@@ -1,0 +1,271 @@
+﻿{
+  "IdentityServerData": {
+    "IdentityResources": [
+      {
+        "Name": "roles",
+        "Enabled": true,
+        "DisplayName": "Roles",
+        "UserClaims": [
+          "role"
+        ]
+      },
+      {
+        "Name": "openid",
+        "Enabled": true,
+        "Required": true,
+        "DisplayName": "Your user identifier",
+        "UserClaims": [
+          "sub"
+        ]
+      },
+      {
+        "Name": "profile",
+        "Enabled": true,
+        "DisplayName": "User profile",
+        "Description": "Your user profile information (first name, last name, etc.)",
+        "Emphasize": true,
+        "UserClaims": [
+          "name",
+          "family.name",
+          "given.name",
+          "middle.name",
+          "nickname",
+          "preferred.username",
+          "profile",
+          "picture",
+          "website",
+          "gender",
+          "birthdate",
+          "zoneinfo",
+          "locale",
+          "updated.at"
+        ]
+      },
+      {
+        "Name": "email",
+        "Enabled": true,
+        "DisplayName": "Your email address",
+        "Emphasize": true,
+        "UserClaims": [
+          "email",
+          "email.verified"
+        ]
+      },
+      {
+        "Name": "address",
+        "Enabled": true,
+        "DisplayName": "Your address",
+        "Emphasize": true,
+        "UserClaims": [
+          "address"
+        ]
+      }
+    ],
+    "ApiScopes": [
+      {
+        "Name": "odp.api.rw",
+        "DisplayName": "odp.api.read.write",
+        "Required": false,
+        "UserClaims": [
+          "sub",
+          "role",
+          "name",
+          "email"
+        ]
+      },
+      {
+        "Name": "aep.api.rwx",
+        "DisplayName": "aep.api.read.write.execute",
+        "Required": false,
+        "UserClaims": [
+          "sub",
+          "role",
+          "name",
+          "email"
+        ]
+      },
+      {
+        "Name": "idp.api.rw",
+        "DisplayName": "idp.api.read.write",
+        "Required": false,
+        "UserClaims": [
+          "sub",
+          "role",
+          "name",
+          "email"
+        ]
+      }
+    ],
+    "ApiResources": [
+      {
+        "Name": "aep",
+        "Scopes": [
+          "aep.api.rwx"
+        ]
+      },
+      {
+        "Name": "odp.api",
+        "Scopes": [
+          "odp.api.rw"
+        ]
+      },
+      {
+        "Name": "idp.api",
+        "Scopes": [
+          "idp.api.rw"
+        ]
+      }
+    ],
+    "Clients": [
+      {
+        "ClientId": "idp.admin",
+        "ClientName": "idp.admin",
+        "ClientUri": "https://localhost:44303",
+        "AllowedGrantTypes": [
+          "authorization.code"
+        ],
+        "RequirePkce": true,
+        "ClientSecrets": [
+          {
+            "Value": "V00dkaPL"
+          }
+        ],
+        "RedirectUris": [
+          "https://localhost:44303/signin-oidc"
+        ],
+        "FrontChannelLogoutUri": "https://localhost:44303/signout-oidc",
+        "PostLogoutRedirectUris": [
+          "https://localhost:44303/signout-callback-oidc"
+        ],
+        "AllowedCorsOrigins": [
+          "https://localhost:44303"
+        ],
+        "AllowedScopes": [
+          "openid",
+          "email",
+          "profile",
+          "roles"
+        ]
+      },
+      {
+        "ClientId": "uip.app",
+        "ClientName": "uip.app",
+        "ClientUri": "https://localhost:44303",
+        "AllowedGrantTypes": [
+          "password"
+        ],
+        "RequirePkce": false,
+        "ClientSecrets": [
+          {
+            "Value": "uip.app"
+          }
+        ],
+        "AllowedScopes": [
+          "odp.api.rw"
+        ]
+      },
+      {
+        "ClientId": "odp.admin",
+        "ClientName": "odp.admin",
+        "AllowedGrantTypes": [
+          "password"
+        ],
+        "RequireClientSecret": true,
+        "RequirePkce": false,
+        "ClientSecrets": [
+          {
+            "Value": "odp.admin"
+          }
+        ],
+        "AllowedScopes": [
+          "odp.api.rw",
+          "idp.api.rw",
+          "aep.api.rw"
+        ]
+      },
+      {
+        "ClientId": "odp.api",
+        "ClientName": "odp.api",
+        "AllowedGrantTypes": [
+          "password"
+        ],
+        "RequireClientSecret": true,
+        "RequirePkce": false,
+        "ClientSecrets": [
+          {
+            "Value": "odp.api"
+          }
+        ],
+        "AllowedScopes": [
+          "odp.api.rw",
+          "idp.api.rw",
+          "aep.api.rwx"
+        ],
+        "AllowedCorsOrigins": [
+          "https://localhost:44302"
+        ]
+      },
+      {
+        "ClientId": "aep.api",
+        "ClientName": "aep",
+        "AllowedGrantTypes": [
+          "password"
+        ],
+        "RequireClientSecret": true,
+        "RequirePkce": false,
+        "ClientSecrets": [
+          {
+            "Value": "aep.api"
+          }
+        ],
+        "AllowedScopes": [
+          "odp.api.rw",
+          "idp.api.rw"
+        ],
+        "AllowedCorsOrigins": [
+          "https://localhost:44302"
+        ]
+      },
+      {
+        "ClientId": "odp.openapi",
+        "ClientName": "odp.openapi",
+        "AllowedGrantTypes": [
+          "password"
+        ],
+        "RequireClientSecret": true,
+        "RequirePkce": false,
+        "ClientSecrets": [
+          {
+            "Value": "odp.openapi"
+          }
+        ],
+        "AllowedScopes": [
+          "odp.api.rw"
+        ],
+        "AllowedCorsOrigins": [
+          "https://localhost:44302"
+        ]
+      },
+      {
+        "ClientId": "idp.openapi",
+        "ClientName": "idp.openapi",
+        "AllowedGrantTypes": [
+          "password"
+        ],
+        "RequireClientSecret": true,
+        "RequirePkce": false,
+        "ClientSecrets": [
+          {
+            "Value": "idp.openapi"
+          }
+        ],
+        "AllowedScopes": [
+          "idp.api.rw"
+        ],
+        "AllowedCorsOrigins": [
+          "https://localhost:44302"
+        ]
+      }
+    ]
+  }
+}                                                                                                                                                        
