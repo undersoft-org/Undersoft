@@ -125,6 +125,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SoftwareDevelopmentKit.Reac
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "undersoft.sdk.react", "src\Undersoft.SoftwareDevelopmentKit.React\undersoft.sdk.react.esproj", "{E73074BD-25EF-4FDF-B52A-D8D7122C570E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SoftwareDevelopmentKit.Estimation", "SoftwareDevelopmentKit.Estimation", "{76A09A5F-669D-4ACC-BF34-2F9A3E8B8D88}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Estimation", "src\Undersoft.SoftwareDevelopmentKit.Estimation\src\Undersoft.SDK.Estimation.csproj", "{30CF254A-5DA8-44EB-B5CC-AA8BC3F44262}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -331,6 +335,10 @@ Global
 		{E73074BD-25EF-4FDF-B52A-D8D7122C570E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E73074BD-25EF-4FDF-B52A-D8D7122C570E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E73074BD-25EF-4FDF-B52A-D8D7122C570E}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{30CF254A-5DA8-44EB-B5CC-AA8BC3F44262}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30CF254A-5DA8-44EB-B5CC-AA8BC3F44262}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30CF254A-5DA8-44EB-B5CC-AA8BC3F44262}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30CF254A-5DA8-44EB-B5CC-AA8BC3F44262}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -388,6 +396,7 @@ Global
 		{EA755805-E119-4D64-97E8-9F1C22B032A6} = {70F127EB-C092-4EF5-81EF-838354777BBE}
 		{474CFC2F-AB7E-4ECF-BC12-AE880DDC466C} = {70F127EB-C092-4EF5-81EF-838354777BBE}
 		{E73074BD-25EF-4FDF-B52A-D8D7122C570E} = {E18B1C6C-5CCE-48FB-B66F-40935F4A0408}
+		{30CF254A-5DA8-44EB-B5CC-AA8BC3F44262} = {76A09A5F-669D-4ACC-BF34-2F9A3E8B8D88}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F31728AB-97C6-4E0D-B412-898579AA77AD}

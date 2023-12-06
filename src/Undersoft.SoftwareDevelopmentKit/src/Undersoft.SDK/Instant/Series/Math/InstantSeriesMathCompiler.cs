@@ -11,7 +11,6 @@ public class InstantSeriesMathCompiler
     internal static AssemblyBuilder ASSEMBLY;
     internal static int CLASS_ID;
     internal static bool COLLECT_MODE = false;
-    internal static string EXE_NAME = "GENERATED_CODE";
     internal static ModuleBuilder MODULE;
     internal static string TYPE_PREFIX = "MATHSET_";
 
