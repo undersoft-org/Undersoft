@@ -1,17 +1,17 @@
-import { AccountPersonal } from "./accountPersonal";
+import { Personal } from "./personal";
 import { Detail } from "./detail";
-import { AccountIdentity } from "./accountIdentity";
-import { Model } from "./model";
-import { UserAccountIdentifier } from "./userAccountIdentifier";
+import { AccountIdentity } from "@/models/accountIdentity";
+import { Model } from "@/models/model";
+import { UserIdentifier } from "./userIdentifier";
 
-export interface UserAccount extends Model {
+export interface User extends Model {
     Group?: string;
     Active: boolean;
     Locked: boolean;
     Contact?: any;
     Details?: Detail[];
-    Identifiers?: UserAccountIdentifier[];
+    Identifiers?: UserIdentifier[];
     Identity?: AccountIdentity;
-    Personal?: AccountPersonal;
+    Personal?: Personal;
     IsAuthorized: boolean;
 }

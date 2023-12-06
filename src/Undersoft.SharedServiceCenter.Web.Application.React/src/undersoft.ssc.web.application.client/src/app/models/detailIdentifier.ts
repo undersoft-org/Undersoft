@@ -1,6 +1,5 @@
 ﻿import { Detail } from "./detail";
-import { Model } from "./model";
-
+import { Model } from "@/models/model";
 
 export interface DetailIdentifier extends Model {
     Entity?: Detail;

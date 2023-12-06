@@ -19,7 +19,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Basic YW9zOmFvcw==",
+						"value": "",
 						"type": "text"
 					}
 				],
@@ -76,7 +76,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkJEQTFFRURDNjNDQkVDNDY4N0Q5MzdDNThCM0ZBQjYxIiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2Nzk0MjM2NjcsImV4cCI6MTY3OTQyNzI2NywiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzMTAiLCJjbGllbnRfaWQiOiJhb3MiLCJzdWIiOiJlODM5MTUxMi04NjMxLTRkYTYtYWVhNS0zYWMyMDdmYmUyOTIiLCJhdXRoX3RpbWUiOjE2Nzk0MjM2NjcsImlkcCI6ImxvY2FsIiwiaWF0IjoxNjc5NDIzNjY3LCJzY29wZSI6WyJlbWFpbCIsIm9wZW5pZCIsInByb2ZpbGUiLCJyb2xlcyJdLCJhbXIiOlsicHdkIl19.rYqSjUM0Dzl1KTbgp_ux40r9PyOiZUEHbDBJd08jyHREfoWoZzs1-9ZIEEojdZT5AT1kDMY8Vtho8IpD3ssAjN9lQDBiBN74mwbhIjvuMcz9RvhwB5NM5OMuEVIGe-ACckSxPGP8M7hETHTW080Fhkt-p3FnfBFM0PDPbTMqGmxAmWdRQwmUFYmQ7FnRyUAao5D-8LTKo_gMHFQbK5iTokNwmdm1jooq36PpZ6-wR_B4DcOCwYCwaPOouXgpvKZxuMP3RJbXyWeMIhY8DMgNWseLU-dyQmb_Mo2lrJ47HPncnwa4DGqri-U42WCFL6el3OEGfmFZu5TdDXQnWGk5lA",
+						"value": "",
 						"type": "text"
 					}
 				],

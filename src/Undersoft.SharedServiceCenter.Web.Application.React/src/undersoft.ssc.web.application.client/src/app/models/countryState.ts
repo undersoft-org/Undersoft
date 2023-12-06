@@ -1,6 +1,6 @@
-import { Model } from "./model";
+import { Model } from "@/models/model";
 
-export interface CountryStateEdge extends Model {
+export interface CountryState extends Model {
     name: string | null;
     stateCode: string | null;
     timeZone: string | null;

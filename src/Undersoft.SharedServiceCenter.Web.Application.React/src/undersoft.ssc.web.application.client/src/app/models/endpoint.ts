@@ -1,6 +1,6 @@
-import { Model } from "./model";
+import { Model } from "@/models/model";
 
-export interface EndpointEdge extends Model {
+export interface Endpoint extends Model {
     host: string | null;
     iP: string | null;
     port: number | null;

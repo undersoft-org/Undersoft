@@ -1,9 +1,9 @@
-﻿import { Model } from "./model";
-import { UserAccount } from "./userAccount";
+﻿import { Model } from "@/models/model";
+import { User } from "./user";
 
 
-export interface UserAccountIdentifier extends Model {
-    Entity?: UserAccount;
+export interface UserIdentifier extends Model {
+    Entity?: User;
     EntityId?: number;
     IdKind?: string;
     Name?: string;

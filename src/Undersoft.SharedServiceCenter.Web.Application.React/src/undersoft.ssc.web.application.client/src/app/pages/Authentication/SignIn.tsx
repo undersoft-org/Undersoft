@@ -6,10 +6,10 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { authorization } from '../../../../infra/store/authorizationStore';
 import * as Yup from 'yup';
-import { AccountIdentity } from '../../../../domain/models/accountIdentity';
-import { PostAction } from '../../../../infra/store/storeRepository';
+import { AccountIdentity } from '@/account/accountIdentity';
+import { PostAction } from '@/services/serviceBase';
 import { jwtDecode } from 'jwt-decode';
-import { currentUser } from "../../../../infra/store/userAccountStore";
+import { currentUser } from "@/app/store/userStore";
 import { Credentials } from '../../../../domain/models/credentials';
 import { IdentityUser } from '../../../../domain/models/identityUser';
 

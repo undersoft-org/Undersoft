@@ -1,4 +1,6 @@
-export interface AddressEdge extends Entity {
+import { Model } from "@/models/model";
+
+export interface Address extends Model {
     cityName: string | null;
     streetName: string | null;
     buildingNumber: string | null;
@@ -7,7 +9,7 @@ export interface AddressEdge extends Entity {
     notices: string | null;
     addressType: AddressType | null;
     countryId: number | null;
-    country: CountryEdge | null;
+    country: Country | null;
     stateId: number | null;
-    countryState: CountryStateEdge | null;
+    countryState: CountryState | null;
 }
