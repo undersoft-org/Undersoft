@@ -7,5 +7,10 @@ public enum AccountGroup
     Manager,
     Servicer,
     Client,
+    Orchestrator,
+    Broker,
+    Provider,
     Administrator,
+    Service,
+    Category
 }

@@ -5,6 +5,7 @@ using Undersoft.SDK.Service.Application.Controller.Crud;
 using Undersoft.SDK.Service.Application.Account;
 using Undersoft.SDK.Service.Application.Operation.Command;
 using Undersoft.SDK.Service.Application.Operation.Remote.Command;
+using Undersoft.SDK.Service.Application.Account.Identity;
 
 namespace Undersoft.SSC.Web.Application.Controllers
 {
@@ -24,7 +25,7 @@ namespace Undersoft.SSC.Web.Application.Controllers
 
             var dto = new AccountIdentity()
             {
-                Credentials = new Credentials()
+                Credentials = new AccountIdentityCredentials()
                 {
                     Email = authorization.Substring(0, separator),
                     Password = authorization.Substring(separator + 1)

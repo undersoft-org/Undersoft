@@ -1,4 +1,4 @@
-import { Model } from "./model";
+import { Model } from "@/models/model";
 
 export interface IdentityRoleClaim extends Model {
 

@@ -8,10 +8,10 @@ using Undersoft.SDK.Service.Data.Service;
 using Undersoft.SDK.Service.Data.Store;
 using System.Reflection;
 using Undersoft.SDK.Service.Application.Controller;
-using Undersoft.SDK.Service.Application.Account;
 using Microsoft.AspNetCore.OData.Formatter;
 
 using Undersoft.SDK.Service.Data.Object;
+using Undersoft.SDK.Service.Application.Account.Identity;
 
 namespace Undersoft.SDK.Service.Application.DataServer;
 
@@ -178,23 +178,23 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
 
         odataBuilder.EntityType<Account>().Action("SignIn")
             .Returns<string>()
-            .Parameter<Credentials>("Credentials");
+            .Parameter<AccountIdentityCredentials>("Credentials");
 
         odataBuilder.EntityType<Account>().Action("SignUp")
             .Returns<string>()
-            .Parameter<Credentials>("Credentials");
+            .Parameter<AccountIdentityCredentials>("Credentials");
 
         odataBuilder.EntityType<Account>().Action("SignOut")
             .Returns<string>()
-            .Parameter<Credentials>("Credentials");
+            .Parameter<AccountIdentityCredentials>("Credentials");
 
         odataBuilder.EntityType<Account>().Action("ResetPassword")
             .Returns<string>()
-            .Parameter<Credentials>("Credentials");
+            .Parameter<AccountIdentityCredentials>("Credentials");
 
         odataBuilder.EntityType<Account>().Action("CompleteRegistration")
             .Returns<string>()
-            .Parameter<Credentials>("Credentials");
+            .Parameter<AccountIdentityCredentials>("Credentials");
 
         actionSetAdded = true;
     }

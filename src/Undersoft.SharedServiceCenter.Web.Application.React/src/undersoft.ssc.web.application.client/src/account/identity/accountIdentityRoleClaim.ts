@@ -1,8 +1,7 @@
 import { Model } from "@/models/model";
 
-export interface IdentityUserClaim extends Model {
-
-    UserId?: number;
+export interface AccountIdentityRoleClaim extends Model {
+    RoleId?: number;
     ClaimType?: string;
     ClaimValue?: string;
 }

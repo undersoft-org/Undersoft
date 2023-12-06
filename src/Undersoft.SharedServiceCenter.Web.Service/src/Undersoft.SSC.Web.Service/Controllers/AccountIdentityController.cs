@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Undersoft.SDK.Service.Application.Account;
+using Undersoft.SDK.Service.Application.Account.Identity;
 
 namespace Undersoft.SSC.Web.API.Controllers
 {

@@ -17,6 +17,7 @@ using Documentation;
 using Account;
 using Account.Email;
 using Data.Store;
+using Undersoft.SDK.Service.Application.Account.Identity;
 
 public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
 {
@@ -67,7 +68,7 @@ public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
                 options.SignIn.RequireConfirmedAccount = true;
                 options.Tokens.ProviderMap.Add("AccountEmailConfirmationTokenProvider",
               new TokenProviderDescriptor(
-            typeof(AccountConfirmationTokenProvider<IdentityUser>)));
+            typeof(AccountIdentityConfirmationTokenProvider<IdentityUser>)));
                 options.Tokens.EmailConfirmationTokenProvider = "AccountEmailConfirmationTokenProvider";
                 options.Tokens.ProviderMap.Add("AccountPasswordResetTokenProvider",
                 new TokenProviderDescriptor(
@@ -103,7 +104,7 @@ public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
     public IApplicationSetup AddIdentityAuthentication() 
     {
         var jwtOptions = new AccountIdentityJWTOptions();
-        var jwtFactory = new AccountIdentityJWTFactory(30, jwtOptions);
+        var jwtFactory = new AccountIdentityJWTGenerator(30, jwtOptions);
 
         registry.AddObject(jwtFactory);
 
@@ -212,10 +213,10 @@ public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
             .Services
             .AddHttpContextAccessor();
 
-        AddApplicationSetupInternalCQRSImplementations(assemblies);
-        AddApplicationSetupInternalCQRSActionImplementations(assemblies);
-        AddApplicationSetupRemoteCQRSImplementations(assemblies);
-        AddApplicationSetupRemoteCQRSActionImplementations(assemblies);
+        AddApplicationSetupInternalImplementations(assemblies);
+        AddApplicationSetupInternalActionImplementations(assemblies);
+        AddApplicationSetupRemoteImplementations(assemblies);
+        AddApplicationSetupRemoteActionImplementations(assemblies);
 
         if (includeSwagger)
             AddSwagger();

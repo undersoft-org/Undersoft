@@ -1,5 +1,5 @@
 ﻿namespace Undersoft.SSC.Web.API.Validators;
-using Undersoft.SDK.Service.Application.Account;
+using Undersoft.SDK.Service.Application.Account.Identity;
 using Undersoft.SDK.Service.Application.Operation.Command.Validator;
 
 public class AccountIdentityValidator : CommandValidator<AccountIdentity>

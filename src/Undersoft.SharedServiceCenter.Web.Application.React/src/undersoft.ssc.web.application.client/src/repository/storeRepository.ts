@@ -5,7 +5,7 @@ import {
 import { EntityId } from '@reduxjs/toolkit/dist/entities/models';
 import { Model } from '@/models/model';
 import Repository from '@/repository/repository';
-import { Query } from '@/models/query';
+import { QuerySet } from '@/models/querySet';
 import { RepositoryResponse } from '@/repository/repositoryConfig';
 
 export declare type Registry<M> = { [id: number | string]: M };
@@ -71,7 +71,7 @@ export default abstract class StoreRepository<I = any, M = Model | any> {
         return state;
     }
 
-    public remoteQuery = (state: EntityState<M> & { loading: string }, action: { payload: Query, type: string, postaction?: PostAction<I, M> }) => {
+    public remoteQuery = (state: EntityState<M> & { loading: string }, action: { payload: QuerySet, type: string, postaction?: PostAction<I, M> }) => {
         this.repository.query(action.payload);
         return state;
     }
