@@ -9,19 +9,19 @@ using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Data;
 
 [OpenDataActionService]
-public abstract class OpenDataActionController<TStore, TType, TDto>
-    : ODataController, IOpenDataActionController<TStore, TType, TDto> where TDto : class
+public abstract class OpenDataActionController<TStore, TType, TDto, TKind>
+    : ODataController, IOpenDataActionController<TStore, TType, TDto, TKind> where TDto : class where TKind : struct, Enum
     where TType : class
     where TStore : IDataServiceStore
 {
     protected readonly IServicer _servicer;
-    protected readonly DataActionKind _kind;
+    protected readonly TKind _kind;
 
     protected OpenDataActionController() { }
 
     public OpenDataActionController(
         IServicer servicer,
-        DataActionKind kind = DataActionKind.None
+        TKind kind = default(TKind)
     )
     {
         _servicer = servicer;
@@ -33,7 +33,7 @@ public abstract class OpenDataActionController<TStore, TType, TDto>
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var result = await _servicer.Send(new Execute<TStore, TType, TDto>
+        var result = await _servicer.Send(new Execute<TStore, TType, TDto, TKind>
                                                 (_kind, dto))
                                                     .ConfigureAwait(false);
         return !result.IsValid

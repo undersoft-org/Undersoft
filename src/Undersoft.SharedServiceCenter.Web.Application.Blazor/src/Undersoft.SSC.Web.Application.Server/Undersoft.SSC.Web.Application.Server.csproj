@@ -15,11 +15,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.22" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.22" NoWarn="NU1605" />
-    <PackageReference Include="Microsoft.Identity.Web" Version="1.16.0" />
-    <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.16.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="1.19.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Web.Application\Undersoft.SSC.Web.Application.csproj" />
+    <ProjectReference Include="..\..\..\Undersoft.SoftwareDevelopmentKit.Blazor\src\Undersoft.SDK.Blazor.Server\Undersoft.SDK.Blazor.Server.csproj" />
     <ProjectReference Include="..\Undersoft.SSC.Web.Application.Client\Undersoft.SSC.Web.Application.Client.csproj" />
   </ItemGroup>
 

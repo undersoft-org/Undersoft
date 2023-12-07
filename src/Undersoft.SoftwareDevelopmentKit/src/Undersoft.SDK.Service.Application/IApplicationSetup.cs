@@ -15,6 +15,7 @@ namespace Undersoft.SDK.Service.Application
         IApplicationSetup AddIdentityService<TContext>() where TContext : DbContext;
         IApplicationSetup AddIdentityAuthentication();
         IApplicationSetup AddIdentityAuthorization();
+        IApplicationSetup UseDataServices();
         IApplicationSetup AddApiVersions(string[] apiVersions);
         IApplicationSetup ConfigureApplication(bool includeSwagger, Assembly[] assemblies = null);
     }

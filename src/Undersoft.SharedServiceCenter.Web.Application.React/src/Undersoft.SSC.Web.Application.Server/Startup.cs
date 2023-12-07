@@ -4,7 +4,6 @@ using Undersoft.SDK.Service.Application.DataServer;
 namespace Undersoft.SSC.Web.Application.Server;
 
 using Infrastructure.Persistance.Stores;
-using Undersoft.SSC.Infrastructure.Persistance.Stores;
 
 public class Startup
 {

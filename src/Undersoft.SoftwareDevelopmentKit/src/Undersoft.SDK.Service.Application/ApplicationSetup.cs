@@ -18,6 +18,7 @@ using Account;
 using Account.Email;
 using Data.Store;
 using Undersoft.SDK.Service.Application.Account.Identity;
+using OpenTelemetry;
 
 public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
 {
@@ -223,6 +224,12 @@ public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
 
         Services.MergeServices();
 
+        return this;
+    }
+
+    public IApplicationSetup UseDataServices()
+    {
+        this.LoadOpenDataEdms().ConfigureAwait(true);
         return this;
     }
 }

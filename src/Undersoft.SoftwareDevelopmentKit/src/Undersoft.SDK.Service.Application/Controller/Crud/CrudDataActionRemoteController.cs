@@ -18,13 +18,13 @@ public abstract class CrudDataActionRemoteController<TStore, TDto, TModel>
     where TStore : IDataServiceStore
 {
     protected readonly IServicer _servicer;
-    protected readonly DataActionKind _kind;
+    protected readonly ActionServiceKind _kind;
 
     protected CrudDataActionRemoteController() { }
 
     protected CrudDataActionRemoteController(
         IServicer servicer,
-        DataActionKind kind = DataActionKind.None
+        ActionServiceKind kind = ActionServiceKind.None
     )
     {
         _servicer = servicer;
@@ -37,7 +37,7 @@ public abstract class CrudDataActionRemoteController<TStore, TDto, TModel>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        if (Enum.TryParse(kind, out DataActionKind eventKind))
+        if (Enum.TryParse(kind, out ActionServiceKind eventKind))
         {
             var result = await _servicer
                 .Send(new RemoteExecute<TStore, TDto, TModel>(eventKind, dto));

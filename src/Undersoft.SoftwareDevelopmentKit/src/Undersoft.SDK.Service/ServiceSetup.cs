@@ -35,7 +35,14 @@ public partial class ServiceSetup : IServiceSetup
     protected IServiceRegistry registry { get; set; }
     protected IServiceCollection services => registry.Services;
 
-    public ServiceSetup(IServiceCollection services, IMvcBuilder mvcBuilder = null)
+    public ServiceSetup(IServiceCollection services)
+    {
+        manager = new ServiceManager(services);
+        registry = manager.Registry;
+        registry.MergeServices();
+    }
+
+    public ServiceSetup(IServiceCollection services, IMvcBuilder mvcBuilder)
     {
         manager = new ServiceManager(services);
         registry = manager.Registry;

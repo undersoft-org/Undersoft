@@ -24,16 +24,16 @@ public class ApplicationHostSetup : IApplicationHostSetup
 
     public ApplicationHostSetup(IApplicationBuilder application) { app = application; }
 
-    public ApplicationHostSetup(IApplicationBuilder application, IWebHostEnvironment environment, bool useSwagger)
-        : this(application, environment, useSwagger ? new string[] { "v1.0" } : null)
+    public ApplicationHostSetup(IApplicationBuilder application, IWebHostEnvironment environment, bool useSwagger, bool useRazorPages = false)
+        : this(application, environment, useSwagger ? new string[] { "v1.0" } : null, useRazorPages)
     {
     }
 
-    public ApplicationHostSetup(IApplicationBuilder application, IWebHostEnvironment environment, string[] apiVersions = null)
+    public ApplicationHostSetup(IApplicationBuilder application, IWebHostEnvironment environment, string[] apiVersions = null, bool useRazorPages = false)
     {
         app = application;
         env = environment;
-        UseStandardSetup(apiVersions);
+        UseStandardSetup(apiVersions, useRazorPages);
     }
 
     public IApplicationHostSetup RebuildProviders()
@@ -50,7 +50,7 @@ public class ApplicationHostSetup : IApplicationHostSetup
         return this;
     }
 
-    public IApplicationHostSetup UseEndpoints()
+    public IApplicationHostSetup UseEndpoints(bool mapRazorPages = false)
     {
         app.UseEndpoints(endpoints =>
         {
@@ -68,6 +68,8 @@ public class ApplicationHostSetup : IApplicationHostSetup
                         .MergeServices();
 
             endpoints.MapControllers();
+            if (mapRazorPages)
+                endpoints.MapRazorPages();
         });
 
         return this;
@@ -123,7 +125,7 @@ public class ApplicationHostSetup : IApplicationHostSetup
         return this;
     }
 
-    public IApplicationHostSetup UseStandardSetup(string[] apiVersions = null)
+    public IApplicationHostSetup UseStandardSetup(string[] apiVersions = null, bool useRazorPages = false)
     {
         UseHeaderForwarding();
 
@@ -148,7 +150,7 @@ public class ApplicationHostSetup : IApplicationHostSetup
         app.UseDefaultFiles();
         app.UseStaticFiles();
 
-        UseEndpoints();
+        UseEndpoints(useRazorPages);
 
         return this;
     }

@@ -5,7 +5,7 @@
 
         IApplicationHostSetup UseHeaderForwarding();
 
-        IApplicationHostSetup UseStandardSetup(string[] apiVersions);
+        IApplicationHostSetup UseStandardSetup(string[] apiVersions, bool useRazorPages = false);
 
         IApplicationHostSetup UseDataServices();
 
@@ -15,7 +15,7 @@
 
         IApplicationHostSetup UseDataMigrations();
 
-        IApplicationHostSetup UseEndpoints();
+        IApplicationHostSetup UseEndpoints(bool useRazorPages = false);
 
         IApplicationHostSetup UseJwtUserInfo();
 

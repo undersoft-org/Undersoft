@@ -32,7 +32,7 @@ public abstract class ActionCommandBase : IActionCommand
 
     public CommandMode CommandMode { get; set; }
 
-    public DataActionKind Kind { get; set; }
+    public Enum Kind { get; set; }
 
     public virtual object Input => Data;
 
@@ -45,13 +45,13 @@ public abstract class ActionCommandBase : IActionCommand
         Result = new ValidationResult();
     }
 
-    protected ActionCommandBase(CommandMode commandMode, DataActionKind kind) : this()
+    protected ActionCommandBase(CommandMode commandMode, Enum kind) : this()
     {
         CommandMode = commandMode;
         Kind = kind;
     }
 
-    protected ActionCommandBase(object entryData, CommandMode commandMode, DataActionKind publishMode)
+    protected ActionCommandBase(object entryData, CommandMode commandMode, ActionServiceKind publishMode)
         : this(commandMode, publishMode)
     {
         Data = entryData;
@@ -60,7 +60,7 @@ public abstract class ActionCommandBase : IActionCommand
     protected ActionCommandBase(
         object entryData,
         CommandMode commandMode,
-    DataActionKind kind,
+    Enum kind,
         params object[] keys
     ) : this(commandMode, kind, keys)
     {
@@ -69,7 +69,7 @@ public abstract class ActionCommandBase : IActionCommand
 
     protected ActionCommandBase(
         CommandMode commandMode,
-        DataActionKind kind,
+        Enum kind,
         params object[] keys
     ) : this(commandMode, kind)
     {

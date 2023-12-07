@@ -355,12 +355,12 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
 
     public override DataServiceQuery<TEntity> Query => dsContext.CreateQuery<TEntity>(Name, true);
 
-    public async Task<IEnumerable<TEntity>> ExecuteAsync<TDto>(TDto payload, DataActionKind kind)
+    public async Task<IEnumerable<TEntity>> ExecuteAsync<TDto>(TDto payload, ActionServiceKind kind)
     {
         return await dsContext.ExecuteAsync<TEntity>(new Uri(dsContext.BaseUri, Name + kind.ToString()), "POST", new BodyOperationParameter("credentials", payload));
     }
 
-    public async Task<IEnumerable<TEntity>> ExecuteAsync<TDto>(TDto[] payloads, DataActionKind kind)
+    public async Task<IEnumerable<TEntity>> ExecuteAsync<TDto>(TDto[] payloads, ActionServiceKind kind)
     {        
         dsSet.AddRange(await MapFrom<TDto>(payloads));
         return dsSet.AsEnumerable();

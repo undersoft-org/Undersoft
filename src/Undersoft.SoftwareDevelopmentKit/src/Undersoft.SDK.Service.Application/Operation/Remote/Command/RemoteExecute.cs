@@ -10,7 +10,7 @@ public class RemoteExecute<TStore, TDto, TModel> : ActionCommand<TModel>
     where TDto : class, IOrigin
     where TStore : IDataServiceStore
 {
-    public RemoteExecute(DataActionKind kind, TModel input)
+    public RemoteExecute(ActionServiceKind kind, TModel input)
         : base(CommandMode.Create, kind, input)
     {
         input.AutoId();

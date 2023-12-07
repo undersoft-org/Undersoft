@@ -10,6 +10,8 @@ public interface IActionCommand : IOperation
 
     object[] Keys { get; set; }
 
+    public Enum Kind { get; set; }
+
     object Response { get; set; }
 
     object Data { get; set; }

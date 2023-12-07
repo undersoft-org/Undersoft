@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Undersoft.SDK.Service;
+using Undersoft.SDK.Service.Application;
 
 namespace Undersoft.SSC.Web.Application.Client
 {
@@ -12,17 +13,9 @@ namespace Undersoft.SSC.Web.Application.Client
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
-            builder.Services.AddHttpClient("Undersoft.SSC.Web.Application.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
-                .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-
-            // Supply HttpClient instances that include access tokens when making requests to the server project
-            builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Undersoft.SSC.Web.Application.ServerAPI"));
-
-            builder.Services.AddMsalAuthentication(options =>
-            {
-                builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
-                options.ProviderOptions.DefaultAccessTokenScopes.Add("api://api.id.uri/access_as_user");
-            });
+            var app = builder.Services.AddAuthorizationCore().AddApplicationSetup();
+            app.ConfigureServices(AppDomain.CurrentDomain.GetAssemblies());
+            app.UseDataServices();
 
             await builder.Build().RunAsync();
         }

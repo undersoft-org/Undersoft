@@ -176,23 +176,23 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
         if (actionSetAdded)
             return;
 
-        odataBuilder.EntityType<Account>().Action("SignIn")
+        odataBuilder.EntityType<AccountIdentity>().Action("SignIn")
             .Returns<string>()
             .Parameter<AccountIdentityCredentials>("Credentials");
 
-        odataBuilder.EntityType<Account>().Action("SignUp")
+        odataBuilder.EntityType<AccountIdentity>().Action("SignUp")
             .Returns<string>()
             .Parameter<AccountIdentityCredentials>("Credentials");
 
-        odataBuilder.EntityType<Account>().Action("SignOut")
+        odataBuilder.EntityType<AccountIdentity>().Action("SignOut")
             .Returns<string>()
             .Parameter<AccountIdentityCredentials>("Credentials");
 
-        odataBuilder.EntityType<Account>().Action("ResetPassword")
+        odataBuilder.EntityType<AccountIdentity>().Action("ResetPassword")
             .Returns<string>()
             .Parameter<AccountIdentityCredentials>("Credentials");
 
-        odataBuilder.EntityType<Account>().Action("CompleteRegistration")
+        odataBuilder.EntityType<AccountIdentity>().Action("CompleteRegistration")
             .Returns<string>()
             .Parameter<AccountIdentityCredentials>("Credentials");
 

@@ -6,7 +6,7 @@ namespace Undersoft.SDK.Service.Application.Operation.Command;
 using Undersoft.SDK.Service.Data;
 using Uniques;
 
-public class ActionCommand<TDto> : ActionCommandBase, IRequest<ActionCommand<TDto>> where TDto : class
+public class ActionCommand<TDto, TKind> : ActionCommandBase, IRequest<ActionCommand<TDto, TKind>> where TDto : class where TKind : Enum
 {
     private long id;
 
@@ -23,17 +23,17 @@ public class ActionCommand<TDto> : ActionCommandBase, IRequest<ActionCommand<TDt
         base.Data = dataObject;
     }
 
-    protected ActionCommand(CommandMode commandMode, DataActionKind kind, TDto dataObject)
+    protected ActionCommand(CommandMode commandMode, TKind kind, TDto dataObject)
         : base(dataObject, commandMode, kind) { }
 
     protected ActionCommand(
         CommandMode commandMode,
-        DataActionKind kind,
+        TKind kind,
         TDto dataObject,
         params object[] keys
     ) : base(dataObject, commandMode, kind, keys) { }
 
-    protected ActionCommand(CommandMode commandMode, DataActionKind publishMode, params object[] keys)
+    protected ActionCommand(CommandMode commandMode, TKind publishMode, params object[] keys)
         : base(commandMode, publishMode, keys) { }
 
     public byte[] GetBytes()
