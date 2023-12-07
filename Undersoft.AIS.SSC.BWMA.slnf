@@ -1,0 +1,28 @@
+{
+  "solution": {
+    "path": "Undersoft.sln",
+    "projects": [
+      "src\\Undersoft.SharedServiceCenter.Web.Application.Blazor\\src\\Undersoft.SSC.Web.Application.Client\\Undersoft.SSC.Web.Application.Client.csproj",
+      "src\\Undersoft.SharedServiceCenter.Web.Application.Blazor\\src\\Undersoft.SSC.Web.Application.Server\\Undersoft.SSC.Web.Application.Server.csproj",
+      "src\\Undersoft.SharedServiceCenter.Web.Microservices\\src\\Undersoft.SSC.Web.Microservices.Account.Service\\Undersoft.SSC.Web.Microservices.Account.Service.csproj",
+      "src\\Undersoft.SharedServiceCenter.Web.Microservices\\src\\Undersoft.SSC.Web.Microservices.Account\\Undersoft.SSC.Web.Microservices.Account.csproj",
+      "src\\Undersoft.SharedServiceCenter.Web.Microservices\\src\\Undersoft.SSC.Web.Microservices.Activity.Service\\Undersoft.SSC.Web.Microservices.Activity.Service.csproj",
+      "src\\Undersoft.SharedServiceCenter.Web.Microservices\\src\\Undersoft.SSC.Web.Microservices.Activity\\Undersoft.SSC.Web.Microservices.Activity.csproj",
+      "src\\Undersoft.SharedServiceCenter.Web.Microservices\\src\\Undersoft.SSC.Web.Microservices.Resource.Service\\Undersoft.SSC.Web.Microservices.Resource.Service.csproj",
+      "src\\Undersoft.SharedServiceCenter.Web.Microservices\\src\\Undersoft.SSC.Web.Microservices.Resource\\Undersoft.SSC.Web.Microservices.Resource.csproj",
+      "src\\Undersoft.SharedServiceCenter.Web.Microservices\\src\\Undersoft.SSC.Web.Microservices.Schedule.Service\\Undersoft.SSC.Web.Microservices.Schedule.Service.csproj",
+      "src\\Undersoft.SharedServiceCenter.Web.Microservices\\src\\Undersoft.SSC.Web.Microservices.Schedule\\Undersoft.SSC.Web.Microservices.Schedule.csproj",
+      "src\\Undersoft.SharedServiceCenter.Web.Microservices\\src\\Undersoft.SSC.Web.Microservices\\Undersoft.SSC.Web.Microservices.csproj",
+      "src\\Undersoft.SharedServiceCenter\\src\\Undersoft.SSC.Web.Application\\Undersoft.SSC.Web.Application.csproj",
+      "src\\Undersoft.SharedServiceCenter\\src\\Undersoft.SSC.Web\\Undersoft.SSC.Web.csproj",
+      "src\\Undersoft.SharedServiceCenter\\src\\Undersoft.SSC\\Undersoft.SSC.csproj",
+      "src\\Undersoft.SoftwareDevelopmentKit.Blazor\\src\\Undersoft.SDK.Blazor.Server\\Undersoft.SDK.Blazor.Server.csproj",
+      "src\\Undersoft.SoftwareDevelopmentKit.Blazor\\src\\Undersoft.SDK.Blazor\\Undersoft.SDK.Blazor.csproj",
+      "src\\Undersoft.SoftwareDevelopmentKit\\bench\\Undersoft.SDK.Benchmarks\\Undersoft.SDK.Benchmarks.csproj",
+      "src\\Undersoft.SoftwareDevelopmentKit\\src\\Undersoft.SDK.Service.Application\\Undersoft.SDK.Service.Application.csproj",
+      "src\\Undersoft.SoftwareDevelopmentKit\\src\\Undersoft.SDK.Service\\Undersoft.SDK.Service.csproj",
+      "src\\Undersoft.SoftwareDevelopmentKit\\src\\Undersoft.SDK\\Undersoft.SDK.csproj",
+      "src\\Undersoft.SoftwareDevelopmentKit\\tests\\Undersoft.SDK.IntegrationTests\\Undersoft.SDK.IntegrationTests.csproj"
+    ]
+  }
+}
