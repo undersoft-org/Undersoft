@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Undersoft.SDK.Service.Application.Controller.Crud;
 using Undersoft.SSC.Domain.Entities.Enums;
 using Undersoft.SSC.Web.Contracts;
-using Undersoft.SSC.Web.ViewModels;
+using Undersoft.SSC.Web.Appllication.ViewModels;
 
 namespace Undersoft.SSC.Web.Application.Controllers
 {

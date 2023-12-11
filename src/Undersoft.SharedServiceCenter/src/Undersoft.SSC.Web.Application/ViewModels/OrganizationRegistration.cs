@@ -10,11 +10,11 @@ using Undersoft.SSC.Web.ViewModels;
 
 namespace Undersoft.SSC.Web.Appllication.ViewModels;
 
-public class UserRegistration : SubAccountRegistration<Organization, User>
+public class OrganizationRegistration : AccountRegistration<Organization>
 {
-    public UserRegistration()
+    public OrganizationRegistration()
     {
         Group = ActivityGroup.Registration;
-        Registration = new RegistrationDetail() { Kind = RegistrationKind.User };
+        Registration = new RegistrationDetail() { Kind = RegistrationKind.Organization };
     }
 }

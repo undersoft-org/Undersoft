@@ -6,6 +6,6 @@ using Undersoft.SSC.Domain.Entities.Enums;
 namespace Undersoft.SSC.Web.Contracts;
 
 [DataContract]
-public class ActivityBase : ContractBase<ActivityBase, Detail, Setting, AccountGroup>
+public class ActivityBase : ContractBase<ActivityBase, Detail, Setting, ActivityGroup>
 {
 }

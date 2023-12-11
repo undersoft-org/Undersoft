@@ -4,6 +4,10 @@ namespace Undersoft.SDK.Service.Data.Object.Detail;
 
 public class Details<TDto> : KeyedCollection<string, TDto> where TDto : class, IDetail
 {
+    public Details() { }
+
+    public Details(IEnumerable<TDto> list) { list.ForEach(item => base.Add(item)); }
+
     protected override string GetKeyForItem(TDto item)
     {
         if (item.Id == 0)

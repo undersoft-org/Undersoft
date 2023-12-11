@@ -1,11 +1,12 @@
 ﻿using Undersoft.SDK.Service.Data.Object.Detail;
 using Undersoft.SSC.Domain.Entities.Enums;
+using Undersoft.SSC.Web.Application.ViewModels;
 using Undersoft.SSC.Web.Contracts;
 using Undersoft.SSC.Web.Contracts.Details;
 
 namespace Undersoft.SSC.Web.ViewModels;
 
-public class Organization : AccountBase, IViewModel
+public class Organization : AccountModel, IViewModel
 {
     public Organization() { Group = AccountGroup.Organization; }
 
