@@ -7,10 +7,11 @@ using Notification;
 using Undersoft.SDK;
 using Undersoft.SDK.Service.Application.Operation.Command;
 
-public class RemoteExecuteHandler<TStore, TDto, TModel>
-    : IRequestHandler<RemoteExecute<TStore, TDto, TModel>, ActionCommand<TModel>>
+public class RemoteExecuteHandler<TStore, TDto, TModel, TKind>
+    : IRequestHandler<RemoteExecute<TStore, TDto, TModel, TKind>, ActionCommand<TModel, TKind>>
     where TDto : class, IOrigin
     where TModel : class, IOrigin
+    where TKind : Enum
     where TStore : IDataServiceStore
 {
     protected readonly IRemoteRepository<TDto> _repository;
@@ -22,8 +23,8 @@ public class RemoteExecuteHandler<TStore, TDto, TModel>
         _servicer = servicer;
     }
 
-    public async Task<ActionCommand<TModel>> Handle(
-        RemoteExecute<TStore, TDto, TModel> request,
+    public async Task<ActionCommand<TModel, TKind>> Handle(
+        RemoteExecute<TStore, TDto, TModel, TKind> request,
         CancellationToken cancellationToken
     )
     {
@@ -32,7 +33,7 @@ public class RemoteExecuteHandler<TStore, TDto, TModel>
         try
         {
             request.Response = (await _repository
-                .ExecuteAsync<TModel>(request.Data,  request.Kind));
+                .ExecuteAsync<TModel, TKind>(request.Data, (TKind)request.Kind));
                 
 
             if (request.Response == null)
@@ -42,7 +43,7 @@ public class RemoteExecuteHandler<TStore, TDto, TModel>
                         + $"unable create source"
                 );
 
-            await _servicer.Publish(new RemoteExecuted<TStore, TDto, TModel>(request)).ConfigureAwait(false);            
+            await _servicer.Publish(new RemoteExecuted<TStore, TDto, TModel, TKind>(request)).ConfigureAwait(false);            
         }
         catch (Exception ex)
         {

@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Undersoft.SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Application\Undersoft.SDK.Service.Application.csproj" />
     <ProjectReference Include="..\Undersoft.SDK.Blazor\Undersoft.SDK.Blazor.csproj" />
   </ItemGroup>
   

@@ -1,11 +1,6 @@
 using NLog.Web;
-using ServiceStack.Text;
 using Undersoft.SDK.Logging;
-using Undersoft.SDK.Service.Application;
-using Undersoft.SDK.Service.Application.DataServer;
 using Undersoft.SDK.Service.Configuration;
-using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SSC.Infrastructure.Persistance.Stores;
 
 namespace Undersoft.SSC.Web.Application.Server;
 
@@ -23,17 +18,14 @@ public class Program
     static IWebHost Build()
     {
 
-        var builder = WebApplication.CreateBuilder(_args);
+        var builder = new WebHostBuilder();
 
-        builder.Info<Runlog>("Starting Undersoft SSC Web Application Server ....");
+        builder.Info<Runlog>("Starting Shared Service Center Web Application Server ....");
 
-        _webapi = builder.WebHost
+        _webapi = builder
             .UseContentRoot(Directory.GetCurrentDirectory())
             .UseConfiguration(ServiceConfigurationHelper.BuildConfiguration())
             .UseKestrel()
-            .ConfigureKestrel((c, o) => o
-                .Configure(c.Configuration
-                .GetSection("Kestrel")))
             .UseStartup<Startup>()
             .UseNLog()
             .Build();
@@ -49,17 +41,17 @@ public class Program
         }
         catch (Exception exception)
         {
-            Log.Error<Runlog>(null, "Undersoft SSC Web Application Server terminated unexpectedly ....", exception);
+            Log.Error<Runlog>(null, "Shared Service Center Web Application Server terminated unexpectedly ....", exception);
         }
         finally
         {
-            Log.Info<Runlog>(null, "Undersoft SSC Web Application Server shutted down ....");
+            Log.Info<Runlog>(null, "Shared Service Center Web Application Server shutted down ....");
         }
     }
 
     public static async Task Restart()
     {
-        Log.Info<Runlog>(null, "Restarting Undersoft SSC Web Application Server ....");
+        Log.Info<Runlog>(null, "Restarting Shared Service Center Web Application Server ....");
 
         Task.WaitAll(Shutdown());
 
@@ -68,9 +60,9 @@ public class Program
 
     public static async Task Shutdown()
     {
-        Log.Info<Runlog>(null, "Shutting down Undersoft SSC Web Application Server ....");
+        Log.Info<Runlog>(null, "Shutting down Shared Service Center Web Application Server ....");
 
-        _webapi.Info<Runlog>("Stopping Undersoft SSC Web Application Server ....");
+        _webapi.Info<Runlog>("Stopping Shared Service Center Web Application Server ....");
 
         if (_webapi != null)
             await _webapi.StopAsync(TimeSpan.FromSeconds(5));

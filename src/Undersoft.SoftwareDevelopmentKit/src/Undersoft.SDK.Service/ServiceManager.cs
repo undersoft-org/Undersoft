@@ -159,9 +159,11 @@ namespace Undersoft.SDK.Service
             _provider.GetRequiredService<ServiceRegistryObject<IServiceProvider>>().Value = _provider;
         }
 
-        public static IServiceProvider BuildInternalProvider()
+        public static IServiceProvider BuildInternalProvider(bool withPropertyInjection = false)
         {
             var provider = GetRegistry().BuildServiceProviderFromFactory<IServiceCollection>();
+            if(withPropertyInjection)
+                provider = provider.AddPropertyInjection();
             SetProvider(provider);
             return provider;
         }
@@ -171,6 +173,17 @@ namespace Undersoft.SDK.Service
             var _provider = registry.GetProvider();
             if (_provider == null)
                 return BuildInternalProvider();
+
+            return _provider;
+        }
+
+        public static IServiceProvider AddPropertyInjection()
+        {
+            var _provider = registry.GetProvider();
+            if (_provider == null)
+                _provider = GetRegistry().BuildServiceProviderFromFactory<IServiceCollection>();
+
+            SetProvider(_provider.AddPropertyInjection());
 
             return _provider;
         }

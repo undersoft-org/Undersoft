@@ -34,7 +34,7 @@ namespace Undersoft.SDK.Service.Application.DataServer
                 var args = contractType.GetGenericArguments();
                 if (args.Length == 1)
                 {
-                    val = val.Substring(0, val.Length - 1) + args[0].Name;
+                    val = val.Substring(0, val.Length - 2) + args[0].Name;
                 }
             }
             return val;

@@ -1,22 +1,19 @@
 import { Link, useNavigate } from 'react-router-dom';
-import logo from '../../images/logo/logo-icon.png';
-import ball from '../../images/logo/backgroud_ball.png';
-import { authorization } from '../../../../infra/store/authorizationStore';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { Credential } from '../../../../domain/models/credential';
+import { AccountIdentityCredentials } from '@/account/identity/accountIdentityCredentials';
 import { jwtDecode } from 'jwt-decode';
 import toast from 'react-hot-toast';
-import { AccountIdentity } from '../../../../domain/models/accountIdentity';
-import { Credentials } from '../../../../domain/models/credentials';
-import { PostAction } from '../../../../infra/store/baseStoreRemotes';
-import { currentUser } from '../../../../infra/store/userAccountStore';
+import { AccountIdentity } from '@/account/identity/accountIdentity';
+import { currentUser } from '@/app/stores/userStore';
+import { PostAction } from '@/repository/storeRepository';
+import { accountIdentityStore } from '@/app/stores/accountIdentityStore';
 
 const SignUp = () => {
 
-    const command = authorization.command.action;
-    const dispatch = authorization.dispatch;
+    const command = accountIdentityStore.command.action;
+    const dispatch = accountIdentityStore.dispatch;
 
     const validationSchema = Yup.object().shape({
         name: Yup.string().required('Name is required'),
@@ -40,7 +37,7 @@ const SignUp = () => {
                     UserName: name,
                     Email: email,
                     Password: password
-                } as Credentials,
+                } as AccountIdentityCredentials,
                 method: "SignUp",
                 postaction: resultHandler
             }));
@@ -80,7 +77,6 @@ const SignUp = () => {
                                         Contact us</Link>
                                 </label>
                             </div>
-                            <img src={logo} alt="logo" />
                         </div>
                         <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
 
@@ -167,7 +163,6 @@ const SignUp = () => {
                     <div className="xl:w-2/3 xl:border-l-2">
                         <div className="w-full">
                             <span>
-                                <img className="w-full" src={ball} />
                             </span></div></div>
                 </div>
             </div>

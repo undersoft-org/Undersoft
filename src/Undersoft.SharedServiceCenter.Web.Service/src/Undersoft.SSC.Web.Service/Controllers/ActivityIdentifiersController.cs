@@ -2,19 +2,20 @@
 using Undersoft.SDK.Service.Application.Controller.Crud;
 using Undersoft.SDK.Service.Application.Controller.Open;
 using Undersoft.SDK.Service.Application.Controller.Stream;
+using Undersoft.SDK.Service.Data.Identifier;
 using Undersoft.SSC.Domain.Entities;
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
     [AllowAnonymous]
-    public class ActivityDataIdentifierController
+    public class ActivityIdentifierController
         : OpenDataController<long, IEntryStore, IReportStore, Identifier<Activity>, Identifier<Contracts.Activity>>
     {
-        public ActivityDataIdentifierController(IServicer ultimatr) : base(ultimatr) { }
+        public ActivityIdentifierController(IServicer ultimatr) : base(ultimatr) { }
     }
 }
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
     public class ActivityIdentifiersController
         : CrudDataController<long, IEntryStore, IReportStore, Identifier<Activity>, Identifier<Contracts.Activity>>
@@ -23,7 +24,7 @@ namespace Undersoft.SSC.Web.API.Controllers
     }
 }
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
     public class ActivityIdentifierStreamController
         : StreamDataController<long, IEntryStore, IReportStore, Identifier<Activity>, Identifier<Contracts.Activity>>,

@@ -6,7 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>2e23f1cc-5ef2-44a4-83ae-0123d3ca2365</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,6 +20,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <Using Include="Undersoft.SDK.Service.Data.Identifier" />
     <Using Include="Undersoft.SSC.Web.API.Controllers" />
     <Using Include="Undersoft.SDK.Service.Application.Controller" />
     <Using Include="Undersoft.SDK.Service.Data.Event" />

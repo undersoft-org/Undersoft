@@ -51,7 +51,7 @@ public abstract class ActionCommandBase : IActionCommand
         Kind = kind;
     }
 
-    protected ActionCommandBase(object entryData, CommandMode commandMode, ActionServiceKind publishMode)
+    protected ActionCommandBase(object entryData, CommandMode commandMode, Enum publishMode)
         : this(commandMode, publishMode)
     {
         Data = entryData;

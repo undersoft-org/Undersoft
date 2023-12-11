@@ -10,19 +10,20 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
     using Undersoft.SDK.Service;
     using Undersoft.SDK.Service.Application.Controller.Open;
     using Undersoft.SDK.Service.Application.Operation.Command;
-
+    
     [AllowAnonymous]
     [OpenDataActionService]
     [ODataRouteComponent("data/open/[controller]")]
-    public abstract class AccountIdentityControllerBase<TStore, TService, TDto>
-        : OpenDataActionController<TStore, TService, TDto, ActionServiceKind>
+    public abstract class AccountIdentityControllerBase<TStore, TService, TDto, TKind>
+        : OpenDataActionController<TStore, TService, TDto, TKind>
         where TDto : class, IAccountIdentity<long>, new()
         where TService : class
+        where TKind : struct, Enum
         where TStore : IDataServiceStore
     {
         public AccountIdentityControllerBase(IServicer servicer) : base(servicer) { }
 
-        [HttpPost(nameof(ActionServiceKind.SignIn))]
+        [HttpPost(nameof(AccountIdentityAction.SignIn))]
         public virtual async Task<IActionResult> SignIn(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -34,8 +35,8 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
             };
 
             var result = await _servicer.Send(
-                new Execute<IIdentityStore, TService, TDto, ActionServiceKind>(
-                    ActionServiceKind.SignIn,
+                new Execute<IIdentityStore, TService, TDto, AccountIdentityAction>(
+                    AccountIdentityAction.SignIn,
                     identityDetails
                 )
             );
@@ -44,7 +45,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 : Created(result.Id.ToString());
         }
 
-        [HttpPost(nameof(ActionServiceKind.SignUp))]
+        [HttpPost(nameof(AccountIdentityAction.SignUp))]
         public virtual async Task<IActionResult> SignUp(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -57,8 +58,8 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var result = await _servicer
                 .Send(
-                    new Execute<IIdentityStore, TService, TDto, ActionServiceKind>(
-                        ActionServiceKind.SignUp,
+                    new Execute<IIdentityStore, TService, TDto, AccountIdentityAction>(
+                        AccountIdentityAction.SignUp,
                         identityDetails
                     )
                 )
@@ -68,7 +69,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 : Created(result.Id.ToString());
         }
 
-        [HttpPost(nameof(ActionServiceKind.SetPassword))]
+        [HttpPost(nameof(AccountIdentityAction.SetPassword))]
         public virtual async Task<IActionResult> SetPassword(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -76,8 +77,8 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var result = await _servicer
                 .Send(
-                    new Execute<IIdentityStore, TService, TDto, ActionServiceKind>(
-                        ActionServiceKind.SetPassword,
+                    new Execute<IIdentityStore, TService, TDto, AccountIdentityAction>(
+                        AccountIdentityAction.SetPassword,
                         new TDto() { Credentials = (AccountIdentityCredentials)parameters["credentials"] })
                 )
                 .ConfigureAwait(false);
@@ -86,7 +87,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 : Created(result.Id.ToString());
         }
 
-        [HttpPost(nameof(ActionServiceKind.SetEmail))]
+        [HttpPost(nameof(AccountIdentityAction.SetEmail))]
         public virtual async Task<IActionResult> SetEmail(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -94,8 +95,8 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var result = await _servicer
                 .Send(
-                    new Execute<IIdentityStore, TService, TDto, ActionServiceKind>(
-                        ActionServiceKind.SetEmail,
+                    new Execute<IIdentityStore, TService, TDto, AccountIdentityAction>(
+                        AccountIdentityAction.SetEmail,
                         new TDto() { Credentials = (AccountIdentityCredentials)parameters["credentials"] }
                     )
                 )
@@ -105,7 +106,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 : Created(result.Id.ToString());
         }
 
-        [HttpPost(nameof(ActionServiceKind.ConfirmPassword))]
+        [HttpPost(nameof(AccountIdentityAction.ConfirmPassword))]
         public virtual async Task<IActionResult> ConfirmPassword(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -113,8 +114,8 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var result = await _servicer
                 .Send(
-                    new Execute<IIdentityStore, TService, TDto, ActionServiceKind>(
-                        ActionServiceKind.ConfirmPassword,
+                    new Execute<IIdentityStore, TService, TDto, AccountIdentityAction>(
+                        AccountIdentityAction.ConfirmPassword,
                         new TDto() { Credentials = (AccountIdentityCredentials)parameters["credentials"] }
                     )
                 )
@@ -124,7 +125,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 : Created(result.Id.ToString());
         }
 
-        [HttpPost(nameof(ActionServiceKind.ConfirmEmail))]
+        [HttpPost(nameof(AccountIdentityAction.ConfirmEmail))]
         public virtual async Task<IActionResult> ConfirmEmail(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -132,8 +133,8 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var result = await _servicer
                 .Send(
-                    new Execute<IIdentityStore, TService, TDto, ActionServiceKind>(
-                        ActionServiceKind.ConfirmEmail,
+                    new Execute<IIdentityStore, TService, TDto, AccountIdentityAction>(
+                        AccountIdentityAction.ConfirmEmail,
                         new TDto() { Credentials = (AccountIdentityCredentials)parameters["credentials"] }
                     )
                 )
@@ -143,7 +144,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 : Created(result.Id.ToString());
         }
 
-        [HttpPost(nameof(ActionServiceKind.CompleteRegistration))]
+        [HttpPost(nameof(AccountIdentityAction.CompleteRegistration))]
         public virtual async Task<IActionResult> CompleteRegistration(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -151,8 +152,8 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var result = await _servicer
                 .Send(
-                    new Execute<IIdentityStore, TService, TDto, ActionServiceKind>(
-                        ActionServiceKind.ConfirmEmail,
+                    new Execute<IIdentityStore, TService, TDto, AccountIdentityAction>(
+                        AccountIdentityAction.ConfirmEmail,
                         new TDto() { Credentials = (AccountIdentityCredentials)parameters["credentials"] }
                     )
                 )
@@ -162,7 +163,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 : Created(result.Id.ToString());
         }
 
-        [HttpPost(nameof(ActionServiceKind.Token))]
+        [HttpPost(nameof(AccountIdentityAction.Token))]
         public virtual async Task<IActionResult> Token(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -170,8 +171,8 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var result = await _servicer
                 .Send(
-                    new Execute<IIdentityStore, TService, TDto, ActionServiceKind>(
-                        ActionServiceKind.Token,
+                    new Execute<IIdentityStore, TService, TDto, AccountIdentityAction>(
+                        AccountIdentityAction.Token,
                         new TDto() { Credentials = (AccountIdentityCredentials)parameters["credentials"] })
                 )
                 .ConfigureAwait(false);
@@ -180,7 +181,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 : Created(result.Id.ToString());
         }
 
-        [HttpGet(nameof(ActionServiceKind.Token))]
+        [HttpGet(nameof(AccountIdentityAction.Token))]
         public virtual async Task<IActionResult> Get([FromHeader] string authorization)
         {
             var encoding = Encoding.GetEncoding("iso-8859-1");
@@ -198,8 +199,8 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var result = await _servicer
                 .Send(
-                    new Execute<IIdentityStore, TService, TDto, ActionServiceKind>(
-                        ActionServiceKind.Token,
+                    new Execute<IIdentityStore, TService, TDto, AccountIdentityAction>(
+                        AccountIdentityAction.Token,
                         identityDetails
                     )
                 )

@@ -25,8 +25,8 @@ public class IdentifiersMapping<TObject> : IIdentifiersMapping where TObject : c
     {
         _identifierBuilder.ToTable(TABLE_NAME, DataStoreSchema.IdentifierSchema);
 
-        _identifierBuilder.HasIndex(k => k.Key).HasMethod("hash");
-        _identifierBuilder.HasIndex(k => k.ObjectId).HasMethod("hash");
+        _identifierBuilder.HasIndex(k => k.Key);
+        _identifierBuilder.HasIndex(k => k.ObjectId);
 
         _identifierBuilder.HasOne(a => a.Object)
                           .WithMany("Identifiers")

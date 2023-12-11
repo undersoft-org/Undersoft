@@ -5,12 +5,13 @@ using Undersoft.SDK.Service.Data;
 
 namespace Undersoft.SDK.Service.Application.Operation.Remote.Command;
 
-public class RemoteExecute<TStore, TDto, TModel> : ActionCommand<TModel>
+public class RemoteExecute<TStore, TDto, TModel, TKind> : ActionCommand<TModel, TKind>
     where TModel : class, IOrigin
     where TDto : class, IOrigin
+    where TKind : Enum
     where TStore : IDataServiceStore
 {
-    public RemoteExecute(ActionServiceKind kind, TModel input)
+    public RemoteExecute(TKind kind, TModel input)
         : base(CommandMode.Create, kind, input)
     {
         input.AutoId();

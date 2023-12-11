@@ -10,10 +10,11 @@ using Undersoft.SDK.Service.Data.Repository;
 using SDK.Service.Data.Store;
 using Undersoft.SDK;
 
-public class ExecutedHandler<TStore, TType, TDto>
-    : INotificationHandler<Executed<TStore, TType, TDto>>
+public class ExecutedHandler<TStore, TType, TDto, TKind>
+    : INotificationHandler<Executed<TStore, TType, TDto, TKind>>
     where TType : class
     where TDto :  class, IOrigin
+    where TKind : Enum
     where TStore : IDataServiceStore
 {
     protected readonly IStoreRepository<Event> _eventStore;
@@ -28,7 +29,7 @@ public class ExecutedHandler<TStore, TType, TDto>
     }
 
     public virtual Task Handle(
-        Executed<TStore, TType, TDto> request,
+        Executed<TStore, TType, TDto, TKind> request,
         CancellationToken cancellationToken
     )
     {

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Razor.Hosting;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Undersoft.SDK.Series;
 using Undersoft.SDK.Uniques;
 using System.Collections.Generic;

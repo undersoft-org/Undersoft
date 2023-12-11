@@ -17,7 +17,7 @@
     <Using Include="Undersoft.SDK.Service.Data.Mapper" />
     <Using Include="Undersoft.SDK.Service.Data.Store" />
     <Using Include="Undersoft.SDK.Service.Data.Store.Relation" />
-    <Using Include="Undersoft.SDK.Service.Application.ViewModel" />
+    <Using Include="Undersoft.SDK.Service.Data.ViewModel" />
     <Using Include="Undersoft.SDK.Service.Data.Service" />
     <Using Include="Undersoft.SDK.Service.Data.File" />
     <Using Include="Undersoft.SDK.Service" />

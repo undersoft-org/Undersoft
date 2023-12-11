@@ -8,7 +8,7 @@ public class Identifiers<TObject> : KeyedCollection<long, Identifier<TObject>>, 
 {
     [JsonIgnore] private static ISeries<Identifier<TObject>> _identifiers = new Registry<Identifier<TObject>>(true);
 
-    public IDataObject this[IdKind kind]
+    public Identifier<TObject> this[IdKind kind]
     {
         get => this.FirstOrDefault(o => o.Kind == kind);
         set => ((IIdentifier<TObject>)value).PutTo(this.FirstOrDefault(o => o.Kind == kind));
@@ -98,13 +98,13 @@ public class Identifiers<TObject> : KeyedCollection<long, Identifier<TObject>>, 
 
 public interface IIdentifiers
 {
-    IDataObject this[IdKind kind] { get; set; }
 }
 
 public interface IIdentifiers<TObject> : IIdentifiers where TObject : IDataObject
 {
     Identifier<TObject> this[int id] { get; set; }
     Identifier<TObject> this[object id] { get; set; }
+    Identifier<TObject> this[IdKind kind] { get; set; }
 
     Identifier<TObject> Search(object id);
 }

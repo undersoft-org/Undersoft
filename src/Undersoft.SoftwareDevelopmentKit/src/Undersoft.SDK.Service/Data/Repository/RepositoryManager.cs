@@ -228,12 +228,12 @@ public class RepositoryManager : Catalog<IDataStoreContext>, IDisposable, IAsync
         return Clients;
     }
 
-    public static IDataMapper CreateMapper(params Profile[] profiles)
+    public static IDataMapper CreateMapper(params MapperProfile[] profiles)
     {
         DataMapper.AddProfiles(profiles);
         return ServiceManager.GetObject<IDataMapper>();
     }
-    public static IDataMapper CreateMapper<TProfile>() where TProfile : Profile
+    public static IDataMapper CreateMapper<TProfile>() where TProfile : MapperProfile
     {
         DataMapper.AddProfiles(typeof(TProfile).New<TProfile>());
         return ServiceManager.GetObject<IDataMapper>();

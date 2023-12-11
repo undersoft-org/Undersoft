@@ -18,7 +18,7 @@ namespace Undersoft.SSC.Web.Service
         {
             var builder = new WebHostBuilder();
 
-            builder.Info<Runlog>("Starting SSC Web API ....");
+            builder.Info<Runlog>("Starting Shared Service Center Web Service ....");
 
             _webapi = builder
                 .UseContentRoot(Directory.GetCurrentDirectory())
@@ -42,17 +42,17 @@ namespace Undersoft.SSC.Web.Service
             }
             catch (Exception exception)
             {
-                Log.Error<Runlog>(null, "SSC Web API terminated unexpectedly ....", exception);
+                Log.Error<Runlog>(null, "Shared Service Center Web Service terminated unexpectedly ....", exception);
             }
             finally
             {
-                Log.Info<Runlog>(null, "SSC Web API shutted down ....");
+                Log.Info<Runlog>(null, "Shared Service Center Web Service shutted down ....");
             }
         }
 
         public static async Task Restart()
         {
-            Log.Info<Runlog>(null, "Restarting SSC Web API ....");
+            Log.Info<Runlog>(null, "Restarting Shared Service Center Web Service ....");
 
             Task.WaitAll(Shutdown());
 
@@ -61,9 +61,9 @@ namespace Undersoft.SSC.Web.Service
 
         public static async Task Shutdown()
         {
-            Log.Info<Runlog>(null, "Shutting down SSC Web API ....");
+            Log.Info<Runlog>(null, "Shutting down Shared Service Center Web Service ....");
 
-            _webapi.Info<Runlog>("Stopping SSC Web API ....");
+            _webapi.Info<Runlog>("Stopping Shared Service Center Web Service ....");
 
             if(_webapi != null)
                 await _webapi.StopAsync(TimeSpan.FromSeconds(5));

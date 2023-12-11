@@ -19,9 +19,10 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
         Task<AccountIdentity> GetById(long id);
         Task<AccountIdentity> GetByName(string name);
         Task<string> GetToken(string email, string password);
+        string GetToken(IAccountIdentity<long> account);
         Task<IdentityRole<long>> SetRole(string roleName);
         Task<bool> SetRoleClaim(string roleName, Claim claim);
-        Task<AccountIdentity> SetUser(string username, string email, string password, IEnumerable<string> roles);
+        Task<AccountIdentity> SetUser(string username, string email, string password, IEnumerable<string> roles, IEnumerable<string> scopes = null);
         Task<bool> SetUserClaim(string email, Claim claim);
         AccountIdentityRole<long> SetUserRole(string email, string current, string previous = null);
         bool TryGetByEmail(string email, out IAccountIdentity<long> account);

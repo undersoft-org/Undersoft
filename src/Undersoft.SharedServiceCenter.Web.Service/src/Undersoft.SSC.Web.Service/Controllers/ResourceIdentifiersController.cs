@@ -4,17 +4,17 @@ using Undersoft.SDK.Service.Application.Controller.Stream;
 using Undersoft.SDK.Service.Application.Controller.Open;
 using Undersoft.SSC.Domain.Entities;
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
     [AllowAnonymous]
-    public class AttachmentDataIdentifierController
+    public class ResourceIdentifierController
         : OpenDataController<long, IEntryStore, IReportStore, Identifier<Resource>, Identifier<Contracts.Resource>>
     {
-        public AttachmentDataIdentifierController(IServicer ultimatr) : base(ultimatr) { }
+        public ResourceIdentifierController(IServicer ultimatr) : base(ultimatr) { }
     }
 }
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
     public class ResourceIdentifiersController
         : CrudDataController<long, IEntryStore, IReportStore, Identifier<Resource>, Identifier<Contracts.Resource>>
@@ -23,12 +23,12 @@ namespace Undersoft.SSC.Web.API.Controllers
     }
 }
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
-    public class AttachmentIdentifierStreamController
+    public class ResourceIdentifierStreamController
         : StreamDataController<long, IEntryStore, IReportStore, Identifier<Resource>, Identifier<Contracts.Resource>>,
             IStreamDataController<Identifier<Contracts.Resource>>
     {
-        public AttachmentIdentifierStreamController() : base() { }
+        public ResourceIdentifierStreamController() : base() { }
     }
 }

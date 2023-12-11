@@ -3,7 +3,6 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Driver;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -23,12 +22,12 @@ using Data.Store;
 using Data.Repository;
 using Data.Repository.Client;
 using Data.Repository.Source;
+using ProtoBuf.Meta;
 
 public partial class ServiceSetup : IServiceSetup
 {
     protected string[] apiVersions = new string[1] { "1" };
     protected Assembly[] Assemblies;
-    protected IMvcBuilder mvc;
 
     protected IServiceConfiguration configuration => manager.Configuration;
     protected IServiceManager manager { get; }
@@ -39,19 +38,11 @@ public partial class ServiceSetup : IServiceSetup
     {
         manager = new ServiceManager(services);
         registry = manager.Registry;
+        AddMapper(new DataMapper());
+        AddCaching();
+        AddJsonSerializerDefaults();
+        AddSourceProviderConfiguration();
         registry.MergeServices();
-    }
-
-    public ServiceSetup(IServiceCollection services, IMvcBuilder mvcBuilder)
-    {
-        manager = new ServiceManager(services);
-        registry = manager.Registry;
-        registry.MergeServices();
-        if (mvcBuilder != null)
-            mvc = mvcBuilder;
-        else
-            mvc = services.AddControllers();
-        registry.MergeServices(mvc.Services);
     }
 
     public ServiceSetup(IServiceCollection services, IConfiguration configuration) : this(services)
@@ -78,6 +69,13 @@ public partial class ServiceSetup : IServiceSetup
             AddStoreCache(item);
         }
 
+        return this;
+    }
+
+    public virtual IServiceSetup AddSourceProviderConfiguration()
+    {
+        registry.AddObject<ISourceProviderConfiguration>(new ServiceSourceProviderConfiguration());
+        
         return this;
     }
 
@@ -215,9 +213,6 @@ public partial class ServiceSetup : IServiceSetup
 
                 switch (metricsExporter)
                 {
-                    case "prometheus":
-                        builder.AddPrometheusExporter();
-                        break;
                     case "otlp":
                         builder.AddOtlpExporter(otlpOptions =>
                         {
@@ -236,9 +231,10 @@ public partial class ServiceSetup : IServiceSetup
         return this;
     }
 
-    public IServiceSetup AddHealthChecks()
+    public IServiceSetup AddPropertyInjection()
     {
-        services.AddHealthChecks();
+        ServiceManager.AddPropertyInjection();
+
         return this;
     }
 
@@ -248,17 +244,19 @@ public partial class ServiceSetup : IServiceSetup
 
         AddDomainImplementations();
 
+        registry.MergeServices();
+
         return this;
     }
 
-    public IServiceSetup AddMapper<TProfile>() where TProfile : Profile
+    public IServiceSetup AddMapper<TProfile>() where TProfile : MapperProfile
     {
         AddMapper(new DataMapper(typeof(TProfile).New<TProfile>()));
 
         return this;
     }
 
-    public IServiceSetup AddMapper(params Profile[] profiles)
+    public IServiceSetup AddMapper(params MapperProfile[] profiles)
     {
         AddMapper(new DataMapper(profiles));
 
@@ -435,20 +433,18 @@ public partial class ServiceSetup : IServiceSetup
     {
         Assemblies ??= assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
 
-        AddMapper(new DataMapper());
+        //AddMapper(new DataMapper());
 
-        AddCaching();
+        //AddCaching();
 
-        AddJsonSerializerDefaults();
+        //AddJsonSerializerDefaults();
 
         AddRepositorySources(Assemblies);
 
         AddRepositoryClients(Assemblies);
 
         AddImplementations(Assemblies);
-
-        registry.MergeServices();
-
+       
         return this;
     }
 

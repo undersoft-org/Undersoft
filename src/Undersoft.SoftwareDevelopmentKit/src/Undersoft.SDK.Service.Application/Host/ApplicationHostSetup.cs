@@ -121,7 +121,7 @@ public class ApplicationHostSetup : IApplicationHostSetup
     public IApplicationHostSetup UseInternalProvider()
     {
         ServiceManager.GetRegistry().MergeServices();
-        app.ApplicationServices = ServiceManager.BuildInternalProvider();
+        app.ApplicationServices = ServiceManager.BuildInternalProvider(true);
         return this;
     }
 

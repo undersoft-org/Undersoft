@@ -9,6 +9,7 @@ using Operation.Remote.Query;
 using Data.Query;
 using Undersoft.SDK.Service.Data.Event;
 using SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Application.Operation.Remote;
 
 [RemoteResult]
 [RemoteCrudDataService]

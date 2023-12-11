@@ -18,6 +18,7 @@ using Data.Contract;
 using Data.Identifier;
 using Data.Store;
 using Data.Branch;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 public partial class ApplicationSetup
 {
@@ -59,7 +60,9 @@ public partial class ApplicationSetup
             .AddScoped<ITypedSeries<IEntity>, TypedRegistry<IEntity>>()
             .AddScoped<ITypedSeries<IContract>, TypedCatalog<IContract>>();
 
-        Catalog<Type> duplicateCheck = new Catalog<Type>();
+        
+
+        Catalog <Type> duplicateCheck = new Catalog<Type>();
         Type[] stores = DataStoreRegistry.Stores
             .Where(s => s.IsAssignableTo(typeof(IDataServiceStore)))
             .ToArray();

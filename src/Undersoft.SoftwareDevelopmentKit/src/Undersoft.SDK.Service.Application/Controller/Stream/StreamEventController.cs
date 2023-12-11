@@ -3,13 +3,13 @@ using System.Linq.Expressions;
 using System.Text.Json;
 
 namespace Undersoft.SDK.Service.Application.Controller.Stream;
+
 using Operation.Command;
 using Operation.Query;
-using Undersoft.SDK.Service.Application.DataServer;
+using SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Application.Operation.Remote;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Query;
-using Undersoft.SDK.Service.Data.Repository.Client.Remote;
-using SDK.Service.Data.Store;
 
 [RemoteResult]
 [StreamDataService]

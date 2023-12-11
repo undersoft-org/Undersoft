@@ -4,17 +4,17 @@ using Undersoft.SDK.Service.Application.Controller.Open;
 using Undersoft.SDK.Service.Application.Controller.Stream;
 using Undersoft.SSC.Domain.Entities;
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
     [AllowAnonymous]
-    public class DataDetailController
+    public class DetailController
         : OpenDataController<long, IEntryStore, IReportStore, Detail, Contracts.Detail>
     {
-        public DataDetailController(IServicer ultimatr) : base(ultimatr) { }
+        public DetailController(IServicer ultimatr) : base(ultimatr) { }
     }
 }
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
     public class DetailsController
         : CrudDataController<long, IEntryStore, IReportStore, Detail, Contracts.Detail>
@@ -23,7 +23,7 @@ namespace Undersoft.SSC.Web.API.Controllers
     }
 }
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
     public class DetailStreamController
         : StreamDataController<long, IEntryStore, IReportStore, Detail, Contracts.Detail>,

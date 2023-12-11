@@ -2,30 +2,29 @@
 using Undersoft.SDK.Service.Application.Controller.Crud;
 using Undersoft.SDK.Service.Application.Controller.Open;
 using Undersoft.SDK.Service.Application.Controller.Stream;
-using Undersoft.SDK.Service.Data.Branch;
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
     [AllowAnonymous]
-    public class EventDataController : OpenEventController<long, IEventStore, Event, EventBranch>
+    public class EventController : OpenEventController<long, IEventStore, Event, Event>
     {
-        public EventDataController(IServicer ultimatr) : base(ultimatr) { }
+        public EventController(IServicer ultimatr) : base(ultimatr) { }
     }
 }
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
-    public class EventsController : CrudEventController<long, IEventStore, Event, EventBranch>
+    public class EventsController : CrudEventController<long, IEventStore, Event, Event>
     {
         public EventsController(IServicer ultimatr) : base(ultimatr) { }
     }
 }
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
     public class EventStreamController
-        : StreamEventController<long, IEventStore, Event, EventBranch>,
-            IStreamDataController<EventBranch>
+        : StreamEventController<long, IEventStore, Event, Event>,
+            IStreamDataController<Event>
     {
         public EventStreamController() : base() { }
     }

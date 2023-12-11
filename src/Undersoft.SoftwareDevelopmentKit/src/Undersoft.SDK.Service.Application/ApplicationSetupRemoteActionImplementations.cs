@@ -56,30 +56,31 @@ public partial class ApplicationSetup
             var store = genericTypes[0];
             var _viewmodel = genericTypes[2];
             var dtoType = genericTypes[1];
+            var _method = genericTypes[3];
 
             service.AddTransient(
                   typeof(IRequest<>).MakeGenericType(
-                      typeof(ActionCommand<>).MakeGenericType(_viewmodel)
+                      typeof(ActionCommand<,>).MakeGenericType(_viewmodel, _method)
                   ),
-                  typeof(ActionCommand<>).MakeGenericType(_viewmodel)
+                  typeof(ActionCommand<,>).MakeGenericType(_viewmodel, _method)
               );
 
             service.AddTransient(
                typeof(IRequestHandler<,>).MakeGenericType(
                    new[]
                    {
-                            typeof(RemoteExecute<,,>).MakeGenericType(store, dtoType, _viewmodel),
-                            typeof(ActionCommand<>).MakeGenericType(_viewmodel)
+                            typeof(RemoteExecute<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method),
+                            typeof(ActionCommand<,>).MakeGenericType(_viewmodel, _method)
                    }
                ),
-               typeof(RemoteExecuteHandler<,,>).MakeGenericType(store, dtoType, _viewmodel)
+               typeof(RemoteExecuteHandler<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method)
            );
 
             service.AddTransient(
              typeof(INotificationHandler<>).MakeGenericType(
-                 typeof(RemoteExecuted<,,>).MakeGenericType(store, dtoType, _viewmodel)
+                 typeof(RemoteExecuted<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method)
              ),
-             typeof(RemoteExecutedHandler<,,>).MakeGenericType(store, dtoType, _viewmodel)
+             typeof(RemoteExecutedHandler<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method)
             );
         }
         return this;

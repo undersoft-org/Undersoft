@@ -18,7 +18,7 @@ public class AccountIdentity : DataObject, IContract, IAccountIdentity<long>
 
     public AccountIdentityNotes Notes { get; set; } = new AccountIdentityNotes();
 
-    public bool IsAuthorized { get; set; }
+    public bool Authorized { get; set; }
 
-    public bool IsAuthenticated { get; set; }
+    public bool Authenticated { get; set; }
 }

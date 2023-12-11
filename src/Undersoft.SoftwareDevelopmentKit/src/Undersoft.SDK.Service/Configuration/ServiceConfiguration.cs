@@ -201,6 +201,11 @@ public class ServiceConfiguration : IServiceConfiguration
         return IdentityServer()?.GetValue<string[]>("Scopes");
     }
 
+    public string[] IdentityServerClaims()
+    {
+        return IdentityServer()?.GetValue<string[]>("Claims");
+    }
+
     public string[] IdentityServerRoles()
     {
         return IdentityServer()?.GetValue<string[]>("Roles");

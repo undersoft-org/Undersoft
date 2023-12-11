@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Undersoft.SSC.Web.Service.API": {
+    "Undersoft.SSC.Web.Service": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

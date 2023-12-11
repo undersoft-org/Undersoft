@@ -1,20 +1,20 @@
-﻿using Undersoft.SSC.Domain.Entities.Enums;
-using Undersoft.SSC.Web.API.Contracts;
-using Undersoft.SSC.Web.API.Contracts.Details;
+﻿using Undersoft.SDK.Service.Data.Object.Detail;
+using Undersoft.SSC.Domain.Entities.Enums;
+using Undersoft.SSC.Web.Contracts;
+using Undersoft.SSC.Web.Contracts.Details;
 
-namespace Undersoft.SSC.Web.Application.ViewModels;
+namespace Undersoft.SSC.Web.ViewModels;
 
-public class Servicer : Account, IViewModel
+public class Servicer : AccountBase, IViewModel
 {
-    public Servicer() { Group = AccountGroup.Client; }
+    public Servicer() { Group = AccountGroup.Servicer; }
 
-    public DataObjects<LicenceDetail>? Licences { get; set; }
+    [Detail]
+    public IdentityDetail? Identity { get; set; }
 
+    [Detail]
     public PersonalDetail? Personal { get; set; }
 
-    public CompanyDetail? Company { get; set; }
-
-    public Location? Location { get; set; }
-
-    public DataObjects<EmployeeDetail>? Employees { get; set; }
+    [Detail]
+    public DataObjects<LicenceDetail>? Licences { get; set; }
 }

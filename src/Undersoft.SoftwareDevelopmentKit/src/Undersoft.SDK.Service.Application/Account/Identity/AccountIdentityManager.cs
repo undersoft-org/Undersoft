@@ -52,9 +52,16 @@ public class AccountIdentityManager : TypedRegistry<IAccountIdentity<long>>, IAc
         string token = null;
         var account = await CheckPassword(email, password);
         if (account != null)
-            token = Token.Generate(account.Claims.Select(c => c.Claim));
+            token = Token.Generate(account.GetClaims());
         return token;
     }
+    public string GetToken(IAccountIdentity<long> account)
+    {
+        if (account != null)
+            return Token.Generate(account.GetClaims());
+        return null;
+    }
+
 
     public async Task<bool> CheckToken(string token)
     {
@@ -70,7 +77,7 @@ public class AccountIdentityManager : TypedRegistry<IAccountIdentity<long>>, IAc
         return null;
     }
 
-    public async Task<AccountIdentity> SetUser(string username, string email, string password, IEnumerable<string> roles)
+    public async Task<AccountIdentity> SetUser(string username, string email, string password, IEnumerable<string> roles, IEnumerable<string> scopes = null)
     {
         if (!TryGetByEmail(email, out IAccountIdentity<long> account))
         {
@@ -82,6 +89,12 @@ public class AccountIdentityManager : TypedRegistry<IAccountIdentity<long>>, IAc
             if (!(await User.CreateAsync(account.Info, password)).Succeeded)
                 return null;
         }
+        else
+        {
+            await User.RemoveFromRolesAsync(account.Info, account.Roles.Select(r => r.Role.Value));
+            await User.RemoveClaimsAsync(account.Info, account.GetClaims());
+        }
+
         await User.AddToRolesAsync(account.Info, roles);
         await User.AddClaimsAsync(
             account.Info,
@@ -89,9 +102,11 @@ public class AccountIdentityManager : TypedRegistry<IAccountIdentity<long>>, IAc
             {
                 new Claim(JwtClaimTypes.Id, account.Id.ToString()),
                 new Claim(JwtClaimTypes.Email, account.Info.Email),
+                new Claim(JwtClaimTypes.Name, account.Info.UserName),
                 new Claim("code_no", account.CodeNo),
-                new Claim(JwtClaimTypes.ClientId, "")
-            }.Concat(roles.Select(r => new Claim("role", r)))
+            }
+            .Concat(roles?.Select(r => new Claim(JwtClaimTypes.Role, r)))
+            .Concat(scopes?.Select(r => new Claim(JwtClaimTypes.Scope, r)))
         );
         var _account = (AccountIdentity)account;
         await MapAccount(_account);

@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>b73039db-9e8d-4aa7-aa0c-eabf84c4bb12</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <SpaRoot>..\undersoft.ssc.web.app.client</SpaRoot>
+    <SpaRoot>..\undersoft.ssc.web.application.client</SpaRoot>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:5173</SpaProxyServerUrl>
     <DockerfileContext>..\..\..</DockerfileContext>
@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Web.Application\Undersoft.SSC.Web.Application.csproj" />
-    <ProjectReference Include="..\undersoft.ssc.web.application.client\undersoft.ssc.web.application.client.esproj" />
   </ItemGroup>
   
   <ItemGroup>

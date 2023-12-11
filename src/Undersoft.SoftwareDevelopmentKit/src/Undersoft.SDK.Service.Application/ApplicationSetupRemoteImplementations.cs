@@ -159,17 +159,6 @@ public partial class ApplicationSetup
                 typeof(IRequestHandler<,>).MakeGenericType(
                     new[]
                     {
-                        typeof(RemoteExecute<,,>).MakeGenericType(store, dtoType, _viewmodel),
-                        typeof(ActionCommand<>).MakeGenericType(_viewmodel)
-                    }
-                ),
-                typeof(RemoteExecuteHandler<,,>).MakeGenericType(store, dtoType, _viewmodel)
-            );
-
-            service.AddScoped(
-                typeof(IRequestHandler<,>).MakeGenericType(
-                    new[]
-                    {
                         typeof(RemoteChangeSet<,,>).MakeGenericType(store, dtoType, _viewmodel),
                         typeof(RemoteCommandSet<>).MakeGenericType(_viewmodel)
                     }
@@ -208,13 +197,6 @@ public partial class ApplicationSetup
                     }
                 ),
                 typeof(RemoteDeleteSetHandler<,,>).MakeGenericType(store, dtoType, _viewmodel)
-            );
-
-            service.AddScoped(
-                typeof(INotificationHandler<>).MakeGenericType(
-                    typeof(RemoteExecuted<,,>).MakeGenericType(store, dtoType, _viewmodel)
-                ),
-                typeof(RemoteExecutedHandler<,,>).MakeGenericType(store, dtoType, _viewmodel)
             );
 
             service.AddScoped(

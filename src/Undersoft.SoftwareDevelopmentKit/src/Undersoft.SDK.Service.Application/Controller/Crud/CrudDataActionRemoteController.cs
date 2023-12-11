@@ -11,20 +11,21 @@ using Undersoft.SDK.Service.Data;
 [ApiController]
 [RemoteCrudDataActionService]
 [Route($"{StoreRoutes.CrudIdentityStore}/[controller]")]
-public abstract class CrudDataActionRemoteController<TStore, TDto, TModel>
-    : ControllerBase, ICrudDataActionRemoteController<TStore, TDto, TModel>
+public abstract class CrudDataActionRemoteController<TStore, TDto, TModel, TKind>
+    : ControllerBase, ICrudDataActionRemoteController<TStore, TDto, TModel, TKind>
     where TModel : class, IOrigin
     where TDto : class, IOrigin
+    where TKind : struct, Enum
     where TStore : IDataServiceStore
 {
     protected readonly IServicer _servicer;
-    protected readonly ActionServiceKind _kind;
+    protected readonly AccountIdentityAction _kind;
 
     protected CrudDataActionRemoteController() { }
 
     protected CrudDataActionRemoteController(
         IServicer servicer,
-        ActionServiceKind kind = ActionServiceKind.None
+        AccountIdentityAction kind = AccountIdentityAction.None
     )
     {
         _servicer = servicer;
@@ -37,10 +38,10 @@ public abstract class CrudDataActionRemoteController<TStore, TDto, TModel>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        if (Enum.TryParse(kind, out ActionServiceKind eventKind))
+        if (Enum.TryParse(kind, out TKind method))
         {
             var result = await _servicer
-                .Send(new RemoteExecute<TStore, TDto, TModel>(eventKind, dto));
+                .Send(new RemoteExecute<TStore, TDto, TModel, TKind>(method, dto));
 
             return !result.IsValid
                    ? UnprocessableEntity(result.ErrorMessages)

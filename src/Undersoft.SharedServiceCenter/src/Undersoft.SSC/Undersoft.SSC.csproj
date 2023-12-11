@@ -15,6 +15,13 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Undersoft.SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Application\Undersoft.SDK.Service.Application.csproj" />
   </ItemGroup>
+  
+    <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.23">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 
   <ItemGroup>
     <Using Include="Undersoft.SDK.Service.Data.Entity" />

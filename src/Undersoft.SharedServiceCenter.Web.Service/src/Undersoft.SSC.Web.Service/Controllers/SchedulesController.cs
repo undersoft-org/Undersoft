@@ -4,17 +4,17 @@ using Undersoft.SDK.Service.Application.Controller.Open;
 using Undersoft.SDK.Service.Application.Controller.Stream;
 using Undersoft.SSC.Domain.Entities;
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
     [AllowAnonymous]
-    public class ScheduleDataController
+    public class ScheduleController
         : OpenDataController<long, IEntryStore, IReportStore, Schedule, Contracts.Schedule>
     {
-        public ScheduleDataController(IServicer ultimatr) : base(ultimatr) { }
+        public ScheduleController(IServicer ultimatr) : base(ultimatr) { }
     }
 }
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
     public class SchedulesController
         : CrudDataController<long, IEntryStore, IReportStore, Schedule, Contracts.Schedule>
@@ -23,7 +23,7 @@ namespace Undersoft.SSC.Web.API.Controllers
     }
 }
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
     public class ScheduleStreamController
         : StreamDataController<long, IEntryStore, IReportStore, Schedule, Contracts.Schedule>,

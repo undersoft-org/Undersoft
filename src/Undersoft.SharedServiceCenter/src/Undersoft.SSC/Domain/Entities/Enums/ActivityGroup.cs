@@ -3,5 +3,5 @@
 public enum ActivityGroup
 {
     None,
-    AccountRegistration
+    Registration
 }

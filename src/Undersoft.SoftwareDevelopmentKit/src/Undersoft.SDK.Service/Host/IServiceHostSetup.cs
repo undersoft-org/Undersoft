@@ -4,8 +4,10 @@
     {
         IServiceHostSetup UseDataServices();
 
-        IServiceHostSetup UseAdvancedProvider();
+        IServiceHostSetup UseInternalProvider();
 
         IServiceHostSetup UseDataMigrations();
+
+        IServiceHostSetup RebuildProviders();
     }
 }

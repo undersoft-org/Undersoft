@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { currentUser } from '@/app/store/userStore'
+import { currentUser } from '@/app/stores/userStore'
 
 export { SecuredRoute };
 

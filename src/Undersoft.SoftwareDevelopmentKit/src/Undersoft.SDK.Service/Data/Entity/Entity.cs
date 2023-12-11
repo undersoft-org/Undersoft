@@ -27,5 +27,4 @@ using Undersoft.SDK.Service.Data.Object;
 public class Entity : DataObject, IEntity
 {
     public Entity() : base() { }
-
 }

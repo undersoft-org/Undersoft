@@ -14,6 +14,8 @@ namespace Undersoft.SSC.Domain.Entities
 
         public virtual RelatedSet<Schedule>? Schedules { get; set; }
 
+        public virtual RelatedSet<Detail>? Details { get; set; }
+
         public virtual RelatedSet<Setting>? Settings { get; set; }
     }
 }

@@ -1,34 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ProtoBuf.Grpc.Server;
-using Undersoft.SDK.Logging;
-using Undersoft.SDK.Series;
-using System;
-using System.Linq;
-using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Host;
-using Undersoft.SDK.Service.Data.Repository;
-using System.ComponentModel.Design;
 
 namespace Undersoft.SDK.Service.Host
 {
     public partial class ServiceHostSetup : IServiceHostSetup
     {
-        public static bool basicProvider;
-
         IHostBuilder app;
-        IHostEnvironment env;
+        IHostingEnvironment env;
 
         public ServiceHostSetup(IHostBuilder application) { app = application; }
 
-        public ServiceHostSetup(IHostBuilder application, IHostEnvironment environment, bool useSwagger)
+        public ServiceHostSetup(IHostBuilder application, IHostingEnvironment environment, bool useSwagger)
         {
             app = application;
             env = environment; 
         }
 
-        public ServiceHostSetup(IHostBuilder application, IHostEnvironment environment, string[] apiVersions = null)
+        public ServiceHostSetup(IHostBuilder application, IHostingEnvironment environment, string[] apiVersions = null)
         {
             app = application;
             env = environment;
@@ -36,10 +26,7 @@ namespace Undersoft.SDK.Service.Host
 
         public virtual IServiceHostSetup RebuildProviders()
         {
-            if (!basicProvider)
-                UseAdvancedProvider();
-            else
-                UseBasicProvider();
+            UseInternalProvider();
             return this;
         }
 
@@ -67,18 +54,10 @@ namespace Undersoft.SDK.Service.Host
             return this;
         }
 
-        public IServiceHostSetup UseBasicProvider()
-        {
-            app.UseDefaultServiceProvider(opt => opt.ValidateOnBuild = true);            
-            basicProvider = true;
-            return this;
-        }
-
-        public virtual IServiceHostSetup UseAdvancedProvider()
+        public virtual IServiceHostSetup UseInternalProvider()
         {
             ServiceManager.GetRegistry().MergeServices();
             app.UseServiceProviderFactory(ServiceManager.GetProviderFactory());
-            basicProvider = false;
             return this;
         }      
     }

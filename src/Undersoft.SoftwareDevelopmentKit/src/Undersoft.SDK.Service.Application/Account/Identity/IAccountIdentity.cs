@@ -18,8 +18,8 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
         AccountIdentityNotes Notes { get; set; }
 
-        bool IsAuthorized { get; set; }
+        bool Authorized { get; set; }
 
-        bool IsAuthenticated { get; set; }
+        bool Authenticated { get; set; }
     }
 }

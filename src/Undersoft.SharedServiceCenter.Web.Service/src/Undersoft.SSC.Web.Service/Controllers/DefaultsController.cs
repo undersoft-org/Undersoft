@@ -4,7 +4,7 @@ using Undersoft.SDK.Service.Application.Controller.Open;
 using Undersoft.SDK.Service.Application.Controller.Stream;
 using Undersoft.SSC.Domain.Entities;
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
     [AllowAnonymous]
     public class DefaultDataController
@@ -14,7 +14,7 @@ namespace Undersoft.SSC.Web.API.Controllers
     }
 }
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
     public class DefaultsController
         : CrudDataController<long, IEntryStore, IReportStore, Default, Contracts.Default>
@@ -23,7 +23,7 @@ namespace Undersoft.SSC.Web.API.Controllers
     }
 }
 
-namespace Undersoft.SSC.Web.API.Controllers
+namespace Undersoft.SSC.Web.Controllers
 {
     public class DefaultStreamController
         : StreamDataController<long, IEntryStore, IReportStore, Default, Contracts.Default>,

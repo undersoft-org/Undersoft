@@ -11,12 +11,13 @@ using Undersoft.SDK.Service.Application.Operation.Notification;
 using Undersoft.SDK.Service.Application.Operation.Command;
 using Undersoft.SDK;
 
-public class RemoteExecuted<TStore, TDto, TModel> : RemoteActionNotification<ActionCommand<TModel>>
+public class RemoteExecuted<TStore, TDto, TModel, TKind> : RemoteActionNotification<ActionCommand<TModel, TKind>>
     where TDto : class, IOrigin
     where TModel : class, IOrigin
+    where TKind : Enum
     where TStore : IDataServiceStore
 {
-    public RemoteExecuted(RemoteExecute<TStore, TDto, TModel> command) : base(command)
+    public RemoteExecuted(RemoteExecute<TStore, TDto, TModel, TKind> command) : base(command)
     {
     }
 }

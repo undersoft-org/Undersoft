@@ -18,5 +18,5 @@ public class ConfigurationOptions
 
     public Assembly UserSecretsAssembly { get; set; }
 
-    public string UserSecretsId { get; set; }
+    public string UserSecretsId { get; set; } 
 }

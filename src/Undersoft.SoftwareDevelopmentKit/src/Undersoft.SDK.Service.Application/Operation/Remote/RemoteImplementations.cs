@@ -18,8 +18,8 @@ using Operation.Remote.Query;
 using Operation.Remote.Query.Handler;
 using Operation.Remote.Validator;
 using Undersoft.SDK.Series;
-using Undersoft.SDK.Service.Application.ViewModel;
 using Undersoft.SDK.Service.Data.Branch;
+using Undersoft.SDK.Service.Data.ViewModel;
 
 public static class RemoteImplementations
 {

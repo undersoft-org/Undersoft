@@ -12,5 +12,6 @@ public enum AccountGroup
     Provider,
     Administrator,
     Service,
-    Category
+    Category,
+    Organization
 }

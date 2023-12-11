@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 
 namespace Undersoft.SDK.Service.Configuration;
 
@@ -48,24 +49,17 @@ public static class ServiceConfigurationHelper
                 );
         }
 
-        if (options.EnvironmentName == "Development")
-        {
-            if (options.UserSecretsId != null)
-            {
-                builder.AddUserSecrets(options.UserSecretsId);
-            }
-            else if (options.UserSecretsAssembly != null)
-            {
-                builder.AddUserSecrets(options.UserSecretsAssembly, true);
-            }
-        }
-
-        builder = builder.AddEnvironmentVariables(options.EnvironmentVariablesPrefix);
-
-        if (options.CommandLineArgs != null)
-        {
-            builder = builder.AddCommandLine(options.CommandLineArgs);
-        }
+        //if (options.EnvironmentName == "Development")
+        //{
+        //    if (options.UserSecretsId != null)
+        //    {
+        //        builder.AddUserSecrets(options.UserSecretsId);
+        //    }
+        //    else if (options.UserSecretsAssembly != null)
+        //    {
+        //        builder.AddUserSecrets(options.UserSecretsAssembly, true);
+        //    }
+        //}
 
         builderAction?.Invoke(builder);
 

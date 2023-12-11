@@ -32,9 +32,7 @@ public static class DataStoreModelBuilderExtensions
             {
                 var model = builder.Entity(clr);
                 model.HasKey("Id");
-                model.HasIndex("Id").HasMethod("hash");
                 model.HasIndex("Ordinal").IsUnique();
-                model.Property("Ordinal").UseIdentityColumn();
                 model.Property("CodeNo").HasMaxLength(32).IsConcurrencyToken(true);
             }            
         }

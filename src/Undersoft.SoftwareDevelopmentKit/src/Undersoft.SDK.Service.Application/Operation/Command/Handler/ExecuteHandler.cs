@@ -6,10 +6,11 @@ using Undersoft.SDK.Service.Application.Operation.Notification;
 using SDK.Service.Data.Store;
 using Undersoft.SDK;
 
-public class ExecuteHandler<TStore, TType, TDto>
-    : IRequestHandler<Execute<TStore, TType, TDto>, ActionCommand<TDto>>
+public class ExecuteHandler<TStore, TType, TDto, TKind>
+    : IRequestHandler<Execute<TStore, TType, TDto, TKind>, ActionCommand<TDto, TKind>>
     where TType : class
     where TDto : class, IOrigin
+    where TKind : Enum
     where TStore : IDataServiceStore
 {
     protected readonly IServicer _servicer;
@@ -21,8 +22,8 @@ public class ExecuteHandler<TStore, TType, TDto>
         _service = service;
     }
 
-    public async Task<ActionCommand<TDto>> Handle(
-        Execute<TStore, TType, TDto> request,
+    public async Task<ActionCommand<TDto, TKind>> Handle(
+        Execute<TStore, TType, TDto, TKind> request,
         CancellationToken cancellationToken
     )
     {
@@ -33,7 +34,7 @@ public class ExecuteHandler<TStore, TType, TDto>
             request.Response =
                 await new Invoker<TType>(request.Kind.ToString(), request.Data).InvokeAsync(cancellationToken);
 
-            _ = _servicer.Publish(new Executed<TStore, TType, TDto>(request)).ConfigureAwait(false);
+            _ = _servicer.Publish(new Executed<TStore, TType, TDto, TKind>(request)).ConfigureAwait(false);
         }
         catch (Exception ex)
         {

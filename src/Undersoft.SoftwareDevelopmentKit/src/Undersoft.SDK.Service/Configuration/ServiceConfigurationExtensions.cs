@@ -9,6 +9,21 @@ namespace Undersoft.SDK.Service.Configuration;
 
 public static class ServiceConfigurationExtensions
 {
+    public static IServiceConfiguration BuildConfiguration(this IConfiguration config)
+    {
+        return new ServiceConfiguration(config);
+    }
+
+    public static IServiceConfiguration BuildConfiguration(
+        this IConfiguration config,
+        IServiceCollection services
+    )
+    {
+        var _config = new ServiceConfiguration(config);
+        _config.Services = services;
+        return _config;
+    }
+
     public static IServiceCollection ReplaceConfiguration(this IServiceCollection services,
         IConfiguration configuration)
     {

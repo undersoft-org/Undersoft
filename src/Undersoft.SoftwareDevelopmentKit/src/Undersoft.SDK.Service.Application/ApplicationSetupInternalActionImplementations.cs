@@ -10,7 +10,7 @@ using Operation.Command;
 using Operation.Command.Handler;
 using Operation.Notification;
 using Operation.Notification.Handler;
-using ViewModel;
+using Data.ViewModel;
 
 public partial class ApplicationSetup
 {
@@ -52,30 +52,31 @@ public partial class ApplicationSetup
             var store = genericTypes[0];
             var actionType = genericTypes[1];
             var dtoType = genericTypes[2];
+            var _method = genericTypes[3];
 
             service.AddTransient(
                      typeof(IRequest<>).MakeGenericType(
-                         typeof(ActionCommand<>).MakeGenericType(dtoType)
+                         typeof(ActionCommand<,>).MakeGenericType(dtoType, _method)
                      ),
-                     typeof(ActionCommand<>).MakeGenericType(dtoType)
+                     typeof(ActionCommand<,>).MakeGenericType(dtoType, _method)
                  );
 
             service.AddTransient(
                typeof(IRequestHandler<,>).MakeGenericType(
                    new[]
                    {
-                            typeof(Execute<,,>).MakeGenericType(store, actionType, dtoType),
-                            typeof(ActionCommand<>).MakeGenericType(dtoType)
+                            typeof(Execute<,,,>).MakeGenericType(store, actionType, dtoType, _method),
+                            typeof(ActionCommand<,>).MakeGenericType(dtoType, _method)
                    }
                ),
-               typeof(ExecuteHandler<,,>).MakeGenericType(store, actionType, dtoType)
+               typeof(ExecuteHandler<,,,>).MakeGenericType(store, actionType, dtoType, _method)
            );
 
             service.AddTransient(
              typeof(INotificationHandler<>).MakeGenericType(
-                 typeof(Executed<,,>).MakeGenericType(store, actionType, dtoType)
+                 typeof(Executed<,,,>).MakeGenericType(store, actionType, dtoType, _method)
              ),
-             typeof(ExecutedHandler<,,>).MakeGenericType(store, actionType, dtoType)
+             typeof(ExecutedHandler<,,,>).MakeGenericType(store, actionType, dtoType, _method)
             );
         }
         return this;

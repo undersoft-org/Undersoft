@@ -4,10 +4,11 @@ using Undersoft.SDK.Service.Application.Operation.Remote.Command;
 
 namespace Undersoft.SDK.Service.Application.Operation.Remote.Notification.Handler;
 
-public class RemoteExecutedHandler<TStore, TDto, TModel>
-    : INotificationHandler<RemoteExecuted<TStore, TDto, TModel>>
+public class RemoteExecutedHandler<TStore, TDto, TModel, TKind>
+    : INotificationHandler<RemoteExecuted<TStore, TDto, TModel, TKind>>
     where TDto : class, IOrigin
     where TModel : class, IOrigin
+    where TKind : Enum
     where TStore : IDataServiceStore
 {
     protected readonly IStoreRepository<Event> _eventStore;
@@ -22,7 +23,7 @@ public class RemoteExecutedHandler<TStore, TDto, TModel>
     }
 
     public virtual Task Handle(
-        RemoteExecuted<TStore, TDto, TModel> request,
+        RemoteExecuted<TStore, TDto, TModel, TKind> request,
         CancellationToken cancellationToken
     )
     {

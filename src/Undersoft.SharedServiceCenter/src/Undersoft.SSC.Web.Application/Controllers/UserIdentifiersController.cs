@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Undersoft.SDK.Service.Application.Controller.Crud;
 using Undersoft.SSC.Domain.Entities.Enums;
-using Undersoft.SSC.Web.API.Contracts;
-using Undersoft.SSC.Web.Application.ViewModels;
+using Undersoft.SSC.Web.Contracts;
+using Undersoft.SSC.Web.ViewModels;
 
 namespace Undersoft.SSC.Web.Application.Controllers
 {
@@ -12,7 +12,7 @@ namespace Undersoft.SSC.Web.Application.Controllers
     [AllowAnonymous]
     [ODataRouteComponent(StoreRoutes.OpenDataStore)]
     public class UserIdentifierController
-        : OpenDataRemoteController<long, IDataStore, Identifier<Account>, Identifier<User>>
+        : OpenDataRemoteController<long, IDataStore, Identifier<AccountBase>, Identifier<User>>
     {
         public UserIdentifierController(IServicer ultimatr)
             : base(ultimatr, m => d => d.Object.Group == AccountGroup.User) { }
@@ -23,7 +23,7 @@ namespace Undersoft.SSC.Web.Application.Controllers
 {
     [AllowAnonymous]
     public class UserIdentifiersController
-        : CrudDataRemoteController<long, IDataStore, Identifier<Account>, Identifier<User>>
+        : CrudDataRemoteController<long, IDataStore, Identifier<AccountBase>, Identifier<User>>
     {
         public UserIdentifiersController(IServicer ultimatr)
             : base(ultimatr, m => d => d.Object.Group == AccountGroup.User) { }

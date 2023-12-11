@@ -19,7 +19,6 @@ using Instant.Attributes;
 using Instant.Rubrics;
 using Instant.Rubrics.Attributes;
 using Undersoft.SDK.Extracting;
-using Microsoft.AspNetCore.Authentication;
 using Undersoft.SDK.Serialization;
 using Undersoft.SDK;
 

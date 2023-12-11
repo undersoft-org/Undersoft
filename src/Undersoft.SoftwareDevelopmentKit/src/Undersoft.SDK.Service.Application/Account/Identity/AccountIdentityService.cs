@@ -20,19 +20,18 @@ public class AccountIdentityService
             await ConfirmEmail(await Authorize(Authenticate(identity)))
         );
 
-        if (account.IsAuthorized)
+        if (account.Authorized)
         {
-            var claims = account.GetClaims();
-            account.Credentials.SessionToken = _manager.Token.Generate(claims);
+            account.Credentials.SessionToken = _manager.GetToken(account);
             account.Notes = new AccountIdentityNotes()
             {
-                Success = "Succesfully sign in!",
-                Status = SigningStatus.Succeded
+                Success = "Signed in",
+                Status = SigningStatus.SignedIn
             };
             await _manager.SignIn.SignInWithClaimsAsync(
                 account.Info,
                 account.Credentials.SaveAccountInCookies,
-                claims
+                account.GetClaims()
             );
         }
         return account;
@@ -46,11 +45,11 @@ public class AccountIdentityService
                 _creds.UserName,
                 _creds.Email,
                 _creds.Password,
-                new string[] { "Subscriber" }
+                new string[] { "User" }
             );
         await _manager.SignIn.CreateUserPrincipalAsync(account.Info);
         account = await ConfirmEmail(await Authorize(Authenticate(identity)));
-        account.IsAuthorized = false;
+        account.Authorized = false;
         return account;
     }
 
@@ -58,22 +57,16 @@ public class AccountIdentityService
     {
         var account = Authenticate(identity);
 
-        if (account.IsAuthenticated)
+        if (account.Authenticated)
         {
-            var claims = account.GetClaims();
             var principal = await _manager.SignIn.CreateUserPrincipalAsync(account.Info);
             if (_manager.SignIn.IsSignedIn(principal))
                 await _manager.SignIn.SignOutAsync();
             account.Notes = new AccountIdentityNotes()
             {
-                Success = "Succesfully sign out!",
-                Status = SigningStatus.Succeded
+                Success = "Signed out",
+                Status = SigningStatus.SignedOut
             };
-            await _manager.SignIn.SignInWithClaimsAsync(
-                account.Info,
-                account.Credentials.SaveAccountInCookies,
-                claims
-            );
         }
         return account;
     }
@@ -88,22 +81,22 @@ public class AccountIdentityService
             {
                 Notes = new AccountIdentityNotes()
                 {
-                    Errors = "Account doesn't exists",
-                    Status = SigningStatus.WrongEmail
+                    Errors = "Invalid email",
+                    Status = SigningStatus.InvalidEmail
                 },
                 Credentials = _creds
             };
         }
         account.Credentials.PatchFrom(_creds);
         account.Credentials.PatchFrom(account.Info);
-        account.IsAuthenticated = true;
-        account.IsAuthorized = isAuthorized;
+        account.Authenticated = true;
+        account.Authorized = isAuthorized;
         return account;
     }
 
     public async Task<IAccountIdentity<long>> Authorize(IAccountIdentity<long> account)
     {
-        if (account != null && account.IsAuthenticated)
+        if (account != null && account.Authenticated)
         {
             var _creds = account.Credentials;
             account = await _manager.CheckPassword(_creds.Email, _creds.Password);
@@ -114,15 +107,15 @@ public class AccountIdentityService
                 {
                     Notes = new AccountIdentityNotes()
                     {
-                        Errors = "Wrong password",
-                        Status = SigningStatus.WrongPassword
+                        Errors = "Invalid password",
+                        Status = SigningStatus.InvalidPassword
                     },
                     Credentials = _creds
                 };
             }
             else
             {
-                account.IsAuthorized = true;
+                account.Authorized = true;
             }
         }
         account.Credentials.Password = null;
@@ -131,7 +124,7 @@ public class AccountIdentityService
 
     public async Task<IAccountIdentity<long>> ConfirmEmail(IAccountIdentity<long> account)
     {
-        if (account != null && account.IsAuthenticated && account.IsAuthorized)
+        if (account != null && account.Authenticated && account.Authorized)
         {
             var _creds = account.Credentials;
             if (!_creds.EmailConfirmed)
@@ -145,26 +138,26 @@ public class AccountIdentityService
                         )).Succeeded
                     )
                     {
+                        _creds.EmailConfirmationToken = null;
                         _creds.EmailConfirmed = true;
-                        account.IsAuthorized = true;
-                        account.Notes = new AccountIdentityNotes() { Info = "Email confirmed", };
+                        account.Authorized = true;
+                        account.Notes = new AccountIdentityNotes() { Info = "Email has been confirmed", };
                         return account;
-                    }
-                    _creds.EmailConfirmationToken = null;
+                    }                    
                 }
                 _creds.EmailConfirmationToken =
                     await _manager.User.GenerateEmailConfirmationTokenAsync(account.Info);
                 account.Notes = new AccountIdentityNotes()
                 {
-                    Info = "Please confirm your email address",
+                    Info = "Please confirm your email",
                     Status = SigningStatus.EmailNotConfirmed,
                 };
-                account.IsAuthorized = false;
+                account.Authorized = false;
             }
             else
             {
-                account.Notes = new AccountIdentityNotes() { Info = "Your email was confirmed" };
-                account.IsAuthorized = true;
+                account.Notes = new AccountIdentityNotes() { Info = "Email has been confirmed" };
+                account.Authorized = true;
             }
         }
         return account;
@@ -172,7 +165,7 @@ public class AccountIdentityService
 
     public async Task<IAccountIdentity<long>> ResetPassword(IAccountIdentity<long> account)
     {
-        if (account != null && account.IsAuthenticated && account.IsAuthorized)
+        if (account != null && account.Authenticated && account.Authorized)
         {
             var _creds = account.Credentials;
             if (_creds.PasswordResetToken != null)
@@ -186,8 +179,8 @@ public class AccountIdentityService
                 )
                 {
                     _creds.PasswordResetToken = null;
-                    account.IsAuthorized = true;
-                    account.Notes = new AccountIdentityNotes() { Info = "Password Successfully Changed", };
+                    account.Authorized = true;
+                    account.Notes = new AccountIdentityNotes() { Info = "Password has been reset", };
                     return account;
                 }
                 _creds.PasswordResetToken = null;
@@ -197,9 +190,9 @@ public class AccountIdentityService
             account.Notes = new AccountIdentityNotes()
             {
                 Info = "Please confirm reset password by email",
-                Status = SigningStatus.ResetPasswrdNotConfirmed,
+                Status = SigningStatus.ResetPasswordNotConfirmed,
             };
-            account.IsAuthorized = false;
+            account.Authorized = false;
         }
         return (AccountIdentity)account;
     }
@@ -210,8 +203,8 @@ public class AccountIdentityService
     {
         if (
             account != null
-            && account.IsAuthenticated
-            && account.IsAuthorized
+            && account.Authenticated
+            && account.Authorized
             && account.Credentials.EmailConfirmed
         )
         {
@@ -230,7 +223,7 @@ public class AccountIdentityService
                     )
                     {
                         _creds.RegistrationCompleted = true;
-                        account.IsAuthorized = true;
+                        account.Authorized = true;
                         account.Notes = new AccountIdentityNotes() { Info = "Registration completed", };
                         return account;
                     }
@@ -244,12 +237,12 @@ public class AccountIdentityService
                 account.Notes = new AccountIdentityNotes()
                 {
                     Info = "Please complete registration process",
-                    Status = SigningStatus.NotFullyRegisterd
+                    Status = SigningStatus.RegistrationNotCompleted
                 };
-                account.IsAuthorized = false;
+                account.Authorized = false;
             }
             else
-                account.Notes = new AccountIdentityNotes() { Info = "Your registration was completed" };
+                account.Notes = new AccountIdentityNotes() { Info = "Registration completed" };
         }
         return account;
     }
@@ -259,12 +252,14 @@ public enum SigningStatus
 {
     Unsigned,
     Failure,
-    Succeded,
+    Succeed,
+    SignedIn,
+    SignedOut,
     TryoutsOverlimit,
-    WrongEmail,
-    WrongPassword,
-    NotFullyRegisterd,
+    InvalidEmail,
+    InvalidPassword,
+    RegistrationNotCompleted,
     EmailNotConfirmed,
-    ResetPasswrdNotConfirmed,
-    NeedAction
+    ResetPasswordNotConfirmed,
+    ActionRequired
 }

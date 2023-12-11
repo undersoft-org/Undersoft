@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Undersoft.SDK.Service;
-using Undersoft.SDK.Service.Application;
 
 namespace Undersoft.SSC.Web.Application.Client
 {
@@ -10,14 +10,19 @@ namespace Undersoft.SSC.Web.Application.Client
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+            builder.ConfigureContainer(ServiceManager.GetProviderFactory());
+
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
-            var app = builder.Services.AddAuthorizationCore().AddApplicationSetup();
-            app.ConfigureServices(AppDomain.CurrentDomain.GetAssemblies());
-            app.UseDataServices();
+            builder.Services.AddServiceSetup().ConfigureServices();
 
-            await builder.Build().RunAsync();
+            var host = builder.Build();
+            
+            host.Services.UseDataServices();
+            
+            await host.RunAsync();
         }
     }
 }

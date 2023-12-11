@@ -4,7 +4,6 @@ using System.IO;
 using Undersoft.SDK.Logging;
 using System.Threading;
 using JetBrains.Annotations;
-using Microsoft.Azure.Cosmos.Linq;
 using NLog.Fluent;
 using Undersoft.SDK.Service.Data.File.Blob.Container;
 
@@ -30,7 +29,7 @@ namespace Undersoft.SDK.Service.Data.File.Blob
                 blobName,
                 cancellationToken)
         {
-            if (blobStream.IsNull()) { this.Warning<Runlog, Exception>("stream is null"); }
+            if (blobStream == null) { this.Warning<Runlog, Exception>("stream is null"); }
             BlobStream = blobStream;
             OverrideExisting = overrideExisting;
         }

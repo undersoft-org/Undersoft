@@ -27,7 +27,7 @@ public interface IRemoteRepository<TEntity> : IRepository<TEntity> where TEntity
 
     Task<IEnumerable<TEntity>> FindMany(params object[] keys);
 
-    Task<IEnumerable<TEntity>> ExecuteAsync<TModel>(TModel payload, ActionServiceKind kind);
+    Task<IEnumerable<TEntity>> ExecuteAsync<TModel, TKind>(TModel payload, TKind kind) where TKind : Enum;
 
-    Task<IEnumerable<TEntity>> ExecuteAsync<TModel>(TModel[] payload, ActionServiceKind kind);
+    Task<IEnumerable<TEntity>> ExecuteAsync<TModel, TKind>(TModel[] payload, TKind kind) where TKind : Enum;
 }

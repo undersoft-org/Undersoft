@@ -16,17 +16,32 @@ using DataServer;
 using Documentation;
 using Account;
 using Account.Email;
-using Data.Store;
+using Service.Data.Store;
 using Undersoft.SDK.Service.Application.Account.Identity;
 using OpenTelemetry;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
 {
+    protected IMvcBuilder mvc;
+
     public ApplicationSetup(IServiceCollection services, IMvcBuilder mvcBuilder = null)
-        : base(services, mvcBuilder) { }
+        : base(services)
+    {
+        if (mvcBuilder != null)
+            mvc = mvcBuilder;
+        else
+            mvc = services.AddControllers();
+
+        registry.MergeServices(mvc.Services);
+    }
 
     public ApplicationSetup(IServiceCollection services, IConfiguration configuration)
-        : base(services, configuration) { }
+        : base(services, configuration)
+    {
+        mvc = services.AddControllers();
+        registry.MergeServices(mvc.Services);
+    }
 
     public IApplicationSetup AddDataServer<TServiceStore>(
         DataServerTypes dataServerTypes,
@@ -37,7 +52,7 @@ public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
         if ((dataServerTypes & DataServerTypes.OData) > 0)
         {
             var ds = new OpenDataServerBuilder<TServiceStore>();
-            if(builder != null)
+            if (builder != null)
                 builder.Invoke(ds);
             ds.Build();
             ds.AddODataServicer(mvc);
@@ -58,38 +73,64 @@ public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
             ds.Build();
         }
         return this;
-    }  
+    }
+
+    public override IServiceSetup AddSourceProviderConfiguration()
+    {
+        registry.AddObject<ISourceProviderConfiguration>(new ApplicationSourceProviderConfiguration());
+
+        return this;
+    }
+
+    public IServiceSetup AddHealthChecks()
+    {
+        services.AddHealthChecks();
+        return this;
+    }
 
     public IApplicationSetup AddIdentityService<TContext>() where TContext : DbContext
     {
         registry.Services
-            .AddIdentity<IdentityUser<long>, IdentityRole<long>>(
-            options =>
+            .AddIdentity<IdentityUser<long>, IdentityRole<long>>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
-                options.Tokens.ProviderMap.Add("AccountEmailConfirmationTokenProvider",
-              new TokenProviderDescriptor(
-            typeof(AccountIdentityConfirmationTokenProvider<IdentityUser>)));
-                options.Tokens.EmailConfirmationTokenProvider = "AccountEmailConfirmationTokenProvider";
-                options.Tokens.ProviderMap.Add("AccountPasswordResetTokenProvider",
-                new TokenProviderDescriptor(
-                typeof(AccountPasswordResetTokenProvider<IdentityUser>)));
+                options.Tokens.ProviderMap.Add(
+                    "AccountEmailConfirmationTokenProvider",
+                    new TokenProviderDescriptor(
+                        typeof(AccountIdentityConfirmationTokenProvider<IdentityUser>)
+                    )
+                );
+                options.Tokens.EmailConfirmationTokenProvider =
+                    "AccountEmailConfirmationTokenProvider";
+                options.Tokens.ProviderMap.Add(
+                    "AccountPasswordResetTokenProvider",
+                    new TokenProviderDescriptor(
+                        typeof(AccountPasswordResetTokenProvider<IdentityUser>)
+                    )
+                );
                 options.Tokens.PasswordResetTokenProvider = "AccountPasswordResetTokenProvider";
-                options.Tokens.ProviderMap.Add("AccountChangeEmailTokenProvider",
-            new TokenProviderDescriptor(
-                typeof(AccountChangeEmailTokenProvider<IdentityUser>)));
+                options.Tokens.ProviderMap.Add(
+                    "AccountChangeEmailTokenProvider",
+                    new TokenProviderDescriptor(
+                        typeof(AccountChangeEmailTokenProvider<IdentityUser>)
+                    )
+                );
                 options.Tokens.ChangeEmailTokenProvider = "AccountChangeEmailTokenProvider";
-                options.Tokens.ProviderMap.Add("AccountRegistrationProcessTokenProvider",
-            new TokenProviderDescriptor(
-            typeof(AccountRegistrationProcessTokenProvider<IdentityUser>)));
-                options.Tokens.ChangePhoneNumberTokenProvider = "AccountRegistrationProcessTokenProvider";
+                options.Tokens.ProviderMap.Add(
+                    "AccountRegistrationProcessTokenProvider",
+                    new TokenProviderDescriptor(
+                        typeof(AccountRegistrationProcessTokenProvider<IdentityUser>)
+                    )
+                );
+                options.Tokens.ChangePhoneNumberTokenProvider =
+                    "AccountRegistrationProcessTokenProvider";
                 options.User.RequireUniqueEmail = true;
-            }
-            )
+            })
             .AddEntityFrameworkStores<TContext>();
 
-        registry.Configure<DataProtectionTokenProviderOptions>(o =>
-        o.TokenLifespan = TimeSpan.FromHours(3));
+        registry.Configure<DataProtectionTokenProviderOptions>(
+            o => o.TokenLifespan = TimeSpan.FromHours(3)
+        );
 
         registry.AddScoped<IAccountIdentityManager, AccountIdentityManager>();
         registry.AddScoped<AccountIdentityService>();
@@ -98,33 +139,35 @@ public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
 
         AddIdentityAuthentication();
         AddIdentityAuthorization();
-        
+
         return this;
     }
 
-    public IApplicationSetup AddIdentityAuthentication() 
+    public IApplicationSetup AddIdentityAuthentication()
     {
         var jwtOptions = new AccountIdentityJWTOptions();
         var jwtFactory = new AccountIdentityJWTGenerator(30, jwtOptions);
 
         registry.AddObject(jwtFactory);
 
-        registry.Services.AddAuthentication(x =>
-        {
-            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(x =>
-        {
-            x.RequireHttpsMetadata = false;
-            x.SaveToken = true;
-            x.TokenValidationParameters = new TokenValidationParameters
+        registry.Services
+            .AddAuthentication(x =>
             {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(jwtOptions.SecurityKey),
-                ValidateIssuer = false,
-                ValidateAudience = false
-            };
-        });
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(jwtOptions.SecurityKey),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
         return this;
     }
 
@@ -176,7 +219,7 @@ public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
                 new OpenApiInfo { Title = ao.ApiName, Version = ao.ApiVersion }
             );
             options.OperationFilter<SwaggerJsonIgnoreFilter>();
-            options.DocumentFilter<IgnoreApiDocument>();          
+            options.DocumentFilter<IgnoreApiDocument>();
 
             options.AddSecurityDefinition(
                 "oauth2",
@@ -210,9 +253,7 @@ public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
     {
         Assemblies ??= assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
 
-        base.ConfigureServices(Assemblies)
-            .Services
-            .AddHttpContextAccessor();
+        base.ConfigureServices(Assemblies).Services.AddHttpContextAccessor();
 
         AddApplicationSetupInternalImplementations(assemblies);
         AddApplicationSetupInternalActionImplementations(assemblies);

@@ -13,6 +13,12 @@ using System.Runtime.Intrinsics.Arm;
 
 namespace Undersoft.SDK.Service.Data.Mapper
 {
+    public interface IMapperProfile : IProfileConfiguration, IProfileExpression
+    { }
+
+    public class MapperProfile : Profile, IMapperProfile
+    { }
+
     public class DataMapper : IDataMapper
     {
         private static object buildHolder = new object();
@@ -21,13 +27,13 @@ namespace Undersoft.SDK.Service.Data.Mapper
         private static Profile[] profiles = new Profile[0];
         private readonly HashSet<long> checkRepeated = new HashSet<long>();
 
-        public static void AddProfiles(params Profile[] profiles)
+        public static void AddProfiles(params IMapperProfile[] profiles)
         {
-            DataMapper.profiles = DataMapper.profiles.Concat(profiles).ToArray();
-            expression.AddProfiles(profiles);
+            DataMapper.profiles = DataMapper.profiles.Concat(profiles.Cast<MapperProfile>()).ToArray();
+            expression.AddProfiles(profiles.Cast<MapperProfile>());
         }
 
-        public DataMapper(params Profile[] profiles)
+        public DataMapper(params IMapperProfile[] profiles)
         {
             if (profiles.Length > 0)
                 AddProfiles(profiles);

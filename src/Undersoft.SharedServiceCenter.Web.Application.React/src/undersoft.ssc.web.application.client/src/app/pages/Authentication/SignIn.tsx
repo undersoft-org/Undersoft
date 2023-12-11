@@ -10,7 +10,7 @@ import { AccountIdentity } from '@/account/accountIdentity';
 import { PostAction } from '@/services/serviceBase';
 import { jwtDecode } from 'jwt-decode';
 import { currentUser } from "@/app/store/userStore";
-import { Credentials } from '../../../../domain/models/credentials';
+import { Credentials } from '@/app/models/credentials';
 import { IdentityUser } from '../../../../domain/models/identityUser';
 
 const SignIn = () => {

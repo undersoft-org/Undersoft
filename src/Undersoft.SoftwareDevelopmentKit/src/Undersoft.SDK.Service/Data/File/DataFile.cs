@@ -1,6 +1,5 @@
 
 using System;
-using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,61 +9,51 @@ using Undersoft.SDK.Service.Data.File.Container;
 
 namespace Undersoft.SDK.Service.Data.File
 {
-    public class DataFile : FileContainer, IFormFile
+    public class DataFile : FileContainer
     {
-        private IFormFile _formFile;
         private Stream _stream;
 
-        public DataFile(FileContainer container, string filename) : base(container.ContainerName)
+        public DataFile(FileContainer container, string filename) : this(container.ContainerName, filename)
         {
-            var task = GetOrNullAsync(filename);
-            task.Wait();
-            _stream = task.Result;
-            _formFile = new FormFile(_stream, 0, _stream.Length, filename.Split('.')[0], filename);
         }
         public DataFile(string containerName, string filename) : base(containerName)
         {
             var task = GetOrNullAsync(filename);
             task.Wait();
             _stream = task.Result;
-            _formFile = new FormFile(_stream, 0, _stream.Length, filename.Split('.')[0], filename);
+            Name = filename.Split('.')[0];
+            FileName = filename;
+            Length = _stream.Length;
         }
-        public DataFile(string path) : base(Path.GetDirectoryName(path))
+        public DataFile(string path) : this(Path.GetDirectoryName(path), Path.GetFileName(path))
         {
-            var filename = Path.GetFileName(path);
-            var task = GetOrNullAsync(filename);
-            task.Wait();
-            _stream = task.Result;
-            _formFile = new FormFile(_stream, 0, _stream.Length, filename.Split('.')[0], filename);
         }
 
         public Stream Stream => _stream;
 
-        public string ContentType => _formFile.ContentType;
+        public string ContentType { get; set; }
 
-        public string ContentDisposition => _formFile.ContentDisposition;
+        public string ContentDisposition { get; set; }
 
-        public IHeaderDictionary Headers => _formFile.Headers;
+        public long Length { get; set; }
 
-        public long Length => _formFile.Length;
+        public string Name { get; set; }
 
-        public string Name => _formFile.Name;
-
-        public string FileName => _formFile.FileName;
+        public string FileName { get; set; }
 
         public void CopyTo(Stream target)
         {
-            _formFile.CopyTo(target);
+            _stream.CopyTo(target);
         }
 
         public Task CopyToAsync(Stream target, CancellationToken cancellationToken = default)
         {
-            return _formFile.CopyToAsync(target, cancellationToken);
+            return _stream.CopyToAsync(target, cancellationToken);
         }
 
         public Stream OpenReadStream()
         {
-            return _formFile.OpenReadStream();
+            return _stream;
         }
     }
 }

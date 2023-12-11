@@ -355,16 +355,14 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
 
     public override DataServiceQuery<TEntity> Query => dsContext.CreateQuery<TEntity>(Name, true);
 
-    public async Task<IEnumerable<TEntity>> ExecuteAsync<TDto>(TDto payload, ActionServiceKind kind)
+    public async Task<IEnumerable<TEntity>> ExecuteAsync<TDto, TKind>(TDto payload, TKind kind) where TKind : Enum
     {
-        return await dsContext.ExecuteAsync<TEntity>(new Uri(dsContext.BaseUri, Name + kind.ToString()), "POST", new BodyOperationParameter("credentials", payload));
+        return await dsContext.ExecuteAsync<TEntity>(new Uri(dsContext.BaseUri, Name + kind.ToString()), "POST", new BodyOperationParameter(typeof(TDto).Name, payload));
     }
 
-    public async Task<IEnumerable<TEntity>> ExecuteAsync<TDto>(TDto[] payloads, ActionServiceKind kind)
+    public async Task<IEnumerable<TEntity>> ExecuteAsync<TDto, TKind>(TDto[] payloads, TKind kind) where TKind : Enum
     {        
-        dsSet.AddRange(await MapFrom<TDto>(payloads));
-        return dsSet.AsEnumerable();
-        //return await dsContext.ExecuteAsync<TEntity>(new Uri(dsContext.BaseUri, Name), "POST", new BodyOperationParameter("dtos", await MapFrom<List<TDto>>(payloads)));
+        return await dsContext.ExecuteAsync<TEntity>(new Uri(dsContext.BaseUri, Name + kind.ToString()), "POST", new BodyOperationParameter(typeof(TDto).Name, payloads));
     }
 }
 

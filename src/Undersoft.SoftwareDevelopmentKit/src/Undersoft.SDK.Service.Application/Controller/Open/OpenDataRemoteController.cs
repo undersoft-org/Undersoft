@@ -9,6 +9,7 @@ namespace Undersoft.SDK.Service.Application.Controller.Open;
 using Operation.Remote.Command;
 using Operation.Remote.Query;
 using Undersoft.SDK.Service.Application.Documentation;
+using Undersoft.SDK.Service.Application.Operation.Remote;
 using Undersoft.SDK.Service.Data.Object;
 
 [IgnoreApi]

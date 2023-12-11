@@ -8,6 +8,7 @@ using Data.Repository.Client.Remote;
 using Data.Service;
 using Operation.Remote.Command;
 using Operation.Remote.Query;
+using Undersoft.SDK.Service.Application.Operation.Remote;
 
 [RemoteResult]
 [RemoteCrudDataService]

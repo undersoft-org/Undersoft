@@ -18,6 +18,7 @@ namespace Undersoft.SSC.Infrastructure.Persistance.Stores.Mappings
                 .LinkOneToSet<Default, Resource>(ExpandSite.OnLeft)
                 .LinkOneToSet<Default, Schedule>(ExpandSite.OnLeft)
                 .LinkOneToSet<Default, Setting>(ExpandSite.OnRight)
+                .LinkOneToSet<Default, Detail>(ExpandSite.OnRight)
                 .LinkOneToSet<Default, Activity>(
                     nameof(Activity.Default),
                     nameof(Activity.Default),
