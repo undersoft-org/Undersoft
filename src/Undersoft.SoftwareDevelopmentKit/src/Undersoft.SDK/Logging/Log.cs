@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Logging
 {
-    using NLog;
+    using Serilog.Events;
     using System.Collections.Concurrent;
     using System.Text.Json;
     using System.Text.Json.Serialization;
@@ -15,7 +15,6 @@
         private static int _logLevel = 2;
         private static bool cleaningEnabled = false;
         private static DateTime clearLogTime;
-        private static Thread logger;
         private static ILogHandler handler { get; set; }
 
         private static ConcurrentQueue<Starlog> logQueue = new ConcurrentQueue<Starlog>();
@@ -27,17 +26,15 @@
         static Log()
         {
             jsonOptions = JsonOptionsBuilder();
-            handler = new LogHandler(jsonOptions, LogLevel.Info);
+            handler = new LogHandler(jsonOptions, LogEventLevel.Information);
             clearLogTime = DateTime.Now
                 .AddDays(BACK_LOG_DAYS)
                 .AddHours(BACK_LOG_HOURS)
                 .AddMinutes(BACK_LOG_MINUTES);
-            threadLive = true;
-            logger = new Thread(new ThreadStart(logging));
-            logger.Start();
+            Start(_logLevel);
         }
 
-        public static void Add(LogLevel logLevel, string category, string message, ILogSate state)
+        public static void Add(LogEventLevel logLevel, string category, string message, ILogSate state)
         {
             var _log = new Starlog()
             {
@@ -75,7 +72,7 @@
             }
         }
 
-        public static void CreateHandler(LogLevel level)
+        public static void CreateHandler(LogEventLevel level)
         {
             handler = new LogHandler(jsonOptions, level);
         }
@@ -85,35 +82,22 @@
             _logLevel = logLevel;
         }
 
-        public static void Start()
-        {
-            threadLive = true;
-            _logLevel = 2;
-            logger.Start();
-        }
-
         public static void Start(int logLevel)
         {
-            CreateHandler(LogLevel.Info);
+            CreateHandler(LogEventLevel.Information);
             SetLevel(logLevel);
             if (!threadLive)
             {
                 threadLive = true;
-                logger.Start();
+                Task.Run(logging);
             }
-        }
-
-        public static void Stop()
-        {
-            logger.Join();
-            threadLive = false;
         }
 
         private static void logging()
         {
-            while (threadLive)
+            try
             {
-                try
+                while (threadLive)
                 {
                     Clock = DateTime.Now;
                     Thread.Sleep(1000);
@@ -133,8 +117,8 @@
                     if (cleaningEnabled)
                         ClearLog();
                 }
-                catch (Exception ex) { }
             }
+            catch (Exception ex) { }
         }
 
         private static JsonSerializerOptions JsonOptionsBuilder()

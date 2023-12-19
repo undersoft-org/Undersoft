@@ -1,4 +1,3 @@
-using NLog.Web;
 using Undersoft.SDK.Service.Configuration;
 
 namespace Undersoft.SSC.Web.Service
@@ -28,7 +27,6 @@ namespace Undersoft.SSC.Web.Service
                     .Configure(c.Configuration
                     .GetSection("Kestrel")))
                 .UseStartup<Startup>()
-                .UseNLog()
                 .Build();
 
             return _webapi;

@@ -91,7 +91,7 @@ public partial class Layout : IHandlerException, IAsyncDisposable
     public Func<string, Task<bool>>? OnAuthorizing { get; set; }
 
     [Parameter]
-    public string NotAuthorizeUrl { get; set; } = "/Account/Login";
+    public string NotAuthorizeUrl { get; set; } = "/Signin";
 
     [Inject]
     [NotNull]

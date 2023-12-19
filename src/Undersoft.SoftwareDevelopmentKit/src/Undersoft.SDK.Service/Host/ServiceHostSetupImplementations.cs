@@ -67,7 +67,7 @@ namespace Undersoft.SDK.Service.Host
                     }
                 }
             }
-            //app.RebuildProviders();
+            //sm.RebuildProviders();
         }
     }
 }

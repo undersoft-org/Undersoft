@@ -133,7 +133,7 @@ public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
         );
 
         registry.AddScoped<IAccountIdentityManager, AccountIdentityManager>();
-        registry.AddScoped<AccountIdentityService>();
+        registry.AddScoped<AuthorizationService>();
         registry.AddTransient<IEmailSender, AccountEmailSender>();
         registry.Configure<AccountEmailSenderOptions>(configuration);
 

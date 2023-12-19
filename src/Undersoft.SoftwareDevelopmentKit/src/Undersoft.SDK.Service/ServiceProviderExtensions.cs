@@ -58,6 +58,7 @@ namespace Undersoft.SDK.Service
         public static IServiceProvider UseDataServices(this IServiceProvider provider)
         {
             provider.LoadDataServiceModels().ConfigureAwait(false);
+
             return provider;
         }
     }

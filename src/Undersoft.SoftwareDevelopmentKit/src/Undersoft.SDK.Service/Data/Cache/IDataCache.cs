@@ -1,12 +1,6 @@
-﻿using Undersoft.SDK.Series;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace Undersoft.SDK.Service.Data.Cache;
+﻿namespace Undersoft.SDK.Service.Data.Cache;
 
 using Undersoft.SDK;
-using Uniques;
 
 public interface IDataCache : ITypedSeries<IOrigin>
 {

@@ -6,16 +6,32 @@ namespace Undersoft.SDK.Service.Application.Behaviour;
 
 using Logging;
 using Operation;
+using System.Diagnostics;
+using System.Diagnostics.Metrics;
 
 public class LoggingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>, IOperation where TResponse : IOperation
+    where TRequest : IRequest<TResponse>, IOperation
+    where TResponse : IOperation
 {
+    //private ActivitySource activitySource;
+
+    //public LoggingBehaviour(Instrumentation instrumentation)
+    //{
+    //    activitySource = instrumentation.ActivitySource;
+    //}
+
     public LoggingBehaviour()
-    {
+    {        
     }
 
-    public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+    public async Task<TResponse> Handle(
+        TRequest request,
+        CancellationToken cancellationToken,
+        RequestHandlerDelegate<TResponse> next)
     {
+
+        //using var activity = activitySource.StartActivity($"Operation Request: {request.GetType().Name}");
+
         request.Info<Apilog>($"Request data source", request.Input);
 
         var response = await next();

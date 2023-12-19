@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Undersoft.SDK.Uniques;
 using System.Security.Claims;
+using Undersoft.SDK.Security.Identity;
 
 namespace Undersoft.SDK.Service.Application.Account.Identity
 {
@@ -14,9 +15,9 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
         IEnumerable<Claim> GetClaims();
 
-        AccountIdentityCredentials Credentials { get; set; }
+        ICredentials Credentials { get; set; }
 
-        AccountIdentityNotes Notes { get; set; }
+        AuthorizationNotes Notes { get; set; }
 
         bool Authorized { get; set; }
 

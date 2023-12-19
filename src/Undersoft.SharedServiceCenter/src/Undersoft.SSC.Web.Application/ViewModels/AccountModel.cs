@@ -2,8 +2,8 @@ using System.Runtime.Serialization;
 using Undersoft.SDK.Service.Data.Object.Detail;
 using Undersoft.SDK.Service.Data.Object.Setting;
 using Undersoft.SDK.Service.Data.ViewModel;
-using Undersoft.SSC.Domain.Entities.Enums;
 using Undersoft.SSC.Web.Contracts;
+using Undersoft.SSC.Web.Enums;
 
 namespace Undersoft.SSC.Web.Application.ViewModels;
 

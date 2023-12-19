@@ -97,7 +97,7 @@ public partial class Tab : IHandlerException, IDisposable
     public string? DefaultUrl { get; set; }
 
     [Parameter]
-    [Obsolete("请使用 OnClickTabItemAsync 代替")]
+    [Obsolete("OnClickTabItemAsync")]
     [ExcludeFromCodeCoverage]
     public Func<TabItem, Task>? OnClickTab { get; set; }
 

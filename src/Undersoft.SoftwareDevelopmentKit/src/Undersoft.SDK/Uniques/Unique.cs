@@ -12,8 +12,6 @@
         private static readonly int WAIT_LOOPS = 500;
         private static UniqueKey32 bit32 = new UniqueKey32();
         private static UniqueKey64 bit64 = new UniqueKey64();
-        private static bool generating;
-        private static Thread generator;
         private static object holder = new object();
         private static long keyNumber = (long)DateTime.Now.Ticks;
         private static ConcurrentQueue<ulong> keys = new ConcurrentQueue<ulong>();
@@ -21,7 +19,7 @@
 
         static Unique()
         {
-            generator = startup();
+            generate();
         }
 
         public static UniqueKey32 Bit32
@@ -45,17 +43,12 @@
                 {
                     if (!(loop = keys.TryDequeue(out key)))
                     {
-                        if (!generating)
-                            Start();
-
                         counter++;
-                        Thread.Sleep(20);
                     }
                     else
                     {
-                        int count = keys.Count;
-                        if (count < LOW_LIMIT)
-                            Start();
+                        if (keys.Count < LOW_LIMIT)
+                            generate();
                         break;
                     }
                 }
@@ -63,41 +56,16 @@
             }
         }
 
-        public static void Start()
+        private unsafe static void keyGeneration()
         {
             lock (holder)
             {
-                if (!generating)
+                long seed = nextSeed();
+                int count = CAPACITY - keys.Count;
+                for (int i = 0; i < count; i++)
                 {
-                    generating = true;
-                    Monitor.Pulse(holder);
-                }
-            }
-        }
-
-        public static void Stop()
-        {
-            if (generating)
-            {
-                generating = false;
-            }
-        }
-
-        private unsafe static void keyGeneration()
-        {
-            while (generating)
-            {
-                lock (holder)
-                {
-                    long seed = nextSeed();
-                    int count = CAPACITY - keys.Count;
-                    for (int i = 0; i < count; i++)
-                    {
-                        long keyNo = nextKeyNumber();
-                        keys.Enqueue(Hasher64.ComputeKey(((byte*)&keyNo), 8, seed));
-                    }
-                    Stop();
-                    Monitor.Wait(holder);
+                    long keyNo = nextKeyNumber();
+                    keys.Enqueue(Hasher64.ComputeKey(((byte*)&keyNo), 8, seed));
                 }
             }
         }
@@ -112,12 +80,9 @@
             return randomSeed.Next();
         }
 
-        private static Thread startup()
+        private static void generate()
         {
-            generating = true;
-            Thread _reffiler = new Thread(new ThreadStart(keyGeneration));
-            _reffiler.Start();
-            return _reffiler;
+            Task.Run(keyGeneration);
         }
     }
 }

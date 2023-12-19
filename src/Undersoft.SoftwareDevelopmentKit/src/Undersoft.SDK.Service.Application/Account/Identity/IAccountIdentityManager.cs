@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Security.Claims;
+using Undersoft.SDK.Security.Identity;
 
 namespace Undersoft.SDK.Service.Application.Account.Identity
 {
@@ -19,7 +20,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
         Task<AccountIdentity> GetById(long id);
         Task<AccountIdentity> GetByName(string name);
         Task<string> GetToken(string email, string password);
-        string GetToken(IAccountIdentity<long> account);
+        string GetToken(IAuthorization account);
         Task<IdentityRole<long>> SetRole(string roleName);
         Task<bool> SetRoleClaim(string roleName, Claim claim);
         Task<AccountIdentity> SetUser(string username, string email, string password, IEnumerable<string> roles, IEnumerable<string> scopes = null);

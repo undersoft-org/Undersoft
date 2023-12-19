@@ -69,7 +69,7 @@ public class AccountIdentityJWTGenerator
             expires: DateTime.UtcNow.AddMinutes(options.MinutesToExpire),
             signingCredentials: new SigningCredentials(
                 securitykey,
-                SecurityAlgorithms.HmacSha256Signature,
+                SecurityAlgorithms.HmacSha512Signature,
                 SecurityAlgorithms.Sha512Digest
             )
         );

@@ -1,64 +1,78 @@
-﻿using NLog;
-using NLog.Config;
+﻿using Serilog;
+using Serilog.Core;
+using Serilog.Events;
+using Serilog.Extensions.Logging;
+using Serilog.Sinks;
+using Serilog.Settings;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Reflection;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
+using Serilog.Settings.Configuration;
+using Serilog.Expressions;
 
 namespace Undersoft.SDK.Logging
 {
     public class LogHandler : ILogHandler
     {
-        private readonly LogFactory factory;
-        private readonly ConcurrentDictionary<string, ILogger> loggerRegistry = new ConcurrentDictionary<string, ILogger>();
+        private readonly ConcurrentDictionary<string, Serilog.ILogger> loggerRegistry =
+            new ConcurrentDictionary<string, Serilog.ILogger>();
 
         private string sender;
         private ILogger logger;
-        private LogLevel level;
-        private LoggingConfiguration configuration;
+        private LogEventLevel level;
         private JsonSerializerOptions jsonOptions;
 
-        public LogHandler(JsonSerializerOptions options, LogLevel level)
+        public LogHandler(JsonSerializerOptions jsonoptions, LogEventLevel level)
         {
-            var nlogEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-            LogManager.Configuration = (new XmlLoggingConfiguration(nlogEnvironment == ""
-                        ? "Properties/nlog.config"
-                        : $"Properties/nlog.{nlogEnvironment}.config")).Reload();
-            
-            factory = LogManager.Configuration.LogFactory;
+            string suffix = ".json";
+            if (!(environment == null))
+                suffix = $".{environment}.json";
 
-            jsonOptions = options;
+            IConfigurationBuilder builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile($"appsettings{suffix}", optional: true, reloadOnChange: true);
+
+            var configuration = builder.Build();
+
+            var options = new ConfigurationReaderOptions(typeof(ConsoleLoggerConfigurationExtensions).Assembly, typeof(SerilogExpression).Assembly);
+
+            logger = Serilog.Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration, options).CreateLogger();
+
+            jsonOptions = jsonoptions;
             this.level = level;
             sender = "Undersoft.SDK.Logging";
-            logger = factory.GetCurrentClassLogger();
             loggerRegistry.TryAdd(sender, logger);
         }
 
         public ILogger GetLogger<TState>(TState state)
         {
-            return factory.GetLogger(typeof(TState).FullName);
+            return logger.ForContext<TState>(level, typeof(TState).FullName, state);
         }
 
         public bool Clean(DateTime olderThen)
         {
-
             return true;
         }
 
-        public bool IsEnabled(LogLevel logLevel)
+        public bool IsEnabled(LogEventLevel logLevel)
         {
-            return ((level.Ordinal - logLevel.Ordinal) < 1);
+            return (((int)level - (int)logLevel) < 1);
         }
 
         public void Write(Starlog log)
         {
             if (IsEnabled(log.Level))
             {
-                loggerChooser(log).Log(log.Level, JsonSerializer.Serialize(log, jsonOptions));
+                loggerChooser(log).Write(log.Level, JsonSerializer.Serialize(log, jsonOptions));
             }
         }
 
-        public void SetLevel(LogLevel level)
+        public void SetLevel(LogEventLevel level)
         {
             this.level = level;
         }
@@ -68,7 +82,7 @@ namespace Undersoft.SDK.Logging
             if (log.Sender != sender)
             {
                 sender = log.Sender;
-                logger = loggerRegistry.GetOrAdd(sender, l => factory.GetLogger(sender));
+                logger = loggerRegistry.GetOrAdd(sender, l => GetLogger(sender));
             }
 
             return logger;
@@ -76,8 +90,10 @@ namespace Undersoft.SDK.Logging
 
         private Starlog Optimize(Starlog log)
         {
-            if (log.State?.DataObject != null &&
-                log.State.DataObject.GetType().IsAssignableTo(typeof(IEnumerable)))
+            if (
+                log.State?.DataObject != null
+                && log.State.DataObject.GetType().IsAssignableTo(typeof(IEnumerable))
+            )
             {
                 var dataenum = ((IEnumerable)log.State.DataObject).GetEnumerator();
                 dataenum.MoveNext();

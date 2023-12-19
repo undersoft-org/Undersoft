@@ -15,10 +15,11 @@ namespace Undersoft.SSC.Web.Service
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddApplicationSetup()
+            var setup = services
+                .AddApplicationSetup();
+            setup
                 .ConfigureApplication(true, AppDomain.CurrentDomain.GetAssemblies())
-                .AddIdentityService<ServiceIdentityStore>()
+                .AddIdentityService<ServiceIdentityStore>()               
                 .AddDataServer<IDataServiceStore>(
                     DataServerTypes.All,
                     builder =>
@@ -29,6 +30,7 @@ namespace Undersoft.SSC.Web.Service
                             .AddDataServices<ServiceEventStore>()
                             .AddIdentityActionSet()
                 );
+            setup.AddCaching();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

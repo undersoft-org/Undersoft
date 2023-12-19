@@ -1,8 +1,8 @@
 using Undersoft.SDK.Service.Data.Contract;
 using Undersoft.SDK.Service.Data.Object.Detail;
-using Undersoft.SSC.Domain.Entities.Enums;
 using Undersoft.SSC.Web.Contracts;
 using Undersoft.SSC.Web.Contracts.Details;
+using Undersoft.SSC.Web.Enums;
 
 namespace Undersoft.SSC.Web.Application.ViewModels;
 

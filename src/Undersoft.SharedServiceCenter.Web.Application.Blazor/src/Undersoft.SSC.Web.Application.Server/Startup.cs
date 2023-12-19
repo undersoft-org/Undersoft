@@ -3,8 +3,8 @@ using Undersoft.SDK.Service.Application.DataServer;
 
 namespace Undersoft.SSC.Web.Application.Server;
 
-using Infrastructure.Persistance.Stores;
 using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SSC.Infrastructure.Persistance.Stores;
 
 public class Startup
 {
@@ -17,16 +17,16 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services
-            .AddApplicationSetup()
-            .ConfigureApplication(true, AppDomain.CurrentDomain.GetAssemblies())        
-            .AddDataServer<IEventStore>(
-                DataServerTypes.All,
-                builder =>
-                    builder.AddDataServices<AppEventStore>()
-            );
         services.AddControllersWithViews();
         services.AddRazorPages();
+        var setup = services.AddApplicationSetup();
+        setup
+            .ConfigureApplication(true, AppDomain.CurrentDomain.GetAssemblies())
+            .AddDataServer<IEventStore>(
+                DataServerTypes.All,
+                builder => builder.AddDataServices<AppEventStore>()
+            );
+        setup.AddCaching();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,10 +42,9 @@ public class Startup
             app.UseHsts();
         }
 
+        var a = app.UseApplicationSetup(env, true, true);
         app.UseBlazorFrameworkFiles();
-
-        app.UseInternalProvider()
-            .UseApplicationSetup(env, true, true)
+        a.UseInternalProvider()
             .UseDataMigrations()
             .UseDataServices()
             .MapFallbackToFile("/index.html");

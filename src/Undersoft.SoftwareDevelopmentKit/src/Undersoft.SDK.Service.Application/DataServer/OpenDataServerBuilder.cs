@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.OData.Formatter;
 
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Application.Account.Identity;
+using Undersoft.SDK.Security.Identity;
 
 namespace Undersoft.SDK.Service.Application.DataServer;
 
@@ -176,25 +177,25 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
         if (actionSetAdded)
             return;
 
-        odataBuilder.EntityType<AccountIdentity>().Action("SignIn")
+        odataBuilder.EntityType<Authorization>().Action("SignIn")
             .Returns<string>()
-            .Parameter<AccountIdentityCredentials>("AccountIdentityCredentials");
+            .Parameter<Authorization>("Authorization");
 
-        odataBuilder.EntityType<AccountIdentity>().Action("SignUp")
+        odataBuilder.EntityType<Authorization>().Action("SignUp")
             .Returns<string>()
-            .Parameter<AccountIdentityCredentials>("AccountIdentityCredentials");
+            .Parameter<Authorization>("Authorization");
 
-        odataBuilder.EntityType<AccountIdentity>().Action("SignOut")
+        odataBuilder.EntityType<Authorization>().Action("SignOut")
             .Returns<string>()
-            .Parameter<AccountIdentityCredentials>("AccountIdentityCredentials");
+            .Parameter<Authorization>("Authorization");
 
-        odataBuilder.EntityType<AccountIdentity>().Action("ResetPassword")
+        odataBuilder.EntityType<Authorization>().Action("ResetPassword")
             .Returns<string>()
-            .Parameter<AccountIdentityCredentials>("AccountIdentityCredentials");
+            .Parameter<Authorization>("Authorization");
 
-        odataBuilder.EntityType<AccountIdentity>().Action("CompleteRegistration")
+        odataBuilder.EntityType<Authorization>().Action("CompleteRegistration")
             .Returns<string>()
-            .Parameter<AccountIdentityCredentials>("AccountIdentityCredentials");
+            .Parameter<Authorization>("Authorization");
 
         actionSetAdded = true;
     }

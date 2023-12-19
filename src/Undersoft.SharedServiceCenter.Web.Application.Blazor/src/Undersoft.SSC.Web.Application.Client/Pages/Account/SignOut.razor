@@ -1,0 +1,15 @@
+﻿@page "/Account/SignOut"
+
+@inject IRemoteRepository<IDataStore, Authorization> accountsRepository
+@inject NavigationManager navigationManager
+
+@using Undersoft.SSC.Web.Application.Client
+
+<text>Sign out...</text>
+
+@code{
+    protected async override Task OnInitializedAsync()
+    {
+        navigationManager.NavigateTo("");
+    }
+}

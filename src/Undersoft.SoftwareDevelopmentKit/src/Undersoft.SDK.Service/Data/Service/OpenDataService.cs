@@ -14,6 +14,8 @@ namespace Undersoft.SDK.Service.Data.Service
 
     public partial class OpenDataService : DataServiceContext
     {
+        private string _securityToken;
+
         public OpenDataService(Uri serviceUri) : base(serviceUri)
         {
             MergeOption = MergeOption.AppendOnly;
@@ -27,6 +29,12 @@ namespace Undersoft.SDK.Service.Data.Service
             SaveChangesDefaultOptions = SaveChangesOptions.BatchWithSingleChangeset;
             ResolveName = (t) => this.GetMappedName(t);
             ResolveType = (n) => this.GetMappedType(n);
+            SendingRequest2 += RequestAuthorization;
+        }
+
+        private void RequestAuthorization(object sender, SendingRequest2EventArgs e)
+        {
+            e.RequestMessage.SetHeader("Authorization", "Bearer " + _securityToken);
         }
 
         public void CreateServiceModel()

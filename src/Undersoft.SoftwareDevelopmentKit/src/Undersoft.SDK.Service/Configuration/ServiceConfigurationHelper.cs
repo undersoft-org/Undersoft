@@ -18,36 +18,20 @@ public static class ServiceConfigurationHelper
         options = options ?? new ConfigurationOptions();
         options.EnvironmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-        if (options.BasePath == null)
-        {
-            options.BasePath = Directory.GetCurrentDirectory();
-        }
+        if (options.BasePath == null)        
+            options.BasePath = Directory.GetCurrentDirectory();        
+       
+        string suffix = ".json";
+        if (!(options.EnvironmentName == null))
+            suffix = $".{options.EnvironmentName}.json";
 
-        IConfigurationBuilder builder = new ConfigurationBuilder()
-            .SetBasePath(options.BasePath)
-            .AddJsonFile($"{options.GeneralFileName}.json", optional: true, reloadOnChange: true);
+        IConfigurationBuilder builder = new ConfigurationBuilder().SetBasePath(options.BasePath)
+        .AddJsonFile($"{options.GeneralFileName}{suffix}", optional: true, reloadOnChange: true);
+
         if (options.OptionalFileNames != null && options.OptionalFileNames.Length > 0)
             options.OptionalFileNames.ForEach(
-                s => builder.AddJsonFile($"{s}.json", optional: true, reloadOnChange: true)
+               optionalName => builder.AddJsonFile($"{optionalName}{suffix}", optional: true, reloadOnChange: true)
             );
-
-        if (!(options.EnvironmentName == null))
-        {
-            builder = builder.AddJsonFile(
-                $"{options.GeneralFileName}.{options.EnvironmentName}.json",
-                optional: true,
-                reloadOnChange: true
-            );
-            if (options.OptionalFileNames != null && options.OptionalFileNames.Length > 0)
-                options.OptionalFileNames.ForEach(
-                    s =>
-                        builder.AddJsonFile(
-                            $"{s}.{options.EnvironmentName}.json",
-                            optional: true,
-                            reloadOnChange: true
-                        )
-                );
-        }
 
         //if (options.EnvironmentName == "Development")
         //{

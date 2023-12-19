@@ -162,8 +162,6 @@ namespace Undersoft.SDK.Service
         public static IServiceProvider BuildInternalProvider(bool withPropertyInjection = false)
         {
             var provider = GetRegistry().BuildServiceProviderFromFactory<IServiceCollection>();
-            if(withPropertyInjection)
-                provider = provider.AddPropertyInjection();
             SetProvider(provider);
             return provider;
         }

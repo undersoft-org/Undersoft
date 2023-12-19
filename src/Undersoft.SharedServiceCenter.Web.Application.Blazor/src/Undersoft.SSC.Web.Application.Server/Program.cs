@@ -1,4 +1,3 @@
-using NLog.Web;
 using Undersoft.SDK.Logging;
 using Undersoft.SDK.Service.Configuration;
 
@@ -27,12 +26,10 @@ public class Program
             .UseConfiguration(ServiceConfigurationHelper.BuildConfiguration())
             .UseKestrel()
             .UseStartup<Startup>()
-            .UseNLog()
             .Build();
 
         return _webapi;
     }
-
     public static void Launch()
     {
         try

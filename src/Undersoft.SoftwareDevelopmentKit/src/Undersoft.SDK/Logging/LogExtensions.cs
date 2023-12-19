@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
     using Undersoft.SDK.Uniques;
-    using NLog;
+    using Serilog.Events;
 
     public static partial class Log
     {
@@ -18,7 +18,7 @@
 
                 var _log = new Starlog()
                 {
-                    Level = LogLevel.Error,
+                    Level = LogEventLevel.Error,
                     Group = typeof(T).Name.ToUpper().Replace("LOG", ""),                    
                     Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
                     State = t,
@@ -37,7 +37,7 @@
 
                 var _log = new Starlog()
                 {
-                    Level = LogLevel.Fatal,
+                    Level = LogEventLevel.Fatal,
                     Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
                     Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
                     State = t,
@@ -57,7 +57,7 @@
 
                 var _log = new Starlog()
                 {
-                    Level = LogLevel.Info,
+                    Level = LogEventLevel.Information,
                     Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
                     Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
                     State = t,
@@ -77,7 +77,7 @@
 
                 var _log = new Starlog()
                 {
-                    Level = LogLevel.Error,
+                    Level = LogEventLevel.Error,
                     Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
                     Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
                     State = t,
@@ -95,7 +95,7 @@
 
             var _log = new Starlog()
             {
-                Level = LogLevel.Info,
+                Level = LogEventLevel.Information,
                 Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
                 
                 Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
@@ -113,7 +113,7 @@
 
             var _log = new Starlog()
             {
-                Level = LogLevel.Warn,
+                Level = LogEventLevel.Warning,
                 Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
                 
                 Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
@@ -131,7 +131,7 @@
 
             var _log = new Starlog()
             {
-                Level = LogLevel.Info,
+                Level = LogEventLevel.Information,
                 Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
                 
                 Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
@@ -148,7 +148,7 @@
             t.DataObject = data;
 
             var _log = new Starlog() { 
-                Level = LogLevel.Fatal, 
+                Level = LogEventLevel.Fatal, 
                 Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
                 
                 Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
@@ -167,7 +167,7 @@
 
                var _log = new Starlog()
                {
-                   Level = LogLevel.Error,
+                   Level = LogEventLevel.Error,
                    Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
 
                    Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
@@ -190,7 +190,7 @@
 
             var _log = new Starlog()
             {
-                Level = LogLevel.Fatal,
+                Level = LogEventLevel.Fatal,
                 Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
                 
                 Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
@@ -212,7 +212,7 @@
 
             var _log = new Starlog()
             {
-                Level = LogLevel.Info,
+                Level = LogEventLevel.Information,
                 Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
                 
                 Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
@@ -230,7 +230,7 @@
 
             var _log = new Starlog()
             {
-                Level = LogLevel.Error,
+                Level = LogEventLevel.Error,
                 Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
                 
                 Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
@@ -252,7 +252,7 @@
 
             var _log = new Starlog()
             {
-                Level = LogLevel.Info,
+                Level = LogEventLevel.Information,
                 Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
                 
                 Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
@@ -270,7 +270,7 @@
 
             var _log = new Starlog()
             {
-                Level = LogLevel.Warn,
+                Level = LogEventLevel.Warning,
                 Group    = typeof(T).Name.ToUpper().Replace("LOG", ""),
                 
                 Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
@@ -288,7 +288,7 @@
 
             var _log = new Starlog()
             {
-                Level = LogLevel.Info,
+                Level = LogEventLevel.Information,
                 Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
                 
                 Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
@@ -308,7 +308,7 @@
 
                 var _log = new Starlog()
                 {
-                    Level = LogLevel.Fatal,
+                    Level = LogEventLevel.Fatal,
                     Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
                     Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",                    
                     State = t,
@@ -338,7 +338,7 @@
 
         public int Id { get; } = (int)((((uint)Unique.NewId) << 1) >> 1);
 
-        public LogLevel Level { get; set; }
+        public LogEventLevel Level { get; set; }
 
         public ILogSate State { get; set; }
 

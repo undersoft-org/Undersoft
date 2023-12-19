@@ -38,10 +38,6 @@ public partial class ServiceSetup : IServiceSetup
     {
         manager = new ServiceManager(services);
         registry = manager.Registry;
-        AddMapper(new DataMapper());
-        AddCaching();
-        AddJsonSerializerDefaults();
-        AddSourceProviderConfiguration();
         registry.MergeServices();
     }
 
@@ -75,7 +71,7 @@ public partial class ServiceSetup : IServiceSetup
     public virtual IServiceSetup AddSourceProviderConfiguration()
     {
         registry.AddObject<ISourceProviderConfiguration>(new ServiceSourceProviderConfiguration());
-        
+
         return this;
     }
 
@@ -86,7 +82,7 @@ public partial class ServiceSetup : IServiceSetup
         newopts.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         newopts.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         newopts.NumberHandling = JsonNumberHandling.AllowReadingFromString;
-        newopts.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));        
+        newopts.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
 
         var fld = (
             typeof(JsonSerializerOptions).GetField(
@@ -126,6 +122,8 @@ public partial class ServiceSetup : IServiceSetup
             .GetValue<string>("HistogramAggregation")
             .ToLowerInvariant();
         var metricsExporter = config.GetValue<string>("UseMetricsExporter").ToLowerInvariant();
+
+        registry.AddSingleton<Instrumentation>();
 
         services
             .AddOpenTelemetry()
@@ -174,9 +172,7 @@ public partial class ServiceSetup : IServiceSetup
                         builder.AddOtlpExporter(otlpOptions =>
                         {
                             // Use IConfiguration directly for Otlp exporter source option.
-                            otlpOptions.Endpoint = new Uri(
-                                config.GetValue<string>("Otlp:Source")
-                            );
+                            otlpOptions.Endpoint = new Uri(config.GetValue<string>("Otlp:Source"));
                         });
                         break;
 
@@ -217,9 +213,7 @@ public partial class ServiceSetup : IServiceSetup
                         builder.AddOtlpExporter(otlpOptions =>
                         {
                             // Use IConfiguration directly for Otlp exporter source option.
-                            otlpOptions.Endpoint = new Uri(
-                                config.GetValue<string>("Otlp:Source")
-                            );
+                            otlpOptions.Endpoint = new Uri(config.GetValue<string>("Otlp:Source"));
                         });
                         break;
                     default:
@@ -291,20 +285,20 @@ public partial class ServiceSetup : IServiceSetup
                 .Where(t => t.FullName.Contains(client.Key))
                 .Select(t => t.UnderlyingSystemType)
                 .FirstOrDefault();
-            
+
             if (
                 (provider == ClientProvider.None)
                 || (connectionString == null)
                 || (contextType == null)
-            )            
-                continue;            
+            )
+                continue;
 
             string routePrefix = AddDataClientPrefix(contextType).Trim();
             if (!connectionString.EndsWith('/'))
-                connectionString += "/";            
+                connectionString += "/";
 
-            if (routePrefix.StartsWith('/'))            
-                routePrefix = routePrefix.Substring(1);            
+            if (routePrefix.StartsWith('/'))
+                routePrefix = routePrefix.Substring(1);
 
             routePrefix = routePrefix + "/" + provider.ToString().ToLower();
 
@@ -396,8 +390,7 @@ public partial class ServiceSetup : IServiceSetup
             Type storeOptionsType = typeof(DbContextOptions<>).MakeGenericType(storeDbType);
             Type storeRepoType = typeof(RepositorySource<>).MakeGenericType(storeDbType);
 
-            IRepositorySource storeSource = (IRepositorySource)
-                storeRepoType.New(repoSource);
+            IRepositorySource storeSource = (IRepositorySource)storeRepoType.New(repoSource);
 
             Type istoreRepoType = typeof(IRepositorySource<>).MakeGenericType(storeDbType);
             Type ipoolRepoType = typeof(IRepositoryContextPool<>).MakeGenericType(storeDbType);
@@ -433,18 +426,18 @@ public partial class ServiceSetup : IServiceSetup
     {
         Assemblies ??= assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
 
-        //AddMapper(new DataMapper());
+        AddMapper(new DataMapper());        
 
-        //AddCaching();
+        AddJsonSerializerDefaults();
 
-        //AddJsonSerializerDefaults();
+        AddSourceProviderConfiguration();
 
         AddRepositorySources(Assemblies);
 
         AddRepositoryClients(Assemblies);
 
         AddImplementations(Assemblies);
-       
+
         return this;
     }
 
@@ -461,6 +454,7 @@ public partial class ServiceSetup : IServiceSetup
         Type datacache = typeof(StoreCache<>).MakeGenericType(tstore);
 
         object cache = datacache.New(registry.GetObject<IDataCache>());
+
         registry.AddObject(idatacache, cache);
         registry.AddObject(datacache, cache);
 
@@ -499,7 +493,7 @@ public partial class ServiceSetup : IServiceSetup
         }
         else if (iface == typeof(IReportStore))
         {
-            return  StoreRoutes.ReportStore;
+            return StoreRoutes.ReportStore;
         }
         else if (iface == typeof(IDataStore))
         {

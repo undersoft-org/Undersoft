@@ -1,6 +1,6 @@
-﻿using Undersoft.SSC.Domain.Entities.Enums;
-using Undersoft.SSC.Web.Application.ViewModels;
+﻿using Undersoft.SSC.Web.Application.ViewModels;
 using Undersoft.SSC.Web.Contracts.Details;
+using Undersoft.SSC.Web.Enums;
 
 namespace Undersoft.SSC.Web.Appllication.ViewModels;
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Undersoft.SDK.Security.Identity;
 using Undersoft.SDK.Service.Data.Contract;
 
 namespace Undersoft.SDK.Service.Application.Account.Identity;
@@ -14,9 +15,9 @@ public class AccountIdentity : DataObject, IContract, IAccountIdentity<long>
 
     public IEnumerable<Claim> GetClaims() { return Claims.Select(c => c.Claim); }
 
-    public AccountIdentityCredentials Credentials { get; set; } = new AccountIdentityCredentials();
+    public ICredentials Credentials { get; set; } = new Credentials();
 
-    public AccountIdentityNotes Notes { get; set; } = new AccountIdentityNotes();
+    public AuthorizationNotes Notes { get; set; } = new AuthorizationNotes();
 
     public bool Authorized { get; set; }
 

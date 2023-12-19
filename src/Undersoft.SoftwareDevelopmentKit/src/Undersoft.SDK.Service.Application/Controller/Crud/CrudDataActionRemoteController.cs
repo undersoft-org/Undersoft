@@ -19,13 +19,13 @@ public abstract class CrudDataActionRemoteController<TStore, TDto, TModel, TKind
     where TStore : IDataServiceStore
 {
     protected readonly IServicer _servicer;
-    protected readonly AccountIdentityAction _kind;
+    protected readonly AuthorizationAction _kind;
 
     protected CrudDataActionRemoteController() { }
 
     protected CrudDataActionRemoteController(
         IServicer servicer,
-        AccountIdentityAction kind = AccountIdentityAction.None
+        AuthorizationAction kind = AuthorizationAction.None
     )
     {
         _servicer = servicer;

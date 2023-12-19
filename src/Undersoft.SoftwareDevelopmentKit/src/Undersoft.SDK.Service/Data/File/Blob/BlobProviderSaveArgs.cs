@@ -4,7 +4,6 @@ using System.IO;
 using Undersoft.SDK.Logging;
 using System.Threading;
 using JetBrains.Annotations;
-using NLog.Fluent;
 using Undersoft.SDK.Service.Data.File.Blob.Container;
 
 namespace Undersoft.SDK.Service.Data.File.Blob

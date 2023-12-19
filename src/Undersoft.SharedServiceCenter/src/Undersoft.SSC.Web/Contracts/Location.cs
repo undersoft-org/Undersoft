@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
-using Undersoft.SSC.Domain.Entities.Enums;
 using Undersoft.SSC.Web.Contracts.Locations;
+using Undersoft.SSC.Web.Enums;
 
 namespace Undersoft.SSC.Web.Contracts;
 

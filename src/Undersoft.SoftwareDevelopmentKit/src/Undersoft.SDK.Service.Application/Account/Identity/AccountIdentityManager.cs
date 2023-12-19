@@ -15,6 +15,7 @@ using System.IdentityModel.Claims;
 using System.Security;
 using System.Security.Claims;
 using Claim = System.Security.Claims.Claim;
+using Undersoft.SDK.Security.Identity;
 
 namespace Undersoft.SDK.Service.Application.Account.Identity;
 
@@ -55,13 +56,12 @@ public class AccountIdentityManager : TypedRegistry<IAccountIdentity<long>>, IAc
             token = Token.Generate(account.GetClaims());
         return token;
     }
-    public string GetToken(IAccountIdentity<long> account)
+    public string GetToken(IAuthorization auth)
     {
-        if (account != null)
-            return Token.Generate(account.GetClaims());
-        return null;
+        if (!TryGetByEmail(auth.Credentials.Email, out IAccountIdentity<long> account))
+            return null;
+        return Token.Generate(account.GetClaims());        
     }
-
 
     public async Task<bool> CheckToken(string token)
     {
@@ -232,7 +232,7 @@ public class AccountIdentityManager : TypedRegistry<IAccountIdentity<long>>, IAc
     {
         if (account.Info != null)
         {
-            account.Credentials.MapUser(account.Info);
+            account.Credentials.PatchFrom(account.Info);
             account.Roles = (await User.GetRolesAsync(account.Info))
                 .Select(async r => await Role.FindByNameAsync(r))
                 .Select(t => t.Result)
