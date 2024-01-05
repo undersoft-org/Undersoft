@@ -4,7 +4,7 @@ using Undersoft.SDK.Service.Application.Controller.Open;
 using Undersoft.SDK.Service.Application.Controller.Stream;
 using Undersoft.SSC.Domain.Entities;
 
-namespace Undersoft.SSC.Web.Controllers
+namespace Undersoft.SSC.Web.Service.Controllers
 {
     [AllowAnonymous]
     public class ResourceController
@@ -14,7 +14,7 @@ namespace Undersoft.SSC.Web.Controllers
     }
 }
 
-namespace Undersoft.SSC.Web.Controllers
+namespace Undersoft.SSC.Web.Service.Controllers
 {
     public class ResourcesController
         : CrudDataController<long, IEntryStore, IReportStore, Resource, Contracts.Resource>
@@ -23,11 +23,10 @@ namespace Undersoft.SSC.Web.Controllers
     }
 }
 
-namespace Undersoft.SSC.Web.Controllers
+namespace Undersoft.SSC.Web.Service.Controllers
 {
     public class ResourceStreamController
-        : StreamDataController<long, IEntryStore, IReportStore, Resource, Contracts.Resource>,
-            IStreamDataController<Contracts.Resource>
+        : StreamDataController<long, IEntryStore, IReportStore, Resource, Contracts.Resource>
     {
         public ResourceStreamController() : base() { }
     }

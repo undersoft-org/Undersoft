@@ -32,10 +32,10 @@ public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore,
 
     public void Load(object origin) { Load(origin, dsContext); }
 
-    public void Load<T>(IEnumerable<T> origins, OpenDataService context) where T : class
-    { origins.DoEach((o) => Load(o, context)); }
+    public void Load<T>(IEnumerable<T> origins, OpenDataServiceContext context) where T : class
+    { origins.ForEach((o) => Load(o, context)); }
 
-    public void Load(object origin, OpenDataService context)
+    public void Load(object origin, OpenDataServiceContext context)
     {
         IInnerProxy _entity = (IInnerProxy)origin;
         int rubricId = RemoteMember.RubricId;
@@ -74,7 +74,7 @@ public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore,
 
     public async Task LoadAsync(object origin) { await Task.Run(() => Load(origin, dsContext), Cancellation); }
 
-    public async ValueTask LoadAsync(object origin, OpenDataService context, CancellationToken token)
+    public async ValueTask LoadAsync(object origin, OpenDataServiceContext context, CancellationToken token)
     { await Task.Run(() => Load(origin, context), token); }
 
     public override Task<int> Save(bool asTransaction, CancellationToken token = default)

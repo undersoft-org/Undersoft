@@ -14,24 +14,9 @@
     {
         #region Methods
 
-        public static ISeries<TResult> DoEach<TItem, TResult>(this IEnumerable<TItem> items, Func<TItem, TResult> action)
+        public static IEnumerable<TResult> DoEach<TItem, TResult>(this IEnumerable<TItem> items, Func<TItem, TResult> action)
         {
-            var set = new Registry<TResult>(true);
-            foreach (var item in items)
-            {
-                if (typeof(TResult).IsAssignableTo(typeof(IUnique)))
-                    set.Add(action(item));
-                else
-                    set.Add(Unique.NewId, action(item));
-            }
-            return set;
-        }
-        public static void DoEach<TItem>(this IEnumerable<TItem> items, Action<TItem> action)
-        {
-            foreach (var item in items)
-            {
-                action(item);
-            }
+            return items.ForEach(action).Commit();
         }
 
         public static IEnumerable<TResult> ForOnly<TItem, TResult>(this IEnumerable<TItem> items, Func<TItem, bool> condition, Func<TItem, TResult> action)
@@ -144,7 +129,7 @@
         }
 
         public static async IAsyncEnumerable<TResult> ForEachAsync<TItem, TResult>(this IEnumerable<TItem> items, Func<TItem, int, TResult> action)
-        {   
+        {
             int i = 0;
             foreach (var item in items)
             {
@@ -257,11 +242,14 @@
             return items.ToArray();
         }
 
-        public static TItem[] Commit<TItem>(this IEnumerable<TItem> items, Action actionAfterCommit)
+        public static TItem[] Commit<TItem>(this IEnumerable<TItem> items, Action<TItem[]> actionAfterCommit)
         {
-            var array = items.ToArray();
-            actionAfterCommit.Invoke();
-            return array;
+            using (TransactionScope ts = CreateLockTransaction())
+            {
+                var array = items.ToArray();
+                actionAfterCommit.Invoke(array);
+                return array;
+            }
         }
 
         public static ObservableCollection<TItem> ToObservableCollection<TItem>(this IEnumerable<TItem> items)

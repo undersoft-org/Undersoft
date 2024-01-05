@@ -1,8 +1,17 @@
-﻿namespace Undersoft.SDK.Invoking.Work
+﻿using Undersoft.SDK.Uniques;
+
+namespace Undersoft.SDK.Invoking.Work
 {
-    public class Workflow<TCase> : Case where TCase : class
+    public class Workflow<TCase> : Workflow where TCase : class
     {
-        public Workflow() : base(new WorkAspects(typeof(TCase).FullName)) { }
+        public Workflow() : base(typeof(TCase).FullName) { }
+    }
+
+    public class Workflow : Case
+    {
+        public Workflow() : this(Unique.NewId.ToString()) { }
+
+        public Workflow(string name) : base(new WorkAspects(name)) { }
 
         public WorkAspect<TAspect> Aspect<TAspect>() where TAspect : class
         {

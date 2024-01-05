@@ -132,11 +132,11 @@ public class RepositoryManager : Catalog<IDataStoreContext>, IDisposable, IAsync
         return (IRepositoryClient)repotype.New(client);
     }
     public static IRepositoryClient<TContext> CreateClient<TContext>(IRepositoryClient<TContext> client)
-        where TContext : OpenDataService
+        where TContext : OpenDataServiceContext
     {
         return new RepositoryClient<TContext>(client);
     }
-    public static IRepositoryClient<TContext> CreateClient<TContext>(Uri serviceRoot) where TContext : OpenDataService
+    public static IRepositoryClient<TContext> CreateClient<TContext>(Uri serviceRoot) where TContext : OpenDataServiceContext
     {
         return new RepositoryClient<TContext>(serviceRoot);
     }
@@ -153,7 +153,7 @@ public class RepositoryManager : Catalog<IDataStoreContext>, IDisposable, IAsync
         return client;
     }
 
-    public static bool TryGetClient<TContext>(out IRepositoryClient<TContext> source) where TContext : OpenDataService
+    public static bool TryGetClient<TContext>(out IRepositoryClient<TContext> source) where TContext : OpenDataServiceContext
     {
         return Clients.TryGet(out source);
     }

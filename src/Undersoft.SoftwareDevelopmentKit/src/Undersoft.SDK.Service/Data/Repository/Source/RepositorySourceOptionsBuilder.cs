@@ -7,10 +7,22 @@ namespace Undersoft.SDK.Service.Data.Repository.Source
 {
     public static class RepositorySourceOptionsBuilder
     {
+        public static IServiceRegistry AddEntityFrameworkSourceProvider<TSourceProvider>(SourceProvider provider) where TSourceProvider : class, ISourceProviderConfiguration
+        {
+            
+            var sourceConfiguration = typeof(TSourceProvider).New<TSourceProvider>();            
+            sourceConfiguration.AddSourceProvider(provider);
+            var registry = ServiceManager.GetRegistry();
+            registry.AddObject<ISourceProviderConfiguration>(sourceConfiguration);
+            return registry;
+        }
+
         public static IServiceRegistry AddEntityFrameworkSourceProvider(SourceProvider provider)
         {
             var registry = ServiceManager.GetRegistry();
-            registry.GetObject<ISourceProviderConfiguration>().AddSourceProvider(provider);            
+            var sourceConfiguration = registry.GetObject<ISourceProviderConfiguration>();           
+            sourceConfiguration.AddSourceProvider(provider);
+
             return registry;
         }
 

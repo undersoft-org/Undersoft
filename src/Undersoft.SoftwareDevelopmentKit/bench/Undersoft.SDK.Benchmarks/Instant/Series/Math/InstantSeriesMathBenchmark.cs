@@ -23,8 +23,7 @@ namespace Undersoft.SDK.Benchmarks.Instant.Series.Math
 
         public InstantSeriesMathBenchmark()
         {
-            factory = new InstantSeriesCreator(
-                typeof(InstantSeriesMathMockModel),
+            factory = new InstantProxiesCreator<InstantSeriesMathMockModel>(                
                 "InstantSeriesCreator_InstantSeriesMath_Test"
             );
 

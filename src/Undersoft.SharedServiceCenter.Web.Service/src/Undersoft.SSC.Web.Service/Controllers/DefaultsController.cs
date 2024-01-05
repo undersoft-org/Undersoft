@@ -4,31 +4,21 @@ using Undersoft.SDK.Service.Application.Controller.Open;
 using Undersoft.SDK.Service.Application.Controller.Stream;
 using Undersoft.SSC.Domain.Entities;
 
-namespace Undersoft.SSC.Web.Controllers
+namespace Undersoft.SSC.Web.Service.Controllers
 {
     [AllowAnonymous]
     public class DefaultDataController
-        : OpenDataController<long, IEntryStore, IReportStore, Default, Contracts.Default>
+        : OpenDataController<long, IEntryStore, IReportStore, Default, Web.Contracts.Default>
     {
         public DefaultDataController(IServicer ultimatr) : base(ultimatr) { }
     }
 }
 
-namespace Undersoft.SSC.Web.Controllers
+namespace Undersoft.SSC.Web.Service.Controllers
 {
     public class DefaultsController
-        : CrudDataController<long, IEntryStore, IReportStore, Default, Contracts.Default>
+        : CrudDataController<long, IEntryStore, IReportStore, Default, Web.Contracts.Default>
     {
         public DefaultsController(IServicer ultimatr) : base(ultimatr) { }
-    }
-}
-
-namespace Undersoft.SSC.Web.Controllers
-{
-    public class DefaultStreamController
-        : StreamDataController<long, IEntryStore, IReportStore, Default, Contracts.Default>,
-            IStreamDataController<Contracts.Default>
-    {
-        public DefaultStreamController() : base() { }
     }
 }

@@ -2,7 +2,7 @@ using System.Runtime.Serialization;
 using Undersoft.SDK.Serialization;
 using Undersoft.SDK.Service.Data.Contract;
 using Undersoft.SDK.Service.Data.Object.Detail;
-using Undersoft.SSC.Web.Enums;
+using Undersoft.SSC.Domain.Entities.Enums;
 
 namespace Undersoft.SSC.Web.Contracts;
 

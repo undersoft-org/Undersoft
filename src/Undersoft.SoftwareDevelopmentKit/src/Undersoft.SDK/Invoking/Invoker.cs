@@ -15,42 +15,36 @@ namespace Undersoft.SDK.Invoking
 
     public class Invoker<T> : Invoker
     {
-        public Invoker() : base(typeof(T))
-        {
-        }
-        public Invoker(params object[] constructorParams) : base(typeof(T), constructorParams)
-        {
-        }
+        public Invoker() : base(typeof(T)) { }
+
+        public Invoker(params object[] constructorParams) : base(typeof(T), constructorParams) { }
+
         public Invoker(IInvoke invoke) : base(invoke.TypeName, invoke.MethodName) { }
-        public Invoker(Func<T, string> method) : base(typeof(T), method(typeof(T).New<T>()))
-        {
-        }
-        public Invoker(Func<T, string> method, params object[] constructorParams) : base(typeof(T), method(typeof(T).New<T>(constructorParams)), constructorParams)
-        {
 
-        }
-        public Invoker(Func<T, string> method, params Type[] parameterTypes) : base(typeof(T), method(typeof(T).New<T>()), parameterTypes)
-        {
+        public Invoker(Func<T, string> method) : base(typeof(T), method(typeof(T).New<T>())) { }
 
-        }
-        public Invoker(T targetObject, Func<T, string> method) : base(targetObject, method(targetObject))
-        {
-        }
-        public Invoker(Type[] parameterTypes, params object[] constructorParams) : base(typeof(T), parameterTypes, constructorParams)
-        {
-        }
-        public Invoker(string methodName) : base(typeof(T), methodName)
-        {
-        }
-        public Invoker(string methodName, params Type[] parameterTypes) : base(typeof(T), methodName, parameterTypes)
-        {
-        }
-        public Invoker(string methodName, Type[] parameterTypes, params object[] constructorParams) : base(typeof(T), methodName, parameterTypes, constructorParams)
-        {
-        }
-        public Invoker(string methodName, params object[] constructorParams) : base(typeof(T), methodName, constructorParams)
-        {
-        }
+        public Invoker(Func<T, string> method, params object[] constructorParams)
+            : base(typeof(T), method(typeof(T).New<T>(constructorParams)), constructorParams) { }
+
+        public Invoker(Func<T, string> method, params Type[] parameterTypes)
+            : base(typeof(T), method(typeof(T).New<T>()), parameterTypes) { }
+
+        public Invoker(T targetObject, Func<T, string> method)
+            : base(targetObject, method(targetObject)) { }
+
+        public Invoker(Type[] parameterTypes, params object[] constructorParams)
+            : base(typeof(T), parameterTypes, constructorParams) { }
+
+        public Invoker(string methodName) : base(typeof(T), methodName) { }
+
+        public Invoker(string methodName, params Type[] parameterTypes)
+            : base(typeof(T), methodName, parameterTypes) { }
+
+        public Invoker(string methodName, Type[] parameterTypes, params object[] constructorParams)
+            : base(typeof(T), methodName, parameterTypes, constructorParams) { }
+
+        public Invoker(string methodName, params object[] constructorParams)
+            : base(typeof(T), methodName, constructorParams) { }
     }
 
     public class Invoker : IInvoker, IInvoke
@@ -58,21 +52,43 @@ namespace Undersoft.SDK.Invoking
         private Uscn serialcode;
         private event InvokerDelegate routine;
 
-        public Invoker()
-        {
-        }
-        public Invoker(Type targetType) : this(targetType.GetMethods().FirstOrDefault(m => m.IsPublic)) { }
+        public Invoker() { }
+
+        public Invoker(Type targetType)
+            : this(targetType.GetMethods().FirstOrDefault(m => m.IsPublic)) { }
+
         public Invoker(Type targetType, Type[] parameterTypes)
-            : this(targetType.GetMethods().Where(m => m.IsPublic && m.GetParameters().All(p => parameterTypes.Contains(p.ParameterType))).FirstOrDefault()) { }
-        public Invoker(Type targetType, Type[] parameterTypes, params object[] constructorParameters)
-            : this(targetType.GetMethods()
-                .FirstOrDefault(m => m.IsPublic && m.GetParameters().
-                    All(p => parameterTypes
-                        .Contains(p.ParameterType))),
-                constructorParameters)
-        { }
+            : this(
+                targetType
+                    .GetMethods()
+                    .Where(
+                        m =>
+                            m.IsPublic
+                            && m.GetParameters().All(p => parameterTypes.Contains(p.ParameterType))
+                    )
+                    .FirstOrDefault()
+            ) { }
+
+        public Invoker(
+            Type targetType,
+            Type[] parameterTypes,
+            params object[] constructorParameters
+        )
+            : this(
+                targetType
+                    .GetMethods()
+                    .FirstOrDefault(
+                        m =>
+                            m.IsPublic
+                            && m.GetParameters().All(p => parameterTypes.Contains(p.ParameterType))
+                    ),
+                constructorParameters
+            ) { }
+
         public Invoker(Type targetType, params object[] constructorParameters)
-            : this(targetType.GetMethods().FirstOrDefault(m => m.IsPublic), constructorParameters) { }
+            : this(targetType.GetMethods().FirstOrDefault(m => m.IsPublic), constructorParameters)
+        { }
+
         public Invoker(Delegate targetMethod)
         {
             TargetObject = targetMethod.Target;
@@ -84,34 +100,55 @@ namespace Undersoft.SDK.Invoking
             Parameters = m.GetParameters();
             createUniqueKey();
         }
+
         public Invoker(object targetObject, string methodName)
             : this(targetObject, methodName, null) { }
+
         public Invoker(object targetObject, string methodName, params Type[] parameterTypes)
         {
             TargetObject = targetObject;
             Type t = TargetObject.GetType();
 
-            MethodInfo m = parameterTypes != null ? t.GetMethod(methodName, parameterTypes) : t.GetMethod(methodName);
+            MethodInfo m =
+                parameterTypes != null
+                    ? t.GetMethod(methodName, parameterTypes)
+                    : t.GetMethod(methodName);
 
-            NumberOfArguments = m.GetParameters().Length;
+            NumberOfArguments = parameterTypes != null ? m.GetParameters().Length : 0;
             Info = m;
-            Parameters = m.GetParameters();
+            Parameters = parameterTypes != null ? m.GetParameters() : null;
             createUniqueKey();
         }
+
         public Invoker(Type targetType, string methodName)
             : this(Instances.New(targetType), methodName, null) { }
+
         public Invoker(Type targetType, string methodName, params Type[] parameterTypes)
             : this(Instances.New(targetType), methodName, parameterTypes) { }
+
         public Invoker(Type targetType, string methodName, params object[] constructorParams)
             : this(Instances.New(targetType, constructorParams), methodName) { }
-        public Invoker(Type targetType, string methodName, Type[] parameterTypes, params object[] constructorParams)
-            : this(Instances.New(targetType, constructorParams), methodName, parameterTypes) { }
+
+        public Invoker(
+            Type targetType,
+            string methodName,
+            Type[] parameterTypes,
+            params object[] constructorParams
+        ) : this(Instances.New(targetType, constructorParams), methodName, parameterTypes) { }
+
         public Invoker(string targetName, string methodName)
             : this(Instances.New(targetName), methodName, null) { }
+
         public Invoker(string targetName, string methodName, params Type[] parameterTypes)
             : this(Instances.New(targetName), methodName, parameterTypes) { }
-        public Invoker(string targetName, string methodName, Type[] parameterTypes, params object[] constructorParams)
-            : this(Instances.New(targetName, constructorParams), methodName, parameterTypes) { }
+
+        public Invoker(
+            string targetName,
+            string methodName,
+            Type[] parameterTypes,
+            params object[] constructorParams
+        ) : this(Instances.New(targetName, constructorParams), methodName, parameterTypes) { }
+
         public Invoker(object targetObject, MethodInfo methodInvokeInfo)
         {
             TargetObject = targetObject;
@@ -122,14 +159,12 @@ namespace Undersoft.SDK.Invoking
             Parameters = m.GetParameters();
             createUniqueKey();
         }
+
         public Invoker(MethodInfo methodInvokeInfo)
-            : this(methodInvokeInfo.DeclaringType.New(), methodInvokeInfo)
-        {
-        }
+            : this(methodInvokeInfo.DeclaringType.New(), methodInvokeInfo) { }
+
         public Invoker(MethodInfo methodInvokeInfo, params object[] constructorParams)
-            : this(methodInvokeInfo.DeclaringType.New(constructorParams), methodInvokeInfo)
-        {
-        }
+            : this(methodInvokeInfo.DeclaringType.New(constructorParams), methodInvokeInfo) { }
 
         public string Name { get; set; }
 
@@ -203,18 +238,27 @@ namespace Undersoft.SDK.Invoking
             set => serialcode.CodeNo = value;
         }
 
-        public object[] ValueArray { get => ParameterValues; set => ParameterValues = value; }
+        public object[] ValueArray
+        {
+            get => ParameterValues;
+            set => ParameterValues = value;
+        }
 
-        public Uscn SerialCode { get => serialcode; set => serialcode = value; }       
-        
+        public Uscn SerialCode
+        {
+            get => serialcode;
+            set => serialcode = value;
+        }
+
         public string TypeName { get; set; }
 
         public virtual Task Publish(params object[] parameters)
         {
             try
             {
-
-                return Task.Run(() => (Method ?? invoking(Info)).DynamicInvoke(TargetObject, parameters));
+                return Task.Run(
+                    () => (Method ?? invoking(Info)).DynamicInvoke(TargetObject, parameters)
+                );
             }
             catch (Exception e)
             {
@@ -251,6 +295,7 @@ namespace Undersoft.SDK.Invoking
                 throw new TargetInvocationException(e);
             }
         }
+
         public virtual object Invoke(bool withTarget, object target, params object[] parameters)
         {
             try
@@ -279,6 +324,7 @@ namespace Undersoft.SDK.Invoking
                 throw new TargetInvocationException(e);
             }
         }
+
         public virtual T Execute<T>(bool withTarget, object target, params object[] parameters)
         {
             try
@@ -307,7 +353,12 @@ namespace Undersoft.SDK.Invoking
                 throw new TargetInvocationException(e);
             }
         }
-        public virtual async Task<object> InvokeAsync(bool withTarget, object target, params object[] parameters)
+
+        public virtual async Task<object> InvokeAsync(
+            bool withTarget,
+            object target,
+            params object[] parameters
+        )
         {
             try
             {
@@ -335,7 +386,12 @@ namespace Undersoft.SDK.Invoking
                 throw new TargetInvocationException(e);
             }
         }
-        public virtual async Task<T> InvokeAsync<T>(bool withTarget, object target, params object[] parameters)
+
+        public virtual async Task<T> InvokeAsync<T>(
+            bool withTarget,
+            object target,
+            params object[] parameters
+        )
         {
             try
             {
@@ -374,6 +430,7 @@ namespace Undersoft.SDK.Invoking
             var key = qualifiedName.UniqueKey64();
             return key;
         }
+
         private static long getUniqueSeed(MethodInfo info)
         {
             var name = getFullName(info);
@@ -383,26 +440,26 @@ namespace Undersoft.SDK.Invoking
 
         private string getFullName()
         {
-            return $"{Info.DeclaringType.FullName}." +
-                   $"{Info.Name}";
+            return $"{Info.DeclaringType.FullName}." + $"{Info.Name}";
         }
+
         private static string getFullName(MethodInfo info)
         {
-            return $"{info.DeclaringType.FullName}." +
-                   $"{info.Name}";
+            return $"{info.DeclaringType.FullName}." + $"{info.Name}";
         }
 
         private string getQualifiedName()
         {
-            return $"{Info.DeclaringType.FullName}." +
-                   $"{Info.Name}" +
-                   $"{new String(Parameters.SelectMany(p => "." + p.ParameterType.Name).ToArray())}";
+            return $"{Info.DeclaringType.FullName}."
+                + $"{Info.Name}"
+                + $"{new String(Parameters.SelectMany(p => "." + p.ParameterType.Name).ToArray())}";
         }
+
         private static string getQualifiedName(MethodInfo info, ParameterInfo[] parameters)
         {
-            return $"{info.DeclaringType.FullName}." +
-                   $"{info.Name}" +
-                   $"{new String(parameters.SelectMany(p => "." + p.ParameterType.Name).ToArray())}";
+            return $"{info.DeclaringType.FullName}."
+                + $"{info.Name}"
+                + $"{new String(parameters.SelectMany(p => "." + p.ParameterType.Name).ToArray())}";
         }
 
         public byte[] GetBytes()
@@ -427,53 +484,75 @@ namespace Undersoft.SDK.Invoking
 
         public static string GetName(Type type, string methodName, params Type[] parameterTypes)
         {
-            MethodInfo m = parameterTypes != null ? type.GetMethod(methodName, parameterTypes) : type.GetMethod(methodName);
+            MethodInfo m =
+                parameterTypes != null
+                    ? type.GetMethod(methodName, parameterTypes)
+                    : type.GetMethod(methodName);
             return getFullName(m);
         }
+
         public static string GetName(Type type, params Type[] parameterTypes)
         {
             if (parameterTypes != null && parameterTypes.Any())
             {
-                return getFullName(type.GetMethods()
-                     .FirstOrDefault(m => m.IsPublic && m.GetParameters().
-                         All(p => parameterTypes
-                             .Contains(p.ParameterType))));
+                return getFullName(
+                    type.GetMethods()
+                        .FirstOrDefault(
+                            m =>
+                                m.IsPublic
+                                && m.GetParameters()
+                                    .All(p => parameterTypes.Contains(p.ParameterType))
+                        )
+                );
             }
             else
             {
-                return getFullName(type.GetMethods()
-                     .FirstOrDefault(m => m.IsPublic));
+                return getFullName(type.GetMethods().FirstOrDefault(m => m.IsPublic));
             }
         }
+
         public static string GetName<T>(string methodName, params Type[] parameterTypes)
         {
             return GetName(typeof(T), methodName, parameterTypes);
         }
+
         public static string GetName<T>(params Type[] parameterTypes)
         {
             return GetName(typeof(T), parameterTypes);
         }
 
-        public static string GetQualifiedName(Type type, string methodName, params Type[] parameterTypes)
+        public static string GetQualifiedName(
+            Type type,
+            string methodName,
+            params Type[] parameterTypes
+        )
         {
             var m = type.GetMethods()
-                 .FirstOrDefault(m => m.GetParameters().
-                     All(p => parameterTypes
-                         .Contains(p.ParameterType)) && m.IsPublic && m.Name == methodName);
+                .FirstOrDefault(
+                    m =>
+                        m.GetParameters().All(p => parameterTypes.Contains(p.ParameterType))
+                        && m.IsPublic
+                        && m.Name == methodName
+                );
             return getQualifiedName(m, m.GetParameters());
         }
+
         public static string GetQualifiedName(Type type, params Type[] parameterTypes)
         {
             var m = type.GetMethods()
-                 .FirstOrDefault(m => m.IsPublic && m.GetParameters().
-                     All(p => parameterTypes
-                         .Contains(p.ParameterType)));
+                .FirstOrDefault(
+                    m =>
+                        m.IsPublic
+                        && m.GetParameters().All(p => parameterTypes.Contains(p.ParameterType))
+                );
             return getQualifiedName(m, m.GetParameters());
         }
+
         public static string GetQualifiedName<T>(params Type[] parameterTypes)
         {
             return GetQualifiedName(typeof(T), parameterTypes);
         }
+
         public static string GetQualifiedName<T>(string methodName, params Type[] parameterTypes)
         {
             return GetQualifiedName(typeof(T), methodName, parameterTypes);
@@ -481,10 +560,12 @@ namespace Undersoft.SDK.Invoking
 
         private Delegate invoking(MethodInfo methodInfo)
         {
-            DynamicMethod dynamicMethod = new DynamicMethod(string.Empty,
-                          typeof(object), new Type[] { typeof(object),
-                          typeof(object[]) },
-                          methodInfo.DeclaringType.Module);
+            DynamicMethod dynamicMethod = new DynamicMethod(
+                string.Empty,
+                typeof(object),
+                new Type[] { typeof(object), typeof(object[]) },
+                methodInfo.DeclaringType.Module
+            );
 
             ILGenerator il = dynamicMethod.GetILGenerator();
             ParameterInfo[] ps = methodInfo.GetParameters();
@@ -551,10 +632,12 @@ namespace Undersoft.SDK.Invoking
 
             il.Emit(OpCodes.Ret);
 
-            Delegate invoker = (InvokerDelegate)dynamicMethod.CreateDelegate(typeof(InvokerDelegate));
+            Delegate invoker = (InvokerDelegate)
+                dynamicMethod.CreateDelegate(typeof(InvokerDelegate));
 
             return invoker;
         }
+
         private static void casting(ILGenerator il, Type type)
         {
             if (type.IsValueType)
@@ -566,6 +649,7 @@ namespace Undersoft.SDK.Invoking
                 il.Emit(OpCodes.Castclass, type);
             }
         }
+
         private static void boxing(ILGenerator il, Type type)
         {
             if (type.IsValueType)
@@ -573,6 +657,7 @@ namespace Undersoft.SDK.Invoking
                 il.Emit(OpCodes.Box, type);
             }
         }
+
         private static void directint(ILGenerator il, int value)
         {
             switch (value)
@@ -620,10 +705,7 @@ namespace Undersoft.SDK.Invoking
         }
     }
 
-    public class Deputies : Registry<Invoker>
-    {
-    }
-
+    public class Deputies : Registry<Invoker> { }
 
     public class ModificationEventArgs : EventArgs
     {

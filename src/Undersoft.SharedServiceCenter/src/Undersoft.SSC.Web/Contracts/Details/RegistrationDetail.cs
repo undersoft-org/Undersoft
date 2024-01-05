@@ -1,5 +1,5 @@
 ﻿using Undersoft.SDK.Service.Data.Object.Detail;
-using Undersoft.SSC.Web.Enums;
+using Undersoft.SSC.Domain.Entities.Enums;
 
 namespace Undersoft.SSC.Web.Contracts.Details;
 

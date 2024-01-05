@@ -11,14 +11,14 @@ public interface IRepositoryClient
         IDisposable,
         IAsyncDisposable
 {
-    OpenDataService Context { get; }
+    OpenDataServiceContext Context { get; }
 
     Uri Route { get; }
 
-    TContext GetContext<TContext>() where TContext : OpenDataService;
+    TContext GetContext<TContext>() where TContext : OpenDataServiceContext;
 
     object CreateContext(Type contextType, Uri serviceRoot);
-    TContext CreateContext<TContext>(Uri serviceRoot) where TContext : OpenDataService;
+    TContext CreateContext<TContext>(Uri serviceRoot) where TContext : OpenDataServiceContext;
 
     void BuildMetadata();
 }

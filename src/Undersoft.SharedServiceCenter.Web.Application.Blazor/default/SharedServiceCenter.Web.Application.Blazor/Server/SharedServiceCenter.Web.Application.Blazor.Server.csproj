@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.Development.jsonold" />
+    <None Remove="appsettings.jsonold" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.Development.jsonold" />
+    <Content Include="appsettings.jsonold" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.22" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Web.Application\Undersoft.SSC.Web.Application.csproj" />
+    <ProjectReference Include="..\..\..\..\Undersoft.SharedServiceCenter\src\Undersoft.SSC\Undersoft.SSC.csproj" />
+    <ProjectReference Include="..\Client\SharedServiceCenter.Web.Application.Blazor.Client.csproj" />
+    <ProjectReference Include="..\Shared\SharedServiceCenter.Web.Application.Blazor.Shared.csproj" />
+  </ItemGroup>
+
+
+</Project>

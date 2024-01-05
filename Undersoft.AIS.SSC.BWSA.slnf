@@ -5,6 +5,7 @@
       "src\\Undersoft.SharedServiceCenter.Web.Application.Blazor\\src\\Undersoft.SSC.Web.Application.Client\\Undersoft.SSC.Web.Application.Client.csproj",
       "src\\Undersoft.SharedServiceCenter.Web.Application.Blazor\\src\\Undersoft.SSC.Web.Application.Server\\Undersoft.SSC.Web.Application.Server.csproj",
       "src\\Undersoft.SharedServiceCenter.Web.Service\\src\\Undersoft.SSC.Web.Service\\Undersoft.SSC.Web.Service.csproj",
+      "src\\Undersoft.SharedServiceCenter\\src\\Undersoft.SSC.Infrastructure\\Undersoft.SSC.Infrastructure.csproj",
       "src\\Undersoft.SharedServiceCenter\\src\\Undersoft.SSC.Web.Application\\Undersoft.SSC.Web.Application.csproj",
       "src\\Undersoft.SharedServiceCenter\\src\\Undersoft.SSC.Web\\Undersoft.SSC.Web.csproj",
       "src\\Undersoft.SharedServiceCenter\\src\\Undersoft.SSC\\Undersoft.SSC.csproj",

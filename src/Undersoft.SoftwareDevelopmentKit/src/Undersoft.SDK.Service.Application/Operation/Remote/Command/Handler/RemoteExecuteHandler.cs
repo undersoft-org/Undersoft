@@ -3,6 +3,7 @@ using MediatR;
 
 namespace Undersoft.SDK.Service.Application.Operation.Remote.Command.Handler;
 
+using Microsoft.AspNetCore.Http;
 using Notification;
 using Undersoft.SDK;
 using Undersoft.SDK.Service.Application.Operation.Command;
@@ -32,9 +33,14 @@ public class RemoteExecuteHandler<TStore, TDto, TModel, TKind>
             return request;
         try
         {
-            request.Response = (await _repository
-                .ExecuteAsync<TModel, TKind>(request.Data, (TKind)request.Kind));
-                
+            request.Response = (
+                request.CommandMode == CommandMode.Action
+                    ? await _repository.ExecuteAsync<TModel, TKind>(
+                        request.Data,
+                        (TKind)request.Kind
+                    )
+                    : await _repository.ExecuteAsync<TKind>((TKind)request.Kind)
+            );
 
             if (request.Response == null)
                 throw new Exception(
@@ -43,7 +49,9 @@ public class RemoteExecuteHandler<TStore, TDto, TModel, TKind>
                         + $"unable create source"
                 );
 
-            await _servicer.Publish(new RemoteExecuted<TStore, TDto, TModel, TKind>(request)).ConfigureAwait(false);            
+            await _servicer
+                .Publish(new RemoteExecuted<TStore, TDto, TModel, TKind>(request))
+                .ConfigureAwait(false);
         }
         catch (Exception ex)
         {

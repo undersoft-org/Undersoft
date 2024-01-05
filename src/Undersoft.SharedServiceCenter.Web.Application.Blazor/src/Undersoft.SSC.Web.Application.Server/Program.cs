@@ -25,6 +25,7 @@ public class Program
             .UseContentRoot(Directory.GetCurrentDirectory())
             .UseConfiguration(ServiceConfigurationHelper.BuildConfiguration())
             .UseKestrel()
+            .UseStaticWebAssets()
             .UseStartup<Startup>()
             .Build();
 

@@ -45,17 +45,12 @@ public abstract class StreamDataController<TKey, TEntry, TReport, TEntity, TDto>
         return _servicer.CreateStream(new GetAsync<TReport, TEntity, TDto>(0, 0));
     }
 
-    public virtual async Task<int> Count()
+    public virtual Task<string> Count()
     {
-        return await Task.Run(() => _servicer.use<TReport, TEntity>().Count());
+        return Task.FromResult(_servicer.use<TReport, TEntity>().Count().ToString());
     }
 
-    public virtual IAsyncEnumerable<TDto> Range([FromRoute] int offset, [FromRoute] int limit)
-    {
-        return _servicer.CreateStream(new GetAsync<TReport, TEntity, TDto>(offset, limit));
-    }
-
-    public virtual IAsyncEnumerable<TDto> Query([FromRoute] int offset, [FromRoute] int limit, QuerySet query)
+    public virtual IAsyncEnumerable<TDto> Query(QuerySet query)
     {
         query.FilterItems.ForEach(
             (fi) =>
@@ -68,14 +63,14 @@ public abstract class StreamDataController<TKey, TEntry, TReport, TEntity, TDto>
         return
             _servicer
                 .CreateStream(
-                    new FilterAsync<TReport, TEntity, TDto>(offset, limit,
+                    new FilterAsync<TReport, TEntity, TDto>(0, 0,
                         new FilterExpression<TEntity>(query.FilterItems).Create(),
                         new SortExpression<TEntity>(query.SortItems)
                     )
                 );
     }
 
-    public virtual IAsyncEnumerable<string> Creates([FromBody] TDto[] dtos)
+    public virtual IAsyncEnumerable<string> Creates(TDto[] dtos)
     {
         var result = _servicer.CreateStream(new CreateSetAsync<TEntry, TEntity, TDto>
                                                     (_publishMode, dtos));
@@ -86,7 +81,7 @@ public abstract class StreamDataController<TKey, TEntry, TReport, TEntity, TDto>
         return response;
     }
 
-    public virtual IAsyncEnumerable<string> Changes([FromBody] TDto[] dtos)
+    public virtual IAsyncEnumerable<string> Changes(TDto[] dtos)
     {
         var result = _servicer.CreateStream(new ChangeSetAsync<TEntry, TEntity, TDto>
                                                    (_publishMode, dtos));
@@ -97,7 +92,7 @@ public abstract class StreamDataController<TKey, TEntry, TReport, TEntity, TDto>
         return response;
     }
 
-    public virtual IAsyncEnumerable<string> Updates([FromBody] TDto[] dtos)
+    public virtual IAsyncEnumerable<string> Updates(TDto[] dtos)
     {
         var result = _servicer.CreateStream(new UpdateSetAsync<TEntry, TEntity, TDto>
                                                  (_publishMode, dtos));
@@ -108,7 +103,7 @@ public abstract class StreamDataController<TKey, TEntry, TReport, TEntity, TDto>
         return response;
     }
 
-    public virtual IAsyncEnumerable<string> Deletes([FromBody] TDto[] dtos)
+    public virtual IAsyncEnumerable<string> Deletes(TDto[] dtos)
     {
         var result = _servicer.CreateStream(new DeleteSetAsync<TEntry, TEntity, TDto>
                                                   (_publishMode, dtos));

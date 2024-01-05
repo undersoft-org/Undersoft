@@ -4,6 +4,7 @@ using System.Text.Json;
 
 namespace Undersoft.SDK.Service.Application.Controller.Crud;
 using Data.Service;
+using Microsoft.AspNetCore.Http;
 using Operation.Command;
 using Operation.Query;
 using Undersoft.SDK.Service.Data.Event;

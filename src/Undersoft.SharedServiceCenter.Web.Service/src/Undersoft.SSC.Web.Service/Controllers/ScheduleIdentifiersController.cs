@@ -4,7 +4,7 @@ using Undersoft.SDK.Service.Application.Controller.Open;
 using Undersoft.SDK.Service.Application.Controller.Stream;
 using Undersoft.SSC.Domain.Entities;
 
-namespace Undersoft.SSC.Web.Controllers
+namespace Undersoft.SSC.Web.Service.Controllers
 {
     [AllowAnonymous]
     public class ScheduleIdentifierController
@@ -14,7 +14,7 @@ namespace Undersoft.SSC.Web.Controllers
     }
 }
 
-namespace Undersoft.SSC.Web.Controllers
+namespace Undersoft.SSC.Web.Service.Controllers
 {
     public class ScheduleIdentifiersController
         : CrudDataController<long, IEntryStore, IReportStore, Identifier<Schedule>, Identifier<Contracts.Schedule>>
@@ -23,12 +23,3 @@ namespace Undersoft.SSC.Web.Controllers
     }
 }
 
-namespace Undersoft.SSC.Web.Controllers
-{
-    public class ScheduleIdentifierStreamController
-        : StreamDataController<long, IEntryStore, IReportStore, Identifier<Schedule>, Identifier<Contracts.Schedule>>,
-            IStreamDataController<Identifier<Contracts.Schedule>>
-    {
-        public ScheduleIdentifierStreamController() : base() { }
-    }
-}

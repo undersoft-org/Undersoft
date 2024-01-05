@@ -17,7 +17,7 @@ public interface IRemoteRepository<TStore, TEntity> : IRemoteRepository<TEntity>
 
 public interface IRemoteRepository<TEntity> : IRepository<TEntity> where TEntity : class, IOrigin
 {
-    OpenDataService Context { get; }
+    OpenDataServiceContext Context { get; }
 
     new DataServiceQuery<TEntity> Query { get; }
 
@@ -27,7 +27,11 @@ public interface IRemoteRepository<TEntity> : IRepository<TEntity> where TEntity
 
     Task<IEnumerable<TEntity>> FindMany(params object[] keys);
 
-    Task<IEnumerable<TEntity>> ExecuteAsync<TModel, TKind>(TModel payload, TKind kind) where TKind : Enum;
+    void SetSecurityToken(string token);
 
-    Task<IEnumerable<TEntity>> ExecuteAsync<TModel, TKind>(TModel[] payload, TKind kind) where TKind : Enum;
+    Task<IEnumerable<TEntity>> ExecuteAsync<TKind>(TKind kind, string httpMethod = "GET") where TKind : Enum;
+
+    Task<IEnumerable<TEntity>> ExecuteAsync<TModel, TKind>(TModel payload, TKind kind, string httpMethod = "POST") where TKind : Enum;
+
+    Task<IEnumerable<TEntity>> ExecuteAsync<TModel, TKind>(TModel[] payload, TKind kind, string httpMethod = "POST") where TKind : Enum;
 }

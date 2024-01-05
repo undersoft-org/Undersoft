@@ -17,6 +17,6 @@ namespace Undersoft.SDK.Service.Application
         IApplicationSetup AddIdentityAuthorization();
         IApplicationSetup UseDataServices();
         IApplicationSetup AddApiVersions(string[] apiVersions);
-        IApplicationSetup ConfigureApplication(bool includeSwagger, Assembly[] assemblies = null);
+        IApplicationSetup ConfigureApplication(bool includeSwagger, Assembly[] assemblies = null, Type[] sourceTypes = null, Type[] clientTypes = null);
     }
 }

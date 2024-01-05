@@ -7,19 +7,12 @@ using Undersoft.SDK.Service.Data.Identifier;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Entity;
 using Undersoft.SSC.Domain.Entities.Enums;
+using System.Text.Json.Serialization;
+using System.Runtime.Serialization;
 
 public class Resource : OpenEntity<Resource, Detail, Setting, ResourceGroup>
 {
     public virtual string? Path { get; set; }
-
-    [NotMapped]
-    public virtual string? ContainerName => System.IO.Path.GetDirectoryName(Path);
-
-    [NotMapped]
-    public virtual string? FileName => System.IO.Path.GetFileName(Path);
-
-    [NotMapped]
-    public virtual DataFile? File => new DataFile(Path);
 
     public virtual RelatedSet<Resource>? RelatedFrom { get; set; }
 

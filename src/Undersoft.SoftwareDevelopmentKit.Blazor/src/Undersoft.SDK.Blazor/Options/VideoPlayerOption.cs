@@ -16,5 +16,5 @@ public class VideoPlayerOption
 
     public string? Poster { get; set; }
 
-    public string? Language { get; set; } = "zh-CN";
+    public string? Language { get; set; } = "en-US";
 }

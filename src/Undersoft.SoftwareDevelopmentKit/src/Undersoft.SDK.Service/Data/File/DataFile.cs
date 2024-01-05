@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 using System.Text;
 using System.Linq;
 using Undersoft.SDK.Service.Data.File.Container;
+using System.Text.Json.Serialization;
+using Microsoft.Extensions.Primitives;
+using System.Runtime.Serialization;
 
 namespace Undersoft.SDK.Service.Data.File
 {
-    public class DataFile : FileContainer
+    public class DataFile : FileContainer, IDataFile
     {
-        private Stream _stream;
+        Stream _stream;
 
         public DataFile(FileContainer container, string filename) : this(container.ContainerName, filename)
         {
@@ -29,29 +32,31 @@ namespace Undersoft.SDK.Service.Data.File
         {
         }
 
-        public Stream Stream => _stream;
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public virtual Stream Stream => _stream;
 
-        public string ContentType { get; set; }
+        public virtual string ContentType { get; set; }
 
-        public string ContentDisposition { get; set; }
+        public virtual string ContentDisposition { get; set; }
 
-        public long Length { get; set; }
+        public virtual long Length { get; set; }
 
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
-        public string FileName { get; set; }
+        public virtual string FileName { get; set; }
 
-        public void CopyTo(Stream target)
+        public virtual void CopyTo(Stream target)
         {
             _stream.CopyTo(target);
         }
 
-        public Task CopyToAsync(Stream target, CancellationToken cancellationToken = default)
+        public virtual Task CopyToAsync(Stream target, CancellationToken cancellationToken = default)
         {
             return _stream.CopyToAsync(target, cancellationToken);
         }
 
-        public Stream OpenReadStream()
+        public virtual Stream OpenReadStream()
         {
             return _stream;
         }

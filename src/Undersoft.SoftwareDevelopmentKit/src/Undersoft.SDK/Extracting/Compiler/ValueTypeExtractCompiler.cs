@@ -44,6 +44,7 @@
                 .Where(m => m.Name == "op_Explicit")
                 .Where(m => m.ReturnType == typeof(void*))
                 .FirstOrDefault();
+
             code.EmitCall(OpCodes.Call, method_IntPtr_op_Explicit, null);
             code.Emit(OpCodes.Stloc, 2);
 

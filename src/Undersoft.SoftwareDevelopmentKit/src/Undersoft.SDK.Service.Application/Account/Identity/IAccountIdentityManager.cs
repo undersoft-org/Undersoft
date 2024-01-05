@@ -15,6 +15,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
         Task<AccountIdentity> CheckPassword(string email, string password);
         Task<bool> CheckToken(string token);
+        Task<string> RenewToken(string token);
         Task<bool> Delete(string email);
         Task<AccountIdentity> GetByEmail(string email);
         Task<AccountIdentity> GetById(long id);

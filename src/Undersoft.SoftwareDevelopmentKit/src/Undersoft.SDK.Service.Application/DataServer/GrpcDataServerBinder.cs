@@ -20,8 +20,8 @@ namespace Undersoft.SDK.Service.Application.DataServer
         public override IList<object> GetMetadata(MethodInfo method, Type contractType, Type serviceType)
         {
             var resolvedServiceType = serviceType;
-            if (serviceType.IsInterface)
-                resolvedServiceType = registry[serviceType]?.ImplementationType ?? serviceType;
+            if (serviceType.IsInterface)           
+                resolvedServiceType = registry.Get(serviceType)?.ImplementationInstance?.GetType() ?? serviceType;                           
 
             return base.GetMetadata(method, contractType, resolvedServiceType);
         }

@@ -4,37 +4,25 @@ using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Undersoft.SDK.Security.Identity;
 
 namespace Undersoft.SDK.Service.Application;
 
 public class ApplicationHostJwtMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly IServicer _servicer;
 
-    public ApplicationHostJwtMiddleware(RequestDelegate next)
+    public ApplicationHostJwtMiddleware(RequestDelegate next, IServicer servicer)
     {
         _next = next;
+        _servicer = servicer;
     }
 
     public async Task Invoke(HttpContext context)
     {
-        var ao = ServiceManager.GetConfiguration().Identity;
-        var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-        var client = new HttpClient();
-
-        var response = await client.GetUserInfoAsync(new UserInfoRequest
-        {
-            Address = $"{ao.BaseUrl}/connect/userinfo",
-            Token = token
-        });
-        //response.
-
-        //if (userId != null)
-        //{
-        //    // attach user to context on successful jwt validation
-        //    context.Items["User"] = await userRepository.GetUser(userId.Value);
-        //}
-
+        var auth = _servicer.GetService<IAuthorization>();
+        auth.Credentials.SessionToken = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").LastOrDefault();
         await _next(context);
     }
 }

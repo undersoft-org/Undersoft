@@ -46,7 +46,7 @@ internal static class RouteTableFactory
 internal static class RouteTableFactory
 {
     [NotNull]
-    private static Microsoft.AspNetCore.Components.Routing.RouteTable? Routes { get; set; }
+    private static Microsoft.AspNetCore.Components.Routing.RouteTable Routes { get; set; }
     private static readonly HashSet<Assembly> _assemblies = new();
 
     public static RouteContext Create(IEnumerable<Assembly> assemblies, string url)

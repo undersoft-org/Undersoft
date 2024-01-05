@@ -18,6 +18,9 @@ namespace Undersoft.SDK.Service
                     case SourceProvider.MemoryDb:
                         registry.AddEntityFrameworkInMemoryDatabase();
                         break;
+                    case SourceProvider.SqlLite:
+                        registry.AddEntityFrameworkSqlite();
+                        break;
                     default:
                         break;
                 }

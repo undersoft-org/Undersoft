@@ -13,6 +13,8 @@ namespace Undersoft.SDK.Service.Application.Operation.Command
         Update = 4,
         Delete = 8,
         Upsert = 16,
-        Invoke = 32
+        Invoke = 32,
+        Action = 64,
+        Function = 128,
     }
 }

@@ -8,13 +8,13 @@ using Service.Host;
 
 public static class ApplicationHostExtensions
 {
-    public static IApplicationHostSetup UseApplicationSetup(this IApplicationBuilder app, IWebHostEnvironment env, bool useSwagger = true, bool useRazorPages = false)
+    public static IApplicationHostSetup UseApplicationSetup(this IApplicationBuilder app)
     {
-        return new ApplicationHostSetup(app, env, useSwagger, useRazorPages);
+        return new ApplicationHostSetup(app);
     }
-    public static IApplicationHostSetup UseApplicationSetup(this IApplicationBuilder app, IWebHostEnvironment env, string[] apiVersions, bool useRazorPages = false)
+    public static IApplicationHostSetup UseApplicationSetup(this IApplicationBuilder app, IWebHostEnvironment env)
     {
-        return new ApplicationHostSetup(app, env, apiVersions, useRazorPages);
+        return new ApplicationHostSetup(app, env);
     }
     public static IApplicationBuilder UseDefaultProvider(this IApplicationBuilder app)
     {

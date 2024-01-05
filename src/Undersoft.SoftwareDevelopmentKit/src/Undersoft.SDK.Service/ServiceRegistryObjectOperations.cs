@@ -48,8 +48,8 @@ public partial class ServiceRegistry
             return accessor;
         }
 
-        Put(ServiceDescriptor.Singleton(oaType), accessor);
-        Put(ServiceDescriptor.Singleton(iaType), accessor);
+        Put(ServiceDescriptor.Singleton(oaType, accessor));
+        Put(ServiceDescriptor.Singleton(iaType, accessor));
 
         return accessor;
     }
@@ -66,8 +66,8 @@ public partial class ServiceRegistry
             return accessor;
         }
 
-        Put(ServiceDescriptor.Singleton(oaType), accessor);
-        Put(ServiceDescriptor.Singleton(iaType), accessor);
+        this.Put(ServiceDescriptor.Singleton(oaType, accessor));
+        this.Put(ServiceDescriptor.Singleton(iaType, accessor));
 
         if (obj != null)
             this.AddSingleton(type, obj);
@@ -98,7 +98,7 @@ public partial class ServiceRegistry
 
     public object GetObject(Type type)
     {
-        Type accessorType = typeof(IServiceRegistryObject<>).MakeGenericType(type);
+        Type accessorType = typeof(ServiceRegistryObject<>).MakeGenericType(type);
         return ((ServiceRegistryObject)GetSingleton(accessorType))?.Value;
     }
 

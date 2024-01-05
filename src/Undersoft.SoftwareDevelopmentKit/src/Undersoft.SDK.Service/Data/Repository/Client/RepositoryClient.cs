@@ -62,20 +62,20 @@ public class RepositoryClient : Catalog<IRepositoryContext>, IRepositoryClient
 
     public virtual Uri Route => uri;
 
-    public virtual OpenDataService Context => (OpenDataService)InnerContext;
+    public virtual OpenDataServiceContext Context => (OpenDataServiceContext)InnerContext;
 
     public virtual object CreateContext()
     {
-        return ContextType.New<OpenDataService>(uri);
+        return ContextType.New<OpenDataServiceContext>(uri);
     }
     public virtual object CreateContext(Type contextType, Uri serviceRoot)
     {
         uri ??= serviceRoot;
         this.contextType ??= contextType;
-        return (OpenDataService)contextType.New(uri);
+        return (OpenDataServiceContext)contextType.New(uri);
     }
 
-    public virtual TContext GetContext<TContext>() where TContext : OpenDataService
+    public virtual TContext GetContext<TContext>() where TContext : OpenDataServiceContext
     {
         return (TContext)InnerContext;
     }
@@ -85,7 +85,7 @@ public class RepositoryClient : Catalog<IRepositoryContext>, IRepositoryClient
         contextType ??= typeof(TContext);
         return typeof(TContext).New<TContext>(uri);
     }
-    public virtual TContext CreateContext<TContext>(Uri serviceRoot) where TContext : OpenDataService
+    public virtual TContext CreateContext<TContext>(Uri serviceRoot) where TContext : OpenDataServiceContext
     {
         uri = serviceRoot;
         contextType ??= typeof(TContext);
@@ -282,7 +282,7 @@ public class RepositoryClient : Catalog<IRepositoryContext>, IRepositoryClient
         return 0;
     }
 
-    private async Task<int> saveAsTransaction(OpenDataService context, CancellationToken token = default)
+    private async Task<int> saveAsTransaction(OpenDataServiceContext context, CancellationToken token = default)
     {
         try
         {
@@ -298,7 +298,7 @@ public class RepositoryClient : Catalog<IRepositoryContext>, IRepositoryClient
         return -1;
     }
 
-    private async Task<int> saveChanges(OpenDataService context, CancellationToken token = default)
+    private async Task<int> saveChanges(OpenDataServiceContext context, CancellationToken token = default)
     {
         try
         {

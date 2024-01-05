@@ -1,5 +1,5 @@
-﻿import { addScript } from '../../../BootstrapBlazor/modules/utility.js'
-import Data from '../../../BootstrapBlazor/modules/data.js'
+﻿import { addScript } from '../../../Undersoft.SDK.Blazor/modules/utility.js'
+import Data from '../../../Undersoft.SDK.Blazor/modules/data.js'
 
 const generate = (b, content) => {
     b._qrcode.clear()
@@ -17,7 +17,7 @@ const clear = b => {
 }
 
 export async function init(el, invoker, content, callback) {
-    await addScript('./_content/BootstrapBlazor.BarCode/qrcode.min.js')
+    await addScript('./_content/Undersoft.SDK.Blazor.BarCode/qrcode.min.js')
 
     const b = {}
     Data.set(el, b)

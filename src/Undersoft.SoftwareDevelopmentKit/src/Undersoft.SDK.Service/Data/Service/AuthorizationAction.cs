@@ -14,6 +14,6 @@ namespace Undersoft.SDK.Service.Data
         ConfirmPassword,
         ConfirmEmail,
         CompleteRegistration,
-        Token
+        Renew
     }
 }

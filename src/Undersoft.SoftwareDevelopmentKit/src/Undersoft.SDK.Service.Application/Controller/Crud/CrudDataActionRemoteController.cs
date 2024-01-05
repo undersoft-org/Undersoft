@@ -3,33 +3,34 @@
 namespace Undersoft.SDK.Service.Application.Controller.Crud;
 
 using Data.Service;
+using Microsoft.AspNetCore.Http;
 using Operation.Remote.Command;
+using System.Net.Http;
 using Undersoft.SDK;
 using Undersoft.SDK.Service;
+using Undersoft.SDK.Service.Application.Operation.Command;
 using Undersoft.SDK.Service.Data;
 
 [ApiController]
 [RemoteCrudDataActionService]
 [Route($"{StoreRoutes.CrudIdentityStore}/[controller]")]
 public abstract class CrudDataActionRemoteController<TStore, TDto, TModel, TKind>
-    : ControllerBase, ICrudDataActionRemoteController<TStore, TDto, TModel, TKind>
+    : ControllerBase,
+        ICrudDataActionRemoteController<TStore, TDto, TModel, TKind>
     where TModel : class, IOrigin
     where TDto : class, IOrigin
     where TKind : struct, Enum
     where TStore : IDataServiceStore
-{
-    protected readonly IServicer _servicer;
-    protected readonly AuthorizationAction _kind;
+{    
+    protected readonly IServicer _servicer;    
 
     protected CrudDataActionRemoteController() { }
 
     protected CrudDataActionRemoteController(
-        IServicer servicer,
-        AuthorizationAction kind = AuthorizationAction.None
+        IServicer servicer
     )
     {
-        _servicer = servicer;
-        _kind = kind;
+        _servicer = servicer;            
     }
 
     [HttpPost("{kind}")]
@@ -40,12 +41,32 @@ public abstract class CrudDataActionRemoteController<TStore, TDto, TModel, TKind
 
         if (Enum.TryParse(kind, out TKind method))
         {
-            var result = await _servicer
-                .Send(new RemoteExecute<TStore, TDto, TModel, TKind>(method, dto));
+            var result = await _servicer.Send(
+                new RemoteExecute<TStore, TDto, TModel, TKind>(method, dto, CommandMode.Action)
+            );
 
             return !result.IsValid
-                   ? UnprocessableEntity(result.ErrorMessages)
-                   : Ok(result.Response);
+                ? UnprocessableEntity(result.ErrorMessages)
+                : Ok(result.Response);
+        }
+        return NotFound(kind);
+    }
+
+    [HttpGet("{kind}")]
+    public virtual async Task<IActionResult> Get([FromRoute] string kind)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        if (Enum.TryParse(kind, out TKind method))
+        {
+            var result = await _servicer.Send(
+                new RemoteExecute<TStore, TDto, TModel, TKind>(method, null, CommandMode.Function)
+            );
+
+            return !result.IsValid
+                ? UnprocessableEntity(result.ErrorMessages)
+                : Ok(result.Response);
         }
         return NotFound(kind);
     }

@@ -29,14 +29,14 @@ public static class OpenDataServiceRegistry
     public static ISeries<Type> Stores = new Registry<Type>();
     public static ISeries<ServiceRemoteBase> Links = new Registry<ServiceRemoteBase>(true);
 
-    public static IEdmModel GetEdmModel(this OpenDataService context)
+    public static IEdmModel GetEdmModel(this OpenDataServiceContext context)
     {
         Task<IEdmModel> model = context.GetEdmModelAsync();
         model.Wait();
         return model.Result;
     }
 
-    public static async Task<IEdmModel> GetEdmModelAsync(this OpenDataService context)
+    public static async Task<IEdmModel> GetEdmModelAsync(this OpenDataServiceContext context)
     {
         // Get the service metadata's Uri
         var metadataUri = context.GetMetadataUri();
@@ -127,7 +127,7 @@ public static class OpenDataServiceRegistry
         return null;
     }
 
-    public static ISeries<IEdmEntityType> GetEdmEntityTypes(this OpenDataService context)
+    public static ISeries<IEdmEntityType> GetEdmEntityTypes(this OpenDataServiceContext context)
     {
         var contextType = context.GetType();
 
@@ -162,7 +162,7 @@ public static class OpenDataServiceRegistry
         return dsEntities;
     }
 
-    public static Type GetLinkedStoreType(this OpenDataService context)
+    public static Type GetLinkedStoreType(this OpenDataServiceContext context)
     {
         return GetLinkedStoreTypes(context.GetType());
     }
@@ -194,19 +194,19 @@ public static class OpenDataServiceRegistry
         return Assemblies.FindType(sn);
     }
 
-    public static Type GetMappedType(this OpenDataService context, string name)
+    public static Type GetMappedType(this OpenDataServiceContext context, string name)
     {
         return GetMappedType(name);
     }
 
-    public static string GetMappedName(this OpenDataService context, Type type)
+    public static string GetMappedName(this OpenDataServiceContext context, Type type)
     {
         if (MappedNames.TryGet(type, out string name))
             return name;
         return type.Name;
     }
 
-    public static string GetMappedFullName(this OpenDataService context, Type type)
+    public static string GetMappedFullName(this OpenDataServiceContext context, Type type)
     {
         if (MappedFullNames.TryGet(type, out string name))
             return name;

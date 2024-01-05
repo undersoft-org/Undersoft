@@ -175,6 +175,7 @@ namespace Undersoft.SDK.Service
                     Add(s);
                 }
             });
+
             if (actualizeExternalServices)
                 this.ForEach(c =>
                 {
@@ -190,19 +191,19 @@ namespace Undersoft.SDK.Service
                 return;
 
             if (!actualizeExternalServices)
-                services.DoEach(s => { if (!Contains(s)) Add(s); } );
+                services.ForEach(s => { if (!Contains(s)) Add(s); } );
             else
             { 
                 var tempRegistry = new Registry<ServiceDescriptor>(true);
                 
-                services.DoEach(s =>
+                services.ForEach(s =>
                 {
                     tempRegistry.Add(GetKey(s.ServiceType), s);
                     if (!Contains(s))                    
                         Add(s);                    
                 });
 
-                this.DoEach(c =>
+                this.ForEach(c =>
                 {
                     if (!tempRegistry.Contains(GetKey(c.ServiceType), c))                    
                         services.Add(c);                    

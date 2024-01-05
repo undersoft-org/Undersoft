@@ -6,7 +6,7 @@ namespace Undersoft.SDK.Service.Data.Repository.Client;
 using Configuration;
 using Undersoft.SDK.Service.Data.Repository.Source;
 
-public class RepositoryClient<TContext> : RepositoryClient, IRepositoryClient<TContext> where TContext : OpenDataService
+public class RepositoryClient<TContext> : RepositoryClient, IRepositoryClient<TContext> where TContext : OpenDataServiceContext
 {
     public RepositoryClient() { }
     public RepositoryClient(IServiceConfiguration config) : this()

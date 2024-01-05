@@ -300,7 +300,7 @@ namespace Undersoft.SDK.Service.Data.Service.Remote
 
         public virtual void AddRange(IEnumerable<TEntity> items)
         {                        
-            items.DoEach(e => Add(e));
+            items.ForEach(e => Add(e));
         }
 
         protected override void InsertItem(int index, TEntity item)

@@ -11,9 +11,9 @@ namespace Undersoft.SDK.Security.Identity
             this.PatchFrom(user);
         }
 
-        public ICredentials Credentials { get; set; }
+        public ICredentials Credentials { get; set; } = new Credentials();
 
-        public AuthorizationNotes Notes { get; set; }
+        public AuthorizationNotes Notes { get; set; } = new AuthorizationNotes();
     }
 
     public class AuthorizationNotes

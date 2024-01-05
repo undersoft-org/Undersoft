@@ -20,25 +20,33 @@ namespace Undersoft.SDK.IntegrationTests.Invoking.Work
         }
 
         [Fact]
-        public void Workflow_MultiThreading_Integration_Test()
+        public void MultiThreading_Workflow_ParallelConcurrentSynchronization_Framework_Integration_Test()
         {
-            var work = new Workflow<WorkAspects>();
+            var work = new Workflow();
 
             var download = work
-                .Aspect<WorkTest>()
+                .Aspect<NBPSource>()
                     .AddWork<FirstCurrency>()
-                    .AddWork<SecondCurrency>()
-                        .Allocate(4);
+                    .AddWork(
+                        new[]
+                        {
+                            new Invoker(
+                                "Undersoft.SDK.IntegrationTests.Invoking.Work.SecondCurrency",
+                                "GetCurrency"
+                            )
+                        }
+                    )
+                .Allocate(4);
 
             var compute = work
-                .Aspect<NBPSource>()
+                .Aspect("PrintFirstCurrencyRateForSecondCurrency")
                     .AddWork<ComputeCurrency>()
                     .AddWork<PresentResult>()
-                        .Allocate(2);
+                .Allocate(2);
 
             download
                 .Work<FirstCurrency>()
-                    .FlowTo<ComputeCurrency>()
+                    .FlowTo("ComputeCurrency")
                 .Work<SecondCurrency>()
                     .FlowTo<ComputeCurrency>();
 
@@ -48,11 +56,7 @@ namespace Undersoft.SDK.IntegrationTests.Invoking.Work
 
             for (int i = 1; i < 10; i++)
             {
-                download
-                    .Work<FirstCurrency>()
-                        .Run("EUR", i)
-                    .Work<SecondCurrency>()
-                        .Run("USD", i);
+                download.Work<FirstCurrency>().Run("EUR", i).Work<SecondCurrency>().Run("USD", i);
             }
 
             Thread.Sleep(10000);

@@ -18,20 +18,38 @@ using System.Runtime.Serialization;
 using Uniques;
 using Undersoft.SDK;
 using Undersoft.SDK.Service.Data;
+using Undersoft.SDK.Security.Identity;
 
-public class RemoteRepository<TStore, TEntity> : RemoteRepository<TEntity>, IRemoteRepository<TStore, TEntity>
-  where TEntity : class, IOrigin, IInnerProxy
-  where TStore : IDataServiceStore
+public class RemoteRepository<TStore, TEntity>
+    : RemoteRepository<TEntity>,
+        IRemoteRepository<TStore, TEntity>
+    where TEntity : class, IOrigin, IInnerProxy
+    where TStore : IDataServiceStore
 {
-    public RemoteRepository(IRepositoryContextPool<OpenDataService<TStore>> pool, IEntityCache<TStore, TEntity> cache) : base(
-        pool.ContextPool)
+    public RemoteRepository(
+        IRepositoryContextPool<OpenDataService<TStore>> pool,
+        IEntityCache<TStore, TEntity> cache
+    ) : base(pool.ContextPool)
     {
         mapper = cache.Mapper;
         this.cache = cache;
     }
 
+    public RemoteRepository(
+        IRepositoryContextPool<OpenDataService<TStore>> pool,
+        IEntityCache<TStore, TEntity> cache,
+        IAuthorization authorization
+    ) : base(pool.ContextPool)
+    {
+        dsContext.SetSecurityString(authorization.Credentials.SessionToken);
+        mapper = cache.Mapper;
+        this.cache = cache;
+    }
+
     public override Task<int> Save(bool asTransaction, CancellationToken token = default)
-    { return ContextLease.Save(asTransaction, token); }
+    {
+        return ContextLease.Save(asTransaction, token);
+    }
 }
 
 public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRepository<TEntity>
@@ -42,26 +60,34 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
 
     protected RemoteSet<TEntity> dsSet;
 
-    public RemoteRepository()
-    {
-    }
+    public RemoteRepository() { }
 
     public RemoteRepository(IRepositoryClient repositorySource) : base(repositorySource)
     {
         if (dsContext != null)
         {
-            dsSet = new RemoteSet<TEntity>(dsContext, dsContext.GetMappedName(typeof(TEntity)), null, null);
+            dsSet = new RemoteSet<TEntity>(
+                dsContext,
+                dsContext.GetMappedName(typeof(TEntity)),
+                null,
+                null
+            );
             dsQuery = dsSet.Query;
             Expression = Expression.Constant(this);
             Provider = new RemoteRepositoryExpressionProvider<TEntity>(Query);
         }
     }
 
-    public RemoteRepository(OpenDataService context) : base(context)
+    public RemoteRepository(OpenDataServiceContext context) : base(context)
     {
         if (dsContext != null)
         {
-            dsSet = new RemoteSet<TEntity>(dsContext, dsContext.GetMappedName(typeof(TEntity)),null, null);
+            dsSet = new RemoteSet<TEntity>(
+                dsContext,
+                dsContext.GetMappedName(typeof(TEntity)),
+                null,
+                null
+            );
             dsQuery = dsSet.Query;
             Expression = Expression.Constant(this.AsEnumerable());
             Provider = new RemoteRepositoryExpressionProvider<TEntity>(dsQuery);
@@ -72,7 +98,12 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
     {
         if (dsContext != null)
         {
-            dsSet = new RemoteSet<TEntity>(dsContext, dsContext.GetMappedName(typeof(TEntity)), null, null);
+            dsSet = new RemoteSet<TEntity>(
+                dsContext,
+                dsContext.GetMappedName(typeof(TEntity)),
+                null,
+                null
+            );
             dsQuery = dsSet.Query;
             Expression = Expression.Constant(this);
             Provider = new RemoteRepositoryExpressionProvider<TEntity>(Query);
@@ -107,7 +138,9 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
         }
     }
 
-    public override TEntity this[object[] keys, params Expression<Func<TEntity, object>>[] expanders]
+    public override TEntity this[object[] keys, params Expression<
+        Func<TEntity, object>
+    >[] expanders]
     {
         get
         {
@@ -144,7 +177,9 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
         }
     }
 
-    public override object this[Expression<Func<TEntity, object>> selector, object[] keys, params Expression<Func<TEntity, object>>[] expanders]
+    public override object this[Expression<
+        Func<TEntity, object>
+    > selector, object[] keys, params Expression<Func<TEntity, object>>[] expanders]
     {
         get
         {
@@ -155,7 +190,7 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
 
             dsSet.Load(query);
             return ((TEntity)dsSet[keys]).ToQueryable<TEntity>().Select(selector).FirstOrDefault();
-        }       
+        }
         set
         {
             DataServiceQuery<TEntity> query = FindQuery(keys);
@@ -171,10 +206,10 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
     private TEntity lookup(params object[] keys)
     {
         var item = cache.Lookup<TEntity>(keys);
-        if (item != null)        
+        if (item != null)
             dsSet.Load(item);
         else
-            item = dsSet[keys];          
+            item = dsSet[keys];
         return item;
     }
 
@@ -221,7 +256,7 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
             if (_entity != null)
                 entity.PatchTo(_entity);
             return _entity;
-        } 
+        }
         return null;
     }
 
@@ -229,12 +264,16 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
     {
         try
         {
-            return (await dsContext.SaveChangesAsync(SaveChangesOptions.BatchWithSingleChangeset, token)).Count();
+            return (
+                await dsContext.SaveChangesAsync(SaveChangesOptions.BatchWithSingleChangeset, token)
+            ).Count();
         }
         catch (Exception e)
         {
             dsContext.Failure<Datalog>(
-                $"{$"Fail on update dataservice as singlechangeset, using context:{dsContext.GetType().Name}, "}{$"TimeStamp: {DateTime.Now.ToString()}"}", ex: e);
+                $"{$"Fail on update dataservice as singlechangeset, using context:{dsContext.GetType().Name}, "}{$"TimeStamp: {DateTime.Now.ToString()}"}",
+                ex: e
+            );
         }
 
         return -1;
@@ -244,20 +283,26 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
     {
         try
         {
-            return (await dsContext.SaveChangesAsync(
-                SaveChangesOptions.BatchWithIndependentOperations | SaveChangesOptions.ContinueOnError,
-                token)).Count();
+            return (
+                await dsContext.SaveChangesAsync(
+                    SaveChangesOptions.BatchWithIndependentOperations
+                        | SaveChangesOptions.ContinueOnError,
+                    token
+                )
+            ).Count();
         }
         catch (Exception e)
         {
             dsContext.Failure<Datalog>(
-                $"{$"Fail on update dataservice as independent operations, using context:{dsContext.GetType().Name}, "}{$"TimeStamp: {DateTime.Now.ToString()}"}", ex: e);
+                $"{$"Fail on update dataservice as independent operations, using context:{dsContext.GetType().Name}, "}{$"TimeStamp: {DateTime.Now.ToString()}"}",
+                ex: e
+            );
         }
 
         return -1;
     }
 
-    protected OpenDataService dsContext => (OpenDataService)InnerContext;
+    protected OpenDataServiceContext dsContext => (OpenDataServiceContext)InnerContext;
 
     public override object TracePatching(object item, string propertyName = null, Type type = null)
     {
@@ -291,7 +336,10 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
             yield return Add(e);
     }
 
-    public override IAsyncEnumerable<TEntity> AddAsync(IEnumerable<TEntity> entity) { return entity.ForEachAsync((e) => Add(e)); }
+    public override IAsyncEnumerable<TEntity> AddAsync(IEnumerable<TEntity> entity)
+    {
+        return entity.ForEachAsync((e) => Add(e));
+    }
 
     public override TEntity Delete(TEntity entity)
     {
@@ -302,7 +350,10 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
         return entity;
     }
 
-    public override Task<TEntity> Find(params object[] keys) { return findAsync(keys); }
+    public override Task<TEntity> Find(params object[] keys)
+    {
+        return findAsync(keys);
+    }
 
     public async Task<IEnumerable<TEntity>> FindMany(params object[] keys)
     {
@@ -313,16 +364,19 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
             else
                 findOne(key);
         }
-        return (await Context.ExecuteBatchAsync(_batchset.ToArray()))
-            .SelectMany(o => o as QueryOperationResponse<TEntity>);
+        return (await Context.ExecuteBatchAsync(_batchset.ToArray())).SelectMany(
+            o => o as QueryOperationResponse<TEntity>
+        );
     }
 
     public string KeyString(params object[] keys)
-    { return $"{Name}({(keys.Length > 1 ? keys.Aggregate(string.Empty, (a, b) => $"{a},{b}") : keys[0])})"; }
+    {
+        return $"{Name}({(keys.Length > 1 ? keys.Aggregate(string.Empty, (a, b) => $"{a},{b}") : keys[0])})";
+    }
 
     public override TEntity NewEntry(params object[] parameters)
     {
-        TEntity entity = Sign(typeof(TEntity).New<TEntity>(parameters));                
+        TEntity entity = Sign(typeof(TEntity).New<TEntity>(parameters));
         dsContext.AddObject(Name, entity);
         return entity;
     }
@@ -336,7 +390,6 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
 
     public DataServiceQuery<TEntity> FindQuery(params object[] keys)
     {
-   
         if (keys != null)
             return dsQuery.CreateFunctionQuery<TEntity>(KeyString(keys), true);
         return null;
@@ -347,7 +400,7 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
         return Query;
     }
 
-    public OpenDataService Context => dsContext;
+    public OpenDataServiceContext Context => dsContext;
 
     public override string Name => Context.GetMappedName(ElementType);
 
@@ -355,14 +408,59 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
 
     public override DataServiceQuery<TEntity> Query => dsContext.CreateQuery<TEntity>(Name, true);
 
-    public async Task<IEnumerable<TEntity>> ExecuteAsync<TDto, TKind>(TDto payload, TKind kind) where TKind : Enum
+    public async Task<IEnumerable<TEntity>> ExecuteAsync<TKind>(
+       TKind kind,
+       string httpMethod = "GET"
+   ) where TKind : Enum
     {
-        return await dsContext.ExecuteAsync<TEntity>(new Uri(dsContext.BaseUri, Name + kind.ToString()), "POST", new BodyOperationParameter(typeof(TDto).Name, payload));
+        return await ExecuteAsync<TKind>(
+            null,
+            kind,
+            httpMethod
+        );
     }
 
-    public async Task<IEnumerable<TEntity>> ExecuteAsync<TDto, TKind>(TDto[] payloads, TKind kind) where TKind : Enum
-    {        
-        return await dsContext.ExecuteAsync<TEntity>(new Uri(dsContext.BaseUri, Name + kind.ToString()), "POST", new BodyOperationParameter(typeof(TDto).Name, payloads));
+    public async Task<IEnumerable<TEntity>> ExecuteAsync<TDto, TKind>(
+        TDto payload,
+        TKind kind,
+        string httpMethod = "POST"
+    ) where TKind : Enum
+    {
+        return await ExecuteAsync<TKind>(
+            httpMethod != "GET" ? new BodyOperationParameter(typeof(TDto).Name, payload) : null,
+            kind,
+            httpMethod
+        );
+    }
+
+    public async Task<IEnumerable<TEntity>> ExecuteAsync<TDto, TKind>(
+        TDto[] payloads,
+        TKind kind,
+        string httpMethod = "POST"
+    ) where TKind : Enum
+    {
+        return await ExecuteAsync<TKind>(
+            httpMethod != "GET" ? new BodyOperationParameter(typeof(TDto).Name, payloads) : null,
+            kind,
+            httpMethod
+        );
+    }
+
+    private async Task<IEnumerable<TEntity>> ExecuteAsync<TKind>(
+        BodyOperationParameter parameter,
+        TKind kind,
+        string httpMethod
+    ) where TKind : Enum
+    {
+        return await dsContext.ExecuteAsync<TEntity>(
+            new Uri(dsContext.BaseUri, Name + kind.ToString()),
+            httpMethod,
+            parameter
+        );
+    }
+
+    public void SetSecurityToken(string token)
+    {
+        dsContext.SetSecurityString(token);
     }
 }
-

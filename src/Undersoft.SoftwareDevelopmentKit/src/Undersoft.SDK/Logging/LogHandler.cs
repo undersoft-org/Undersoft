@@ -68,7 +68,7 @@ namespace Undersoft.SDK.Logging
         {
             if (IsEnabled(log.Level))
             {
-                loggerChooser(log).Write(log.Level, JsonSerializer.Serialize(log, jsonOptions));
+                loggerChooser(log).Write(log.Level, log.State.Exception, log.Message, log.Sender, log.Group, log.Id, log.State.DataObject);
             }
         }
 

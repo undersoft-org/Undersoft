@@ -16,14 +16,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Infrastructure\Undersoft.SSC.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Web\Undersoft.SSC.Web.csproj" />
-    <ProjectReference Include="..\..\..\Undersoft.SharedServiceCenter\src\Undersoft.SSC\Undersoft.SSC.csproj" />
-    <ProjectReference Include="..\..\..\Undersoft.SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Application\Undersoft.SDK.Service.Application.csproj" />
   </ItemGroup>
   
   <ItemGroup>
     <Using Include="Undersoft.SDK.Service.Data.Identifier" />
-    <Using Include="Undersoft.SSC.Web.Controllers" />
+    <Using Include="Undersoft.SSC.Web.Service.Controllers" />
     <Using Include="Undersoft.SDK.Service.Application.Controller" />
     <Using Include="Undersoft.SDK.Service.Data.Event" />
     <Using Include="Undersoft.SDK.Service.Data.Mapper" />

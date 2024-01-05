@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Web.Application\Undersoft.SSC.Web.Application.csproj" />
+    <ProjectReference Include="..\..\..\Undersoft.SoftwareDevelopmentKit.Blazor\src\Undersoft.SDK.Blazor\Undersoft.SDK.Blazor.csproj" />
   </ItemGroup>
 
   <ItemGroup>

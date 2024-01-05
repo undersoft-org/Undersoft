@@ -4,7 +4,7 @@ using Undersoft.SSC.Web.Contracts;
 
 namespace Undersoft.SSC.Web.Service.Validators;
 
-public class AccountValidator : CommandSetValidator<Contracts.AccountBase>
+public class AccountValidator : CommandSetValidator<Account>
 {
     public AccountValidator(IServicer ultimatr) : base(ultimatr)
     {

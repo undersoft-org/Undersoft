@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Undersoft.SDK.Service.Application.Controller.Crud;
 using Undersoft.SSC.Web.Contracts;
 using Undersoft.SSC.Web.Appllication.ViewModels;
-using Undersoft.SSC.Web.Enums;
+using Undersoft.SSC.Domain.Entities.Enums;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Application.Controller.Open;
 using Undersoft.SDK.Service.Data.Store;
@@ -14,7 +14,7 @@ namespace Undersoft.SSC.Web.Application.Server.Controllers
 
     [AllowAnonymous]
     [ODataRouteComponent(StoreRoutes.OpenDataStore)]
-    public class ClientController : OpenDataRemoteController<long, IDataStore, AccountBase, Customer>
+    public class ClientController : OpenDataRemoteController<long, IDataStore, AccountBase, ClientAccount>
     {
         public ClientController(IServicer ultimatr)
             : base(ultimatr, c => a => a.Group == AccountGroup.Client) { }
@@ -23,7 +23,7 @@ namespace Undersoft.SSC.Web.Application.Server.Controllers
 
 namespace Undersoft.SSC.Web.Application.Server.Controllers
 {
-    public class ClientsController : CrudDataRemoteController<long, IDataStore, AccountBase, Customer>
+    public class ClientsController : CrudDataRemoteController<long, IDataStore, AccountBase, ClientAccount>
     {
         public ClientsController(IServicer ultimatr)
             : base(ultimatr, c => a => a.Group == AccountGroup.Client) { }

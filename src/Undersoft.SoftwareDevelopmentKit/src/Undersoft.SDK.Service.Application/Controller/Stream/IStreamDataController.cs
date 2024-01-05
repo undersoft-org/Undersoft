@@ -8,10 +8,9 @@ using Undersoft.SDK.Service.Data.Query;
 [ServiceContract]
 public interface IStreamDataController<TDto> where TDto : class, IDataObject
 {
-    Task<int> Count();
+    Task<string> Count();
     IAsyncEnumerable<TDto> All();
-    IAsyncEnumerable<TDto> Range(int offset, int limit);
-    IAsyncEnumerable<TDto> Query(int offset, int limit, QuerySet query);
+    IAsyncEnumerable<TDto> Query(QuerySet query);
     IAsyncEnumerable<string> Creates(TDto[] dtos);
     IAsyncEnumerable<string> Changes(TDto[] dtos);
     IAsyncEnumerable<string> Updates(TDto[] dtos);

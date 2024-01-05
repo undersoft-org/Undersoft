@@ -18,12 +18,14 @@ namespace Undersoft.SDK.Service.Application.DataServer;
 
 public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuilder<TStore> where TStore : IDataServiceStore
 {
+    IServiceRegistry _registry;
     protected ODataConventionModelBuilder odataBuilder;
     protected IEdmModel edmModel;
     protected static bool actionSetAdded;
 
     public OpenDataServerBuilder() : base()
     {
+        _registry = ServiceManager.GetManager().Registry;
         odataBuilder = new ODataConventionModelBuilder();
         StoreType = typeof(TStore);
     }
@@ -37,6 +39,7 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
     public override void Build()
     {
         BuildEdm();
+        _registry.MergeServices(true);
     }
 
     public object EntitySet(Type entityType)
@@ -78,7 +81,8 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
                     a.GetTypes()
                         .Where(
                             type => type.GetCustomAttribute<OpenDataServiceAttribute>()
-                                    != null || type.GetCustomAttribute<OpenDataActionServiceAttribute>() != null
+                                    != null || type.GetCustomAttribute<OpenDataActionServiceAttribute>() != null 
+                                    || type.GetCustomAttribute<RemoteOpenDataServiceAttribute>() != null
                         )
                         ).ToArray();
 
@@ -118,6 +122,7 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
 
         });
         AddODataSupport(mvc);
+        _registry.MergeServices(true);
         return mvc;
     }
 
@@ -177,6 +182,10 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
         if (actionSetAdded)
             return;
 
+        odataBuilder.EntityType<Authorization>().Function("SignIn")
+           .Returns<string>()
+           .Parameter<string>("Authorization");
+
         odataBuilder.EntityType<Authorization>().Action("SignIn")
             .Returns<string>()
             .Parameter<Authorization>("Authorization");
@@ -188,6 +197,10 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
         odataBuilder.EntityType<Authorization>().Action("SignOut")
             .Returns<string>()
             .Parameter<Authorization>("Authorization");
+
+        odataBuilder.EntityType<Authorization>().Function("Renew")
+            .Returns<string>()
+            .Parameter<string>("Authorization");
 
         odataBuilder.EntityType<Authorization>().Action("ResetPassword")
             .Returns<string>()

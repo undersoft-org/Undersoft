@@ -8,12 +8,13 @@ using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Operation.Command;
 using Operation.Query;
+using SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Application.Documentation;
 using Undersoft.SDK.Service.Data.Event;
-
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Uniques;
-using SDK.Service.Data.Store;
 
+[IgnoreApi]
 [OpenDataService]
 public abstract class OpenDataController<TKey, TEntry, TReport, TEntity, TDto>
     : ODataController, IOpenDataController<TKey, TEntity, TDto>

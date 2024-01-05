@@ -33,14 +33,14 @@ public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
         else
             mvc = services.AddControllers();
 
-        registry.MergeServices(mvc.Services);
+        registry.MergeServices(services);
     }
 
     public ApplicationSetup(IServiceCollection services, IConfiguration configuration)
         : base(services, configuration)
     {
         mvc = services.AddControllers();
-        registry.MergeServices(mvc.Services);
+        registry.MergeServices(services);
     }
 
     public IApplicationSetup AddDataServer<TServiceStore>(
@@ -72,12 +72,16 @@ public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
                 builder.Invoke(ds);
             ds.Build();
         }
+
+        registry.MergeServices(true);
         return this;
     }
 
     public override IServiceSetup AddSourceProviderConfiguration()
     {
-        registry.AddObject<ISourceProviderConfiguration>(new ApplicationSourceProviderConfiguration());
+        registry.AddObject<ISourceProviderConfiguration>(
+            new ApplicationSourceProviderConfiguration()
+        );
 
         return this;
     }
@@ -181,28 +185,11 @@ public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
                 .RequireAuthenticatedUser()
                 .Build();
 
-            ic.Scopes.ForEach(
-                s => options.AddPolicy(s, policy => policy.RequireClaim("access", s))
-            );
+            ic.Scopes.ForEach(s => options.AddPolicy(s, policy => policy.RequireClaim("scope", s)));
 
             ic.Roles.ForEach(s => options.AddPolicy(s, policy => policy.RequireRole(s)));
 
-            options.AddPolicy(
-                "Administrators",
-                policy =>
-                    policy.RequireAssertion(
-                        context =>
-                            context.User.HasClaim(
-                                c =>
-                                    (
-                                        (
-                                            c.Type == JwtClaimTypes.Role
-                                            && c.Value == ic.AdministrationRole
-                                        )
-                                    )
-                            )
-                    )
-            );
+            ic.Claims.ForEach(s => options.AddPolicy(s, policy => policy.RequireClaim(s)));
         });
 
         return this;
@@ -248,17 +235,20 @@ public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
 
     public IApplicationSetup ConfigureApplication(
         bool includeSwagger = true,
-        Assembly[] assemblies = null
+        Assembly[] assemblies = null,
+        Type[] sourceTypes = null,
+        Type[] clientTypes = null
     )
     {
         Assemblies ??= assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
 
-        base.ConfigureServices(Assemblies).Services.AddHttpContextAccessor();
+        base.ConfigureServices(Assemblies, sourceTypes, clientTypes)
+            .Services.AddHttpContextAccessor();
 
-        AddApplicationSetupInternalImplementations(assemblies);
-        AddApplicationSetupInternalActionImplementations(assemblies);
-        AddApplicationSetupRemoteImplementations(assemblies);
-        AddApplicationSetupRemoteActionImplementations(assemblies);
+        AddApplicationSetupInternalImplementations(Assemblies);
+        AddApplicationSetupInternalActionImplementations(Assemblies);
+        AddApplicationSetupRemoteImplementations(Assemblies);
+        AddApplicationSetupRemoteActionImplementations(Assemblies);
 
         if (includeSwagger)
             AddSwagger();

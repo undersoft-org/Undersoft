@@ -17,10 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Infrastructure\Undersoft.SSC.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Web.Application\Undersoft.SSC.Web.Application.csproj" />
-    <ProjectReference Include="..\..\..\Undersoft.SharedServiceCenter\src\Undersoft.SSC\Undersoft.SSC.csproj" />
     <ProjectReference Include="..\..\..\Undersoft.SoftwareDevelopmentKit.Blazor\src\Undersoft.SDK.Blazor.Server\Undersoft.SDK.Blazor.Server.csproj" />
-    <ProjectReference Include="..\..\..\Undersoft.SoftwareDevelopmentKit\src\Undersoft.SDK\Undersoft.SDK.csproj" />
     <ProjectReference Include="..\Undersoft.SSC.Web.Application.Client\Undersoft.SSC.Web.Application.Client.csproj" />
   </ItemGroup>
 

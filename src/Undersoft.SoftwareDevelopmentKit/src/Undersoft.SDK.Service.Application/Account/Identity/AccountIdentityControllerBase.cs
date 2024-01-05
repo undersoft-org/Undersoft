@@ -5,6 +5,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.OData.Formatter;
     using Microsoft.AspNetCore.OData.Routing.Attributes;
+    using System.Net;
     using System.Text;
     using Undersoft.SDK.Security.Identity;
     using Undersoft.SDK.Service;
@@ -24,6 +25,35 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
     {
         public AuthorizationControllerBase(IServicer servicer) : base(servicer) { }
 
+        [HttpGet(nameof(AuthorizationAction.SignIn))]
+        public virtual async Task<IActionResult> SignIn([FromHeader] string authorization)
+        {
+            var encoding = Encoding.GetEncoding("iso-8859-1");
+            authorization = encoding.GetString(Convert.FromBase64String(authorization));
+            int separator = authorization.IndexOf(':');
+
+            var identityDetails = new TDto()
+            {
+                Credentials = new Credentials()
+                {
+                    Email = authorization.Substring(0, separator),
+                    Password = authorization.Substring(separator + 1)
+                }
+            };
+
+            var result = await _servicer
+                .Send(
+                    new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
+                        AuthorizationAction.SignIn,
+                        identityDetails
+                    )
+                )
+                .ConfigureAwait(false);
+            return !result.IsValid
+                ? Unauthorized(result.ErrorMessages)
+                : Ok(result.Output.ToString());
+        }
+
         [HttpPost(nameof(AuthorizationAction.SignIn))]
         public virtual async Task<IActionResult> SignIn(ODataActionParameters parameters)
         {
@@ -32,7 +62,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var identityDetails = new TDto()
             {
-                Credentials = ((Authorization)parameters["Authorization"]).Credentials
+                Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials
             };
 
             var result = await _servicer.Send(
@@ -70,6 +100,32 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 : Created(result.Id.ToString());
         }
 
+        [HttpGet(nameof(AuthorizationAction.Renew))]
+        public virtual async Task<IActionResult> Renew([FromHeader] string authorization)
+        {
+            int separator = authorization.IndexOf(' ');
+
+            var identityDetails = new TDto()
+            {
+                Credentials = new Credentials()
+                {
+                    SessionToken = authorization.Substring(separator + 1)
+                }
+            };
+
+            var result = await _servicer
+                .Send(
+                    new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
+                        AuthorizationAction.Renew,
+                        identityDetails
+                    )
+                )
+                .ConfigureAwait(false);
+            return !result.IsValid
+                ? Unauthorized(result.ErrorMessages)
+                : Ok(result.Output.ToString());
+        }
+
         [HttpPost(nameof(AuthorizationAction.SetPassword))]
         public virtual async Task<IActionResult> SetPassword(ODataActionParameters parameters)
         {
@@ -80,7 +136,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 .Send(
                     new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
                         AuthorizationAction.SetPassword,
-                        new TDto() { Credentials = (Credentials)parameters["credentials"] })
+                        new TDto() { Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials })
                 )
                 .ConfigureAwait(false);
             return !result.IsValid
@@ -98,7 +154,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 .Send(
                     new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
                         AuthorizationAction.SetEmail,
-                        new TDto() { Credentials = (Credentials)parameters["credentials"] }
+                        new TDto() { Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials }
                     )
                 )
                 .ConfigureAwait(false);
@@ -117,7 +173,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 .Send(
                     new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
                         AuthorizationAction.ConfirmPassword,
-                        new TDto() { Credentials = (Credentials)parameters["credentials"] }
+                        new TDto() { Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials }
                     )
                 )
                 .ConfigureAwait(false);
@@ -136,7 +192,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 .Send(
                     new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
                         AuthorizationAction.ConfirmEmail,
-                        new TDto() { Credentials = (Credentials)parameters["credentials"] }
+                        new TDto() { Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials }
                     )
                 )
                 .ConfigureAwait(false);
@@ -155,7 +211,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 .Send(
                     new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
                         AuthorizationAction.ConfirmEmail,
-                        new TDto() { Credentials = (Credentials)parameters["credentials"] }
+                        new TDto() { Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials }
                     )
                 )
                 .ConfigureAwait(false);
@@ -164,51 +220,6 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 : Created(result.Id.ToString());
         }
 
-        [HttpPost(nameof(AuthorizationAction.Token))]
-        public virtual async Task<IActionResult> Token(ODataActionParameters parameters)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
 
-            var result = await _servicer
-                .Send(
-                    new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
-                        AuthorizationAction.Token,
-                        new TDto() { Credentials = (Credentials)parameters["credentials"] })
-                )
-                .ConfigureAwait(false);
-            return !result.IsValid
-                ? UnprocessableEntity(result.ErrorMessages)
-                : Created(result.Id.ToString());
-        }
-
-        [HttpGet(nameof(AuthorizationAction.Token))]
-        public virtual async Task<IActionResult> Get([FromHeader] string authorization)
-        {
-            var encoding = Encoding.GetEncoding("iso-8859-1");
-            authorization = encoding.GetString(Convert.FromBase64String(authorization));
-            int separator = authorization.IndexOf(':');
-
-            var identityDetails = new TDto()
-            {
-                Credentials = new Credentials()
-                {
-                    Email = authorization.Substring(0, separator),
-                    Password = authorization.Substring(separator + 1)
-                }
-            };
-
-            var result = await _servicer
-                .Send(
-                    new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
-                        AuthorizationAction.Token,
-                        identityDetails
-                    )
-                )
-                .ConfigureAwait(false);
-            return !result.IsValid
-                ? Unauthorized(result.ErrorMessages)
-                : Ok(result.Output.ToString());
-        }
     }
 }

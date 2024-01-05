@@ -38,6 +38,7 @@ namespace Undersoft.SDK.Service
         Lazy<object> GetServiceLazy(Type type);
         Lazy<T> GetServiceLazy<T>() where T : class;
         T GetSingleton<T>() where T : class;
+        object GetSingleton(Type type);        
         bool IsAdded(Type type);
         bool IsAdded<T>() where T : class;
         void MergeServices(bool actualizeExternalServices = true);

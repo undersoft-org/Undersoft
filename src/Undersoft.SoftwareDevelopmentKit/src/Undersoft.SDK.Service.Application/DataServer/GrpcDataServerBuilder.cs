@@ -12,14 +12,16 @@ using Controller;
 using Undersoft.SDK.Service.Application.Controller.Stream;
 using Undersoft.SDK.Service.Data.Contract;
 
-public class GrpcDataServerBuilder<TServiceStore> : DataServerBuilder, IDataServerBuilder<TServiceStore> where TServiceStore : IDataServiceStore
+public class GrpcDataServerBuilder<TServiceStore>
+    : DataServerBuilder,
+        IDataServerBuilder<TServiceStore> where TServiceStore : IDataServiceStore
 {
     static bool grpcadded = false;
     IServiceRegistry _registry;
 
     public GrpcDataServerBuilder() : base()
     {
-        _registry = ServiceManager.GetManager().Registry;
+        _registry = ServiceManager.GetRegistry();
         StoreType = typeof(TServiceStore);
     }
 
@@ -35,39 +37,50 @@ public class GrpcDataServerBuilder<TServiceStore> : DataServerBuilder, IDataServ
                 a =>
                     a.GetTypes()
                         .Where(
-                            type => type.GetCustomAttribute<StreamDataServiceAttribute>()
-                                    != null
+                            type => type.GetCustomAttribute<StreamDataServiceAttribute>() != null
                         )
-                        .ToArray())
+                        .ToArray()
+            )
             .Where(
                 b =>
                     !b.IsAbstract
                     && b.BaseType.IsGenericType
                     && b.BaseType.GenericTypeArguments.Length > 3
-            ).ToArray();
+            )
+            .ToArray();
 
         foreach (var controllerType in controllerTypes)
         {
             Type ifaceType = null;
             var genTypes = controllerType.BaseType.GenericTypeArguments;
 
-            if (genTypes.Length > 4 && genTypes[1].IsAssignableTo(StoreType) && genTypes[2].IsAssignableTo(StoreType))
+            if (
+                genTypes.Length > 4
+                && genTypes[1].IsAssignableTo(StoreType)
+                && genTypes[2].IsAssignableTo(StoreType)
+            )
                 ifaceType = typeof(IStreamDataController<>).MakeGenericType(new[] { genTypes[4] });
             else if (genTypes.Length > 3)
-                if (genTypes[3].IsAssignableTo(typeof(IContract)) && genTypes[1].IsAssignableTo(StoreType))
-                    ifaceType = typeof(IStreamDataController<>).MakeGenericType(new[] { genTypes[3] });
+                if (
+                    genTypes[3].IsAssignableTo(typeof(IContract))
+                    && genTypes[1].IsAssignableTo(StoreType)
+                )
+                    ifaceType = typeof(IStreamDataController<>).MakeGenericType(
+                        new[] { genTypes[3] }
+                    );
                 else
                     continue;
 
             GrpcDataServerRegistry.ServiceContracts.Add(ifaceType);
 
-            _registry.AddSingleton(ifaceType, controllerType.New());
+            _registry.AddObject(ifaceType, controllerType.New());
         }
     }
 
     public override void Build()
     {
         AddControllers();
+        _registry.MergeServices(true);
     }
 
     protected override string GetRoutes()
@@ -94,10 +107,13 @@ public class GrpcDataServerBuilder<TServiceStore> : DataServerBuilder, IDataServ
                     .CompressionLevel
                     .NoCompression;
             });
+
             _registry.AddSingleton(
                 BinderConfiguration.Create(binder: new GrpcDataServerBinder(_registry))
             );
+
             _registry.AddCodeFirstGrpcReflection();
+            _registry.MergeServices(true);
             grpcadded = true;
         }
     }

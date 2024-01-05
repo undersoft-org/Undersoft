@@ -36,7 +36,7 @@
         public WorkAspect Aspect;
         private Thread[] workers;
         private int WorkersCount => Aspect.WorkersCount;
-        private Registry<Worker> Elaborations = new Registry<Worker>();
+        private Registry<Worker> Works = new Registry<Worker>();
 
         public Workspace(WorkAspect aspect)
         {
@@ -82,12 +82,12 @@
             {
                 if (work != null)
                 {
-                    Elaborations.Enqueue(Clone(work.Worker));
+                    Works.Enqueue(Clone(work.Worker));
                     Monitor.Pulse(inlock);
                 }
                 else
                 {
-                    Elaborations.Enqueue(DateTime.Now.Ticks, null);
+                    Works.Enqueue(DateTime.Now.Ticks, null);
                     Monitor.Pulse(inlock);
                 }
             }
@@ -108,7 +108,7 @@
 
                 lock (inlock)
                 {
-                    while (!Elaborations.TryDequeue(out worker))
+                    while (!Works.TryDequeue(out worker))
                     {
                         Monitor.Wait(inlock);
                     }

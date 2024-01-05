@@ -23,6 +23,8 @@ using Data.Repository;
 using Data.Repository.Client;
 using Data.Repository.Source;
 using ProtoBuf.Meta;
+using Undersoft.SDK.Security.Identity;
+using Serilog;
 
 public partial class ServiceSetup : IServiceSetup
 {
@@ -31,13 +33,12 @@ public partial class ServiceSetup : IServiceSetup
 
     protected IServiceConfiguration configuration => manager.Configuration;
     protected IServiceManager manager { get; }
-    protected IServiceRegistry registry { get; set; }
+    protected IServiceRegistry registry => manager.Registry;
     protected IServiceCollection services => registry.Services;
 
     public ServiceSetup(IServiceCollection services)
     {
         manager = new ServiceManager(services);
-        registry = manager.Registry;
         registry.MergeServices();
     }
 
@@ -104,6 +105,12 @@ public partial class ServiceSetup : IServiceSetup
         flds.Single(f => f.Name == "_referenceHandler")
             .SetValue(JsonSerializerOptions.Default, ReferenceHandler.IgnoreCycles);
 #endif
+    }
+
+    public IServiceSetup AddLogging()
+    {
+        registry.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
+        return this;
     }
 
     public IServiceSetup AddOpenTelemetry()
@@ -235,10 +242,11 @@ public partial class ServiceSetup : IServiceSetup
     public IServiceSetup AddImplementations(Assembly[] assemblies = null)
     {
         registry.AddScoped<IServicer, Servicer>();
+        registry.AddScoped<IAuthorization, Authorization>();
 
         AddDomainImplementations();
 
-        registry.MergeServices();
+        registry.MergeServices(true);
 
         return this;
     }
@@ -267,10 +275,16 @@ public partial class ServiceSetup : IServiceSetup
     }
 
     public IServiceSetup AddRepositoryClients(Assembly[] assemblies = null)
+    {        
+        assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
+        Type[] serviceTypes = assemblies.SelectMany(a => a.DefinedTypes).Select(t => t.UnderlyingSystemType).ToArray();
+        return AddRepositoryClients(serviceTypes);
+    }
+
+    public IServiceSetup AddRepositoryClients(Type[] serviceTypes)
     {
         IServiceConfiguration config = configuration;
-        assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
-        TypeInfo[] definedTypes = assemblies.SelectMany(a => a.DefinedTypes).ToArray();
+
         IEnumerable<IConfigurationSection> clients = config.Clients();
         RepositoryClients repoClients = new RepositoryClients();
 
@@ -281,9 +295,8 @@ public partial class ServiceSetup : IServiceSetup
             ClientProvider provider = config.ClientProvider(client);
             string connectionString = config.ClientConnectionString(client).Trim();
             int poolsize = config.ClientPoolSize(client);
-            Type contextType = definedTypes
-                .Where(t => t.FullName.Contains(client.Key))
-                .Select(t => t.UnderlyingSystemType)
+            Type contextType = serviceTypes
+                .Where(t => t.FullName.Contains(client.Key))                
                 .FirstOrDefault();
 
             if (
@@ -345,9 +358,14 @@ public partial class ServiceSetup : IServiceSetup
 
     public IServiceSetup AddRepositorySources(Assembly[] assemblies = null)
     {
-        IServiceConfiguration config = configuration;
         assemblies ??= Assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
-        TypeInfo[] definedTypes = assemblies.SelectMany(a => a.DefinedTypes).ToArray();
+        Type[] storeTypes = assemblies.SelectMany(a => a.DefinedTypes).Select(t => t.UnderlyingSystemType).ToArray();
+        return AddRepositorySources(storeTypes);
+    }
+
+    public IServiceSetup AddRepositorySources(Type[] storeTypes)
+    {
+        IServiceConfiguration config = configuration;
         IEnumerable<IConfigurationSection> sources = config.Sources();
 
         RepositorySources repoSources = new RepositorySources();
@@ -360,9 +378,8 @@ public partial class ServiceSetup : IServiceSetup
             string connectionString = config.SourceConnectionString(source);
             SourceProvider provider = config.SourceProvider(source);
             int poolsize = config.SourcePoolSize(source);
-            Type contextType = definedTypes
+            Type contextType = storeTypes
                 .Where(t => t.FullName == source.Key)
-                .Select(t => t.UnderlyingSystemType)
                 .FirstOrDefault();
 
             if (
@@ -422,9 +439,11 @@ public partial class ServiceSetup : IServiceSetup
         return this;
     }
 
-    public virtual IServiceSetup ConfigureServices(Assembly[] assemblies = null)
+    public virtual IServiceSetup ConfigureServices(Assembly[] assemblies = null, Type[] sourceTypes = null, Type[] clientTypes = null)
     {
         Assemblies ??= assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
+
+        AddLogging();
 
         AddMapper(new DataMapper());        
 
@@ -432,9 +451,15 @@ public partial class ServiceSetup : IServiceSetup
 
         AddSourceProviderConfiguration();
 
-        AddRepositorySources(Assemblies);
+        if(sourceTypes != null)
+            AddRepositorySources(sourceTypes);
+        else
+            AddRepositorySources(Assemblies);
 
-        AddRepositoryClients(Assemblies);
+        if(clientTypes != null)
+            AddRepositoryClients(clientTypes);
+        else
+            AddRepositoryClients(Assemblies);   
 
         AddImplementations(Assemblies);
 

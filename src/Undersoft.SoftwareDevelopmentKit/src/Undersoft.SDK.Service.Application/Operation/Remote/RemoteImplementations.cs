@@ -23,7 +23,7 @@ using Undersoft.SDK.Service.Data.ViewModel;
 
 public static class RemoteImplementations
 {
-    public static void AddOpenDataImplementations(this OpenDataService context, Assembly[] assemblies)
+    public static void AddOpenDataImplementations(this OpenDataServiceContext context, Assembly[] assemblies)
     {
         IServiceRegistry service = ServiceManager.GetRegistry();
 

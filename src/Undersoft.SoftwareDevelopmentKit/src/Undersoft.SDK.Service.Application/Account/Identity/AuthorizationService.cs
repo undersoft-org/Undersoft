@@ -73,6 +73,26 @@ public class AuthorizationService
         return account;
     }
 
+    public async Task<IAuthorization> Renew(IAuthorization identity)
+    {
+        var account = Authenticate(identity);
+
+        if (account.Credentials.Authenticated)
+        {
+            var principal = await _manager.SignIn.CreateUserPrincipalAsync(
+                await _manager.User.FindByEmailAsync(account.Credentials.Email)
+            );
+            if (_manager.SignIn.IsSignedIn(principal))
+                await _manager.SignIn.SignOutAsync();
+            account.Notes = new AuthorizationNotes()
+            {
+                Success = "Signed out",
+                Status = SigningStatus.SignedOut
+            };
+        }
+        return account;
+    }
+
     public IAuthorization Authenticate(IAuthorization identity, bool isAuthorized = false)
     {
         var _creds = identity.Credentials;

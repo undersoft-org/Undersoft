@@ -6,7 +6,7 @@ using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Application.Controller.Open;
 using Undersoft.SDK.Service.Data.Identifier;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SSC.Web.Enums;
+using Undersoft.SSC.Domain.Entities.Enums;
 using Undersoft.SSC.Web.Appllication.ViewModels;
 
 namespace Undersoft.SSC.Web.Application.Server.Controllers
@@ -18,7 +18,7 @@ namespace Undersoft.SSC.Web.Application.Server.Controllers
             long,
             IDataStore,
             Identifier<AccountBase>,
-            Identifier<Customer>
+            Identifier<ClientAccount>
         >
     {
         public ClientIdentifierController(IServicer ultimatr)
@@ -34,7 +34,7 @@ namespace Undersoft.SSC.Web.Application.Server.Controllers
             long,
             IDataStore,
             Identifier<AccountBase>,
-            Identifier<Customer>
+            Identifier<ClientAccount>
         >
     {
         public ClientIdentifiersController(IServicer ultimatr)

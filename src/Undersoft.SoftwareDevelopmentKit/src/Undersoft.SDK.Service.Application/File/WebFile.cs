@@ -7,10 +7,11 @@ using System.Text;
 using System.Linq;
 using Undersoft.SDK.Service.Data.File.Container;
 using Microsoft.AspNetCore.Http;
+using Undersoft.SDK.Service.Data.File;
 
 namespace Undersoft.SDK.Service.Application.File
 {
-    public class WebFile : FileContainer, IFormFile, IWebFile
+    public class WebFile : DataFile, IFormFile, IWebFile
     {
         private IFormFile _formFile;
         private Stream _stream;
@@ -38,31 +39,29 @@ namespace Undersoft.SDK.Service.Application.File
             _formFile = new FormFile(_stream, 0, _stream.Length, filename.Split('.')[0], filename);
         }
 
-        public Stream Stream => _stream;
+        public override string ContentType => _formFile.ContentType;
 
-        public string ContentType => _formFile.ContentType;
-
-        public string ContentDisposition => _formFile.ContentDisposition;
+        public override string ContentDisposition => _formFile.ContentDisposition;
 
         public IHeaderDictionary Headers => _formFile.Headers;
 
-        public long Length => _formFile.Length;
+        public override long Length => _formFile.Length;
 
-        public string Name => _formFile.Name;
+        public override string Name => _formFile.Name;
 
-        public string FileName => _formFile.FileName;
+        public override string FileName => _formFile.FileName;
 
-        public void CopyTo(Stream target)
+        public override void CopyTo(Stream target)
         {
             _formFile.CopyTo(target);
         }
 
-        public Task CopyToAsync(Stream target, CancellationToken cancellationToken = default)
+        public override Task CopyToAsync(Stream target, CancellationToken cancellationToken = default)
         {
             return _formFile.CopyToAsync(target, cancellationToken);
         }
 
-        public Stream OpenReadStream()
+        public override Stream OpenReadStream()
         {
             return _formFile.OpenReadStream();
         }

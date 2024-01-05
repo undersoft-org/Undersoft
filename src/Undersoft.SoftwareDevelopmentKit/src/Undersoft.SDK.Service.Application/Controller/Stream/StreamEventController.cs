@@ -13,7 +13,7 @@ using Undersoft.SDK.Service.Data.Query;
 
 [RemoteResult]
 [StreamDataService]
-public abstract class StreamEventController<TKey, TStore, TEntity, TDto> : IStreamEventController<TDto> where TDto : class, IDataObject
+public abstract class StreamEventController<TKey, TStore, TEntity, TDto> : IStreamDataController<TDto> where TDto : class, IDataObject
     where TEntity : class, IDataObject
     where TStore : IDatabaseStore
 {
@@ -43,17 +43,12 @@ public abstract class StreamEventController<TKey, TStore, TEntity, TDto> : IStre
         return _servicer.CreateStream(new GetAsync<TStore, TEntity, TDto>(0, 0));
     }
 
-    public virtual async Task<int> Count()
+    public virtual Task<string> Count()
     {
-        return await Task.Run(() => _servicer.use<TStore, TEntity>().Count());
+        return Task.FromResult(_servicer.use<TStore, TEntity>().Count().ToString());
     }
 
-    public virtual IAsyncEnumerable<TDto> Range(int offset, int limit)
-    {
-        return _servicer.CreateStream(new GetAsync<TStore, TEntity, TDto>(offset, limit));
-    }
-
-    public virtual IAsyncEnumerable<TDto> Query(int offset, int limit, QuerySet query)
+    public virtual IAsyncEnumerable<TDto> Query(QuerySet query)
     {
         query.FilterItems.ForEach(
             (fi) =>
@@ -66,7 +61,7 @@ public abstract class StreamEventController<TKey, TStore, TEntity, TDto> : IStre
         return
             _servicer
                 .CreateStream(
-                    new FilterAsync<TStore, TEntity, TDto>(offset, limit,
+                    new FilterAsync<TStore, TEntity, TDto>(0, 0,
                         new FilterExpression<TEntity>(query.FilterItems).Create(),
                         new SortExpression<TEntity>(query.SortItems)
                     )

@@ -23,22 +23,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Properties\nlog.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-  
-  <ItemGroup>
-  <Content Include="Properties\nlog.Development.config">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-  </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
     <PackageReference Include="Serilog" Version="3.1.1" />
     <PackageReference Include="Serilog.Expressions" Version="3.4.1" />

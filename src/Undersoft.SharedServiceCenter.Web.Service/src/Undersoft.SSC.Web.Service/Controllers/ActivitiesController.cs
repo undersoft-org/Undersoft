@@ -4,7 +4,7 @@ using Undersoft.SDK.Service.Application.Controller.Open;
 using Undersoft.SDK.Service.Application.Controller.Stream;
 using Undersoft.SSC.Domain.Entities;
 
-namespace Undersoft.SSC.Web.Controllers
+namespace Undersoft.SSC.Web.Service.Controllers
 {
     [AllowAnonymous]
     public class ActivityController
@@ -14,7 +14,7 @@ namespace Undersoft.SSC.Web.Controllers
     }
 }
 
-namespace Undersoft.SSC.Web.Controllers
+namespace Undersoft.SSC.Web.Service.Controllers
 {
     public class ActivitiesController
         : CrudDataController<long, IEntryStore, IReportStore, Activity, Contracts.Activity>
@@ -23,11 +23,10 @@ namespace Undersoft.SSC.Web.Controllers
     }
 }
 
-namespace Undersoft.SSC.Web.Controllers
+namespace Undersoft.SSC.Web.Service.Controllers
 {
     public class ActivityStreamController
-        : StreamDataController<long, IEntryStore, IReportStore, Activity, Contracts.Activity>,
-            IStreamDataController<Contracts.Activity>
+        : StreamDataController<long, IEntryStore, IReportStore, Activity, Contracts.Activity>
     {
         public ActivityStreamController() : base() { }
     }

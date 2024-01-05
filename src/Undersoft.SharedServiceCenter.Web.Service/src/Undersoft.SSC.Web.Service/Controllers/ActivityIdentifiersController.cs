@@ -5,7 +5,7 @@ using Undersoft.SDK.Service.Application.Controller.Stream;
 using Undersoft.SDK.Service.Data.Identifier;
 using Undersoft.SSC.Domain.Entities;
 
-namespace Undersoft.SSC.Web.Controllers
+namespace Undersoft.SSC.Web.Service.Controllers
 {
     [AllowAnonymous]
     public class ActivityIdentifierController
@@ -15,7 +15,7 @@ namespace Undersoft.SSC.Web.Controllers
     }
 }
 
-namespace Undersoft.SSC.Web.Controllers
+namespace Undersoft.SSC.Web.Service.Controllers
 {
     public class ActivityIdentifiersController
         : CrudDataController<long, IEntryStore, IReportStore, Identifier<Activity>, Identifier<Contracts.Activity>>
@@ -24,12 +24,3 @@ namespace Undersoft.SSC.Web.Controllers
     }
 }
 
-namespace Undersoft.SSC.Web.Controllers
-{
-    public class ActivityIdentifierStreamController
-        : StreamDataController<long, IEntryStore, IReportStore, Identifier<Activity>, Identifier<Contracts.Activity>>,
-            IStreamDataController<Identifier<Contracts.Activity>>
-    {
-        public ActivityIdentifierStreamController() : base() { }
-    }
-}

@@ -54,6 +54,7 @@ public class RestDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
     public override void Build()
     {
         AddControllers();
+        _registry.MergeServices(true);
     }
 
     protected override string GetRoutes()

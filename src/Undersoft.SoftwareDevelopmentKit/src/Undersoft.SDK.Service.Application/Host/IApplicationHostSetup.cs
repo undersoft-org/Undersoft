@@ -1,11 +1,15 @@
-﻿namespace Undersoft.SDK.Service.Application
+﻿using Microsoft.AspNetCore.Builder;
+
+namespace Undersoft.SDK.Service.Application
 {
     public interface IApplicationHostSetup
     {
 
         IApplicationHostSetup UseHeaderForwarding();
 
-        IApplicationHostSetup UseStandardSetup(string[] apiVersions, bool useRazorPages = false);
+        IApplicationHostSetup UseApiSetup(string[] apiVersions);
+        
+        IApplicationHostSetup UseCustomSetup(Action<IApplicationHostSetup> action);
 
         IApplicationHostSetup UseDataServices();
 
@@ -17,12 +21,14 @@
 
         IApplicationHostSetup UseEndpoints(bool useRazorPages = false);
 
-        IApplicationHostSetup UseJwtUserInfo();
+        IApplicationHostSetup UseJwtMiddleware();
 
         IApplicationHostSetup RebuildProviders();
 
         IApplicationHostSetup UseSwaggerSetup(string[] apiVersions);
 
         IApplicationHostSetup MapFallbackToFile(string filePath);
+
+        IApplicationBuilder Application { get; }
     }
 }

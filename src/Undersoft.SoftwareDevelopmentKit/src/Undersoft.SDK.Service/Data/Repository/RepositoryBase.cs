@@ -231,12 +231,12 @@ public abstract class Repository : IRepository
 
     public virtual void LoadRemote(object entity)
     {
-        RemoteObjects.DoEach((o) => o.Load(entity));
+        RemoteObjects.ForEach((o) => o.Load(entity));
     }
 
     public virtual async Task LoadRemoteAsync(object entity)
     {
-        await Task.WhenAll(RemoteObjects.DoEach((o) => o.LoadAsync(entity)));
+        await Task.WhenAll(RemoteObjects.ForEach((o) => o.LoadAsync(entity)));
     }
 
     public virtual void LoadRelated(EntityEntry entry, RelatedType relatedType)

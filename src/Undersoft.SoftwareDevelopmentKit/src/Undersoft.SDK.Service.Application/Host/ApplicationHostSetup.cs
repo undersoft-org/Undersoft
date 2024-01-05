@@ -16,7 +16,7 @@ using Series;
 
 public class ApplicationHostSetup : IApplicationHostSetup
 {
-    public static bool basicProvider;
+    public static bool defaultProvider;
 
     IApplicationBuilder app;
     IWebHostEnvironment env;
@@ -24,21 +24,15 @@ public class ApplicationHostSetup : IApplicationHostSetup
 
     public ApplicationHostSetup(IApplicationBuilder application) { app = application; }
 
-    public ApplicationHostSetup(IApplicationBuilder application, IWebHostEnvironment environment, bool useSwagger, bool useRazorPages = false)
-        : this(application, environment, useSwagger ? new string[] { "v1.0" } : null, useRazorPages)
-    {
-    }
-
-    public ApplicationHostSetup(IApplicationBuilder application, IWebHostEnvironment environment, string[] apiVersions = null, bool useRazorPages = false)
+    public ApplicationHostSetup(IApplicationBuilder application, IWebHostEnvironment environment)
     {
         app = application;
         env = environment;
-        UseStandardSetup(apiVersions, useRazorPages);
     }
 
     public IApplicationHostSetup RebuildProviders()
     {
-        if (basicProvider)
+        if (defaultProvider)
         {
             UseDefaultProvider();
         }
@@ -50,7 +44,7 @@ public class ApplicationHostSetup : IApplicationHostSetup
         return this;
     }
 
-    public IApplicationHostSetup UseEndpoints(bool mapRazorPages = false)
+    public IApplicationHostSetup UseEndpoints(bool useRazorPages = false)
     {
         app.UseEndpoints(endpoints =>
         {
@@ -63,13 +57,17 @@ public class ApplicationHostSetup : IApplicationHostSetup
 
                 endpoints.MapCodeFirstGrpcReflectionService();
             }
+
             ServiceManager
-                .GetRegistry()                    
-                        .MergeServices();
+               .GetRegistry()
+                   .MergeServices();
 
             endpoints.MapControllers();
-            if (mapRazorPages)
+
+            if (useRazorPages)
                 endpoints.MapRazorPages();
+
+            endpoints.MapFallbackToFile("/index.html");
         });
 
         return this;
@@ -81,8 +79,7 @@ public class ApplicationHostSetup : IApplicationHostSetup
         {
             endpoints.MapFallbackToFile(filePath);
         });
-        //erb.MapDefaultControllerRoute();
-        //StaticFilesEndpointRouteBuilderExtensions.MapFallbackToFile(erb, filePath);
+
         return this;
     }
 
@@ -114,7 +111,7 @@ public class ApplicationHostSetup : IApplicationHostSetup
     {
         ServiceManager.GetRegistry().MergeServices(false);
         ServiceManager.SetProvider(app.ApplicationServices);
-        basicProvider = true;
+        defaultProvider = true;
         return this;
     }
 
@@ -125,7 +122,7 @@ public class ApplicationHostSetup : IApplicationHostSetup
         return this;
     }
 
-    public IApplicationHostSetup UseStandardSetup(string[] apiVersions = null, bool useRazorPages = false)
+    public IApplicationHostSetup UseApiSetup(string[] apiVersions = null)
     {
         UseHeaderForwarding();
 
@@ -137,6 +134,9 @@ public class ApplicationHostSetup : IApplicationHostSetup
         app.UseODataBatching();
         app.UseODataQueryRequest();
 
+        app.UseDefaultFiles();
+        app.UseStaticFiles();
+
         app.UseRouting();
 
         app.UseCors();
@@ -147,10 +147,16 @@ public class ApplicationHostSetup : IApplicationHostSetup
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.UseDefaultFiles();
-        app.UseStaticFiles();
+        UseJwtMiddleware();
 
-        UseEndpoints(useRazorPages);
+        UseEndpoints();
+
+        return this;
+    }
+
+    public IApplicationHostSetup UseCustomSetup(Action<IApplicationHostSetup> action)
+    {
+        action(this);
 
         return this;
     }
@@ -190,10 +196,12 @@ public class ApplicationHostSetup : IApplicationHostSetup
         return this;
     }
 
-    public IApplicationHostSetup UseJwtUserInfo()
+    public IApplicationHostSetup UseJwtMiddleware()
     {
         app.UseMiddleware<ApplicationHostJwtMiddleware>();
 
         return this;
     }
+
+    public IApplicationBuilder Application => app;
 }

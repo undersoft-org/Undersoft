@@ -68,6 +68,19 @@ public class AccountIdentityManager : TypedRegistry<IAccountIdentity<long>>, IAc
         return (await Token.Validate(token)).IsValid;
     }
 
+    public async Task<string> RenewToken(string token)
+    {
+        string _token = null;
+        var validation = await Token.Validate(token);
+        if (validation.IsValid)
+        {
+            var emailClaim = validation.ClaimsIdentity.Claims.Where(c => c.Type == JwtClaimTypes.Email).FirstOrDefault();
+            if (emailClaim != null)
+                _token = GetToken(new Authorization() { Credentials = new Credentials() { Email = emailClaim.Value } });            
+        }
+        return _token;
+    }
+
     public async Task<AccountIdentity> CheckPassword(string email, string password)
     {
         if (!TryGetByEmail(email, out IAccountIdentity<long> account))

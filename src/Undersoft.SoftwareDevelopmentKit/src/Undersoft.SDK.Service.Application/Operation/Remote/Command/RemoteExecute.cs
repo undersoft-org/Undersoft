@@ -11,8 +11,8 @@ public class RemoteExecute<TStore, TDto, TModel, TKind> : ActionCommand<TModel, 
     where TKind : Enum
     where TStore : IDataServiceStore
 {
-    public RemoteExecute(TKind kind, TModel input)
-        : base(CommandMode.Create, kind, input)
+    public RemoteExecute(TKind kind, TModel input, CommandMode mode = CommandMode.Action)
+        : base(mode, kind, input)
     {
         input.AutoId();
     }

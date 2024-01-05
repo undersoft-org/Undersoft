@@ -7,5 +7,5 @@ internal class RouteContext
 
     public Type? Handler { get; set; }
 
-    public IReadOnlyDictionary<string, object>? Parameters { get; set; }
+    public IReadOnlyDictionary<string, object> Parameters { get; set; }
 }

@@ -6,16 +6,15 @@ using Undersoft.SDK.Service.Application.Controller.Open;
 using Undersoft.SDK.Service.Data.Identifier;
 using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SSC.Web.Contracts;
-using Undersoft.SSC.Web.Enums;
+using Undersoft.SSC.Domain.Entities.Enums;
 
 namespace Undersoft.SSC.Web.Application.Server.Controllers
 {
 
-
     [AllowAnonymous]
     [ODataRouteComponent(StoreRoutes.OpenDataStore)]
     public class ServicerrIdentifierController
-        : OpenDataRemoteController<long, IDataStore, Identifier<AccountBase>, Identifier<ViewModels.Servicer>>
+        : OpenDataRemoteController<long, IDataStore, Identifier<AccountBase>, Identifier<ViewModels.ServiceAccount>>
     {
         public ServicerrIdentifierController(IServicer ultimatr)
             : base(ultimatr, m => d => d.Object.Group == AccountGroup.Servicer) { }
@@ -26,7 +25,7 @@ namespace Undersoft.SSC.Web.Application.Server.Controllers
 {
     [AllowAnonymous]
     public class ServicerIdentifiersController
-        : CrudDataRemoteController<long, IDataStore, Identifier<AccountBase>, Identifier<ViewModels.Servicer>>
+        : CrudDataRemoteController<long, IDataStore, Identifier<AccountBase>, Identifier<ViewModels.ServiceAccount>>
     {
         public ServicerIdentifiersController(IServicer ultimatr)
             : base(ultimatr, m => d => d.Object.Group == AccountGroup.Servicer) { }
