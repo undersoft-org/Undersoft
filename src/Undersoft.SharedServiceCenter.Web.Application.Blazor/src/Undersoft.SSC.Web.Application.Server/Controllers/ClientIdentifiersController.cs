@@ -17,7 +17,7 @@ namespace Undersoft.SSC.Web.Application.Server.Controllers
         : OpenDataRemoteController<
             long,
             IDataStore,
-            Identifier<AccountBase>,
+            Identifier<Account>,
             Identifier<ClientAccount>
         >
     {
@@ -33,7 +33,7 @@ namespace Undersoft.SSC.Web.Application.Server.Controllers
         : CrudDataRemoteController<
             long,
             IDataStore,
-            Identifier<AccountBase>,
+            Identifier<Account>,
             Identifier<ClientAccount>
         >
     {

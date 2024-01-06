@@ -15,10 +15,10 @@ namespace Undersoft.SSC.Web.Application.Server.Controllers
 
     [AllowAnonymous]
     [ODataRouteComponent(StoreRoutes.OpenDataStore)]
-    public class UserIdentifierController
-        : OpenDataRemoteController<long, IDataStore, Identifier<AccountBase>, Identifier<UserAccount>>
+    public class UserAccountIdentifierController
+        : OpenDataRemoteController<long, IDataStore, Identifier<Account>, Identifier<UserAccount>>
     {
-        public UserIdentifierController(IServicer ultimatr)
+        public UserAccountIdentifierController(IServicer ultimatr)
             : base(ultimatr, m => d => d.Object.Group == AccountGroup.User) { }
     }
 }
@@ -26,10 +26,10 @@ namespace Undersoft.SSC.Web.Application.Server.Controllers
 namespace Undersoft.SSC.Web.Application.Server.Controllers
 {
     [AllowAnonymous]
-    public class UserIdentifiersController
-        : CrudDataRemoteController<long, IDataStore, Identifier<AccountBase>, Identifier<UserAccount>>
+    public class UserAccountIdentifiersController
+        : CrudDataRemoteController<long, IDataStore, Identifier<Account>, Identifier<UserAccount>>
     {
-        public UserIdentifiersController(IServicer ultimatr)
+        public UserAccountIdentifiersController(IServicer ultimatr)
             : base(ultimatr, m => d => d.Object.Group == AccountGroup.User) { }
     }
 }

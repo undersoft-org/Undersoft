@@ -13,10 +13,10 @@ namespace Undersoft.SSC.Web.Application.Server.Controllers
 {
     [AllowAnonymous]
     [ODataRouteComponent(StoreRoutes.OpenDataStore)]
-    public class ServicerController
+    public class ServiceAccountController
         : OpenDataRemoteController<long, IDataStore, AccountBase, ViewModels.ServiceAccount>
     {
-        public ServicerController(IServicer ultimatr)
+        public ServiceAccountController(IServicer ultimatr)
             : base(ultimatr, m => d => d.Group == AccountGroup.Servicer) { }
     }
 }
@@ -24,10 +24,10 @@ namespace Undersoft.SSC.Web.Application.Server.Controllers
 namespace Undersoft.SSC.Web.Application.Server.Controllers
 {
     [AllowAnonymous]
-    public class ServicersController
+    public class ServiceAccountsController
         : CrudDataRemoteController<long, IDataStore, AccountBase, ViewModels.ServiceAccount>
     {
-        public ServicersController(IServicer ultimatr)
+        public ServiceAccountsController(IServicer ultimatr)
             : base(ultimatr, m => d => d.Group == AccountGroup.Servicer) { }
     }
 }

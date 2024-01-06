@@ -2,6 +2,7 @@ using Undersoft.SDK.Service.Data.Repository;
 using Undersoft.SDK.Service.Data.Service;
 using Undersoft.SDK.Uniques;
 using System;
+using Microsoft.OData.Edm;
 
 namespace Undersoft.SDK.Service.Data.Repository.Client;
 
@@ -20,7 +21,7 @@ public interface IRepositoryClient
     object CreateContext(Type contextType, Uri serviceRoot);
     TContext CreateContext<TContext>(Uri serviceRoot) where TContext : OpenDataServiceContext;
 
-    void BuildMetadata();
+    Task<IEdmModel> BuildMetadata();
 }
 
 public interface IRepositoryClient<TContext>

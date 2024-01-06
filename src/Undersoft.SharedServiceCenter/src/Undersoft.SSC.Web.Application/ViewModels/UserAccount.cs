@@ -9,7 +9,7 @@ using Undersoft.SSC.Domain.Entities.Enums;
 
 namespace Undersoft.SSC.Web.Application.ViewModels;
 
-public class UserAccount : Account
+public class UserAccount : ViewModelBase<UserAccount, Detail, Setting, AccountGroup>, IViewModel
 {
     public UserAccount() { Group = AccountGroup.User; }
 

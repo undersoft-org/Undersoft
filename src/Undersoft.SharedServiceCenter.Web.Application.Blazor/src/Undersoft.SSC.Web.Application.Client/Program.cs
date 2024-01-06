@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Serilog;
+using Undersoft.SDK.Blazor.Services;
 using Undersoft.SDK.Service;
-using Undersoft.SDK.Service.Data.Service;
+using Undersoft.SSC.Web.Infrastructure.Persistance.Services;
 
 namespace Undersoft.SSC.Web.Application.Client
 {
@@ -12,25 +14,28 @@ namespace Undersoft.SSC.Web.Application.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-            var serviceSetup = builder.Services.AddServiceSetup();
+            var serviceSetup = builder.Services.AddServiceSetup(builder.Configuration);
 
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.ConfigureContainer(
                 ServiceManager.GetProviderFactory(),
-                (services) =>
+                async (services) =>
                 {
-                    services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
                     services.AddAuthorizationCore();
                     serviceSetup.ConfigureServices(
                         AppDomain.CurrentDomain.GetAssemblies(),
                         null,
-                        new[] { typeof(OpenDataServiceContext) }
+                        new[] { typeof(OpenDataService) }
                     );
                     var reg = ServiceManager.GetRegistry();
                     reg.MergeServices(services, true);
-                    ServiceManager.BuildInternalProvider().UseDataServices();
+                    services.AddScoped<JWTAuthenticationStateProvider>();
+                    services.AddScoped<AuthenticationStateProvider, JWTAuthenticationStateProvider>(
+                        provider => provider.GetRequiredService<JWTAuthenticationStateProvider>()
+                        );
+                    await ServiceManager.BuildInternalProvider().UseDataServices();
                     reg.MergeServices(services, true);
                 }
             );

@@ -10,22 +10,20 @@ using Undersoft.SDK.Service.Data.Store;
 
 namespace Undersoft.SSC.Web.Application.Server.Controllers
 {
-  
-
     [AllowAnonymous]
     [ODataRouteComponent(StoreRoutes.OpenDataStore)]
-    public class ClientController : OpenDataRemoteController<long, IDataStore, AccountBase, ClientAccount>
+    public class ClientAccountController : OpenDataRemoteController<long, IDataStore, Account, ClientAccount>
     {
-        public ClientController(IServicer ultimatr)
+        public ClientAccountController(IServicer ultimatr)
             : base(ultimatr, c => a => a.Group == AccountGroup.Client) { }
     }
 }
 
 namespace Undersoft.SSC.Web.Application.Server.Controllers
 {
-    public class ClientsController : CrudDataRemoteController<long, IDataStore, AccountBase, ClientAccount>
+    public class ClientAccountsController : CrudDataRemoteController<long, IDataStore, Account, ClientAccount>
     {
-        public ClientsController(IServicer ultimatr)
+        public ClientAccountsController(IServicer ultimatr)
             : base(ultimatr, c => a => a.Group == AccountGroup.Client) { }
     }
 }

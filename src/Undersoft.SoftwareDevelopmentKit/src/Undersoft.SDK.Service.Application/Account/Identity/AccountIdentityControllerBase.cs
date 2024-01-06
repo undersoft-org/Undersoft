@@ -16,8 +16,8 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
     [AllowAnonymous]
     [OpenDataActionService]
     [ODataRouteComponent("data/open/[controller]")]
-    public abstract class AuthorizationControllerBase<TStore, TService, TDto, TKind>
-        : OpenDataActionController<TStore, TService, TDto, TKind>
+    public abstract class AuthorizationControllerBase<TStore, TKind, TService, TDto>
+        : OpenDataActionController<TStore, TKind, TService, TDto>
         where TDto : class, IAuthorization, new()
         where TService : class
         where TKind : struct, Enum

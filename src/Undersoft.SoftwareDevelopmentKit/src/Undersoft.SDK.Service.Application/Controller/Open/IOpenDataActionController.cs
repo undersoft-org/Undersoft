@@ -6,7 +6,7 @@ namespace Undersoft.SDK.Service.Application.Controller.Open;
 
 using Uniques;
 
-public interface IOpenDataActionController<TKey, TEntity, TDto, TKind> where TDto : class where TKind : Enum
+public interface IOpenDataActionController<TKey, TKind, TEntity, TDto> where TDto : class where TKind : Enum
 {
     Task<IActionResult> Post([FromODataBody] TDto dto);
 }

@@ -54,9 +54,9 @@ public partial class ApplicationSetup
         {
             var genericTypes = controllerType.BaseType.GenericTypeArguments;
             var store = genericTypes[0];
-            var _viewmodel = genericTypes[2];
-            var dtoType = genericTypes[1];
-            var _method = genericTypes[3];
+            var _viewmodel = genericTypes[3];
+            var dtoType = genericTypes[2];
+            var _method = genericTypes[1];
 
             service.AddTransient(
                   typeof(IRequest<>).MakeGenericType(

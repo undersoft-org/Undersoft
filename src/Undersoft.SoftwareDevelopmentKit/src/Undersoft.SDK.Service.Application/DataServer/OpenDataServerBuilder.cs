@@ -83,6 +83,7 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
                             type => type.GetCustomAttribute<OpenDataServiceAttribute>()
                                     != null || type.GetCustomAttribute<OpenDataActionServiceAttribute>() != null 
                                     || type.GetCustomAttribute<RemoteOpenDataServiceAttribute>() != null
+                                    || type.GetCustomAttribute<RemoteOpenDataActionServiceAttribute>() != null
                         )
                         ).ToArray();
 
@@ -94,7 +95,7 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
                 EntitySet(genTypes[4]);
             else if (genTypes.Length > 3)
             {
-                if (genTypes[3].IsAssignableTo(typeof(IDataObject)) && genTypes[1].IsAssignableTo(StoreType))
+                if (genTypes[3].IsAssignableTo(typeof(IOrigin)) && (genTypes[1].IsAssignableTo(StoreType) || genTypes[0].IsAssignableTo(StoreType)))
                     EntitySet(genTypes[3]);
                 else
                     continue;

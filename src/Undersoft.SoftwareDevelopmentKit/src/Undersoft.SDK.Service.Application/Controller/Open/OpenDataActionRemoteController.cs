@@ -1,40 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 
-namespace Undersoft.SDK.Service.Application.Controller.Crud;
+namespace Undersoft.SDK.Service.Application.Controller.Open;
 
-using Data.Service;
-using Microsoft.AspNetCore.Http;
-using Operation.Remote.Command;
-using System.Net.Http;
-using Undersoft.SDK;
+using Microsoft.AspNetCore.OData.Formatter;
+using Operation.Command;
+using SDK.Service.Data.Store;
 using Undersoft.SDK.Service;
-using Undersoft.SDK.Service.Application.Operation.Command;
+using Undersoft.SDK.Service.Application.Controller.Crud;
+using Undersoft.SDK.Service.Application.Documentation;
+using Undersoft.SDK.Service.Application.Operation.Remote.Command;
 using Undersoft.SDK.Service.Data;
 
-[ApiController]
-[RemoteCrudDataActionService]
-[Route($"{StoreRoutes.CrudIdentityStore}/[controller]")]
-public abstract class CrudDataActionRemoteController<TStore, TKind, TDto, TModel>
-    : ControllerBase,
-        ICrudDataActionRemoteController<TStore, TKind, TDto, TModel>
+[IgnoreApi]
+[RemoteOpenDataActionService]
+public abstract class OpenDataActionRemoteController<TStore, TKind, TDto, TModel>
+    : ODataController, IOpenDataActionRemoteController<TStore, TKind, TDto, TModel>
     where TModel : class, IOrigin
     where TDto : class, IOrigin
     where TKind : struct, Enum
     where TStore : IDataServiceStore
-{    
-    protected readonly IServicer _servicer;    
+{
+    protected readonly IServicer _servicer;
 
-    protected CrudDataActionRemoteController() { }
+    protected OpenDataActionRemoteController() { }
 
-    protected CrudDataActionRemoteController(
+    public OpenDataActionRemoteController(
         IServicer servicer
     )
     {
-        _servicer = servicer;            
+        _servicer = servicer;      
     }
 
-    [HttpPost("{kind}")]
-    public virtual async Task<IActionResult> Post([FromRoute] string kind, [FromBody] TModel dto)
+    public virtual async Task<IActionResult> Post([FromODataUri] string kind, TModel dto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -52,8 +50,7 @@ public abstract class CrudDataActionRemoteController<TStore, TKind, TDto, TModel
         return NotFound(kind);
     }
 
-    [HttpGet("{kind}")]
-    public virtual async Task<IActionResult> Get([FromRoute] string kind)
+    public virtual async Task<IActionResult> Get([FromODataUri] string kind)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);

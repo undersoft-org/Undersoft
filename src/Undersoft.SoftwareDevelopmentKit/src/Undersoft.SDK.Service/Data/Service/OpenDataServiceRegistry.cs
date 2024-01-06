@@ -29,11 +29,10 @@ public static class OpenDataServiceRegistry
     public static ISeries<Type> Stores = new Registry<Type>();
     public static ISeries<ServiceRemoteBase> Links = new Registry<ServiceRemoteBase>(true);
 
-    public static IEdmModel GetEdmModel(this OpenDataServiceContext context)
+    public static async Task<IEdmModel> GetEdmModel(this OpenDataServiceContext context)
     {
-        Task<IEdmModel> model = context.GetEdmModelAsync();
-        model.Wait();
-        return model.Result;
+        IEdmModel model = await context.GetEdmModelAsync();
+        return model;
     }
 
     public static async Task<IEdmModel> GetEdmModelAsync(this OpenDataServiceContext context)
@@ -93,7 +92,7 @@ public static class OpenDataServiceRegistry
                                 "Object Service Client - Http Get Metadata Request Failed",
                                 response
                             );
-                            Thread.Sleep(5000);
+                            await Task.Delay(5000);
                         }
                     }
                 }
@@ -105,7 +104,7 @@ public static class OpenDataServiceRegistry
                         client.BaseAddress,
                         ex
                     );
-                    Thread.Sleep(interval);
+                    await Task.Delay(interval);
                 }
 
                 if (tryouts < 2)

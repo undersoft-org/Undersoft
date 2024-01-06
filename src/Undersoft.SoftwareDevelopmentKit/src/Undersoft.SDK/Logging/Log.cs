@@ -93,14 +93,14 @@
             }
         }
 
-        private static void logging()
+        private static async void logging()
         {
             try
             {
                 while (threadLive)
                 {
                     Clock = DateTime.Now;
-                    Thread.Sleep(1000);
+                    await Task.Delay(1000);
                     int count = logQueue.Count;
                     for (int i = 0; i < count; i++)
                     {

@@ -17,6 +17,7 @@ using Entity;
 using Undersoft.SDK.Service.Data.Repository;
 using Undersoft.SDK.Service.Data.Repository.Source;
 using Undersoft.SDK.Service.Data.Object;
+using Microsoft.OData.Edm;
 
 public class RepositoryClient : Catalog<IRepositoryContext>, IRepositoryClient
 {
@@ -92,10 +93,11 @@ public class RepositoryClient : Catalog<IRepositoryContext>, IRepositoryClient
         return typeof(TContext).New<TContext>(uri);
     }
 
-    public void BuildMetadata()
+    public async Task<IEdmModel> BuildMetadata()
     {
-        Context.CreateServiceModel();
+        var edmModel = await Context.CreateServiceModel();
         Context.GetEdmEntityTypes();
+        return edmModel;
     }
 
     public override long Id

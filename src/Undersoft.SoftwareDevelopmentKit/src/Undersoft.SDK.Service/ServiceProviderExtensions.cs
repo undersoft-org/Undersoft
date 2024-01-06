@@ -44,20 +44,17 @@ namespace Undersoft.SDK.Service
 
         public static async Task LoadDataServiceModels(this IServiceProvider provider)
         {
-            await Task.Run(() =>
+            foreach(var client in RepositoryManager.Clients)
             {
-                RepositoryManager.Clients.ForEach((client) =>
-                {
-                    client.BuildMetadata();
-                });
+                var model = await client.BuildMetadata();
+            }
 
-                ServiceHostSetup.AddOpenDataServiceImplementations();
-            });
+            ServiceHostSetup.AddOpenDataServiceImplementations();
         }
 
-        public static IServiceProvider UseDataServices(this IServiceProvider provider)
+        public static async Task<IServiceProvider> UseDataServices(this IServiceProvider provider)
         {
-            provider.LoadDataServiceModels().ConfigureAwait(false);
+            await provider.LoadDataServiceModels();
 
             return provider;
         }

@@ -69,7 +69,7 @@ public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel>
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Post([FromODataBody] TModel dto)
+    public virtual async Task<IActionResult> Post(TModel dto)
     {
         bool isValid = false;
 

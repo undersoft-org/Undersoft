@@ -7,7 +7,7 @@ namespace Undersoft.SSC.Web.Service.Controllers
 {
     [AllowAnonymous]
     public class AuthorizationController
-        : AuthorizationControllerBase<IDataStore, AuthorizationService, Authorization, AuthorizationAction>
+        : AuthorizationControllerBase<IDataStore, AuthorizationAction, AuthorizationService, Authorization>
     {
         public AuthorizationController(IServicer servicer) : base(servicer) { }
     }

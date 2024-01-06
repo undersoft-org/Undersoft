@@ -8,7 +8,7 @@ using Undersoft.SSC.Domain.Entities.Enums;
 
 namespace Undersoft.SSC.Web.Appllication.ViewModels;
 
-public class ClientAccount : Account, IViewModel
+public class ClientAccount : ViewModelBase<ClientAccount, Detail, Setting, AccountGroup>, IViewModel
 {
     public ClientAccount() { Group = AccountGroup.Client; }
 

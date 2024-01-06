@@ -30,17 +30,26 @@ namespace Undersoft.SDK.Service.Data.Service
                 e.RequestMessage.SetHeader("Authorization", _securityString.Encoded);
         }
 
-        public void CreateServiceModel()
+        public async Task<IEdmModel> CreateServiceModel()
         {
+            var edmModel = await AddServiceModel();
             Format.LoadServiceModel = GetServiceModel;
             Format.UseJson();
+            return edmModel;
+        }
+
+        public async Task<IEdmModel> AddServiceModel()
+        {
+            Type t = GetType();
+            if (!OpenDataServiceRegistry.EdmModels.TryGet(t, out IEdmModel edmModel))
+                OpenDataServiceRegistry.EdmModels.Add(t, edmModel = OnModelCreating(await this.GetEdmModel()));
+            return edmModel;
         }
 
         public IEdmModel GetServiceModel()
         {
             Type t = GetType();
-            if (!OpenDataServiceRegistry.EdmModels.TryGet(t, out IEdmModel edmModel))
-                OpenDataServiceRegistry.EdmModels.Add(t, edmModel = OnModelCreating(this.GetEdmModel()));
+            OpenDataServiceRegistry.EdmModels.TryGet(t, out IEdmModel edmModel);
             return edmModel;
         }
 

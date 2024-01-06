@@ -6,7 +6,7 @@ using Undersoft.SSC.Domain.Entities.Enums;
 
 namespace Undersoft.SSC.Web.Application.ViewModels;
 
-public class ServiceAccount : Account, IViewModel
+public class ServiceAccount : ViewModelBase<ServiceAccount, Detail, Setting, AccountGroup>, IViewModel
 {
     public ServiceAccount() { Group = AccountGroup.Servicer; }
 

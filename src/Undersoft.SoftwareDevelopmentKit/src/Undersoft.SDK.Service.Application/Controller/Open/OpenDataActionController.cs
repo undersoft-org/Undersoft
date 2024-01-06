@@ -9,8 +9,8 @@ using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Data;
 
 [OpenDataActionService]
-public abstract class OpenDataActionController<TStore, TType, TDto, TKind>
-    : ODataController, IOpenDataActionController<TStore, TType, TDto, TKind> where TDto : class where TKind : struct, Enum
+public abstract class OpenDataActionController<TStore, TKind, TType, TDto>
+    : ODataController, IOpenDataActionController<TStore, TKind, TType, TDto> where TDto : class where TKind : struct, Enum
     where TType : class
     where TStore : IDataServiceStore
 {
