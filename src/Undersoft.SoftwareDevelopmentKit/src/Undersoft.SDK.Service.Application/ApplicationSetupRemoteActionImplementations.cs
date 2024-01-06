@@ -18,6 +18,7 @@ using Operation.Remote.Query.Handler;
 using Operation.Remote.Validator;
 using Undersoft.SDK.Series;
 using Undersoft.SDK.Service.Application.Operation.Command;
+using static Grpc.Core.ChannelOption;
 
 
 public partial class ApplicationSetup
@@ -50,6 +51,8 @@ public partial class ApplicationSetup
             )
             .ToArray();
 
+        HashSet<string> duplicateCheck = new HashSet<string>();
+
         foreach (var controllerType in controllerTypes)
         {
             var genericTypes = controllerType.BaseType.GenericTypeArguments;
@@ -58,30 +61,34 @@ public partial class ApplicationSetup
             var dtoType = genericTypes[2];
             var _method = genericTypes[1];
 
-            service.AddTransient(
+            if (duplicateCheck.Add(store.Name + _viewmodel.Name + dtoType.Name + _method.Name))
+            {
+
+                service.AddTransient(
                   typeof(IRequest<>).MakeGenericType(
                       typeof(ActionCommand<,>).MakeGenericType(_viewmodel, _method)
                   ),
                   typeof(ActionCommand<,>).MakeGenericType(_viewmodel, _method)
               );
 
-            service.AddTransient(
-               typeof(IRequestHandler<,>).MakeGenericType(
-                   new[]
-                   {
+                service.AddTransient(
+                   typeof(IRequestHandler<,>).MakeGenericType(
+                       new[]
+                       {
                             typeof(RemoteExecute<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method),
                             typeof(ActionCommand<,>).MakeGenericType(_viewmodel, _method)
-                   }
-               ),
-               typeof(RemoteExecuteHandler<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method)
-           );
+                       }
+                   ),
+                   typeof(RemoteExecuteHandler<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method)
+               );
 
-            service.AddTransient(
-             typeof(INotificationHandler<>).MakeGenericType(
-                 typeof(RemoteExecuted<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method)
-             ),
-             typeof(RemoteExecutedHandler<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method)
-            );
+                service.AddTransient(
+                 typeof(INotificationHandler<>).MakeGenericType(
+                     typeof(RemoteExecuted<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method)
+                 ),
+                 typeof(RemoteExecutedHandler<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method)
+                );
+            }
         }
         return this;
     }

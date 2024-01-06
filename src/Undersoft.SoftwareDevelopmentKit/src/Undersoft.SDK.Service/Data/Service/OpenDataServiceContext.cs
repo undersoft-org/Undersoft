@@ -13,11 +13,11 @@ namespace Undersoft.SDK.Service.Data.Service
             MergeOption = MergeOption.AppendOnly;
             HttpRequestTransportMode = HttpRequestTransportMode.HttpClient;
             IgnoreResourceNotFoundException = true;
+            //EntityParameterSendOption = EntityParameterSendOption.SendOnlySetProperties;
             KeyComparisonGeneratesFilterQuery = false;
             DisableInstanceAnnotationMaterialization = true;
             EnableWritingODataAnnotationWithoutPrefix = false;
             AddAndUpdateResponsePreference = DataServiceResponsePreference.NoContent;
-            EntityParameterSendOption = EntityParameterSendOption.SendOnlySetProperties;
             SaveChangesDefaultOptions = SaveChangesOptions.BatchWithSingleChangeset;
             ResolveName = (t) => this.GetMappedName(t);
             ResolveType = (n) => this.GetMappedType(n);

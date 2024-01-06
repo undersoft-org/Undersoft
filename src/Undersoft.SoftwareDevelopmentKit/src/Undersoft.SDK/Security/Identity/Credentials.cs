@@ -22,7 +22,7 @@
     }
 
     [Serializable]
-    public class Credentials : Origin, ICredentials
+    public class Credentials : ICredentials
     {
         public ServiceSite Site;
         public IdentityType Type;

@@ -33,7 +33,7 @@
 
     private async Task Authorize()
     {
-        auth = (await _repository.ActionAsync(auth, AuthorizationAction.SignIn))?.FirstOrDefault();
+        auth = (await _repository.ActionAsync(auth, AuthorizationAction.SignIn));
 
         if (auth != null)
             await _authService.SignIn(auth);

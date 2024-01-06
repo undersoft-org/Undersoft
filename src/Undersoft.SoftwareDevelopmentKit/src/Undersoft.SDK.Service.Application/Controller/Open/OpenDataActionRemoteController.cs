@@ -6,13 +6,13 @@ namespace Undersoft.SDK.Service.Application.Controller.Open;
 using Microsoft.AspNetCore.OData.Formatter;
 using Operation.Command;
 using SDK.Service.Data.Store;
+using System.Text.Json;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Application.Controller.Crud;
 using Undersoft.SDK.Service.Application.Documentation;
 using Undersoft.SDK.Service.Application.Operation.Remote.Command;
 using Undersoft.SDK.Service.Data;
 
-[IgnoreApi]
 [RemoteOpenDataActionService]
 public abstract class OpenDataActionRemoteController<TStore, TKind, TDto, TModel>
     : ODataController, IOpenDataActionRemoteController<TStore, TKind, TDto, TModel>
@@ -32,7 +32,8 @@ public abstract class OpenDataActionRemoteController<TStore, TKind, TDto, TModel
         _servicer = servicer;      
     }
 
-    public virtual async Task<IActionResult> Post([FromODataUri] string kind, TModel dto)
+    [HttpPost(StoreRoutes.OpenDataRoute+"/[controller]/{kind}")]
+    public virtual async Task<IActionResult> Post([FromODataUri] string kind, ODataActionParameters parameters)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -40,7 +41,7 @@ public abstract class OpenDataActionRemoteController<TStore, TKind, TDto, TModel
         if (Enum.TryParse(kind, out TKind method))
         {
             var result = await _servicer.Send(
-                new RemoteExecute<TStore, TDto, TModel, TKind>(method, dto, CommandMode.Action)
+                new RemoteExecute<TStore, TDto, TModel, TKind>(method, ((JsonElement)parameters[typeof(TDto).Name]).Deserialize<TModel>(), CommandMode.Action)
             );
 
             return !result.IsValid
@@ -50,6 +51,7 @@ public abstract class OpenDataActionRemoteController<TStore, TKind, TDto, TModel
         return NotFound(kind);
     }
 
+    [HttpGet(StoreRoutes.OpenDataRoute + "/[controller]/{kind}")]
     public virtual async Task<IActionResult> Get([FromODataUri] string kind)
     {
         if (!ModelState.IsValid)

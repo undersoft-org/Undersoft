@@ -10,7 +10,7 @@ public interface IOpenDataActionRemoteController<TStore, TKind, TDto, TModel>
     where TModel : class, IOrigin
     where TKind : Enum
 {
-    Task<IActionResult> Post([FromODataUri] string kind, TModel dto);
+    Task<IActionResult> Post([FromODataUri] string kind, ODataActionParameters dto);
 
     Task<IActionResult> Get([FromODataUri] string kind);
 }

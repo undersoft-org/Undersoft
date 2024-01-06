@@ -90,9 +90,9 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
             )
             .ToArray();
 
-        foreach (var types in controllerTypes)
+        foreach (var controllerType in controllerTypes)
         {
-            var genTypes = types.BaseType.GenericTypeArguments;
+            var genTypes = controllerType.BaseType.GenericTypeArguments;
 
             if (
                 genTypes.Length > 4
@@ -194,6 +194,62 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
     }
 
     private void AddAuthorizationActions()
+    {
+        if (actionSetAdded)
+            return;
+
+        odataBuilder
+            .EntityType<Authorization>()
+            .Function("SignIn")
+            .Returns<string>()
+            .Parameter<string>("Authorization");
+
+        odataBuilder
+            .EntityType<Authorization>()
+            .Action("SignIn")
+            .ReturnsFromEntitySet<Authorization>("Authorization")
+            .Parameter<Authorization>("Authorization");
+
+        odataBuilder
+            .EntityType<Authorization>()
+            .Action("SignUp")
+            .ReturnsFromEntitySet<Authorization>("Authorization")
+            .Parameter<Authorization>("Authorization");
+
+        odataBuilder
+            .EntityType<Authorization>()
+            .Action("SignOut")
+            .ReturnsFromEntitySet<Authorization>("Authorization")
+            .Parameter<Authorization>("Authorization");
+
+        odataBuilder
+            .EntityType<Authorization>()
+            .Action("Renew")
+            .ReturnsFromEntitySet<Authorization>("Authorization")
+            .Parameter<Authorization>("Authorization");
+
+        odataBuilder
+            .EntityType<Authorization>()
+            .Action("ConfirmEmail")
+            .ReturnsFromEntitySet<Authorization>("Authorization")
+            .Parameter<Authorization>("Authorization");
+
+        odataBuilder
+            .EntityType<Authorization>()
+            .Action("ResetPassword")
+            .ReturnsFromEntitySet<Authorization>("Authorization")
+            .Parameter<Authorization>("Authorization");
+
+        odataBuilder
+            .EntityType<Authorization>()
+            .Action("CompleteRegistration")
+            .ReturnsFromEntitySet<Authorization>("Authorization")
+            .Parameter<Authorization>("Authorization");
+
+        actionSetAdded = true;
+    }
+
+    private void AddRemoteAuthorizationActions()
     {
         if (actionSetAdded)
             return;

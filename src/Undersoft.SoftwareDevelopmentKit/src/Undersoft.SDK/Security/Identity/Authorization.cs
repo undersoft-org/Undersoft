@@ -1,11 +1,12 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.ComponentModel;
+using System.IdentityModel.Tokens.Jwt;
 using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Instant.Updating;
 
 namespace Undersoft.SDK.Security.Identity
 {
      [Serializable]
-    public class Authorization : InnerProxy, IAuthorization
+    public class Authorization : Origin, IInnerProxy, IAuthorization
     {
         public void Map(object user)
         {
@@ -15,6 +16,11 @@ namespace Undersoft.SDK.Security.Identity
         public Credentials Credentials { get; set; } = new Credentials();
 
         public AuthorizationNotes Notes { get; set; } = new AuthorizationNotes();
+
+        IProxy IInnerProxy.Proxy => throw new NotImplementedException();
+
+        object IInnerProxy.this[int fieldId] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        object IInnerProxy.this[string propertyName] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 
     public class AuthorizationNotes

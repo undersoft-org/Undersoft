@@ -38,10 +38,10 @@ public static class ApplicationHostExtensions
     {
         await Task.Run(() =>
         {
-            RepositoryManager.Clients.ForEach((client) =>
+            Task.WaitAll(RepositoryManager.Clients.ForEach((client) =>
             {
-                client.BuildMetadata();
-            });
+               return client.BuildMetadata();
+            }).Commit());
 
             ServiceHostSetup.AddOpenDataServiceImplementations();
             app.RebuildProviders();

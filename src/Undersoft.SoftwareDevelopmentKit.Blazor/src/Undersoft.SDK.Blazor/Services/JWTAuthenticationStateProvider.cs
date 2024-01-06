@@ -57,7 +57,7 @@ public class JWTAuthenticationStateProvider : AuthenticationStateProvider, IAuth
             }
             if (IsTokenExpired(expirationTime.AddMinutes(-5)))
             {
-                var auth = (await _repository.FunctionAsync(AuthorizationAction.Renew))?.FirstOrDefault();
+                var auth = (await _repository.FunctionAsync(AuthorizationAction.Renew));
                 if (auth != null)
                 {
                     _authorization.Credentials = auth.Credentials;

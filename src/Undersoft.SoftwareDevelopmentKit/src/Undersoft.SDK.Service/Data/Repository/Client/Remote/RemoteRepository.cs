@@ -20,6 +20,7 @@ using Undersoft.SDK;
 using Undersoft.SDK.Service.Data;
 using Undersoft.SDK.Security.Identity;
 using Undersoft.SDK.Service.Data.Mapper;
+using System.Text.Json;
 
 public class RemoteRepository<TStore, TEntity>
     : RemoteRepository<TEntity>,
@@ -417,7 +418,7 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
 
     public override DataServiceQuery<TEntity> Query => dsContext.CreateQuery<TEntity>(Name, true);
 
-    public async Task<IEnumerable<TEntity>> FunctionAsync<TKind>(
+    public async Task<TEntity> FunctionAsync<TKind>(
        TKind kind,
        string httpMethod = "GET"
    ) where TKind : Enum
@@ -429,43 +430,41 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
         );
     }
 
-    public async Task<IEnumerable<TEntity>> ActionAsync<TDto, TKind>(
+    public async Task<TEntity> ActionAsync<TDto, TKind>(
         TDto payload,
         TKind kind,
         string httpMethod = "POST"
     ) where TKind : Enum
     {
         return await InvokeAsync<TKind>(
-            httpMethod != "GET" ? new BodyOperationParameter(typeof(TDto).Name, payload) : null,
+            httpMethod != "GET" ? new BodyOperationParameter(typeof(TDto).Name, (object)payload) : null,
             kind,
             httpMethod
         );
     }
 
-    public async Task<IEnumerable<TEntity>> ActionAsync<TDto, TKind>(
+    public async Task<TEntity> ActionAsync<TDto, TKind>(
         TDto[] payloads,
         TKind kind,
         string httpMethod = "POST"
     ) where TKind : Enum
     {
         return await InvokeAsync<TKind>(
-            httpMethod != "GET" ? new BodyOperationParameter(typeof(TDto).Name, payloads) : null,
+            httpMethod != "GET" ? new BodyOperationParameter(typeof(TDto).Name, (object)payloads) : null,
             kind,
             httpMethod
         );
     }
 
-    private async Task<IEnumerable<TEntity>> InvokeAsync<TKind>(
+    private async Task<TEntity> InvokeAsync<TKind>(
         BodyOperationParameter parameter,
         TKind kind,
         string httpMethod
     ) where TKind : Enum
-    {        
-        return await dsContext.ExecuteAsync<TEntity>(
-            new Uri(dsContext.BaseUri, Name + "/" + kind.ToString()),
-            httpMethod,
-            parameter
-        );
+    {
+        var action = new DataServiceActionQuerySingle<TEntity>(dsContext, dsContext.BaseUri.OriginalString + "/" + Name + "/" + kind.ToString(), new BodyOperationParameter[] { parameter });
+        var result = await action.GetValueAsync();
+        return result;
     }   
 
     public void SetSecurityToken(string token)
