@@ -87,11 +87,11 @@ public class GrpcDataServerBuilder<TServiceStore>
     {
         if (StoreType == typeof(IEventStore))
         {
-            return StoreRoutes.StreamEventStore;
+            return StoreRoutes.StreamEventRoute;
         }
         else
         {
-            return StoreRoutes.StreamDataStore;
+            return StoreRoutes.StreamDataRoute;
         }
     }
 

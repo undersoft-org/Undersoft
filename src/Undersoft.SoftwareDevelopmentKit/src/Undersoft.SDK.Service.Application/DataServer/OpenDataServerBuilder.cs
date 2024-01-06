@@ -175,15 +175,15 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
     {
         if (StoreType == typeof(IEventStore))
         {
-            return StoreRoutes.OpenEventStore;
+            return StoreRoutes.OpenEventRoute;
         }
         else if (StoreType == typeof(IIdentityStore))
         {
-            return StoreRoutes.OpenIdentityStore;
+            return StoreRoutes.OpenIdentityRoute;
         }
         else
         {
-            return StoreRoutes.OpenDataStore;
+            return StoreRoutes.OpenDataRoute;
         }
     }
 

@@ -11,7 +11,7 @@ using Undersoft.SDK.Service.Data.Store;
 namespace Undersoft.SSC.Web.Application.Server.Controllers
 {
     [AllowAnonymous]
-    [ODataRouteComponent(StoreRoutes.OpenDataStore)]
+    [ODataRouteComponent(StoreRoutes.OpenDataRoute)]
     public class ServiceAccountController
         : OpenDataRemoteController<long, IDataStore, AccountBase, ViewModels.ServiceAccount>
     {

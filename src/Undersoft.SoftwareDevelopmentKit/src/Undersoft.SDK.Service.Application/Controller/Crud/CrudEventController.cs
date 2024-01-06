@@ -11,7 +11,7 @@ using SDK.Service.Data.Store;
 
 [CrudDataService]
 [ApiController]
-[Route($"{StoreRoutes.CrudEventStore}/Events")]
+[Route($"{StoreRoutes.RestEventRoute}/Events")]
 public abstract class CrudEventController<TKey, TStore, TEntity, TDto> : ControllerBase
     where TDto : class, IDataObject
     where TEntity : class, IDataObject

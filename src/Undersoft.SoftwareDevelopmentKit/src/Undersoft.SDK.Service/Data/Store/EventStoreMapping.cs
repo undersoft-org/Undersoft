@@ -7,7 +7,7 @@ using Event;
 
 public class EventStoreMapping : EntityTypeMapping<Event>
 {
-    private const string TABLE_NAME = "EventStore";
+    private const string TABLE_NAME = "EventStoreRoute";
 
     public override void Configure(EntityTypeBuilder<Event> builder)
     {

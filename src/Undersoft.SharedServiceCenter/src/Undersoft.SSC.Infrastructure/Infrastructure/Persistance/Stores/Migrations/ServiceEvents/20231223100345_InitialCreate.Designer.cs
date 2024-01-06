@@ -106,7 +106,7 @@ namespace Undersoft.SSC.Infrastructure.Infrastructure.Persistance.Stores.Migrati
                     b.HasIndex("Ordinal")
                         .IsUnique();
 
-                    b.ToTable("EventStore", "EventNode");
+                    b.ToTable("EventStoreRoute", "EventNode");
                 });
 #pragma warning restore 612, 618
         }

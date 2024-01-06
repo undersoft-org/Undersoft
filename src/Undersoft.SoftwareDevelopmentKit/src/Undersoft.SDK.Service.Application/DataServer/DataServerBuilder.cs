@@ -28,11 +28,11 @@ namespace Undersoft.SDK.Service.Application.DataServer
         {
             if (StoreType == typeof(IEventStore))
             {
-                return StoreRoutes.EventStore + RoutePrefix;
+                return StoreRoutes.EventStoreRoute + RoutePrefix;
             }
             else
             {
-                return StoreRoutes.DataStore + RoutePrefix;
+                return StoreRoutes.DataStoreRoute + RoutePrefix;
             }
         }
 

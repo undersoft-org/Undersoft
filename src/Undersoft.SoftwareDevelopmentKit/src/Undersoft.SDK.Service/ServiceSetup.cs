@@ -517,27 +517,27 @@ public partial class ServiceSetup : IServiceSetup
     {
         if (iface == typeof(IEntryStore))
         {
-            return StoreRoutes.EntryStore;
+            return StoreRoutes.EntryStoreRoute;
         }
         else if (iface == typeof(IEventStore))
         {
-            return StoreRoutes.EventStore;
+            return StoreRoutes.EventStoreRoute;
         }
         else if (iface == typeof(IReportStore))
         {
-            return StoreRoutes.ReportStore;
+            return StoreRoutes.ReportStoreRoute;
         }
         else if (iface == typeof(IDataStore))
         {
-            return StoreRoutes.DataStore;
+            return StoreRoutes.DataStoreRoute;
         }
         else if (iface == typeof(IIdentityStore))
         {
-            return StoreRoutes.OpenIdentityStore;
+            return StoreRoutes.OpenIdentityRoute;
         }
         else
         {
-            return StoreRoutes.DataStore;
+            return StoreRoutes.DataStoreRoute;
         }
     }
 }

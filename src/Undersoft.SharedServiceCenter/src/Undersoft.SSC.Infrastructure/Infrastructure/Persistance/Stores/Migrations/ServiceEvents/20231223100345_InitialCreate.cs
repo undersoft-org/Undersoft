@@ -14,7 +14,7 @@ namespace Undersoft.SSC.Infrastructure.Infrastructure.Persistance.Stores.Migrati
                 name: "EventNode");
 
             migrationBuilder.CreateTable(
-                name: "EventStore",
+                name: "EventStoreRoute",
                 schema: "EventNode",
                 columns: table => new
                 {
@@ -46,7 +46,7 @@ namespace Undersoft.SSC.Infrastructure.Infrastructure.Persistance.Stores.Migrati
             migrationBuilder.CreateIndex(
                 name: "IX_EventStore_Ordinal",
                 schema: "EventNode",
-                table: "EventStore",
+                table: "EventStoreRoute",
                 column: "Ordinal",
                 unique: true);
         }
@@ -54,7 +54,7 @@ namespace Undersoft.SSC.Infrastructure.Infrastructure.Persistance.Stores.Migrati
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EventStore",
+                name: "EventStoreRoute",
                 schema: "EventNode");
         }
     }

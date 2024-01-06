@@ -14,7 +14,7 @@ namespace Undersoft.SSC.Web.Application.Server.Controllers
 {
 
     [AllowAnonymous]
-    [ODataRouteComponent(StoreRoutes.OpenDataStore)]
+    [ODataRouteComponent(StoreRoutes.OpenDataRoute)]
     public class UserAccountIdentifierController
         : OpenDataRemoteController<long, IDataStore, Identifier<Account>, Identifier<UserAccount>>
     {

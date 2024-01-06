@@ -13,7 +13,7 @@ using Undersoft.SDK.Service.Application.Operation.Remote;
 [RemoteResult]
 [RemoteCrudDataService]
 [ApiController]
-[Route($"{StoreRoutes.CrudDataStore}/[controller]")]
+[Route($"{StoreRoutes.RestDataRoute}/[controller]")]
 public abstract class CrudDataRemoteController<TKey, TStore, TDto, TModel>
     : ControllerBase,
         ICrudDataRemoteController<TKey, TDto, TModel>

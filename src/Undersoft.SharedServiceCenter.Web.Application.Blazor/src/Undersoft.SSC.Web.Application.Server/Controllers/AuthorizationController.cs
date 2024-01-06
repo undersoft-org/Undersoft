@@ -11,7 +11,7 @@ using Undersoft.SDK.Service.Data.Store;
 namespace Undersoft.SSC.Web.Application.Server.Controllers
 {
     [AllowAnonymous]
-    [Route($"{StoreRoutes.CrudDataStore}/[controller]")]
+    [Route($"{StoreRoutes.RestDataRoute}/[controller]")]
     public class AuthorizationsController
         : CrudDataActionRemoteController<IDataStore, AuthorizationAction, Authorization, Authorization>
     {
@@ -21,7 +21,7 @@ namespace Undersoft.SSC.Web.Application.Server.Controllers
 namespace Undersoft.SSC.Web.Application.Server.Controllers
 {
     [AllowAnonymous]
-    [ODataRouteComponent(StoreRoutes.OpenDataStore)]
+    [ODataRouteComponent(StoreRoutes.OpenDataRoute)]
     public class AuthorizationController
        : OpenDataActionRemoteController<IDataStore, AuthorizationAction, Authorization, Authorization>
     {

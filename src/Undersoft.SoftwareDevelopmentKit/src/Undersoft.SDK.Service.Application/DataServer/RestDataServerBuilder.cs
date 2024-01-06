@@ -61,11 +61,11 @@ public class RestDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
     {
         if (StoreType == typeof(IEventStore))
         {
-            return StoreRoutes.CrudEventStore;
+            return StoreRoutes.RestEventRoute;
         }
         else
         {
-            return StoreRoutes.CrudDataStore;
+            return StoreRoutes.RestDataRoute;
         }
     }
 }

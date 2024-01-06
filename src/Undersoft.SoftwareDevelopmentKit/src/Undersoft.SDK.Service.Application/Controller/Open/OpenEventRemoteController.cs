@@ -15,7 +15,7 @@ using Undersoft.SDK.Service.Application.Documentation;
 
 [IgnoreApi]
 [RemoteOpenDataService]
-[ODataRouteComponent(StoreRoutes.OpenEventStore)]
+[ODataRouteComponent(StoreRoutes.OpenEventRoute)]
 public abstract class OpenEventRemoteController<TKey, TStore, TDto, TModel> : ODataController, IOpenEventRemoteController<TKey, TModel> where TModel : class, IDataObject
     where TDto : class, IDataObject
     where TStore : IDataServiceStore
