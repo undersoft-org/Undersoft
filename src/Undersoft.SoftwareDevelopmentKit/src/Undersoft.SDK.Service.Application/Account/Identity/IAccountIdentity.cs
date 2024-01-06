@@ -15,7 +15,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
         IEnumerable<Claim> GetClaims();
 
-        ICredentials Credentials { get; set; }
+        Credentials Credentials { get; set; }
 
         AuthorizationNotes Notes { get; set; }
 

@@ -32,7 +32,7 @@ public class ExecuteHandler<TStore, TType, TDto, TKind>
         try
         {
             request.Response =
-                await new Invoker<TType>(request.Kind.ToString(), request.Data).InvokeAsync(cancellationToken);
+                await new Invoker(_service, request.Kind.ToString()).InvokeAsync(request.Data);
 
             _ = _servicer.Publish(new Executed<TStore, TType, TDto, TKind>(request)).ConfigureAwait(false);
         }

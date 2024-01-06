@@ -114,9 +114,14 @@ namespace Undersoft.SDK.Invoking
                     ? t.GetMethod(methodName, parameterTypes)
                     : t.GetMethod(methodName);
 
-            NumberOfArguments = parameterTypes != null ? m.GetParameters().Length : 0;
+            if (m.GetParameters().Any())
+            {
+                Parameters = m.GetParameters();
+                NumberOfArguments = Parameters.Length;
+                parameterTypes = m.GetParameters().Select(p => p.ParameterType).ToArray();
+            }
+
             Info = m;
-            Parameters = parameterTypes != null ? m.GetParameters() : null;
             createUniqueKey();
         }
 

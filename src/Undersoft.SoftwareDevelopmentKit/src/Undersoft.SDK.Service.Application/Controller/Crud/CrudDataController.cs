@@ -13,7 +13,7 @@ using Undersoft.SDK.Service.Data.Query;
 
 [ApiController]
 [CrudDataService]
-[Route($"{StoreRoutes.RestDataRoute}/[controller]")]
+[Route($"{StoreRoutes.CrudDataRoute}/[controller]")]
 public class CrudDataController<TKey, TEntry, TReport, TEntity, TDto>
     : ControllerBase, ICrudDataController<TKey, TEntity, TDto>
     where TDto : class, IDataObject

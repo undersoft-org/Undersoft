@@ -15,7 +15,7 @@ public class AccountIdentity : DataObject, IContract, IAccountIdentity<long>
 
     public IEnumerable<Claim> GetClaims() { return Claims.Select(c => c.Claim); }
 
-    public ICredentials Credentials { get; set; } = new Credentials();
+    public Credentials Credentials { get; set; } = new Credentials();
 
     public AuthorizationNotes Notes { get; set; } = new AuthorizationNotes();
 

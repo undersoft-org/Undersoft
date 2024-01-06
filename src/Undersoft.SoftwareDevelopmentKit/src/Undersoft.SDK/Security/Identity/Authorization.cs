@@ -12,7 +12,7 @@ namespace Undersoft.SDK.Security.Identity
             this.PatchFrom(user);
         }
 
-        public ICredentials Credentials { get; set; } = new Credentials();
+        public Credentials Credentials { get; set; } = new Credentials();
 
         public AuthorizationNotes Notes { get; set; } = new AuthorizationNotes();
     }

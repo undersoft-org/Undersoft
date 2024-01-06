@@ -422,6 +422,8 @@ public partial class ServiceSetup : IServiceSetup
 
             AddDatabaseConfiguration(globalSource.Context);
 
+            registry.AddObject(contextType, globalSource.Context);
+
             registry.AddObject(iRepoType, globalSource);
             registry.AddObject(repoType, globalSource);
             registry.AddObject(repoOptionsType, globalSource.Options);

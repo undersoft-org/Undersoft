@@ -24,14 +24,12 @@ public class AccountIdentityManager : TypedRegistry<IAccountIdentity<long>>, IAc
     public AccountIdentityManager() { }
 
     public AccountIdentityManager(
-        IdentityDbContext<IdentityUser<long>, IdentityRole<long>, long> context,
         UserManager<IdentityUser<long>> user,
         RoleManager<IdentityRole<long>> role,
         SignInManager<IdentityUser<long>> signIn,
         AccountIdentityJWTGenerator token
     )
     {
-        Context = context;
         User = user;
         Role = role;
         SignIn = signIn;
@@ -206,9 +204,7 @@ public class AccountIdentityManager : TypedRegistry<IAccountIdentity<long>>, IAc
         if (TryGet(id, out account))
             return true;
 
-        var accountTask = GetById(id);
-        accountTask.Wait(100 * 100);
-        account = accountTask.Result;
+        account = GetById(id).GetAwaiter().GetResult();
 
         if (account == null)
             return false;
@@ -231,7 +227,7 @@ public class AccountIdentityManager : TypedRegistry<IAccountIdentity<long>>, IAc
 
     public async Task<AccountIdentity> GetById(long id)
     {
-        if (TryGet((ulong)id, out IAccountIdentity<long> account))
+        if (TryGet(id, out IAccountIdentity<long> account))
             return (AccountIdentity)account;
         var _account = new AccountIdentity();
         _account.Id = id;

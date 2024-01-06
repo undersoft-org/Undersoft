@@ -20,6 +20,7 @@ using Service.Data.Store;
 using Undersoft.SDK.Service.Application.Account.Identity;
 using OpenTelemetry;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
 {
@@ -101,7 +102,7 @@ public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
                 options.Tokens.ProviderMap.Add(
                     "AccountEmailConfirmationTokenProvider",
                     new TokenProviderDescriptor(
-                        typeof(AccountIdentityConfirmationTokenProvider<IdentityUser>)
+                        typeof(AccountEmailConfirmationTokenProvider<IdentityUser>)
                     )
                 );
                 options.Tokens.EmailConfirmationTokenProvider =
@@ -131,18 +132,22 @@ public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
                 options.User.RequireUniqueEmail = true;
             })
             .AddEntityFrameworkStores<TContext>();
-
         registry.Configure<DataProtectionTokenProviderOptions>(
             o => o.TokenLifespan = TimeSpan.FromHours(3)
         );
+
+        registry.AddTransient<AccountEmailConfirmationTokenProvider<IdentityUser>>();
+        registry.AddTransient<AccountPasswordResetTokenProvider<IdentityUser>>();
+        registry.AddTransient<AccountChangeEmailTokenProvider<IdentityUser>>();
+        registry.AddTransient<AccountRegistrationProcessTokenProvider<IdentityUser>>();
+
+        AddIdentityAuthentication();
+        AddIdentityAuthorization();
 
         registry.AddScoped<IAccountIdentityManager, AccountIdentityManager>();
         registry.AddScoped<AuthorizationService>();
         registry.AddTransient<IEmailSender, AccountEmailSender>();
         registry.Configure<AccountEmailSenderOptions>(configuration);
-
-        AddIdentityAuthentication();
-        AddIdentityAuthorization();
 
         return this;
     }

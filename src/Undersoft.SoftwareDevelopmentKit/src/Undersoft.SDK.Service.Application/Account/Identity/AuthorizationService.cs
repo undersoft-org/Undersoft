@@ -9,7 +9,6 @@ public class AuthorizationService
     private IAccountIdentityManager _manager;
 
     public AuthorizationService(IServicer servicer, IAccountIdentityManager accountManager)
-        : base()
     {
         _servicer = servicer;
         _manager = accountManager;

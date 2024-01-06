@@ -7,6 +7,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
     using Microsoft.AspNetCore.OData.Routing.Attributes;
     using System.Net;
     using System.Text;
+    using System.Text.Json;
     using Undersoft.SDK.Security.Identity;
     using Undersoft.SDK.Service;
     using Undersoft.SDK.Service.Application.Controller.Open;
@@ -42,7 +43,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var result = await _servicer
                 .Send(
-                    new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
+                    new Execute<TStore, TService, TDto, AuthorizationAction>(
                         AuthorizationAction.SignIn,
                         identityDetails
                     )
@@ -61,11 +62,11 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var identityDetails = new TDto()
             {
-                Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials
+                Credentials = (((JsonElement)parameters[typeof(TDto).Name]).Deserialize<TDto>()).Credentials
             };
 
             var result = await _servicer.Send(
-                new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
+                new Execute<TStore, TService, TDto, AuthorizationAction>(
                     AuthorizationAction.SignIn,
                     identityDetails
                 )
@@ -83,12 +84,12 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var identityDetails = new TDto()
             {
-                Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials
+                Credentials = (((JsonElement)parameters[typeof(TDto).Name]).Deserialize<TDto>()).Credentials
             };
 
             var result = await _servicer
                 .Send(
-                    new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
+                    new Execute<TStore, TService, TDto, AuthorizationAction>(
                         AuthorizationAction.SignUp,
                         identityDetails
                     )
@@ -107,12 +108,12 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var identityDetails = new TDto()
             {
-                Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials
+                Credentials = (((JsonElement)parameters[typeof(TDto).Name]).Deserialize<TDto>()).Credentials
             };
 
             var result = await _servicer
                 .Send(
-                    new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
+                    new Execute<TStore, TService, TDto, AuthorizationAction>(
                         AuthorizationAction.SignOut,
                         identityDetails
                     )
@@ -131,12 +132,12 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var identityDetails = new TDto()
             {
-                Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials
+                Credentials = (((JsonElement)parameters[typeof(TDto).Name]).Deserialize<TDto>()).Credentials
             };
 
             var result = await _servicer
                 .Send(
-                    new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
+                    new Execute<TStore, TService, TDto, AuthorizationAction>(
                         AuthorizationAction.Renew,
                         identityDetails
                     )
@@ -155,7 +156,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var result = await _servicer
                 .Send(
-                    new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
+                    new Execute<TStore, TService, TDto, AuthorizationAction>(
                         AuthorizationAction.SetPassword,
                         new TDto() { Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials })
                 )
@@ -173,9 +174,9 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var result = await _servicer
                 .Send(
-                    new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
+                    new Execute<TStore, TService, TDto, AuthorizationAction>(
                         AuthorizationAction.ConfirmPassword,
-                        new TDto() { Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials }
+                        new TDto() { Credentials = (((JsonElement)parameters[typeof(TDto).Name]).Deserialize<TDto>()).Credentials }
                     )
                 )
                 .ConfigureAwait(false);
@@ -192,9 +193,9 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var result = await _servicer
                 .Send(
-                    new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
+                    new Execute<TStore, TService, TDto, AuthorizationAction>(
                         AuthorizationAction.ConfirmEmail,
-                        new TDto() { Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials }
+                        new TDto() { Credentials = (((JsonElement)parameters[typeof(TDto).Name]).Deserialize<TDto>()).Credentials }
                     )
                 )
                 .ConfigureAwait(false);
@@ -211,9 +212,9 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
             var result = await _servicer
                 .Send(
-                    new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
+                    new Execute<TStore, TService, TDto, AuthorizationAction>(
                         AuthorizationAction.CompleteRegistration,
-                        new TDto() { Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials }
+                        new TDto() { Credentials = (((JsonElement)parameters[typeof(TDto).Name]).Deserialize<TDto>()).Credentials }
                     )
                 )
                 .ConfigureAwait(false);

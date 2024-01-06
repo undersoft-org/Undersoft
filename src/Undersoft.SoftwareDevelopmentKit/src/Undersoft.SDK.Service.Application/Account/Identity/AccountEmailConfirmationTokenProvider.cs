@@ -13,10 +13,10 @@ using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Service.Application.Account.Identity;
 
-public class AccountIdentityConfirmationTokenProvider<TUser>
+public class AccountEmailConfirmationTokenProvider<TUser>
                               : DataProtectorTokenProvider<TUser> where TUser : class
 {
-    public AccountIdentityConfirmationTokenProvider(
+    public AccountEmailConfirmationTokenProvider(
         IDataProtectionProvider dataProtectionProvider,
         IOptions<AccountEmailConfirmationTokenProviderOptions> options,
         ILogger<DataProtectorTokenProvider<TUser>> logger)

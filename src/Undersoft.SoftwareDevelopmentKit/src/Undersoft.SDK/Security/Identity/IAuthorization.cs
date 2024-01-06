@@ -2,7 +2,7 @@
 {
     public interface IAuthorization
     {
-        ICredentials Credentials { get; set; }
+        Credentials Credentials { get; set; }
 
         AuthorizationNotes Notes { get; set; }
     }

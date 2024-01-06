@@ -462,24 +462,11 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
     ) where TKind : Enum
     {        
         return await dsContext.ExecuteAsync<TEntity>(
-            new Uri(dsContext.BaseUri, Name + kind.ToString()),
+            new Uri(dsContext.BaseUri, Name + "/" + kind.ToString()),
             httpMethod,
             parameter
         );
-    }
-
-    private async Task<IEnumerable<TEntity>> ExecuteAsync<TKind>(
-      BodyOperationParameter parameter,
-      TKind kind,
-      string httpMethod
-  ) where TKind : Enum
-    {
-        return await dsContext.ExecuteAsync<TEntity>(
-            new Uri(dsContext.BaseUri, Name + "(" + kind.ToString() + ")"),
-            httpMethod,
-            parameter
-        );
-    }
+    }   
 
     public void SetSecurityToken(string token)
     {
