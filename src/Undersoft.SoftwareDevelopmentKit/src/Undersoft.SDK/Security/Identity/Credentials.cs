@@ -24,8 +24,8 @@
     [Serializable]
     public class Credentials : ICredentials
     {
-        public ServiceSite Site;
-        public IdentityType Type;
+        public ServiceSite? Site { get; set; }
+        public IdentityType? Type { get; set; }
 
         public string UserName { get; set; }
 
