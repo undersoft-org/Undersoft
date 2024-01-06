@@ -65,10 +65,17 @@ namespace Undersoft.SDK.Service.Data.Service
 
         public void SetSecurityString(string securityString)
         {
-            var strings = securityString.Split(" ");
-            string prefix = strings.Length > 0 ? strings[0] : null;
-            var token = strings.LastOrDefault();
-            _securityString = new SecurityString(token,  prefix);
+            if (securityString != null)
+            {
+                var strings = securityString.Split(" ");
+                string prefix = strings.Length > 0 ? strings[0] : null;
+                var token = strings.LastOrDefault();
+                _securityString = new SecurityString(token, prefix);
+            }
+            else 
+            { 
+                _securityString = null; 
+            }
         }
 
     }

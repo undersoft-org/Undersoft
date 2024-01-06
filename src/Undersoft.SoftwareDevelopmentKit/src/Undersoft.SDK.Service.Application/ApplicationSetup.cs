@@ -92,7 +92,7 @@ public partial class ApplicationSetup : ServiceSetup, IApplicationSetup
         return this;
     }
 
-    public IApplicationSetup AddIdentityService<TContext>() where TContext : DbContext
+    public IApplicationSetup AddAccountIdentity<TContext>() where TContext : DbContext
     {
         registry.Services
             .AddIdentity<IdentityUser<long>, IdentityRole<long>>(options =>

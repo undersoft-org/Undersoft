@@ -54,8 +54,7 @@ namespace Undersoft.SDK.Service
 
         public static async Task<IServiceProvider> UseDataServices(this IServiceProvider provider)
         {
-            await provider.LoadDataServiceModels();
-
+            await provider.LoadDataServiceModels();            
             return provider;
         }
     }

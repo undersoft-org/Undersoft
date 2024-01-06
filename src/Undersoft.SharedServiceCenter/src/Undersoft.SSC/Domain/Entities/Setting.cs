@@ -10,7 +10,7 @@ using Undersoft.SSC.Domain.Entities.Enums;
 
 namespace Undersoft.SSC.Domain.Entities
 {
-    public class Setting : ObjectSetting<Setting, SettingKind>, IEntity, ISerializableObject, ISetting
+    public class Setting : ObjectSetting<Setting, SettingKind>, IEntity, ISerializableJsonDocument, ISetting
     {
         public virtual RelatedSet<Setting>? RelatedFrom { get; set; }
 

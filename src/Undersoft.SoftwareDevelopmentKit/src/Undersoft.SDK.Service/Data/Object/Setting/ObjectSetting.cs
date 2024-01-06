@@ -13,7 +13,7 @@ using Undersoft.SDK.Service.Data.Identifier;
 
 [DataContract]
 [StructLayout(LayoutKind.Sequential)]
-public class ObjectSetting<TSetting, TKind> : DataObject, ISerializableObject, ISetting
+public class ObjectSetting<TSetting, TKind> : DataObject, ISerializableJsonDocument, ISetting
     where TSetting : class, ISetting
     where TKind : struct, Enum
 {
@@ -21,11 +21,11 @@ public class ObjectSetting<TSetting, TKind> : DataObject, ISerializableObject, I
     [JsonIgnore]
     [IgnoreDataMember]
     [IgnoreMap]
-    internal IDataSerializer _serializer;
+    internal IJsonDocumentSerializer _serializer;
 
     public ObjectSetting() : base()
     {
-        _serializer = new DataSerializer(this);
+        _serializer = new JsonDocumentSerializer(this);
     }
 
     public ObjectSetting(TKind kind) : base()

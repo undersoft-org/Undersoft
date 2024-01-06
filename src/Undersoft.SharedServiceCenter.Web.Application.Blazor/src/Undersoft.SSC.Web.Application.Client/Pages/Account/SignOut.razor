@@ -1,8 +1,9 @@
-﻿@page "/Account/SignOut"
+﻿@page "/account/signout"
 
-@inject IRemoteRepository<IDataStore, Authorization> accountsRepository
+@inject IRemoteRepository<IDataStore, Authorization> _repository
 @inject NavigationManager navigationManager
 
+@using Undersoft.SDK.Service.Data;
 @using Undersoft.SSC.Web.Application.Client
 
 <text>Sign out...</text>
@@ -10,6 +11,8 @@
 @code{
     protected async override Task OnInitializedAsync()
     {
+        var userToken = await _repository.ExecuteAsync(auth, AuthorizationAction.SignOut);
+
         navigationManager.NavigateTo("");
     }
 }

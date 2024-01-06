@@ -143,18 +143,19 @@ public static class OpenDataServiceRegistry
             var iface = GetLinkedStoreTypes(contextType);
 
             foreach (var entityType in entityTypes)
-            {
-                dsEntities.Add(entityType.Name, entityType);
-
+            {              
                 var localEntityType = EdmAssemblyResolve(entityType);
+                if (localEntityType != null)
+                {
+                    dsEntities.Add(entityType.Name, entityType);
+                    dsEntities.Add(localEntityType.FullName, entityType);
 
-                dsEntities.Add(localEntityType.FullName, entityType);
+                    if (!EntityContexts.TryGet(entityType.Name, out ISeries<Type> dsEntityContext))
+                        dsEntityContext = new Registry<Type>();
 
-                if (!EntityContexts.TryGet(entityType.Name, out ISeries<Type> dsEntityContext))
-                    dsEntityContext = new Registry<Type>();
-
-                dsEntityContext.Put(iface, contextType);
-                EntityContexts.Put(entityType.Name, dsEntityContext);
+                    dsEntityContext.Put(iface, contextType);
+                    EntityContexts.Put(entityType.Name, dsEntityContext);
+                }
             }
             ContextEntities.Add(contextType, dsEntities);
         }
@@ -251,8 +252,11 @@ public static class OpenDataServiceRegistry
         if (remoteName.Contains("Identifier"))
         {
             var entityName = remoteName.Replace("Identifier", null);
+            if (entityName.Contains("_1Of"))
+                entityName = entityName.Replace("_1Of", null);
             var argumentType = Assemblies.FindType(entityName);
-            localEntityType = typeof(Identifier<>).MakeGenericType(argumentType);
+            if(argumentType != null)
+                localEntityType = typeof(Identifier<>).MakeGenericType(argumentType);
         }
         else
         {

@@ -61,7 +61,7 @@ namespace Undersoft.SDK.Service
 
             registry.Services.Replace(ServiceDescriptor.Singleton<IServiceProviderFactory<IServiceCollection>>(factory));
             registry.Services.Replace(ServiceDescriptor.Singleton<IServiceCollection>(registry));
-            registry.MergeServices();
+            registry.MergeServices(true);
 
             return factory;
         }
@@ -250,6 +250,13 @@ namespace Undersoft.SDK.Service
         {
             if (registry == null)
                 return new ServiceManager(new ServiceCollection()).Registry;
+            return registry;
+        }
+
+        public static IServiceRegistry GetRegistry(IServiceCollection services)
+        {
+            if (registry == null)
+                return new ServiceManager(services).Registry;
             return registry;
         }
 

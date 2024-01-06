@@ -9,7 +9,7 @@ using Undersoft.SSC.Domain.Entities.Enums;
 
 namespace Undersoft.SSC.Domain.Entities;
 
-public class Detail : ObjectDetail<Detail, DetailKind>, IEntity, ISerializableObject, IDetail
+public class Detail : ObjectDetail<Detail, DetailKind>, IEntity, ISerializableJsonDocument, IDetail
 {
     public virtual RelatedSet<Detail>? RelatedFrom { get; set; }
 

@@ -7,7 +7,7 @@ using Undersoft.SSC.Domain.Entities.Enums;
 namespace Undersoft.SSC.Web.Contracts;
 
 [DataContract]
-public class Detail : ObjectDetail<Detail, DetailKind>, ISerializableObject, IDetail, IContract
+public class Detail : ObjectDetail<Detail, DetailKind>, ISerializableJsonDocument, IDetail, IContract
 {
     public Detail() : base() { }
 

@@ -13,15 +13,15 @@ using System.Xml.Linq;
 
 namespace Undersoft.SDK.Serialization;
 
-public class DataSerializer : ISerializableObject, IDataSerializer
+public class JsonDocumentSerializer : ISerializableJsonDocument, IJsonDocumentSerializer
 {
     internal object _structure;
-    internal ISerializableObject _container;
+    internal ISerializableJsonDocument _container;
     internal Type _type;
 
-    public DataSerializer() { }
+    public JsonDocumentSerializer() { }
 
-    public DataSerializer(ISerializableObject container)
+    public JsonDocumentSerializer(ISerializableJsonDocument container)
     {
         _container = container;
     }

@@ -10,7 +10,7 @@ namespace Undersoft.SDK.Service
         ServiceDescriptor this[Type serviceType] { get; set; }
 
         IServiceManager Manager { get; }
-        IServiceCollection Services { get; }
+        IServiceCollection Services { get; set; }
 
         ServiceRegistryObject<T> AddObject<T>() where T : class;
         ServiceRegistryObject<T> AddObject<T>(ServiceRegistryObject<T> accessor) where T : class;

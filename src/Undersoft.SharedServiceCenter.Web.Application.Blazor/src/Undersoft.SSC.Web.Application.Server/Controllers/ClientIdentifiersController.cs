@@ -7,7 +7,7 @@ using Undersoft.SDK.Service.Application.Controller.Open;
 using Undersoft.SDK.Service.Data.Identifier;
 using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SSC.Domain.Entities.Enums;
-using Undersoft.SSC.Web.Appllication.ViewModels;
+using Undersoft.SSC.Web.Application.ViewModels;
 
 namespace Undersoft.SSC.Web.Application.Server.Controllers
 {

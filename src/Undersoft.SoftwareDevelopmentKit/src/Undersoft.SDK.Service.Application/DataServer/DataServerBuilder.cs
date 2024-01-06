@@ -41,7 +41,8 @@ namespace Undersoft.SDK.Service.Application.DataServer
             TryAdd(typeof(TContext));
             return this;
         }
-        public virtual IDataServerBuilder AddIdentityActionSet()
+
+        public virtual IDataServerBuilder AddAuthorizationService()
         {
             return this;
         }

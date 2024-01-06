@@ -9,6 +9,7 @@ namespace Undersoft.SDK.Service.Data
         None,
         SignIn,
         SignUp,
+        SignOut,
         SetPassword,
         SetEmail,
         ConfirmPassword,

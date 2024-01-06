@@ -16,7 +16,8 @@ using Undersoft.SDK.Security.Identity;
 
 namespace Undersoft.SDK.Service.Application.DataServer;
 
-public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuilder<TStore> where TStore : IDataServiceStore
+public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuilder<TStore>
+    where TStore : IDataServiceStore
 {
     IServiceRegistry _registry;
     protected ODataConventionModelBuilder odataBuilder;
@@ -46,8 +47,7 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
     {
         var entitySetName = entityType.Name;
         if (entityType.IsGenericType && entityType.IsAssignableTo(typeof(Identifier)))
-            entitySetName =
-                entityType.GetGenericArguments().FirstOrDefault().Name + "Identifier";
+            entitySetName = entityType.GetGenericArguments().FirstOrDefault().Name + "Identifier";
 
         var etc = odataBuilder.AddEntityType(entityType);
         etc.Name = entitySetName;
@@ -80,28 +80,44 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
                 a =>
                     a.GetTypes()
                         .Where(
-                            type => type.GetCustomAttribute<OpenDataServiceAttribute>()
-                                    != null || type.GetCustomAttribute<OpenDataActionServiceAttribute>() != null 
-                                    || type.GetCustomAttribute<RemoteOpenDataServiceAttribute>() != null
-                                    || type.GetCustomAttribute<RemoteOpenDataActionServiceAttribute>() != null
+                            type =>
+                                type.GetCustomAttribute<OpenDataServiceAttribute>() != null
+                                || type.GetCustomAttribute<OpenDataActionServiceAttribute>() != null
+                                || type.GetCustomAttribute<RemoteOpenDataServiceAttribute>() != null
+                                || type.GetCustomAttribute<RemoteOpenDataActionServiceAttribute>()
+                                    != null
                         )
-                        ).ToArray();
+            )
+            .ToArray();
 
         foreach (var types in controllerTypes)
         {
             var genTypes = types.BaseType.GenericTypeArguments;
 
-            if (genTypes.Length > 4 && genTypes[1].IsAssignableTo(StoreType) && genTypes[2].IsAssignableTo(StoreType))
+            if (
+                genTypes.Length > 4
+                && genTypes[1].IsAssignableTo(StoreType)
+                && genTypes[2].IsAssignableTo(StoreType)
+            )
                 EntitySet(genTypes[4]);
             else if (genTypes.Length > 3)
             {
-                if (genTypes[3].IsAssignableTo(typeof(IOrigin)) && (genTypes[1].IsAssignableTo(StoreType) || genTypes[0].IsAssignableTo(StoreType)))
+                if (
+                    genTypes[3].IsAssignableTo(typeof(IOrigin))
+                    && (
+                        genTypes[1].IsAssignableTo(StoreType)
+                        || genTypes[0].IsAssignableTo(StoreType)
+                    )
+                )
                     EntitySet(genTypes[3]);
                 else
                     continue;
             }
             else if (genTypes.Length > 2)
-                if (genTypes[2].IsAssignableTo(typeof(IDataObject)) && genTypes[0].IsAssignableTo(StoreType))
+                if (
+                    genTypes[2].IsAssignableTo(typeof(IDataObject))
+                    && genTypes[0].IsAssignableTo(StoreType)
+                )
                     EntitySet(genTypes[2]);
                 else
                     continue;
@@ -120,7 +136,6 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
             b.RouteOptions.EnableKeyAsSegment = false;
             b.RouteOptions.EnableControllerNameCaseInsensitive = true;
             b.EnableQueryFeatures(PageLimit).AddRouteComponents(route, model);
-
         });
         AddODataSupport(mvc);
         _registry.MergeServices(true);
@@ -172,46 +187,65 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
         }
     }
 
-    public override IDataServerBuilder AddIdentityActionSet()
+    public override IDataServerBuilder AddAuthorizationService()
     {
-        AddActionSet();
-        return base.AddIdentityActionSet();
+        AddAuthorizationActions();
+        return base.AddAuthorizationService();
     }
 
-    public void AddActionSet()
+    private void AddAuthorizationActions()
     {
         if (actionSetAdded)
             return;
 
-        odataBuilder.EntityType<Authorization>().Function("SignIn")
-           .Returns<string>()
-           .Parameter<string>("Authorization");
-
-        odataBuilder.EntityType<Authorization>().Action("SignIn")
-            .Returns<string>()
-            .Parameter<Authorization>("Authorization");
-
-        odataBuilder.EntityType<Authorization>().Action("SignUp")
-            .Returns<string>()
-            .Parameter<Authorization>("Authorization");
-
-        odataBuilder.EntityType<Authorization>().Action("SignOut")
-            .Returns<string>()
-            .Parameter<Authorization>("Authorization");
-
-        odataBuilder.EntityType<Authorization>().Function("Renew")
+        odataBuilder
+            .EntityType<Authorization>()
+            .Function("SignIn")
             .Returns<string>()
             .Parameter<string>("Authorization");
 
-        odataBuilder.EntityType<Authorization>().Action("ResetPassword")
+        odataBuilder
+            .EntityType<Authorization>()
+            .Action("SignIn")
             .Returns<string>()
             .Parameter<Authorization>("Authorization");
 
-        odataBuilder.EntityType<Authorization>().Action("CompleteRegistration")
+        odataBuilder
+            .EntityType<Authorization>()
+            .Action("SignUp")
+            .Returns<string>()
+            .Parameter<Authorization>("Authorization");
+
+        odataBuilder
+            .EntityType<Authorization>()
+            .Action("SignOut")
+            .Returns<string>()
+            .Parameter<Authorization>("Authorization");
+
+        odataBuilder
+            .EntityType<Authorization>()
+            .Function("Renew")
+            .Returns<string>()
+            .Parameter<string>("Authorization");
+
+        odataBuilder
+            .EntityType<Authorization>()
+            .Action("ConfirmEmail")
+            .Returns<string>()
+            .Parameter<Authorization>("Authorization");
+
+        odataBuilder
+            .EntityType<Authorization>()
+            .Action("ResetPassword")
+            .Returns<string>()
+            .Parameter<Authorization>("Authorization");
+
+        odataBuilder
+            .EntityType<Authorization>()
+            .Action("CompleteRegistration")
             .Returns<string>()
             .Parameter<Authorization>("Authorization");
 
         actionSetAdded = true;
     }
-
 }

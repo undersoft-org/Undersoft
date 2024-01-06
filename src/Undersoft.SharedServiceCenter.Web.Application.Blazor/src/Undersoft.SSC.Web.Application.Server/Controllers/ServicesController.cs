@@ -2,7 +2,6 @@
 using Undersoft.SDK.Service.Application.Controller.Crud;
 using Undersoft.SSC.Web.Contracts;
 using Undersoft.SSC.Domain.Entities.Enums;
-using Undersoft.SSC.Web.ViewModels;
 
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Undersoft.SDK.Service;

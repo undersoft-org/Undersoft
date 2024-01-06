@@ -30,12 +30,11 @@ namespace Undersoft.SSC.Web.Service
                         typeof(ServiceEventStore)
                     }
                 )
-                .AddIdentityService<ServiceIdentityStore>()
+                .AddAccountIdentity<ServiceIdentityStore>()
                 .AddDataServer<IDataServiceStore>(
                     DataServerTypes.All,
-                    builder => builder.AddIdentityActionSet()
+                    builder => builder.AddAuthorizationService()
                 );
-            setup.AddCaching();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

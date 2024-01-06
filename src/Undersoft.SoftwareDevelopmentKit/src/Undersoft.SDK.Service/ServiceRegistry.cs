@@ -24,7 +24,7 @@ namespace Undersoft.SDK.Service
             Manager = manager;
         }
 
-        public IServiceCollection Services { get; }
+        public IServiceCollection Services { get; set; }
         public IServiceManager Manager { get; }
 
         public ServiceDescriptor this[string name]

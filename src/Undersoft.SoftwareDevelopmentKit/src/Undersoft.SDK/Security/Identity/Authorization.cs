@@ -1,10 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Instant.Updating;
 
 namespace Undersoft.SDK.Security.Identity
 {
      [Serializable]
-    public class Authorization : Origin, IAuthorization
+    public class Authorization : InnerProxy, IAuthorization
     {
         public void Map(object user)
         {

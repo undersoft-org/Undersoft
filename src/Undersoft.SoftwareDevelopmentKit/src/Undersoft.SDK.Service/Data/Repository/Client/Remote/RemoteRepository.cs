@@ -19,6 +19,7 @@ using Uniques;
 using Undersoft.SDK;
 using Undersoft.SDK.Service.Data;
 using Undersoft.SDK.Security.Identity;
+using Undersoft.SDK.Service.Data.Mapper;
 
 public class RemoteRepository<TStore, TEntity>
     : RemoteRepository<TEntity>,
@@ -26,6 +27,14 @@ public class RemoteRepository<TStore, TEntity>
     where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
+    public RemoteRepository(
+       IRepositoryContextPool<OpenDataService<TStore>> pool
+   ) : base(pool.ContextPool)
+    {
+        mapper = ServiceManager.GetObject<IDataMapper>();
+    }
+
+
     public RemoteRepository(
         IRepositoryContextPool<OpenDataService<TStore>> pool,
         IEntityCache<TStore, TEntity> cache

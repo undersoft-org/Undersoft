@@ -463,6 +463,8 @@ public partial class ServiceSetup : IServiceSetup
 
         AddImplementations(Assemblies);
 
+        AddCaching();
+
         return this;
     }
 
@@ -473,7 +475,7 @@ public partial class ServiceSetup : IServiceSetup
         return this;
     }
 
-    private IServiceSetup AddStoreCache(Type tstore)
+    public IServiceSetup AddStoreCache(Type tstore)
     {
         Type idatacache = typeof(IStoreCache<>).MakeGenericType(tstore);
         Type datacache = typeof(StoreCache<>).MakeGenericType(tstore);
@@ -484,6 +486,11 @@ public partial class ServiceSetup : IServiceSetup
         registry.AddObject(datacache, cache);
 
         return this;
+    }
+
+    public IServiceSetup AddStoreCache<TStore>()
+    {
+        return AddStoreCache(typeof(TStore));
     }
 
     private void AddDatabaseConfiguration(IDataStoreContext context)

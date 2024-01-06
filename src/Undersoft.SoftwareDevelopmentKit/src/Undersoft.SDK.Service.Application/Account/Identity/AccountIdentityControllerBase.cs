@@ -15,7 +15,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
 
     [AllowAnonymous]
     [OpenDataActionService]
-    [ODataRouteComponent("data/open/[controller]")]
+    [ODataRouteComponent($"{StoreRoutes.OpenDataStore}/[controller]")]
     public abstract class AuthorizationControllerBase<TStore, TKind, TService, TDto>
         : OpenDataActionController<TStore, TKind, TService, TDto>
         where TDto : class, IAuthorization, new()
@@ -91,6 +91,30 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 .Send(
                     new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
                         AuthorizationAction.SignUp,
+                        identityDetails
+                    )
+                )
+                .ConfigureAwait(false);
+            return !result.IsValid
+                ? UnprocessableEntity(result.ErrorMessages)
+                : Created(result.Id.ToString());
+        }
+
+        [HttpPost(nameof(AuthorizationAction.SignOut))]
+        public virtual async Task<IActionResult> SignOut(ODataActionParameters parameters)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var identityDetails = new TDto()
+            {
+                Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials
+            };
+
+            var result = await _servicer
+                .Send(
+                    new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
+                        AuthorizationAction.SignOut,
                         identityDetails
                     )
                 )

@@ -30,7 +30,6 @@ public class Startup
                 new[] { typeof(OpenDataService) }
             )
             .AddDataServer<IDataServiceStore>(DataServerTypes.All);
-        setup.AddCaching();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

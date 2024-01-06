@@ -12,7 +12,7 @@ namespace Undersoft.SDK.Service.Application
             DataServerTypes dataServiceTypes,
             Action<DataServerBuilder> builder = null
         ) where TServiceStore : IDataServiceStore;
-        IApplicationSetup AddIdentityService<TContext>() where TContext : DbContext;
+        IApplicationSetup AddAccountIdentity<TContext>() where TContext : DbContext;
         IApplicationSetup AddIdentityAuthentication();
         IApplicationSetup AddIdentityAuthorization();
         IApplicationSetup UseDataServices();
