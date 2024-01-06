@@ -66,7 +66,7 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
     {
         if (edmModel == null)
         {
-            AddActionSet();
+            AddAuthorizationActions();
             edmModel = odataBuilder.GetEdmModel();
             odataBuilder.ValidateModel(edmModel);
         }
@@ -207,43 +207,43 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
         odataBuilder
             .EntityType<Authorization>()
             .Action("SignIn")
-            .Returns<string>()
+            .ReturnsFromEntitySet<Authorization>("Authorization")
             .Parameter<Authorization>("Authorization");
 
         odataBuilder
             .EntityType<Authorization>()
             .Action("SignUp")
-            .Returns<string>()
+            .ReturnsFromEntitySet<Authorization>("Authorization")
             .Parameter<Authorization>("Authorization");
 
         odataBuilder
             .EntityType<Authorization>()
             .Action("SignOut")
-            .Returns<string>()
+            .ReturnsFromEntitySet<Authorization>("Authorization")
             .Parameter<Authorization>("Authorization");
 
         odataBuilder
             .EntityType<Authorization>()
-            .Function("Renew")
-            .Returns<string>()
-            .Parameter<string>("Authorization");
+            .Action("Renew")
+            .ReturnsFromEntitySet<Authorization>("Authorization")
+            .Parameter<Authorization>("Authorization");
 
         odataBuilder
             .EntityType<Authorization>()
             .Action("ConfirmEmail")
-            .Returns<string>()
+            .ReturnsFromEntitySet<Authorization>("Authorization")
             .Parameter<Authorization>("Authorization");
 
         odataBuilder
             .EntityType<Authorization>()
             .Action("ResetPassword")
-            .Returns<string>()
+            .ReturnsFromEntitySet<Authorization>("Authorization")
             .Parameter<Authorization>("Authorization");
 
         odataBuilder
             .EntityType<Authorization>()
             .Action("CompleteRegistration")
-            .Returns<string>()
+            .ReturnsFromEntitySet<Authorization>("Authorization")
             .Parameter<Authorization>("Authorization");
 
         actionSetAdded = true;

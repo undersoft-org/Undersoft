@@ -37,6 +37,9 @@ namespace Undersoft.SSC.Web.Application.Client
                     reg.AddScoped<AuthenticationStateProvider, JWTAuthenticationStateProvider>(
                         provider => provider.GetRequiredService<JWTAuthenticationStateProvider>()
                     );
+                    reg.AddScoped<IAuthenticationStateService, JWTAuthenticationStateProvider>(
+                       provider => provider.GetRequiredService<JWTAuthenticationStateProvider>()
+                   );
                     reg.MergeServices(true);
                 }
             );

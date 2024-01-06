@@ -35,11 +35,11 @@ public class RemoteExecuteHandler<TStore, TDto, TModel, TKind>
         {
             request.Response = (
                 request.CommandMode == CommandMode.Action
-                    ? await _repository.ExecuteAsync<TModel, TKind>(
+                    ? await _repository.ActionAsync<TModel, TKind>(
                         request.Data,
                         (TKind)request.Kind
                     )
-                    : await _repository.ExecuteAsync<TKind>((TKind)request.Kind)
+                    : await _repository.FunctionAsync<TKind>((TKind)request.Kind)
             );
 
             if (request.Response == null)

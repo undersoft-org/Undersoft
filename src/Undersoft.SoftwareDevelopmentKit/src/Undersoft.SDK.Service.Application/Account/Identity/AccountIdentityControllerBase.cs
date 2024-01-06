@@ -14,8 +14,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
     using Undersoft.SDK.Service.Data;
 
     [AllowAnonymous]
-    [OpenDataActionService]
-    [ODataRouteComponent($"{StoreRoutes.OpenDataStore}/[controller]")]
+    [OpenDataActionService]   
     public abstract class AuthorizationControllerBase<TStore, TKind, TService, TDto>
         : OpenDataActionController<TStore, TKind, TService, TDto>
         where TDto : class, IAuthorization, new()
@@ -25,7 +24,7 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
     {
         public AuthorizationControllerBase(IServicer servicer) : base(servicer) { }
 
-        [HttpGet(nameof(AuthorizationAction.SignIn))]
+        [HttpGet($"{StoreRoutes.OpenDataStore}/[controller]/{nameof(AuthorizationAction.SignIn)}")]
         public virtual async Task<IActionResult> SignIn([FromHeader] string authorization)
         {
             var encoding = Encoding.GetEncoding("iso-8859-1");
@@ -51,10 +50,10 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 .ConfigureAwait(false);
             return !result.IsValid
                 ? Unauthorized(result.ErrorMessages)
-                : Ok(result.Output.ToString());
+                : Ok(result.Response);
         }
 
-        [HttpPost(nameof(AuthorizationAction.SignIn))]
+        [HttpPost($"{StoreRoutes.OpenDataStore}/[controller]/{nameof(AuthorizationAction.SignIn)}")]
         public virtual async Task<IActionResult> SignIn(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -73,10 +72,10 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
             );
             return !result.IsValid
                 ? UnprocessableEntity(result.ErrorMessages)
-                : Created(result.Id.ToString());
+                : Created(result.Response);
         }
 
-        [HttpPost(nameof(AuthorizationAction.SignUp))]
+        [HttpPost($"{StoreRoutes.OpenDataStore}/[controller]/{nameof(AuthorizationAction.SignUp)}")]
         public virtual async Task<IActionResult> SignUp(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -97,10 +96,10 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 .ConfigureAwait(false);
             return !result.IsValid
                 ? UnprocessableEntity(result.ErrorMessages)
-                : Created(result.Id.ToString());
+                : Created(result.Response);
         }
 
-        [HttpPost(nameof(AuthorizationAction.SignOut))]
+        [HttpPost($"{StoreRoutes.OpenDataStore}/[controller]/{nameof(AuthorizationAction.SignOut)}")]
         public virtual async Task<IActionResult> SignOut(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -121,20 +120,18 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 .ConfigureAwait(false);
             return !result.IsValid
                 ? UnprocessableEntity(result.ErrorMessages)
-                : Created(result.Id.ToString());
+                : Created(result.Response);
         }
 
-        [HttpGet(nameof(AuthorizationAction.Renew))]
-        public virtual async Task<IActionResult> Renew([FromHeader] string authorization)
+        [HttpPost($"{StoreRoutes.OpenDataStore}/[controller]/{nameof(AuthorizationAction.Renew)}")]
+        public virtual async Task<IActionResult> Renew(ODataActionParameters parameters)
         {
-            int separator = authorization.IndexOf(' ');
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var identityDetails = new TDto()
             {
-                Credentials = new Credentials()
-                {
-                    SessionToken = authorization.Substring(separator + 1)
-                }
+                Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials
             };
 
             var result = await _servicer
@@ -147,10 +144,10 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 .ConfigureAwait(false);
             return !result.IsValid
                 ? Unauthorized(result.ErrorMessages)
-                : Ok(result.Output.ToString());
+                : Ok(result.Response);
         }
 
-        [HttpPost(nameof(AuthorizationAction.SetPassword))]
+        [HttpPost($"{StoreRoutes.OpenDataStore}/[controller]/{nameof(AuthorizationAction.SetPassword)}")]
         public virtual async Task<IActionResult> SetPassword(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -165,29 +162,10 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 .ConfigureAwait(false);
             return !result.IsValid
                 ? UnprocessableEntity(result.ErrorMessages)
-                : Created(result.Id.ToString());
+                : Created(result.Response);
         }
 
-        [HttpPost(nameof(AuthorizationAction.SetEmail))]
-        public virtual async Task<IActionResult> SetEmail(ODataActionParameters parameters)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var result = await _servicer
-                .Send(
-                    new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
-                        AuthorizationAction.SetEmail,
-                        new TDto() { Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials }
-                    )
-                )
-                .ConfigureAwait(false);
-            return !result.IsValid
-                ? UnprocessableEntity(result.ErrorMessages)
-                : Created(result.Id.ToString());
-        }
-
-        [HttpPost(nameof(AuthorizationAction.ConfirmPassword))]
+        [HttpPost($"{StoreRoutes.OpenDataStore}/[controller]/{nameof(AuthorizationAction.ConfirmPassword)}")]
         public virtual async Task<IActionResult> ConfirmPassword(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -203,10 +181,10 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 .ConfigureAwait(false);
             return !result.IsValid
                 ? UnprocessableEntity(result.ErrorMessages)
-                : Created(result.Id.ToString());
+                : Created(result.Response);
         }
 
-        [HttpPost(nameof(AuthorizationAction.ConfirmEmail))]
+        [HttpPost($"{StoreRoutes.OpenDataStore}/[controller]/{nameof(AuthorizationAction.ConfirmEmail)}")]
         public virtual async Task<IActionResult> ConfirmEmail(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -222,10 +200,10 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
                 .ConfigureAwait(false);
             return !result.IsValid
                 ? UnprocessableEntity(result.ErrorMessages)
-                : Created(result.Id.ToString());
+                : Created(result.Response);
         }
 
-        [HttpPost(nameof(AuthorizationAction.CompleteRegistration))]
+        [HttpPost($"{StoreRoutes.OpenDataStore}/[controller]/{nameof(AuthorizationAction.CompleteRegistration)}")]
         public virtual async Task<IActionResult> CompleteRegistration(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -234,14 +212,14 @@ namespace Undersoft.SDK.Service.Application.Account.Identity
             var result = await _servicer
                 .Send(
                     new Execute<IIdentityStore, TService, TDto, AuthorizationAction>(
-                        AuthorizationAction.ConfirmEmail,
+                        AuthorizationAction.CompleteRegistration,
                         new TDto() { Credentials = ((TDto)parameters[typeof(TDto).Name]).Credentials }
                     )
                 )
                 .ConfigureAwait(false);
             return !result.IsValid
                 ? UnprocessableEntity(result.ErrorMessages)
-                : Created(result.Id.ToString());
+                : Created(result.Response);
         }
 
 

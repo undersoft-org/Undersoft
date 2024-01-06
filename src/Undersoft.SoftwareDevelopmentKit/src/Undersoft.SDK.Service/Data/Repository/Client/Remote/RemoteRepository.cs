@@ -417,52 +417,65 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
 
     public override DataServiceQuery<TEntity> Query => dsContext.CreateQuery<TEntity>(Name, true);
 
-    public async Task<IEnumerable<TEntity>> ExecuteAsync<TKind>(
+    public async Task<IEnumerable<TEntity>> FunctionAsync<TKind>(
        TKind kind,
        string httpMethod = "GET"
    ) where TKind : Enum
     {
-        return await ExecuteAsync<TKind>(
+        return await InvokeAsync<TKind>(
             null,
             kind,
             httpMethod
         );
     }
 
-    public async Task<IEnumerable<TEntity>> ExecuteAsync<TDto, TKind>(
+    public async Task<IEnumerable<TEntity>> ActionAsync<TDto, TKind>(
         TDto payload,
         TKind kind,
         string httpMethod = "POST"
     ) where TKind : Enum
     {
-        return await ExecuteAsync<TKind>(
+        return await InvokeAsync<TKind>(
             httpMethod != "GET" ? new BodyOperationParameter(typeof(TDto).Name, payload) : null,
             kind,
             httpMethod
         );
     }
 
-    public async Task<IEnumerable<TEntity>> ExecuteAsync<TDto, TKind>(
+    public async Task<IEnumerable<TEntity>> ActionAsync<TDto, TKind>(
         TDto[] payloads,
         TKind kind,
         string httpMethod = "POST"
     ) where TKind : Enum
     {
-        return await ExecuteAsync<TKind>(
+        return await InvokeAsync<TKind>(
             httpMethod != "GET" ? new BodyOperationParameter(typeof(TDto).Name, payloads) : null,
             kind,
             httpMethod
         );
     }
 
-    private async Task<IEnumerable<TEntity>> ExecuteAsync<TKind>(
+    private async Task<IEnumerable<TEntity>> InvokeAsync<TKind>(
         BodyOperationParameter parameter,
         TKind kind,
         string httpMethod
     ) where TKind : Enum
-    {
+    {        
         return await dsContext.ExecuteAsync<TEntity>(
             new Uri(dsContext.BaseUri, Name + kind.ToString()),
+            httpMethod,
+            parameter
+        );
+    }
+
+    private async Task<IEnumerable<TEntity>> ExecuteAsync<TKind>(
+      BodyOperationParameter parameter,
+      TKind kind,
+      string httpMethod
+  ) where TKind : Enum
+    {
+        return await dsContext.ExecuteAsync<TEntity>(
+            new Uri(dsContext.BaseUri, Name + "(" + kind.ToString() + ")"),
             httpMethod,
             parameter
         );

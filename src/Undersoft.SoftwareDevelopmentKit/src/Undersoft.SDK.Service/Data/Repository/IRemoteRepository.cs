@@ -29,9 +29,9 @@ public interface IRemoteRepository<TEntity> : IRepository<TEntity> where TEntity
 
     void SetSecurityToken(string token);
 
-    Task<IEnumerable<TEntity>> ExecuteAsync<TKind>(TKind kind, string httpMethod = "GET") where TKind : Enum;
+    Task<IEnumerable<TEntity>> FunctionAsync<TKind>(TKind kind, string httpMethod = "GET") where TKind : Enum;
 
-    Task<IEnumerable<TEntity>> ExecuteAsync<TModel, TKind>(TModel payload, TKind kind, string httpMethod = "POST") where TKind : Enum;
+    Task<IEnumerable<TEntity>> ActionAsync<TModel, TKind>(TModel payload, TKind kind, string httpMethod = "POST") where TKind : Enum;
 
-    Task<IEnumerable<TEntity>> ExecuteAsync<TModel, TKind>(TModel[] payload, TKind kind, string httpMethod = "POST") where TKind : Enum;
+    Task<IEnumerable<TEntity>> ActionAsync<TModel, TKind>(TModel[] payload, TKind kind, string httpMethod = "POST") where TKind : Enum;
 }

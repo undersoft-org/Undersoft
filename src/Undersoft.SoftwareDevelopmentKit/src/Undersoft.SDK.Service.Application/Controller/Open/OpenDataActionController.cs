@@ -27,17 +27,4 @@ public abstract class OpenDataActionController<TStore, TKind, TType, TDto>
         _servicer = servicer;
         _kind = kind;
     }
-
-    [HttpPost]
-    public virtual async Task<IActionResult> Post(TDto dto)
-    {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-
-        var result = await _servicer.Send(new Execute<TStore, TType, TDto, TKind>
-                                                (_kind, dto))
-                                                    .ConfigureAwait(false);
-        return !result.IsValid
-               ? UnprocessableEntity(result.ErrorMessages)
-               : Created(result.Id.ToString());
-    }
 }

@@ -44,7 +44,7 @@
 
     private async Task Authorize()
     {
-        var userToken = await _repository.ExecuteAsync(auth, AuthorizationAction.SignUp);
+        var userToken = await _repository.ActionAsync(auth, AuthorizationAction.SignUp);
 
         navigationManager.NavigateTo("");
     }

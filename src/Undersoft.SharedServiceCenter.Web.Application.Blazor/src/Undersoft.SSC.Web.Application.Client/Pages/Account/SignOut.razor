@@ -1,6 +1,5 @@
 ﻿@page "/account/signout"
 
-@inject IRemoteRepository<IDataStore, Authorization> _repository
 @inject NavigationManager navigationManager
 
 @using Undersoft.SDK.Service.Data;
@@ -11,8 +10,6 @@
 @code{
     protected async override Task OnInitializedAsync()
     {
-        var userToken = await _repository.ExecuteAsync(auth, AuthorizationAction.SignOut);
-
         navigationManager.NavigateTo("");
     }
 }

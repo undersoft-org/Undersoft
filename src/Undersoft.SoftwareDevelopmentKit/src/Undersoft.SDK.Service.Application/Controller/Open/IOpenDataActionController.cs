@@ -8,5 +8,4 @@ using Uniques;
 
 public interface IOpenDataActionController<TKey, TKind, TEntity, TDto> where TDto : class where TKind : Enum
 {
-    Task<IActionResult> Post([FromODataBody] TDto dto);
 }

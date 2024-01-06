@@ -1,10 +1,8 @@
 ﻿@page "/account/signin"
 
 @inject IRemoteRepository<IDataStore, Authorization> _repository
+@inject IAuthenticationStateService _authService
 @inject NavigationManager navigationManager
-
-@using Undersoft.SDK.Service.Data;
-@using Undersoft.SSC.Web.Application.Client
 
 <h3>Sign in</h3>
 
@@ -31,12 +29,15 @@
 </EditForm>
 
 @code {
-    private Authorization auth = new Authorization();
+    private Authorization? auth = new Authorization();
 
     private async Task Authorize()
     {
-        var userToken = await _repository.ExecuteAsync(auth, AuthorizationAction.SignIn);
-       
+        auth = (await _repository.ActionAsync(auth, AuthorizationAction.SignIn))?.FirstOrDefault();
+
+        if (auth != null)
+            await _authService.SignIn(auth);
+
         navigationManager.NavigateTo("");
     }
 }

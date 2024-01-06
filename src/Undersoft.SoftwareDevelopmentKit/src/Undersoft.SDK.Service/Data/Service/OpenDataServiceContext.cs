@@ -22,6 +22,7 @@ namespace Undersoft.SDK.Service.Data.Service
             ResolveName = (t) => this.GetMappedName(t);
             ResolveType = (n) => this.GetMappedType(n);
             SendingRequest2 += RequestAuthorization;
+            Format.LoadServiceModel = GetServiceModel;
         }
 
         private void RequestAuthorization(object sender, SendingRequest2EventArgs e)
@@ -33,14 +34,13 @@ namespace Undersoft.SDK.Service.Data.Service
         public async Task<IEdmModel> CreateServiceModel()
         {
             var edmModel = await AddServiceModel();
-            Format.LoadServiceModel = GetServiceModel;
             Format.UseJson();
             return edmModel;
         }
 
         public async Task<IEdmModel> AddServiceModel()
         {
-            Type t = GetType();
+            string t = GetType().FullName;
             if (!OpenDataServiceRegistry.EdmModels.TryGet(t, out IEdmModel edmModel))
                 OpenDataServiceRegistry.EdmModels.Add(t, edmModel = OnModelCreating(await this.GetEdmModel()));
             return edmModel;
@@ -48,7 +48,7 @@ namespace Undersoft.SDK.Service.Data.Service
 
         public IEdmModel GetServiceModel()
         {
-            Type t = GetType();
+            string t = GetType().FullName;
             OpenDataServiceRegistry.EdmModels.TryGet(t, out IEdmModel edmModel);
             return edmModel;
         }

@@ -14,9 +14,10 @@ using Undersoft.SDK.Service.Data.Store;
 
 namespace Undersoft.SDK.Blazor.Services;
 
-public class JWTAuthenticationStateProvider : AuthenticationStateProvider
+public class JWTAuthenticationStateProvider : AuthenticationStateProvider, IAuthenticationStateService
 {
     private readonly IJSRuntime js;
+    private readonly IAuthorization _authorization;
     private readonly IRemoteRepository<IDataStore, Authorization> _repository;
     private readonly string TOKENKEY = "TOKENKEY";
     private readonly string EXPIRATIONTOKENKEY = "EXPIRATIONTOKENKEY";
@@ -26,11 +27,13 @@ public class JWTAuthenticationStateProvider : AuthenticationStateProvider
 
     public JWTAuthenticationStateProvider(
         IJSRuntime js,
-        IRemoteRepository<IDataStore, Authorization> repository
+        IRemoteRepository<IDataStore, Authorization> repository,
+        IAuthorization authorization
     )
     {
         this.js = js;
         this._repository = repository;
+        _authorization = authorization;
     }
 
     public async override Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -54,10 +57,10 @@ public class JWTAuthenticationStateProvider : AuthenticationStateProvider
             }
             if (IsTokenExpired(expirationTime.AddMinutes(-5)))
             {
-                var auth = (await _repository.ExecuteAsync(AuthorizationAction.Renew))?.FirstOrDefault();
-                if(auth != null)
-                {                    
-                    ServiceManager.GetManager().GetService<IAuthorization>().Credentials = auth.Credentials;
+                var auth = (await _repository.FunctionAsync(AuthorizationAction.Renew))?.FirstOrDefault();
+                if (auth != null)
+                {
+                    _authorization.Credentials = auth.Credentials;
                     token = auth.Credentials.SessionToken;
                 }
                 if (token == null)
@@ -70,7 +73,7 @@ public class JWTAuthenticationStateProvider : AuthenticationStateProvider
 
     public AuthenticationState BuildAuthenticationState(string token)
     {
-        ServiceManager.GetManager().GetService<IAuthorization>().Credentials.SessionToken = token;
+        _authorization.Credentials.SessionToken = token;
         return new AuthenticationState(
             new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt"))
         );
@@ -114,15 +117,27 @@ public class JWTAuthenticationStateProvider : AuthenticationStateProvider
         return expirationTime <= DateTime.UtcNow;
     }
 
-    public async Task SignIn(string userToken)
+    public async Task SignIn(Authorization authorization)
     {
-        await js.SetInLocalStorage(TOKENKEY, userToken);
-        var authState = BuildAuthenticationState(userToken);
+        _authorization.Credentials = authorization.Credentials;
+        await js.SetInLocalStorage(TOKENKEY, _authorization.Credentials.SessionToken);
+        var authState = BuildAuthenticationState(_authorization.Credentials.SessionToken);
         NotifyAuthenticationStateChanged(Task.FromResult(authState));
+    }
+
+    public async Task SignOut()
+    {
+        await _repository.ActionAsync(_authorization, AuthorizationAction.SignOut);
+        await CleanUp();
+        NotifyAuthenticationStateChanged(Task.FromResult(Anonymous));
     }
 
     private async Task CleanUp()
     {
         await js.RemoveItem(TOKENKEY);
+        await js.RemoveItem(EXPIRATIONTOKENKEY);
+        _authorization.Credentials.SessionToken = null;
+        _authorization.Credentials = null;
+        _repository.Context.SetSecurityString(null);
     }
 }
