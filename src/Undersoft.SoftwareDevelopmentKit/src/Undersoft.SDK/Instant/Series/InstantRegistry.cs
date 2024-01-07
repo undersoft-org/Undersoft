@@ -34,9 +34,9 @@
 
         public abstract Uscn Code { get; set; }
 
-        public new abstract ulong Id { get; set; }
+        //public new abstract long Id { get; set; }
 
-        public new abstract ulong TypeId { get; set; }
+        //public new abstract long TypeId { get; set; }
 
         public override ISeriesItem<IInstant> EmptyItem()
         {

@@ -4,6 +4,8 @@
     {
         public IInstantSeries[] DataParameters = new IInstantSeries[1];
         public int ParametersCount = 0;
+        public int RowOffset = 0;
+        public int RowChunk = 0;
 
         public abstract void Compute();
 
@@ -22,7 +24,18 @@
 
         public int GetRowCount(int paramid)
         {
-            return DataParameters[paramid].Count;
+            if (RowChunk == 0)
+                return DataParameters[paramid].Count;
+            else
+            {
+                var count = DataParameters[paramid].Count - RowOffset;
+                return RowChunk > count ? count : RowChunk;
+            }
+        }
+
+        public int GetRowOffset()
+        {
+            return RowOffset;
         }
 
         public int Put(IInstantSeries v)
@@ -31,7 +44,7 @@
             if (index < 0)
             {
                 DataParameters[ParametersCount] = v;
-                return 1 + ParametersCount++;
+                return ++ParametersCount;
             }
             else
             {
@@ -40,21 +53,26 @@
             return index;
         }
 
-        public void SetParams(IInstantSeries p)
+        public void SetParams(IInstantSeries p, int offset = 0, int chunk = 0)
         {
             Put(p);
+
+            RowOffset = offset;
+            RowChunk = chunk;
         }
 
-        public bool SetParams(IInstantSeries p, int index)
+        public void SetParams(IInstantSeries p, int index, int offset, int chunk)
         {
             if (index < ParametersCount)
             {
+                RowOffset = offset;
+                RowChunk = chunk;
+
                 if (ReferenceEquals(DataParameters[index], p))
-                    return false;
+                    return;
                 else
                     DataParameters[index] = p;
             }
-            return false;
         }
 
         public void SetParams(IInstantSeries[] p, int paramCount)

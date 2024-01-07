@@ -57,38 +57,46 @@ public static class ProxyFactory
     public static IProxy Create(object item)
     {
         var t = item.GetType();
-        if (t.IsAssignableTo(typeof(IProxy)))
-            return (IProxy)item;
-        else if (t.IsAssignableTo(typeof(IInnerProxy)))
+        if (!TryGetProxy(item, t, out var proxy))
         {
-            var proxy = ((IInnerProxy)item).Proxy;
-            if(proxy != null)
-                return proxy;                
+            var key = t.UniqueKey32();
+            if (!Cache.TryGet(key, out ProxyCreator sleeve))
+                Cache.Add(key, sleeve = new ProxyCreator(t));
+
+            return sleeve.Create(item);
         }
-
-        var key = t.UniqueKey32();
-        if (!Cache.TryGet(key, out ProxyCreator sleeve))
-            Cache.Add(key, sleeve = new ProxyCreator(t));
-
-        return sleeve.Create(item);
+        return proxy;
     }
 
     public static IProxy Create<T>(T item)
     {
         var t = typeof(T);
+        if (!TryGetProxy(item, t, out var proxy))
+        {
+            var key = t.UniqueKey32();
+            if (!Cache.TryGet(key, out ProxyCreator sleeve))
+                Cache.Add(key, sleeve = new ProxyCreator<T>());
+
+            return sleeve.Create(item);
+        }
+        return proxy;
+    }
+
+    private static bool TryGetProxy(object item, Type type, out IProxy proxy)
+    {
+        var t = type;
         if (t.IsAssignableTo(typeof(IProxy)))
-            return (IProxy)item;
+        {
+            proxy = (IProxy)item;
+            return true;
+        }
         else if (t.IsAssignableTo(typeof(IInnerProxy)))
         {
-            var proxy = ((IInnerProxy)item).Proxy;
+            proxy = ((IInnerProxy)item).Proxy;
             if (proxy != null)
-                return proxy;
+                return true;
         }
-
-        var key = t.UniqueKey32();
-        if (!Cache.TryGet(key, out ProxyCreator sleeve))
-            Cache.Add(key, sleeve = new ProxyCreator<T>());
-
-        return sleeve.Create(item);
+        proxy = null;
+        return false;
     }
 }  

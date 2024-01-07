@@ -35,7 +35,7 @@
         {
             TypeBuilder tb = GetTypeBuilder(typeName);
 
-            CreateSerialCodeProperty(tb, typeof(Uscn), "code");
+            CreateSerialCodeProperty(tb, typeof(Uscn), "Code");
 
             CreateUniqueKeyProperty(tb);
 
@@ -69,11 +69,11 @@
             PropertyBuilder prop = tb.DefineProperty(
                 "Id",
                 PropertyAttributes.HasDefault,
-                typeof(ulong),
-                new Type[] { typeof(ulong) }
+                typeof(long),
+                new Type[] { typeof(long) }
             );
 
-            PropertyInfo iprop = seriesType.GetProperty("Id");
+            PropertyInfo iprop = typeof(IIdentifiable).GetProperty("Id");
 
             MethodInfo accessor = iprop.GetGetMethod();
 
@@ -130,7 +130,7 @@
                 new Type[] { typeof(ulong) }
             );
 
-            PropertyInfo iprop = seriesType.GetProperty("TypeId");
+            PropertyInfo iprop = typeof(IIdentifiable).GetProperty("TypeId");
 
             MethodInfo accessor = iprop.GetGetMethod();
 
@@ -459,7 +459,7 @@
                 il.Emit(OpCodes.Ldarg_2);
                 il.EmitCall(
                     OpCodes.Callvirt,
-                    seriesType.GetMethod("set_Item", new Type[] { typeof(int), typeof(object) }),
+                    seriesType.GetMethod("set_Item", new Type[] { typeof(int), typeof(IInstant) }),
                     null
                 );
                 il.Emit(OpCodes.Ret);
@@ -1054,7 +1054,7 @@
                 new Type[] { type }
             );
 
-            PropertyInfo iprop = seriesType.GetProperty("code");
+            PropertyInfo iprop = seriesType.GetProperty(name);
 
             MethodInfo accessor = iprop.GetGetMethod();
 

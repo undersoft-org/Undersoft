@@ -1267,6 +1267,7 @@ namespace Undersoft.SDK.Series.Base
             get => serialcode.TypeId;
             set => serialcode.TypeId = value;
         }
+        
         public string CodeNo { get => serialcode.ToString(); set => serialcode.FromTetrahex(value.ToCharArray()); }
         public DateTime Created { get; set; }
         public string Creator { get; set; }

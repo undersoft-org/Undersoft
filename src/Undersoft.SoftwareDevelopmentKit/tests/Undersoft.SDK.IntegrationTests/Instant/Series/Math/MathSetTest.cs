@@ -98,14 +98,14 @@ public class MathSetTest
 
         instatnSeriesMath = new InstantSeriesMath(instantSeries);
 
-        MathSet ml = instatnSeriesMath.GetMathSet("SellNetPrice");
+        MathSet ml = instatnSeriesMath["SellNetPrice"];
 
         ml.Formula =
             (ml["NetPrice"] < 10 | ml["NetPrice"] > 50)
             * (ml["NetPrice"] * (ml["SellFeeRate"] / 100) + ml["NetPrice"])
         ;
 
-        MathSet ml2 = instatnSeriesMath.GetMathSet("SellGrossPrice");
+        MathSet ml2 = instatnSeriesMath["SellGrossPrice"];
 
         ml2.Formula = ml * ml2["TaxRate"];
 

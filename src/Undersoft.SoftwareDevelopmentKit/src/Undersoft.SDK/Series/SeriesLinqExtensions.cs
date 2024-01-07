@@ -270,7 +270,7 @@
         {
             using (TransactionScope ts = CreateLockTransaction())
             {
-                return query.ToArray();
+                return query.Commit();
             }
         }
 
@@ -278,7 +278,7 @@
         {
             using (TransactionScope ts = CreateLockTransaction())
             {
-                return query.ToList();
+                return query.AsEnumerable().ToList();
             }
         }
 

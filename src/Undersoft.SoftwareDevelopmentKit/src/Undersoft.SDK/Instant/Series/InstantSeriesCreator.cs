@@ -215,8 +215,8 @@
 
         private IInstantSeries newProxies(IInstantSeries newproxies)
         {
-            newproxies.InstantType = instant.Type;
-            newproxies.InstantSize = instant.Size;
+            newproxies.InstantType = proxy.Type;
+            newproxies.InstantSize = proxy.Size;
             newproxies.Type = this.Type;
             newproxies.Instant = this;
             newproxies.Prime = true;

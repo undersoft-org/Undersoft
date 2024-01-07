@@ -60,7 +60,14 @@
                     cc.SetIndexVariable(0, i);
                     cc.SetIndexVariable(1, size.rows);
 
-                    g.Emit(OpCodes.Ldc_I4_0);
+                    g.Emit(OpCodes.Ldarg_0);
+                    g.EmitCall(
+                       OpCodes.Callvirt,
+                       typeof(CompiledMathSet).GetMethod(
+                           "GetRowOffset"
+                       ),
+                       null
+                   );
                     g.Emit(OpCodes.Stloc, i);
                     g.Emit(OpCodes.Ldarg_0);
                     g.Emit(OpCodes.Ldc_I4_0);
@@ -76,11 +83,6 @@
 
                     if (size.rows > 1 || size.cols > 1)
                     {
-                        int index;
-                        int count;
-
-                        index = i;
-                        count = size.rows;
 
                         g.MarkLabel(topLabel);
 
@@ -88,11 +90,11 @@
                         expr.Compile(g, cc);
                         lexpr.CompileAssign(g, cc, true, false);
 
-                        g.Emit(OpCodes.Ldloc, index);
+                        g.Emit(OpCodes.Ldloc, i);
                         g.Emit(OpCodes.Ldc_I4_1);
                         g.Emit(OpCodes.Add);
                         g.Emit(OpCodes.Dup);
-                        g.Emit(OpCodes.Stloc, index);
+                        g.Emit(OpCodes.Stloc, i);
 
                         g.Emit(OpCodes.Ldloc, l);
                         g.Emit(OpCodes.Blt, topLabel);

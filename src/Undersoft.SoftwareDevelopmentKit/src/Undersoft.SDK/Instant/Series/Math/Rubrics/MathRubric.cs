@@ -151,9 +151,14 @@
         public CompiledMathSet CombineEvaluator()
         {
             if (evaluator == null)
-                evaluator = formula.CompileMathSet(formula);
+                evaluator = GetCompiledMathSet();
 
             return evaluator;
+        }
+
+        public CompiledMathSet GetCompiledMathSet()
+        {
+            return formula.CompileMathSet(formula);
         }
 
         public int CompareTo(IUnique other)

@@ -56,7 +56,9 @@ namespace Undersoft.SDK.IntegrationTests.Invoking.Work
 
             for (int i = 1; i < 10; i++)
             {
-                download.Work<FirstCurrency>().Run("EUR", i).Work<SecondCurrency>().Run("USD", i);
+                download
+                    .Work<FirstCurrency>().Run("EUR", i)
+                    .Work<SecondCurrency>().Run("USD", i);
             }
 
             Thread.Sleep(10000);

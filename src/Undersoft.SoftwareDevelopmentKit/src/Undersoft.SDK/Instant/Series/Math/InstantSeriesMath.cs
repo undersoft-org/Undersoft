@@ -9,11 +9,11 @@ using Instant.Rubrics;
 
 public class InstantSeriesMath : IInstantSeriesMath
 {
-    private MathRubrics computation;
+    private MathRubrics mathRubrics;
 
     public InstantSeriesMath(IInstantSeries data)
     {
-        computation = new MathRubrics(data);
+        mathRubrics = new MathRubrics(data);
         serialcode.Id = (long)DateTime.Now.ToBinary();
         if (data.Computations == null)
             data.Computations = new Catalog<IInstantSeriesMath>();
@@ -35,14 +35,14 @@ public class InstantSeriesMath : IInstantSeriesMath
 
     public MathSet GetMathSet(int id)
     {
-        MemberRubric rubric = computation.Rubrics[id];
+        MemberRubric rubric = mathRubrics.Rubrics[id];
         if (rubric != null)
         {
             MathRubric mathrubric = null;
-            if (computation.MathsetRubrics.TryGet(rubric.Name, out mathrubric))
+            if (mathRubrics.MathsetRubrics.TryGet(rubric.Name, out mathrubric))
                 return mathrubric.GetMathset();
-            return computation
-                .Put(rubric.Name, new MathRubric(computation, rubric))
+            return mathRubrics
+                .Put(rubric.Name, new MathRubric(mathRubrics, rubric))
                 .Value.GetMathset();
         }
         return null;
@@ -51,13 +51,13 @@ public class InstantSeriesMath : IInstantSeriesMath
     public MathSet GetMathSet(string name)
     {
         MemberRubric rubric = null;
-        if (computation.Rubrics.TryGet(name, out rubric))
+        if (mathRubrics.Rubrics.TryGet(name, out rubric))
         {
             MathRubric mathrubric = null;
-            if (computation.MathsetRubrics.TryGet(name, out mathrubric))
+            if (mathRubrics.MathsetRubrics.TryGet(name, out mathrubric))
                 return mathrubric.GetMathset();
-            return computation
-                .Put(rubric.Name, new MathRubric(computation, rubric))
+            return mathRubrics
+                .Put(rubric.Name, new MathRubric(mathRubrics, rubric))
                 .Value.GetMathset();
         }
         return null;
@@ -70,24 +70,42 @@ public class InstantSeriesMath : IInstantSeriesMath
 
     public bool ContainsFirst(MemberRubric rubric)
     {
-        return computation.First.Value.RubricName == rubric.Name;
+        return mathRubrics.First.Value.RubricName == rubric.Name;
     }
 
     public bool ContainsFirst(string rubricName)
     {
-        return computation.First.Value.RubricName == rubricName;
+        return mathRubrics.First.Value.RubricName == rubricName;
     }
 
     public IInstantSeries Compute()
     {
-        computation.Combine();
-        computation
+        mathRubrics.Combine();
+        mathRubrics
             .AsValues()
             .Where(p => !p.PartialMathset)
             .OrderBy(p => p.ComputeOrdinal)
             .Select(p => p.Compute())
             .ToArray();
-        return computation.Data;
+        return mathRubrics.Data;
+    }
+
+    public IInstantSeries ComputeChunk(int offset, int chunk)
+    {
+        mathRubrics.Combine(offset, chunk);
+        mathRubrics
+            .AsValues()
+            .Where(p => !p.PartialMathset)
+            .OrderBy(p => p.ComputeOrdinal)
+            .ForEach(p => p.Compute())
+            .Commit();
+        return mathRubrics.Data;
+    }
+
+    public InstantSeriesMath SetMathRubrics(MathRubrics rubrics)
+    {
+        mathRubrics = rubrics;
+        return this;
     }
 
     private Uscn serialcode;

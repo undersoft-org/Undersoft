@@ -46,34 +46,55 @@
             get { return Rubrics.Count; }
         }
 
-        public bool Combine()
+        public bool Combine(int offset = 0, int batch = 0)
         {
             if (!ReferenceEquals(Data, null))
             {
                 CompiledMathSet[] evs = CombineEvaluators();
-                bool[] b = evs.Select(e => e.SetParams(Data, 0)).ToArray();
+                evs.ForEach(e => e.SetParams(Data, 0, offset, batch));
                 return true;
             }
-            CombineEvaluators();
+            else
+                CombineEvaluators();
             return false;
         }
 
-        public bool Combine(IInstantSeries table)
+        public bool Combine(IInstantSeries table, int offset = 0, int batch = 0)
         {
             if (!ReferenceEquals(Data, table))
             {
                 Data = table;
                 CompiledMathSet[] evs = CombineEvaluators();
-                bool[] b = evs.Select(e => e.SetParams(Data, 0)).ToArray();
+                evs.ForEach(e => e.SetParams(Data, 0, offset, batch));
                 return true;
             }
-            CombineEvaluators();
+            else
+                CombineEvaluators();
+            return false;
+        }
+
+        public bool CombineChunk(IInstantSeries table, int offset = 0, int batch = 0)
+        {
+            if (!ReferenceEquals(Data, table))
+            {
+                Data = table;
+                CompiledMathSet[] evs = GetCompiledMathSets();
+                evs.ForEach(e => e.SetParams(Data, 0, offset, batch));
+                return true;
+            }
+            else
+                GetCompiledMathSets();
             return false;
         }
 
         public CompiledMathSet[] CombineEvaluators()
         {
             return this.AsValues().Select(m => m.CombineEvaluator()).ToArray();
+        }
+
+        public CompiledMathSet[] GetCompiledMathSets()
+        {
+            return this.AsValues().Select(m => m.GetCompiledMathSet()).ToArray();
         }
 
         public override ISeriesItem<MathRubric>[] EmptyVector(int size)
