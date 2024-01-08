@@ -62,8 +62,9 @@ namespace Undersoft.SDK.Series.Base
                 throw new TimeoutException("Wait read timeout");
         }
 
-        protected void acquireRehash()
+        protected void acquireRemover()
         {
+            acquireWriter();
             if (!rehashAccess.Wait(WAIT_REHASH_TIMEOUT))
                 throw new TimeoutException("Wait write Timeout");
             readAccess.Reset();
@@ -85,7 +86,11 @@ namespace Undersoft.SDK.Series.Base
                 rehashAccess.Set();
         }
 
-        protected void releaseRehash() { readAccess.Set(); }
+        protected void releaseRemover() 
+        { 
+            readAccess.Set();
+            releaseWriter();
+        }
 
         protected void releaseWriter()
         {
@@ -152,11 +157,9 @@ namespace Undersoft.SDK.Series.Base
 
         protected override V InnerRemove(long key)
         {
-            acquireWriter();
-            acquireRehash();
+            acquireRemover();
             V temp = base.InnerRemove(key);
-            releaseRehash();
-            releaseWriter();
+            releaseRemover();
             return temp;
         }
 
@@ -194,20 +197,16 @@ namespace Undersoft.SDK.Series.Base
 
         protected override void Rehash(int newsize)
         {
-            acquireWriter();
-            acquireRehash();
+            acquireRemover();
             base.Rehash(newsize);
-            releaseRehash();
-            releaseWriter();
+            releaseRemover();
         }
 
         protected override void Reindex()
         {
-            acquireWriter();
-            acquireRehash();
+            acquireRemover();
             base.Reindex();
-            releaseRehash();
-            releaseWriter();
+            releaseRemover();
         }
 
         protected override bool InnerAdd(ISeriesItem<V> value)
@@ -236,13 +235,9 @@ namespace Undersoft.SDK.Series.Base
 
         public override void Clear()
         {
-            acquireWriter();
-            acquireRehash();
-
+            acquireRemover();
             base.Clear();
-
-            releaseRehash();
-            releaseWriter();
+            releaseRemover();
         }
 
         public override void CopyTo(Array array, int index)
@@ -268,11 +263,9 @@ namespace Undersoft.SDK.Series.Base
 
         public override V Dequeue()
         {
-            acquireWriter();
-            acquireRehash();
+            acquireRemover();
             V temp = base.Dequeue();
-            releaseRehash();
-            releaseWriter();
+            releaseRemover();
             return temp;
         }
 
@@ -337,31 +330,25 @@ namespace Undersoft.SDK.Series.Base
 
         public override bool TryDequeue(out ISeriesItem<V> output)
         {
-            acquireWriter();
-            acquireRehash();
+            acquireRemover();
             bool temp = base.TryDequeue(out output);
-            releaseRehash();
-            releaseWriter();
+            releaseRemover();
             return temp;
         }
 
         public override bool TryDequeue(out V output)
         {
-            acquireWriter();
-            acquireRehash();
+            acquireRemover();
             bool temp = base.TryDequeue(out output);
-            releaseRehash();
-            releaseWriter();
+            releaseRemover();
             return temp;
         }
 
         public override bool TryPick(int skip, out V output)
         {
-            acquireWriter();
-            acquireRehash();
+            acquireRemover();
             bool temp = base.TryPick(skip, out output);
-            releaseRehash();
-            releaseWriter();
+            releaseRemover();
             return temp;
         }
     }
