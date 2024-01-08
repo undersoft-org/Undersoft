@@ -3,7 +3,7 @@
     using Series;
 
     public class WorkMethods : Registry<IInvoker>
-    {
+    {        
         public override ISeriesItem<IInvoker>[] EmptyVector(int size)
         {
             return new WorkMethod[size];

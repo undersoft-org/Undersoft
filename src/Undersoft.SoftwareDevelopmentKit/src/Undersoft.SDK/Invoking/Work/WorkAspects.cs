@@ -6,7 +6,7 @@
 
     public class WorkAspects : Registry<WorkAspect>
     {
-        public WorkAspects(string name = null, WorkNotes notes = null)
+        public WorkAspects(string name = null, WorkNotes notes = null) : base(true)
         {
             Name = (name != null) ? name : "ThreadGraph";
             Notes = (Notes != null) ? notes : new WorkNotes();

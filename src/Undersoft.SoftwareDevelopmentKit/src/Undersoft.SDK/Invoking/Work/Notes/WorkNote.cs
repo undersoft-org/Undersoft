@@ -2,7 +2,7 @@
 {
     using Uniques;
 
-    public class WorkNote : IUnique
+    public class WorkNote : Origin
     {
         public object[] Parameters;
         public WorkNoteBox SenderBox;
@@ -63,8 +63,6 @@
         public WorkNote(string sender, string recipient, params object[] Params)
             : this(sender, recipient, null, null, Params) { }
 
-        public IUnique Empty => new Uscn();
-
         public WorkNoteEvoker EvokerOut { get; set; }
 
         public WorkNoteEvokers EvokersIn { get; set; }
@@ -76,37 +74,5 @@
         public WorkItem Sender { get; set; }
 
         public string SenderName { get; set; }
-
-        public long Id
-        {
-            get => Sender.Id;
-            set => Sender.Id = value;
-        }
-
-        public long TypeId
-        {
-            get => ((IUnique)Sender).TypeId;
-            set => ((IUnique)Sender).TypeId = value;
-        }
-
-        public int CompareTo(IUnique other)
-        {
-            return Sender.CompareTo(other);
-        }
-
-        public bool Equals(IUnique other)
-        {
-            return Sender.Equals(other);
-        }
-
-        public byte[] GetBytes()
-        {
-            return Sender.GetBytes();
-        }
-
-        public byte[] GetIdBytes()
-        {
-            return Sender.GetIdBytes();
-        }
     }
 }

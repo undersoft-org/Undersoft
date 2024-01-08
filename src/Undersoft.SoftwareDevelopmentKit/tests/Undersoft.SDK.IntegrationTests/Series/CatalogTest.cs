@@ -29,28 +29,28 @@ namespace Undersoft.SDK.IntegrationTests.Series
         [Fact]
         public async Task Catalog_Concurrent_IndentifierKeys_Test()
         {
-            Task t = board64_MultiThread_Test(identifierKeyTestCollection);
+            Task t = Catalog_MultiThread_Test(identifierKeyTestCollection);
             await t.ConfigureAwait(true);
         }
 
         [Fact]
         public async Task Catalog_Concurrent_IntKeys_Test()
         {
-            Task t = board64_MultiThread_Test(intKeyTestCollection);
+            Task t = Catalog_MultiThread_Test(intKeyTestCollection);
             await t.ConfigureAwait(true);
         }
 
         [Fact]
         public async Task Catalog_Concurrent_LongKeys_Test()
         {
-            Task t = board64_MultiThread_Test(longKeyTestCollection);
+            Task t = Catalog_MultiThread_Test(longKeyTestCollection);
             await t.ConfigureAwait(true);
         }
 
         [Fact]
         public async Task Catalog_Concurrent_StringKeys_Test()
         {
-            Task t = board64_MultiThread_Test(stringKeyTestCollection);
+            Task t = Catalog_MultiThread_Test(stringKeyTestCollection);
             await t.ConfigureAwait(true);
         }
 
@@ -78,7 +78,7 @@ namespace Undersoft.SDK.IntegrationTests.Series
             Catalog_Sync_Integrated_Test(stringKeyTestCollection.Take(100000).ToArray());
         }
 
-        private Task board64_MultiThread_Test(IList<KeyValuePair<object, string>> collection)
+        private Task Catalog_MultiThread_Test(IList<KeyValuePair<object, string>> collection)
         {
             registry = new Catalog64<string>();
             Action publicTest = () =>

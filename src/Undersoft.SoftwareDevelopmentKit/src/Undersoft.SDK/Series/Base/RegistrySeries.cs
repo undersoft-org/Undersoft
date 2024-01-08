@@ -536,7 +536,7 @@
             ++repeated;
         }
 
-        protected ISeriesItem<V> swapRepeated(ISeriesItem<V> item)
+        protected virtual ISeriesItem<V> swapRepeated(ISeriesItem<V> item)
         {
             V value = item.Value;
             ISeriesItem<V> _item = item.Next;
@@ -824,12 +824,12 @@
 
         public override ISeriesItem<V> Next(ISeriesItem<V> item)
         {
-            ISeriesItem<V> _item = vector[item.Index + 1];
-            if (_item != null)
+            item = vector[item.Index + 1];
+            if (item != null)
             {
-                if (!_item.Removed)
-                    return _item;
-                return Next(_item);
+                if (!item.Removed)
+                    return item;
+                return Next(item);
             }
             return null;
         }
@@ -873,7 +873,9 @@
                 return false;
 
             if (repeatable && (output.Next != null))
+            {
                 output = swapRepeated(output);
+            }
             else
                 first = output;
 

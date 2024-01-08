@@ -4,12 +4,12 @@
     using Series;
     using Uniques;
 
-    public class WorkNoteEvoker : Catalog<WorkItem>, IUnique
+    public class WorkNoteEvoker : Registry<WorkItem>, IUnique
     {
         public ISeries<WorkItem> RelatedWorks = new Catalog<WorkItem>();
         public ISeries<string> RelatedWorkNames = new Catalog<string>();
 
-        public WorkNoteEvoker(WorkItem sender, WorkItem recipient, params WorkItem[] relayWorks)
+        public WorkNoteEvoker(WorkItem sender, WorkItem recipient, params WorkItem[] relayWorks) : base(true)
         {
             Sender = sender;
             SenderName = sender.Worker.Name;
@@ -21,7 +21,7 @@
             RelatedWorkNames.Add(RelatedWorks.Select(rn => rn.Worker.Name));
         }
 
-        public WorkNoteEvoker(WorkItem sender, WorkItem recipient, params string[] relayNames)
+        public WorkNoteEvoker(WorkItem sender, WorkItem recipient, params string[] relayNames) : base(true)
         {
             Sender = sender;
             SenderName = sender.Name;
@@ -40,7 +40,7 @@
             );
         }
 
-        public WorkNoteEvoker(WorkItem sender, string recipientName, params WorkItem[] relayWorks)
+        public WorkNoteEvoker(WorkItem sender, string recipientName, params WorkItem[] relayWorks) : base(true)
         {
             Sender = sender;
             SenderName = sender.Name;
@@ -57,7 +57,7 @@
             RelatedWorkNames.Add(RelatedWorks.Select(rn => rn.Worker.Name));
         }
 
-        public WorkNoteEvoker(WorkItem sender, string recipientName, params string[] relayNames)
+        public WorkNoteEvoker(WorkItem sender, string recipientName, params string[] relayNames) : base(true)
         {
             Sender = sender;
             SenderName = sender.Worker.Name;

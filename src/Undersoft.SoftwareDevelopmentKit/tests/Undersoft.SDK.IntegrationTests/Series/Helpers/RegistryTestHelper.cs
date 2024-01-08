@@ -28,7 +28,7 @@ namespace System.Series.Tests
 
         public IList<KeyValuePair<object, string>> stringKeyTestCollection { get; set; }
 
-        public void Registry_Async_Integrated_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void Registry_Sync_Integrated_Test(IList<KeyValuePair<object, string>> testCollection)
         {
             Registry_Sync_Add_Test(testCollection);
             Registry_Sync_Count_Test(100000);

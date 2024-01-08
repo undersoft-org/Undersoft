@@ -40,7 +40,7 @@ namespace Undersoft.SDK.IntegrationTests.Invoking.Work
             download
                 .Work<FirstCurrency>((w) => w.GetCurrency)
                     .FlowTo<ComputeCurrency>((w) => w.Compute)
-                .Work<SecondCurrency>()
+                .Work<SecondCurrency>((w) => w.GetCurrency)
                     .FlowTo<ComputeCurrency>((w) => w.Compute);
 
             compute
@@ -54,7 +54,7 @@ namespace Undersoft.SDK.IntegrationTests.Invoking.Work
                     .Work<SecondCurrency>((w) => w.GetCurrency).Run("USD", i);
             }
 
-            Task.Delay(10000);
+            Thread.Sleep(30000);
 
             download.Close(true);
             compute.Close(true);
@@ -81,10 +81,11 @@ namespace Undersoft.SDK.IntegrationTests.Invoking.Work
         public string file_name;
         public DateTime rate_date;
         private int start_int = 1;
+        private int _daysbefore;
 
         public NBPSource(int daysbefore)
         {
-            GetFileName(daysbefore);
+            
         }
 
         public Dictionary<string, double> GetCurrenciesRate(List<string> currency_names)
@@ -102,7 +103,8 @@ namespace Undersoft.SDK.IntegrationTests.Invoking.Work
         {
             try
             {
-                string file = xml_url + file_name + ".xml";
+                var filenane =  GetFileName(_daysbefore).GetAwaiter().GetResult();
+                string file = xml_url + filenane + ".xml";
                 DataSet ds = new DataSet();
                 ds.ReadXml(file);
                 var tabledate = ds.Tables["tabela_kursow"].Rows.Cast<DataRow>().AsEnumerable();
@@ -117,7 +119,7 @@ namespace Undersoft.SDK.IntegrationTests.Invoking.Work
                     select new { Kurs = k["kurs_sredni"].ToString() }
                 ).First();
                 rate_date = Convert.ToDateTime(before_rate_date.Data);
-                return Convert.ToDouble(rate.Kurs);
+                return Double.Parse(rate.Kurs);
             }
             catch (Exception ex)
             {
@@ -126,7 +128,7 @@ namespace Undersoft.SDK.IntegrationTests.Invoking.Work
             }
         }
 
-        private async void GetFileName(int daysbefore)
+        private async Task<string> GetFileName(int daysbefore)
         {
             try
             {
@@ -150,7 +152,7 @@ namespace Undersoft.SDK.IntegrationTests.Invoking.Work
 
                     if (start_int > 365)
                     {
-                        if (--maxdaysbackward < 1)
+                        if (--maxdaysbackward < 0)
                             throw new ArgumentOutOfRangeException();
 
                         start_int = 1;
@@ -159,6 +161,7 @@ namespace Undersoft.SDK.IntegrationTests.Invoking.Work
                 }
                 file_name = date_str;
                 rate_date = date_of_rate;
+                return file_name;
             }
             catch (Exception ex)
             {

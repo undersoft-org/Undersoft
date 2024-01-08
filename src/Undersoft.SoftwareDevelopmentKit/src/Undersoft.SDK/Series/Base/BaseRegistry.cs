@@ -75,8 +75,8 @@ namespace Undersoft.SDK.Series.Base
             {
                 if (!writeAccess.Wait(WAIT_WRITE_TIMEOUT))
                     throw new TimeoutException("Wait write Timeout");
-                writeAccess.Reset();
-            } while (!writePass.Wait(0));
+            } while (!writePass.Wait(1));
+            writeAccess.Reset();
         }
 
         protected void releaseReader()
@@ -156,9 +156,7 @@ namespace Undersoft.SDK.Series.Base
         protected override V InnerRemove(long key)
         {
             acquireWriter();
-            acquireRemover();
             V temp = base.InnerRemove(key);
-            releaseRemover();
             releaseWriter();
             return temp;
         }
@@ -235,9 +233,11 @@ namespace Undersoft.SDK.Series.Base
 
         public override void Clear()
         {
+            acquireWriter();
             acquireRemover();
             base.Clear();
             releaseRemover();
+            releaseWriter();
         }
 
         public override void CopyTo(Array array, int index)
@@ -264,9 +264,7 @@ namespace Undersoft.SDK.Series.Base
         public override V Dequeue()
         {
             acquireWriter();
-            acquireRemover();
             V temp = base.Dequeue();
-            releaseRemover();
             releaseWriter();
             return temp;
         }
@@ -333,31 +331,33 @@ namespace Undersoft.SDK.Series.Base
         public override bool TryDequeue(out ISeriesItem<V> output)
         {
             acquireWriter();
-            acquireRemover();
-            bool temp = base.TryDequeue(out output);
-            releaseRemover();
+            bool temp = base.TryDequeue(out output);            
             releaseWriter();
             return temp;
         }
 
         public override bool TryDequeue(out V output)
         {
-            acquireWriter();
-            acquireRemover();
+            acquireWriter();            
             bool temp = base.TryDequeue(out output);
-            releaseRemover();
             releaseWriter();
             return temp;
         }
 
         public override bool TryPick(int skip, out V output)
         {
-            acquireWriter();
-            acquireRemover();
+            acquireReader();
             bool temp = base.TryPick(skip, out output);
-            releaseRemover();
-            releaseWriter();
+            releaseReader();
             return temp;
+        }
+
+        protected override ISeriesItem<V> swapRepeated(ISeriesItem<V> item)
+        {
+            acquireRemover();
+            var _item = base.swapRepeated(item);
+            releaseRemover();
+            return _item;
         }
     }
 }

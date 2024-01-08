@@ -6,6 +6,8 @@
 
     public class WorkNoteEvokers : Registry<WorkNoteEvoker>
     {
+        public WorkNoteEvokers() : base(true) { }
+
         public bool Contains(IEnumerable<WorkItem> objectives)
         {
             return this.AsValues()

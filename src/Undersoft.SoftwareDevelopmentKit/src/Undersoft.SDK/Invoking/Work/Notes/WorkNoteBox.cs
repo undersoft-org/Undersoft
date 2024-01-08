@@ -4,9 +4,9 @@
     using System.Linq;
     using Series;
 
-    public class WorkNoteBox : Catalog<WorkNoteTopic>
+    public class WorkNoteBox : Registry<WorkNoteTopic>
     {
-        public WorkNoteBox(string Recipient)
+        public WorkNoteBox(string Recipient) : base(true)
         {
             RecipientName = Recipient;
             Evokers = new WorkNoteEvokers();

@@ -15,7 +15,7 @@
         int readers;
 
         internal readonly ManualResetEventSlim readAccess = new ManualResetEventSlim(true, 128);
-        internal readonly ManualResetEventSlim rehashAccess = new ManualResetEventSlim(true, 128);
+        internal readonly ManualResetEventSlim removeAccess = new ManualResetEventSlim(true, 128);
         internal readonly ManualResetEventSlim writeAccess = new ManualResetEventSlim(true, 128);
         internal readonly SemaphoreSlim writePass = new SemaphoreSlim(1);
 
@@ -66,14 +66,14 @@
         protected void acquireReader()
         {
             Interlocked.Increment(ref readers);
-            rehashAccess.Reset();
+            removeAccess.Reset();
             if (!readAccess.Wait(WAIT_READ_TIMEOUT))
                 throw new TimeoutException("Wait write Timeout");
         }
 
-        protected void acquireRehash()
+        protected void acquireRemover()
         {
-            if (!rehashAccess.Wait(WAIT_REHASH_TIMEOUT))
+            if (!removeAccess.Wait(WAIT_REHASH_TIMEOUT))
                 throw new TimeoutException("Wait write Timeout");
             readAccess.Reset();
         }
@@ -84,8 +84,25 @@
             {
                 if (!writeAccess.Wait(WAIT_WRITE_TIMEOUT))
                     throw new TimeoutException("Wait write Timeout");
-                writeAccess.Reset();
-            } while (!writePass.Wait(0));
+            } while (!writePass.Wait(1));
+            writeAccess.Reset();
+        }
+
+        protected void releaseReader()
+        {
+            if (0 == Interlocked.Decrement(ref readers))
+                removeAccess.Set();
+        }
+
+        protected void releaseRehash()
+        {
+            readAccess.Set();
+        }
+
+        protected void releaseWriter()
+        {
+            writePass.Release();
+            writeAccess.Set();
         }
 
         protected override V InnerGet(long key)
@@ -146,33 +163,16 @@
 
         protected override void Rehash(int newsize)
         {
-            acquireRehash();
+            acquireRemover();
             base.Rehash(newsize);
             releaseRehash();
         }
 
         protected override void Reindex()
         {
-            acquireRehash();
+            acquireRemover();
             base.Reindex();
             releaseRehash();
-        }
-
-        protected void releaseReader()
-        {
-            if (0 == Interlocked.Decrement(ref readers))
-                rehashAccess.Set();
-        }
-
-        protected void releaseRehash()
-        {
-            readAccess.Set();
-        }
-
-        protected void releaseWriter()
-        {
-            writePass.Release();
-            writeAccess.Set();
         }
 
         protected override bool InnerAdd(ISeriesItem<V> value)
@@ -202,7 +202,7 @@
         public override void Clear()
         {
             acquireWriter();
-            acquireRehash();
+            acquireRemover();
 
             base.Clear();
 
@@ -312,10 +312,11 @@
 
         public override bool TryPick(int skip, out V output)
         {
-            acquireWriter();
+            acquireReader();
             bool temp = base.TryPick(skip, out output);
-            releaseWriter();
+            acquireReader();
             return temp;
         }
+
     }
 }

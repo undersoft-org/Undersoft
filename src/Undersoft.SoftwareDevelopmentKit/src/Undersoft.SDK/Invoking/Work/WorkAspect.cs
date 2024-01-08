@@ -8,7 +8,7 @@
     {
         public WorkAspects Case { get; set; }
 
-        public WorkAspect(string Name)
+        public WorkAspect(string Name) : base(true)
         {
             this.Name = Name;
             WorkersCount = 1;

@@ -47,7 +47,7 @@ namespace Undersoft.SDK.Invoking
             : base(typeof(T), methodName, constructorParams) { }
     }
 
-    public class Invoker : IInvoker, IInvoke
+    public class Invoker : Origin, IInvoker, IInvoke
     {
         private Uscn serialcode;
         private event InvokerDelegate routine;
@@ -225,34 +225,10 @@ namespace Undersoft.SDK.Invoking
 
         public IUnique Empty => Uscn.Empty;
 
-        public long Id
-        {
-            get => serialcode.Id;
-            set => serialcode.Id = value;
-        }
-
-        public long TypeId
-        {
-            get => serialcode.TypeId;
-            set => serialcode.TypeId = value;
-        }
-
-        public string CodeNo
-        {
-            get => serialcode.CodeNo;
-            set => serialcode.CodeNo = value;
-        }
-
         public object[] ValueArray
         {
             get => ParameterValues;
             set => ParameterValues = value;
-        }
-
-        public Uscn SerialCode
-        {
-            get => serialcode;
-            set => serialcode = value;
         }
 
         public string TypeName { get; set; }
@@ -458,9 +434,9 @@ namespace Undersoft.SDK.Invoking
             Name = getFullName();
             QualifiedName = getQualifiedName();
             long seed = Info.DeclaringType.UniqueKey();
-            serialcode.Id = QualifiedName.UniqueKey64();
-            serialcode.TypeId = seed;
-            serialcode.Time = DateTime.Now.ToBinary();
+            Id = QualifiedName.UniqueKey64();
+            TypeId = seed;
+            Time = DateTime.Now;
         }
 
         private static long getUniqueKey(MethodInfo info, ParameterInfo[] parameters)
@@ -499,26 +475,6 @@ namespace Undersoft.SDK.Invoking
             return $"{info.DeclaringType.FullName}."
                 + $"{info.Name}"
                 + $"{new String(parameters.SelectMany(p => "." + p.ParameterType.Name).ToArray())}";
-        }
-
-        public byte[] GetBytes()
-        {
-            return serialcode.GetBytes();
-        }
-
-        public byte[] GetIdBytes()
-        {
-            return serialcode.GetIdBytes();
-        }
-
-        public bool Equals(IUnique other)
-        {
-            return serialcode.Equals(other);
-        }
-
-        public int CompareTo(IUnique other)
-        {
-            return serialcode.CompareTo(other);
         }
 
         public static string GetName(Type type, string methodName, params Type[] parameterTypes)

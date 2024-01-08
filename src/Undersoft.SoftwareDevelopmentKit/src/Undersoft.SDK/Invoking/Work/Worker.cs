@@ -4,7 +4,7 @@
     using Uniques;
     using Notes;
 
-    public class Worker : IUnique, IWorker
+    public class Worker : Origin, IWorker
     {
         private readonly Registry<object> input = new Registry<object>(true);
         private readonly Registry<object> output = new Registry<object>(true);

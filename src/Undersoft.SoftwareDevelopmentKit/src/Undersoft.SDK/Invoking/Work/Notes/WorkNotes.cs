@@ -11,8 +11,10 @@
         Schedule
     }
 
-    public class WorkNotes : Catalog<WorkNoteBox>
+    public class WorkNotes : Registry<WorkNoteBox>
     {
+        public WorkNotes() : base(true) { }
+
         private Case Case { get; set; }
 
         private void send(WorkNote parameters)
