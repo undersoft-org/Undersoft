@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System;
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 1)]
-public class MathsetMockModel
+public class MathsetMockModel : Origin
 {
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 10)]
     public string Alias = "StockAlias";
@@ -14,7 +14,6 @@ public class MathsetMockModel
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 20)]
     public string Name = "StockFullName";
     public int Quantity = 86;
-    private long Key = long.MaxValue;
 
     public double BuyFeeRate { get; set; } = 8;
 
@@ -30,8 +29,6 @@ public class MathsetMockModel
     public double CurrentMarkupRate { get; set; } = 0;
 
     public Guid GlobalId { get; set; } = new Guid();
-
-    public int Id { get; set; } = 404;
 
     public double NetCost { get; set; } = 1.00;
 
@@ -49,11 +46,7 @@ public class MathsetMockModel
 
     public bool Status { get; set; }
 
-    public Uscn SystemKey { get; set; } = Uscn.Empty;
-
     public double TargetMarkupRate { get; set; } = 0;
 
     public double TaxRate { get; set; } = 1.23;
-
-    public DateTime Time { get; set; } = DateTime.Now;
 }

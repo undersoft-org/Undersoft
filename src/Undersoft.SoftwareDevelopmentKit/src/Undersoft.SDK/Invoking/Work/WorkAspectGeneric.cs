@@ -4,9 +4,9 @@
     {
         public WorkAspect() : base(typeof(TAspect).FullName) { }
 
-        public override WorkItem Work<TEvent>() where TEvent : class
+        public override WorkItem Work<TEvent>(string methodname = null) where TEvent : class
         {
-            return base.Work<TEvent>();
+            return base.Work<TEvent>(methodname);
         }
 
         public override WorkItem Work<TEvent>(Type[] arguments) where TEvent : class

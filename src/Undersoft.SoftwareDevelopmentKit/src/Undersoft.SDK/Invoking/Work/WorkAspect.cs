@@ -79,9 +79,13 @@
             return this;
         }
 
-        public virtual WorkAspect AddWork<T>() where T : class
+        public virtual WorkAspect AddWork<T>(string methodName = null) where T : class
         {
-            var deputy = new Invoker<T>();
+            Invoker<T> deputy = null;
+            if(methodName != null)
+                deputy = new Invoker<T>(methodName);
+            else
+                deputy = new Invoker<T>();
             AddWork(Case.Methods.EnsureGet(deputy, k => deputy).Value);
             return this;
         }
@@ -108,14 +112,14 @@
             return this;
         }
 
-        public virtual WorkAspect AddWork<T>(Func<T, string> method) where T : class
+        public virtual WorkAspect AddWork<T>(Func<T, Delegate> method) where T : class
         {
             var deputy = new Invoker<T>(method);
             AddWork(Case.Methods.EnsureGet(deputy, k => deputy).Value);
             return this;
         }
 
-        public virtual WorkAspect AddWork<T>(Func<T, string> method, params Type[] arguments)
+        public virtual WorkAspect AddWork<T>(Func<T, Delegate> method, params Type[] arguments)
             where T : class
         {
             var deputy = new Invoker<T>(method, arguments);
@@ -123,7 +127,7 @@
             return this;
         }
 
-        public virtual WorkAspect AddWork<T>(Func<T, string> method, params object[] consrtuctorParams)
+        public virtual WorkAspect AddWork<T>(Func<T, Delegate> method, params object[] consrtuctorParams)
             where T : class
         {
             var deputy = new Invoker<T>(method, consrtuctorParams);
@@ -131,11 +135,20 @@
             return this;
         }
 
-        public virtual WorkItem Work<T>() where T : class
+        public virtual WorkItem Work<T>(string methodName = null) where T : class
         {
-            if (!TryGet(Invoker.GetName<T>(), out WorkItem labor))
+            if (methodName == null)
+                methodName = Invoker.GetName<T>();
+            else 
+                methodName = Invoker.GetName<T>(methodName);
+
+            if (!TryGet(methodName, out WorkItem labor))
             {
-                var deputy = new Invoker<T>();
+                Invoker<T> deputy = null;
+                if (methodName != null)
+                    deputy = new Invoker<T>(methodName);
+                else
+                    deputy = new Invoker<T>();
                 return AddWork(Case.Methods.EnsureGet(deputy, k => deputy).Value);
             }
             return labor;
@@ -172,7 +185,7 @@
             return labor;
         }
 
-        public virtual WorkItem Work<T>(Func<T, string> method) where T : class
+        public virtual WorkItem Work<T>(Func<T, Delegate> method) where T : class
         {
             var deputy = new Invoker<T>(method);
             if (!TryGet(deputy.Name, out WorkItem labor))
@@ -182,7 +195,7 @@
             return labor;
         }
 
-        public virtual WorkItem Work<T>(Func<T, string> method, params Type[] arguments)
+        public virtual WorkItem Work<T>(Func<T, Delegate> method, params Type[] arguments)
             where T : class
         {
             var deputy = new Invoker<T>(method, arguments);
@@ -193,7 +206,7 @@
             return labor;
         }
 
-        public virtual WorkItem Work<T>(Func<T, string> method, params object[] consrtuctorParams)
+        public virtual WorkItem Work<T>(Func<T, Delegate> method, params object[] consrtuctorParams)
             where T : class
         {
             var deputy = new Invoker<T>(method, consrtuctorParams);

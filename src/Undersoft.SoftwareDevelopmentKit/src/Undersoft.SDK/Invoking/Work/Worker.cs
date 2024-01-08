@@ -72,9 +72,14 @@
 
         public IInvoker Process { get; set; }
 
-        public WorkAspect FlowTo<T>()
+        public WorkAspect FlowTo<T>(string methodName = null)
         {
-            return Work.FlowTo<T>();
+            return Work.FlowTo<T>(methodName);
+        }
+
+        public WorkAspect FlowTo<T>(Func<T, Delegate> methodName) where T : class, new()
+        {
+            return Work.FlowTo<T>(methodName);
         }
 
         public WorkAspect FlowTo(WorkItem recipient)
@@ -89,7 +94,7 @@
             return Work.Aspect;
         }
 
-        public WorkAspect FlowTo(string RecipientName)
+        public WorkAspect FlowTo(string RecipientName, string methodName)
         {
             Evokers.Add(new WorkNoteEvoker(Work, RecipientName, Name));
             return Work.Aspect;
@@ -101,9 +106,14 @@
             return Work.Aspect;
         }
 
-        public WorkAspect FlowFrom<T>()
+        public WorkAspect FlowFrom<T>(string methodName = null)
         {
-            return Work.FlowFrom<T>();
+            return Work.FlowFrom<T>(methodName);
+        }
+
+        public WorkAspect FlowFrom<T>(Func<T, Delegate> methodName) where T : class, new()
+        {
+            return Work.FlowFrom<T>(methodName);
         }
 
         public WorkAspect FlowFrom(WorkItem sender)
@@ -118,9 +128,9 @@
             return Work.Aspect;
         }
 
-        public WorkAspect FlowFrom(string SenderName)
+        public WorkAspect FlowFrom(string SenderName, string methodName)
         {
-            Work.FlowFrom(SenderName);
+            Work.FlowFrom(SenderName, methodName);
             return Work.Aspect;
         }
 

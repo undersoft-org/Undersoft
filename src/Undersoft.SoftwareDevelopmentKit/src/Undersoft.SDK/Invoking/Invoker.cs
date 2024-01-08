@@ -21,16 +21,16 @@ namespace Undersoft.SDK.Invoking
 
         public Invoker(IInvoke invoke) : base(invoke.TypeName, invoke.MethodName) { }
 
-        public Invoker(Func<T, string> method) : base(typeof(T), method(typeof(T).New<T>())) { }
+        public Invoker(Func<T, Delegate> method) : base(typeof(T), method(typeof(T).New<T>()).Method.Name) { }
 
-        public Invoker(Func<T, string> method, params object[] constructorParams)
-            : base(typeof(T), method(typeof(T).New<T>(constructorParams)), constructorParams) { }
+        public Invoker(Func<T, Delegate> method, params object[] constructorParams)
+            : base(typeof(T), method(typeof(T).New<T>(constructorParams)).Method.Name, constructorParams) { }
 
-        public Invoker(Func<T, string> method, params Type[] parameterTypes)
-            : base(typeof(T), method(typeof(T).New<T>()), parameterTypes) { }
+        public Invoker(Func<T, Delegate> method, params Type[] parameterTypes)
+            : base(typeof(T), method(typeof(T).New<T>()).Method.Name, parameterTypes) { }
 
-        public Invoker(T targetObject, Func<T, string> method)
-            : base(targetObject, method(targetObject)) { }
+        public Invoker(T targetObject, Func<T, Delegate> method)
+            : base(targetObject, method(targetObject).Method.Name) { }
 
         public Invoker(Type[] parameterTypes, params object[] constructorParams)
             : base(typeof(T), parameterTypes, constructorParams) { }
@@ -211,7 +211,7 @@ namespace Undersoft.SDK.Invoking
 
         public Object TargetObject { get; set; }
 
-        public Delegate Method { get; }
+        public Delegate Method { get; set;  }
 
         public MethodInfo Info { get; set; }
 
@@ -281,7 +281,12 @@ namespace Undersoft.SDK.Invoking
                     target = TargetObject;
                 }
 
-                return Task.Run(() => (Method ?? invoking(Info)).DynamicInvoke(target, parameters));
+                if (Method == null)
+                {
+                    Method = invoking(Info);
+                }
+
+                return  Task.Run(() => Method.DynamicInvoke(target, parameters));
             }
             catch (Exception e)
             {
@@ -293,7 +298,15 @@ namespace Undersoft.SDK.Invoking
         {
             try
             {
-                return (Method ?? invoking(Info)).DynamicInvoke(TargetObject, parameters);
+                if (Method == null)
+                {
+                    Method = invoking(Info);
+                }
+
+                var obj = Method.DynamicInvoke(TargetObject, parameters);
+
+                return obj;
+
             }
             catch (Exception e)
             {
@@ -310,7 +323,14 @@ namespace Undersoft.SDK.Invoking
                     parameters = new[] { target }.Concat(parameters).ToArray();
                     target = TargetObject;
                 }
-                return (Method ?? invoking(Info)).DynamicInvoke(target, parameters);
+                if (Method == null)
+                {
+                    Method = invoking(Info);
+                }
+
+                var obj = Method.DynamicInvoke(target, parameters);
+
+                return obj;
             }
             catch (Exception e)
             {
@@ -322,7 +342,14 @@ namespace Undersoft.SDK.Invoking
         {
             try
             {
-                return (T)(Method ?? invoking(Info)).DynamicInvoke(TargetObject, parameters);
+                if (Method == null)
+                {
+                    Method = invoking(Info);
+                }
+
+                var obj = Method.DynamicInvoke(TargetObject, parameters);
+
+                return (T)obj;
             }
             catch (Exception e)
             {
@@ -339,7 +366,14 @@ namespace Undersoft.SDK.Invoking
                     parameters = new[] { target }.Concat(parameters).ToArray();
                     target = TargetObject;
                 }
-                return (T)(Method ?? invoking(Info)).DynamicInvoke(target, parameters);
+                if (Method == null)
+                {
+                    Method = invoking(Info);
+                }
+
+                var obj = Method.DynamicInvoke(target, parameters);
+
+                return (T)obj;
             }
             catch (Exception e)
             {

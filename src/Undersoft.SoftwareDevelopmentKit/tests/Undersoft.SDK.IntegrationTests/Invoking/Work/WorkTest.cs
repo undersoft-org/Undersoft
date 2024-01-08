@@ -8,6 +8,7 @@ namespace Undersoft.SDK.IntegrationTests.Invoking.Work
     using System.Net.Http;
     using System.Text;
     using System.Threading;
+    using System.Threading.Tasks;
     using Undersoft.SDK.Invoking;
     using Undersoft.SDK.Invoking.Work;
     using Xunit;
@@ -26,42 +27,34 @@ namespace Undersoft.SDK.IntegrationTests.Invoking.Work
 
             var download = work
                 .Aspect<NBPSource>()
-                    .AddWork<FirstCurrency>()
-                    .AddWork(
-                        new[]
-                        {
-                            new Invoker(
-                                "Undersoft.SDK.IntegrationTests.Invoking.Work.SecondCurrency",
-                                "GetCurrency"
-                            )
-                        }
-                    )
+                    .AddWork<FirstCurrency>((w) => w.GetCurrency)
+                    .AddWork<SecondCurrency>((w) => w.GetCurrency)
                 .Allocate(4);
 
             var compute = work
-                .Aspect("PrintFirstCurrencyRateForSecondCurrency")
-                    .AddWork<ComputeCurrency>()
-                    .AddWork<PresentResult>()
+                .Aspect<WorkTest>()
+                    .AddWork<ComputeCurrency>((w) => w.Compute)
+                    .AddWork<PresentResult>((w) => w.Present)
                 .Allocate(2);
 
             download
-                .Work<FirstCurrency>()
-                    .FlowTo("ComputeCurrency")
+                .Work<FirstCurrency>((w) => w.GetCurrency)
+                    .FlowTo<ComputeCurrency>((w) => w.Compute)
                 .Work<SecondCurrency>()
-                    .FlowTo<ComputeCurrency>();
+                    .FlowTo<ComputeCurrency>((w) => w.Compute);
 
             compute
-                .Work<PresentResult>()
-                    .FlowFrom<ComputeCurrency>();
+                .Work<PresentResult>((w) => w.Present)
+                    .FlowFrom<ComputeCurrency>((w) => w.Compute);
 
-            for (int i = 1; i < 10; i++)
+            for (int i = 1; i < 5; i++)
             {
                 download
-                    .Work<FirstCurrency>().Run("EUR", i)
-                    .Work<SecondCurrency>().Run("USD", i);
+                    .Work<FirstCurrency>((w) => w.GetCurrency).Run("EUR", i)
+                    .Work<SecondCurrency>((w) => w.GetCurrency).Run("USD", i);
             }
 
-            Thread.Sleep(10000);
+            Task.Delay(10000);
 
             download.Close(true);
             compute.Close(true);

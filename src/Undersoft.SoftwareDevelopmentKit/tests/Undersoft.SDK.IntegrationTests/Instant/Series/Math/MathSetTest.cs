@@ -17,7 +17,7 @@ public class MathSetTest
     {
         instatnSeriesCreator = new InstantSeriesCreator(
             typeof(MathsetMockModel),
-            "InstantSeries_Mathset_Test"
+            "InstantSeries_Mathset_Test", InstantType.Derived
         );
 
         instantSeries = instatnSeriesCreator.Combine();
@@ -26,8 +26,7 @@ public class MathSetTest
 
         for (int i = 0; i < 2000 * 1000; i++)
         {
-            IProxy f = instantSeries.NewProxy();
-            f.Target = new MathsetMockModel();
+            IInstant f = instantSeries.NewInstant();
 
             f["NetPrice"] = (double)f["NetPrice"] + i;
             f["SellFeeRate"] = (double)f["SellFeeRate"] / 2;
@@ -78,6 +77,50 @@ public class MathSetTest
     }
 
     [Fact]
+    public void Mathset_Parallel_Computation_In_4_Chunks_Formula_Test()
+    {
+        instatnSeriesMath = new InstantSeriesMath(instantSeries);
+
+        MathSet ml = instatnSeriesMath[nameof(MathsetMockModel.SellNetPrice)];
+
+        ml.Formula =
+            ml[nameof(MathsetMockModel.NetPrice)]
+                * (ml[nameof(MathsetMockModel.SellFeeRate)] / 100D)
+            + ml[nameof(MathsetMockModel.NetPrice)];
+
+        MathSet ml2 = instatnSeriesMath[nameof(MathsetMockModel.SellGrossPrice)];
+
+        ml2.Formula = ml * ml2["TaxRate"];
+
+        instatnSeriesMath.ComputeInParallel();
+
+        var a = instantSeries
+            .Query(c => (double)c["NetPrice"] > 10 && (double)c["NetPrice"] < 50)
+            .ToArray();
+
+        ml.Formula = ml["NetPrice"] * (ml["SellFeeRate"] / 95D) + ml["NetPrice"];
+
+        instatnSeriesMath.ComputeInParallel();
+
+        var b = instantSeries
+            .Query(c => (double)c["NetPrice"] < 10 || (double)c["NetPrice"] > 50)
+            .ToArray();
+
+        instantSeries
+            .AsValues()
+            .ForEach(
+                (c) =>
+                {
+                    c["SellNetPrice"] =
+                        (double)c["NetPrice"] * ((double)c["SellFeeRate"] / 100D)
+                        + (double)c["NetPrice"];
+
+                    c["SellGrossPrice"] = (double)c["SellNetPrice"] * (double)c["TaxRate"];
+                }
+            );
+    }
+
+    [Fact]
     public void Mathset_Computation_LogicOnStack_Formula_Test()
     {
         instantSeries
@@ -102,8 +145,7 @@ public class MathSetTest
 
         ml.Formula =
             (ml["NetPrice"] < 10 | ml["NetPrice"] > 50)
-            * (ml["NetPrice"] * (ml["SellFeeRate"] / 100) + ml["NetPrice"])
-        ;
+            * (ml["NetPrice"] * (ml["SellFeeRate"] / 100) + ml["NetPrice"]);
 
         MathSet ml2 = instatnSeriesMath["SellGrossPrice"];
 

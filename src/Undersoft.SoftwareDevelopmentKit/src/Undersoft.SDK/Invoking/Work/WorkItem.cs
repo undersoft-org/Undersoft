@@ -6,11 +6,11 @@
     using Uniques;
     using Notes;
 
-    public class WorkItem : Task<object>, IInvoker, IWorker
+    public class WorkItem : Origin, IInvoker, IWorker
     {
         public IUnique Empty => Uscn.Empty;
 
-        public WorkItem(IInvoker operation) : base(() => operation.Invoke())
+        public WorkItem(IInvoker operation) 
         {
             Name = operation.Name;
             Worker = new Worker(operation.Name, operation);
@@ -18,10 +18,11 @@
             Box = new WorkNoteBox(Worker.Name);
             Box.Work = this;
 
-            SerialCode = new Uscn(Name.UniqueKey(), Unique.NewId);
+            Id = Name.UniqueKey();
+            TypeId = Unique.NewId;
         }
 
-        public WorkItem(Worker worker) : base(() => worker.Process.Invoke())
+        public WorkItem(Worker worker)
         {
             Name = worker.Name;
             Worker = worker;
@@ -29,7 +30,8 @@
             Box = new WorkNoteBox(Worker.Name);
             Box.Work = this;
 
-            SerialCode = new Uscn(Name.UniqueKey(), Unique.NewId);
+            Id = Name.UniqueKey();
+            TypeId = Unique.NewId;
         }
 
         public string Name { get; set; }
@@ -88,26 +90,6 @@
             set => ParameterValues = value;
         }
 
-        public Uscn SerialCode;
-
-        public new long Id
-        {
-            get => SerialCode.Id;
-            set => SerialCode.SetId(value);
-        }
-
-        public long TypeId
-        {
-            get => SerialCode.TypeId;
-            set => SerialCode.SetTypeId(value);
-        }
-
-        public string CodeNo
-        {
-            get => SerialCode.CodeNo;
-            set => SerialCode.SetCodeNo(value);
-        }
-
         public InvokerDelegate MethodInvoker => Process.MethodInvoker;
 
         public Delegate Method => Process.Method;
@@ -123,26 +105,6 @@
         {
             this.Run(parameters);
             return null;
-        }
-
-        public byte[] GetBytes()
-        {
-            return Worker.Process.GetBytes();
-        }
-
-        public byte[] GetIdBytes()
-        {
-            return SerialCode.GetIdBytes();
-        }
-
-        public bool Equals(IUnique other)
-        {
-            return SerialCode.Equals(other);
-        }
-
-        public int CompareTo(IUnique other)
-        {
-            return SerialCode.CompareTo(other);
         }
 
         public Task<object> InvokeAsync(params object[] parameters)
@@ -185,9 +147,26 @@
             set => Process.TargetObject = value;
         }
 
-        public WorkAspect FlowTo<T>()
+        public WorkAspect FlowTo<T>(string methodName = null)
         {
-            FlowTo(typeof(T).Name);
+            if(methodName == null)
+                methodName =  typeof(T).GetMethods().FirstOrDefault(m => m.IsPublic).Name;
+
+            FlowTo(typeof(T).FullName, methodName);
+            return Aspect;
+        }
+
+        public WorkAspect FlowTo<T>(Func<T, Delegate> methodName) where T : class, new()
+        {
+            string name = null;
+            if (methodName == null)
+                name = typeof(T).GetMethods().FirstOrDefault(m => m.IsPublic).Name;
+            else
+            {
+                name = methodName(new T()).Method.Name;
+            }
+
+            FlowTo(typeof(T).FullName, name);
             return Aspect;
         }
 
@@ -220,17 +199,16 @@
             return Aspect;
         }
 
-        public WorkAspect FlowTo(string RecipientName)
+        public WorkAspect FlowTo(string RecipientName, string methodName)
         {
-            var recipient = Case.AsValues()
-                .Where(m => m.ContainsKey(RecipientName))
+            var recipient = Case
+                .Where(m => m.ContainsKey(RecipientName + "." + methodName))
                 .SelectMany(os => os.AsValues())
                 .FirstOrDefault();
 
-            long recipientKey = RecipientName.UniqueKey();
+            long recipientKey = recipient.Name.UniqueKey();
 
             var relationWorks = Aspect
-                .AsValues()
                 .Where(l => l.Worker.Evokers.ContainsKey(l.Name.UniqueKey(recipientKey)))
                 .ToArray();
 
@@ -253,9 +231,26 @@
             return Aspect;
         }
 
-        public WorkAspect FlowFrom<T>()
+        public WorkAspect FlowFrom<T>(string methodName = null)
         {
-            FlowFrom(typeof(T).Name);
+            if (methodName == null)
+                methodName = typeof(T).GetMethods().FirstOrDefault(m => m.IsPublic).Name;
+
+            FlowFrom(typeof(T).FullName, methodName);
+            return Aspect;
+        }
+
+        public WorkAspect FlowFrom<T>(Func<T, Delegate> methodName) where T : class, new()
+        {
+            string name = null;
+            if (methodName == null)
+                name = typeof(T).GetMethods().FirstOrDefault(m => m.IsPublic).Name;
+            else
+            {
+                name = methodName(new T()).Method.Name;
+            }
+
+            FlowFrom(typeof(T).FullName, name);
             return Aspect;
         }
 
@@ -271,11 +266,11 @@
             return Aspect;
         }
 
-        public WorkAspect FlowFrom(string SenderName)
+        public WorkAspect FlowFrom(string SenderName, string methodName)
         {
-            var sender = Case.AsValues()
-                .Where(m => m.ContainsKey(SenderName))
-                .SelectMany(os => os.AsValues())
+            var sender = Case
+                .Where(m => m.ContainsKey(SenderName + "." + methodName))
+                .SelectMany(os => os)
                 .FirstOrDefault();
 
             sender.FlowTo(this);

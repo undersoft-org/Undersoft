@@ -9,15 +9,24 @@ using Instant.Rubrics;
 
 public class InstantSeriesMath : IInstantSeriesMath
 {
-    private MathRubrics mathRubrics;
+    private MathRubrics rubrics;
 
     public InstantSeriesMath(IInstantSeries data)
     {
-        mathRubrics = new MathRubrics(data);
+        rubrics = new MathRubrics(data);
         serialcode.Id = (long)DateTime.Now.ToBinary();
         if (data.Computations == null)
             data.Computations = new Catalog<IInstantSeriesMath>();
         data.Computations.Put(this);
+    }
+
+    public InstantSeriesMath(MathRubrics rubrics)
+    {
+        this.rubrics = rubrics;
+        serialcode.Id = (long)DateTime.Now.ToBinary();
+        if (rubrics.Data.Computations == null)
+            rubrics.Data.Computations = new Catalog<IInstantSeriesMath>();
+        rubrics.Data.Computations.Put(this);
     }
 
     public MathSet this[int id]
@@ -35,15 +44,13 @@ public class InstantSeriesMath : IInstantSeriesMath
 
     public MathSet GetMathSet(int id)
     {
-        MemberRubric rubric = mathRubrics.Rubrics[id];
+        MemberRubric rubric = rubrics.Rubrics[id];
         if (rubric != null)
         {
             MathRubric mathrubric = null;
-            if (mathRubrics.MathsetRubrics.TryGet(rubric.Name, out mathrubric))
+            if (rubrics.MathsetRubrics.TryGet(rubric.Name, out mathrubric))
                 return mathrubric.GetMathset();
-            return mathRubrics
-                .Put(rubric.Name, new MathRubric(mathRubrics, rubric))
-                .Value.GetMathset();
+            return rubrics.Put(rubric.Name, new MathRubric(rubrics, rubric)).Value.GetMathset();
         }
         return null;
     }
@@ -51,14 +58,12 @@ public class InstantSeriesMath : IInstantSeriesMath
     public MathSet GetMathSet(string name)
     {
         MemberRubric rubric = null;
-        if (mathRubrics.Rubrics.TryGet(name, out rubric))
+        if (rubrics.Rubrics.TryGet(name, out rubric))
         {
             MathRubric mathrubric = null;
-            if (mathRubrics.MathsetRubrics.TryGet(name, out mathrubric))
+            if (rubrics.MathsetRubrics.TryGet(name, out mathrubric))
                 return mathrubric.GetMathset();
-            return mathRubrics
-                .Put(rubric.Name, new MathRubric(mathRubrics, rubric))
-                .Value.GetMathset();
+            return rubrics.Put(rubric.Name, new MathRubric(rubrics, rubric)).Value.GetMathset();
         }
         return null;
     }
@@ -70,43 +75,56 @@ public class InstantSeriesMath : IInstantSeriesMath
 
     public bool ContainsFirst(MemberRubric rubric)
     {
-        return mathRubrics.First.Value.RubricName == rubric.Name;
+        return rubrics.First.Value.RubricName == rubric.Name;
     }
 
     public bool ContainsFirst(string rubricName)
     {
-        return mathRubrics.First.Value.RubricName == rubricName;
+        return rubrics.First.Value.RubricName == rubricName;
     }
 
     public IInstantSeries Compute()
     {
-        mathRubrics.Combine();
-        mathRubrics
-            .AsValues()
+        rubrics.Combine();
+        rubrics
             .Where(p => !p.PartialMathset)
             .OrderBy(p => p.ComputeOrdinal)
             .Select(p => p.Compute())
             .ToArray();
-        return mathRubrics.Data;
+        return rubrics.Data;
     }
 
-    public IInstantSeries ComputeChunk(int offset, int chunk)
+    public IInstantSeries ComputeInParallel(int chunks = 4)
     {
-        mathRubrics.Combine(offset, chunk);
-        mathRubrics
-            .AsValues()
-            .Where(p => !p.PartialMathset)
-            .OrderBy(p => p.ComputeOrdinal)
-            .ForEach(p => p.Compute())
-            .Commit();
-        return mathRubrics.Data;
+        var rowcount = rubrics.Data.Count;
+        var chunksize = rowcount / chunks;
+        var lastchunksize = (rowcount - (chunksize * chunks)) + chunksize;
+        InstantSeriesMath _temp = this;
+        CompiledMathSet[][] mathChunks = new CompiledMathSet[chunks][];
+
+        mathChunks.AsParallel().ForEach(
+            (ism, x) =>
+            {
+                mathChunks[x] = _temp.Compile(x * chunksize, (x == chunks - 1) ? lastchunksize : chunksize);               
+                _temp.Clone();
+            }
+        );
+
+        mathChunks.AsParallel().ForEach((mch) => mch.ForEach((cms) => new Evaluator(cms.Compute)()));
+        return rubrics.Data;
     }
 
-    public InstantSeriesMath SetMathRubrics(MathRubrics rubrics)
+    public CompiledMathSet[] Compile(int offset, int chunk)
     {
-        mathRubrics = rubrics;
-        return this;
+        return rubrics.Compile(offset, chunk);
     }
+
+    public InstantSeriesMath Clone()
+    {
+        return new InstantSeriesMath(rubrics);
+    }
+
+    public MathRubrics Rubrics => rubrics;
 
     private Uscn serialcode;
     public Uscn SerialCode
@@ -148,7 +166,8 @@ public class InstantSeriesMath : IInstantSeriesMath
         set => serialcode.TypeId = value;
     }
 
-    public string CodeNo {
+    public string CodeNo
+    {
         get => serialcode.CodeNo;
         set => serialcode.CodeNo = value;
     }

@@ -73,18 +73,29 @@
             return false;
         }
 
-        public bool CombineChunk(IInstantSeries table, int offset = 0, int batch = 0)
+        public CompiledMathSet[] Compile(int offset = 0, int batch = 0)
+        {
+            if (!ReferenceEquals(Data, null))
+            {                
+                CompiledMathSet[] evs = CompileEvaluators();
+                evs.ForEach(e => e.SetParams(Data, 0, offset, batch));
+                return evs;
+            }
+            else
+                return CompileEvaluators();
+        }
+
+        public CompiledMathSet[] Compile(IInstantSeries table, int offset = 0, int batch = 0)
         {
             if (!ReferenceEquals(Data, table))
             {
                 Data = table;
-                CompiledMathSet[] evs = GetCompiledMathSets();
+                CompiledMathSet[] evs = CompileEvaluators();
                 evs.ForEach(e => e.SetParams(Data, 0, offset, batch));
-                return true;
+                return evs;
             }
             else
-                GetCompiledMathSets();
-            return false;
+                return CompileEvaluators();
         }
 
         public CompiledMathSet[] CombineEvaluators()
@@ -92,7 +103,7 @@
             return this.AsValues().Select(m => m.CombineEvaluator()).ToArray();
         }
 
-        public CompiledMathSet[] GetCompiledMathSets()
+        public CompiledMathSet[] CompileEvaluators()
         {
             return this.AsValues().Select(m => m.GetCompiledMathSet()).ToArray();
         }

@@ -339,10 +339,10 @@
 
         public void Initialize()
         {
-            NoticeChange = new Invoker<BaseTracedRegistry<V>>(this, a => nameof(a.OnPropertyChanged));
+            NoticeChange = new Invoker<BaseTracedRegistry<V>>(this, a => a.OnPropertyChanged);
             NoticeChanging = new Invoker<BaseTracedRegistry<V>>(
                 this,
-                a => nameof(a.OnPropertyChanging)
+                a => a.OnPropertyChanging
             );
         }
 

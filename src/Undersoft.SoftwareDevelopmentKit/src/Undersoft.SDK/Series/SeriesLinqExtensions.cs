@@ -14,7 +14,7 @@
     {
         #region Methods
 
-        public static IEnumerable<TResult> DoEach<TItem, TResult>(this IEnumerable<TItem> items, Func<TItem, TResult> action)
+        public static TResult[] DoEach<TItem, TResult>(this IEnumerable<TItem> items, Func<TItem, TResult> action)
         {
             return items.ForEach(action).Commit();
         }
