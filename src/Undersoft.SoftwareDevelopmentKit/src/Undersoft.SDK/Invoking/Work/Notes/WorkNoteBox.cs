@@ -205,9 +205,6 @@
                         if (notes.All(a => a != null))
                         {
                             object[] parameters = new object[0];
-                            object begin = Work.Worker.GetInput();
-                            if (begin != null)
-                                parameters = parameters.Concat((object[])begin).ToArray();
                             foreach (WorkNote note in notes)
                             {
                                 if (note.Parameters.GetType().IsArray)

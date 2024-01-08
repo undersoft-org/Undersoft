@@ -47,14 +47,14 @@ namespace Undersoft.SDK.IntegrationTests.Invoking.Work
                 .Work<PresentResult>((w) => w.Present)
                     .FlowFrom<ComputeCurrency>((w) => w.Compute);
 
-            for (int i = 1; i < 5; i++)
+            for (int i = 1; i < 7; i++)
             {
                 download
                     .Work<FirstCurrency>((w) => w.GetCurrency).Run("EUR", i)
                     .Work<SecondCurrency>((w) => w.GetCurrency).Run("USD", i);
             }
 
-            Thread.Sleep(30000);
+            Thread.Sleep(10000);
 
             download.Close(true);
             compute.Close(true);
@@ -85,7 +85,7 @@ namespace Undersoft.SDK.IntegrationTests.Invoking.Work
 
         public NBPSource(int daysbefore)
         {
-            
+            _daysbefore = daysbefore;
         }
 
         public Dictionary<string, double> GetCurrenciesRate(List<string> currency_names)
@@ -137,7 +137,7 @@ namespace Undersoft.SDK.IntegrationTests.Invoking.Work
                 string file_list = await client.GetStringAsync(file_dir);
                 string date_str = string.Empty;
                 DateTime date_of_rate = DateTime.Now.AddDays(minusdays);
-                int maxdaysbackward = 3;
+                int maxdaysbackward = -3;
                 while (true)
                 {
                     date_str =
@@ -152,11 +152,11 @@ namespace Undersoft.SDK.IntegrationTests.Invoking.Work
 
                     if (start_int > 365)
                     {
-                        if (--maxdaysbackward < 0)
+                        if (--maxdaysbackward < -5)
                             throw new ArgumentOutOfRangeException();
 
                         start_int = 1;
-                        date_of_rate = date_of_rate.AddDays(-1);
+                        date_of_rate = date_of_rate.AddDays(maxdaysbackward);
                     }
                 }
                 file_name = date_str;

@@ -82,7 +82,7 @@
             {
                 if (work != null)
                 {
-                    Works.Enqueue(Clone(work.Worker));
+                    Works.Enqueue(work.Worker.Clone());
                     Monitor.Pulse(inlock);
                 }
                 else
@@ -101,10 +101,11 @@
 
         public void Activate()
         {
+
             for (; ; )
             {
-                Worker worker = null;
-                object input = null;
+                Worker worker;
+                object input;
 
                 lock (inlock)
                 {
@@ -112,15 +113,20 @@
                     {
                         Monitor.Wait(inlock);
                     }
-
-                    if (worker != null)
-                        input = worker.GetInput();
                 }
 
-                if (worker == null)
-                    return;
+                lock (outlock)
+                {
+                    if (worker != null)
+                    {
+                        input = worker.GetInput();
+                    }
+                    else
+                        return;
+                }
 
-                object output = null;
+                object output;
+
                 if (input != null)
                 {
                     if (input is IList)
@@ -133,6 +139,10 @@
                     output = worker.Process.Invoke();
                 }
 
+                while (!worker.CanSetOutput())
+                {
+                    Thread.Sleep(10);
+                }
                 lock (outlock)
                 {
                     Outpost(worker, output);
@@ -143,7 +153,7 @@
         private Worker Clone(Worker worker)
         {
             Worker _worker = new Worker(worker.Name, worker.Process);
-            _worker.SetInput(worker.GetInput());
+            _worker.Input = worker.Input;
             _worker.Evokers = worker.Evokers;
             _worker.Work = worker.Work;
             return _worker;

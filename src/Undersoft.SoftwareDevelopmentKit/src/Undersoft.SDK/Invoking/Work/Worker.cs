@@ -6,9 +6,9 @@
 
     public class Worker : Origin, IWorker
     {
-        private readonly Registry<object> input = new Registry<object>(true);
-        private readonly Registry<object> output = new Registry<object>(true);
-        private Uscn SerialCode;
+        public Registry<object> Input { get; set; } = new Registry<object>(true);
+        public Registry<object> Output { get; set; } = new Registry<object>(true);
+        public Worker RootWorker { get; set; }
 
         private Worker() { }
 
@@ -16,8 +16,9 @@
         {
             Process = Method;
             this.Name = Name;
-            long seed = Unique.NewId;
-            SerialCode = new Uscn((Process.Id).UniqueKey(seed), seed);
+            TypeId = Process.Id;
+            Id = Unique.NewId.UniqueKey(TypeId);           
+            RootWorker = this;
         }
 
         public IUnique Empty => new Uscn();
@@ -26,51 +27,53 @@
 
         public object GetInput()
         {
-            object entry;
-            input.TryDequeue(out entry);
+            Input.TryDequeue(out object entry);
+            InputId = RootWorker.InputId++;
             return entry;
         }
 
         public void SetInput(object value)
         {
-            input.Enqueue(value);
+            Input.Enqueue(Unique.NewId, value);
         }
 
         public object GetOutput()
-        {
-            object entry;
-            output.TryDequeue(out entry);
+        {                       
+            Output.TryDequeue(out object entry);
             return entry;
         }
 
         public void SetOutput(object value)
+        {        
+            Output.Enqueue(Unique.NewId, value);
+            OutputId = RootWorker.OutputId++;
+        }
+
+        public bool CanSetOutput()
         {
-            output.Enqueue(value);
+            return InputId == RootWorker.OutputId;
+        }
+
+        public Worker Clone()
+        {
+            var _worker = new Worker(Name, Process);
+            RootWorker = this;
+            _worker.Input = Input;
+            _worker.Output = Output;
+            _worker.Evokers = Evokers;
+            _worker.Work = Work;
+            return _worker;
         }
 
         public WorkItem Work { get; set; }
 
         public string Name { get; set; }
 
-        public long Id
-        {
-            get => SerialCode.Id;
-            set => SerialCode.Id = value;
-        }
-
-        public long TypeId
-        {
-            get => SerialCode.TypeId;
-            set => SerialCode.TypeId = value;
-        }
-
-        public string CodeNo
-        {
-            get => SerialCode.CodeNo;
-            set => SerialCode.CodeNo = value;
-        }
-
         public IInvoker Process { get; set; }
+
+        public int OutputId { get; set; }
+
+        public int InputId { get; set; }
 
         public WorkAspect FlowTo<T>(string methodName = null)
         {
@@ -138,26 +141,6 @@
         {
             Work.FlowFrom(SenderName, RelationNames);
             return Work.Aspect;
-        }
-
-        public int CompareTo(IUnique other)
-        {
-            return SerialCode.CompareTo(other);
-        }
-
-        public bool Equals(IUnique other)
-        {
-            return SerialCode.Equals(other);
-        }
-
-        public byte[] GetBytes()
-        {
-            return SerialCode.GetBytes();
-        }
-
-        public byte[] GetIdBytes()
-        {
-            return SerialCode.GetIdBytes();
         }
     }
 }

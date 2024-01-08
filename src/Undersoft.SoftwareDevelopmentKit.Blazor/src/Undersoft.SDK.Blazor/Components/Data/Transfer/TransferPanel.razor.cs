@@ -11,7 +11,7 @@ public partial class TransferPanel
         .AddClassFromAttributes(AdditionalAttributes)
         .Build();
 
-    private string? SearchClass => CssBuilder.Default("input-prefix")
+    private string? SearchClass => CssBuilder.Default("Input-prefix")
         .AddClass("is-on", !string.IsNullOrEmpty(SearchText))
         .AddClass("disabled", IsDisabled)
         .Build();

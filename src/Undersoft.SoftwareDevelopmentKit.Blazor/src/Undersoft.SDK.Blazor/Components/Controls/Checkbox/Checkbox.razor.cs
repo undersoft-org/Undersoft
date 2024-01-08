@@ -18,7 +18,7 @@ public partial class Checkbox<TValue>
 
     private bool IsShowAfterLabel => ShowAfterLabel && !string.IsNullOrEmpty(DisplayText);
 
-    protected string? InputClassString => CssBuilder.Default("form-check-input")
+    protected string? InputClassString => CssBuilder.Default("form-check-Input")
         .AddClass($"border-{Color.ToDescriptionString()}", Color != Color.None)
         .AddClass("disabled", IsDisabled)
         .Build();

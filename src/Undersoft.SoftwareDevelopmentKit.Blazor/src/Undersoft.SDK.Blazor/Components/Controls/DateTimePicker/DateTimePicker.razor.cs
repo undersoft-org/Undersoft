@@ -11,7 +11,7 @@ public partial class DateTimePicker<TValue>
         .AddClassFromAttributes(AdditionalAttributes)
         .Build();
 
-    private string? InputClassName => CssBuilder.Default("dropdown-toggle form-control datetime-picker-input")
+    private string? InputClassName => CssBuilder.Default("dropdown-toggle form-control datetime-picker-Input")
         .AddClass(ValidCss)
         .Build();
 

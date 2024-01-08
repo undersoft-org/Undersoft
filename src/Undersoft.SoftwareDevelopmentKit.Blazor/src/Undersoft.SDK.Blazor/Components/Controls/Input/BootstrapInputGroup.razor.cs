@@ -2,7 +2,7 @@
 
 public partial class BootstrapInputGroup
 {
-    private string? ClassString => CssBuilder.Default("input-group")
+    private string? ClassString => CssBuilder.Default("Input-group")
         .AddClassFromAttributes(AdditionalAttributes)
         .Build();
 

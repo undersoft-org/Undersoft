@@ -2,7 +2,7 @@
 
 public partial class BootstrapInputGroupIcon
 {
-    private string? ClassString => CssBuilder.Default("input-group-text")
+    private string? ClassString => CssBuilder.Default("Input-group-text")
         .AddClassFromAttributes(AdditionalAttributes)
         .Build();
 

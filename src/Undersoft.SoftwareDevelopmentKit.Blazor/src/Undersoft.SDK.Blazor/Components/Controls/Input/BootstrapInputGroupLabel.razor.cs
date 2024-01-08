@@ -3,7 +3,7 @@
 public partial class BootstrapInputGroupLabel
 {
     private string? ClassString => CssBuilder.Default()
-        .AddClass("input-group-text", IsInnerLabel)
+        .AddClass("Input-group-text", IsInnerLabel)
         .AddClass("form-label", !IsInnerLabel)
         .AddClassFromAttributes(AdditionalAttributes)
         .Build();

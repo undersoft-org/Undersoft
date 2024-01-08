@@ -11,7 +11,7 @@
         const int WAIT_REHASH_TIMEOUT = 5000;
         const int WAIT_WRITE_TIMEOUT = 5000;
         internal readonly ManualResetEventSlim readAccess = new ManualResetEventSlim(true, 128);
-        internal readonly ManualResetEventSlim rehashAccess = new ManualResetEventSlim(true, 128);
+        internal readonly ManualResetEventSlim removeAccess = new ManualResetEventSlim(true, 128);
         internal readonly ManualResetEventSlim writeAccess = new ManualResetEventSlim(true, 128);
         internal readonly SemaphoreSlim writePass = new SemaphoreSlim(1);
         internal int readers;
@@ -75,14 +75,14 @@
         protected void acquireReader()
         {
             Interlocked.Increment(ref readers);
-            rehashAccess.Reset();
+            removeAccess.Reset();
             if (!readAccess.Wait(WAIT_READ_TIMEOUT))
                 throw new TimeoutException("Wait write Timeout");
         }
 
-        protected void acquireRehash()
+        protected void acquireRemover()
         {
-            if (!rehashAccess.Wait(WAIT_REHASH_TIMEOUT))
+            if (!removeAccess.Wait(WAIT_REHASH_TIMEOUT))
                 throw new TimeoutException("Wait write Timeout");
             readAccess.Reset();
         }
@@ -100,7 +100,7 @@
         protected void releaseReader()
         {
             if (0 == Interlocked.Decrement(ref readers))
-                rehashAccess.Set();
+                removeAccess.Set();
         }
 
         protected void releaseRehash()
@@ -213,14 +213,14 @@
 
         protected override void Rehash(int newsize)
         {
-            acquireRehash();
+            acquireRemover();
             base.Rehash(newsize);
             releaseRehash();
         }
 
         protected override void Reindex()
         {
-            acquireRehash();
+            acquireRemover();
             base.Reindex();
             releaseRehash();
         }
@@ -228,7 +228,7 @@
         public override void Clear()
         {
             acquireWriter();
-            acquireRehash();
+            acquireRemover();
 
             base.Clear();
 

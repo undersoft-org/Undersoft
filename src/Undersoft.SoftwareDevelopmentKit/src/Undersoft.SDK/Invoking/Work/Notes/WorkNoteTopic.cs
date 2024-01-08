@@ -3,11 +3,11 @@
     using System.Collections.Generic;
     using Series;
 
-    public class WorkNoteTopic : Catalog<WorkNote>
+    public class WorkNoteTopic : Registry<WorkNote>
     {
         public WorkNoteBox RecipientBox;
 
-        public WorkNoteTopic(string senderName, IList<WorkNote> notelist, WorkNoteBox recipient = null)
+        public WorkNoteTopic(string senderName, IList<WorkNote> notelist, WorkNoteBox recipient = null) : base(true)
         {
             if (recipient != null)
             {
@@ -23,7 +23,7 @@
             }
         }
 
-        public WorkNoteTopic(string senderName, WorkNote note, WorkNoteBox recipient = null)
+        public WorkNoteTopic(string senderName, WorkNote note, WorkNoteBox recipient = null) : base(true)
         {
             if (recipient != null)
             {
@@ -33,14 +33,14 @@
             Notes = note;
         }
 
-        public WorkNoteTopic(string senderName, WorkNoteBox recipient = null)
+        public WorkNoteTopic(string senderName, WorkNoteBox recipient = null) : base(true)
         {
             if (recipient != null)
                 RecipientBox = recipient;
             SenderName = senderName;
         }
 
-        public WorkNoteTopic(string senderName, WorkNoteBox recipient = null, params object[] parameters)
+        public WorkNoteTopic(string senderName, WorkNoteBox recipient = null, params object[] parameters) : base(true)
         {
             if (recipient != null)
                 RecipientBox = recipient;
