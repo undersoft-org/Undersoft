@@ -14,7 +14,7 @@ namespace Undersoft.SDK.Series.Base
         int readers;
 
         readonly ManualResetEventSlim readAccess = new ManualResetEventSlim(true, 128);    
-        readonly ManualResetEventSlim rehashAccess = new ManualResetEventSlim(true, 128);
+        readonly ManualResetEventSlim removeAccess = new ManualResetEventSlim(true, 128);
         readonly ManualResetEventSlim writeAccess = new ManualResetEventSlim(true, 128);
         readonly SemaphoreSlim writePass = new SemaphoreSlim(1);
 
@@ -57,15 +57,14 @@ namespace Undersoft.SDK.Series.Base
         protected void acquireReader()
         {
             Interlocked.Increment(ref readers);
-            rehashAccess.Reset();
+            removeAccess.Reset();
             if (!readAccess.Wait(WAIT_READ_TIMEOUT))
                 throw new TimeoutException("Wait read timeout");
         }
 
         protected void acquireRemover()
         {
-            acquireWriter();
-            if (!rehashAccess.Wait(WAIT_REHASH_TIMEOUT))
+            if (!removeAccess.Wait(WAIT_REHASH_TIMEOUT))
                 throw new TimeoutException("Wait write Timeout");
             readAccess.Reset();
         }
@@ -83,13 +82,12 @@ namespace Undersoft.SDK.Series.Base
         protected void releaseReader()
         {
             if (0 == Interlocked.Decrement(ref readers))            
-                rehashAccess.Set();
+                removeAccess.Set();
         }
 
         protected void releaseRemover() 
         { 
             readAccess.Set();
-            releaseWriter();
         }
 
         protected void releaseWriter()
@@ -157,9 +155,11 @@ namespace Undersoft.SDK.Series.Base
 
         protected override V InnerRemove(long key)
         {
+            acquireWriter();
             acquireRemover();
             V temp = base.InnerRemove(key);
             releaseRemover();
+            releaseWriter();
             return temp;
         }
 
@@ -263,9 +263,11 @@ namespace Undersoft.SDK.Series.Base
 
         public override V Dequeue()
         {
+            acquireWriter();
             acquireRemover();
             V temp = base.Dequeue();
             releaseRemover();
+            releaseWriter();
             return temp;
         }
 
@@ -330,25 +332,31 @@ namespace Undersoft.SDK.Series.Base
 
         public override bool TryDequeue(out ISeriesItem<V> output)
         {
+            acquireWriter();
             acquireRemover();
             bool temp = base.TryDequeue(out output);
             releaseRemover();
+            releaseWriter();
             return temp;
         }
 
         public override bool TryDequeue(out V output)
         {
+            acquireWriter();
             acquireRemover();
             bool temp = base.TryDequeue(out output);
             releaseRemover();
+            releaseWriter();
             return temp;
         }
 
         public override bool TryPick(int skip, out V output)
         {
+            acquireWriter();
             acquireRemover();
             bool temp = base.TryPick(skip, out output);
             releaseRemover();
+            releaseWriter();
             return temp;
         }
     }
