@@ -73,7 +73,7 @@
     <Using Include="Undersoft.SDK.Invoking" />
     <Using Include="Undersoft.SDK.Series" />
     <Using Include="Undersoft.SDK.Instant.Series" />
-    <Using Include="Undersoft.SDK.Instant.Series.Math" />
+    <Using Include="Undersoft.SDK.Instant.Math" />
     <Using Include="Undersoft.SDK.Instant.Rubrics" />
     <Using Include="Undersoft.SDK.Instant" />
     <Using Include="Undersoft.SDK.Instant.Updating" />

@@ -43,7 +43,7 @@
 
             CreateIsPrimeField(tb, typeof(bool), "Prime");
 
-            CreateRubricsField(tb, typeof(MemberRubrics), "Rubrics");
+            CreateRubricsField(tb, typeof(MemberRubrics), "Routine");
 
             CreateKeyRubricsField(tb, typeof(MemberRubrics), "KeyRubrics");
 
@@ -990,7 +990,7 @@
                 new Type[] { type }
             );
 
-            PropertyInfo iprop = seriesType.GetProperty("Rubrics");
+            PropertyInfo iprop = seriesType.GetProperty("Routine");
 
             MethodInfo accessor = iprop.GetGetMethod();
 

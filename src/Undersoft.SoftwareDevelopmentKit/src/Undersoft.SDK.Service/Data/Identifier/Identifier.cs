@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Undersoft.SDK.Service.Data.Identifier;
 
-using Entity;
+using Data.Entity;
 using Undersoft.SDK.Service.Data.Object;
 
 [DataContract]

@@ -6,6 +6,7 @@
     using Instant.Proxies;
     using Math;
     using Querying;
+    using Undersoft.SDK.Instant.Math;
 
     public interface IInstantSeries : ISeries<IInstant>, IInstant
     {
@@ -45,6 +46,6 @@
          
         InstantSeriesAggregate Aggregate { get; set; }
 
-        ISeries<IInstantSeriesMath> Computations { get; set; }
+        ISeries<IInstantMath> Computations { get; set; }
     }
 }

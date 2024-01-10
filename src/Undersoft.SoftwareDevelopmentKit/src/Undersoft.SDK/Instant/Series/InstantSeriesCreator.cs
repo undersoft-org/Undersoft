@@ -11,14 +11,23 @@
         instant
     }
 
-    public class InstantProxiesCreator<T> : InstantSeriesCreator
+    public class InstantProxiesCreator<T> : InstantProxiesCreator
     {
         public InstantProxiesCreator() : base(typeof(T)) { }
 
         public InstantProxiesCreator(string seriesName) : base(typeof(T), seriesName) { }
     }
 
-    public class InstantSeriesCreator<T> : InstantSeriesCreator
+    public class InstantProxiesCreator : InstantSeriesCreator
+    {
+        public InstantProxiesCreator(IProxy proxyObject, bool safeThread = true) : base(proxyObject, safeThread) { }
+
+        public InstantProxiesCreator(Type proxyModelType, bool safeThread = true) : base(proxyModelType, safeThread) { }
+
+        public InstantProxiesCreator(Type proxyModelType, string seriesName, bool safeThread = true) : base(proxyModelType, seriesName, safeThread) { }
+    }
+
+        public class InstantSeriesCreator<T> : InstantSeriesCreator
     {
         public InstantSeriesCreator(InstantType mode = InstantType.Reference) : base(typeof(T), mode) { }
 
@@ -152,7 +161,7 @@
 
         public Type Type { get; set; }
 
-        public IInstantSeries Combine()
+        public IInstantSeries Create()
         {
             if (this.Type == null)
             {
@@ -184,14 +193,14 @@
 
         private IInstantSeries newinstants()
         {
-            IInstantSeries newseries = newinstants((IInstantSeries)(Type.New()));
+            IInstantSeries newseries = newInstants((IInstantSeries)(Type.New()));
             newseries.Rubrics = CloneRubrics();
             newseries.KeyRubrics = newseries.Rubrics.KeyRubrics;
             newseries.View = newseries.AsQueryable();
             return newseries;
         }
 
-        private IInstantSeries newinstants(IInstantSeries newseries)
+        private IInstantSeries newInstants(IInstantSeries newseries)
         {
             newseries.InstantType = instant.Type;
             newseries.InstantSize = instant.Size;

@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Undersoft.SDK.Service.Application\Undersoft.SDK.Service.Application.csproj" />
+    <ProjectReference Include="..\..\src\Undersoft.SDK.Service.Application\Undersoft.SDK.Service.Server.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,14 +45,13 @@
     <Using Include="Undersoft.SDK.Service.Data.Event" />
     <Using Include="Undersoft.SDK.Service.Data.Query" />
     <Using Include="Undersoft.SDK.Service.Data.Mapper" />
-    <Using Include="Undersoft.SDK.Service.Data.Store" />
-    <Using Include="Undersoft.SDK.Service.Data.Service" />
-    <Using Include="Undersoft.SDK.Service.Data.Repository" />
-    <Using Include="Undersoft.SDK.Service.Data.Repository" />
-    <Using Include="Undersoft.SDK.Service.Data.Repository.Client" />
-    <Using Include="Undersoft.SDK.Service.Data.Repository.Client.Remote" />
-    <Using Include="Undersoft.SDK.Service.Data.Repository.Source" />
-    <Using Include="Undersoft.SDK.Service.Data.Repository.Source.Store" />
+    <Using Include="Undersoft.SDK.Service.Infrastructure.Store" />
+    <Using Include="Undersoft.SDK.Service.Client" />
+    <Using Include="Undersoft.SDK.Service.Infrastructure.Repository" />
+    <Using Include="Undersoft.SDK.Service.Infrastructure.Repository.Client" />
+    <Using Include="Undersoft.SDK.Service.Infrastructure.Repository.Client.Remote" />
+    <Using Include="Undersoft.SDK.Service.Infrastructure.Repository.Source" />
+    <Using Include="Undersoft.SDK.Service.Infrastructure.Repository.Source.Store" />
     <Using Include="Undersoft.SDK.Extracting" />
     <Using Include="Undersoft.SDK.Invoking" />
     <Using Include="Undersoft.SDK.Series" />
@@ -60,7 +59,7 @@
     <Using Include="Undersoft.SDK.Instant.Attributes" />
     <Using Include="Undersoft.SDK.Instant.Rubrics" />
     <Using Include="Undersoft.SDK.Instant.Series" />
-    <Using Include="Undersoft.SDK.Instant.Series.Math" />
+    <Using Include="Undersoft.SDK.Instant.Math" />
     <Using Include="Undersoft.SDK.Instant.Updating" />
     <Using Include="Undersoft.SDK.Instant.Proxies" />
     <Using Include="Undersoft.SDK.Logging" />

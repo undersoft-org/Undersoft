@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
-using Undersoft.SDK.Service.Data.Repository.Source;
-using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Infrastructure.Repository.Source;
+using Undersoft.SDK.Service.Infrastructure.Store;
 
 namespace Undersoft.SDK.Service
 {

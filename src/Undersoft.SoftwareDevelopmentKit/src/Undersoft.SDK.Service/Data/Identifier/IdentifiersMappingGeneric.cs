@@ -2,10 +2,8 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Undersoft.SDK.Service.Data.Identifier;
-
-using Data.Store;
-using Undersoft.SDK.Service.Data.Entity;
 using Undersoft.SDK.Service.Data.Object;
+using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class IdentifiersMapping<TObject> : IIdentifiersMapping where TObject : class, IDataObject
 {

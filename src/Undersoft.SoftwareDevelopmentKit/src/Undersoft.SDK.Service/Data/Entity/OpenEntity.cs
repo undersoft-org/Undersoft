@@ -6,7 +6,7 @@ using Identifier;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Object.Detail;
 using Undersoft.SDK.Service.Data.Object.Setting;
-using Undersoft.SDK.Service.Data.Store.Relation;
+using Undersoft.SDK.Service.Data.Relation;
 
 [DataContract]
 [StructLayout(LayoutKind.Sequential)]

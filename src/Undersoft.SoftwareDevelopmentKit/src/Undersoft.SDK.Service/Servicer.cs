@@ -4,8 +4,8 @@ namespace Undersoft.SDK.Service;
 
 using Invoking;
 using Microsoft.Extensions.DependencyInjection;
-using Undersoft.SDK.Service.Data.Repository.Client;
-using Undersoft.SDK.Service.Data.Repository.Source;
+using Undersoft.SDK.Service.Infrastructure.Repository.Client;
+using Undersoft.SDK.Service.Infrastructure.Repository.Source;
 
 public class Servicer : ServiceManager, IServicer, IMediator
 {

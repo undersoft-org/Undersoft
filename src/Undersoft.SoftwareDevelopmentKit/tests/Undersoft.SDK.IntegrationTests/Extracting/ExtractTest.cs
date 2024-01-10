@@ -5,7 +5,6 @@ using Xunit;
 
 namespace Undersoft.SDK.IntegrationTests.Extracting;
 
-using Instant.Series;
 using Mocks;
 
 public class ExtractTest
@@ -30,7 +29,7 @@ public class ExtractTest
         );
         FieldsAndPropertiesModel fom = new FieldsAndPropertiesModel();
         instantSeriesCreator = new InstantSeriesCreator(instantCreator, "InstantSeries_Compilation_Test");
-        instantSeries = instantSeriesCreator.Combine();
+        instantSeries = instantSeriesCreator.Create();
 
         instant = instantSeries.NewInstant();
 

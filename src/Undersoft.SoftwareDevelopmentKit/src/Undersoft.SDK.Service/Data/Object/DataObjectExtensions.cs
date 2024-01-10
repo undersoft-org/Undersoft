@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using System.Threading;
 using System;
 using System.Linq;
-using Undersoft.SDK.Service.Data.Service;
 
 namespace Undersoft.SDK.Service.Data.Object;
 
 using Event;
+using Undersoft.SDK.Service.Client;
 
 public static class DataObjectExtensions
 {

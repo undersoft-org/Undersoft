@@ -1,5 +1,5 @@
 ﻿using System;
-using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Infrastructure.Store;
 
 namespace Undersoft.SDK.Service.Data.Entity;
 

@@ -1,12 +1,11 @@
-﻿using Undersoft.SDK.Service.Data.Store;
-
-namespace Undersoft.SDK.Service.Data.Cache;
+﻿namespace Undersoft.SDK.Service.Data.Cache;
 
 using Instant.Proxies;
 using Instant.Rubrics;
 using Invoking;
 using Undersoft.SDK;
 using Undersoft.SDK.Service.Data.Object;
+using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class DataCache : TypedCache<IOrigin>, IDataCache
 {

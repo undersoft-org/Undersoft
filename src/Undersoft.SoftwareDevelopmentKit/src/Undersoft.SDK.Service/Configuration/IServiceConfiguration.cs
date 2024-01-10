@@ -4,7 +4,7 @@ namespace Undersoft.SDK.Service.Configuration;
 using Microsoft.Extensions.Configuration;
 
 using Undersoft.SDK.Service.Configuration.Options;
-using Undersoft.SDK.Service.Data.Repository.Source;
+using Undersoft.SDK.Service.Infrastructure.Repository.Source;
 
 public interface IServiceConfiguration : IConfiguration
 {

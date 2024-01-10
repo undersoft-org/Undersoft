@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Undersoft.SDK.Service.Configuration;
 
 using Undersoft.SDK.Service.Configuration.Options;
-using Undersoft.SDK.Service.Data.Repository.Source;
+using Undersoft.SDK.Service.Infrastructure.Repository.Source;
 
 public class ServiceConfiguration : IServiceConfiguration
 {

@@ -17,7 +17,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant
         public Guid EntityId { get; set; }
 
         [Description(
-            "Typ encji - Partner = 1,Facility = 2,Service = 3,FacilityService = 4,Client = 5,ClientContract = 6,User = 7,ClientPlatform = 8,ProductVariant = 9,UserProduct = 10"
+            "Typ encji - Partner = 1,Facility = 2,Client = 3,FacilityService = 4,Client = 5,ClientContract = 6,User = 7,ClientPlatform = 8,ProductVariant = 9,UserProduct = 10"
         )]
         [Required]
         public Type EntityType { get; set; }

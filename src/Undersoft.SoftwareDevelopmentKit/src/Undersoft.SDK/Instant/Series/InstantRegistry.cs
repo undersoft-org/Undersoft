@@ -9,6 +9,7 @@
     using System.Linq;
     using Querying;
     using Math;
+    using Undersoft.SDK.Instant.Math;
 
     public abstract class InstantRegistry : BaseRegistry<IInstant>, IInstantSeries
     {
@@ -132,7 +133,7 @@
             set => aggregate = value;
         }
 
-        public ISeries<IInstantSeriesMath> Computations { get; set; }
+        public ISeries<IInstantMath> Computations { get; set; }
 
         object IInstant.this[int fieldId]
         {

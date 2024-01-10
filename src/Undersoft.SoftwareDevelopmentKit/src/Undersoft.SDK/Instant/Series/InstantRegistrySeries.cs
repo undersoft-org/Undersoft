@@ -9,6 +9,7 @@
     using Rubrics;
     using System.IO;
     using System.Linq;
+    using Undersoft.SDK.Instant.Math;
 
     public abstract class InstantRegistrySeries : RegistrySeries<IInstant>, IInstantSeries
     {
@@ -185,6 +186,6 @@
             set => aggregate = value;
         }
 
-        public ISeries<IInstantSeriesMath> Computations { get; set; }
+        public ISeries<IInstantMath> Computations { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant
 
             var InstantSeries2 = new InstantProxiesCreator<FieldsAndPropertiesModel>();
 
-            var rttab = InstantSeries2.Combine();
+            var rttab = InstantSeries2.Create();
 
             for (int i = 0; i < 10000; i++)
             {
@@ -52,7 +52,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant
                 "InstantSequence_Compilation_Test"
             );
 
-            instantSeries = instantSeriesCreator.Combine();
+            instantSeries = instantSeriesCreator.Create();
 
             instantSeries.Add(instantSeries.NewInstant());
             instantSeries[0, 4] = instant[4];
@@ -72,7 +72,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant
                 "InstantSequence_Compilation_Test"
             );
 
-            instantSeries = instantSeriesCreator.Combine();
+            instantSeries = instantSeriesCreator.Create();
 
             instantSeries.Add(instantSeries.NewInstant());
             instantSeries[0, nameof(fom.Name)] = instant[nameof(fom.Name)];
@@ -95,7 +95,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant
                 "InstantSequence_Compilation_Test"
             );
 
-            instantSeries = instantSeriesCreator.Combine();
+            instantSeries = instantSeriesCreator.Create();
 
             IInstant rcst = instantSeries.NewInstant();
 
@@ -114,7 +114,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant
                 "InstantSequence_Compilation_Test"
             );
 
-            var rttab = instantSeriesCreator.Combine();
+            var rttab = instantSeriesCreator.Create();
 
             Assert.Equal(rttab.Rubrics, instantSeriesCreator.Rubrics);
         }

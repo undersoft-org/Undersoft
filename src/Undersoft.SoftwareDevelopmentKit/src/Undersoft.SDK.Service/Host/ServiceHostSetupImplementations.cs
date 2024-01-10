@@ -3,12 +3,12 @@ using Microsoft.OData.Edm;
 using System;
 using System.Collections.Generic;
 using Undersoft.SDK.Series;
-using Undersoft.SDK.Service.Data.Service;
-using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Data.Repository;
-using Undersoft.SDK.Service.Data.Repository.Client.Remote;
 using Undersoft.SDK.Service.Data.Entity;
-using Undersoft.SDK.Service.Data.Service.Remote;
+using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Infrastructure.Repository;
+using Undersoft.SDK.Service.Infrastructure.Repository.Client.Remote;
+using Undersoft.SDK.Service.Infrastructure.Store.Remote;
+using Undersoft.SDK.Service.Client;
 
 namespace Undersoft.SDK.Service.Host
 {

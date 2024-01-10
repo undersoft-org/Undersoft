@@ -1,0 +1,12 @@
+using System.Runtime.Serialization;
+using Undersoft.SDK.Service.Data.Object.Detail;
+using Undersoft.SDK.Service.Data.Object.Setting;
+using Undersoft.SSC.Entities.Enums;
+using Undersoft.SSC.Service.Contracts;
+
+namespace Undersoft.SSC.Service.Contracts.Base;
+
+[DataContract]
+public class AccountBase : ContractBase<AccountBase, Detail, Setting, AccountGroup>
+{
+}

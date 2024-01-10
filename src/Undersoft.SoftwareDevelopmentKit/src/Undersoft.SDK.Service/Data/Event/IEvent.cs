@@ -2,9 +2,9 @@
 
 using Undersoft.SDK.Service.Data.Contract;
 using Undersoft.SDK.Service.Data.Entity;
-using Undersoft.SDK.Service.Data.ViewModel;
+using Undersoft.SDK.Service.Data.Model;
 
-public interface IEvent : IEntity, IContract, IViewModel
+public interface IEvent : IEntity, IContract, IModel
 {
     uint EventVersion { get; set; }
     string EventType { get; set; }

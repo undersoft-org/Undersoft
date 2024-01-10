@@ -11,7 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Undersoft.SDK.Service.Application\Undersoft.SDK.Service.Application.csproj" />
+    <ProjectReference Include="..\..\src\Undersoft.SDK.Service.Server\Undersoft.SDK.Service.Server.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Instant\Series\" />
   </ItemGroup>
 
 </Project>

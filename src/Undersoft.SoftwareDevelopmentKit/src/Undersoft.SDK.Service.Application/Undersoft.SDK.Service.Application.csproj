@@ -1,99 +1,47 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>Undersoft.SDK.Service.Application</RootNamespace>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Company>Undersoft</Company>
     <Authors>Dariusz Hanc</Authors>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>disable</Nullable>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/hadarius/RadicalFramework.Presenting</RepositoryUrl>
+    <Version>1.6.1</Version>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.0.1</AssemblyVersion>
-    <FileVersion>1.0.0.1</FileVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <AssemblyVersion>1.6.1.1</AssemblyVersion>
+    <FileVersion>1.6.1.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="BuildBundlerMinifierPlus2022" Version="5.2.2" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.44.0" />
-    <PackageReference Include="IdentityModel" Version="6.2.0" />
-    <PackageReference Include="IdentityModel.AspNetCore.OAuth2Introspection" Version="6.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.15" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.23" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="7.0.12" />
-    <PackageReference Include="Microsoft.IdentityModel.Abstractions" Version="6.33.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Logging" Version="6.33.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Protocols" Version="6.33.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.33.0" />
-    <PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.177" />
-    <PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.0.177" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.23" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc9.14" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.33.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="6.0.23" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.23" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="6.0.23" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Design" Version="1.1.2" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
-    <PackageReference Include="MongoDB.EntityFramework" Version="1.0.1" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.22" />
-    <PackageReference Include="Oracle.EntityFrameworkCore" Version="6.21.120" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="6.0.23" />
+    <ProjectReference Include="..\..\..\Undersoft.SoftwareDevelopmentKit\src\Undersoft.SDK.Service\Undersoft.SDK.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Undersoft.SDK.Service\Undersoft.SDK.Service.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Using Include="Undersoft.SDK.Service.Application.Components" />
+    <Using Include="Undersoft.SDK.Service.Infrastructure.Store" />
+    <Using Include="Undersoft.SDK.Service.Infrastructure.Repository" />
     <Using Include="Undersoft.SDK.Service.Data.Entity" />
-    <Using Include="Undersoft.SDK.Service.Data.Identifier" />
-    <Using Include="Undersoft.SDK.Service.Data.Object" />
-    <Using Include="Undersoft.SDK.Service.Data.Event" />
-    <Using Include="Undersoft.SDK.Service.Data.Query" />
-    <Using Include="Undersoft.SDK.Service.Data.Mapper" />
-    <Using Include="Undersoft.SDK.Service.Data.Store" />
-    <Using Include="Undersoft.SDK.Service.Data.Service" />
-    <Using Include="Undersoft.SDK.Service.Data.Repository" />
-    <Using Include="Undersoft.SDK.Service.Data.Repository" />
-    <Using Include="Undersoft.SDK.Service.Data.Repository.Client" />
-    <Using Include="Undersoft.SDK.Service.Data.Repository.Client.Remote" />
-    <Using Include="Undersoft.SDK.Service.Data.Repository.Source" />
-    <Using Include="Undersoft.SDK.Service.Data.Repository.Source.Store" />
-    <Using Include="Undersoft.SDK.Extracting" />
-    <Using Include="Undersoft.SDK.Invoking" />
-    <Using Include="Undersoft.SDK.Series" />
-    <Using Include="Undersoft.SDK.Instant" />
-    <Using Include="Undersoft.SDK.Instant.Series.Querying" />
-    <Using Include="Undersoft.SDK.Instant.Attributes" />
-    <Using Include="Undersoft.SDK.Instant.Rubrics" />
-    <Using Include="Undersoft.SDK.Instant.Series" />
-    <Using Include="Undersoft.SDK.Instant.Series.Math" />
-    <Using Include="Undersoft.SDK.Instant.Updating" />
-    <Using Include="Undersoft.SDK.Instant.Proxies" />
-    <Using Include="Undersoft.SDK.Logging" />
-    <Using Include="Undersoft.SDK.Uniques" />
-    <Using Include="Undersoft.SDK.Serialization" />
-    <Using Include="Undersoft.SDK.Extracting" />
+    <Using Include="Microsoft.AspNetCore.Components" />
+    <Using Include="Microsoft.Extensions.Options" />
+    <Using Include="Microsoft.JSInterop" />
+    <Using Include="System.ComponentModel.DataAnnotations" />
+    <Using Include="System.Diagnostics.CodeAnalysis" />
   </ItemGroup>
-  
+
 </Project>

@@ -3,7 +3,7 @@
 namespace Undersoft.SDK.Service
 {
     using Configuration;
-    using Undersoft.SDK.Service.Data.Repository;
+    using Undersoft.SDK.Service.Infrastructure.Repository;
 
     public interface IServiceManager : IRepositoryManager, IServiceProvider
     {

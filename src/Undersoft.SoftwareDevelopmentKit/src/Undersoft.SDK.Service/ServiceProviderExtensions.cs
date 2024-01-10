@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Undersoft.SDK.Service.Data.Repository;
 using Undersoft.SDK.Service.Host;
+using Undersoft.SDK.Service.Infrastructure.Repository;
 
 namespace Undersoft.SDK.Service
 {

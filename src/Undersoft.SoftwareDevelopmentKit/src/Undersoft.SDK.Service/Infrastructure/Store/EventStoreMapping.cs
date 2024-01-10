@@ -1,0 +1,19 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Undersoft.SDK.Service.Infrastructure.Store;
+
+using Undersoft.SDK.Service.Data.Event;
+
+public class EventStoreMapping : EntityTypeMapping<Event>
+{
+    private const string TABLE_NAME = "EventStoreRoute";
+
+    public override void Configure(EntityTypeBuilder<Event> builder)
+    {
+        builder.ToTable(TABLE_NAME, "EventNode");
+
+        builder.Property(p => p.PublishTime)
+            .HasColumnType("timestamp");
+    }
+}

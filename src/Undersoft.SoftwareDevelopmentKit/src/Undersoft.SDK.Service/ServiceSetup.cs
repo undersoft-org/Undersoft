@@ -11,20 +11,19 @@ using System.Diagnostics.Metrics;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Serilog;
 
 namespace Undersoft.SDK.Service;
 
 using Configuration;
 using Data.Cache;
 using Data.Mapper;
-using Data.Service;
-using Data.Store;
-using Data.Repository;
-using Data.Repository.Client;
-using Data.Repository.Source;
-using ProtoBuf.Meta;
-using Undersoft.SDK.Security.Identity;
-using Serilog;
+using Security.Identity;
+using Client;
+using Infrastructure.Repository;
+using Infrastructure.Repository.Client;
+using Infrastructure.Repository.Source;
+using Infrastructure.Store;
 
 public partial class ServiceSetup : IServiceSetup
 {
