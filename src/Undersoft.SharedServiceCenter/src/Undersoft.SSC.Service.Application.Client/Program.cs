@@ -33,12 +33,12 @@ namespace Undersoft.SSC.Service.Application.Client
                     var reg = ServiceManager.GetRegistry();
                     reg.Services = services;
                     reg.AddAuthorizationCore();
-                    reg.AddScoped<JWTAuthenticationStateProvider>();
-                    reg.AddScoped<AuthenticationStateProvider, JWTAuthenticationStateProvider>(
-                        provider => provider.GetRequiredService<JWTAuthenticationStateProvider>()
+                    reg.AddScoped<AccountAuthenticationStateProvider>();
+                    reg.AddScoped<AuthenticationStateProvider, AccountAuthenticationStateProvider>(
+                        provider => provider.GetRequiredService<AccountAuthenticationStateProvider>()
                     );
-                    reg.AddScoped<IAuthenticationStateService, JWTAuthenticationStateProvider>(
-                       provider => provider.GetRequiredService<JWTAuthenticationStateProvider>()
+                    reg.AddScoped<IAuthenticationStateService, AccountAuthenticationStateProvider>(
+                       provider => provider.GetRequiredService<AccountAuthenticationStateProvider>()
                    );
                     reg.MergeServices(true);
                 }

@@ -17,17 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Undersoft.SSC.Web.Microservices\Undersoft.SSC.Web.Microservices.csproj" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Using Include="Undersoft.SSC.Web.API.Controllers" />
-    <Using Include="Undersoft.SDK.Service.Application.Controller" />
+    <Using Include="Undersoft.SDK.Service.Data.Identifier" />
+    <Using Include="Undersoft.SDK.Service.Server.Controller" />
     <Using Include="Undersoft.SDK.Service.Data.Event" />
     <Using Include="Undersoft.SDK.Service.Data.Mapper" />
-    <Using Include="Undersoft.SDK.Service.Data.Store" />
-    <Using Include="Undersoft.SDK.Service.Data.Store.Relation" />
-    <Using Include="Undersoft.SDK.Service.Data.Service" />
+    <Using Include="Undersoft.SDK.Service.Infrastructure.Store" />
+    <Using Include="Undersoft.SDK.Service.Data.Relation" />
+    <Using Include="Undersoft.SDK.Service.Client" />
     <Using Include="Undersoft.SDK.Service.Data.File" />
     <Using Include="Undersoft.SDK.Service" />
     <Using Include="Undersoft.SDK.Extracting" />
@@ -47,6 +43,11 @@
     <Content Update="Properties\nlog.Development.config">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Undersoft.SSC.Service.Infrastructure\Undersoft.SSC.Service.Infrastructure.csproj" />
+    <ProjectReference Include="..\Undersoft.SSC.Service\Undersoft.SSC.Service.csproj" />
   </ItemGroup>
 
 </Project>

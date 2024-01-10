@@ -1,72 +1,69 @@
-using NLog.Web;
 using Undersoft.SDK.Service.Configuration;
 
-namespace Undersoft.SSC.Web.Microservices.Activity.Service
+namespace Undersoft.SSC.Service.Activity.Server;
+
+public class Program
 {
-    public class Program
+    static string[]? _args;
+    static IWebHost? _webapi;
+
+    public static void Main(string[] args)
     {
-        static string[]? _args;
-        static IWebHost? _webapi;
+        _args = args;
+        Launch();
+    }
 
-        public static void Main(string[] args)
+    static IWebHost Build()
+    {
+        var builder = new WebHostBuilder();
+
+        builder.Info<Runlog>("Starting Undersoft.SSC.Service.Activity.Server ....");
+
+        _webapi = builder
+            .UseContentRoot(Directory.GetCurrentDirectory())
+            .UseConfiguration(ServiceConfigurationHelper.BuildConfiguration())
+            .UseKestrel()
+            .ConfigureKestrel((c, o) => o
+                .Configure(c.Configuration
+                .GetSection("Kestrel")))
+            .UseStartup<Startup>()
+            .Build();
+
+        return _webapi;
+    }
+
+    public static void Launch()
+    {
+        try
         {
-            _args = args;
-            Launch();
+            Build().Run();
         }
-
-        static IWebHost Build()
+        catch (Exception exception)
         {
-            var builder = new WebHostBuilder();
-
-            builder.Info<Runlog>("Starting SSC Service API ....");
-
-            _webapi = builder
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseConfiguration(ServiceConfigurationHelper.BuildConfiguration())
-                .UseKestrel()
-                .ConfigureKestrel((c, o) => o
-                    .Configure(c.Configuration
-                    .GetSection("Kestrel")))
-                .UseStartup<Startup>()
-                .UseNLog()
-                .Build();
-
-            return _webapi;
+            Log.Error<Runlog>(null, "Undersoft.SSC.Service.Activity.Server  terminated unexpectedly ....", exception);
         }
-
-        public static void Launch()
+        finally
         {
-            try
-            {                
-                Build().Run();
-            }
-            catch (Exception exception)
-            {
-                Log.Error<Runlog>(null, "SSC Service API terminated unexpectedly ....", exception);
-            }
-            finally
-            {
-                Log.Info<Runlog>(null, "SSC Service API shutted down ....");
-            }
+            Log.Info<Runlog>(null, "Undersoft.SSC.Service.Activity.Server shutted down ....");
         }
+    }
 
-        public static async Task Restart()
-        {
-            Log.Info<Runlog>(null, "Restarting SSC Service API ....");
+    public static async Task Restart()
+    {
+        Log.Info<Runlog>(null, "Restarting Undersoft.SSC.Service.Activity.Server  ....");
 
-            Task.WaitAll(Shutdown());
+        Task.WaitAll(Shutdown());
 
-            await Task.Run(() => Launch());
-        }
+        await Task.Run(() => Launch());
+    }
 
-        public static async Task Shutdown()
-        {
-            Log.Info<Runlog>(null, "Shutting down SSC Service API ....");
+    public static async Task Shutdown()
+    {
+        Log.Info<Runlog>(null, "Shutting down Undersoft.SSC.Service.Activity.Server  ....");
 
-            _webapi.Info<Runlog>("Stopping SSC Service API ....");
+        _webapi.Info<Runlog>("Stopping Undersoft.SSC.Service.Activity.Server  ....");
 
-            if(_webapi != null)
-                await _webapi.StopAsync(TimeSpan.FromSeconds(5));
-        }
+        if (_webapi != null)
+            await _webapi.StopAsync(TimeSpan.FromSeconds(5));
     }
 }

@@ -15,7 +15,7 @@ using Undersoft.SDK.Service.Application.Components;
 
 namespace Undersoft.SDK.Service.Application.Services;
 
-public class JWTAuthenticationStateProvider : AuthenticationStateProvider, IAuthenticationStateService
+public class AccountAuthenticationStateProvider : AuthenticationStateProvider, IAuthenticationStateService
 {
     private readonly IJSRuntime js;
     private readonly IAuthorization _authorization;
@@ -26,7 +26,7 @@ public class JWTAuthenticationStateProvider : AuthenticationStateProvider, IAuth
     private AuthenticationState Anonymous =>
         new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
 
-    public JWTAuthenticationStateProvider(
+    public AccountAuthenticationStateProvider(
         IJSRuntime js,
         IRemoteRepository<IDataStore, Authorization> repository,
         IAuthorization authorization
