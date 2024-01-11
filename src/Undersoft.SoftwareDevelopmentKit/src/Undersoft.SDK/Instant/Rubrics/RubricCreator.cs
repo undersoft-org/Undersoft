@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using Undersoft.SDK.Instant.Proxies;
     using Undersoft.SDK.Series;
 
     public class RubricBuilder
@@ -62,18 +63,18 @@
 
         public MemberInfo[] GetMembers(Type modelType)
         {
+            //var excludedNames = new string[] { "proxy" };
             return modelType
-                .GetMembers(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+                .GetMembers(BindingFlags.Instance | BindingFlags.Public)
                 .Where(
                     m =>
-                        m.Name != "SeriesItem"
-                        && m.Name != "ValueArray" && m.Name != "proxy"
-                        && (
+                        //!excludedNames.Contains(m.Name.ToLower())
+                         (
                             m.MemberType == MemberTypes.Field
                             || (
                                 m.MemberType == MemberTypes.Property
-                                && ((PropertyInfo)m).CanRead
-                                && ((PropertyInfo)m).CanWrite
+                                && (((PropertyInfo)m).CanRead && ((PropertyInfo)m).CanWrite)
+                                && (((PropertyInfo)m).PropertyType != typeof(IProxy))
                             )
                         )
                 )

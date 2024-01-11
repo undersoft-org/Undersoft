@@ -5,7 +5,7 @@ using Undersoft.SDK.Service.Data.Identifier;
 using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Server.Controller.Crud;
 using Undersoft.SDK.Service.Server.Controller.Open;
-using Undersoft.SSC.Entities;
+using Undersoft.SSC.Entities.Account;
 using Undersoft.SSC.Entities.Enums;
 using Undersoft.SSC.Service.Application.Models;
 

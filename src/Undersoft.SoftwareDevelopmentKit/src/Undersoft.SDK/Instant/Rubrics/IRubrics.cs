@@ -9,7 +9,7 @@
 
         int[] BinarySizes { get; }
 
-        IInstantSeries Figures { get; set; }
+        IInstantSeries Series { get; set; }
 
         IRubrics KeyRubrics { get; set; }
 

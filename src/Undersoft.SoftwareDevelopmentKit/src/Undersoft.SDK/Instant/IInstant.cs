@@ -9,10 +9,13 @@
     {
         object this[string propertyName] { get; set; }
 
-        object this[int fieldId] { get; set; }
-
-        object[] ValueArray { get; set; }
+        object this[int fieldId] { get; set; }        
 
         Uscn Code { get; set; }
+    }
+
+    public interface IValueArray : IInstant
+    {
+        object[] ValueArray { get; set; }
     }
 }

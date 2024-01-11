@@ -25,7 +25,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant
 
             var IProxy = new FieldsAndPropertiesModel().ToProxy();
 
-            var InstantSeries2 = new InstantProxiesCreator<FieldsAndPropertiesModel>();
+            var InstantSeries2 = new ProxySeriesCreator<FieldsAndPropertiesModel>();
 
             var rttab = InstantSeries2.Create();
 

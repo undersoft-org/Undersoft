@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Service.Application.Components;
 
-public abstract class CircleBase : PresenterModule2
+public abstract class CircleBase : ComponentModule2
 {
     protected virtual string? ClassString => CssBuilder.Default("circle")
         .AddClassFromAttributes(AdditionalAttributes)

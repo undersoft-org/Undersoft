@@ -2,7 +2,7 @@
 
 namespace Undersoft.SDK.Service.Application.Components;
 
-public abstract class IdComponent : PresenterComponent
+public abstract class IdComponent : Component
 {
     [Parameter]
     [NotNull]

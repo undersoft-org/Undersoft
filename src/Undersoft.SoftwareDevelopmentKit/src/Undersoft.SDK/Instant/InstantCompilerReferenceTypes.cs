@@ -12,8 +12,10 @@
 
     public class InstantCompilerReferenceTypes : InstantCompiler
     {
-        public InstantCompilerReferenceTypes(InstantCreator instantFigure, ISeries<RubricModel> rubricBuilders)
-            : base(instantFigure, rubricBuilders) { }
+        public InstantCompilerReferenceTypes(
+            InstantCreator instantFigure,
+            ISeries<RubricModel> rubricBuilders
+        ) : base(instantFigure, rubricBuilders) { }
 
         public override Type CompileInstantType(string typeName)
         {
@@ -48,7 +50,6 @@
         {
             int i = 0;
             rubricBuilders
-                .AsValues()
                 .ForEach(
                     (fp) =>
                     {
@@ -166,13 +167,6 @@
                             {
                                 il.Emit(OpCodes.Box, rubricBuilders[i].Type);
                             }
-                            else if (rubricBuilders[i].Type == typeof(char[]))
-                            {
-                                il.Emit(
-                                    OpCodes.Newobj,
-                                    typeof(string).GetConstructor(new Type[] { typeof(char[]) })
-                                );
-                            }
                             il.Emit(OpCodes.Ret);
                         }
                     }
@@ -216,21 +210,12 @@
                             il.MarkLabel(branches[i]);
                             il.Emit(OpCodes.Ldarg_0);
                             il.Emit(OpCodes.Ldarg_2);
-                            if (rubricBuilders[i].Type.IsValueType)
-                            {
-                                il.Emit(OpCodes.Unbox_Any, rubricBuilders[i].Type);
-                            }
-                            else if (rubricBuilders[i].Type == typeof(char[]))
-                            {
-                                il.Emit(OpCodes.Castclass, typeof(string));
-                                il.EmitCall(
-                                    OpCodes.Call,
-                                    typeof(string).GetMethod("ToCharArray", Type.EmptyTypes),
-                                    null
-                                );
-                            }
-                            else
-                                il.Emit(OpCodes.Castclass, rubricBuilders[i].Type);
+                            il.Emit(
+                                rubricBuilders[i].Type.IsValueType
+                                    ? OpCodes.Unbox_Any
+                                    : OpCodes.Castclass,
+                                rubricBuilders[i].Type
+                            );
                             il.Emit(OpCodes.Stfld, rubricBuilders[i].Field.RubricInfo);
                             il.Emit(OpCodes.Ret);
                         }
@@ -380,7 +365,7 @@
             var field = rubricBuilders.FirstOrDefault(
                 p =>
                     p.Field != null
-                    && p.Field.FieldName.Contains(name, StringComparison.InvariantCultureIgnoreCase)
+                    && p.Field.FieldName.ToLower().Equals(name, StringComparison.InvariantCultureIgnoreCase)
             );
             if (field != null)
             {
@@ -467,7 +452,7 @@
 
         public override void CreateValueArrayProperty(TypeBuilder tb)
         {
-            PropertyInfo prop = typeof(IInstant).GetProperty("ValueArray");
+            PropertyInfo prop = typeof(IValueArray).GetProperty("ValueArray");
 
             MethodInfo accessor = prop.GetGetMethod();
 
@@ -500,13 +485,6 @@
                 {
                     il.Emit(OpCodes.Box, rubricBuilders[i].Type);
                 }
-                else if (rubricBuilders[i].Type == typeof(char[]))
-                {
-                    il.Emit(
-                        OpCodes.Newobj,
-                        typeof(string).GetConstructor(new Type[] { typeof(char[]) })
-                    );
-                }
                 il.Emit(OpCodes.Stelem, typeof(object));
             }
             il.Emit(OpCodes.Ldloc_0);
@@ -536,21 +514,10 @@
                 il.Emit(OpCodes.Ldloc_0);
                 il.Emit(OpCodes.Ldc_I4, i);
                 il.Emit(OpCodes.Ldelem, typeof(object));
-                if (rubricBuilders[i].Type.IsValueType)
-                {
-                    il.Emit(OpCodes.Unbox_Any, rubricBuilders[i].Type);
-                }
-                else if (rubricBuilders[i].Type == typeof(char[]))
-                {
-                    il.Emit(OpCodes.Castclass, typeof(string));
-                    il.EmitCall(
-                        OpCodes.Call,
-                        typeof(string).GetMethod("ToCharArray", Type.EmptyTypes),
-                        null
-                    );
-                }
-                else
-                    il.Emit(OpCodes.Castclass, rubricBuilders[i].Type);
+                il.Emit(
+                    rubricBuilders[i].Type.IsValueType ? OpCodes.Unbox_Any : OpCodes.Castclass,
+                    rubricBuilders[i].Type
+                );
                 il.Emit(OpCodes.Stfld, rubricBuilders[i].Field.RubricInfo);
             }
             il.Emit(OpCodes.Ret);
@@ -596,7 +563,7 @@
                 )
             );
 
-            tb.AddInterfaceImplementation(typeof(IInstant));
+            tb.AddInterfaceImplementation(typeof(IValueArray));
 
             return tb;
         }
@@ -615,7 +582,6 @@
                     type,
                     FieldAttributes.Private
                         | FieldAttributes.HasDefault
-                        | FieldAttributes.HasFieldMarshal
                 );
 
                 if (type == typeof(string))

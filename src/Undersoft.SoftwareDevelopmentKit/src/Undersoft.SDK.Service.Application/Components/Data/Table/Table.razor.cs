@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Web.Virtualization;
 using System.Globalization;
+using Undersoft.SDK.Instant.Proxies;
 
 namespace Undersoft.SDK.Service.Application.Components;
 
@@ -173,7 +174,7 @@ public partial class Table<TItem> : ITable, IModelEqualityComparer<TItem> where 
 
     [Inject]
     [NotNull]
-    private IOptionsMonitor<PresenterOptions>? Options { get; set; }
+    private IOptionsMonitor<ApplicationOptions>? Options { get; set; }
 
     [Parameter]
     public bool IsTracking { get; set; }
@@ -681,7 +682,7 @@ public partial class Table<TItem> : ITable, IModelEqualityComparer<TItem> where 
             }
             else
             {
-                ret = Utility.GetPropertyValue<TItem, object?>(item, fieldName);
+                ret = item.ValueOf(fieldName);
 
                 if (ret != null)
                 {

@@ -1,180 +1,95 @@
-﻿// Copyright (c) Argo Zhang (argo@163.com). All rights reserved.
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-// Website: https://www.blazor.zone or https://argozhang.github.io/
-
-using Microsoft.AspNetCore.Components.Forms;
+﻿using Microsoft.AspNetCore.Components.Forms;
 
 namespace Undersoft.SDK.Service.Application.Components;
 
 public partial class Table<TItem>
 {
-    /// <summary>
-    /// 获得/设置 编辑弹窗 Title 文字
-    /// </summary>
     [NotNull]
     protected string? EditModalTitleString { get; set; }
 
-    /// <summary>
-    /// 获得/设置 被选中数据集合
-    /// </summary>
     [Parameter]
     public List<TItem> SelectedRows { get; set; } = new List<TItem>();
 
-    /// <summary>
-    /// 获得/设置 选中行变化回调方法
-    /// </summary>
     [Parameter]
     public EventCallback<List<TItem>> SelectedRowsChanged { get; set; }
 
-    /// <summary>
-    /// 获得/设置 新建行位置枚举 默认为 Last 最后
-    /// </summary>
     [Parameter]
     public InsertRowMode InsertRowMode { get; set; } = InsertRowMode.Last;
 
-    /// <summary>
-    /// 获得/设置 是否正在查询数据
-    /// </summary>
     private bool IsLoading { get; set; }
 
-    /// <summary>
-    /// 获得 渲染模式
-    /// </summary>
     protected TableRenderMode ActiveRenderMode => RenderMode switch
     {
         TableRenderMode.Auto => ScreenSize < RenderModeResponsiveWidth ? TableRenderMode.CardView : TableRenderMode.Table,
         _ => RenderMode
     };
 
-    /// <summary>
-    /// 获得/设置 客户端屏幕宽度
-    /// </summary>
     protected BreakPoint ScreenSize { get; set; }
 
-    /// <summary>
-    /// 获得/设置 组件编辑模式 默认为弹窗编辑行数据 PopupEditForm
-    /// </summary>
     [Parameter]
     public EditMode EditMode { get; set; }
 
-    /// <summary>
-    /// 获得/设置 组件布局方式 默认为 Auto
-    /// </summary>
     [Parameter]
     public TableRenderMode RenderMode { get; set; }
 
-    /// <summary>
-    /// 获得/设置 组件布局自适应切换阈值 默认为 768
-    /// </summary>
     [Parameter]
     public BreakPoint RenderModeResponsiveWidth { get; set; } = BreakPoint.Medium;
 
-    /// <summary>
-    /// 获得/设置 编辑弹框是否 Body 出现滚动条 默认 false
-    /// </summary>
     [Parameter]
     public bool ScrollingDialogContent { get; set; }
 
-    /// <summary>
-    /// 获得/设置 是否支持键盘 ESC 关闭当前弹窗 默认 true 支持
-    /// </summary>
     [Parameter]
     public bool IsKeyboard { get; set; } = true;
 
-    /// <summary>
-    /// 获得/设置 行样式格式回调委托
-    /// </summary>
     [Parameter]
     public Func<TItem, string?>? SetRowClassFormatter { get; set; }
 
-    /// <summary>
-    /// 获得/设置 保存后回调委托方法
-    /// </summary>
     [Parameter]
     public Func<TItem, Task>? OnAfterSaveAsync { get; set; }
 
-    /// <summary>
-    /// 获得/设置 编辑数据弹窗 Title
-    /// </summary>
     [Parameter]
     [NotNull]
     public string? EditModalTitle { get; set; }
 
-    /// <summary>
-    /// 获得/设置 新建数据弹窗 Title
-    /// </summary>
     [Parameter]
     [NotNull]
     public string? AddModalTitle { get; set; }
 
-    /// <summary>
-    /// 获得/设置 EditModel 实例
-    /// </summary>
     [Parameter]
     [NotNull]
     public TItem? EditModel { get; set; }
 
-    /// <summary>
-    /// 获得/设置 EditTemplate 实例
-    /// </summary>
     [Parameter]
     public RenderFragment<TItem>? EditTemplate { get; set; }
 
-    /// <summary>
-    /// 获得/设置 BeforeRowButtonTemplate 实例 此模板生成的按钮默认放置到按钮前面如需放置前面 请查看 <see cref="RowButtonTemplate" />
-    /// </summary>
     [Parameter]
     public RenderFragment<TItem>? BeforeRowButtonTemplate { get; set; }
 
-    /// <summary>
-    /// 获得/设置 RowButtonTemplate 实例 此模板生成的按钮默认放置到按钮后面如需放置前面 请查看 <see cref="BeforeRowButtonTemplate" />
-    /// </summary>
     [Parameter]
     public RenderFragment<TItem>? RowButtonTemplate { get; set; }
 
-    /// <summary>
-    /// 获得/设置 行内功能按钮列头文本 默认为 操作
-    /// </summary>
     [Parameter]
     [NotNull]
     public string? ColumnButtonTemplateHeaderText { get; set; }
 
-    /// <summary>
-    /// 获得/设置 点击行即选中本行 默认为 false
-    /// </summary>
     [Parameter]
     public bool ClickToSelect { get; set; }
 
-    /// <summary>
-    /// 获得/设置 单选模式下双击即编辑本行 默认为 false
-    /// </summary>
     [Parameter]
     public bool DoubleClickToEdit { get; set; }
 
-    /// <summary>
-    /// 获得/设置 是否自动生成列信息 默认为 false
-    /// </summary>
     [Parameter]
     public bool AutoGenerateColumns { get; set; }
 
-    /// <summary>
-    /// 获得/设置 查询时是否显示正在加载中动画 默认为 false
-    /// </summary>
     [Parameter]
     public bool ShowLoading { get; set; }
 
     [NotNull]
     private string? DataServiceInvalidOperationText { get; set; }
 
-    /// <summary>
-    /// 获得/设置 数据服务参数 组件采用就近原则 如果提供了 Items > OnQueryAsync > DataService > 全局注入的数据服务 IDataService
-    /// </summary>
     [Parameter]
     public IDataService<TItem>? DataService { get; set; }
 
-    /// <summary>
-    /// 获得/设置 注入数据服务
-    /// </summary>
     [Inject]
     [NotNull]
     private IDataService<TItem>? InjectDataService { get; set; }
@@ -205,7 +120,6 @@ public partial class Table<TItem>
         {
             if (Items != null)
             {
-                // always return true if use Items as datasource
                 ret = true;
             }
             else
@@ -228,7 +142,6 @@ public partial class Table<TItem>
         {
             if (Items != null)
             {
-                // always return true if use Items as datasource
                 ret = true;
             }
             else
@@ -258,15 +171,10 @@ public partial class Table<TItem>
         }
     }
 
-    /// <summary>
-    /// 单选模式下选择行时调用此方法
-    /// </summary>
-    /// <param name="val"></param>
     protected async Task ClickRow(TItem val)
     {
         if (ClickToSelect)
         {
-            // 多选模式清空
             if (!IsMultipleSelect)
             {
                 SelectedRows.Clear();
@@ -301,23 +209,10 @@ public partial class Table<TItem>
         }
     }
 
-    /// <summary>
-    /// 检查当前行是否被选中方法
-    /// </summary>
-    /// <param name="val"></param>
-    /// <returns></returns>
     protected virtual bool CheckActive(TItem val) => SelectedRows.Any(row => Equals(val, row));
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
     protected Task OnClickRefreshAsync() => QueryAsync();
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
     protected void OnClickCardView()
     {
         var model = RenderMode;
@@ -356,17 +251,8 @@ public partial class Table<TItem>
         }
     }
 
-    /// <summary>
-    /// 查询按钮调用此方法 参数 pageIndex 默认值 null 保持上次页码 第一页页码为 1
-    /// </summary>
-    /// <returns></returns>
     public Task QueryAsync(int? pageIndex = null) => QueryAsync(true, pageIndex);
 
-    /// <summary>
-    /// 显示/隐藏 Loading 遮罩
-    /// </summary>
-    /// <param name="state">true 时显示，false 时隐藏</param>
-    /// <returns></returns>
     public async ValueTask ToggleLoading(bool state)
     {
         if (ShowLoading)
@@ -376,11 +262,6 @@ public partial class Table<TItem>
         }
     }
 
-    /// <summary>
-    /// 显示/隐藏 Loading 遮罩
-    /// </summary>
-    /// <param name="state">true 时显示，false 时隐藏</param>
-    /// <returns></returns>
     protected async ValueTask InternalToggleLoading(bool state)
     {
         if (ShowLoading && !IsLoading)
@@ -389,12 +270,8 @@ public partial class Table<TItem>
         }
     }
 
-    /// <summary>
-    /// 调用 OnQuery 回调方法获得数据源
-    /// </summary>
     protected async Task QueryData()
     {
-        // 目前设计使用 Items 参数后不回调 OnQueryAsync 方法
         if (Items == null)
         {
             if (OnQueryAsync == null && DynamicContext != null && typeof(TItem).IsAssignableTo(typeof(IDynamicObject)))
@@ -423,10 +300,8 @@ public partial class Table<TItem>
             IsAdvanceSearch = queryData.IsAdvanceSearch;
             QueryItems = queryData.Items ?? Enumerable.Empty<TItem>();
 
-            // 处理选中行逻辑
             ResetSelectedRows(QueryItems);
 
-            // 分页情况下内部不做处理防止页码错乱
             ProcessData();
 
             if (IsTree)
@@ -434,7 +309,6 @@ public partial class Table<TItem>
                 await ProcessTreeData();
             }
 
-            // 更新数据后清楚缓存防止新数据不显示
             RowsCache = null;
 
             void ProcessData()
@@ -443,14 +317,12 @@ public partial class Table<TItem>
                 var sorted = queryData.IsSorted;
                 var searched = queryData.IsSearch;
 
-                // 外部未处理 SearchText 模糊查询
                 if (!searched && queryOption.Searchs.Any())
                 {
                     QueryItems = QueryItems.Where(queryOption.Searchs.GetFilterFunc<TItem>(FilterLogic.Or));
                     TotalCount = QueryItems.Count();
                 }
 
-                // 外部未处理自定义高级搜索 内部进行高级自定义搜索过滤
                 if (!IsAdvanceSearch && queryOption.CustomerSearchs.Any())
                 {
                     QueryItems = QueryItems.Where(queryOption.CustomerSearchs.GetFilterFunc<TItem>());
@@ -458,15 +330,12 @@ public partial class Table<TItem>
                     IsAdvanceSearch = true;
                 }
 
-                // 外部未过滤，内部自行过滤
                 if (!filtered && queryOption.Filters.Any())
                 {
                     QueryItems = QueryItems.Where(queryOption.Filters.GetFilterFunc<TItem>());
                     TotalCount = QueryItems.Count();
                 }
 
-                // 外部未处理排序，内部自行排序
-                // 先处理列头排序 再处理默认多列排序
                 if (!sorted)
                 {
                     if (OnSort == null && queryOption.SortOrder != SortOrder.Unset && !string.IsNullOrEmpty(queryOption.SortName))
@@ -500,7 +369,6 @@ public partial class Table<TItem>
 
                 async Task CheckExpand(IEnumerable<TableTreeNode<TItem>> nodes)
                 {
-                    // 恢复当前节点状态
                     foreach (var node in nodes)
                     {
                         await TreeNodeCache.CheckExpandAsync(node, GetChildrenRowAsync);
@@ -554,9 +422,6 @@ public partial class Table<TItem>
         }
     }
 
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
     public bool Equals(TItem? x, TItem? y) => DynamicContext?.EqualityComparer?.Invoke((IDynamicObject?)x, (IDynamicObject?)y) ?? this.Equals<TItem>(x, y);
 
     private async Task OnClickExtensionButton(TItem item, TableCellButtonArgs args)
@@ -579,7 +444,6 @@ public partial class Table<TItem>
         SelectedRows.Add(item);
         await OnSelectedRowsChanged();
 
-        // 更新行选中状态
         await EditAsync();
     }
 
@@ -589,10 +453,6 @@ public partial class Table<TItem>
         await SaveAsync(context, AddInCell ? ItemChangedType.Add : ItemChangedType.Update);
     }
 
-    /// <summary>
-    /// 双击行回调此方法
-    /// </summary>
-    /// <param name="item"></param>
     protected async Task DoubleClickRow(TItem item)
     {
         if (DoubleClickToEdit)
@@ -608,10 +468,6 @@ public partial class Table<TItem>
         StateHasChanged();
     }
 
-    /// <summary>
-    /// 行尾列按钮点击回调此方法
-    /// </summary>
-    /// <param name="item"></param>
     protected Func<Task<bool>> ClickBeforeDelete(TItem item) => () =>
     {
         SelectedRows.Clear();

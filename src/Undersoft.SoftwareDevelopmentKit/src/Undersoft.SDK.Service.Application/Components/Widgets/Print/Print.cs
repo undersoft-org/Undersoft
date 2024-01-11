@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Service.Application.Components;
 
-public class Print : PresenterComponent, IDisposable
+public class Print : Component, IDisposable
 {
     [Inject]
     [NotNull]

@@ -2,9 +2,9 @@
 
 public class MessageService : PresenterService<MessageOption>
 {
-    private PresenterOptions Options { get; }
+    private ApplicationOptions Options { get; }
 
-    public MessageService(IOptionsMonitor<PresenterOptions> option)
+    public MessageService(IOptionsMonitor<ApplicationOptions> option)
     {
         Options = option.CurrentValue;
     }

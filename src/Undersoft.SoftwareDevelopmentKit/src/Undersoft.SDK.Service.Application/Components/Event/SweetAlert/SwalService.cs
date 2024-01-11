@@ -2,9 +2,9 @@
 
 public class SwalService : PresenterService<SwalOption>
 {
-    private PresenterOptions _option;
+    private ApplicationOptions _option;
 
-    public SwalService(IOptionsMonitor<PresenterOptions> option)
+    public SwalService(IOptionsMonitor<ApplicationOptions> option)
     {
         _option = option.CurrentValue;
     }

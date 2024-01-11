@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Service.Application.Components;
 
-public abstract class TooltipWrapperBase : PresenterModule2
+public abstract class TooltipWrapperBase : ComponentModule2
 {
     protected virtual string? PlacementString => (!string.IsNullOrEmpty(TooltipText) && TooltipPlacement != Placement.Auto) ? TooltipPlacement.ToDescriptionString() : null;
 

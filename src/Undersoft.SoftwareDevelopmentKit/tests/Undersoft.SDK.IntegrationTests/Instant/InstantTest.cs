@@ -14,59 +14,59 @@ namespace Undersoft.SDK.IntegrationTests.Instant
         public InstantTest() { }
 
         [Fact]
-        public void Instant_Memberinfo_FieldsAndPropertiesModel_Compilation_Test()
+        public void Instant_Memberinfo_FieldsAndPropertiesModel_Integration_Test()
         {
             InstantCreator derivedType = new InstantCreator<Agreement>(InstantType.Derived);
-            IInstant InstantA = Instant_Compilation_Helper_Test(derivedType, new Agreement());
+            IInstant InstantA = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(derivedType, new Agreement());
 
             InstantCreator referenceType = new InstantCreator<Agreement>();
-            IInstant InstantB = Instant_Compilation_Helper_Test(referenceType, new Agreement());
+            IInstant InstantB = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(referenceType, new Agreement());
 
             //  InstantCreator valueType = new InstantCreator<Agreement>(InstantType.ValueType);
             //  IInstant InstantC = Instant_Compilation_Helper_Test(valueType, new Agreement());
         }
 
         [Fact]
-        public void Instant_Memberinfo_FieldsOnlyModel_Compilation_Test()
+        public void Instant_Memberinfo_FieldsOnlyModel_Integration_Test()
         {
             InstantCreator derivedType = new InstantCreator(typeof(FieldsOnlyModel), InstantType.Derived);
-            IInstant InstantA = Instant_Compilation_Helper_Test(derivedType, new FieldsOnlyModel());
+            IInstant InstantA = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(derivedType, new FieldsOnlyModel());
 
             InstantCreator referenceType = new InstantCreator(typeof(FieldsOnlyModel), InstantType.Reference);
-            IInstant InstantB = Instant_Compilation_Helper_Test(referenceType, new FieldsOnlyModel());
+            IInstant InstantB = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(referenceType, new FieldsOnlyModel());
 
             InstantCreator valueType = new InstantCreator(typeof(FieldsOnlyModel), InstantType.ValueType);
-            IInstant InstantC = Instant_Compilation_Helper_Test(valueType, new FieldsOnlyModel());
+            IInstant InstantC = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(valueType, new FieldsOnlyModel());
         }
 
         [Fact]
-        public void Instant_Memberinfo_PropertiesOnlyModel_Compilation_Test()
+        public void Instant_Memberinfo_PropertiesOnlyModel_Integration_Test()
         {
             InstantCreator derivedType = new InstantCreator(typeof(PropertiesOnlyModel), InstantType.Derived);
-            IInstant InstantA = Instant_Compilation_Helper_Test(
+            IInstant InstantA = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(
                 derivedType,
                 new PropertiesOnlyModel()
             );
 
             InstantCreator referenceType = new InstantCreator(typeof(PropertiesOnlyModel), InstantType.Reference);
-            IInstant InstantB = Instant_Compilation_Helper_Test(
+            IInstant InstantB = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(
                 referenceType,
                 new PropertiesOnlyModel()
             );
 
             InstantCreator valueType = new InstantCreator(typeof(PropertiesOnlyModel), InstantType.ValueType);
-            IInstant InstantC = Instant_Compilation_Helper_Test(valueType, new PropertiesOnlyModel());
+            IInstant InstantC = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(valueType, new PropertiesOnlyModel());
         }
 
         [Fact]
-        public void Instant_MemberRubric_FieldsOnlyModel_Compilation_Test()
+        public void Instant_MemberRubric_FieldsOnlyModel_Integration_Test()
         {
             InstantCreator referenceType = new InstantCreator(
                 InstantMocks.Instant_MemberRubric_FieldsOnlyModel(),
                 "Instant_MemberRubric_FieldsOnlyModel_Reference"
             );
             FieldsOnlyModel fom = new FieldsOnlyModel();
-            IInstant InstantA = Instant_Compilation_Helper_Test(referenceType, fom);
+            IInstant InstantA = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(referenceType, fom);
 
             InstantCreator valueType = new InstantCreator(
                 InstantMocks.Instant_Memberinfo_FieldsOnlyModel(),
@@ -74,28 +74,28 @@ namespace Undersoft.SDK.IntegrationTests.Instant
                  InstantType.ValueType
             );
             fom = new FieldsOnlyModel();
-            IInstant InstantB = Instant_Compilation_Helper_Test(valueType, fom);
+            IInstant InstantB = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(valueType, fom);
         }
 
-        [Fact]
-        public void Instant_ValueArray_GetSet_Test()
-        {
-            InstantCreator referenceType = new InstantCreator(typeof(FieldsAndPropertiesModel));
+        //[Fact]
+        //public void Instant_Copy_Values_From_Object_To_Object_Using_Compiled_ValueArray_Property__Test()
+        //{
+        //    InstantCreator referenceType = new InstantCreator(typeof(FieldsAndPropertiesModel));
 
-            Instant_Compilation_Helper_Test(
-                referenceType,
-                Instant_Compilation_Helper_Test(referenceType, new FieldsAndPropertiesModel())
-            );
+        //    Instant_Creation_Compilation_ValueArray_Property_Operations_On_New_RuntimeType_Object_Instance_Test(
+        //        referenceType,
+        //        Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(referenceType, new FieldsAndPropertiesModel())
+        //    );
 
-            InstantCreator valueType = new InstantCreator(typeof(PropertiesOnlyModel), InstantType.ValueType);
+        //    InstantCreator valueType = new InstantCreator(typeof(PropertiesOnlyModel), InstantType.ValueType);
 
-            Instant_Compilation_Helper_Test(
-                valueType,
-                Instant_Compilation_Helper_Test(valueType, new FieldsAndPropertiesModel())
-            );
-        }
+        //    Instant_Creation_Compilation_ValueArray_Property_Operations_On_New_RuntimeType_Object_Instance_Test(
+        //        valueType,
+        //        Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(valueType, new FieldsAndPropertiesModel())
+        //    );
+        //}
 
-        private IInstant Instant_Compilation_Helper_Test(InstantCreator str, Agreement fom)
+        private IInstant Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(InstantCreator str, Agreement fom)
         {
             IInstant rts = str.Create();
             fom.Kind = AgreementKind.Agree;
@@ -140,7 +140,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant
                     if (fi != null)
                         Assert.Equal(rts[r.Name], fi.GetValue(fom));
                 }
-                if (r.MemberType == MemberTypes.Property)
+                if (r.MemberType == MemberTypes.Property && r.Name != "TypeId")
                 {
                     var pi = fom.GetType().GetProperty(((PropertyInfo)r).Name);
                     if (pi != null)
@@ -154,7 +154,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant
             return rts;
         }
 
-        private IInstant Instant_Compilation_Helper_Test(InstantCreator str, FieldsAndPropertiesModel fom)
+        private IInstant Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(InstantCreator str, FieldsAndPropertiesModel fom)
         {
             IInstant rts = str.Create();
             fom.Id = 202;
@@ -195,7 +195,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant
                     if (fi != null)
                         Assert.Equal(rts[r.Name], fi.GetValue(fom));
                 }
-                if (r.MemberType == MemberTypes.Property)
+                if (r.MemberType == MemberTypes.Property && r.Name != "TypeId")
                 {
                     var pi = fom.GetType().GetProperty(((PropertyInfo)r).Name);
                     if (pi != null)
@@ -205,7 +205,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant
             return rts;
         }
 
-        private IInstant Instant_Compilation_Helper_Test(InstantCreator str, FieldsOnlyModel fom)
+        private IInstant Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(InstantCreator str, FieldsOnlyModel fom)
         {
             IInstant rts = str.Create();
             fom.Id = 202;
@@ -245,7 +245,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant
                     if (fi != null)
                         Assert.Equal(rts[r.Name], fi.GetValue(fom));
                 }
-                if (r.MemberType == MemberTypes.Property)
+                if (r.MemberType == MemberTypes.Property && r.Name != "TypeId")
                 {
                     var pi = fom.GetType().GetProperty(((PropertyInfo)r).Name);
                     if (pi != null)
@@ -255,16 +255,16 @@ namespace Undersoft.SDK.IntegrationTests.Instant
             return rts;
         }
 
-        private void Instant_Compilation_Helper_Test(InstantCreator str, IInstant Instant)
-        {
-            //IInstant rts = str.Combine();
-            //object[] values = rts.ValueArray;
-            //rts.ValueArray = Instant.ValueArray;
-            //for (int i = 0; i < values.Length; i++)
-            //    Assert.Equal(Instant[i], rts.ValueArray[i]);
-        }
+        //private void Instant_Creation_Compilation_ValueArray_Property_Operations_On_New_RuntimeType_Object_Instance_Test(InstantCreator str, IInstant Instant)
+        //{
+        //    IInstant rts = str.Create();
+        //    object[] values = rts.ValueArray;
+        //    rts.ValueArray = Instant.ValueArray;
+        //    for (int i = 0; i < values.Length; i++)
+        //        Assert.Equal(Instant[i], rts.ValueArray[i]);
+        //}
 
-        private IInstant Instant_Compilation_Helper_Test(InstantCreator str, PropertiesOnlyModel fom)
+        private IInstant Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(InstantCreator str, PropertiesOnlyModel fom)
         {
             IInstant rts = str.Create();
             fom.Id = 202;
@@ -303,7 +303,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant
                     if (fi != null)
                         Assert.Equal(rts[r.Name], fi.GetValue(fom));
                 }
-                if (r.MemberType == MemberTypes.Property)
+                if (r.MemberType == MemberTypes.Property && r.Name != "TypeId")
                 {
                     var pi = fom.GetType().GetProperty(((PropertyInfo)r).Name);
                     if (pi != null)

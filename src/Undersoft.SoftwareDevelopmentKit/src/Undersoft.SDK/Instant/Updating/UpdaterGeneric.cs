@@ -5,7 +5,7 @@
 
     public class Updater<T> : Updater, IUpdater<T> where T : class
     {
-        public Updater() { }
+        public Updater() : base(typeof(T).New<T>()) { }
 
         public Updater(T item) : base(item) { }
 
@@ -65,10 +65,10 @@
         public IProxy EntryProxy => source;
         public IProxy PresetProxy => (IProxy)Preset;
 
-        public new T Entry => (T)(preset.Target);
+        public T Entry => (T)((preset == null) ? preset = creator.Create(Target) : preset);
         public new T Preset => (T)((preset == null) ? preset = creator.Create(source) : preset);
 
-        public new T Devisor
+        public T Devisor
         {
             get => (T)(source.Target);
             set => source.Target = value;

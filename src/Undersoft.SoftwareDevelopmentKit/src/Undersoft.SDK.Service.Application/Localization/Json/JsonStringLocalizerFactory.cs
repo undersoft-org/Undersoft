@@ -16,7 +16,7 @@ internal class JsonStringLocalizerFactory : ResourceManagerStringLocalizerFactor
 
     public JsonStringLocalizerFactory(
         ICacheManager cacheManager,
-        IOptionsMonitor<PresenterOptions> options,
+        IOptionsMonitor<ApplicationOptions> options,
         IOptions<JsonLocalizationOptions> jsonLocalizationOptions,
         IOptions<LocalizationOptions> localizationOptions,
         ILoggerFactory loggerFactory) : base(localizationOptions, loggerFactory)
@@ -34,7 +34,7 @@ internal class JsonStringLocalizerFactory : ResourceManagerStringLocalizerFactor
         options.OnChange(OnChange);
 
         [ExcludeFromCodeCoverage]
-        void OnChange(PresenterOptions op)
+        void OnChange(ApplicationOptions op)
         {
             jsonLocalizationOptions.Value.EnableFallbackCulture = op.EnableFallbackCulture;
             jsonLocalizationOptions.Value.FallbackCulture = op.FallbackCulture;

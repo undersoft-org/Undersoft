@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 
 namespace Undersoft.SDK.Service.Application.Components;
 
-public partial class Chart : PresenterComponent, IAsyncDisposable
+public partial class Chart : Component, IAsyncDisposable
 {
     [NotNull]
     private IJSObjectReference? Module { get; set; }

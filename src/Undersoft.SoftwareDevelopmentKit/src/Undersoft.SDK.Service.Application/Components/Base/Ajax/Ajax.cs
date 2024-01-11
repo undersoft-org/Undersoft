@@ -1,7 +1,7 @@
 ﻿namespace Undersoft.SDK.Service.Application.Components;
 
 [JSModuleAutoLoader("./_content/Undersoft.Sdk.Service.Application/modules/ajax.js", Relative = false, AutoInvokeInit = false, AutoInvokeDispose = false)]
-public class Ajax : PresenterModule
+public class Ajax : ComponentModule
 {
     [Inject]
     [NotNull]

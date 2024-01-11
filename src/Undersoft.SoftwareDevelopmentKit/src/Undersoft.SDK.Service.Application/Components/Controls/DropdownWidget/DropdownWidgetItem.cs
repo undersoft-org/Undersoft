@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Service.Application.Components;
 
-public class DropdownWidgetItem : PresenterComponent
+public class DropdownWidgetItem : Component
 {
     [Parameter]
     public string? Icon { get; set; }

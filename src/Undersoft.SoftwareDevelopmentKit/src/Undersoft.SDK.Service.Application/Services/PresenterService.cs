@@ -11,7 +11,7 @@ public abstract class PresenterService<TOption>
             : Cache.FirstOrDefault();
         if (Callback == null)
         {
-            throw new InvalidOperationException($"{GetType().Name} not registerd. refer doc https://www.blazor.zone/install-server step 7 for PresenterRoot");
+            throw new InvalidOperationException($"{GetType().Name} not registerd. refer doc https://www.blazor.zone/install-server step 7 for RootComponent");
         }
         await Callback.Invoke(option);
     }

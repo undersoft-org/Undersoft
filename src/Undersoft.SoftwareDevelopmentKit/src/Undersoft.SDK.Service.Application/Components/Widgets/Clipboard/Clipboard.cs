@@ -1,7 +1,7 @@
 ﻿namespace Undersoft.SDK.Service.Application.Components;
 
 [JSModuleAutoLoader("base/utility")]
-public class Clipboard : PresenterModule2
+public class Clipboard : ComponentModule2
 {
     [Inject]
     [NotNull]

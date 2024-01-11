@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Service.Application.Components;
 
-public abstract class DialogBase<TModel> : PresenterModule
+public abstract class DialogBase<TModel> : ComponentModule
 {
     [Parameter]
     [NotNull]

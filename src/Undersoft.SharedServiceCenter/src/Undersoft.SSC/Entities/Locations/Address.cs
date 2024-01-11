@@ -1,7 +1,7 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SSC.Entities;
+using Undersoft.SSC.Entities.Account;
 using Undersoft.SSC.Entities.Enums;
 
 namespace Undersoft.SSC.Entities.Locations
@@ -31,6 +31,6 @@ namespace Undersoft.SSC.Entities.Locations
         public long? LocationId { get; set; }
         [JsonIgnore]
         [IgnoreDataMember]
-        public virtual Location? Location { get; set; }
+        public virtual AccountLocation? Location { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using Undersoft.SDK.Instant.Proxies;
 using static Microsoft.AspNetCore.Internal.LinkerFlags;
 
 namespace Microsoft.AspNetCore.Components.Reflection;
@@ -152,7 +153,7 @@ internal static class ComponentProperties
         {
             try
             {
-                writer.SetValue(target, value);
+               target.ValueOf(parameterName, value);
             }
             catch (Exception ex)
             {
@@ -163,11 +164,11 @@ internal static class ComponentProperties
         }
     }
 
-    internal static IEnumerable<PropertyInfo> GetCandidateBindableProperties([DynamicallyAccessedMembers(Component)] Type targetType)
+    internal static IEnumerable<PropertyInfo> GetCandidateBindableProperties([DynamicallyAccessedMembers(Internal.LinkerFlags.Component)] Type targetType)
         => MemberAssignment.GetPropertiesIncludingInherited(targetType, BindablePropertyFlags);
 
     [DoesNotReturn]
-    private static void ThrowForUnknownIncomingParameterName([DynamicallyAccessedMembers(Component)] Type targetType,
+    private static void ThrowForUnknownIncomingParameterName([DynamicallyAccessedMembers(Internal.LinkerFlags.Component)] Type targetType,
         string parameterName)
     {
         // We know we're going to throw by this stage, so it doesn't matter that the following
@@ -222,7 +223,7 @@ internal static class ComponentProperties
     }
 
     [DoesNotReturn]
-    private static void ThrowForMultipleCaptureUnmatchedValuesParameters([DynamicallyAccessedMembers(Component)] Type targetType)
+    private static void ThrowForMultipleCaptureUnmatchedValuesParameters([DynamicallyAccessedMembers(Internal.LinkerFlags.Component)] Type targetType)
     {
         var propertyNames = new List<string>();
         foreach (var property in targetType.GetProperties(BindablePropertyFlags))
@@ -257,7 +258,7 @@ internal static class ComponentProperties
         private readonly Dictionary<string, PropertySetter> _underlyingWriters;
         private readonly ConcurrentDictionary<string, PropertySetter?> _referenceEqualityWritersCache;
 
-        public WritersForType([DynamicallyAccessedMembers(Component)] Type targetType)
+        public WritersForType([DynamicallyAccessedMembers(Internal.LinkerFlags.Component)] Type targetType)
         {
             _underlyingWriters = new Dictionary<string, PropertySetter>(StringComparer.OrdinalIgnoreCase);
             _referenceEqualityWritersCache = new ConcurrentDictionary<string, PropertySetter?>(ReferenceEqualityComparer.Instance);

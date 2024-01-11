@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Undersoft.SDK.Service.Application.Components;
 
-public class Block : PresenterComponent
+public class Block : Component
 {
     [Parameter]
     public string? Name { get; set; }

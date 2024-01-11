@@ -5,21 +5,15 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using Undersoft.SDK.Instant.Proxies;
 
 namespace Microsoft.AspNetCore.Components.Reflection;
 
 [ExcludeFromCodeCoverage]
 internal sealed class PropertySetter
 {
-    private static readonly MethodInfo CallPropertySetterOpenGenericMethod =
-        typeof(PropertySetter).GetMethod(nameof(CallPropertySetter), BindingFlags.NonPublic | BindingFlags.Static)!;
+    private int _index;
 
-    private readonly Action<object, object> _setterDelegate;
-
-    [UnconditionalSuppressMessage(
-        "ReflectionAnalysis",
-        "IL2060:MakeGenericMethod",
-        Justification = "The referenced methods don't have any DynamicallyAccessedMembers annotations. See https://github.com/mono/linker/issues/1727")]
     public PropertySetter(Type targetType, PropertyInfo property)
     {
         if (property.SetMethod == null)
@@ -29,34 +23,12 @@ internal sealed class PropertySetter
                 "has no setter.");
         }
 
-        var setMethod = property.SetMethod;
-
-        var propertySetterAsAction =
-            setMethod.CreateDelegate(typeof(Action<,>).MakeGenericType(targetType, property.PropertyType));
-        var callPropertySetterClosedGenericMethod =
-            CallPropertySetterOpenGenericMethod.MakeGenericMethod(targetType, property.PropertyType);
-        _setterDelegate = (Action<object, object>)
-            callPropertySetterClosedGenericMethod.CreateDelegate(typeof(Action<object, object>), propertySetterAsAction);
+        _index = targetType.ToProxy().Rubrics[property.Name].RubricId;
     }
 
     public bool Cascading { get; init; }
 
-    public void SetValue(object target, object value) => _setterDelegate(target, value);
-
-    private static void CallPropertySetter<TTarget, TValue>(
-        Action<TTarget, TValue> setter,
-        object target,
-        object value)
-        where TTarget : notnull
-    {
-        if (value == null)
-        {
-            setter((TTarget)target, default!);
-        }
-        else
-        {
-            setter((TTarget)target, (TValue)value);
-        }
-    }
+    public void SetValue(object target, object value) => target.ValueOf(_index, value);
+    
 }
 #endif

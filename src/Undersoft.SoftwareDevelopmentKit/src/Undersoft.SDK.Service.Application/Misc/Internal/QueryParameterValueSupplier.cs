@@ -27,7 +27,7 @@ internal sealed class QueryParameterValueSupplier
     private readonly ReadOnlyMemory<char>[] _queryParameterNames;
     private readonly QueryParameterDestination[] _destinations;
 
-    public static QueryParameterValueSupplier? ForType([DynamicallyAccessedMembers(Component)] Type componentType)
+    public static QueryParameterValueSupplier? ForType([DynamicallyAccessedMembers(LinkerFlags.Component)] Type componentType)
     {
         if (!_cacheByType.TryGetValue(componentType, out var instanceOrNull))
         {
@@ -114,7 +114,7 @@ internal sealed class QueryParameterValueSupplier
         }
     }
 
-    private static QueryParameterMapping[]? GetSortedMappings([DynamicallyAccessedMembers(Component)] Type componentType)
+    private static QueryParameterMapping[]? GetSortedMappings([DynamicallyAccessedMembers(LinkerFlags.Component)] Type componentType)
     {
         var candidateProperties = MemberAssignment.GetPropertiesIncludingInherited(componentType, ComponentProperties.BindablePropertyFlags);
         HashSet<ReadOnlyMemory<char>>? usedQueryParameterNames = null;

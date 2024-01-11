@@ -32,7 +32,7 @@
             get => binarySizes;
         }
 
-        public IInstantSeries Figures { get; set; }
+        public IInstantSeries Series { get; set; }
 
         public IRubrics KeyRubrics { get; set; }
 

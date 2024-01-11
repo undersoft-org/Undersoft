@@ -9,7 +9,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant
     public class UserProfile : Entity
     {
         [ForeignKey("User")]
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
 
         [StringLength(100)]
         public string Name { get; set; }
@@ -42,8 +42,6 @@ namespace Undersoft.SDK.IntegrationTests.Instant
 
         public long ChipNumber { get; set; }
 
-        [StringLength(2), MinLength(2)]
-        [Column(TypeName = "char(2)")]
         public string Language { get; set; }
 
         [StringLength(100)]
@@ -51,16 +49,14 @@ namespace Undersoft.SDK.IntegrationTests.Instant
 
         public int CustomerExternalId { get; set; }
 
-        [Description("Nazwa klienta")]
         public string CustomerName { get; set; }
-
-        [Description("Facebook ID")]
+ 
         public string FacebookId { get; set; }
 
         [StringLength(11)]
         public string Pesel { get; set; }
 
-        public Guid SSOID { get; set; }
+        public Guid? SSOID { get; set; }
 
         public User User { get; set; }
     }

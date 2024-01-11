@@ -3,8 +3,7 @@ using System.Net;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text.Json.Serialization;
-using Undersoft.SSC.Entities;
-
+using Undersoft.SSC.Entities.Account;
 
 namespace Undersoft.SSC.Entities.Locations;
 
@@ -22,5 +21,5 @@ public class Endpoint : DataObject
 
     [JsonIgnore]
     [IgnoreDataMember]
-    public virtual Location? Location { get; set; }
+    public virtual AccountLocation? Location { get; set; }
 }

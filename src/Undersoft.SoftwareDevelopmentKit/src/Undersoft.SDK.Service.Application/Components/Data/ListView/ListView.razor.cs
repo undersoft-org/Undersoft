@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Service.Application.Components;
 
-public partial class ListView<TItem> : PresenterComponent
+public partial class ListView<TItem> : Component
 {
     private string? ClassString => CssBuilder.Default("listview")
         .AddClass("is-vertical", IsVertical)

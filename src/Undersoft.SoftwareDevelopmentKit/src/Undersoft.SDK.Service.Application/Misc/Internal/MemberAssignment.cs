@@ -15,7 +15,7 @@ namespace Microsoft.AspNetCore.Components.Reflection;
 internal class MemberAssignment
 {
     public static IEnumerable<PropertyInfo> GetPropertiesIncludingInherited(
-        [DynamicallyAccessedMembers(Component)] Type type,
+        [DynamicallyAccessedMembers(Internal.LinkerFlags.Component)] Type type,
         BindingFlags bindingFlags)
     {
         var dictionary = new Dictionary<string, object>(StringComparer.Ordinal);

@@ -1,7 +1,7 @@
 ﻿namespace Undersoft.SDK.Service.Application.Components;
 
 [JSModuleAutoLoader("./_content/BootstrapBlazor/modules/responsive.js", JSObjectReference = true, Relative = false)]
-public class ResizeNotification : PresenterModule
+public class ResizeNotification : ComponentModule
 {
     [Inject]
     [NotNull]

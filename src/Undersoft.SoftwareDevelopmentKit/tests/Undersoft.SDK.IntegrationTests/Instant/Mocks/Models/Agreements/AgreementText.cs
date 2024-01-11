@@ -5,7 +5,6 @@ namespace Undersoft.SDK.IntegrationTests.Instant
 {
     public class AgreementText: Entity
     {
-        public ulong TypeId { get; set; }  
         public ulong VersionId { get; set; }  
         public int VersionNumber { get; set; }
         public string Language { get; set; }

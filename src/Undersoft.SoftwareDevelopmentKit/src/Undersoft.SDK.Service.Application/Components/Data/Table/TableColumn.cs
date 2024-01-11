@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Application.Components;
 
-public class TableColumn<TItem, TType> : PresenterComponent, ITableColumn
+public class TableColumn<TItem, TType> : Component, ITableColumn
 {
     public IFilter? Filter { get; set; }
 

@@ -35,10 +35,6 @@
 
         public abstract Uscn Code { get; set; }
 
-        //public new abstract long Id { get; set; }
-
-        //public new abstract long TypeId { get; set; }
-
         public override ISeriesItem<IInstant> EmptyItem()
         {
             return new InstantSeriesItem(this);

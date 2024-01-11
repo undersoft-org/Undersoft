@@ -55,7 +55,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Sched
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Schedule", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Schedule\Undersoft.SSC.Service.Schedule.csproj", "{E8D04563-A4CC-451F-9450-0B890FCF75B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Undersoft.SSC.Service.Application.Client.Hybrid", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Application.Client.Hybrid\Undersoft.SSC.Service.Application.Client.Hybrid.csproj", "{CD5D9E98-BA51-43C6-B8B2-2DDCBA94DCBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Application.Hybrid", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Application.Client.Hybrid\Undersoft.SSC.Service.Application.Hybrid.csproj", "{CD5D9E98-BA51-43C6-B8B2-2DDCBA94DCBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Undersoft.SSC.Service.Application.UI", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Application.UI\Undersoft.SSC.Service.Application.UI.csproj", "{5613584F-E077-4AAF-A14C-275B8B009B23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -157,6 +159,10 @@ Global
 		{CD5D9E98-BA51-43C6-B8B2-2DDCBA94DCBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD5D9E98-BA51-43C6-B8B2-2DDCBA94DCBE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CD5D9E98-BA51-43C6-B8B2-2DDCBA94DCBE}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{5613584F-E077-4AAF-A14C-275B8B009B23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5613584F-E077-4AAF-A14C-275B8B009B23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5613584F-E077-4AAF-A14C-275B8B009B23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5613584F-E077-4AAF-A14C-275B8B009B23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -187,6 +193,7 @@ Global
 		{9701BE99-EFCC-4CE1-90F0-B4EBB7BB20D0} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
 		{E8D04563-A4CC-451F-9450-0B890FCF75B3} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
 		{CD5D9E98-BA51-43C6-B8B2-2DDCBA94DCBE} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
+		{5613584F-E077-4AAF-A14C-275B8B009B23} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F31728AB-97C6-4E0D-B412-898579AA77AD}

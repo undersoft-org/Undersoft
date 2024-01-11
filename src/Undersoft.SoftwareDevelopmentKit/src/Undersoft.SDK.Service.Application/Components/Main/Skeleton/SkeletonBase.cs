@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Service.Application.Components;
 
-public abstract class SkeletonBase : PresenterComponent
+public abstract class SkeletonBase : Component
 {
     [Parameter]
     public bool Round { get; set; } = true;

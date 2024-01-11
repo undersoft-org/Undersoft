@@ -3,8 +3,7 @@ using Undersoft.SDK.Service.Server.Controller.Crud;
 using Undersoft.SDK.Service.Server.Controller.Open;
 using Undersoft.SDK.Service.Server.Controller.Stream;
 using Undersoft.SDK.Service.Infrastructure.Store;
-
-using Undersoft.SSC.Entities;
+using Undersoft.SSC.Entities.Account;
 
 namespace Undersoft.SSC.Service.Server.Controllers
 {

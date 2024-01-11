@@ -1,7 +1,7 @@
 ﻿namespace Undersoft.SDK.Service.Application.Components;
 
 [JSModuleAutoLoader("./_content/BootstrapBlazor/modules/fullscreen.js", Relative = false)]
-public class FullScreen : PresenterModule
+public class FullScreen : ComponentModule
 {
     [Inject]
     [NotNull]

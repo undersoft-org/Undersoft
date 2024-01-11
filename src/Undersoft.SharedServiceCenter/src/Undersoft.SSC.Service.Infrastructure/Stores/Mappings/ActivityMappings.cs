@@ -5,7 +5,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 {
     using Undersoft.SDK.Service.Data.Relation;
     using Undersoft.SDK.Service.Infrastructure.Store;
-    using Undersoft.SSC.Entities;
+    using Undersoft.SSC.Entities.Account;
+    using Undersoft.SSC.Entities.Activity;
+    using Undersoft.SSC.Entities.Resource;
+    using Undersoft.SSC.Entities.Schedule;
 
     public class ActivityMappings : EntityTypeMapping<Activity>
     {
@@ -17,7 +20,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 
             modelBuilder
                 .ApplyIdentifiers<Activity>()
-                .LinkOneToOne<Activity, Location>(ExpandSite.OnRight)
+                .LinkOneToOne<Activity, AccountLocation>(ExpandSite.OnRight)
                 .LinkSetToSet<Activity, Account>(
                     nameof(Resource.Activities),
                     nameof(Resource.Activities),

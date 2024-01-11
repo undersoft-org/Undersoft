@@ -1,7 +1,7 @@
 ﻿namespace Undersoft.SDK.Service.Application.Components;
 
 [JSModuleAutoLoader("./_content/BootstrapBlazor/modules/download.js", Relative = false, AutoInvokeInit = false, AutoInvokeDispose = false)]
-public class Download : PresenterModule
+public class Download : ComponentModule
 {
     [Inject]
     [NotNull]

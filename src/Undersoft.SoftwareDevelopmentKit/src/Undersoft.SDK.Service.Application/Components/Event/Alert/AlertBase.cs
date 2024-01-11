@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Service.Application.Components;
 
-public abstract class AlertBase : PresenterComponent
+public abstract class AlertBase : Component
 {
     protected virtual string? ClassName => CssBuilder.Default("alert fade show")
         .AddClass($"alert-{Color.ToDescriptionString()}", Color != Color.None)

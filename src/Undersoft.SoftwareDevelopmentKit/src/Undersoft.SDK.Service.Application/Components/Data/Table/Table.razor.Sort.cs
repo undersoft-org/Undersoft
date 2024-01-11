@@ -1,74 +1,37 @@
-﻿// Copyright (c) Argo Zhang (argo@163.com). All rights reserved.
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-// Website: https://www.blazor.zone or https://argozhang.github.io/
-
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 
 namespace Undersoft.SDK.Service.Application.Components;
 
-/// <summary>
-/// 
-/// </summary>
 public partial class Table<TItem>
 {
-    /// <summary>
-    /// 获得/设置 排序字段名称
-    /// </summary>
     protected string? SortName { get; set; }
 
-    /// <summary>
-    /// 获得/设置 排序方式
-    /// </summary>
     protected SortOrder SortOrder { get; set; }
 
-    /// <summary>
-    /// 获得/设置 升序图标 fa-solid fa-sort-up
-    /// </summary>
     [Parameter]
     [NotNull]
     public string? SortIconAsc { get; set; }
 
-    /// <summary>
-    /// 获得/设置 降序图标 fa-solid fa-sort-down
-    /// </summary>
     [Parameter]
     [NotNull]
     public string? SortIconDesc { get; set; }
 
-    /// <summary>
-    /// 获得/设置 默认图标 fa-solid fa-sort
-    /// </summary>
     [Parameter]
     [NotNull]
     public string? SortIcon { get; set; }
 
-    /// <summary>
-    /// 获得/设置 过滤图标 默认 fa-solid fa-filter
-    /// </summary>
     [Parameter]
     public string? FilterIcon { get; set; }
 
-    /// <summary>
-    /// 获得/设置 多列排序顺序 默认为空 多列时使用逗号分割 如："Name, Age desc"
-    /// </summary>
     [Parameter]
     public string? SortString { get; set; }
 
-    /// <summary>
-    /// 获得/设置 点击表头排序时回调方法
-    /// </summary>
     [Parameter]
     public Func<string, SortOrder, string>? OnSort { get; set; }
 
-    /// <summary>
-    /// 获得/设置 内部表头排序时回调方法
-    /// </summary>
     [NotNull]
     protected Func<string, SortOrder, Task>? InternalOnSortAsync { get; set; }
 
-    /// <summary>
-    /// 点击列进行排序方法
-    /// </summary>
     protected Func<Task> OnClickHeader(ITableColumn col) => async () =>
     {
         UpdateSortTooltip = true;
@@ -88,27 +51,15 @@ public partial class Table<TItem>
 
         SortName = col.GetFieldName();
 
-        // 通知 Table 组件刷新数据
         await InternalOnSortAsync(SortName, SortOrder);
     };
 
-    /// <summary>
-    /// 获取指定列头样式字符串
-    /// </summary>
-    /// <param name="col"></param>
-    /// <param name="isFilterHeader"></param>
-    /// <returns></returns>
     protected string? GetHeaderClassString(ITableColumn col, bool isFilterHeader = false) => CssBuilder.Default()
         .AddClass("sortable", col.Sortable && !isFilterHeader)
         .AddClass("filterable", col.Filterable)
         .AddClass(GetFixedCellClassString(col))
         .Build();
 
-    /// <summary>
-    /// 获得列头单元格样式
-    /// </summary>
-    /// <param name="col"></param>
-    /// <returns></returns>
     protected string? GetHeaderCellClassString(ITableColumn col) => CssBuilder.Default()
         .AddClass("table-text")
         .AddClass("text-truncate", col.HeaderTextEllipsis)
@@ -172,12 +123,6 @@ public partial class Table<TItem>
 
     private int MultiColumnWidth => ShowCheckboxText ? ShowCheckboxTextColumnWidth : CheckboxColumnWidth;
 
-    /// <summary>
-    /// 获得指定列头固定列样式
-    /// </summary>
-    /// <param name="col"></param>
-    /// <param name="cellClass"></param>
-    /// <returns></returns>
     protected string? GetFixedCellClassString(ITableColumn col, string? cellClass = null) => CssBuilder.Default(cellClass)
         .AddClass("fixed", col.Fixed)
         .AddClass("fixed-right", col.Fixed && IsTail(col))
@@ -185,10 +130,6 @@ public partial class Table<TItem>
         .AddClass("fl", IsFirstColumn(col))
         .Build();
 
-    /// <summary>
-    /// 获得扩展按钮列固定列样式
-    /// </summary>
-    /// <returns></returns>
     protected string? FixedExtendButtonsColumnClassString => CssBuilder.Default("table-column-button")
         .AddClass("fixed", FixedExtendButtonsColumn)
         .AddClass("fixed-right", !IsExtendButtonsInRowHeader)
@@ -196,10 +137,6 @@ public partial class Table<TItem>
         .AddClass("fl", IsFirstExtendButtonColumn())
         .Build();
 
-    /// <summary>
-    /// 获得 按钮列样式表集合
-    /// </summary>
-    /// <returns></returns>
     protected string? ExtendButtonsColumnClass => CssBuilder.Default()
         .AddClass("fixed", FixedExtendButtonsColumn)
         .AddClass("fixed-right", !IsExtendButtonsInRowHeader)
@@ -207,10 +144,6 @@ public partial class Table<TItem>
         .AddClass("fl", IsFirstExtendButtonColumn())
         .Build();
 
-    /// <summary>
-    /// 获得扩展按钮列固定列样式
-    /// </summary>
-    /// <returns></returns>
     protected string? GetFixedExtendButtonsColumnStyleString(int margin = 0) => CssBuilder.Default()
         .AddClass($"right: {(IsFixedHeader ? margin : 0)}px;", FixedExtendButtonsColumn && !IsExtendButtonsInRowHeader)
         .AddClass($"left: {GetExtendButtonsColumnLeftMargin()}px;", FixedExtendButtonsColumn && IsExtendButtonsInRowHeader)
@@ -246,7 +179,6 @@ public partial class Table<TItem>
         var ret = false;
         if (col.Fixed && IsTail(col))
         {
-            // 查找前一列是否固定
             var index = Columns.IndexOf(col) - 1;
             if (index > 0)
             {
@@ -300,19 +232,8 @@ public partial class Table<TItem>
         return middle < index;
     }
 
-    /// <summary>
-    /// 获得列单元格 Style 用于设置文本超长溢出
-    /// </summary>
-    /// <param name="col"></param>
-    /// <returns></returns>
     protected string? GetCellStyleString(ITableColumn col) => col.TextEllipsis && !AllowResizing ? $"width: {col.Width ?? 200}px" : null;
 
-    /// <summary>
-    /// 获得指定列头固定列样式
-    /// </summary>
-    /// <param name="col"></param>
-    /// <param name="margin"></param>
-    /// <returns></returns>
     protected string? GetFixedCellStyleString(ITableColumn col, int margin = 0)
     {
         var style = CssBuilder.Default();
@@ -325,7 +246,6 @@ public partial class Table<TItem>
             var start = 0;
             if (isTail)
             {
-                // after
                 while (index + 1 < Columns.Count)
                 {
                     width += Columns[index++].Width ?? defaultWidth;
@@ -335,7 +255,6 @@ public partial class Table<TItem>
                     width += ExtendButtonColumnWidth;
                 }
 
-                // 如果是固定表头时增加滚动条位置
                 if (IsFixedHeader && (index + 1) == Columns.Count)
                 {
                     width += margin;
@@ -367,24 +286,12 @@ public partial class Table<TItem>
         return style.Build();
     }
 
-    /// <summary>
-    /// 获取指定列头样式字符串
-    /// </summary>
-    /// <param name="col"></param>
-    /// <returns></returns>
     protected string? GetHeaderWrapperClassString(ITableColumn col) => CssBuilder.Default("table-cell")
         .AddClass("is-sort", col.Sortable)
         .AddClass("is-filter", col.Filterable)
         .AddClass(col.Align.ToDescriptionString(), col.Align == Alignment.Center || col.Align == Alignment.Right)
         .Build();
 
-    /// <summary>
-    /// 获得 Cell 文字样式
-    /// </summary>
-    /// <param name="col"></param>
-    /// <param name="hasChildren"></param>
-    /// <param name="inCell"></param>
-    /// <returns></returns>
     protected string? GetCellClassString(ITableColumn col, bool hasChildren, bool inCell) => CssBuilder.Default("table-cell")
         .AddClass(col.Align.ToDescriptionString(), col.Align == Alignment.Center || col.Align == Alignment.Right)
         .AddClass("is-wrap", col.TextWrap)
@@ -396,10 +303,6 @@ public partial class Table<TItem>
         .AddClass(col.CssClass)
         .Build();
 
-    /// <summary>
-    /// 获取指定列头样式字符串
-    /// </summary>
-    /// <returns></returns>
     protected string? GetIconClassString(string fieldName) => CssBuilder.Default("sort-icon")
         .AddClass(SortIcon, SortName != fieldName || SortOrder == SortOrder.Unset)
         .AddClass(SortIconAsc, SortName == fieldName && SortOrder == SortOrder.Asc)

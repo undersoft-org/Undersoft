@@ -31,7 +31,7 @@ public class ProxyCompiler : ProxyCompilerBase
 
         CreateSerialCodeProperty(tb, typeof(Uscn), "Code");
 
-        CreateValueArrayProperty(tb);
+        //CreateValueArrayProperty(tb);
 
         CreateItemByIntProperty(tb);
 
@@ -578,7 +578,7 @@ public class ProxyCompiler : ProxyCompilerBase
             .FirstOrDefault(
                 p =>
                     p.Field != null
-                    && p.Field.FieldName.Contains(
+                    && p.Field.FieldName.Equals(
                         name,
                         StringComparison.InvariantCultureIgnoreCase
                     )
@@ -738,7 +738,6 @@ public class ProxyCompiler : ProxyCompilerBase
 
     public override void CreateIdProperty(TypeBuilder tb)
     {
-
         PropertyBuilder prop = tb.DefineProperty(
             "Id",
             PropertyAttributes.HasDefault,

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Undersoft.SDK.Service.Application.Services;
+using Undersoft.SSC.Service.Application.UI;
 using Undersoft.SDK.Service;
 using Undersoft.SSC.Service.Clients;
 

@@ -5,29 +5,7 @@
     using Rubrics;
     using System.Linq;
 
-    public enum InstantSeriesMode
-    {
-        proxy,
-        instant
-    }
-
-    public class InstantProxiesCreator<T> : InstantProxiesCreator
-    {
-        public InstantProxiesCreator() : base(typeof(T)) { }
-
-        public InstantProxiesCreator(string seriesName) : base(typeof(T), seriesName) { }
-    }
-
-    public class InstantProxiesCreator : InstantSeriesCreator
-    {
-        public InstantProxiesCreator(IProxy proxyObject, bool safeThread = true) : base(proxyObject, safeThread) { }
-
-        public InstantProxiesCreator(Type proxyModelType, bool safeThread = true) : base(proxyModelType, safeThread) { }
-
-        public InstantProxiesCreator(Type proxyModelType, string seriesName, bool safeThread = true) : base(proxyModelType, seriesName, safeThread) { }
-    }
-
-        public class InstantSeriesCreator<T> : InstantSeriesCreator
+    public class InstantSeriesCreator<T> : InstantSeriesCreator
     {
         public InstantSeriesCreator(InstantType mode = InstantType.Reference) : base(typeof(T), mode) { }
 
@@ -37,62 +15,33 @@
 
     public class InstantSeriesCreator : IInstantCreator
     {
-        private Type compiledType;
+        protected Type compiledType;
         private InstantCreator instant;
-        private ProxyCreator proxy;
-        private long key;
-        private bool safeThread;
-        private InstantSeriesMode mode;
 
-        public InstantSeriesCreator(
-            ProxyCreator proxyGenerator,
-            string seriesTypeName = null,
-            bool safeThread = true
-        )
-        {
-            mode = InstantSeriesMode.proxy;
-            if (proxyGenerator.Type == null)
-                proxyGenerator.Create();
-            this.safeThread = safeThread;
-            this.proxy = proxyGenerator;
-            Name =
-                (seriesTypeName != null && seriesTypeName != "")
-                    ? seriesTypeName
-                    : proxy.Name + "_F";
-        }
+        protected long key;
+        protected bool threadSafe;
+        protected InstantSeriesMode mode;
 
-        public InstantSeriesCreator(IProxy proxyObject, bool safeThread = true)
-            : this(
-                new ProxyCreator(proxyObject.GetType(), proxyObject.GetType().Name),
-                null,
-                safeThread
-            )
-        { }
-
-        public InstantSeriesCreator(Type proxyModelType, bool safeThread = true)
-            : this(new ProxyCreator(proxyModelType), null, safeThread) { }
-
-        public InstantSeriesCreator(Type proxyModelType, string seriesName, bool safeThread = true)
-            : this(new ProxyCreator(proxyModelType), seriesName, safeThread) { }
+        public InstantSeriesCreator() { }
 
         public InstantSeriesCreator(
             InstantCreator instantGenerator,
             string seriesTypeName = null,
-            bool safeThread = true
+            bool threadSafe = true
         )
         {
             mode = InstantSeriesMode.instant;
             if (instantGenerator.Type == null)
                 instantGenerator.Create();
-            this.safeThread = safeThread;
+            this.threadSafe = threadSafe;
             this.instant = instantGenerator;
             Name =
                 (seriesTypeName != null && seriesTypeName != "")
                     ? seriesTypeName
-                    : instant.Name + "s";
+                    : instant.Name + "_Instant";
         }
 
-        public InstantSeriesCreator(IInstant instantObject, bool safeThread = true)
+        public InstantSeriesCreator(IInstant instantObject, bool threadSafe = true)
             : this(
                 new InstantCreator(
                     instantObject.GetType(),
@@ -100,7 +49,7 @@
                     InstantType.Reference
                 ),
                 null,
-                safeThread
+                threadSafe
             )
         { }
 
@@ -108,12 +57,12 @@
             IInstant instantObject,
             string seriesTypeName,
             InstantType modeType = InstantType.Reference,
-            bool safeThread = true
+            bool threadSafe = true
         )
             : this(
                 new InstantCreator(instantObject.GetType(), instantObject.GetType().Name, modeType),
                 seriesTypeName,
-                safeThread
+                threadSafe
             )
         { }
 
@@ -149,39 +98,36 @@
 
         public string Name { get; set; }
 
-        public IRubrics Rubrics
+        public virtual IRubrics Rubrics
         {
-            get => (proxy != null) ? proxy.Rubrics : instant.Rubrics;
+            get => instant.Rubrics;
         }
 
-        public int Size
+        public virtual int Size
         {
-            get => (proxy != null) ? proxy.Size : instant.Size;
+            get => instant.Size;
         }
 
         public Type Type { get; set; }
 
-        public IInstantSeries Create()
+        public virtual IInstantSeries Create()
         {
             if (this.Type == null)
             {
-                var ifc = new InstantSeriesCompiler(this, safeThread);
+                var ifc = new InstantSeriesCompiler(this, threadSafe);
                 compiledType = ifc.CompileFigureType(Name);
                 this.Type = compiledType.New().GetType();
                 key = Unique.NewId;
             }
-            if (mode == InstantSeriesMode.instant)
-                return newinstants();
-            else
-                return newProxies();
+            return newinstants();
         }
 
-        public object New()
+        public virtual object New()
         {
-            return (mode == InstantSeriesMode.proxy) ? newProxies() : newinstants();
+            return newinstants();
         }
 
-        private MemberRubrics CloneRubrics()
+        public MemberRubrics CloneRubrics()
         {
             var rubrics = new MemberRubrics(Rubrics.Select(r => r.ShalowCopy(null)));
             rubrics.KeyRubrics = new MemberRubrics(
@@ -207,37 +153,10 @@
             newseries.Type = this.Type;
             newseries.Instant = this;
             newseries.Prime = true;
-            ((IUnique)newseries).Id = key;
-            ((IUnique)newseries).TypeId = Name.UniqueKey64();
+            ((IIdentifiable)newseries).Id = key;
+            ((IIdentifiable)newseries).TypeId = Name.UniqueKey64();
 
             return newseries;
-        }
-
-        private IInstantSeries newProxies()
-        {
-            IInstantSeries newproxies = newProxies((IInstantSeries)(this.Type.New()));
-            newproxies.Rubrics = CloneRubrics();
-            newproxies.KeyRubrics = newproxies.Rubrics.KeyRubrics;
-            newproxies.View = newproxies.AsQueryable();
-            return newproxies;
-        }
-
-        private IInstantSeries newProxies(IInstantSeries newproxies)
-        {
-            newproxies.InstantType = proxy.Type;
-            newproxies.InstantSize = proxy.Size;
-            newproxies.Type = this.Type;
-            newproxies.Instant = this;
-            newproxies.Prime = true;
-            ((IUnique)newproxies).Id = key;
-            ((IUnique)newproxies).TypeId = Name.UniqueKey64();
-
-            return newproxies;
-        }
-
-        public static object AsParallel()
-        {
-            throw new NotImplementedException();
         }
     }
 }

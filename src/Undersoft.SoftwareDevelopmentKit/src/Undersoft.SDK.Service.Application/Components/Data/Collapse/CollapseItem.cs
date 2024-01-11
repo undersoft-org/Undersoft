@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Service.Application.Components;
 
-public class CollapseItem : PresenterComponent, IDisposable
+public class CollapseItem : Component, IDisposable
 {
     [Parameter]
     public string? Text { get; set; }

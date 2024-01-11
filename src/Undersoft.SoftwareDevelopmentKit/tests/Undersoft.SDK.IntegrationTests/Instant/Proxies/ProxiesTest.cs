@@ -12,12 +12,12 @@ namespace Undersoft.SDK.IntegrationTests.Instant.Proxies
     {
         private IInstant Instant;
         private IInstantSeries Proxies;
-        private InstantSeriesCreator SeriesCreator;
+        private ProxySeriesCreator SeriesCreator;
 
         [Fact]
         public void Proxies_SelectionFromInstantSeriesMultiNesting_Test()
         {
-            SeriesCreator = new InstantSeriesCreator<FieldsAndPropertiesModel>("InstantSequence_Compilation_Test");
+            SeriesCreator = new ProxySeriesCreator<FieldsAndPropertiesModel>("InstantSequence_Compilation_Test");
             Proxies = SeriesCreator.Create();
 
             Instant = Proxy_Compilation_Helper_Test(Proxies, new FieldsAndPropertiesModel());
@@ -27,8 +27,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant.Proxies
             for (int i = 0; i < 250000; i++)
             {
                 IProxy _proxy = Proxies.NewProxy();
-                _proxy.Target = Proxies.NewProxy();
-                // _proxy.ValueArray = IInstant.ValueArray;
+                _proxy.Target = Proxies.NewProxy();;
                 _proxy["Id"] = idSeed + i;
                 _proxy["Time"] = now;
                 Proxies.Add(_proxy);
@@ -43,8 +42,8 @@ namespace Undersoft.SDK.IntegrationTests.Instant.Proxies
             Proxies.Add(Proxies.NewProxy());
             Proxies[0, 4] = Instant[4];
 
-            IInstantSeries isel1 = new InstantSeriesCreator(Proxies).Create();
-            IInstantSeries isel2 = new InstantSeriesCreator(isel1).Create();
+            IInstantSeries isel1 = new ProxySeriesCreator(Proxies, true).Create();
+            IInstantSeries isel2 = new ProxySeriesCreator(isel1).Create();
 
             foreach (var card in Proxies)
                 isel2.Add(card);
@@ -55,11 +54,11 @@ namespace Undersoft.SDK.IntegrationTests.Instant.Proxies
             isel2[0, 4] = Instant[4];
 
             Assert.Equal(Instant[4], isel2[0, 4]);
-            Assert.Equal(Proxies.Count, isel1.Count);
-            Assert.Equal(isel1.Count, isel2.Count);
-        }
+            Assert.Equal(Proxies.Count, isel2.Count - 1);
+            Assert.NotEqual(isel1.Count, isel2.Count);
+        }     
 
-        private IInstant Proxy_Compilation_Helper_Test(IInstantSeries str, FieldsAndPropertiesModel fom)
+        private IProxy Proxy_Compilation_Helper_Test(IInstantSeries str, FieldsAndPropertiesModel fom)
         {
             IProxy rts = str.NewProxy();
             rts.Target = new FieldsAndPropertiesModel();

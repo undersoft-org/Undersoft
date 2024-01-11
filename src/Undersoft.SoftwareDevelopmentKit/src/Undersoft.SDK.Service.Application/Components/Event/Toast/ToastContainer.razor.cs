@@ -36,7 +36,7 @@ public partial class ToastContainer : IDisposable
 
     [Inject]
     [NotNull]
-    private IOptionsMonitor<PresenterOptions>? Options { get; set; }
+    private IOptionsMonitor<ApplicationOptions>? Options { get; set; }
 
     protected override void OnInitialized()
     {

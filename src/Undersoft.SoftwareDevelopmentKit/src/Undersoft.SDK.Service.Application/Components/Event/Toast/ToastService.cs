@@ -2,9 +2,9 @@
 
 public class ToastService : PresenterService<ToastOption>
 {
-    private PresenterOptions Options { get; }
+    private ApplicationOptions Options { get; }
 
-    public ToastService(IOptionsMonitor<PresenterOptions> options)
+    public ToastService(IOptionsMonitor<ApplicationOptions> options)
     {
         Options = options.CurrentValue;
     }

@@ -5,7 +5,8 @@ namespace Undersoft.SSC.Service.Resource.Infrastructure.Stores;
 using Service.Infrastructure.Stores.Mappings;
 using Service.Infrastructure.Stores.Mappings.Locations;
 using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SSC.Entities;
+using Undersoft.SSC.Entities.Account;
+using Undersoft.SSC.Entities.Resource;
 
 public class ServiceDataStore<TStore, TContext> : Store<TStore, TContext>
     where TStore : IDatabaseStore
@@ -17,7 +18,7 @@ public class ServiceDataStore<TStore, TContext> : Store<TStore, TContext>
     public virtual DbSet<Detail>? Details { get; set; }
     public virtual DbSet<Setting>? Settings { get; set; }
     public virtual DbSet<Default>? Defaults { get; set; }
-    public virtual DbSet<Location>? Locations { get; set; }
+    public virtual DbSet<AccountLocation>? Locations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

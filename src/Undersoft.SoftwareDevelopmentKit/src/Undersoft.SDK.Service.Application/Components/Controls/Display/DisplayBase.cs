@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Application.Components;
 
-public abstract class DisplayBase<TValue> : PresenterModule2
+public abstract class DisplayBase<TValue> : ComponentModule2
 {
     protected bool IsShowLabel { get; set; }
 

@@ -6,7 +6,7 @@ using System;
 
 namespace Undersoft.SDK.IntegrationTests.Instant
 {
-    public class Agreement : InnerProxy
+    public class Agreement : Origin
     {
         public AgreementKind Kind { get; set; }
         [Key]

@@ -43,7 +43,7 @@
 
             CreateIsPrimeField(tb, typeof(bool), "Prime");
 
-            CreateRubricsField(tb, typeof(MemberRubrics), "Routine");
+            CreateRubricsField(tb, typeof(MemberRubrics), "Rubrics");
 
             CreateKeyRubricsField(tb, typeof(MemberRubrics), "KeyRubrics");
 
@@ -853,7 +853,7 @@
             il.Emit(OpCodes.Ldarg_0);
             il.EmitCall(
                 OpCodes.Call,
-                typeof(MemberRubrics).GetMethod("set_Figures", new Type[] { seriesType }),
+                typeof(MemberRubrics).GetMethod("set_Series", new Type[] { seriesType }),
                 null
             );
             il.Emit(OpCodes.Ldarg_0);
@@ -990,7 +990,7 @@
                 new Type[] { type }
             );
 
-            PropertyInfo iprop = seriesType.GetProperty("Routine");
+            PropertyInfo iprop = seriesType.GetProperty("Rubrics");
 
             MethodInfo accessor = iprop.GetGetMethod();
 
@@ -1034,7 +1034,7 @@
             il.Emit(OpCodes.Ldarg_0);
             il.EmitCall(
                 OpCodes.Call,
-                typeof(MemberRubrics).GetMethod("set_Figures", new Type[] { seriesType }),
+                typeof(MemberRubrics).GetMethod("set_Series", new Type[] { seriesType }),
                 null
             );
             il.Emit(OpCodes.Ldarg_0);

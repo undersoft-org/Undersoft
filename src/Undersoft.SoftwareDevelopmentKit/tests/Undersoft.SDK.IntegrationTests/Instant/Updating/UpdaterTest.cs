@@ -70,8 +70,6 @@ namespace Undersoft.SDK.IntegrationTests.Instant.Updating
 
             var updater6 = new Updater<Agreement>(profile);
 
-            updater6.MapDevisor();
-
             var Proxy = new ProxyCreator<Agreement>();
             var updater0 = new Updater<UserProfile>();
             var updater1 = new Updater<User>();
@@ -90,9 +88,9 @@ namespace Undersoft.SDK.IntegrationTests.Instant.Updating
 
             var userprofile = new UserProfile()
             {
-                Email = "jflskdfjlkdj",
-                Name = "hfdjkfsjdkh",
-                Surname = "fdlfhjdsk",
+                Email = "43423423",
+                Name = "8978787",
+                Surname = "43432432",
                 Created = DateTime.Now
             };
 
@@ -100,8 +98,10 @@ namespace Undersoft.SDK.IntegrationTests.Instant.Updating
 
             var updater5 = new Updater<UserProfile>(userprofile);
 
-            var _Proxy0 = Proxy.Create(profile);
-            var _Proxy1 = Proxy.Create(_Proxy0);
+            var dataObject0 = userprofile;
+
+            var _Proxy0 = profile.ToProxy();
+            var _Proxy1 = _Proxy0.ToProxy();
 
             var mock = new Agreement()
             {
@@ -112,34 +112,17 @@ namespace Undersoft.SDK.IntegrationTests.Instant.Updating
                 VersionId = 992
             };
 
-            var prop = Proxy.Rubrics;
-
-            List<IUpdater> list = new();
-            for (int i = 0; i < 300000; i++)
-            {
-                var updater2 = new Updater<Agreement>();
-
-                // updater2.ValueArray = _Proxy0.ValueArray;
-
-                list.Add(updater2);
-            }
-
-            updater0.Entry.ChipNumber = 1005L;
-            updater0.Entry.Name = "nnnnnnn";
-            updater0.Entry.SSOID = new Guid();
-            updater0.Id = 93939393L;
-
-            updater0.Patch(updater1);
             updater0.Patch(profile);
             updater1.Put(_Proxy0);
 
-            updater3.Patch(updater6);
+            mock.PatchTo(updater3.Source);
+            dataObject0.PatchFrom(updater0.Source);
+            dataObject0.PutTo(updater1.Source);
+            dataObject0.PutFrom(mock);
 
             var c = updater5.Preset;
             c.City = "dfdfhdsdh";
             c.FacebookId = "dfklsdfk";
-
-            updater5.MapDevisor();
 
             ((Agreement)_Proxy0).TypeId = 1005L;
             var uk = _Proxy0.Id;

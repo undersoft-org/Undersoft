@@ -5,7 +5,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 {
     using Undersoft.SDK.Service.Data.Relation;
     using Undersoft.SDK.Service.Infrastructure.Store;
-    using Undersoft.SSC.Entities;
+    using Undersoft.SSC.Entities.Account;
+    using Undersoft.SSC.Entities.Activity;
+    using Undersoft.SSC.Entities.Resource;
+    using Undersoft.SSC.Entities.Schedule;
 
     public class DefaultMappings : EntityTypeMapping<Default>
     {

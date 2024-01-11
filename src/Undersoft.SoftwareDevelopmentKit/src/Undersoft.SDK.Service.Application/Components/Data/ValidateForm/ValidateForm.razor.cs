@@ -50,7 +50,7 @@ public partial class ValidateForm
 
     [Inject]
     [NotNull]
-    private IOptionsMonitor<PresenterOptions>? BootstrapBlazorOptions { get; set; }
+    private IOptionsMonitor<ApplicationOptions>? BootstrapBlazorOptions { get; set; }
 
     [Inject]
     [NotNull]

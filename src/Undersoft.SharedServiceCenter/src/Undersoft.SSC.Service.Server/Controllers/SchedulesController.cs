@@ -2,7 +2,7 @@
 using Undersoft.SDK.Service.Server.Controller.Crud;
 using Undersoft.SDK.Service.Server.Controller.Open;
 using Undersoft.SDK.Service.Server.Controller.Stream;
-using Undersoft.SSC.Entities;
+using Undersoft.SSC.Entities.Schedule;
 
 namespace Undersoft.SSC.Service.Server.Controllers
 {

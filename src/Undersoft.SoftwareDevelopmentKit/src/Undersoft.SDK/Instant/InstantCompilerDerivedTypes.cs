@@ -23,7 +23,7 @@
 
             CreateFieldsAndProperties(tb);
 
-            CreateValueArrayProperty(tb);
+            //CreateValueArrayProperty(tb);
 
             CreateItemByIntProperty(tb);
 
@@ -494,14 +494,10 @@
         {
             RubricModel fp = null;
             var field = rubricBuilders
-                .AsValues()
                 .FirstOrDefault(
                     p =>
                         p.Field != null
-                        && p.Field.FieldName.Contains(
-                            name,
-                            StringComparison.InvariantCultureIgnoreCase
-                        )
+                         && p.Field.FieldName.Equals(name, StringComparison.InvariantCultureIgnoreCase)
                 );
             if (field != null)
             {
@@ -702,7 +698,7 @@
 
         public override void CreateValueArrayProperty(TypeBuilder tb)
         {
-            PropertyInfo prop = typeof(IInstant).GetProperty("ValueArray");
+            PropertyInfo prop = typeof(IValueArray).GetProperty("ValueArray");
 
             MethodInfo accessor = prop.GetGetMethod();
 
@@ -819,7 +815,7 @@
                 )
             );
 
-            tb.AddInterfaceImplementation(typeof(IInstant));
+            tb.AddInterfaceImplementation(typeof(IValueArray));
 
             tb.SetParent(figure.BaseType);
 

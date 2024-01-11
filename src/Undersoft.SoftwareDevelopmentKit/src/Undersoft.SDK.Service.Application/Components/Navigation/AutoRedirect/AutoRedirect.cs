@@ -1,7 +1,7 @@
 ﻿namespace Undersoft.SDK.Service.Application.Components;
 
 [JSModuleAutoLoader("./_content/BootstrapBlazor/modules/autoredirect.js", JSObjectReference = true, Relative = false)]
-public class AutoRedirect : PresenterModule
+public class AutoRedirect : ComponentModule
 {
     [Parameter]
     public string? RedirectUrl { get; set; }

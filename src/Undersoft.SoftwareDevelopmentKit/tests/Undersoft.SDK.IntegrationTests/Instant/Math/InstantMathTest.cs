@@ -3,6 +3,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant.Math;
 using System.Linq;
 using Undersoft.SDK.Instant.Math;
 using Undersoft.SDK.Instant.Math.Set;
+using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Instant.Series;
 using Undersoft.SDK.Instant.Series.Querying;
 using Xunit;
@@ -10,13 +11,13 @@ using Xunit;
 public class InstantMathTest
 {
     private InstantCreator instantCreator;
-    private InstantProxiesCreator instatnProxiesCreator;
+    private ProxySeriesCreator instatnProxiesCreator;
     private InstantMath instantMath;
     private IInstantSeries instantSeries;
 
     public InstantMathTest()
     {
-        instatnProxiesCreator = new InstantProxiesCreator<InstantMathTestDataModel>();
+        instatnProxiesCreator = new ProxySeriesCreator<InstantMathTestDataModel>();
 
         instantSeries = instatnProxiesCreator.Create();
 

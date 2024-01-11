@@ -12,10 +12,6 @@ public interface IUpdater : IInstant
 
     object Clone();
 
-    void MapPreset();
-    void MapDevisor();
-    void MapEntry();
-
     E Patch<E>() where E : class;
     E Patch<E>(E item) where E : class;
 

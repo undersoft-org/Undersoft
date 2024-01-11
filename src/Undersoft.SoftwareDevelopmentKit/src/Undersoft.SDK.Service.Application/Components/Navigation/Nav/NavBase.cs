@@ -2,7 +2,7 @@
 
 namespace Undersoft.SDK.Service.Application.Components;
 
-public abstract class NavBase : PresenterComponent
+public abstract class NavBase : Component
 {
     protected string? ClassString => CssBuilder.Default("nav")
         .AddClass("justify-content-center", Alignment == Alignment.Center && !IsVertical)

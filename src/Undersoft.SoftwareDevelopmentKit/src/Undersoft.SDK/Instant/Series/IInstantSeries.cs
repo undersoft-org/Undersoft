@@ -1,12 +1,11 @@
 ﻿namespace Undersoft.SDK.Instant.Series
 {
-    using System.Linq;
-    using SDK.Series;
-    using Rubrics;
     using Instant.Proxies;
     using Math;
     using Querying;
-    using Undersoft.SDK.Instant.Math;
+    using Rubrics;
+    using SDK.Series;
+    using System.Linq;
 
     public interface IInstantSeries : ISeries<IInstant>, IInstant
     {

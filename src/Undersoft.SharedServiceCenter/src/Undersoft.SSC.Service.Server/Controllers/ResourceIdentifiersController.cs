@@ -4,7 +4,7 @@ using Undersoft.SDK.Service.Server.Controller.Stream;
 using Undersoft.SDK.Service.Server.Controller.Open;
 
 using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SSC.Entities;
+using Undersoft.SSC.Entities.Resource;
 
 namespace Undersoft.SSC.Service.Server.Controllers
 {

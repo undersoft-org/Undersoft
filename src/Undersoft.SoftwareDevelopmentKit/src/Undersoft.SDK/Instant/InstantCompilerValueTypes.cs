@@ -404,7 +404,7 @@
                 .FirstOrDefault(
                     p =>
                         p.Field != null
-                        && p.Field.FieldName.Contains(
+                        && p.Field.FieldName.Equals(
                             name,
                             StringComparison.InvariantCultureIgnoreCase
                         )
@@ -490,7 +490,7 @@
 
         public override void CreateValueArrayProperty(TypeBuilder tb)
         {
-            PropertyInfo prop = typeof(IInstant).GetProperty("ValueArray");
+            PropertyInfo prop = typeof(IValueArray).GetProperty("ValueArray");
 
             MethodInfo accessor = prop.GetGetMethod();
 
@@ -621,7 +621,7 @@
                 )
             );
 
-            tb.AddInterfaceImplementation(typeof(IInstant));
+            tb.AddInterfaceImplementation(typeof(IValueArray));
 
             return tb;
         }

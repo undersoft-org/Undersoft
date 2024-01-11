@@ -23,32 +23,26 @@ namespace Undersoft.SDK.IntegrationTests.Instant
             profile.AutoId();
 
             var _Proxy0 = profile.ToProxy();
+
             var _Proxy1 = Proxy.Create(_Proxy0);
 
             var _InstantSeries = new InstantSeriesCreator(_Proxy1);
 
-            var mock = new Agreement()
-            {
-                Comments = "fdsfsf",
-                Created = DateTime.Now,
-                Kind = AgreementKind.Cancellation,
-                Creator = "fsds",
-                VersionId = 992
-            };
-
             var prop = Proxy.Rubrics;
             List<IProxy> list = new();
-            for (int i = 0; i < 300000; i++)
+            for (int i = 0; i < 10000; i++)
             {
-                var _Proxy2 = Proxy.Create();
+                var _Proxy2 = _Proxy1.ToProxy();
                 foreach (var rubric in prop)
                 {
                     _Proxy2[rubric.RubricName] = _Proxy0[rubric.RubricName];
+
+                    Assert.Equal(profile.ValueOf(rubric.RubricName), _Proxy0[rubric.RubricName]);
                 }
                 list.Add(_Proxy2);
             }
 
-            _Proxy1["TypeId"] = 1005UL;
+            _Proxy1["TypeId"] = 1005L;
             object o = _Proxy1[5];
         }
 
@@ -69,7 +63,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant
             profile.AutoId();
 
             var _Proxy0 = Proxy.Create(profile);
-            ((IInnerProxy)_Proxy0)[0] = 1;
+            ((IProxy)_Proxy0)[0] = 1;
 
             var _Proxy1 = Proxy.Create(_Proxy0);
 

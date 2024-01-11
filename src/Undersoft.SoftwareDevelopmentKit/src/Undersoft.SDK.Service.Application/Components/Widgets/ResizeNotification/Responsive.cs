@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Service.Application.Components;
 
-public class Responsive : PresenterComponent, IDisposable
+public class Responsive : Component, IDisposable
 {
     [Inject]
     [NotNull]

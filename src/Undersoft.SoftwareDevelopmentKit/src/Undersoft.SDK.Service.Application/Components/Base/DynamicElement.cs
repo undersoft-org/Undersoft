@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Undersoft.SDK.Service.Application.Components;
 
-public class DynamicElement : PresenterComponent
+public class DynamicElement : Component
 {
     [Parameter]
     [NotNull]

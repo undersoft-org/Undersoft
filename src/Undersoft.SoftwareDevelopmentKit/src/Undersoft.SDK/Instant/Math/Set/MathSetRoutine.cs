@@ -20,7 +20,7 @@
         public MathSetRoutine(IRubrics rubrics)
         {
             Rubrics = rubrics;
-            Data = rubrics.Figures;
+            Data = rubrics.Series;
         }
 
         public MathSetRoutine(MathSetRoutine rubrics)

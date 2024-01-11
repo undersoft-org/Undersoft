@@ -7,7 +7,7 @@ namespace Undersoft.SDK.Service.Application.Components;
 /// <summary>
 /// Split 组件基类
 /// </summary>
-public abstract class SplitBase : PresenterComponent
+public abstract class SplitBase : Component
 {
     /// <summary>
     /// 获得/设置 是否垂直分割

@@ -5,7 +5,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 {
     using Undersoft.SDK.Service.Data.Relation;
     using Undersoft.SDK.Service.Infrastructure.Store;
-    using Undersoft.SSC.Entities;
+    using Undersoft.SSC.Entities.Account;
+    using Undersoft.SSC.Entities.Schedule;
 
     public class ScheduleMappings : EntityTypeMapping<Schedule>
     {
@@ -19,7 +20,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
                 .ApplyIdentifiers<Schedule>()
                 .LinkSetToSet<Schedule, Setting>(ExpandSite.OnRight)
                 .LinkSetToSet<Schedule, Detail>(ExpandSite.OnRight, true)
-                .LinkOneToOne<Schedule, Location>(ExpandSite.OnRight)
+                .LinkOneToOne<Schedule, AccountLocation>(ExpandSite.OnRight)
                 .LinkSetToSet<Schedule, Schedule>(
                     nameof(Schedule.RelatedTo),
                     nameof(Schedule.RelatedFrom),

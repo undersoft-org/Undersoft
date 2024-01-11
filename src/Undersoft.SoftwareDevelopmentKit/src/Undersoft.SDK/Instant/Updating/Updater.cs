@@ -238,23 +238,6 @@ public class Updater : IUpdater
         return changes;
     }
 
-    public void MapPreset()
-    {
-        var presetShell = creator.Create(preset);
-        Preset.PutFrom(presetShell);
-    }
-
-    public void MapEntry()
-    {
-        var presetShell = creator.Create(Preset);
-        presetShell.PutFrom(Preset);
-    }
-
-    public void MapDevisor()
-    {
-        Preset.PutFrom(source);
-    }
-
     public void SafeMapPreset()
     {
         var presetShell = creator.Create(preset);
@@ -308,12 +291,12 @@ public class Updater : IUpdater
         patchEqualTypesCount = 0;
         var _target = target;
         var _sameVariations = new UpdaterItem[Rubrics.Count];
-        UpdaterItem vary;
+        UpdaterItem vary = new UpdaterItem();
 
         Rubrics.ForEach(
             (rubric) =>
             {
-                if (!rubric.IsKey && !ExcludedRubrics.ContainsKey(rubric))
+                if (!rubric.IsKey && !ExcludedRubrics.Contains(rubric.Name.ToLower()))
                 {
                     var targetndex = rubric.RubricId;
                     var originValue = Source[targetndex];
@@ -325,10 +308,10 @@ public class Updater : IUpdater
                     )
                     {
                         if (!RecursiveUpdate(originValue, targetValue, target, rubric, rubric))
-                        {
-                            vary = _sameVariations[patchEqualTypesCount++];
+                        {                            
                             vary.TargetIndex = targetndex;
                             vary.OriginValue = originValue;
+                            _sameVariations[patchEqualTypesCount++] = vary;
                         }
                     }
                 }
@@ -342,12 +325,12 @@ public class Updater : IUpdater
         patchNotEqualTypesCount = 0;
         var _target = target;
         var _customVariations = new UpdaterItem[Rubrics.Count];
-        UpdaterItem vary;
+        UpdaterItem vary = new UpdaterItem();
 
         Rubrics.ForEach(
             (originRubric) =>
             {
-                if (!originRubric.IsKey && !ExcludedRubrics.ContainsKey(originRubric))
+                if (!originRubric.IsKey && !ExcludedRubrics.Contains(originRubric.Name.ToLower()))
                 {
                     var name = originRubric.Name;
                     if (_target.Rubrics.TryGet(name, out MemberRubric targetRubric))
@@ -370,12 +353,12 @@ public class Updater : IUpdater
                                     targetRubric
                                 )
                             )
-                            {
-                                vary = _customVariations[patchNotEqualTypesCount++];
+                            {                                
                                 vary.TargetIndex = targetIndex;
                                 vary.OriginValue = originValue;
                                 vary.OriginType = originRubric.RubricType;
                                 vary.TargetType = targetRubric.RubricType;
+                                _customVariations[patchNotEqualTypesCount++] = vary;
                             }
                         }
                     }
@@ -390,12 +373,12 @@ public class Updater : IUpdater
         putEqualTypesCount = 0;
         var _target = target;
         var _sameMutations = new UpdaterItem[Rubrics.Count];
-        UpdaterItem vary;
+        UpdaterItem vary = new UpdaterItem();
 
         Rubrics.ForEach(
             (rubric) =>
             {
-                if (!rubric.IsKey && !ExcludedRubrics.ContainsKey(rubric))
+                if (!rubric.IsKey && !ExcludedRubrics.Contains(rubric.Name.ToLower()))
                 {
                     var index = rubric.RubricId;
                     var originValue = Source[index];
@@ -405,10 +388,10 @@ public class Updater : IUpdater
                         originValue != null
                         && !RecursiveUpdate(originValue, targetValue, target, rubric, rubric)
                     )
-                    {
-                        vary = _sameMutations[putEqualTypesCount++];
+                    {                        
                         vary.TargetIndex = index;
                         vary.OriginValue = originValue;
+                        _sameMutations[putEqualTypesCount++] = vary;
                     }
                 }
             }
@@ -421,12 +404,12 @@ public class Updater : IUpdater
         putNotEqualTypesCount = 0;
         var _target = target;
         var _customMutations = new UpdaterItem[Rubrics.Count];
-        UpdaterItem item;
+        UpdaterItem vary = new UpdaterItem();
 
         Rubrics.ForEach(
             (originRubric) =>
             {
-                if (!originRubric.IsKey && !ExcludedRubrics.ContainsKey(originRubric))
+                if (!originRubric.IsKey && !ExcludedRubrics.Contains(originRubric.Name.ToLower()))
                 {
                     var name = originRubric.Name;
                     if (_target.Rubrics.TryGet(name, out MemberRubric targetRubric))
@@ -445,12 +428,12 @@ public class Updater : IUpdater
                                 targetRubric
                             )
                         )
-                        {
-                            item = _customMutations[putNotEqualTypesCount++];
-                            item.TargetIndex = targetIndex;
-                            item.OriginValue = originValue;
-                            item.OriginType = originRubric.RubricType;
-                            item.TargetType = targetRubric.RubricType;
+                        {                          
+                            vary.TargetIndex = targetIndex;
+                            vary.OriginValue = originValue;
+                            vary.OriginType = originRubric.RubricType;
+                            vary.TargetType = targetRubric.RubricType;
+                            _customMutations[putNotEqualTypesCount++] = vary;
                         }
                     }
                 }
@@ -607,25 +590,17 @@ public class Updater : IUpdater
         return true;
     }
 
-    private static IRubrics excludedRubrics;
+    private static HashSet<string> excludedRubrics;
 
-    public IRubrics ExcludedRubrics
+    public HashSet<string> ExcludedRubrics
     {
         get =>
-            excludedRubrics ??= new MemberRubrics(
-                new MemberRubric[]
-                {
-                    Rubrics["TypeId"],
-                    Rubrics["TypeId"],
-                    Rubrics["OriginKey"],
-                    Rubrics["Priority"],
-                    Rubrics["Flags"],
-                    Rubrics["Time"],
-                    Rubrics["GUID"],
-                    Rubrics["code"],
-                    Rubrics["SSN"],
-                    Rubrics["proxy"]
-                }
+            excludedRubrics ??= new HashSet<string>(
+                new string[]
+                {       
+                    "proxy",
+                "valuearray" 
+                }                
             );
     }
 
@@ -753,11 +728,5 @@ public class Updater : IUpdater
         trackset.Clear();
     }
 
-    public bool HavePresets => trackset != null;
-
-    public object[] ValueArray
-    {
-        get => source.ValueArray;
-        set => source.ValueArray = value;
-    }
+    public bool HavePresets => trackset != null;   
 }
