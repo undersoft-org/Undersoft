@@ -10,39 +10,44 @@ namespace Undersoft.SDK.Workflows
     using Uniques;
     using Series;
 
+    public class WorkPointer : Origin
+    {
+        public IntPtr Pointer {  get; set; }
+    }
+     
     public static class WorkPointers
     {
-        private static Registry<IntPtr> pointers;
+        private static TypedRegistry<WorkPointer> pointers;
 
         static WorkPointers()
         {
-            pointers = new Registry<IntPtr>(true, UniquePrimes.Get(7));
+            pointers = new TypedRegistry<WorkPointer>(true, UniquePrimes.Get(7));
         }
 
         public static IEnumerable<T> GetRange<T>(long id)
         {
-            if (pointers.TryGet(id, out ISeriesItem<IntPtr> ptrs))
+            if (pointers.TryGet(id, out ISeriesItem<WorkPointer> ptrs))
                 return ptrs.ForEach(p => Target<T>(p));
             return default;
         }
 
         public static IEnumerable<T> GetRange<T>()
         {
-            if (pointers.TryGet(ThreadId, out ISeriesItem<IntPtr> ptrs))
+            if (pointers.TryGet(ThreadId, out ISeriesItem<WorkPointer> ptrs))
                 return ptrs.ForEach(p => Target<T>(p));
             return default;
         }
 
         public static IEnumerable<object> GetRange()
         {
-            if (pointers.TryGet(ThreadId, out ISeriesItem<IntPtr> ptrs))
+            if (pointers.TryGet(ThreadId, out ISeriesItem<WorkPointer> ptrs))
                 return ptrs.ForEach(p => Target(p));
             return default;
         }
 
         public static IEnumerable<T> GetTypedRange<T>(long id)
         {
-            if (pointers.TryGet(typeof(T).FullName.UniqueKey64((uint)id), out ISeriesItem<IntPtr> ptrs))
+            if (pointers.TryGet(typeof(T).FullName.UniqueKey64((uint)id), out ISeriesItem<WorkPointer> ptrs))
                 return ptrs.ForEach(p => Target<T>(p));
             return default;
         }
@@ -51,7 +56,7 @@ namespace Undersoft.SDK.Workflows
         {
             int id = Thread.CurrentThread.ManagedThreadId;
             var key = typeof(T).FullName.UniqueKey64((uint)id);
-            if (pointers.TryGet(key, out ISeriesItem<IntPtr> ptrs))
+            if (pointers.TryGet(key, out ISeriesItem<WorkPointer> ptrs))
                 return ptrs.ForEach(p => Target<T>(p));
             return default;
         }
@@ -60,14 +65,14 @@ namespace Undersoft.SDK.Workflows
         {
             int id = Thread.CurrentThread.ManagedThreadId;
             var key = type.FullName.UniqueKey64((uint)id);
-            if (pointers.TryGet(key, out ISeriesItem<IntPtr> ptrs))
+            if (pointers.TryGet(key, out ISeriesItem<WorkPointer> ptrs))
                 return ptrs.ForEach(p => Target(p));
             return default;
         }
 
         public static T Get<T>(long id)
         {
-            if (pointers.TryGet(id, out IntPtr ptr))
+            if (pointers.TryGet(id, out WorkPointer ptr))
                 return Target<T>(ptr);
             return default;
         }
@@ -75,7 +80,7 @@ namespace Undersoft.SDK.Workflows
         public static T Get<T>()
         {
             int id = Thread.CurrentThread.ManagedThreadId;
-            if (pointers.TryGet(id, out IntPtr ptr))
+            if (pointers.TryGet(id, out WorkPointer ptr))
                 return Target<T>(ptr);
             return default;
         }
@@ -83,7 +88,7 @@ namespace Undersoft.SDK.Workflows
         public static object Get()
         {
             int id = Thread.CurrentThread.ManagedThreadId;
-            if (pointers.TryGet(id, out IntPtr ptr))
+            if (pointers.TryGet(id, out WorkPointer ptr))
                 return Target(ptr);
             return default;
         }
@@ -92,7 +97,7 @@ namespace Undersoft.SDK.Workflows
         {
             int id = Thread.CurrentThread.ManagedThreadId;
             var key = typeof(T).FullName.UniqueKey64((uint)id);
-            if (pointers.TryGet(key, out IntPtr ptr))
+            if (pointers.TryGet(key, out WorkPointer ptr))
                 return Target<T>(ptr);
             return default;
         }
@@ -101,14 +106,14 @@ namespace Undersoft.SDK.Workflows
         {
             int id = Thread.CurrentThread.ManagedThreadId;
             var key = type.FullName.UniqueKey64((uint)id);
-            if (pointers.TryGet(key, out IntPtr ptr))
+            if (pointers.TryGet(key, out WorkPointer ptr))
                 return Target(ptr);
             return default;
         }
 
         public static T GetTyped<T>(long id)
         {
-            if (pointers.TryGet(typeof(T).FullName.UniqueKey64((uint)id), out IntPtr ptr))
+            if (pointers.TryGet(typeof(T).FullName.UniqueKey64((uint)id), out WorkPointer ptr))
                 return Target<T>(ptr);
             return default;
         }
@@ -151,8 +156,8 @@ namespace Undersoft.SDK.Workflows
 
         public static long SetTyped<T>(T item)
         {
-            var key = typeof(T).FullName.UniqueKey64((uint)ThreadId);
-            pointers.Put(key, Address(item));
+            var key = typeof(T).FullName.UniqueKey64();
+            pointers.Put(ThreadId, key, Address(item));
             return key;
         }
 
@@ -231,19 +236,19 @@ namespace Undersoft.SDK.Workflows
             return Task.Run(() => Add(item, id));
         }
 
-        private static IntPtr Address<T>(T item)
+        private static WorkPointer Address<T>(T item)
         {
-            return GCHandle.ToIntPtr(GCHandle.Alloc(item, GCHandleType.Normal));
+            return new WorkPointer() { Pointer = GCHandle.ToIntPtr(GCHandle.Alloc(item, GCHandleType.Normal)) };
         }
 
-        private static T Target<T>(IntPtr ptr)
+        private static T Target<T>(WorkPointer work)
         {
-            return (T)GCHandle.FromIntPtr(ptr).Target;
+            return (T)GCHandle.FromIntPtr(work.Pointer).Target;
         }
 
-        private static object Target(IntPtr ptr)
+        private static object Target(WorkPointer work)
         {
-            return GCHandle.FromIntPtr(ptr).Target;
+            return GCHandle.FromIntPtr(work.Pointer).Target;
         }
 
         private static int ThreadId => Thread.CurrentThread.ManagedThreadId;

@@ -3,9 +3,9 @@
 namespace Undersoft.SSC.Service.Contracts.Details;
 
 [Detail]
-public class EmployeeDetail : DataObject
+public class RequestDetail : DataObject
 {
-    public EmployeeDetail() { }
+    public RequestDetail() { }
 
     public string? FirstName { get; set; }
 

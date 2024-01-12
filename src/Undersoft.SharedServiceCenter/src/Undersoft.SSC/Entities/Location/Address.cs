@@ -1,7 +1,7 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SSC.Entities.Account;
+using Undersoft.SSC.Entities.Accounts;
 using Undersoft.SSC.Entities.Enums;
 
 namespace Undersoft.SSC.Entities.Locations

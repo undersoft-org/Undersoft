@@ -2,7 +2,7 @@ using Undersoft.SDK.Serialization;
 using Undersoft.SDK.Service.Data.Object.Setting;
 using Undersoft.SSC.Entities.Enums;
 
-namespace Undersoft.SSC.Entities.Schedule
+namespace Undersoft.SSC.Entities.Schedules
 {
     public class ScheduleSetting : ObjectSetting<ScheduleSetting, SettingKind>, IEntity, ISerializableJsonDocument, ISetting
     {

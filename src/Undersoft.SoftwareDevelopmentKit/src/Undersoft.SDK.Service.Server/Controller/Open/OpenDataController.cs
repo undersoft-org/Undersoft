@@ -8,11 +8,10 @@ using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Operation.Command;
 using Operation.Query;
-
-using Undersoft.SDK.Service.Server.Documentation;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Server.Documentation;
 using Undersoft.SDK.Uniques;
 
 [IgnoreApi]

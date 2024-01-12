@@ -2,7 +2,7 @@ using Undersoft.SDK.Service.Data.Relation;
 using Undersoft.SSC.Entities.Enums;
 using Undersoft.SSC.Entities.Locations;
 
-namespace Undersoft.SSC.Entities.Resource
+namespace Undersoft.SSC.Entities.Resources
 {
     public class ResourceLocation : DataObject
     {

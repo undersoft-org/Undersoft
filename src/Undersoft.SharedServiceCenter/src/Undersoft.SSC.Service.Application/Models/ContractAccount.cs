@@ -16,11 +16,11 @@ public class ContractAccount : Account, IModel
     public PersonalDetail? Personal { get; set; }
 
     [Detail]
-    public CompanyDetail? Company { get; set; }
+    public MathDetail? Company { get; set; }
 
     [Detail]
-    public DataObjects<EmployeeDetail>? Employees { get; set; }
+    public DataObjects<RequestDetail>? Employees { get; set; }
 
     [Detail]
-    public DataObjects<LicenceDetail>? Licences { get; set; }
+    public DataObjects<ResponseDetail>? Licences { get; set; }
 }

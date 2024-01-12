@@ -5,9 +5,9 @@ using Undersoft.SSC.Service.Contracts.Details;
 
 namespace Undersoft.SSC.Service.Application.Models;
 
-public class WorkflowAccount : ModelBase<ServiceAccount, Detail, Setting, AccountGroup>, IModel
+public class FlowAccount : ModelBase<ServiceAccount, Detail, Setting, AccountGroup>, IModel
 {
-    public WorkflowAccount() { Group = AccountGroup.Servicer; }
+    public FlowAccount() { Group = AccountGroup.Servicer; }
 
     [Detail]
     public IdentityDetail? Identity { get; set; }

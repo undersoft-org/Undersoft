@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Relation;
 
-namespace Undersoft.SSC.Entities.Schedule
+namespace Undersoft.SSC.Entities.Schedules
 {
     public class ScheduleDefault : DataObject, IEntity
     {

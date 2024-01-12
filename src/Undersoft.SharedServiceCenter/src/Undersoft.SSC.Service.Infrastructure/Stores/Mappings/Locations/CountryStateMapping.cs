@@ -15,11 +15,11 @@ public class CountryStateMapping : EntityTypeMapping<CountryState>
     {
         builder.ToTable(TABLE_NAME, DataStoreSchema.LocalSchema);
 
-        modelBuilder.LinkOneToSet<Country, CountryState>(
+        modelBuilder.RelateOneToSet<Country, CountryState>(
             nameof(CountryState.Country),
             nameof(Country.CountryStates), ExpandSite.OnRight);
 
-        modelBuilder.LinkOneToSet<CountryState, Address>(
+        modelBuilder.RelateOneToSet<CountryState, Address>(
             nameof(Address.CountryState),
             nameof(CountryState.Addresses), ExpandSite.OnLeft);
     }

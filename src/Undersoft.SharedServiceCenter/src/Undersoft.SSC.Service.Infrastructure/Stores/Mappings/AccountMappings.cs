@@ -3,11 +3,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 {
-    using Undersoft.SDK.Service.Data.Relation;
-    using Undersoft.SDK.Service.Infrastructure.Store;
-    using Undersoft.SSC.Entities.Account;
-    using Undersoft.SSC.Entities.Resource;
-    using Undersoft.SSC.Entities.Schedule;
+    using SDK.Service.Data.Relation;
+    using SDK.Service.Infrastructure.Store;
+    using SSC.Entities.Accounts;
+    using SSC.Entities.Activity;
+    using Undersoft.SSC.Entities.Resources;
+    using Undersoft.SSC.Entities.Schedules;
 
     public class AccountMappings : EntityTypeMapping<Account>
     {
@@ -19,14 +20,38 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 
             modelBuilder
                 .ApplyIdentifiers<Account>()
-                .LinkSetToSet<Account, Resource>(ExpandSite.OnRight)
-                .LinkSetToSet<Account, Schedule>(ExpandSite.OnRight)
-                .LinkSetToSet<Account, Setting>(ExpandSite.OnRight)
-                .LinkSetToSet<Account, Detail>(ExpandSite.OnRight)
-                .LinkOneToOne<Account, AccountLocation>(ExpandSite.OnRight)
-                .LinkSetToSet<Account, Account>(
+                .RelateOneToSet<AccountDefault, Account>(ExpandSite.OnLeft)
+                .RelateSetToSet<Account, AccountSetting>(ExpandSite.OnRight)
+                .RelateOneToOne<Account, AccountLocation>(ExpandSite.OnRight)
+                .RelateSetToSet<Account, AccountDetail>(ExpandSite.OnRight)
+                .RelateSetToSet<Account, Account>(
                     nameof(Account.RelatedTo),
                     nameof(Account.RelatedFrom),
+                    ExpandSite.OnRight
+                )
+                .RelateSetToRemoteSet<Account, Activity>(
+                    r => r.AccountsToActivities,
+                    r => r.Accounts,
+                    ExpandSite.OnRight
+                )
+                .RelateSetToRemoteSet<Account, Resource>(
+                    r => r.AccountsToResources,
+                    r => r.Accounts,
+                    ExpandSite.OnRight
+                )
+                .RelateSetToRemoteSet<Account, Schedule>(
+                    r => r.AccountsToSchedules,
+                    r => r.Accounts,
+                    ExpandSite.OnRight
+                )
+                .RelateSetToSet<AccountSetting, AccountSetting>(
+                    r => r.RelatedTo,
+                    r => r.RelatedFrom,
+                    ExpandSite.OnRight
+                )
+                .RelateSetToSet<AccountDetail, AccountDetail>(
+                    r => r.RelatedTo,
+                    r => r.RelatedFrom,
                     ExpandSite.OnRight
                 );
         }

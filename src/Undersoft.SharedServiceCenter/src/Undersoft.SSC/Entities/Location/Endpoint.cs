@@ -3,7 +3,7 @@ using System.Net;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text.Json.Serialization;
-using Undersoft.SSC.Entities.Account;
+using Undersoft.SSC.Entities.Accounts;
 
 namespace Undersoft.SSC.Entities.Locations;
 

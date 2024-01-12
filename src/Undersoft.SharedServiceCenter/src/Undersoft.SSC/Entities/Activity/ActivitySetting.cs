@@ -2,7 +2,7 @@ using Undersoft.SDK.Serialization;
 using Undersoft.SDK.Service.Data.Object.Setting;
 using Undersoft.SSC.Entities.Enums;
 
-namespace Undersoft.SSC.Entities.Activity
+namespace Undersoft.SSC.Entities
 {
     public class ActivitySetting : ObjectSetting<ActivitySetting, SettingKind>, IEntity, ISerializableJsonDocument, ISetting
     {

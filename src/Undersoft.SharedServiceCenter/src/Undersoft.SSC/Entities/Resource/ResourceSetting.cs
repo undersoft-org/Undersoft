@@ -2,7 +2,7 @@ using Undersoft.SDK.Serialization;
 using Undersoft.SDK.Service.Data.Object.Setting;
 using Undersoft.SSC.Entities.Enums;
 
-namespace Undersoft.SSC.Entities.Resource
+namespace Undersoft.SSC.Entities.Resources
 {
     public class ResourceSetting : ObjectSetting<ResourceSetting, SettingKind>, IEntity, ISerializableJsonDocument, ISetting
     {

@@ -5,7 +5,7 @@ namespace Undersoft.SSC.Service.Activity.Infrastructure.Stores;
 using Service.Infrastructure.Stores.Mappings;
 using Service.Infrastructure.Stores.Mappings.Locations;
 using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SSC.Entities.Account;
+using Undersoft.SSC.Entities.Accounts;
 using Undersoft.SSC.Entities.Activity;
 
 public class ServiceDataStore<TStore, TContext> : Store<TStore, TContext>

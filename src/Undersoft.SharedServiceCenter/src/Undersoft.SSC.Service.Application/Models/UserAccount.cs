@@ -21,5 +21,5 @@ public class UserAccount : ModelBase<UserAccount, Detail, Setting, AccountGroup>
     public ProfileSetting? Profile { get; set; }
 
     [Detail]
-    public DataObjects<LicenceDetail>? Licences { get; set; }
+    public DataObjects<ResponseDetail>? Licences { get; set; }
 }

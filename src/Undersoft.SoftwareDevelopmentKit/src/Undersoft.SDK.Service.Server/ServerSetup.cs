@@ -217,7 +217,7 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
                     {
                         Password = new OpenApiOAuthFlow
                         {
-                            TokenUrl = new Uri($"{ao.BaseUrl}/connect")
+                            TokenUrl = new Uri($"{ao.BaseUrl}/data/open/Authorization/Signin")
                         }
                     }
                 }

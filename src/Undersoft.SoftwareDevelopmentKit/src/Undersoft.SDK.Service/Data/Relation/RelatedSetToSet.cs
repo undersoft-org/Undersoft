@@ -100,13 +100,9 @@ public class RelatedSetToSet<TLeft, TRight>
             .WithMany(LEFT_NAME)
             .UsingEntity<RelationNode<TLeft, TRight>>(
                 j => j.HasOne(a => a.RightEntity).WithMany(),
-                //.WithMany(RELATION_TABLE_NAME)
-                //.HasForeignKey(a => a.RightEntityId),
-
+              
                 j => j.HasOne(a => a.LeftEntity).WithMany(),
-                //.WithMany(RELATION_TABLE_NAME)
-                //.HasForeignKey(a => a.LeftEntityId),
-
+             
                 j =>
                 {
                     j.HasKey(k => new { k.LeftEntityId, k.RightEntityId });

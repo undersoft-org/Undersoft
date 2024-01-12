@@ -5,7 +5,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings.Locations;
 
 using Undersoft.SDK.Service.Data.Relation;
 using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SSC.Entities.Account;
+using Undersoft.SSC.Entities.Accounts;
 using Undersoft.SSC.Entities.Locations;
 
 public class LocationMapping : EntityTypeMapping<AccountLocation>
@@ -17,8 +17,8 @@ public class LocationMapping : EntityTypeMapping<AccountLocation>
         builder.ToTable(TABLE_NAME, DataStoreSchema.LocalSchema);
 
         modelBuilder
-            .LinkOneToSet<AccountLocation, Endpoint>(ExpandSite.OnRight)
-            .LinkOneToSet<AccountLocation, Address>(
+            .RelateOneToSet<AccountLocation, Endpoint>(ExpandSite.OnRight)
+            .RelateOneToSet<AccountLocation, Address>(
                 nameof(Address.Location),
                 nameof(AccountLocation.Addresses),
                 ExpandSite.OnRight

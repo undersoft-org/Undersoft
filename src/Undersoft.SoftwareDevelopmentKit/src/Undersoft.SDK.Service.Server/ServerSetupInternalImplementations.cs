@@ -58,9 +58,7 @@ public partial class ServerSetup
             .AddScoped<ITypedSeries<IEntity>, TypedRegistry<IEntity>>()
             .AddScoped<ITypedSeries<IContract>, TypedCatalog<IContract>>();
 
-        
-
-        Catalog <Type> duplicateCheck = new Catalog<Type>();
+        Catalog<Type> duplicateCheck = new Catalog<Type>();
         Type[] stores = DataStoreRegistry.Stores
             .Where(s => s.IsAssignableTo(typeof(IDataServiceStore)))
             .ToArray();

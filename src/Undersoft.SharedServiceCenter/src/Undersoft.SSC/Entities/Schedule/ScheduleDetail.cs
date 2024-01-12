@@ -2,7 +2,7 @@ using Undersoft.SDK.Serialization;
 using Undersoft.SDK.Service.Data.Object.Detail;
 using Undersoft.SSC.Entities.Enums;
 
-namespace Undersoft.SSC.Entities.Schedule;
+namespace Undersoft.SSC.Entities.Schedules;
 
 public class ScheduleDetail : ObjectDetail<ScheduleDetail, DetailKind>, IEntity, ISerializableJsonDocument, IDetail
 {

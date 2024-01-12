@@ -5,8 +5,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 {
     using Undersoft.SDK.Service.Data.Relation;
     using Undersoft.SDK.Service.Infrastructure.Store;
-    using Undersoft.SSC.Entities.Account;
-    using Undersoft.SSC.Entities.Schedule;
+    using Undersoft.SSC.Entities.Accounts;
+    using Undersoft.SSC.Entities.Resources;
+    using Undersoft.SSC.Entities.Schedules;
 
     public class ScheduleMappings : EntityTypeMapping<Schedule>
     {
@@ -18,14 +19,24 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 
             modelBuilder
                 .ApplyIdentifiers<Schedule>()
-                .LinkSetToSet<Schedule, Setting>(ExpandSite.OnRight)
-                .LinkSetToSet<Schedule, Detail>(ExpandSite.OnRight, true)
-                .LinkOneToOne<Schedule, AccountLocation>(ExpandSite.OnRight)
-                .LinkSetToSet<Schedule, Schedule>(
+                .RelateSetToSet<Schedule, ScheduleSetting>(ExpandSite.OnRight)
+                .RelateOneToOne<Schedule, AccountLocation>(ExpandSite.OnRight)
+                .RelateSetToSet<Schedule, ScheduleDetail>(ExpandSite.OnRight, true)
+                .RelateSetToSet<Schedule, Schedule>(
                     nameof(Schedule.RelatedTo),
                     nameof(Schedule.RelatedFrom),
                     ExpandSite.OnRight
+                )
+                .RelateSetToSet<ScheduleDetail, ScheduleDetail>(
+                    r => r.RelatedTo,
+                    r => r.RelatedFrom,
+                    ExpandSite.OnRight
+                ).RelateSetToSet<ScheduleSetting, ScheduleSetting>(
+                    r => r.RelatedTo,
+                    r => r.RelatedFrom,
+                    ExpandSite.OnRight
                 );
+            ;
         }
     }
 }

@@ -15,7 +15,7 @@ public class LanguageMapping : EntityTypeMapping<Language>
     {
         builder.ToTable(TABLE_NAME, DataStoreSchema.LocalSchema);
 
-        modelBuilder.LinkOneToSet<Language, Country>(
+        modelBuilder.RelateOneToSet<Language, Country>(
             nameof(Country.Language),
             nameof(Language.Countries), ExpandSite.OnLeft);
     }

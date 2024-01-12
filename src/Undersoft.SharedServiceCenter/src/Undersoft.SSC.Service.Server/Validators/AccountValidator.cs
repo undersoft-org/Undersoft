@@ -35,7 +35,7 @@ public class AccountValidator : CommandSetValidator<Account>
                         || (e.Identifiers[IdKind.Email].Value == cmd.Identifiers[IdKind.Email].Value
                         || (e.Identifiers[IdKind.Name].Value == cmd.Identifiers[IdKind.Name].Value)
                         || (e.Identifiers[IdKind.Phone].Value == cmd.Identifiers[IdKind.Phone].Value)),
-                "Account already exists"
+                "Accounts already exists"
                 );
             }
         );

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Undersoft.SDK.Service.Server.Controller.Crud;
 using Undersoft.SDK.Service.Server.Controller.Open;
-using Undersoft.SSC.Entities.Account;
+using Undersoft.SSC.Entities.Accounts;
 
 namespace Undersoft.SSC.Service.Server.Controllers
 {

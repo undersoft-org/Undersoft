@@ -89,19 +89,20 @@ public class DataCache : TypedCache<IOrigin>, IDataCache
         return default;
     }
 
-    public override int GetValidTypeKey(Type obj)
+    public override int GetDataTypeId(Type obj)
     {
         return obj.GetDataTypeId();
     }
-    public override Type GetValidType(Type obj)
+    public override Type GetDataType(Type obj)
     {
         return obj.GetDataType();
     }
-    public override int GetValidTypeKey(object obj)
+
+    public override int GetDataTypeId(object obj)
     {
         return obj.GetDataTypeId();
     }
-    public override Type GetValidType(object obj)
+    public override Type GetDataType(object obj)
     {
         return obj.GetDataType();
     }

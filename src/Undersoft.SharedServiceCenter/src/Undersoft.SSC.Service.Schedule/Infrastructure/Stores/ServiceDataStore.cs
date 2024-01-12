@@ -5,8 +5,8 @@ namespace Undersoft.SSC.Service.Schedule.Infrastructure.Stores;
 using Service.Infrastructure.Stores.Mappings;
 using Service.Infrastructure.Stores.Mappings.Locations;
 using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SSC.Entities.Account;
-using Undersoft.SSC.Entities.Schedule;
+using Undersoft.SSC.Entities.Accounts;
+using Undersoft.SSC.Entities.Schedules;
 
 public class ServiceDataStore<TStore, TContext> : Store<TStore, TContext>
     where TStore : IDatabaseStore
@@ -15,9 +15,6 @@ public class ServiceDataStore<TStore, TContext> : Store<TStore, TContext>
     public ServiceDataStore(DbContextOptions<TContext> options) : base(options) { }
 
     public virtual DbSet<Schedule>? Schedules { get; set; }
-    public virtual DbSet<Detail>? Details { get; set; }
-    public virtual DbSet<Setting>? Settings { get; set; }
-    public virtual DbSet<Default>? Defaults { get; set; }
     public virtual DbSet<AccountLocation>? Locations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

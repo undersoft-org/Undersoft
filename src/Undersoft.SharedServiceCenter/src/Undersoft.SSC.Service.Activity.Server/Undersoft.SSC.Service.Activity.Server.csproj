@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Undersoft.SSC.Service.Activity\Undersoft.SSC.Service.Activity.csproj" />
+    <ProjectReference Include="..\Undersoft.SSC.Service.Application\Undersoft.SSC.Service.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

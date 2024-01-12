@@ -2,7 +2,7 @@ using Undersoft.SDK.Serialization;
 using Undersoft.SDK.Service.Data.Object.Detail;
 using Undersoft.SSC.Entities.Enums;
 
-namespace Undersoft.SSC.Entities.Resource;
+namespace Undersoft.SSC.Entities.Resources;
 
 public class ResourceDetail : ObjectDetail<ResourceDetail, DetailKind>, IEntity, ISerializableJsonDocument, IDetail
 {

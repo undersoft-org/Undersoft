@@ -2,7 +2,7 @@ using Undersoft.SDK.Serialization;
 using Undersoft.SDK.Service.Data.Object.Setting;
 using Undersoft.SSC.Entities.Enums;
 
-namespace Undersoft.SSC.Entities.Account
+namespace Undersoft.SSC.Entities.Accounts
 {
     public class AccountSetting : ObjectSetting<AccountSetting, SettingKind>, IEntity, ISerializableJsonDocument, ISetting
     {

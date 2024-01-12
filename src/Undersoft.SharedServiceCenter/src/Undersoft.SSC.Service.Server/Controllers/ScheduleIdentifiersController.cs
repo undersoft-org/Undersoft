@@ -3,7 +3,7 @@ using Undersoft.SDK.Service.Server.Controller.Crud;
 using Undersoft.SDK.Service.Server.Controller.Open;
 using Undersoft.SDK.Service.Server.Controller.Stream;
 using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SSC.Entities.Schedule;
+using Undersoft.SSC.Entities.Schedules;
 
 namespace Undersoft.SSC.Service.Server.Controllers
 {

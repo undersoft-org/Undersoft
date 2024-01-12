@@ -5,10 +5,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 {
     using Undersoft.SDK.Service.Data.Relation;
     using Undersoft.SDK.Service.Infrastructure.Store;
-    using Undersoft.SSC.Entities.Account;
+    using Undersoft.SSC.Entities.Accounts;
     using Undersoft.SSC.Entities.Activity;
-    using Undersoft.SSC.Entities.Resource;
-    using Undersoft.SSC.Entities.Schedule;
+    using Undersoft.SSC.Entities.Resources;
+    using Undersoft.SSC.Entities.Schedules;
 
     public class ActivityMappings : EntityTypeMapping<Activity>
     {
@@ -20,50 +20,49 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 
             modelBuilder
                 .ApplyIdentifiers<Activity>()
-                .LinkOneToOne<Activity, AccountLocation>(ExpandSite.OnRight)
-                .LinkSetToSet<Activity, Account>(
-                    nameof(Resource.Activities),
-                    nameof(Resource.Activities),
-                    nameof(Activity.Accounts),
-                    nameof(Activity.Accounts),
-                    ExpandSite.OnRight,
-                    true
-                )
-                .LinkSetToSet<Activity, Resource>(
-                    nameof(Resource.Activities),
-                    nameof(Resource.Activities),
-                    nameof(Activity.Resources),
-                    nameof(Activity.Resources),
-                    ExpandSite.OnRight,
-                    true
-                )
-                .LinkSetToSet<Activity, Schedule>(
-                    nameof(Schedule.Activities),
-                    nameof(Schedule.Activities),
-                    nameof(Activity.Schedules),
-                    nameof(Activity.Schedules),
+                .RelateOneToSet<ActivityDefault, Activity>(ExpandSite.OnLeft)
+                .RelateOneToOne<Activity, ActivityLocation>(ExpandSite.OnRight)
+                .RelateSetToSet<Activity, ActivitySetting>(
+                    r => r.Settings,
+                    l => l.Activities,
                     ExpandSite.OnRight
                 )
-                .LinkSetToSet<Activity, Setting>(
-                    nameof(Setting.Activities),
-                    nameof(Setting.Activities),
-                    nameof(Activity.Settings),
-                    nameof(Activity.Settings),
+                .RelateSetToRemoteSet<Account, Activity>(
+                    r => r.AccountsToActivities,
+                    r => r.Accounts,
                     ExpandSite.OnRight
                 )
-                .LinkSetToSet<Activity, Detail>(
-                    nameof(Detail.Activities),
-                    nameof(Detail.Activities),
-                    nameof(Activity.Details),
-                    nameof(Activity.Details),
+                .RelateSetToRemoteSet<Activity, Resource>(
+                    r => r.AccountsToResources,
+                    r => r.Accounts,
+                    ExpandSite.OnRight
+                )
+                .RelateSetToRemoteSet<Activity, Schedule>(
+                    r => r.AccountsToSchedules,
+                    r => r.Accounts,
+                    ExpandSite.OnRight
+                )
+                .RelateSetToSet<Activity, ActivityDetail>(
+                    r => r.Details,
+                    l => l.Activities,
                     ExpandSite.OnRight,
                     true
                 )
-                .LinkSetToSet<Activity, Activity>(
-                    nameof(Activity.RelatedTo),
-                    nameof(Detail.Activities),
-                    nameof(Activity.RelatedFrom),
-                    nameof(Detail.Activities),
+                .RelateSetToSet<ActivityDetail, ActivityDetail>(
+                    r => r.RelatedTo,
+                    r => r.RelatedFrom,
+                    ExpandSite.OnRight
+                )
+                .RelateSetToSet<ActivitySetting, ActivitySetting>(
+                    r => r.RelatedTo,
+                    r => r.RelatedFrom,
+                    ExpandSite.OnRight
+                )
+                .RelateSetToSet<Activity, Activity>(
+                    rm => rm.RelatedTo,
+                    nameof(ActivityDetail.Activities),
+                    rm => rm.RelatedFrom,
+                    nameof(ActivityDetail.Activities),
                     ExpandSite.OnRight
                 );
         }

@@ -1,24 +1,16 @@
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace Undersoft.SDK.Service.Server;
 
-using Behaviour;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Operation.Remote.Command;
 using Operation.Remote.Command.Handler;
-using Operation.Remote.Command.Validator;
 using Operation.Remote.Notification;
 using Operation.Remote.Notification.Handler;
-using Operation.Remote.Query;
-using Operation.Remote.Query.Handler;
-using Operation.Remote.Validator;
-using Undersoft.SDK.Series;
-using Undersoft.SDK.Service.Server.Operation.Command;
 using Undersoft.SDK.Service.Client.Remote;
+using Undersoft.SDK.Service.Server.Operation.Command;
 
 public partial class ServerSetup
 {

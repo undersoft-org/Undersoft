@@ -17,7 +17,7 @@ public class Program
     {
         var builder = new WebHostBuilder();
 
-        builder.Info<Runlog>("Starting Undersoft.SSC.Service.Account.Server ....");
+        builder.Info<Runlog>("Starting Undersoft.SSC.Service.Accounts.Server ....");
 
         _webapi = builder
             .UseContentRoot(Directory.GetCurrentDirectory())
@@ -40,17 +40,17 @@ public class Program
         }
         catch (Exception exception)
         {
-            Log.Error<Runlog>(null, "Undersoft.SSC.Service.Account.Server  terminated unexpectedly ....", exception);
+            Log.Error<Runlog>(null, "Undersoft.SSC.Service.Accounts.Server  terminated unexpectedly ....", exception);
         }
         finally
         {
-            Log.Info<Runlog>(null, "Undersoft.SSC.Service.Account.Server shutted down ....");
+            Log.Info<Runlog>(null, "Undersoft.SSC.Service.Accounts.Server shutted down ....");
         }
     }
 
     public static async Task Restart()
     {
-        Log.Info<Runlog>(null, "Restarting Undersoft.SSC.Service.Account.Server  ....");
+        Log.Info<Runlog>(null, "Restarting Undersoft.SSC.Service.Accounts.Server  ....");
 
         Task.WaitAll(Shutdown());
 
@@ -59,9 +59,9 @@ public class Program
 
     public static async Task Shutdown()
     {
-        Log.Info<Runlog>(null, "Shutting down Undersoft.SSC.Service.Account.Server  ....");
+        Log.Info<Runlog>(null, "Shutting down Undersoft.SSC.Service.Accounts.Server  ....");
 
-        _webapi.Info<Runlog>("Stopping Undersoft.SSC.Service.Account.Server  ....");
+        _webapi.Info<Runlog>("Stopping Undersoft.SSC.Service.Accounts.Server  ....");
 
         if (_webapi != null)
             await _webapi.StopAsync(TimeSpan.FromSeconds(5));

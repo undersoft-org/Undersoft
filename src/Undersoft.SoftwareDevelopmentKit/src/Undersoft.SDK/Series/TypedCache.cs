@@ -107,10 +107,10 @@ public class TypedCache<V> : BaseTypedRegistry<V> where V : IOrigin
 
     protected virtual T InnerMemorize<T>(T item) where T : IOrigin
     {
-        int group = GetValidTypeKey(typeof(T));
+        int group = GetDataTypeId(typeof(T));
         if (!cache.TryGet(group, out IOrigin catalog))
         {
-            ProxyCreator sleeve = ProxyFactory.GetCreator(GetValidType(typeof(T)), group);
+            ProxyCreator sleeve = ProxyFactory.GetCreator(GetDataType(typeof(T)), group);
             sleeve.Create();
 
             IRubrics keyrubrics = sleeve.Rubrics.KeyRubrics;
@@ -199,14 +199,14 @@ public class TypedCache<V> : BaseTypedRegistry<V> where V : IOrigin
 
     public virtual ITypedSeries<IOrigin> CacheSet<T>() where T : IOrigin
     {
-        if (cache.TryGet(GetValidTypeKey(typeof(T)), out IOrigin catalog))
+        if (cache.TryGet(GetDataTypeId(typeof(T)), out IOrigin catalog))
             return (ITypedSeries<IOrigin>)catalog;
         return null;
     }
 
     public virtual T Lookup<T>(object keys) where T : IOrigin
     {
-        if (cache.TryGet(keys, GetValidTypeKey(typeof(T)), out IOrigin output))
+        if (cache.TryGet(keys, GetDataTypeId(typeof(T)), out IOrigin output))
             return (T)output;
         return default;
     }
@@ -223,7 +223,7 @@ public class TypedCache<V> : BaseTypedRegistry<V> where V : IOrigin
         IRubrics mrs = shell.Rubrics.KeyRubrics;
         T[] result = new T[mrs.Count];
         int i = 0;
-        if (cache.TryGet(GetValidTypeKey(typeof(T)), out IOrigin catalog))
+        if (cache.TryGet(GetDataTypeId(typeof(T)), out IOrigin catalog))
         {
             foreach (MemberRubric mr in mrs)
             {
@@ -257,7 +257,7 @@ public class TypedCache<V> : BaseTypedRegistry<V> where V : IOrigin
         params Func<ITypedSeries<IOrigin>, ISeries<IOrigin>>[] selectors)
         where T : IOrigin
     {
-        if (cache.TryGet(GetValidTypeKey(typeof(T)), out IOrigin catalog))
+        if (cache.TryGet(GetDataTypeId(typeof(T)), out IOrigin catalog))
         {
             T[] result = new T[selectors.Length];
             for (int i = 0; i < selectors.Length; i++)
@@ -283,7 +283,7 @@ public class TypedCache<V> : BaseTypedRegistry<V> where V : IOrigin
         MemberRubric[] mrs = ilValuator.Rubrics.Where(p => propertyNames.Contains(p.RubricName)).ToArray();
         T[] result = new T[mrs.Length];
 
-        if (cache.TryGet(GetValidTypeKey(typeof(T)), out IOrigin catalog))
+        if (cache.TryGet(GetDataTypeId(typeof(T)), out IOrigin catalog))
         {
             int i = 0;
             foreach (MemberRubric mr in mrs)
@@ -324,20 +324,20 @@ public class TypedCache<V> : BaseTypedRegistry<V> where V : IOrigin
 
     public virtual ITypedSeries<IOrigin> Catalog => cache;
 
-    public virtual Type GetValidType(object obj)
+    public virtual Type GetDataType(object obj)
     {
         return obj.GetType();
     }
-    public virtual Type GetValidType(Type obj)
+    public virtual Type GetDataType(Type obj)
     {
         return obj;
     }
-    public virtual int GetValidTypeKey(object obj)
+    public virtual int GetDataTypeId(object obj)
     {
         return obj.GetType().UniqueKey32();
     }
 
-    public virtual int GetValidTypeKey(Type obj)
+    public virtual int GetDataTypeId(Type obj)
     {
         return obj.UniqueKey32();
     }

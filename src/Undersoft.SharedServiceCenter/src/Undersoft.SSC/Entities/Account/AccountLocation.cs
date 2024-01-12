@@ -2,7 +2,7 @@ using Undersoft.SDK.Service.Data.Relation;
 using Undersoft.SSC.Entities.Enums;
 using Undersoft.SSC.Entities.Locations;
 
-namespace Undersoft.SSC.Entities.Account
+namespace Undersoft.SSC.Entities.Accounts
 {
     public class AccountLocation : DataObject
     {

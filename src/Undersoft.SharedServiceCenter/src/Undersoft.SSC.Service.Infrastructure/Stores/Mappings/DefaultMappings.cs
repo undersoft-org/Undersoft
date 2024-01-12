@@ -5,10 +5,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 {
     using Undersoft.SDK.Service.Data.Relation;
     using Undersoft.SDK.Service.Infrastructure.Store;
-    using Undersoft.SSC.Entities.Account;
+    using Undersoft.SSC.Entities.Accounts;
     using Undersoft.SSC.Entities.Activity;
-    using Undersoft.SSC.Entities.Resource;
-    using Undersoft.SSC.Entities.Schedule;
+    using Undersoft.SSC.Entities.Resources;
+    using Undersoft.SSC.Entities.Schedules;
 
     public class DefaultMappings : EntityTypeMapping<Default>
     {
@@ -19,12 +19,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
             builder.ToTable(TABLE_NAME, DataStoreSchema.LocalSchema);
 
             modelBuilder
-                .LinkOneToSet<Default, Account>(ExpandSite.OnLeft)
-                .LinkOneToSet<Default, Resource>(ExpandSite.OnLeft)
-                .LinkOneToSet<Default, Schedule>(ExpandSite.OnLeft)
-                .LinkOneToSet<Default, Setting>(ExpandSite.OnRight)
-                .LinkOneToSet<Default, Detail>(ExpandSite.OnRight)
-                .LinkOneToSet<Default, Activity>(
+                .RelateOneToSet<Default, Account>(ExpandSite.OnLeft)
+                .RelateOneToSet<Default, Resource>(ExpandSite.OnLeft)
+                .RelateOneToSet<Default, Schedule>(ExpandSite.OnLeft)
+                .RelateOneToSet<Default, Setting>(ExpandSite.OnRight)
+                .RelateOneToSet<Default, Detail>(ExpandSite.OnRight)
+                .RelateOneToSet<Default, Activity>(
                     nameof(Activity.Default),
                     nameof(Activity.Default),
                     nameof(Default.Activities),

@@ -3,9 +3,9 @@
 namespace Undersoft.SSC.Service.Contracts.Details;
 
 [Detail]
-public class LicenceDetail : DataObject
+public class ResponseDetail : DataObject
 {
-    public LicenceDetail() { }
+    public ResponseDetail() { }
 
     public string? Name { get; set; }
 

@@ -1,9 +1,9 @@
 using Undersoft.SDK.Serialization;
 using Undersoft.SDK.Service.Data.Object.Detail;
-using Undersoft.SSC.Entities.Account;
+using Undersoft.SSC.Entities.Accounts;
 using Undersoft.SSC.Entities.Enums;
 
-namespace Undersoft.SSC.Entities.Activity;
+namespace Undersoft.SSC.Entities;
 
 public class ActivityDetail : ObjectDetail<ActivityDetail, DetailKind>, IEntity, ISerializableJsonDocument, IDetail
 {

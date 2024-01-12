@@ -3,8 +3,8 @@
 namespace Undersoft.SSC.Service.Contracts.Details;
 
 [Detail]
-public class RevenueDetail : AmountDetail
+public class ObjectDetail : AmountDetail
 {
-    public RevenueDetail() { }
+    public ObjectDetail() { }
 
 }

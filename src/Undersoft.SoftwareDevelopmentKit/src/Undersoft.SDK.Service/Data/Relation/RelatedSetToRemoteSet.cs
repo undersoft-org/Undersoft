@@ -7,7 +7,7 @@ using Entity;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
-public class RelatedSetToLinkedSet<TLeft, TRight>
+public class RelatedSetToRemoteSet<TLeft, TRight>
     where TLeft : class, IDataObject
     where TRight : class, IDataObject
 {
@@ -15,8 +15,7 @@ public class RelatedSetToLinkedSet<TLeft, TRight>
     private readonly string LEFT_TABLE_NAME = typeof(TLeft).Name + "s";
     private readonly string RIGHT_TABLE_NAME = typeof(TRight).Name + "s";
     private readonly string LEFT_NAME = typeof(TLeft).Name + "s";
-    private readonly string RIGHT_NAME =
-        typeof(TRight).Name.Replace(typeof(TLeft).Name, "") + "s";
+    private readonly string RIGHT_NAME = typeof(TRight).Name.Replace(typeof(TLeft).Name, "") + "s";
     private readonly string LEFT_SCHEMA = null;
     private readonly string RIGHT_SCHEMA = null;
 
@@ -26,32 +25,22 @@ public class RelatedSetToLinkedSet<TLeft, TRight>
     private readonly EntityTypeBuilder<TRight> _secondBuilder;
     private readonly EntityTypeBuilder<RelationNode<TLeft, TRight>> _relationBuilder;
 
-    public RelatedSetToLinkedSet(
+    public RelatedSetToRemoteSet(
         ModelBuilder modelBuilder,
         ExpandSite expandSite = ExpandSite.None,
         string dbSchema = null
     ) : this(modelBuilder, null, null, null, null, expandSite, dbSchema, dbSchema) { }
 
-    public RelatedSetToLinkedSet(
+    public RelatedSetToRemoteSet(
         ModelBuilder modelBuilder,
         string leftName,
         string rightName,
         ExpandSite expandSite = ExpandSite.None,
         string dbSchema = null
-    )
-        : this(
-            modelBuilder,
-            leftName,
-            leftName,
-            rightName,
-            rightName,
-            expandSite,
-            dbSchema,
-            dbSchema
-        )
+    ) : this(modelBuilder, leftName, leftName, rightName, rightName, expandSite, dbSchema, dbSchema)
     { }
 
-    public RelatedSetToLinkedSet(
+    public RelatedSetToRemoteSet(
         ModelBuilder modelBuilder,
         string leftName,
         string leftTableName,
@@ -81,7 +70,7 @@ public class RelatedSetToLinkedSet<TLeft, TRight>
         if (childSchema != null)
             RIGHT_SCHEMA = childSchema;
 
-        RELATION_TABLE_NAME = LEFT_NAME + "And" + RIGHT_NAME;
+        RELATION_TABLE_NAME = LEFT_NAME + "To" + RIGHT_NAME;
     }
 
     public ModelBuilder Configure()
@@ -89,25 +78,30 @@ public class RelatedSetToLinkedSet<TLeft, TRight>
         _relationBuilder.ToTable(RELATION_TABLE_NAME, DataStoreSchema.RelationSchema);
         _relationBuilder.HasKey(k => new { k.LeftEntityId, k.RightEntityId });
 
-        _relationBuilder
-            .HasOne(a => a.RightEntity)
-            .WithMany(RELATION_TABLE_NAME)
-            .HasForeignKey(a => a.RightEntityId);
+        if (_expandSite == ExpandSite.OnRight)
+        {
+            _relationBuilder
+                .HasOne(a => a.RightEntity)
+                .WithMany(RELATION_TABLE_NAME)
+                .HasForeignKey(a => a.RightEntityId);
 
-        _relationBuilder
-            .HasOne(a => a.LeftEntity)
-            .WithMany(RELATION_TABLE_NAME)
-            .HasForeignKey(a => a.LeftEntityId);
+            _secondBuilder
+                .HasMany<RelationNode<TLeft, TRight>>(RELATION_TABLE_NAME)
+                .WithOne(p => p.RightEntity)
+                .HasForeignKey(k => k.RightEntityId);
+        }
+        else
+        {
+            _relationBuilder
+                .HasOne(a => a.LeftEntity)
+                .WithMany(RELATION_TABLE_NAME)
+                .HasForeignKey(a => a.LeftEntityId);
 
-        _firstBuilder
-            .HasMany<RelationNode<TLeft, TRight>>(RELATION_TABLE_NAME)
-            .WithOne(p => p.LeftEntity)
-            .HasForeignKey(k => k.LeftEntityId);
-
-        _secondBuilder
-            .HasMany<RelationNode<TLeft, TRight>>(RELATION_TABLE_NAME)
-            .WithOne(p => p.RightEntity)
-            .HasForeignKey(k => k.RightEntityId);
+            _firstBuilder
+                .HasMany<RelationNode<TLeft, TRight>>(RELATION_TABLE_NAME)
+                .WithOne(p => p.LeftEntity)
+                .HasForeignKey(k => k.LeftEntityId);
+        }
 
         if ((_expandSite & (ExpandSite.OnRight | ExpandSite.WithMany)) > 0)
             _firstBuilder.Navigation(RELATION_TABLE_NAME);

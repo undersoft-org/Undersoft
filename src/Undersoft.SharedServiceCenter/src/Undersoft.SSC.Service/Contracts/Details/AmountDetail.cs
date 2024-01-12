@@ -24,6 +24,8 @@ public class AmountDetail : DataObject
     public TimeSpan Interval { get; set; }
     public double Duration { get; set; }
 
+    public string? Unit { get; set; }
+
     public double Quantity { get; set; }
 
     public double Value { get; set; }
@@ -46,6 +48,7 @@ public class AmountDetail : DataObject
 
 public enum AmountKind
 {
+    Cost,
     Price,
     Offer,
     Capacity,

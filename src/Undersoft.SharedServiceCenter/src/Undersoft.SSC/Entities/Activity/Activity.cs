@@ -1,11 +1,13 @@
-namespace Undersoft.SSC.Entities.Activity;
+namespace Undersoft.SSC.Entities.Activities;
 
-using Schedule;
-using Resource;
-using Account;
 using Undersoft.SDK.Service.Data.Entity;
 using Undersoft.SDK.Service.Data.Relation;
 using Undersoft.SSC.Entities.Enums;
+using Undersoft.SDK.Service.Infrastructure.Repository.Client.Remote;
+using Undersoft.SDK.Service.Infrastructure.Store.Remote;
+using Undersoft.SSC.Entities.Accounts;
+using Undersoft.SSC.Entities.Schedules;
+using Undersoft.SSC.Entities.Resources;
 
 public class Activity : OpenEntity<Activity, ActivityDetail, ActivitySetting, ActivityGroup>
 {
@@ -13,11 +15,15 @@ public class Activity : OpenEntity<Activity, ActivityDetail, ActivitySetting, Ac
 
     public virtual RelatedSet<Activity>? RelatedTo { get; set; }
 
-    public virtual RelatedSet<Account>? Accounts { get; set; }
+    [Remote] public virtual RemoteSet<Account>? Accounts { get; set; }
 
-    public virtual RelatedSet<Schedule>? Schedules { get; set; }
+    [Remote] public virtual RemoteSet<Resource>? Resources { get; set; }
 
-    public virtual RelatedSet<Resource>? Resources { get; set; }
+    [Remote] public virtual RemoteSet<Schedule>? Schedules { get; set; }
+
+    public virtual RelationNode<Activity, Resource>? ActivitysToResources { get; set; }
+    public virtual RelationNode<Account, Activity>? AccountsToActivities { get; set; }
+    public virtual RelationNode<Activity, Schedule>? ActivitysToSchedules { get; set; }
 
     public long? DefaultId { get; set; }
     public virtual ActivityDefault? Default { get; set; }
