@@ -7,7 +7,6 @@ using Instant.Proxies;
 using Instant.Updating;
 using Logging;
 using Series;
-using Undersoft.SDK;
 using Undersoft.SDK.Security.Identity;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Client;
@@ -19,20 +18,17 @@ using Undersoft.SDK.Service.Infrastructure.Repository.Client;
 using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Infrastructure.Store.Remote;
 
-
 public class RemoteRepository<TStore, TEntity>
     : RemoteRepository<TEntity>,
         IRemoteRepository<TStore, TEntity>
-    where TEntity : class, IOrigin, IInnerProxy
+    where TEntity : class, IDataObject
     where TStore : IDataServiceStore
 {
-    public RemoteRepository(
-       IRepositoryContextPool<OpenDataService<TStore>> pool
-   ) : base(pool.ContextPool)
+    public RemoteRepository(IRepositoryContextPool<OpenDataService<TStore>> pool)
+        : base(pool.ContextPool)
     {
-        mapper = ServiceManager.GetObject<IDataMapper>();
+        mapper = DataMapper.GetMapper();
     }
-
 
     public RemoteRepository(
         IRepositoryContextPool<OpenDataService<TStore>> pool,
@@ -60,8 +56,7 @@ public class RemoteRepository<TStore, TEntity>
     }
 }
 
-public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRepository<TEntity>
-    where TEntity : class, IOrigin, IInnerProxy
+public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRepository<TEntity> where TEntity : class, IOrigin, IInnerProxy
 {
     ISeries<DataServiceRequest> _batchset;
     protected DataServiceQuery<TEntity> dsQuery;
@@ -416,51 +411,52 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
 
     public override DataServiceQuery<TEntity> Query => dsContext.CreateQuery<TEntity>(Name, true);
 
-    public async Task<TEntity> FunctionAsync<TKind>(
-       TKind kind,
-       string httpMethod = "GET"
-   ) where TKind : Enum
+    public async Task<TEntity> FunctionAsync<TModel, TKind>(TKind kind) where TKind : Enum
     {
         return await InvokeAsync(
-            null,
-            kind,
-            httpMethod
+            typeof(TModel).Name,
+            kind
         );
     }
 
-    public async Task<TEntity> ActionAsync<TDto, TKind>(
-        TDto payload,
-        TKind kind,
-        string httpMethod = "POST"
-    ) where TKind : Enum
+    public async Task<TEntity> ActionAsync<TModel, TKind>(TEntity payload, TKind kind)
+        where TKind : Enum
     {
         return await InvokeAsync(
-            httpMethod != "GET" ? new BodyOperationParameter(typeof(TDto).Name, payload) : null,
-            kind,
-            httpMethod
+            new BodyOperationParameter(Name, payload),
+            typeof(TModel).Name,
+            kind
         );
     }
 
-    public async Task<TEntity> ActionAsync<TDto, TKind>(
-        TDto[] payloads,
-        TKind kind,
-        string httpMethod = "POST"
-    ) where TKind : Enum
+    public async Task<TEntity> ActionAsync<TModel, TKind>(TEntity[] payloads, TKind kind)
+        where TKind : Enum
     {
         return await InvokeAsync(
-            httpMethod != "GET" ? new BodyOperationParameter(typeof(TDto).Name, payloads) : null,
-            kind,
-            httpMethod
+            new BodyOperationParameter(Name, payloads),
+            typeof(TModel).Name,
+            kind
         );
     }
 
-    private async Task<TEntity> InvokeAsync<TKind>(
-        BodyOperationParameter parameter,
-        TKind kind,
-        string httpMethod
-    ) where TKind : Enum
+    private async Task<TEntity> InvokeAsync<TKind>(string entityName, TKind kind) where TKind : Enum
     {
-        var action = new DataServiceActionQuerySingle<TEntity>(dsContext, dsContext.BaseUri.OriginalString + "/" + Name + "/" + kind.ToString(), new BodyOperationParameter[] { parameter });
+        var action = dsContext.CreateFunctionQuerySingle<TEntity>(
+            dsContext.BaseUri.OriginalString,
+            entityName + "/" + kind.ToString(),
+            true
+        );
+        var result = await action.GetValueAsync();
+        return result;
+    }
+
+    private async Task<TEntity> InvokeAsync<TKind>(BodyOperationParameter parameter, string entityName, TKind kind) where TKind : Enum
+    {
+        var action = new DataServiceActionQuerySingle<TEntity>(
+            dsContext,
+            dsContext.BaseUri.OriginalString + "/" + entityName + "/" + kind.ToString(),
+            new BodyOperationParameter[] { parameter }
+        );
         var result = await action.GetValueAsync();
         return result;
     }

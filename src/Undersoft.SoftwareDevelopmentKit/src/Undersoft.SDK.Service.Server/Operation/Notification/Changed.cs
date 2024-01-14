@@ -11,7 +11,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 public class Changed<TStore, TEntity, TDto> : Notification<Command<TDto>>
     where TDto : class, IDataObject
     where TEntity : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     public Changed(Command<TDto> command) : base(command) { }
 

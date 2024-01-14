@@ -10,7 +10,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class GetAsync<TStore, TEntity, TDto> : Get<TStore, TEntity, TDto>, IStreamRequest<TDto>
     where TEntity : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     public GetAsync(int offset, int limit, params Expression<Func<TEntity, object>>[] expanders)
         : base(offset, limit, expanders) { }

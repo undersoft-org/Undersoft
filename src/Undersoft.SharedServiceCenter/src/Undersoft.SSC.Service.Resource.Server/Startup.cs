@@ -30,7 +30,7 @@ public class Startup
                 new[]
                 {
                     typeof(ActivityDataService),
-                    typeof(AccountDataService),
+                    typeof(MemberDataService),
                     typeof(ScheduleDataService)
                 }
             )

@@ -5,9 +5,9 @@ using Undersoft.SSC.Service.Contracts;
 
 namespace Undersoft.SSC.Service.Server.Validators;
 
-public class AccountValidator : CommandSetValidator<Account>
+public class MemberValidator : CommandSetValidator<Member>
 {
-    public AccountValidator(IServicer ultimatr) : base(ultimatr)
+    public MemberValidator(IServicer ultimatr) : base(ultimatr)
     {
         ValidationScope(
             CommandMode.Any,
@@ -29,13 +29,13 @@ public class AccountValidator : CommandSetValidator<Account>
             CommandMode.Create,
             () =>
             {
-            ValidateNotExist<IEntryStore, Account>(
+            ValidateNotExist<IEntryStore, Member>(
                 (cmd) =>
                     (e) => (e.Label == cmd.Label)
                         || (e.Identifiers[IdKind.Email].Value == cmd.Identifiers[IdKind.Email].Value
                         || (e.Identifiers[IdKind.Name].Value == cmd.Identifiers[IdKind.Name].Value)
                         || (e.Identifiers[IdKind.Phone].Value == cmd.Identifiers[IdKind.Phone].Value)),
-                "Accounts already exists"
+                "Members already exists"
                 );
             }
         );
@@ -44,7 +44,7 @@ public class AccountValidator : CommandSetValidator<Account>
             () =>
             {
                 ValidateRequired(p => p.Contract.Identifiers[IdKind.Name].Value);
-                ValidateExist<IEntryStore, Account>((cmd) => (e) => e.Id == cmd.Id);
+                ValidateExist<IEntryStore, Member>((cmd) => (e) => e.Id == cmd.Id);
             }
         );
         ValidationScope(
@@ -52,7 +52,7 @@ public class AccountValidator : CommandSetValidator<Account>
             () =>
             {
                 ValidateRequired(a => a.Contract.Id);
-                ValidateExist<IEntryStore, Account>((cmd) => (e) => e.Id == cmd.Id);
+                ValidateExist<IEntryStore, Member>((cmd) => (e) => e.Id == cmd.Id);
             }
         );
     }

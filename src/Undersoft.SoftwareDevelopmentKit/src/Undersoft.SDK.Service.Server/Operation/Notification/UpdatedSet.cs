@@ -11,7 +11,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 public class UpdatedSet<TStore, TEntity, TDto> : NotificationSet<Command<TDto>>
     where TDto : class, IDataObject
     where TEntity : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     public UpdatedSet(UpdateSet<TStore, TEntity, TDto> commands)
         : base(

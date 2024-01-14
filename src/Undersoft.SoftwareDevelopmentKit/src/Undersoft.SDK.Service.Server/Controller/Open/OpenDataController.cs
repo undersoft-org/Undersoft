@@ -20,8 +20,8 @@ public abstract class OpenDataController<TKey, TEntry, TReport, TEntity, TDto>
     : ODataController, IOpenDataController<TKey, TEntity, TDto>
     where TDto : class, IDataObject
     where TEntity : class, IDataObject
-    where TEntry : IDatabaseStore
-    where TReport : IDatabaseStore
+    where TEntry : IDataServerStore
+    where TReport : IDataServerStore
 {
     protected Func<TKey, Func<TDto, object>> _keysetter = k => e => e.SetId(k);
     protected Func<TKey, Expression<Func<TEntity, bool>>> _keymatcher = k => e => k.Equals(e.Id);

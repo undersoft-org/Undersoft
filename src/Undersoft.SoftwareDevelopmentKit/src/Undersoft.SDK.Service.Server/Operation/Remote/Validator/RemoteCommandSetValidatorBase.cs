@@ -146,7 +146,7 @@ public abstract class RemoteCommandSetValidatorBase<TCommand> : AbstractValidato
         params string[] propertyNames
     )
         where TEntity : class, IDataObject
-        where TStore : IDatabaseStore
+        where TStore : IDataServerStore
     {
         var _repository = _servicer.Use<TStore, TEntity>();
 
@@ -175,7 +175,7 @@ public abstract class RemoteCommandSetValidatorBase<TCommand> : AbstractValidato
         params string[] propertyNames
     )
         where TEntity : class, IDataObject
-        where TStore : IDatabaseStore
+        where TStore : IDataServerStore
     {
         var _repository = _servicer.Use<TStore, TEntity>();
 

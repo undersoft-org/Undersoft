@@ -9,7 +9,7 @@ using Undersoft.SDK.Service;
 using Uniques;
 
 public class DataStoreContext<TStore> : DataStoreContext, IDataStoreContext<TStore>
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     protected virtual Type StoreType { get; }
 

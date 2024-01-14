@@ -42,7 +42,7 @@ namespace Undersoft.SDK.Service.Server
             return this;
         }
 
-        public virtual IDataServerBuilder AddAuthorizationService()
+        public virtual IDataServerBuilder AddAuthorizationService<TAuth>() where TAuth : class
         {
             return this;
         }

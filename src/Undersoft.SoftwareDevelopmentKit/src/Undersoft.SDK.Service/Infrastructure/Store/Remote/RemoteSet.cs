@@ -53,7 +53,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Store.Remote
     }
 
     public class RemoteSet<TStore, TEntity> : RemoteSet<TEntity>, IRemoteSet<TStore, TEntity>
-        where TEntity : class, IOrigin
+        where TEntity : class, IOrigin, IInnerProxy
     {
         private IRemoteRepository<TEntity> _repository;
 

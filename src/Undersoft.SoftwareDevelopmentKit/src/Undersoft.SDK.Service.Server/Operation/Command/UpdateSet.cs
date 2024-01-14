@@ -9,7 +9,7 @@ namespace Undersoft.SDK.Service.Server.Operation.Command;
 public class UpdateSet<TStore, TEntity, TDto> : CommandSet<TDto>
     where TEntity : class, IDataObject
     where TDto : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     [JsonIgnore]
     public Func<TDto, Expression<Func<TEntity, bool>>> Predicate { get; }

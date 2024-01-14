@@ -7,7 +7,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class FindHandler<TStore, TEntity, TDto> : IRequestHandler<Find<TStore, TEntity, TDto>, TDto>
     where TEntity : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     protected readonly IStoreRepository<TEntity> _repository;
 

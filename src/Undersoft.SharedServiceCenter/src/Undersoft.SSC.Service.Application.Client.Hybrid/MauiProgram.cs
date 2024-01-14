@@ -40,12 +40,12 @@ namespace Undersoft.SSC.Service.Application.Client.Hybrid
                     var reg = ServiceManager.GetRegistry();
                     reg.Services = services;
                     reg.AddAuthorizationCore();
-                    reg.AddScoped<AccountAuthenticationStateProvider>();
-                    reg.AddScoped<AuthenticationStateProvider, AccountAuthenticationStateProvider>(
-                        provider => provider.GetRequiredService<AccountAuthenticationStateProvider>()
+                    reg.AddScoped<MemberAuthenticationStateProvider>();
+                    reg.AddScoped<AuthenticationStateProvider, MemberAuthenticationStateProvider>(
+                        provider => provider.GetRequiredService<MemberAuthenticationStateProvider>()
                     );
-                    reg.AddScoped<IAuthenticationStateService, AccountAuthenticationStateProvider>(
-                        provider => provider.GetRequiredService<AccountAuthenticationStateProvider>()
+                    reg.AddScoped<IAuthenticationStateService, MemberAuthenticationStateProvider>(
+                        provider => provider.GetRequiredService<MemberAuthenticationStateProvider>()
                     );
                     reg.MergeServices(true);
                 }

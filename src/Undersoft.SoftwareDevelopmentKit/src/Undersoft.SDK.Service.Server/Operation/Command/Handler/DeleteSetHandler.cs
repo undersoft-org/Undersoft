@@ -11,7 +11,7 @@ public class DeleteSetHandler<TStore, TEntity, TDto>
     : IRequestHandler<DeleteSet<TStore, TEntity, TDto>, CommandSet<TDto>>
     where TDto : class, IDataObject
     where TEntity : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     protected readonly IStoreRepository<TEntity> _repository;
     protected readonly IServicer _uservice;

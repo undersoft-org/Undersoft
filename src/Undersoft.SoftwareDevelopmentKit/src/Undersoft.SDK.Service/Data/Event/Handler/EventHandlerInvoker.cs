@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using Undersoft.SDK.Series;
 using System.Threading.Tasks;
-using Undersoft.SDK.Service.Data.Event.Bus;
 
 namespace Undersoft.SDK.Service.Data.Event.Handler
 {

@@ -9,7 +9,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Store;
 
 using Uniques;
 
-public interface IDataStoreContext<TStore> : IDataStoreContext where TStore : IDatabaseStore { }
+public interface IDataStoreContext<TStore> : IDataStoreContext where TStore : IDataServerStore { }
 
 public interface IDataStoreContext : IResettableService, IDisposable, IAsyncDisposable
 {

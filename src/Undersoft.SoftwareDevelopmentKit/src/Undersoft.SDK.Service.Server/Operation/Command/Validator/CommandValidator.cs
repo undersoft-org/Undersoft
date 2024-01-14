@@ -139,7 +139,7 @@ public class CommandValidator<TDto> : CommandValidatorBase<Command<TDto>> where 
         Func<TDto, Expression<Func<TEntity, bool>>> command
     )
         where TEntity : class, IDataObject
-        where TStore : IDatabaseStore
+        where TStore : IDataServerStore
     {
         var _repository = uservice.Use<TStore, TEntity>();
 
@@ -157,7 +157,7 @@ public class CommandValidator<TDto> : CommandValidatorBase<Command<TDto>> where 
         Func<TDto, Expression<Func<TEntity, bool>>> command
     )
         where TEntity : class, IDataObject
-        where TStore : IDatabaseStore
+        where TStore : IDataServerStore
     {
         var _reposiotry = uservice.Use<TStore, TEntity>();
 

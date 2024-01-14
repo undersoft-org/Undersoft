@@ -236,15 +236,15 @@ public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepos
         {
             if (enable)
             {
-                dbContext.ChangeTracker.StateChanged += AuditTrigger;
-                dbContext.ChangeTracker.StateChanged += LinkTrigger;
-                dbContext.ChangeTracker.Tracked += LinkTrigger;
+                dbContext.ChangeTracker.StateChanged += AuditStateEvent;
+                dbContext.ChangeTracker.StateChanged += LoadRemoteEvent;
+                dbContext.ChangeTracker.Tracked += LoadRemoteEvent;
             }
             else
             {
-                dbContext.ChangeTracker.StateChanged -= AuditTrigger;
-                dbContext.ChangeTracker.StateChanged -= LinkTrigger;
-                dbContext.ChangeTracker.Tracked -= LinkTrigger;
+                dbContext.ChangeTracker.StateChanged -= AuditStateEvent;
+                dbContext.ChangeTracker.StateChanged -= LoadRemoteEvent;
+                dbContext.ChangeTracker.Tracked -= LoadRemoteEvent;
             }
         }
     }
@@ -354,14 +354,14 @@ public class StoreRepository<TStore, TEntity>
     public StoreRepository(
         IRepositoryContextPool<DataStoreContext<TStore>> pool,
         IEntityCache<TStore, TEntity> cache,
-        IEnumerable<IRemoteObject<TStore, TEntity>> linked,
+        IEnumerable<IRemoteProperty<TStore, TEntity>> remoteProps,
         IRemoteSynchronizer synchronizer
     ) : base(pool.ContextPool)
     {
         mapper = cache.Mapper;
         this.cache = cache;
         synchronizer.AddRepository(this);
-        RemoteObjects = linked.DoEach(
+        RemoteProperties = remoteProps.DoEach(
             (o) =>
             {
                 o.Host = this;

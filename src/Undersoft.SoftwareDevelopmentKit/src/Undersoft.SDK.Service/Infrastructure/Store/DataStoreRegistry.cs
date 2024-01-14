@@ -156,11 +156,11 @@ public static class DataStoreRegistry
 
             iface = type.GenericTypeArguments
                     .Where(i => i
-                    .IsAssignableTo(typeof(IDatabaseStore)))
+                    .IsAssignableTo(typeof(IDataServerStore)))
                     .FirstOrDefault();
 
             if (iface == null)
-                iface = typeof(IDatabaseStore);
+                iface = typeof(IDataServerStore);
 
             Stores.Put(iface, contextType);
             Stores.Put(contextType, iface);
@@ -348,10 +348,10 @@ public static class DataStoreRegistry
             var iface = storeType
                 .GetInterfaces()
                 .Where(i => i.GetInterfaces()
-                    .Contains(typeof(IDatabaseStore))).FirstOrDefault();
+                    .Contains(typeof(IDataServerStore))).FirstOrDefault();
 
-            if (iface == null && storeType == typeof(IDatabaseStore))
-                iface = typeof(IDatabaseStore);
+            if (iface == null && storeType == typeof(IDataServerStore))
+                iface = typeof(IDataServerStore);
 
             if (dbEntityContext.TryGet(storeType, out Type contextType))
                 return contextType;
@@ -366,10 +366,10 @@ public static class DataStoreRegistry
             var iface = typeof(TStore)
                         .GetInterfaces()
                         .Where(i => i.GetInterfaces()
-                            .Contains(typeof(IDatabaseStore))).FirstOrDefault();
+                            .Contains(typeof(IDataServerStore))).FirstOrDefault();
 
-            if (iface == null && typeof(TStore) == typeof(IDatabaseStore))
-                iface = typeof(IDatabaseStore);
+            if (iface == null && typeof(TStore) == typeof(IDataServerStore))
+                iface = typeof(IDataServerStore);
 
             if (dbEntityContext.TryGet(typeof(TStore), out Type contextType))
                 return contextType;

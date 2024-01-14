@@ -9,7 +9,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Store.Remote;
 
 using Uniques;
 
-public class RemoteOneToSet<TOrigin, TTarget> : RemoteLink<TOrigin, TTarget, IRemoteSet<TTarget>> where TOrigin : class, IUniqueIdentifiable where TTarget : class, IUniqueIdentifiable
+public class RemoteOneToSet<TOrigin, TTarget> : RemoteRelation<TOrigin, TTarget> where TOrigin : class, IOrigin, IInnerProxy where TTarget : class, IOrigin, IInnerProxy
 {
     private Func<TTarget, object> targetKey;
     private Func<TOrigin, object> originKey;

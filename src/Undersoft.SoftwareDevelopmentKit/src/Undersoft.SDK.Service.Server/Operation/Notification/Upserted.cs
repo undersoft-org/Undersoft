@@ -11,7 +11,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 public class Upserted<TStore, TEntity, TDto> : Notification<Command<TDto>>
     where TDto : class, IDataObject
     where TEntity : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     [JsonIgnore]
     public Func<TEntity, Expression<Func<TEntity, bool>>> Predicate { get; }

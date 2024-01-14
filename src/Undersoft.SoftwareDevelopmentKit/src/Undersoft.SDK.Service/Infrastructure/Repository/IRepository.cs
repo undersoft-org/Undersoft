@@ -2,10 +2,11 @@
 using Undersoft.SDK.Service.Data.Query;
 using System.Linq.Expressions;
 using Undersoft.SDK.Service.Infrastructure.Repository.Pagination;
+using Undersoft.SDK.Service.Data.Object;
 
 namespace Undersoft.SDK.Service.Infrastructure.Repository
 {
-    public interface IRepository<TEntity> : IPage<TEntity>, IRepository, IOrderedQueryable<TEntity>, IEnumerable<TEntity> where TEntity : class, IOrigin
+    public interface IRepository<TEntity> : IPage<TEntity>, IRepository, IOrderedQueryable<TEntity>, IEnumerable<TEntity> where TEntity : class, IOrigin, IInnerProxy
     {
         IQueryable<TEntity> this[Expression<Func<TEntity, bool>> predicate] { get; }
         IQueryable<TEntity> this[Expression<Func<TEntity, object>>[] expanders] { get; }
@@ -156,7 +157,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository
         Task<ISeries<TEntity>> HashMapFrom<TDto>(IEnumerable<TDto> model);
         Task<ISeries<TDto>> HashMapTo<TDto>(IEnumerable<object> entity);
         Task<ISeries<TDto>> HashMapTo<TDto>(IEnumerable<TEntity> entity);
-        void LinkTrigger(object sender, EntityEntryEventArgs e);
+        void LoadRemoteEvent(object sender, EntityEntryEventArgs e);
         Task<IList<TEntity>> Map<TDto>(IEnumerable<TDto> model, IEnumerable<TEntity> entity);
         Task<IList<TDto>> Map<TDto>(IEnumerable<TEntity> entity, IEnumerable<TDto> model);
         Task<TEntity> Map<TDto>(TDto model, TEntity entity);

@@ -13,7 +13,7 @@ public class Activity : ActivityBase
     public virtual DataObjects<ActivityBase>? RelatedTo { get; set; }
 
     [DataMember(Order = 20)]
-    public virtual DataObjects<AccountBase>? Accounts { get; set; }
+    public virtual DataObjects<MemberBase>? Members { get; set; }
 
     [DataMember(Order = 21)]
     public virtual DataObjects<ResourceBase>? Resources { get; set; }

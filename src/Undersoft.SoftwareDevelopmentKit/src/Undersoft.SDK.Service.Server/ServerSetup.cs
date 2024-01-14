@@ -16,6 +16,7 @@ using Account.Identity;
 using Documentation;
 using Infrastructure.Repository.Source;
 using Infrastructure.Store;
+using Undersoft.SDK.Service.Application.Account;
 
 public partial class ServerSetup : ServiceSetup, IServerSetup
 {
@@ -139,8 +140,8 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
         AddIdentityAuthentication();
         AddIdentityAuthorization();
 
-        registry.AddScoped<IAccountIdentityManager, AccountIdentityManager>();
-        registry.AddScoped<AuthorizationService>();
+        registry.AddScoped<IAccountManager, AccountManager>();
+        registry.AddScoped<AccountService>();
         registry.AddTransient<IEmailSender, AccountEmailSender>();
         registry.Configure<AccountEmailSenderOptions>(configuration);
 
@@ -149,8 +150,8 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
 
     public IServerSetup AddIdentityAuthentication()
     {
-        var jwtOptions = new AccountIdentityJWTOptions();
-        var jwtFactory = new AccountIdentityJWTGenerator(30, jwtOptions);
+        var jwtOptions = new AccountTokenOptions();
+        var jwtFactory = new AccountTokenGenerator(30, jwtOptions);
 
         registry.AddObject(jwtFactory);
 
@@ -202,8 +203,8 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
         registry.AddSwaggerGen(options =>
         {
             options.SwaggerDoc(
-                ao.ApiVersion,
-                new OpenApiInfo { Title = ao.ApiName, Version = ao.ApiVersion }
+                ao.ServiceVersion,
+                new OpenApiInfo { Title = ao.ServiceName, Version = ao.ServiceVersion }
             );
             options.OperationFilter<SwaggerJsonIgnoreFilter>();
             options.DocumentFilter<IgnoreApiDocument>();
@@ -217,7 +218,7 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
                     {
                         Password = new OpenApiOAuthFlow
                         {
-                            TokenUrl = new Uri($"{ao.BaseUrl}/data/open/Authorization/Signin")
+                            TokenUrl = new Uri($"{ao.ServerBaseUrl}/data/open/Authorization/Signin")
                         }
                     }
                 }

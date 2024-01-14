@@ -2,12 +2,11 @@
 
 namespace Undersoft.SDK.Service.Infrastructure.Store;
 
-public partial class Store<TStore, TContext> : DataStoreContext<TStore> where TStore : IDatabaseStore
+public partial class Store<TStore, TContext> : DataStoreContext<TStore>
+    where TStore : IDataServerStore
     where TContext : DbContext
 {
-    public Store(DbContextOptions<TContext> options) : base(options)
-    {
-    }
+    public Store(DbContextOptions<TContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

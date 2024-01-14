@@ -65,12 +65,12 @@ namespace Undersoft.SDK.Service
 
         public T GetRequiredService<T>() where T : class
         {
-            return GetSingleton<IServiceManager>().RootProvider.GetRequiredService<T>();
+            return GetSingleton<IServiceManager>().Provider.GetRequiredService<T>();
         }
 
         public object GetRequiredService(Type type)
         {
-            return GetSingleton<IServiceManager>().RootProvider.GetRequiredService(type);
+            return GetSingleton<IServiceManager>().Provider.GetRequiredService(type);
         }
 
         public Lazy<T> GetRequiredServiceLazy<T>() where T : class
@@ -136,12 +136,12 @@ namespace Undersoft.SDK.Service
 
         internal T GetService<T>() where T : class
         {
-            return GetSingleton<IServiceManager>().RootProvider.GetService<T>();
+            return GetSingleton<IServiceManager>().Provider.GetService<T>();
         }
 
         internal object GetService(Type type)
         {
-            return GetSingleton<IServiceManager>().RootProvider.GetService(type);
+            return GetSingleton<IServiceManager>().Provider.GetService(type);
         }
     }
 }

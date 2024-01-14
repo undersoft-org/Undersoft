@@ -1,24 +1,24 @@
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Undersoft.SDK.Service.Data.Mapper;
 
 namespace Undersoft.SDK.Service.Infrastructure.Repository;
 
 using Client;
-using Data.Entity;
-
-using Undersoft.SDK.Service.Data.Object;
 using Source;
-using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Client;
+using Undersoft.SDK.Service.Data.Object;
+using Undersoft.SDK.Service.Infrastructure.Store;
 
-public class RepositoryManager : Catalog<IDataStoreContext>, IDisposable, IAsyncDisposable, IRepositoryManager
+public class RepositoryManager : Registry<IDataStoreContext>, IDisposable, IAsyncDisposable, IRepositoryManager, IRepositoryManager
 {
     private new bool disposedValue;
     protected IDataMapper mapper;
 
-    protected static IRepositorySources Sources { get; set; }
-    public static IRepositoryClients Clients { get; set; }
+    private IRepositorySources _sources;
+    protected IRepositorySources Sources => _sources ??= Services.Registry.GetObject<IRepositorySources>();
+
+    private IRepositoryClients _clients;
+    protected IRepositoryClients Clients => _clients ??= Services.Registry.GetObject<IRepositoryClients>();
 
     protected IServiceManager Services { get; init; }
 
@@ -29,14 +29,14 @@ public class RepositoryManager : Catalog<IDataStoreContext>, IDisposable, IAsync
 
     static RepositoryManager()
     {
-        Sources = new RepositorySources();
-        Clients = new RepositoryClients();
+        ServiceManager.AddRootObject<IRepositorySources>(new RepositorySources());
+        ServiceManager.AddRootObject<IRepositoryClients>(new RepositoryClients());
     }
     public RepositoryManager() : base()
     {
     }
 
-    public IStoreRepository<TEntity> use<TStore, TEntity>() where TEntity : class, IDataObject where TStore : IDatabaseStore
+    public IStoreRepository<TEntity> use<TStore, TEntity>() where TEntity : class, IDataObject where TStore : IDataServerStore
     {
         return Use<TStore, TEntity>();
     }
@@ -59,7 +59,7 @@ public class RepositoryManager : Catalog<IDataStoreContext>, IDisposable, IAsync
                                                   typeof(TEntity)));
     }
     public IStoreRepository<TEntity> Use<TStore, TEntity>()
-       where TEntity : class, IDataObject where TStore : IDatabaseStore
+       where TEntity : class, IDataObject where TStore : IDataServerStore
     {
         return Services.GetService<IStoreRepository<TStore, TEntity>>();
     }
@@ -106,7 +106,7 @@ public class RepositoryManager : Catalog<IDataStoreContext>, IDisposable, IAsync
         return Clients.Get(contextType);
     }
 
-    public static void AddClientPool(Type contextType, int poolSize, int minSize = 1)
+    public void AddClientPool(Type contextType, int poolSize, int minSize = 1)
     {
         if (TryGetClient(contextType, out IRepositoryClient client))
         {
@@ -145,19 +145,17 @@ public class RepositoryManager : Catalog<IDataStoreContext>, IDisposable, IAsync
         return new RepositoryClient(contextType, serviceRoot);
     }
 
-    public static IRepositoryClient AddClient(IRepositoryClient client)
+    public IRepositoryClient AddClient(IRepositoryClient client)
     {
-        if (Clients == null)
-            Clients = ServiceManager.GetObject<IRepositoryClients>();
         Clients.Add(client);
         return client;
     }
 
-    public static bool TryGetClient<TContext>(out IRepositoryClient<TContext> source) where TContext : OpenDataServiceContext
+    public bool TryGetClient<TContext>(out IRepositoryClient<TContext> source) where TContext : OpenDataServiceContext
     {
         return Clients.TryGet(out source);
     }
-    public static bool TryGetClient(Type contextType, out IRepositoryClient source)
+    public bool TryGetClient(Type contextType, out IRepositoryClient source)
     {
         return Clients.TryGet(contextType, out source);
     }
@@ -173,7 +171,7 @@ public class RepositoryManager : Catalog<IDataStoreContext>, IDisposable, IAsync
         });
     }
 
-    public static void AddSourcePool(Type contextType, int poolSize, int minSize = 1)
+    public void AddSourcePool(Type contextType, int poolSize, int minSize = 1)
     {
         if (TryGetSource(contextType, out IRepositorySource source))
         {
@@ -201,19 +199,17 @@ public class RepositoryManager : Catalog<IDataStoreContext>, IDisposable, IAsync
         return new RepositorySource(options);
     }
 
-    public static IRepositorySource AddSource(IRepositorySource source)
+    public IRepositorySource AddSource(IRepositorySource source)
     {
-        if (Sources == null)
-            Sources = ServiceManager.GetObject<IRepositorySources>();
         Sources.Add(source);
         return source;
     }
 
-    public static bool TryGetSource<TContext>(out IRepositorySource<TContext> source) where TContext : DbContext
+    public bool TryGetSource<TContext>(out IRepositorySource<TContext> source) where TContext : DbContext
     {
         return Sources.TryGet(out source);
     }
-    public static bool TryGetSource(Type contextType, out IRepositorySource source)
+    public bool TryGetSource(Type contextType, out IRepositorySource source)
     {
         return Sources.TryGet(contextType, out source);
     }
@@ -228,20 +224,20 @@ public class RepositoryManager : Catalog<IDataStoreContext>, IDisposable, IAsync
         return Clients;
     }
 
-    public static IDataMapper CreateMapper(params MapperProfile[] profiles)
+    public IDataMapper CreateMapper(params MapperProfile[] profiles)
     {
         DataMapper.AddProfiles(profiles);
-        return ServiceManager.GetObject<IDataMapper>();
+        return Services.Registry.GetObject<IDataMapper>();
     }
-    public static IDataMapper CreateMapper<TProfile>() where TProfile : MapperProfile
+    public IDataMapper CreateMapper<TProfile>() where TProfile : MapperProfile
     {
         DataMapper.AddProfiles(typeof(TProfile).New<TProfile>());
-        return ServiceManager.GetObject<IDataMapper>();
+        return Services.Registry.GetObject<IDataMapper>();
     }
 
-    public static IDataMapper GetMapper()
+    public IDataMapper GetMapper()
     {
-        return ServiceManager.GetObject<IDataMapper>();
+        return Services.Registry.GetObject<IDataMapper>();
     }
 
     protected override void Dispose(bool disposing)

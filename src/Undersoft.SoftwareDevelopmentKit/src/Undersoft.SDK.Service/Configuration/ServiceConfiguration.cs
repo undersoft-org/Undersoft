@@ -6,7 +6,8 @@ using System.Collections.Generic;
 
 namespace Undersoft.SDK.Service.Configuration;
 
-using Undersoft.SDK.Service.Configuration.Options;
+using Undersoft.SDK.Security.Identity;
+using Undersoft.SDK.Service.Infrastructure.Repository;
 using Undersoft.SDK.Service.Infrastructure.Repository.Source;
 
 public class ServiceConfiguration : IServiceConfiguration
@@ -15,7 +16,10 @@ public class ServiceConfiguration : IServiceConfiguration
     public IServiceCollection Services;
 
     private IdentityOptions _identity;
-    public IdentityOptions Identity => GetIdentityConfiguration();
+    public IdentityOptions Identity => _identity ??= GetIdentityConfiguration();
+
+    private RepositoryOptions _repository;
+    public RepositoryOptions Repositories => _repository ??= GetRepositoryConfiguration(); 
 
     public string this[string key]
     {
@@ -67,7 +71,7 @@ public class ServiceConfiguration : IServiceConfiguration
         return this;
     }
 
-    public string Version => config["Version"];
+    public string Version => config["ServiceVersion"];
     public string Title => config["Title"];
     public string Description => config["Description"];
 
@@ -183,17 +187,17 @@ public class ServiceConfiguration : IServiceConfiguration
 
     public IConfigurationSection IdentityServer()
     {
-        return config.GetSection("IdentityServer");
+        return config.GetSection("Identity");
     }
 
     public string IdentityServerBaseUrl()
     {
-        return IdentityServer().GetValue<string>("BaseUrl");
+        return IdentityServer().GetValue<string>("ServerBaseUrl");
     }
 
-    public string IdentityServerApiName()
+    public string IdentityServiceName()
     {
-        return IdentityServer().GetValue<string>("ApiName");
+        return IdentityServer().GetValue<string>("ServiceName");
     }
 
     public string[] IdentityServerScopes()
@@ -213,10 +217,15 @@ public class ServiceConfiguration : IServiceConfiguration
 
     public IdentityOptions GetIdentityConfiguration()
     {
-        if (_identity != null)
-            return _identity;
-        _identity = new IdentityOptions();
-        config.Bind("IdentityServer", _identity);
-        return _identity;
+        var identity = new IdentityOptions();
+        config.Bind("Identity", identity);
+        return identity;
+    }
+
+    public RepositoryOptions GetRepositoryConfiguration()
+    {
+        var options = new RepositoryOptions();
+        config.Bind("Repository", options);
+        return options;
     }
 }

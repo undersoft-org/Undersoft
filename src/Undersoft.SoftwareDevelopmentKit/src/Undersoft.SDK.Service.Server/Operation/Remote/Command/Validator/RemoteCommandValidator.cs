@@ -144,7 +144,7 @@ public class RemoteCommandValidator<TModel> : RemoteCommandValidatorBase<RemoteC
         Func<TModel, Expression<Func<TEntity, bool>>> command
     )
         where TEntity : class, IDataObject
-        where TStore : IDatabaseStore
+        where TStore : IDataServerStore
     {
         var _repository = uservice.Use<TStore, TEntity>();
 
@@ -162,7 +162,7 @@ public class RemoteCommandValidator<TModel> : RemoteCommandValidatorBase<RemoteC
         Func<TModel, Expression<Func<TEntity, bool>>> command
     )
         where TEntity : class, IDataObject
-        where TStore : IDatabaseStore
+        where TStore : IDataServerStore
     {
         var _reposiotry = uservice.Use<TStore, TEntity>();
 

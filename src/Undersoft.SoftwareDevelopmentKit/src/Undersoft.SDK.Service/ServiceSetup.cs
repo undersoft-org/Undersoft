@@ -155,7 +155,7 @@ public partial class ServiceSetup : IServiceSetup
                                         config.Title
                                             + " ,OS="
                                             + Environment.OSVersion
-                                            + ",Name="
+                                            + ",ServiceName="
                                             + Environment.MachineName
                                             + ",Domain="
                                             + Environment.UserDomainName
@@ -233,7 +233,7 @@ public partial class ServiceSetup : IServiceSetup
 
     public IServiceSetup AddPropertyInjection()
     {
-        ServiceManager.AddPropertyInjection();
+        manager.AddPropertyInjection();
 
         return this;
     }

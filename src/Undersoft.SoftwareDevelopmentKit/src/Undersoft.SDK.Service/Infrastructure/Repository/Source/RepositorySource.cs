@@ -17,7 +17,7 @@ using Security.Identity;
 using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Infrastructure.Repository;
 
-public class RepositorySource : Catalog<IRepositoryContext>, IRepositorySource
+public class RepositorySource : Catalog<IRepositoryContext>, IRepositorySource, IRepositorySource1
 {
     protected DbContextConfigurationSnapshot _configurationSnapshot;
     protected Type contextType;

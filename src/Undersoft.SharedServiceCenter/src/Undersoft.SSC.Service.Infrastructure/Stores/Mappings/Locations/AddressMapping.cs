@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings.Locations;
 
 using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SSC.Entities.Locations;
+using Undersoft.SSC.Entities.Members.Locations;
 
 public class AddressMapping : EntityTypeMapping<Address>
 {

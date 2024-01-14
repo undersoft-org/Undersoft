@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Undersoft.SSC.Entities.Activities;
 
 namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 {
-    using Undersoft.SDK.Service.Data.Relation;
     using Undersoft.SDK.Service.Infrastructure.Store;
-    using Undersoft.SSC.Entities.Accounts;
-    using Undersoft.SSC.Entities.Activity;
+    using Undersoft.SDK.Service.Infrastructure.Store.Relation;
+    using Undersoft.SSC.Entities.Members;
+    using Undersoft.SSC.Entities.Activities.Locations;
     using Undersoft.SSC.Entities.Resources;
     using Undersoft.SSC.Entities.Schedules;
 
@@ -27,20 +28,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
                     l => l.Activities,
                     ExpandSite.OnRight
                 )
-                .RelateSetToRemoteSet<Account, Activity>(
-                    r => r.AccountsToActivities,
-                    r => r.Accounts,
-                    ExpandSite.OnRight
+                .RelateSetToRemoteSet<Activity, Member>(
+                    r => r.MemberNode
                 )
                 .RelateSetToRemoteSet<Activity, Resource>(
-                    r => r.AccountsToResources,
-                    r => r.Accounts,
-                    ExpandSite.OnRight
+                    r => r.ResourceNode
                 )
                 .RelateSetToRemoteSet<Activity, Schedule>(
-                    r => r.AccountsToSchedules,
-                    r => r.Accounts,
-                    ExpandSite.OnRight
+                    r => r.ScheduleNode
                 )
                 .RelateSetToSet<Activity, ActivityDetail>(
                     r => r.Details,
@@ -64,7 +59,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
                     rm => rm.RelatedFrom,
                     nameof(ActivityDetail.Activities),
                     ExpandSite.OnRight
-                );
+                )
+                .RelateOneToSet<ActivityLocation, Endpoint>(ExpandSite.OnRight)
+                .RelateOneToSet<ActivityLocation, Position>(ExpandSite.OnRight);
         }
     }
 }

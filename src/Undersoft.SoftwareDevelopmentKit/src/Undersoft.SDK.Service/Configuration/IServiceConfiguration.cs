@@ -2,8 +2,7 @@
 
 namespace Undersoft.SDK.Service.Configuration;
 using Microsoft.Extensions.Configuration;
-
-using Undersoft.SDK.Service.Configuration.Options;
+using Undersoft.SDK.Security.Identity;
 using Undersoft.SDK.Service.Infrastructure.Repository.Source;
 
 public interface IServiceConfiguration : IConfiguration
@@ -31,7 +30,7 @@ public interface IServiceConfiguration : IConfiguration
     IConfigurationSection Repository();
     IConfigurationSection IdentityServer();
     string IdentityServerBaseUrl();
-    string IdentityServerApiName();
+    string IdentityServiceName();
     string[] IdentityServerScopes();
     string[] IdentityServerRoles();
     IdentityOptions GetIdentityConfiguration();

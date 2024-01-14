@@ -8,7 +8,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 public class GetQueryHandler<TStore, TEntity, TDto>
     : IRequestHandler<GetQuery<TStore, TEntity, TDto>, IQueryable<TDto>>
     where TEntity : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
     where TDto : class
 {
     protected readonly IStoreRepository<TEntity> _repository;

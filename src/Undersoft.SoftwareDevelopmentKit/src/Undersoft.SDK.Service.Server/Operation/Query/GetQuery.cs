@@ -6,7 +6,7 @@ namespace Undersoft.SDK.Service.Server.Operation.Query;
 
 public class GetQuery<TStore, TEntity, TDto> : Query<TStore, TEntity, IQueryable<TDto>>
     where TEntity : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     public GetQuery(params Expression<Func<TEntity, object>>[] expanders) : base(expanders) { }
 

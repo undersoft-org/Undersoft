@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Undersoft.SDK.Service.Data.Event.Bus;
 
 namespace Undersoft.SDK.Service.Data.Event.Handler
 {
@@ -41,7 +40,7 @@ namespace Undersoft.SDK.Service.Data.Event.Handler
 
         protected virtual IEventHandler CreateHandler()
         {
-            return (IEventHandler)Activator.CreateInstance(HandlerType);
+            return HandlerType.New<IEventHandler>();
         }
     }
 }

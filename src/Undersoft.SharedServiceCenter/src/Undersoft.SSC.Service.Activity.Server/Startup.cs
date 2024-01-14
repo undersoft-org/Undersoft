@@ -29,7 +29,7 @@ public class Startup
                 },
                 new[]
                 {
-                    typeof(AccountDataService),
+                    typeof(MemberDataService),
                     typeof(ResourceDataService),
                     typeof(ScheduleDataService)
                 }

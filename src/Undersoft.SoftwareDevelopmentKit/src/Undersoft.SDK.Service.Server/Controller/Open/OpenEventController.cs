@@ -14,7 +14,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 [OpenDataService]
 public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataController, IOpenEventController<TKey, TEntity, TDto> where TDto : class, IDataObject
     where TEntity : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     protected Func<TKey, Func<TDto, object>> _keysetter = k => e => e.SetId(k);
     protected Func<TKey, Expression<Func<TEntity, bool>>> _keymatcher = k => e => k.Equals(e.Id);

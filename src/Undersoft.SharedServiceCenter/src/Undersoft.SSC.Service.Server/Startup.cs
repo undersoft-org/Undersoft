@@ -1,4 +1,5 @@
-﻿using Undersoft.SDK.Service.Server;
+﻿using Undersoft.SDK.Security.Identity;
+using Undersoft.SDK.Service.Server;
 using Undersoft.SSC.Service.Clients;
 using Undersoft.SSC.Service.Infrastructure.Stores;
 
@@ -27,16 +28,16 @@ public class Startup
                 },
                 new[]
                 {
-                    typeof(AccountDataService),
+                    typeof(MemberDataService),
                     typeof(ActivityDataService),
                     typeof(ResourceDataService),
                     typeof(ScheduleDataService)
                 }
             )
-            .AddAccountIdentity<ServiceIdentityStore>()
+            .AddMemberIdentity<ServiceIdentityStore>()
             .AddDataServer<IDataServiceStore>(
                 DataServerTypes.All,
-                builder => builder.AddAuthorizationService()
+                builder => builder.AddAuthorizationService<Authorization>()
             );
     }
 

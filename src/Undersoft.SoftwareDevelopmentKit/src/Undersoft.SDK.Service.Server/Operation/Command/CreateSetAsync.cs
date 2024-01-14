@@ -11,7 +11,7 @@ public class CreateSetAsync<TStore, TEntity, TDto>
         IStreamRequest<Command<TDto>>
     where TEntity : class, IDataObject
     where TDto : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     public CreateSetAsync(EventPublishMode publishPattern, TDto input, object key)
         : base(publishPattern, input, key) { }

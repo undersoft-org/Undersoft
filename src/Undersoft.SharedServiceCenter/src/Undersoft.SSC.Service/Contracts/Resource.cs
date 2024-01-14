@@ -10,7 +10,7 @@ public class Resource : ResourceBase
 
     public virtual DataObjects<ResourceBase>? RelatedTo { get; set; }
 
-    public virtual DataObjects<AccountBase>? Accounts { get; set; }
+    public virtual DataObjects<MemberBase>? Members { get; set; }
 
     public virtual DataObjects<ActivityBase>? Activities { get; set; }
 

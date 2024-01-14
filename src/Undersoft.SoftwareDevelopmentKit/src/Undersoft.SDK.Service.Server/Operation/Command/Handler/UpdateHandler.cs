@@ -12,7 +12,7 @@ public class UpdateHandler<TStore, TEntity, TDto>
     : IRequestHandler<Update<TStore, TEntity, TDto>, Command<TDto>>
     where TDto : class, IDataObject
     where TEntity : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     protected readonly IStoreRepository<TEntity> _repository;
     protected readonly IServicer _servicer;

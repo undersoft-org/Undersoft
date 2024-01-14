@@ -8,7 +8,7 @@ public class Schedule : ScheduleBase
 
     public virtual DataObjects<ScheduleBase>? RelatedTo { get; set; }
 
-    public virtual DataObjects<AccountBase>? Accounts { get; set; }
+    public virtual DataObjects<MemberBase>? Members { get; set; }
 
     public virtual DataObjects<ActivityBase>? Activities { get; set; }
 

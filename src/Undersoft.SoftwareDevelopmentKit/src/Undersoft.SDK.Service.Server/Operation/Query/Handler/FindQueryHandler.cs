@@ -10,7 +10,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 public class FindQueryHandler<TStore, TEntity, TDto>
     : IRequestHandler<FindQuery<TStore, TEntity, TDto>, IQueryable<TDto>>
     where TEntity : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
     where TDto : class, IOrigin, IInnerProxy
 {
     protected readonly IStoreRepository<TEntity> _repository;

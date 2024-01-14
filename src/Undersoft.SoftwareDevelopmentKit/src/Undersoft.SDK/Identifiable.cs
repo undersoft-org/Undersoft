@@ -116,6 +116,11 @@ namespace Undersoft.SDK
             return code.GetPriority();
         }
 
+        public virtual byte SetPriority(byte priority)
+        {
+            return code.SetPriority(priority);
+        }
+
         public virtual void SetFlag(StateFlags state, bool flag)
         {
             code.SetFlag(state, flag);

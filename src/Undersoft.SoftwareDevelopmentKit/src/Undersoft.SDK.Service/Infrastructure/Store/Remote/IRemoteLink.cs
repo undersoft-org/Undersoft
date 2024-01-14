@@ -1,34 +1,18 @@
-﻿using Undersoft.SDK.Instant;
-using System;
-using System.Linq.Expressions;
-using System.Collections.Generic;
+﻿using System.Text.Json.Serialization;
 
-namespace Undersoft.SDK.Service.Infrastructure.Store.Remote;
+namespace Undersoft.SDK.Service.Data.Relation;
 
+using Entity;
+
+using Undersoft.SDK.Service.Data.Object;
 using Uniques;
-using Instant.Rubrics;
-using Undersoft.SDK;
 
-public interface IRemoteLink : IUnique
+public interface IRemoteLink<TSource, TTarget> : IDataObject where TSource : class, IOrigin, IInnerProxy where TTarget : class, IOrigin, IInnerProxy
 {
-    Towards Towards { get; set; }
-
-    MemberRubric RemoteRubric { get; }
-}
-
-public interface IRemoteMember<TOrigin, TTarget> : IRemoteLink where TOrigin : class, IOrigin where TTarget : class, IOrigin
-{
-    Expression<Func<TOrigin, object>> SourceKey { get; set; }
-    Expression<Func<TTarget, object>> TargetKey { get; set; }
-
-    Func<TOrigin, Expression<Func<TTarget, bool>>> Predicate { get; set; }
-
-    Expression<Func<TTarget, bool>> CreatePredicate(object entity);
-}
-
-public interface IRemoteMember<TOrigin, TTarget, TMiddle> : IRemoteMember<TOrigin, TTarget> where TOrigin : class, IOrigin where TTarget : class, IOrigin
-{
-    Expression<Func<TMiddle, object>> MiddleKey { get; set; }
-
-    Expression<Func<TOrigin, IEnumerable<TMiddle>>> MiddleSet { get; set; }
+    [JsonIgnore]
+    TSource Source { get; set; }
+    long SourceId { get; set; }
+    [JsonIgnore]
+    TTarget Target { get; set; }
+    long TargetId { get; set; }
 }

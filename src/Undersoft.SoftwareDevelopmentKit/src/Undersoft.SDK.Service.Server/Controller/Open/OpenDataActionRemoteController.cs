@@ -43,7 +43,7 @@ public abstract class OpenDataActionRemoteController<TStore, TKind, TDto, TModel
         if (Enum.TryParse(kind, out TKind method))
         {
             var result = await _servicer.Send(
-                new RemoteExecute<TStore, TDto, TModel, TKind>(method, ((JsonElement)parameters[typeof(TDto).Name]).Deserialize<TModel>(), CommandMode.Action)
+                new RemoteExecute<TStore, TDto, TModel, TKind>(method, ((JsonElement)parameters[typeof(TModel).Name]).Deserialize<TModel>(), CommandMode.Action)
             );
 
             return !result.IsValid

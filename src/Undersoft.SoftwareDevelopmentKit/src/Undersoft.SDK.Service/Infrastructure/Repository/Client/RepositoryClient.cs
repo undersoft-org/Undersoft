@@ -13,7 +13,7 @@ using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Infrastructure.Repository;
 using Uniques;
 
-public class RepositoryClient : Catalog<IRepositoryContext>, IRepositoryClient
+public class RepositoryClient : Catalog<IRepositoryContext>, IRepositoryClient, IRepositoryClient1
 {
     protected Uri uri;
     protected Uscn servicecode;

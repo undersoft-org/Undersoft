@@ -10,7 +10,7 @@ using System.Linq;
 namespace Undersoft.SDK.Service
 {
 
-    public partial class ServiceRegistry : Registry<ServiceDescriptor>, IServiceRegistry
+    public partial class ServiceRegistry : Registry<ServiceDescriptor>, IServiceRegistry, IServiceRegistry
     {
         public ServiceRegistry() : base(true)
         {
@@ -191,24 +191,24 @@ namespace Undersoft.SDK.Service
                 return;
 
             if (!actualizeExternalServices)
-                services.ForEach(s => { if (!Contains(s)) Add(s); } );
+                services.ForEach(s => { if (!Contains(s)) Add(s); });
             else
-            { 
+            {
                 var tempRegistry = new Registry<ServiceDescriptor>(true);
-                
+
                 services.ForEach(s =>
                 {
                     tempRegistry.Add(GetKey(s.ServiceType), s);
-                    if (!Contains(s))                    
-                        Add(s);                    
+                    if (!Contains(s))
+                        Add(s);
                 });
 
                 this.ForEach(c =>
                 {
-                    if (!tempRegistry.Contains(GetKey(c.ServiceType), c))                    
-                        services.Add(c);                    
+                    if (!tempRegistry.Contains(GetKey(c.ServiceType), c))
+                        services.Add(c);
                 });
-            }           
+            }
         }
     }
 }

@@ -26,7 +26,7 @@ public static class OpenDataServiceRegistry
     public static ISeries<ISeries<Type>> EntityContexts = new Registry<ISeries<Type>>();
     public static ISeries<IEdmModel> EdmModels = new Registry<IEdmModel>();
     public static ISeries<Type> Stores = new Registry<Type>();
-    public static ISeries<RemoteLink> Links = new Registry<RemoteLink>(true);
+    public static ISeries<RemoteRelation> Remotes = new Registry<RemoteRelation>(true);
 
     public static async Task<IEdmModel> GetEdmModel(this OpenDataServiceContext context)
     {

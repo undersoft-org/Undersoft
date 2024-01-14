@@ -16,7 +16,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 [StreamDataService]
 public abstract class StreamEventController<TKey, TStore, TEntity, TDto> : IStreamDataController<TDto> where TDto : class, IDataObject
     where TEntity : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     protected Func<TKey, Func<TDto, object>> _keysetter = k => e => e.SetId(k);
     protected Func<TKey, Expression<Func<TEntity, bool>>> _keymatcher;

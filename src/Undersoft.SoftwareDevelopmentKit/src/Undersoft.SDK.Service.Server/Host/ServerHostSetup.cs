@@ -173,7 +173,7 @@ public class ServerHostSetup : IServerHostSetup
         app.UseSwaggerUI(
             s =>
             {
-                s.SwaggerEndpoint($"{ao.ApiBaseUrl}/swagger/v1/swagger.json", ao.ApiName);
+                s.SwaggerEndpoint($"{ao.ServiceBaseUrl}/swagger/v1/swagger.json", ao.ServiceName);
                 //s.OAuthClientId(ao.SwaggerClientId);
                 //s.OAuthAppName(ao.ApiName);
             });

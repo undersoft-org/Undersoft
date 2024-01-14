@@ -92,7 +92,7 @@ public abstract class Repository : IRepository
 
     public bool Leased => ContextLease != null;
 
-    public IEnumerable<IRemoteObject> RemoteObjects { get; set; }
+    public IEnumerable<IRemoteProperty> RemoteProperties { get; set; }
 
     public virtual int LinkedCount { get; set; }
 
@@ -231,12 +231,12 @@ public abstract class Repository : IRepository
 
     public virtual void LoadRemote(object entity)
     {
-        RemoteObjects.ForEach((o) => o.Load(entity));
+        RemoteProperties.ForEach((o) => o.Load(entity));
     }
 
     public virtual async Task LoadRemoteAsync(object entity)
     {
-        await Task.WhenAll(RemoteObjects.ForEach((o) => o.LoadAsync(entity)));
+        await Task.WhenAll(RemoteProperties.DoEach((o) => o.LoadAsync(entity)));
     }
 
     public virtual void LoadRelated(EntityEntry entry, RelatedType relatedType)
@@ -297,7 +297,7 @@ public abstract class Repository : IRepository
                 .Commit();
     }
 
-    public virtual void LinkTrigger(object sender, EntityEntryEventArgs e)
+    public virtual void LoadRemoteEvent(object sender, EntityEntryEventArgs e)
     {
         var entry = e.Entry;
         var entity = entry.Entity;
@@ -305,7 +305,7 @@ public abstract class Repository : IRepository
 
         if (type.IsAssignableTo(typeof(IEntity)) && type == ElementType)
         {
-            RemoteObjects.DoEach(
+            RemoteProperties.DoEach(
                 async (o) =>
                 {
                     await o.LoadAsync(entity);
@@ -314,7 +314,7 @@ public abstract class Repository : IRepository
         }
     }
 
-    protected virtual void AuditTrigger(object sender, EntityEntryEventArgs e)
+    protected virtual void AuditStateEvent(object sender, EntityEntryEventArgs e)
     {
         var entity = e.Entry.Entity as IOrigin;
 

@@ -14,21 +14,21 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
 
     [AllowAnonymous]
     [ODataRouteComponent(StoreRoutes.OpenDataRoute)]
-    public class ServiceAccountIdentifierController
-        : OpenDataRemoteController<long, IDataStore, Identifier<Account>, Identifier<ServiceAccount>>
+    public class ServiceMemberIdentifierController
+        : OpenDataRemoteController<long, IDataStore, Identifier<Member>, Identifier<ServiceMember>>
     {
-        public ServiceAccountIdentifierController(IServicer ultimatr)
-            : base(ultimatr, m => d => d.Object.Group == AccountGroup.Servicer) { }
+        public ServiceMemberIdentifierController(IServicer ultimatr)
+            : base(ultimatr, m => d => d.Object.Group == MemberGroup.Servitizer) { }
     }
 }
 
 namespace Undersoft.SSC.Service.Application.Server.Controllers
 {
     [AllowAnonymous]
-    public class ServiceAccountIdentifiersController
-        : CrudDataRemoteController<long, IDataStore, Identifier<Account>, Identifier<ServiceAccount>>
+    public class ServiceMemberIdentifiersController
+        : CrudDataRemoteController<long, IDataStore, Identifier<Member>, Identifier<ServiceMember>>
     {
-        public ServiceAccountIdentifiersController(IServicer ultimatr)
-            : base(ultimatr, m => d => d.Object.Group == AccountGroup.Servicer) { }
+        public ServiceMemberIdentifiersController(IServicer ultimatr)
+            : base(ultimatr, m => d => d.Object.Group == MemberGroup.Servitizer) { }
     }
 }

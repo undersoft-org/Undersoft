@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Undersoft.SDK.Service.Server.Account.Identity;
 using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Application.Member;
 
 namespace Undersoft.SSC.Service.Infrastructure.Stores
 {

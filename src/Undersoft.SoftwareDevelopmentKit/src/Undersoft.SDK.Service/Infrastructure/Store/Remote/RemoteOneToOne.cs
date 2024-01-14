@@ -7,9 +7,10 @@ using System.Linq;
 
 namespace Undersoft.SDK.Service.Infrastructure.Store.Remote;
 
+using Undersoft.SDK.Service.Data.Object;
 using Uniques;
 
-public class RemoteOneToOne<TOrigin, TTarget> : RemoteLink<TOrigin, TTarget, TTarget> where TOrigin : class, IUniqueIdentifiable where TTarget : class, IUniqueIdentifiable
+public class RemoteOneToOne<TOrigin, TTarget> : RemoteRelation<TOrigin, TTarget> where TOrigin : class, IOrigin, IInnerProxy where TTarget : class, IOrigin, IInnerProxy
 {
 
     private Func<TTarget, object> targetKey;

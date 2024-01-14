@@ -9,15 +9,26 @@ namespace Undersoft.SDK.Service
     public class ServiceManager : RepositoryManager, IServiceManager, IAsyncDisposable
     {
         private new bool disposedValue;
-        private static IServiceRegistry registry;
-        private static IServiceConfiguration configuration;
+
+        private static IServiceRegistry rootRegistry;
+        private static IServiceConfiguration rootConfiguration;
+
+        private IServiceRegistry registry;
+        private IServiceConfiguration configuration;
 
         protected IServiceScope session;
         protected IServiceProvider provider;
 
         public IServiceProvider RootProvider => GetRootProvider();
-        public IServiceProvider Provider =>  provider ??= GetProvider();
+        public IServiceProvider Provider => provider ??= GetProvider();
         public IServiceScope Session => session ??= GetSession();
+
+        static ServiceManager()
+        {
+            var sm = new ServiceManager(new ServiceCollection());
+            rootRegistry = sm.Registry;
+            rootConfiguration = sm.Configuration;
+        }
 
         public IServiceConfiguration Configuration
         {
@@ -56,8 +67,8 @@ namespace Undersoft.SDK.Service
 
             var factory = new DefaultServiceProviderFactory(options);
 
-            AddObject<IServiceProviderFactory<IServiceCollection>>(factory);
             AddObject<IServiceCollection>(registry);
+            AddObject<IServiceProviderFactory<IServiceCollection>>(factory);
 
             registry.Services.Replace(ServiceDescriptor.Singleton<IServiceProviderFactory<IServiceCollection>>(factory));
             registry.Services.Replace(ServiceDescriptor.Singleton<IServiceCollection>(registry));
@@ -156,26 +167,32 @@ namespace Undersoft.SDK.Service
         public static void SetProvider(IServiceProvider serviceProvider)
         {
             var _provider = serviceProvider;
-            _provider.GetRequiredService<ServiceRegistryObject<IServiceProvider>>().Value = _provider;
+            _provider.GetRequiredService<ServiceObject<IServiceProvider>>().Value = _provider;
         }
 
-        public static IServiceProvider BuildInternalProvider(bool withPropertyInjection = false)
+        public IServiceProvider BuildInternalProvider(bool withPropertyInjection = false)
         {
             var provider = GetRegistry().BuildServiceProviderFromFactory<IServiceCollection>();
             SetProvider(provider);
             return provider;
         }
 
+        public static IServiceProvider BuildInternalRootProvider(bool withPropertyInjection = false)
+        {
+            var provider = GetRootRegistry().BuildServiceProviderFromFactory<IServiceCollection>();
+            SetProvider(provider);
+            return provider;
+        }
+
         public static IServiceProvider GetRootProvider()
         {
-            var _provider = registry.GetProvider();
+            var _provider = rootRegistry.GetProvider();
             if (_provider == null)
-                return BuildInternalProvider();
-
+                return BuildInternalRootProvider();
             return _provider;
         }
 
-        public static IServiceProvider AddPropertyInjection()
+        public IServiceProvider AddPropertyInjection()
         {
             var _provider = registry.GetProvider();
             if (_provider == null)
@@ -193,9 +210,14 @@ namespace Undersoft.SDK.Service
             return provider;
         }
 
-        public static IServiceProviderFactory<IServiceCollection> GetProviderFactory()
+        public IServiceProviderFactory<IServiceCollection> GetProviderFactory()
         {
             return GetObject<IServiceProviderFactory<IServiceCollection>>();
+        }
+
+        public static IServiceProviderFactory<IServiceCollection> GetRootProviderFactory()
+        {
+            return GetRootObject<IServiceProviderFactory<IServiceCollection>>();
         }
 
         public ObjectFactory NewFactory<T>(Type[] constrTypes)
@@ -208,23 +230,37 @@ namespace Undersoft.SDK.Service
             return ActivatorUtilities.CreateFactory(instanceType, constrTypes);
         }
 
-        public static T GetObject<T>() where T : class
+        public T GetObject<T>() where T : class
         {
             return registry.GetObject<T>();
         }
 
-        public static T AddObject<T>(T obj) where T : class
+        public T AddObject<T>(T obj) where T : class
         {
             return registry.AddObject(obj).Value;
         }
-        public static T AddObject<T>() where T : class
+        public T AddObject<T>() where T : class
         {
             return registry.AddObject(typeof(T).New<T>()).Value;
         }
 
+        public static T GetRootObject<T>() where T : class
+        {
+            return rootRegistry.GetObject<T>();
+        }
+
+        public static T AddRootObject<T>(T obj) where T : class
+        {
+            return rootRegistry.AddObject(obj).Value;
+        }
+        public static T AddRootObject<T>() where T : class
+        {
+            return rootRegistry.AddObject(typeof(T).New<T>()).Value;
+        }
+
         public IServiceScope GetSession()
         {
-            if(session == null)
+            if (session == null)
                 session = NewSession();
             return session;
         }
@@ -239,28 +275,39 @@ namespace Undersoft.SDK.Service
             return GetRootProvider().CreateScope();
         }
 
-        public static IServiceManager GetManager()
+        public static IServiceManager GetRootManager()
         {
-            if (registry == null)
-                return new ServiceManager(new ServiceCollection());
+            return GetRootObject<IServiceManager>();
+        }
+
+        public IServiceManager GetManager()
+        {
             return GetObject<IServiceManager>();
         }
 
-        public static IServiceRegistry GetRegistry()
+        public static IServiceRegistry GetRootRegistry()
         {
-            if (registry == null)
-                return new ServiceManager(new ServiceCollection()).Registry;
+            return rootRegistry;
+        }
+
+        public IServiceRegistry GetRegistry()
+        {
             return registry;
         }
 
-        public static IServiceRegistry GetRegistry(IServiceCollection services)
+        public IServiceRegistry GetRegistry(IServiceCollection services)
         {
             if (registry == null)
                 return new ServiceManager(services).Registry;
             return registry;
         }
 
-        public static IServiceConfiguration GetConfiguration()
+        public static IServiceConfiguration GetRootConfiguration()
+        {
+            return rootConfiguration;
+        }
+
+        public IServiceConfiguration GetConfiguration()
         {
             return configuration;
         }

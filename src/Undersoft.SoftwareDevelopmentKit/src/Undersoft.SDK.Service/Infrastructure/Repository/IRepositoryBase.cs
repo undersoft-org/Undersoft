@@ -18,7 +18,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository
 
         CancellationToken Cancellation { get; set; }
 
-        IEnumerable<IRemoteObject> RemoteObjects { get; set; }
+        IEnumerable<IRemoteProperty> RemoteProperties { get; set; }
 
         void LoadRemote(object entity);
 

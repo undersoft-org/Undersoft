@@ -6,25 +6,27 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository;
 using Data.Entity;
 using Instant.Rubrics;
 using Undersoft.SDK.Service.Client;
+using Undersoft.SDK.Service.Data.Object;
+using Undersoft.SDK.Service.Data.Relation;
 using Undersoft.SDK.Service.Infrastructure.Repository.Client.Remote;
 using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Infrastructure.Store.Remote;
 
 public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore, TTarget>, IRepositoryLink<TStore, TOrigin, TTarget>
-    where TOrigin : Entity
-    where TTarget : Entity
+    where TOrigin : class, IDataObject
+    where TTarget : class, IDataObject
     where TStore : IDataServiceStore
 {
-    IRemoteMember<TOrigin, TTarget> relation;
+    IRemoteRelation<TOrigin, TTarget> relation;
 
     public RepositoryLink(
         IRepositoryContextPool<OpenDataService<TStore>> pool,
         IEntityCache<TStore, TTarget> cache,
-        IRemoteMember<TOrigin, TTarget> relation,
+        IRemoteRelation<TOrigin, TTarget> relation,
         IRemoteSynchronizer synchronizer) : base(pool, cache)
     {
         this.relation = relation;
-        Synchronizer = synchronizer;
+        Synchronizer = synchronizer;        
     }
 
     public Expression<Func<TTarget, bool>> CreatePredicate(object entity)
@@ -109,4 +111,15 @@ public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore,
     }
 
     public override Towards Towards => relation.Towards;
+
+    public Expression<Func<IRemoteLink<TOrigin, TTarget>, object>> MiddleKey 
+    { 
+        get => relation.MiddleKey;
+        set => relation.MiddleKey = value;
+    }
+    public Expression<Func<TOrigin, IEnumerable<IRemoteLink<TOrigin, TTarget>>>> MiddleSet
+    {
+        get => relation.MiddleSet;
+        set => relation.MiddleSet = value;
+    }
 }

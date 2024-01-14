@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
-using Undersoft.SDK.Service.Data.Event.Bus;
 
 namespace Undersoft.SDK.Service.Data.Event.Handler
 {

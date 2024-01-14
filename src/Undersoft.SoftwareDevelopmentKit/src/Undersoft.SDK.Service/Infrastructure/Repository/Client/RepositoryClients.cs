@@ -6,7 +6,7 @@ using Undersoft.SDK.Service.Client;
 
 namespace Undersoft.SDK.Service.Infrastructure.Repository.Client
 {
-    public class RepositoryClients : Registry<IRepositoryClient>, IRepositoryClients
+    public class RepositoryClients : Registry<IRepositoryClient>, IRepositoryClients, IRepositoryClients
     {
         public RepositoryClients() : base(false, 17) { }
 

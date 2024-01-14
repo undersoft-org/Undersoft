@@ -12,18 +12,18 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
 {
     [AllowAnonymous]
     [ODataRouteComponent(StoreRoutes.OpenDataRoute)]
-    public class ClientAccountController : OpenDataRemoteController<long, IDataStore, Account, ClientAccount>
+    public class ClientMemberController : OpenDataRemoteController<long, IDataStore, Member, ClientMember>
     {
-        public ClientAccountController(IServicer ultimatr)
-            : base(ultimatr, c => a => a.Group == AccountGroup.Client) { }
+        public ClientMemberController(IServicer ultimatr)
+            : base(ultimatr, c => a => a.Group == MemberGroup.Client) { }
     }
 }
 
 namespace Undersoft.SSC.Service.Application.Server.Controllers
 {
-    public class ClientAccountsController : CrudDataRemoteController<long, IDataStore, Account, ClientAccount>
+    public class ClientMembersController : CrudDataRemoteController<long, IDataStore, Member, ClientMember>
     {
-        public ClientAccountsController(IServicer ultimatr)
-            : base(ultimatr, c => a => a.Group == AccountGroup.Client) { }
+        public ClientMembersController(IServicer ultimatr)
+            : base(ultimatr, c => a => a.Group == MemberGroup.Client) { }
     }
 }

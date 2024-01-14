@@ -209,12 +209,12 @@ public class ExtractTest
         instant.StructureTo(ptr);
 
         instant["Id"] = 88888;
-        instant["Name"] = "Zmiany";
+        instant["ServiceName"] = "Zmiany";
 
         instant.StructureTo(ptr);
 
         instant["Id"] = 5555555;
-        instant["Name"] = "Zm342";
+        instant["ServiceName"] = "Zm342";
 
         instant.StructureFrom(ptr);
 

@@ -58,7 +58,7 @@ namespace Undersoft.SDK.Service.Host
                                         typeof(RepositoryLink<,,>).MakeGenericType(store, callerType, entityType));
 
                                     service.AddScoped(
-                                        typeof(IRemoteObject<,>).MakeGenericType(store, callerType),
+                                        typeof(IRemoteProperty<,>).MakeGenericType(store, callerType),
                                         typeof(RepositoryLink<,,>).MakeGenericType(store, callerType, entityType));
                                     /*********************************************************************************************/
                                 }

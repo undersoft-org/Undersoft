@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Undersoft.SDK.Service.Data.Event.Bus;
 
 using Configuration;
+using Undersoft.SDK.Service.Data.Event.Handler;
 
 public class EventBusModule
 {

@@ -1,42 +1,44 @@
 using Undersoft.SDK.Service.Configuration;
+using Undersoft.SDK.Service.Server;
 
 namespace Undersoft.SSC.Service.Server;
 
 public class Program
 {
-    static string[]? _args;
-    static IWebHost? _webapi;
+    static string[] _arguments = new string[0];
+    static ServerHost _superServer = new ServerHost();
+    static ISeries<ServerHost> _servers = new Registry<ServerHost>();
 
-    public static void Main(string[] args)
+    public static void Main(string[] arguments)
     {
-        _args = args;
+        _arguments = arguments;
         Launch();
     }
 
-    static IWebHost Build()
+    static IHost ServerBuild()
     {
-        var builder = new WebHostBuilder();
+        var builder = new HostBuilder();
 
         builder.Info<Runlog>("Starting Undersoft.SSC.Service.Server ....");
 
-        _webapi = builder
+        return builder.ConfigureWebHost((wh) => wh
             .UseContentRoot(Directory.GetCurrentDirectory())
             .UseConfiguration(ServiceConfigurationHelper.BuildConfiguration())
             .UseKestrel()
             .ConfigureKestrel((c, o) => o
                 .Configure(c.Configuration
-                .GetSection("Kestrel")))
-            .UseStartup<Startup>()
+                .GetSection("Kestrel")))            
+            .UseStartup<Startup>())
             .Build();
-
-        return _webapi;
     }
 
-    public static void Launch()
+    public static async void Launch()
     {
         try
         {                
-            Build().Run();
+            _superServer.Host = ServerBuild();
+            _superServer.Host.Start();
+            await _superServer.Host.WaitForShutdownAsync();
         }
         catch (Exception exception)
         {
@@ -61,9 +63,9 @@ public class Program
     {
         Log.Info<Runlog>(null, "Shutting down Undersoft.SSC.Service.Server ....");
 
-        _webapi.Info<Runlog>("Stopping Undersoft.SSC.Service.Server ....");
+        _superServer.Info<Runlog>("Stopping Undersoft.SSC.Service.Server ....");
 
-        if(_webapi != null)
-            await _webapi.StopAsync(TimeSpan.FromSeconds(5));
+        if(_superServer.Host != null)
+            await _superServer.Host.StopAsync(TimeSpan.FromSeconds(5));
     }
 }

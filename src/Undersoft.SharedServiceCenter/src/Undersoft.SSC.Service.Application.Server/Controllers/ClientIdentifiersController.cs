@@ -17,12 +17,12 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
         : OpenDataRemoteController<
             long,
             IDataStore,
-            Identifier<Account>,
-            Identifier<ClientAccount>
+            Identifier<Member>,
+            Identifier<ClientMember>
         >
     {
         public ClientIdentifierController(IServicer ultimatr)
-            : base(ultimatr, m => d => d.Object.Group == AccountGroup.Client) { }
+            : base(ultimatr, m => d => d.Object.Group == MemberGroup.Client) { }
     }
 }
 
@@ -33,11 +33,11 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
         : CrudDataRemoteController<
             long,
             IDataStore,
-            Identifier<Account>,
-            Identifier<ClientAccount>
+            Identifier<Member>,
+            Identifier<ClientMember>
         >
     {
         public ClientIdentifiersController(IServicer ultimatr)
-            : base(ultimatr, m => d => d.Object.Group == AccountGroup.Client) { }
+            : base(ultimatr, m => d => d.Object.Group == MemberGroup.Client) { }
     }
 }

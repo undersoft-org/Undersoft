@@ -11,7 +11,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 public abstract class Query<TStore, TEntity, TResult> : IRequest<TResult>, IQuery<TEntity>
     where TEntity : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     public int Offset { get; set; } = 0;
 

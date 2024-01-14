@@ -3,8 +3,8 @@ using Undersoft.SSC.Service.Contracts;
 
 namespace Undersoft.SSC.Service.Application.Models;
 
-public class RequestActivity : Account, IModel
+public class RequestActivity : Member, IModel
 {
-    public RequestActivity() { Group = AccountGroup.Servicer; }
+    public RequestActivity() { Group = MemberGroup.Servitizer; }
 
 }

@@ -12,7 +12,7 @@ public class ChangedHandler<TStore, TEntity, TCommand>
     : INotificationHandler<Changed<TStore, TEntity, TCommand>>
     where TEntity : class, IDataObject
     where TCommand : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     protected readonly IStoreRepository<Event> _eventStore;
     protected readonly IStoreRepository<TEntity> _repository;

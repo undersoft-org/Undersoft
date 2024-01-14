@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Undersoft.SDK.Service.Data.Event.Bus;
 
 namespace Undersoft.SDK.Service.Data.Event.Handler
 {

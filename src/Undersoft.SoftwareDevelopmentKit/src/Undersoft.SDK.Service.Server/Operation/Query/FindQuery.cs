@@ -10,7 +10,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class FindQuery<TStore, TEntity, TDto> : Query<TStore, TEntity, IQueryable<TDto>>
     where TEntity : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
     where TDto : class, IIdentifiable
 {
     public FindQuery(params object[] keys) : base(keys) { }

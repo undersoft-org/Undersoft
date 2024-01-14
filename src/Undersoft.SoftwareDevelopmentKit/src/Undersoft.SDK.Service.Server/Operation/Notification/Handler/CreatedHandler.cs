@@ -12,7 +12,7 @@ public class CreatedHandler<TStore, TEntity, TDto>
     : INotificationHandler<Created<TStore, TEntity, TDto>>
     where TDto : class, IDataObject
     where TEntity : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     protected readonly IStoreRepository<Event> _eventStore;
     protected readonly IStoreRepository<TEntity> _repository;

@@ -12,15 +12,15 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class RemoteExecuteHandler<TStore, TDto, TModel, TKind>
     : IRequestHandler<RemoteExecute<TStore, TDto, TModel, TKind>, ActionCommand<TModel, TKind>>
-    where TDto : class, IOrigin
-    where TModel : class, IOrigin
+    where TDto : class, IOrigin, IInnerProxy
+    where TModel : class, IOrigin, IInnerProxy
     where TKind : Enum
     where TStore : IDataServiceStore
 {
-    protected readonly IRemoteRepository<TDto> _repository;
+    protected readonly IRemoteRepository<TModel> _repository;
     protected readonly IServicer _servicer;
 
-    public RemoteExecuteHandler(IServicer servicer, IRemoteRepository<TStore, TDto> repository)
+    public RemoteExecuteHandler(IServicer servicer, IRemoteRepository<TStore, TModel> repository)
     {
         _repository = repository;
         _servicer = servicer;
@@ -37,11 +37,11 @@ public class RemoteExecuteHandler<TStore, TDto, TModel, TKind>
         {
             request.Response = (
                 request.CommandMode == CommandMode.Action
-                    ? await _repository.ActionAsync<TModel, TKind>(
+                    ? await _repository.ActionAsync<TDto, TKind>(
                         request.Data,
                         (TKind)request.Kind
                     )
-                    : await _repository.FunctionAsync<TKind>((TKind)request.Kind)
+                    : await _repository.FunctionAsync<TDto, TKind>((TKind)request.Kind)
             );
 
             if (request.Response == null)

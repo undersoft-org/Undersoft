@@ -10,7 +10,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class Get<TStore, TEntity, TDto> : Query<TStore, TEntity, ISeries<TDto>>
     where TEntity : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     public Get(int offset, int limit, params Expression<Func<TEntity, object>>[] expanders)
         : base(expanders)

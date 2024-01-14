@@ -3,19 +3,19 @@ using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Infrastructure.Store.Remote;
 
+using Undersoft.SDK.Service.Data.Object;
+using Undersoft.SDK.Service.Data.Relation;
 using Uniques;
 
 public static class RemoteLinkExtensions
 {
-    public static IEdmModel RemoteSetToSet<TOrigin, TMiddle, TTarget>(this IEdmModel builder,
-                                                             Expression<Func<TOrigin, IEnumerable<TMiddle>>> middleSet,
-                                                             Expression<Func<TMiddle, object>> middlekey,
+    public static IEdmModel RemoteSetToSet<TOrigin, TTarget>(this IEdmModel builder,
+                                                             Expression<Func<IRemoteLink<TOrigin, TTarget>, object>> middlekey,
                                                              Expression<Func<TTarget, object>> targetkey)
-                                                          where TOrigin : class, IUniqueIdentifiable
-                                                          where TTarget : class, IUniqueIdentifiable
-                                                           where TMiddle : class, IUniqueIdentifiable
+                                                          where TOrigin : class, IDataObject
+                                                          where TTarget : class, IDataObject
     {
-        new RemoteSetToSet<TOrigin, TTarget, TMiddle>(middleSet, middlekey, targetkey);
+        new RemoteSetToSet<TOrigin, TTarget>(middlekey, targetkey);
         return builder;
     }
 

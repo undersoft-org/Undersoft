@@ -59,7 +59,7 @@ internal class JsonStringLocalizer : ResourceManagerStringLocalizer
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(ex, "{JsonStringLocalizerName} searched for '{Name}' in '{TypeName}' with culture '{CultureName}' throw exception.", nameof(JsonStringLocalizer), name, TypeName, CultureInfo.CurrentUICulture.Name);
+                    Logger.LogError(ex, "{JsonStringLocalizerName} searched for '{ServiceName}' in '{TypeName}' with culture '{CultureName}' throw exception.", nameof(JsonStringLocalizer), name, TypeName, CultureInfo.CurrentUICulture.Name);
                 }
                 return ret;
             }
@@ -146,7 +146,7 @@ internal class JsonStringLocalizer : ResourceManagerStringLocalizer
     {
         if (!IgnoreLocalizerMissing)
         {
-            Logger.LogInformation("{JsonStringLocalizerName} searched for '{Name}' in '{TypeName}' with culture '{CultureName}' not found.", nameof(JsonStringLocalizer), name, TypeName, CultureInfo.CurrentUICulture.Name);
+            Logger.LogInformation("{JsonStringLocalizerName} searched for '{ServiceName}' in '{TypeName}' with culture '{CultureName}' not found.", nameof(JsonStringLocalizer), name, TypeName, CultureInfo.CurrentUICulture.Name);
         }
     }
 

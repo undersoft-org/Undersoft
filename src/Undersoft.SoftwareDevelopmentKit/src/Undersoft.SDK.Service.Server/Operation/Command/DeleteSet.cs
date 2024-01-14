@@ -11,7 +11,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 public class DeleteSet<TStore, TEntity, TDto> : CommandSet<TDto>
     where TEntity : class, IDataObject
     where TDto : class, IDataObject
-    where TStore : IDatabaseStore
+    where TStore : IDataServerStore
 {
     [JsonIgnore]
     public Func<TEntity, Expression<Func<TEntity, bool>>> Predicate { get; }

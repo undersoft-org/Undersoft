@@ -2,11 +2,12 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
 namespace Undersoft.SDK.Service.Data.Entity;
+
 using Identifier;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Object.Detail;
 using Undersoft.SDK.Service.Data.Object.Setting;
-using Undersoft.SDK.Service.Data.Relation;
+using Undersoft.SDK.Service.Infrastructure.Store.Relation;
 
 [DataContract]
 [StructLayout(LayoutKind.Sequential)]

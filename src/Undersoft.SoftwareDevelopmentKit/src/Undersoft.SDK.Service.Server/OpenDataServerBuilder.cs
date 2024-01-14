@@ -7,9 +7,7 @@ using Microsoft.OData.ModelBuilder;
 using System.Reflection;
 using Undersoft.SDK.Service.Server.Controller;
 using Microsoft.AspNetCore.OData.Formatter;
-
 using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SDK.Service.Server.Account.Identity;
 using Undersoft.SDK.Security.Identity;
 using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Client.Remote;
@@ -66,7 +64,6 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
     {
         if (edmModel == null)
         {
-            AddAuthorizationActions();
             edmModel = odataBuilder.GetEdmModel();
             odataBuilder.ValidateModel(edmModel);
         }
@@ -187,120 +184,66 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
         }
     }
 
-    public override IDataServerBuilder AddAuthorizationService()
+    public override IDataServerBuilder AddAuthorizationService<TAuth>() where TAuth : class
     {
-        AddAuthorizationActions();
-        return base.AddAuthorizationService();
+        AddAuthorizationActions<TAuth>();
+        return base.AddAuthorizationService<TAuth>();
     }
 
-    private void AddAuthorizationActions()
+    private void AddAuthorizationActions<TAuth>() where TAuth : class
     {
         if (actionSetAdded)
             return;
 
+        var name = typeof(TAuth).Name;  
+
         odataBuilder
-            .EntityType<Authorization>()
+            .EntityType<TAuth>()
             .Function("SignIn")
             .Returns<string>()
-            .Parameter<string>("Authorization");
+            .Parameter<string>(name);
 
         odataBuilder
-            .EntityType<Authorization>()
+            .EntityType<TAuth>()
             .Action("SignIn")
-            .ReturnsFromEntitySet<Authorization>("Authorization")
-            .Parameter<Authorization>("Authorization");
+            .ReturnsFromEntitySet<TAuth>(name)
+            .Parameter<TAuth>(name);
 
         odataBuilder
-            .EntityType<Authorization>()
+            .EntityType<TAuth>()
             .Action("SignUp")
-            .ReturnsFromEntitySet<Authorization>("Authorization")
-            .Parameter<Authorization>("Authorization");
+            .ReturnsFromEntitySet<TAuth>(name)
+            .Parameter<TAuth>(name);
 
         odataBuilder
-            .EntityType<Authorization>()
+            .EntityType<TAuth>()
             .Action("SignOut")
-            .ReturnsFromEntitySet<Authorization>("Authorization")
-            .Parameter<Authorization>("Authorization");
+            .ReturnsFromEntitySet<TAuth>(name)
+            .Parameter<TAuth>(name);
 
         odataBuilder
-            .EntityType<Authorization>()
+            .EntityType<TAuth>()
             .Action("Renew")
-            .ReturnsFromEntitySet<Authorization>("Authorization")
-            .Parameter<Authorization>("Authorization");
+            .ReturnsFromEntitySet<TAuth>(name)
+            .Parameter<TAuth>(name);
 
         odataBuilder
-            .EntityType<Authorization>()
+            .EntityType<TAuth>()
             .Action("ConfirmEmail")
-            .ReturnsFromEntitySet<Authorization>("Authorization")
-            .Parameter<Authorization>("Authorization");
+            .ReturnsFromEntitySet<TAuth>(name)
+            .Parameter<TAuth>(name);
 
         odataBuilder
-            .EntityType<Authorization>()
+            .EntityType<TAuth>()
             .Action("ResetPassword")
-            .ReturnsFromEntitySet<Authorization>("Authorization")
-            .Parameter<Authorization>("Authorization");
+            .ReturnsFromEntitySet<TAuth>(name)
+            .Parameter<TAuth>(name);
 
         odataBuilder
-            .EntityType<Authorization>()
+            .EntityType<TAuth>()
             .Action("CompleteRegistration")
-            .ReturnsFromEntitySet<Authorization>("Authorization")
-            .Parameter<Authorization>("Authorization");
-
-        actionSetAdded = true;
-    }
-
-    private void AddRemoteAuthorizationActions()
-    {
-        if (actionSetAdded)
-            return;
-
-        odataBuilder
-            .EntityType<Authorization>()
-            .Function("SignIn")
-            .Returns<string>()
-            .Parameter<string>("Authorization");
-
-        odataBuilder
-            .EntityType<Authorization>()
-            .Action("SignIn")
-            .ReturnsFromEntitySet<Authorization>("Authorization")
-            .Parameter<Authorization>("Authorization");
-
-        odataBuilder
-            .EntityType<Authorization>()
-            .Action("SignUp")
-            .ReturnsFromEntitySet<Authorization>("Authorization")
-            .Parameter<Authorization>("Authorization");
-
-        odataBuilder
-            .EntityType<Authorization>()
-            .Action("SignOut")
-            .ReturnsFromEntitySet<Authorization>("Authorization")
-            .Parameter<Authorization>("Authorization");
-
-        odataBuilder
-            .EntityType<Authorization>()
-            .Action("Renew")
-            .ReturnsFromEntitySet<Authorization>("Authorization")
-            .Parameter<Authorization>("Authorization");
-
-        odataBuilder
-            .EntityType<Authorization>()
-            .Action("ConfirmEmail")
-            .ReturnsFromEntitySet<Authorization>("Authorization")
-            .Parameter<Authorization>("Authorization");
-
-        odataBuilder
-            .EntityType<Authorization>()
-            .Action("ResetPassword")
-            .ReturnsFromEntitySet<Authorization>("Authorization")
-            .Parameter<Authorization>("Authorization");
-
-        odataBuilder
-            .EntityType<Authorization>()
-            .Action("CompleteRegistration")
-            .ReturnsFromEntitySet<Authorization>("Authorization")
-            .Parameter<Authorization>("Authorization");
+            .ReturnsFromEntitySet<TAuth>(name)
+            .Parameter<TAuth>(name);
 
         actionSetAdded = true;
     }

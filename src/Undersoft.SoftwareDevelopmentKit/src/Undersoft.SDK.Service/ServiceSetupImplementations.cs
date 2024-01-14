@@ -16,7 +16,7 @@ public partial class ServiceSetup
         IServiceRegistry service = registry;        
       
         HashSet<Type> duplicateCheck = new HashSet<Type>();
-        Type[] stores = DataStoreRegistry.Stores.Where(s => s.IsAssignableTo(typeof(IDatabaseStore))).ToArray();
+        Type[] stores = DataStoreRegistry.Stores.Where(s => s.IsAssignableTo(typeof(IDataServerStore))).ToArray();
 
         service.AddScoped<IRemoteSynchronizer, RemoteSynchronizer>();
 

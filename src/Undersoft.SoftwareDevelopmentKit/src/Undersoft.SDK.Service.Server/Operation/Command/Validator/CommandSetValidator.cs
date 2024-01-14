@@ -207,7 +207,7 @@ public class CommandSetValidator<TDto> : CommandSetValidatorBase<CommandSet<TDto
         string message = null
     )
         where TEntity : class, IDataObject
-        where TStore : IDatabaseStore
+        where TStore : IDataServerStore
     {
         var _repository = _servicer.Use<TStore, TEntity>();
         RuleForEach(e => e)
@@ -224,7 +224,7 @@ public class CommandSetValidator<TDto> : CommandSetValidatorBase<CommandSet<TDto
         string message = null
     )
         where TEntity : class, IDataObject
-        where TStore : IDatabaseStore
+        where TStore : IDataServerStore
     {
         var _repository = _servicer.Use<TStore, TEntity>();
         RuleForEach(e => e)

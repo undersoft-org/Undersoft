@@ -14,17 +14,19 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository.Source
 
     public interface IRepositorySource : IRepositoryContextPool
     {
-        IDataStoreContext CreateContext(DbContextOptions options);
-
-        IDataStoreContext CreateContext(Type contextType, DbContextOptions options);
-
-        object EntitySet<TEntity>() where TEntity : class, IUniqueIdentifiable;
-
-        object EntitySet(Type entityType);
-
         IDataStoreContext Context { get; }
-
         DbContextOptions Options { get; }
+        bool Pooled { get; }
+
+        void AcquireAccess();
+        IDataStoreContext CreateContext(DbContextOptions options);
+        IDataStoreContext CreateContext(Type contextType, DbContextOptions options);
+        TContext CreateContext<TContext>(DbContextOptions options) where TContext : DbContext;
+        void CreatePool<TContext>();
+        object EntitySet(Type entityType);
+        object EntitySet<TEntity>() where TEntity : class, IUniqueIdentifiable;
+        TContext GetContext<TContext>() where TContext : DbContext;
+        void ReleaseAccess();
     }
 
     public interface IRepositorySource<TContext> : IRepositoryContextPool<TContext>, IDesignTimeDbContextFactory<TContext>, IDbContextFactory<TContext>, IRepositorySource

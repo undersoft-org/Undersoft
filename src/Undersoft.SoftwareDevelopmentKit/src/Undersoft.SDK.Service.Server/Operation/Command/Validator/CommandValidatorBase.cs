@@ -109,7 +109,7 @@ public abstract class CommandValidatorBase<TCommand> : AbstractValidator<TComman
         params string[] propertyNames
     )
         where TEntity : class, IDataObject
-        where TStore : IDatabaseStore
+        where TStore : IDataServerStore
     {
         RuleFor(e => e)
             .MustAsync(
@@ -130,7 +130,7 @@ public abstract class CommandValidatorBase<TCommand> : AbstractValidator<TComman
         params string[] propertyNames
     )
         where TEntity : class, IDataObject
-        where TStore : IDatabaseStore
+        where TStore : IDataServerStore
     {
         RuleFor(e => e)
             .MustAsync(
