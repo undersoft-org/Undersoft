@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK", "src\Undersoft.SoftwareDevelopmentKit\src\Undersoft.SDK\Undersoft.SDK.csproj", "{79201DAA-9214-4113-96E0-3D14397950A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK", "src\SoftwareDevelopmentKit\src\Undersoft.SDK\Undersoft.SDK.csproj", "{79201DAA-9214-4113-96E0-3D14397950A0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SoftwareDevelopmentKit", "SoftwareDevelopmentKit", "{A0E1E503-BBF6-42A5-88ED-85191AB41A06}"
 EndProject
@@ -11,57 +11,57 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F9FE065B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", "{38C94AAE-725B-4247-9465-2E3A5B451347}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.IntegrationTests", "src\Undersoft.SoftwareDevelopmentKit\tests\Undersoft.SDK.IntegrationTests\Undersoft.SDK.IntegrationTests.csproj", "{17903BD4-EAA1-462A-99BF-982EEF3BC965}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.IntegrationTests", "src\SoftwareDevelopmentKit\tests\Undersoft.SDK.IntegrationTests\Undersoft.SDK.IntegrationTests.csproj", "{17903BD4-EAA1-462A-99BF-982EEF3BC965}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service", "src\Undersoft.SoftwareDevelopmentKit\src\Undersoft.SDK.Service\Undersoft.SDK.Service.csproj", "{9F93E18F-4129-427F-B312-6B6294D36670}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service", "src\SoftwareDevelopmentKit\src\Undersoft.SDK.Service\Undersoft.SDK.Service.csproj", "{9F93E18F-4129-427F-B312-6B6294D36670}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Benchmarks", "src\Undersoft.SoftwareDevelopmentKit\bench\Undersoft.SDK.Benchmarks\Undersoft.SDK.Benchmarks.csproj", "{363AFF68-549D-41FE-AD72-C398B549D58B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Benchmarks", "src\SoftwareDevelopmentKit\bench\Undersoft.SDK.Benchmarks\Undersoft.SDK.Benchmarks.csproj", "{363AFF68-549D-41FE-AD72-C398B549D58B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedServiceCenter", "SharedServiceCenter", "{6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC\Undersoft.SSC.csproj", "{9C173ED8-DDC9-4E6D-9B15-5E2D375CDD9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC", "src\SharedServiceCenter\src\Undersoft.SSC\Undersoft.SSC.csproj", "{9C173ED8-DDC9-4E6D-9B15-5E2D375CDD9B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service\Undersoft.SSC.Service.csproj", "{64B62FBD-4535-4D42-B244-36BBB7EAB1F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service", "src\SharedServiceCenter\src\Undersoft.SSC.Service\Undersoft.SSC.Service.csproj", "{64B62FBD-4535-4D42-B244-36BBB7EAB1F2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Server", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Server\Undersoft.SSC.Service.Server.csproj", "{D8507FB1-C3DE-47EA-8488-F8723E906752}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Server", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Server\Undersoft.SSC.Service.Server.csproj", "{D8507FB1-C3DE-47EA-8488-F8723E906752}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Application", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Application\Undersoft.SSC.Service.Application.csproj", "{86B32451-CBE0-4490-8F5D-E1295A53C6FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Application", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Application\Undersoft.SSC.Service.Application.csproj", "{86B32451-CBE0-4490-8F5D-E1295A53C6FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Infrastructure", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Infrastructure\Undersoft.SSC.Service.Infrastructure.csproj", "{BDAD7B12-E674-43B4-90EA-B9A68DC3B03F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Infrastructure", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Infrastructure\Undersoft.SSC.Service.Infrastructure.csproj", "{BDAD7B12-E674-43B4-90EA-B9A68DC3B03F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service.Server", "src\Undersoft.SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Server\Undersoft.SDK.Service.Server.csproj", "{D50B3498-936C-4598-95F4-9E9F8F3909C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service.Server", "src\SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Server\Undersoft.SDK.Service.Server.csproj", "{D50B3498-936C-4598-95F4-9E9F8F3909C9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service.Application", "src\Undersoft.SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Application\Undersoft.SDK.Service.Application.csproj", "{B324CFE9-FA60-451C-AEC4-8405FD73A11A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service.Application", "src\SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Application\Undersoft.SDK.Service.Application.csproj", "{B324CFE9-FA60-451C-AEC4-8405FD73A11A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service.Application.Server", "src\Undersoft.SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Application.Server\Undersoft.SDK.Service.Application.Server.csproj", "{4346A26D-0DF3-4E1B-BEC2-1C9AE93FAEA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service.Application.Server", "src\SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Application.Server\Undersoft.SDK.Service.Application.Server.csproj", "{4346A26D-0DF3-4E1B-BEC2-1C9AE93FAEA7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Application.Client", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Application.Client\Undersoft.SSC.Service.Application.Client.csproj", "{700D6437-0DA5-45B6-8842-DDFDC0758B0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Application.Client", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Application.Client\Undersoft.SSC.Service.Application.Client.csproj", "{700D6437-0DA5-45B6-8842-DDFDC0758B0A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Application.Server", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Application.Server\Undersoft.SSC.Service.Application.Server.csproj", "{3A61F41A-A32A-4CD7-B3F4-84C17A0A2F3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Application.Server", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Application.Server\Undersoft.SSC.Service.Application.Server.csproj", "{3A61F41A-A32A-4CD7-B3F4-84C17A0A2F3A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Account", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Account\Undersoft.SSC.Service.Account.csproj", "{84291DA1-C119-4292-B27D-B03626BC6E79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Platform", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Platform\Undersoft.SSC.Service.Platform.csproj", "{84291DA1-C119-4292-B27D-B03626BC6E79}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Account.Server", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Account.Server\Undersoft.SSC.Service.Account.Server.csproj", "{752C9556-3577-4B8D-A8AD-6E4EA59FFF13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Platform.Server", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Platform.Server\Undersoft.SSC.Service.Platform.Server.csproj", "{752C9556-3577-4B8D-A8AD-6E4EA59FFF13}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Activity", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Activity\Undersoft.SSC.Service.Activity.csproj", "{1298E528-6839-4405-843D-0600CA8F9AD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Platform.Activity", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Platform.Activity\Undersoft.SSC.Service.Platform.Activity.csproj", "{1298E528-6839-4405-843D-0600CA8F9AD8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Activity.Server", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Activity.Server\Undersoft.SSC.Service.Activity.Server.csproj", "{3BA26490-2AC8-4340-907B-434E968B2A68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Platform.Activity.Server", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Platform.Activity.Server\Undersoft.SSC.Service.Platform.Activity.Server.csproj", "{3BA26490-2AC8-4340-907B-434E968B2A68}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Resource", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Resource\Undersoft.SSC.Service.Resource.csproj", "{A4DB0B65-1B0C-4467-8C67-71884FA0D365}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Platform.Resource", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Platform.Resource\Undersoft.SSC.Service.Platform.Resource.csproj", "{A4DB0B65-1B0C-4467-8C67-71884FA0D365}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Resource.Server", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Resource.Server\Undersoft.SSC.Service.Resource.Server.csproj", "{FFEC12E9-182E-46A7-82D7-5B600D42B884}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Platform.Schedule.Server", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Platform.Schedule.Server\Undersoft.SSC.Service.Platform.Schedule.Server.csproj", "{9701BE99-EFCC-4CE1-90F0-B4EBB7BB20D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Schedule.Server", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Schedule.Server\Undersoft.SSC.Service.Schedule.Server.csproj", "{9701BE99-EFCC-4CE1-90F0-B4EBB7BB20D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Platform.Schedule", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Platform.Schedule\Undersoft.SSC.Service.Platform.Schedule.csproj", "{E8D04563-A4CC-451F-9450-0B890FCF75B3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Schedule", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Schedule\Undersoft.SSC.Service.Schedule.csproj", "{E8D04563-A4CC-451F-9450-0B890FCF75B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Application.UI", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Application.UI\Undersoft.SSC.Service.Application.UI.csproj", "{5613584F-E077-4AAF-A14C-275B8B009B23}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Application.UI", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Application.UI\Undersoft.SSC.Service.Application.UI.csproj", "{5613584F-E077-4AAF-A14C-275B8B009B23}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Undersoft.SSC.Service.Application.Hybrid", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Application.Hybrid\Undersoft.SSC.Service.Application.Hybrid.csproj", "{0277C6AA-0776-4A54-8C44-D74ABC026D20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Undersoft.SSC.Service.Application.Hybrid", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Application.Hybrid\Undersoft.SSC.Service.Application.Hybrid.csproj", "{0277C6AA-0776-4A54-8C44-D74ABC026D20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Platform.Member.Server", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Platform.Member.Server\Undersoft.SSC.Service.Platform.Member.Server.csproj", "{5DD6493A-D1E4-44CE-9AF8-F1C6E8AB6FC4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Member", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Member\Undersoft.SSC.Service.Member.csproj", "{4755E95F-A5B2-40CB-AF57-951C8FEBBCDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Platform.Member", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Platform.Member\Undersoft.SSC.Service.Platform.Member.csproj", "{AA0DE193-923F-40FE-8582-1FB26851112D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Member.Server", "src\Undersoft.SharedServiceCenter\src\Undersoft.SSC.Service.Member.Server\Undersoft.SSC.Service.Member.Server.csproj", "{5DD6493A-D1E4-44CE-9AF8-F1C6E8AB6FC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Platform.Resource.Server", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Platform.Resource.Server\Undersoft.SSC.Service.Platform.Resource.Server.csproj", "{12269426-68F7-4FBF-8CF8-0C8C0569BD48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -145,10 +145,6 @@ Global
 		{A4DB0B65-1B0C-4467-8C67-71884FA0D365}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4DB0B65-1B0C-4467-8C67-71884FA0D365}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4DB0B65-1B0C-4467-8C67-71884FA0D365}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FFEC12E9-182E-46A7-82D7-5B600D42B884}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FFEC12E9-182E-46A7-82D7-5B600D42B884}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FFEC12E9-182E-46A7-82D7-5B600D42B884}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FFEC12E9-182E-46A7-82D7-5B600D42B884}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9701BE99-EFCC-4CE1-90F0-B4EBB7BB20D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9701BE99-EFCC-4CE1-90F0-B4EBB7BB20D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9701BE99-EFCC-4CE1-90F0-B4EBB7BB20D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -167,14 +163,18 @@ Global
 		{0277C6AA-0776-4A54-8C44-D74ABC026D20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0277C6AA-0776-4A54-8C44-D74ABC026D20}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0277C6AA-0776-4A54-8C44-D74ABC026D20}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{4755E95F-A5B2-40CB-AF57-951C8FEBBCDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4755E95F-A5B2-40CB-AF57-951C8FEBBCDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4755E95F-A5B2-40CB-AF57-951C8FEBBCDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4755E95F-A5B2-40CB-AF57-951C8FEBBCDF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5DD6493A-D1E4-44CE-9AF8-F1C6E8AB6FC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5DD6493A-D1E4-44CE-9AF8-F1C6E8AB6FC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DD6493A-D1E4-44CE-9AF8-F1C6E8AB6FC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DD6493A-D1E4-44CE-9AF8-F1C6E8AB6FC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA0DE193-923F-40FE-8582-1FB26851112D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA0DE193-923F-40FE-8582-1FB26851112D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA0DE193-923F-40FE-8582-1FB26851112D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA0DE193-923F-40FE-8582-1FB26851112D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12269426-68F7-4FBF-8CF8-0C8C0569BD48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12269426-68F7-4FBF-8CF8-0C8C0569BD48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12269426-68F7-4FBF-8CF8-0C8C0569BD48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12269426-68F7-4FBF-8CF8-0C8C0569BD48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -201,13 +201,13 @@ Global
 		{1298E528-6839-4405-843D-0600CA8F9AD8} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
 		{3BA26490-2AC8-4340-907B-434E968B2A68} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
 		{A4DB0B65-1B0C-4467-8C67-71884FA0D365} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
-		{FFEC12E9-182E-46A7-82D7-5B600D42B884} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
 		{9701BE99-EFCC-4CE1-90F0-B4EBB7BB20D0} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
 		{E8D04563-A4CC-451F-9450-0B890FCF75B3} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
 		{5613584F-E077-4AAF-A14C-275B8B009B23} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
 		{0277C6AA-0776-4A54-8C44-D74ABC026D20} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
-		{4755E95F-A5B2-40CB-AF57-951C8FEBBCDF} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
 		{5DD6493A-D1E4-44CE-9AF8-F1C6E8AB6FC4} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
+		{AA0DE193-923F-40FE-8582-1FB26851112D} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
+		{12269426-68F7-4FBF-8CF8-0C8C0569BD48} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F31728AB-97C6-4E0D-B412-898579AA77AD}
