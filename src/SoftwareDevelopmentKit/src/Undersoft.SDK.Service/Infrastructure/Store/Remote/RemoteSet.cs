@@ -142,7 +142,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Store.Remote
         public RemoteSet(DataServiceQuery<TEntity> query) : base(query.Context)
         {
             _query = query;
-            context = query.Context;
+            context = query.Context;            
         }
 
         public RemoteSet(DataServiceContext context, IQueryable<TEntity> query) : base(context)

@@ -1,14 +1,17 @@
 ﻿using Undersoft.SDK.Security.Identity;
-using Undersoft.SDK.Service.Application.Hosting;
+using Undersoft.SSC.Infrastructure.Clients;
 using Undersoft.SDK.Service.Server;
-using Undersoft.SSC.Service.Clients;
+using Undersoft.SDK.Service.Server.Account;
+using Undersoft.SDK.Service.Server.Hosting;
 using Undersoft.SSC.Service.Infrastructure.Stores;
+using Undersoft.SSC.Service.Contracts.Details;
 
 namespace Undersoft.SSC.Service.Server;
 
 public class Startup
 {
     public IConfiguration Configuration { get; }
+    public IServiceManager ServiceManager { get; set; }
 
     public Startup(IConfiguration configuration)
     {
@@ -16,7 +19,7 @@ public class Startup
     }
 
     public void ConfigureServices(IServiceCollection services)
-    {            
+    {
         var setup = services.AddServerSetup(services.AddControllers());
         setup
             .ConfigureServer(
@@ -24,22 +27,19 @@ public class Startup
                 AppDomain.CurrentDomain.GetAssemblies(),
                 new[]
                 {
-                    typeof(ServiceAccountStore),
-                    typeof(ServiceEventStore)
+                    typeof(AccountStore),
+                    typeof(EventStore),
+                    typeof(EntryStore),
+                    typeof(ReportStore)
                 },
-                new[]
-                {
-                    typeof(MemberDataService),
-                    typeof(ActivityDataService),
-                    typeof(ResourceDataService),
-                    typeof(ScheduleDataService)
-                }
+                new[] { typeof(ApplicationClient) }
             )
-            .AddAccountServer<ServiceAccountStore>()
+            .AddAccountServer<AccountStore>()
             .AddDataServer<IDataServiceStore>(
                 DataServerTypes.All,
                 builder => builder.AddAccountServices<Authorization>()
             );
+        ServiceManager = setup.Manager;
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

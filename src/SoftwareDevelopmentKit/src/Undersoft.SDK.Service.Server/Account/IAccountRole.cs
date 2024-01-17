@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
-namespace Undersoft.SDK.Service.Application.Account
+namespace Undersoft.SDK.Service.Server.Account
 {
-    public interface IAccountRole<TKey> : IUniqueIdentifiable, IEntity where TKey : IEquatable<TKey>
+    public interface IAccountRole : IIdentifiable
     {
-        IdentityRole<TKey> Info { get; set; }
-
-        Claim Role { get; }
-
-        IEnumerable<IAccountRoleClaim<TKey>> Claims { get; set; }
+        Listing<RoleClaim> Claims { get; set; }
     }
 }

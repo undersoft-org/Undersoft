@@ -10,14 +10,19 @@ using Undersoft.SDK.Logging;
 using Undersoft.SDK.Series;
 using Undersoft.SDK.Uniques;
 using System.Security.Claims;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Undersoft.SDK.Service.Application.Account;
+namespace Undersoft.SDK.Service.Server.Account;
 
-public class AccountRole<TKey> : UniqueIdentifiable where TKey : IEquatable<TKey>
+public class AccountRole : IdentityUserRole<long>, IIdentifiable
 {
-    public IdentityRole<TKey> Info { get; set; } = new IdentityRole<TKey>();
+    public long Id { get; set; }
 
-    public Claim Role => new Claim("role", Info.Name);
+    public long TypeId { get; set; }
 
-    public Registry<AccountRoleClaim<TKey>> Claims { get; set; }
+    public long AccountId { get; set; }
+    public virtual Account Account { get; set; }
+
+    public long AccountRoleId { get; set; }
+    public virtual Role Role { get; set; }
 }

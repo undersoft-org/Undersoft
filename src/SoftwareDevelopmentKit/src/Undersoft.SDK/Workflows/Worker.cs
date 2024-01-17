@@ -10,6 +10,7 @@
     {
         public Registry<object> Input { get; set; } = new Registry<object>(true);
         public Registry<object> Output { get; set; } = new Registry<object>(true);
+
         public Worker RootWorker { get; set; }
 
         private Worker() { }

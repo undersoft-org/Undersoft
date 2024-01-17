@@ -17,7 +17,7 @@
         {
             AggregationOperand parsed = new AggregationOperand();
             rubrics = new MemberRubrics();
-            InstantCreator summaryFigure = new InstantCreator(
+            InstantCreator summaryInstantCreator = new InstantCreator(
                 series.Rubrics
                     .AsValues()
                     .Where(
@@ -54,8 +54,8 @@
                     .ToArray(),
                 $"Aggregate_{series.GetType().Name}"
             );
-            series.Total = summaryFigure.Create();
-            rubrics = (MemberRubrics)summaryFigure.Rubrics;
+            series.Total = summaryInstantCreator.Create();
+            rubrics = (MemberRubrics)summaryInstantCreator.Rubrics;
             return rubrics;
         }
 

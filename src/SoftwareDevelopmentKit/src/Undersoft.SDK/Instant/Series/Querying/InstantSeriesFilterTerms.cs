@@ -47,10 +47,10 @@
 
         public InstantSeriesFilterTerms(IInstantSeries series)
         {
-            this.Figures = series;
+            this.InstantSeriesCreator = series;
         }
 
-        public IInstantSeries Figures
+        public IInstantSeries InstantSeriesCreator
         {
             get { return series; }
             set { series = value; }
@@ -60,7 +60,7 @@
 
         public new int Add(InstantSeriesFilterTerm value)
         {
-            value.Figures = series;
+            value.InstantSeriesCreator = series;
             value.Index = ((IList)this).Add(value);
             return value.Index;
         }
@@ -69,7 +69,7 @@
         {
             foreach (InstantSeriesFilterTerm term in terms)
             {
-                term.Figures = Figures;
+                term.InstantSeriesCreator = InstantSeriesCreator;
                 term.Index = Add(term);
             }
         }

@@ -143,6 +143,7 @@
             get => Worker.Process;
             set => Worker.Process = value;
         }
+     
         public object TargetObject
         {
             get => Process.TargetObject;

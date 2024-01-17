@@ -8,9 +8,9 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Infrastructure.Repository;
 using Undersoft.SDK.Service.Infrastructure.Repository.Client.Remote;
 using Undersoft.SDK.Service.Infrastructure.Store.Remote;
-using Undersoft.SDK.Service.Client;
 using System.Runtime.CompilerServices;
 using Undersoft.SDK.Service.Hosting;
+using Undersoft.SDK.Service.Client;
 
 namespace Undersoft.SDK.Service.Host
 {

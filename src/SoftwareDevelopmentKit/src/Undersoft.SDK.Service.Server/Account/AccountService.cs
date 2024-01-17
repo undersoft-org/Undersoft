@@ -1,7 +1,7 @@
 ﻿using Undersoft.SDK.Logging;
 using Undersoft.SDK.Security.Identity;
 
-namespace Undersoft.SDK.Service.Application.Account;
+namespace Undersoft.SDK.Service.Server.Account;
 
 public class AccountService
 {
@@ -30,7 +30,7 @@ public class AccountService
             };
             var user = await _manager.GetByEmail(account.Credentials.Email);
             await _manager.SignIn.SignInWithClaimsAsync(
-                user.Info,
+                user.User,
                 account.Credentials.SaveAccountInCookies,
                 user.GetClaims()
             );
@@ -48,7 +48,7 @@ public class AccountService
                 _creds.Password,
                 new string[] { "User" }
             );
-        await _manager.SignIn.CreateUserPrincipalAsync(account.Info);
+        await _manager.SignIn.CreateUserPrincipalAsync(account.User);
         return await ConfirmEmail(await Authorize(Authenticate(identity)));
     }
 
@@ -147,7 +147,7 @@ public class AccountService
                     if (
                         (
                             await _manager.User.ConfirmEmailAsync(
-                                (await _manager.GetByEmail(_creds.Email)).Info,
+                                (await _manager.GetByEmail(_creds.Email)).User,
                                 _creds.EmailConfirmationToken
                             )
                         ).Succeeded
@@ -165,7 +165,7 @@ public class AccountService
                 }
                 _creds.EmailConfirmationToken =
                     await _manager.User.GenerateEmailConfirmationTokenAsync(
-                        (await _manager.GetByEmail(_creds.Email)).Info
+                        (await _manager.GetByEmail(_creds.Email)).User
                     );
                 account.Notes = new AuthorizationNotes()
                 {
@@ -193,7 +193,7 @@ public class AccountService
                 if (
                     (
                         await _manager.User.ResetPasswordAsync(
-                            (await _manager.GetByEmail(_creds.Email)).Info,
+                            (await _manager.GetByEmail(_creds.Email)).User,
                             _creds.EmailConfirmationToken,
                             _creds.Password
                         )
@@ -208,7 +208,7 @@ public class AccountService
                 _creds.PasswordResetToken = null;
             }
             _creds.PasswordResetToken = await _manager.User.GeneratePasswordResetTokenAsync(
-                (await _manager.GetByEmail(_creds.Email)).Info
+                (await _manager.GetByEmail(_creds.Email)).User
             );
             account.Notes = new AuthorizationNotes()
             {
@@ -236,7 +236,7 @@ public class AccountService
                 {
                     if (
                         await _manager.User.VerifyUserTokenAsync(
-                            (await _manager.GetByEmail(_creds.Email)).Info,
+                            (await _manager.GetByEmail(_creds.Email)).User,
                             "AccountRegistrationProcessTokenProvider",
                             "Registration",
                             _creds.RegistrationCompleteToken
@@ -254,7 +254,7 @@ public class AccountService
                     _creds.RegistrationCompleteToken = null;
                 }
                 _creds.RegistrationCompleteToken = await _manager.User.GenerateUserTokenAsync(
-                    (await _manager.GetByEmail(_creds.Email)).Info,
+                    (await _manager.GetByEmail(_creds.Email)).User,
                     "AccountRegistrationProcessTokenProvider",
                     "Registration"
                 );

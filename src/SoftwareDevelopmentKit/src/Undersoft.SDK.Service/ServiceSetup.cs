@@ -15,7 +15,6 @@ using System.Text.Json.Serialization;
 
 namespace Undersoft.SDK.Service;
 
-using Client;
 using Configuration;
 using Data.Cache;
 using Data.Mapper;
@@ -24,6 +23,7 @@ using Infrastructure.Repository.Client;
 using Infrastructure.Repository.Source;
 using Infrastructure.Store;
 using Security.Identity;
+using Undersoft.SDK.Service.Client;
 
 public partial class ServiceSetup : IServiceSetup
 {
@@ -38,7 +38,7 @@ public partial class ServiceSetup : IServiceSetup
     public ServiceSetup(IServiceCollection services)
     {
         manager = new ServiceManager(services);
-        registry.MergeServices();
+        registry.MergeServices(true);
     }
 
     public ServiceSetup(IServiceCollection services, IConfiguration configuration) : this(services)
@@ -60,7 +60,7 @@ public partial class ServiceSetup : IServiceSetup
             typeof(IReportStore),
             typeof(IEventStore),
             typeof(IDataStore),
-            typeof(IIdentityStore)
+            typeof(IAccountStore)
         };
         foreach (Type item in stores)
         {
@@ -393,14 +393,21 @@ public partial class ServiceSetup : IServiceSetup
             }
 
             if (providerNotExists.Add(provider.ToString()))
-                RepositorySourceOptionsBuilder.AddEntityFrameworkSourceProvider(provider);
-
+            {
+                registry.AddEntityFrameworkSourceProvider(provider);
+                registry.MergeServices(true);
+            }
+     
             Type iRepoType = typeof(IRepositorySource<>).MakeGenericType(contextType);
             Type repoType = typeof(RepositorySource<>).MakeGenericType(contextType);
             Type repoOptionsType = typeof(DbContextOptions<>).MakeGenericType(contextType);
+            Type repoOptionsBuilderType = typeof(DbContextOptionsBuilder<>).MakeGenericType(contextType);
+
+            var builder = registry.GetObject<ISourceProviderConfiguration>();
+            var options = builder.BuildOptions(repoOptionsBuilderType.New<DbContextOptionsBuilder>(), provider, connectionString).Options;
 
             IRepositorySource repoSource = (IRepositorySource)
-                repoType.New(provider, connectionString);
+                repoType.New(options);
 
             Type storeDbType = typeof(DataStoreContext<>).MakeGenericType(
                 DataStoreRegistry.GetStoreType(contextType)
@@ -534,7 +541,7 @@ public partial class ServiceSetup : IServiceSetup
         {
             return StoreRoutes.DataStoreRoute;
         }
-        else if (iface == typeof(IIdentityStore))
+        else if (iface == typeof(IAccountStore))
         {
             return StoreRoutes.OpenIdentityRoute;
         }

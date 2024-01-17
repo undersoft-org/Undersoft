@@ -5,52 +5,73 @@ using Undersoft.SDK.Logging;
 using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Uniques;
 
-namespace Undersoft.SDK.Service.Application.Account;
+namespace Undersoft.SDK.Service.Server.Account;
 
-public partial class AccountStore<TStore, TContext> : AccountStoreContext<TStore> where TStore : IDataServerStore where TContext : DbContext
+public partial class AccountStore<TStore, TContext> : AccountStoreContext<TStore>
+    where TStore : IDataServerStore
+    where TContext : DbContext
 {
-    public AccountStore(DbContextOptions<TContext> options) : base(options)
-    {
-    }
+    public AccountStore(DbContextOptions<TContext> options) : base(options) { }
 }
 
-public partial class AccountStoreContext<TStore> : IdentityDbContext<IdentityUser<long>, IdentityRole<long>, long>, IDataStoreContext<TStore> where TStore : IDataServerStore
+public partial class AccountStoreContext<TStore>
+    : IdentityDbContext<
+        AccountUser,
+        Role,
+        long,
+        AccountClaim,
+        AccountRole,
+        AccountLogin,
+        RoleClaim,
+        AccountToken
+    >,
+        IDataStoreContext<TStore> where TStore : IDataServerStore
 {
-    public AccountStoreContext(DbContextOptions options) : base(options)
-    {
-    }
+    public AccountStoreContext(DbContextOptions options) : base(options) { }
+
+    public virtual DbSet<Account> Accounts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.HasDefaultSchema("AccountIdentity");
-        builder.Entity<IdentityUser<long>>(entity =>
+        builder.HasDefaultSchema("Account");
+        builder
+            .ApplyMapping<Account>(new AccountMappings())
+            .ApplyMapping<AccountClaim>(new AccountClaimMappings())
+            .ApplyMapping<AccountToken>(new AccountTokenMappings())
+            .ApplyMapping<Role>(new RolemMappings());
+
+        builder.Entity<Account>(entity =>
         {
-            entity.ToTable(name: "Users");
+            entity.ToTable(name: "Accounts");
         });
-        builder.Entity<IdentityRole<long>>(entity =>
+        builder.Entity<AccountUser>(entity =>
+        {
+            entity.ToTable(name: "AccountUsers");
+        });
+        builder.Entity<Role>(entity =>
         {
             entity.ToTable(name: "Roles");
         });
-        builder.Entity<IdentityUserRole<long>>(entity =>
+        builder.Entity<AccountRole>(entity =>
         {
-            entity.ToTable("UserRoles");
+            entity.ToTable("AccountRoles");
         });
-        builder.Entity<IdentityUserClaim<long>>(entity =>
+        builder.Entity<AccountClaim>(entity =>
         {
-            entity.ToTable("UserClaims");
+            entity.ToTable("AccountClaims");
         });
-        builder.Entity<IdentityUserLogin<long>>(entity =>
+        builder.Entity<AccountLogin>(entity =>
         {
-            entity.ToTable("UserLogins");
+            entity.ToTable("AccountLogins");
         });
-        builder.Entity<IdentityRoleClaim<long>>(entity =>
+        builder.Entity<RoleClaim>(entity =>
         {
             entity.ToTable("RoleClaims");
         });
-        builder.Entity<IdentityUserToken<long>>(entity =>
+        builder.Entity<AccountToken>(entity =>
         {
-            entity.ToTable("UserTokens");
+            entity.ToTable("AccountTokens");
         });
     }
 

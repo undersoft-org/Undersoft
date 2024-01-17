@@ -15,7 +15,7 @@ public class DataStoreContextFactory<TContext, TSourceProvider> : IDesignTimeDbC
         var config = new ServiceConfiguration();
         var configSource = config.Source(typeof(TContext).FullName);
         var provider = config.SourceProvider(configSource);
-        RepositorySourceOptionsBuilder.AddEntityFrameworkSourceProvider<TSourceProvider>(provider);
+        RepositorySourceOptionsBuilder.AddRootEntityFrameworkSourceProvider<TSourceProvider>(provider);
         var options = RepositorySourceOptionsBuilder.BuildOptions<TContext>(provider, config.SourceConnectionString(configSource)).Options;
         return typeof(TContext).New<TContext>(options);
     }

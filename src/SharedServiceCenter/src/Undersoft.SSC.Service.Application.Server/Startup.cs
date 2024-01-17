@@ -3,9 +3,9 @@
 using Microsoft.AspNetCore.OData;
 using Undersoft.SDK.Service.Server;
 using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SSC.Infrastructure.Clients;
+using Undersoft.SDK.Service.Server.Hosting;
 using Undersoft.SSC.Service.Infrastructure.Stores;
-using Undersoft.SSC.Service.Clients;
-using Undersoft.SDK.Service.Application.Hosting;
 
 public class Startup
 {
@@ -25,8 +25,13 @@ public class Startup
             .ConfigureServer(
                 true,
                 AppDomain.CurrentDomain.GetAssemblies(),
-                new[] { typeof(AppEventStore) },
-                new[] { typeof(OpenDataService) }
+                new[]
+                {
+                    typeof(EventStore),
+                    typeof(ReportStore),
+                    typeof(EntryStore)
+                },
+                new[] { typeof(ServiceClient) }
             )
             .AddDataServer<IDataServiceStore>(DataServerTypes.All);
     }

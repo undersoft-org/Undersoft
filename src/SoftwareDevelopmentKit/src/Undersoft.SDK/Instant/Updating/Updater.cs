@@ -78,15 +78,6 @@ public class Updater : IUpdater
         source = creator.Create(item);
     }
 
-    protected void setDeltaMarks()
-    {
-        foreach (var rubric in Rubrics)
-        {
-            if (rubric.DeltaMark != null)
-                preset[rubric.RubricId] = rubric.DeltaMark;
-        }
-    }
-
     protected void setBy(IProxy target, UpdaterItem[] changes, int count)
     {
         var _target = target;
@@ -303,8 +294,7 @@ public class Updater : IUpdater
                     var targetValue = _target[targetndex];
 
                     if (
-                        !originValue.NullOrEquals(rubric.DeltaMark)
-                        && !originValue.Equals(targetValue)
+                        !originValue.NullOrEquals(targetValue)
                     )
                     {
                         if (!RecursiveUpdate(originValue, targetValue, target, rubric, rubric))
@@ -340,8 +330,7 @@ public class Updater : IUpdater
                         var targetValue = _target[targetIndex];
 
                         if (
-                            !originValue.NullOrEquals(originRubric.DeltaMark)
-                            && !originValue.Equals(targetValue)
+                            !originValue.NullOrEquals(targetValue)                            
                         )
                         {
                             if (

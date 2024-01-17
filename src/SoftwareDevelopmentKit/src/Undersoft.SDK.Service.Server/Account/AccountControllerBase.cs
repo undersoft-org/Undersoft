@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace Undersoft.SDK.Service.Application.Account
+namespace Undersoft.SDK.Service.Server.Account
 {
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.OData.Formatter;

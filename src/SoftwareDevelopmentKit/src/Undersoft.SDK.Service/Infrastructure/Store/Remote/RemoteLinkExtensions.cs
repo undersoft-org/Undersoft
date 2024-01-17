@@ -5,12 +5,13 @@ namespace Undersoft.SDK.Service.Infrastructure.Store.Remote;
 
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Relation;
+using Undersoft.SDK.Service.Infrastructure.Store.Relation;
 using Uniques;
 
 public static class RemoteLinkExtensions
 {
     public static IEdmModel RemoteSetToSet<TOrigin, TTarget>(this IEdmModel builder,
-                                                             Expression<Func<IRemoteLink<TOrigin, TTarget>, object>> middlekey,
+                                                             Expression<Func<IRelatedLink<TOrigin, TTarget>, object>> middlekey,
                                                              Expression<Func<TTarget, object>> targetkey)
                                                           where TOrigin : class, IDataObject
                                                           where TTarget : class, IDataObject

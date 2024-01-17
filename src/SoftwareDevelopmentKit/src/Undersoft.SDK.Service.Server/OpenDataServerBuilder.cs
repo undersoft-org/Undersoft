@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.OData.Formatter;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Security.Identity;
 using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Client;
 using Undersoft.SDK.Service.Client.Remote;
 
 namespace Undersoft.SDK.Service.Server;
@@ -174,7 +175,7 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
         {
             return StoreRoutes.OpenEventRoute;
         }
-        else if (StoreType == typeof(IIdentityStore))
+        else if (StoreType == typeof(IAccountStore))
         {
             return StoreRoutes.OpenIdentityRoute;
         }

@@ -42,17 +42,26 @@ namespace Undersoft.SDK.Service
             Services = this;
         }
 
+        public ServiceManager(IServiceManager serviceManager) : base()
+        {
+            Services = serviceManager;
+            registry = serviceManager.Registry;
+            provider = serviceManager.Provider;
+            configuration = serviceManager.Configuration;
+        }
+
         internal ServiceManager(IServiceCollection services) : this()
         {
             if (registry == null)
             {
                 registry = new ServiceRegistry(services, this);
-                registry.MergeServices();
+                registry.MergeServices(true);
                 AddObject<IServiceManager>(this);
+
                 BuildServiceProviderFactory(registry);
             }
             else
-                registry.MergeServices(services, false);
+                registry.MergeServices(services, true);
 
             if (configuration == null)
             {
@@ -67,6 +76,7 @@ namespace Undersoft.SDK.Service
 
             var factory = new DefaultServiceProviderFactory(options);
 
+            AddObject<IServiceRegistry>(registry);
             AddObject<IServiceCollection>(registry);
             AddObject<IServiceProviderFactory<IServiceCollection>>(factory);
 
@@ -174,6 +184,7 @@ namespace Undersoft.SDK.Service
         {
             var provider = GetRegistry().BuildServiceProviderFromFactory<IServiceCollection>();
             SetProvider(provider);
+            this.provider = provider;
             return provider;
         }
 
@@ -206,7 +217,11 @@ namespace Undersoft.SDK.Service
         public IServiceProvider GetProvider()
         {
             if (provider == null)
-                provider = Session.ServiceProvider;
+            {
+                provider = GetObject<IServiceProvider>();
+                if (provider == null)
+                    provider = BuildInternalProvider();
+            }
             return provider;
         }
 
@@ -261,18 +276,23 @@ namespace Undersoft.SDK.Service
         public IServiceScope GetSession()
         {
             if (session == null)
-                session = NewSession();
+                session = GetProvider().CreateScope();
             return session;
         }
 
-        public IServiceScope NewSubSession()
+        public IServiceScope NewSession()
         {
             return GetProvider().CreateScope();
         }
 
-        public static IServiceScope NewSession()
+        public static IServiceScope NewRootSession()
         {
             return GetRootProvider().CreateScope();
+        }
+
+        public IServiceScope CreateScope()
+        {
+            return GetProvider().CreateScope();
         }
 
         public static IServiceManager GetRootManager()

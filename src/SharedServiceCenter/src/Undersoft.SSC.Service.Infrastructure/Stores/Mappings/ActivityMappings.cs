@@ -1,15 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Undersoft.SSC.Entities.Activities;
 
 namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 {
     using Undersoft.SDK.Service.Infrastructure.Store;
     using Undersoft.SDK.Service.Infrastructure.Store.Relation;
-    using Undersoft.SSC.Entities.Members;
-    using Undersoft.SSC.Entities.Activities.Locations;
-    using Undersoft.SSC.Entities.Resources;
-    using Undersoft.SSC.Entities.Schedules;
+    using Undersoft.SSC.Domain.Entities;
+    using Undersoft.SSC.Domain.Entities.Locations;
 
     public class ActivityMappings : EntityTypeMapping<Activity>
     {
@@ -21,48 +18,38 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 
             modelBuilder
                 .ApplyIdentifiers<Activity>()
-                .RelateOneToSet<ActivityDefault, Activity>(r=> r.Default, r=> r.Activities, ExpandSite.OnLeft)
-                .RelateOneToOne<Activity, ActivityLocation>(r => r.Activity, r => r.Location, ExpandSite.OnRight)
-                .RelateSetToSet<Activity, ActivitySetting>(
-                          l => l.Activities, r => r.Settings,
-             
+                .RelateSetToSet<Activity, Resource>(
+                    r => r.Activities,
+                    r => r.Resources
+                )
+                .RelateOneToSet<Default, Activity>(
+                    r => r.Default,
+                    r => r.Activities,
+                    ExpandSite.OnLeft
+                )
+                .RelateOneToOne<Activity, Location>(
+                    r => r.Activity,
+                    r => r.Location,
                     ExpandSite.OnRight
                 )
-                .RelateSetToRemoteSet<Activity, Member>(
-                    r => r.MemberNode
+                .RelateSetToSet<Activity, Setting>(
+                    l => l.Activities,
+                    r => r.Settings,
+                    ExpandSite.OnRight
                 )
-                .RelateSetToRemoteSet<Activity, Resource>(
-                    r => r.ResourceNode
-                )
-                .RelateSetToRemoteSet<Activity, Schedule>(
-                    r => r.ScheduleNode
-                )
-                .RelateSetToSet<Activity, ActivityDetail>(
-                          l => l.Activities, r => r.Details,
-           
+                .RelateSetToSet<Activity, Detail>(
+                    l => l.Activities,
+                    r => r.Details,
                     ExpandSite.OnRight,
                     true
                 )
-                .RelateSetToSet<ActivityDetail, ActivityDetail>(
-            
-                    r => r.RelatedFrom, r => r.RelatedTo,
-                    ExpandSite.OnRight
-                )
-                .RelateSetToSet<ActivitySetting, ActivitySetting>(
-
-                    r => r.RelatedFrom, r => r.RelatedTo,
-                    ExpandSite.OnRight
-                )
                 .RelateSetToSet<Activity, Activity>(
-      
                     rm => rm.RelatedFrom,
-                    nameof(ActivityDetail.Activities),
-                                  rm => rm.RelatedTo,
-                    nameof(ActivityDetail.Activities),
+                    nameof(Activity),
+                    rm => rm.RelatedTo,
+                    nameof(Activity),
                     ExpandSite.OnRight
-                )
-                .RelateOneToSet<ActivityLocation, Endpoint>(ExpandSite.OnRight)
-                .RelateOneToSet<ActivityLocation, Position>(ExpandSite.OnRight);
+                );
         }
     }
 }

@@ -4,7 +4,7 @@ using Undersoft.SDK.Service.Data.Contract;
 using Undersoft.SDK.Service.Data.Entity;
 using Undersoft.SDK.Service.Data.Model;
 
-public interface IEvent : IEntity, IContract, IModel
+public interface IEvent
 {
     uint EventVersion { get; set; }
     string EventType { get; set; }

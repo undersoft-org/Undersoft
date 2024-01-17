@@ -7,12 +7,12 @@ using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Server.Controller.Open;
 
-using Client.Remote;
 using Data.Event;
 using Documentation;
 using Infrastructure.Store;
 using Operation.Remote.Command;
 using Operation.Remote.Query;
+using Undersoft.SDK.Service.Client.Remote;
 
 [IgnoreApi]
 [RemoteOpenDataService]

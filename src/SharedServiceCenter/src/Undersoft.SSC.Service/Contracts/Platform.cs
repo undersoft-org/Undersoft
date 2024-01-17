@@ -7,22 +7,13 @@ namespace Undersoft.SSC.Service.Contracts;
 public class Platform : PlatformBase
 {
     [DataMember(Order = 18)]
-    public virtual DataObjects<MemberBase>? RelatedFrom { get; set; }
+    public virtual DataObjects<PlatformBase>? RelatedFrom { get; set; }
 
     [DataMember(Order = 19)]
-    public virtual DataObjects<MemberBase>? RelatedTo { get; set; }
-
-    [DataMember(Order = 20)]
-    public virtual DataObjects<ActivityBase>? Activities { get; set; }
-
-    [DataMember(Order = 21)]
-    public virtual DataObjects<ResourceBase>? Resources { get; set; }
-
-    [DataMember(Order = 22)]
-    public virtual DataObjects<ScheduleBase>? Schedules { get; set; }
+    public virtual DataObjects<PlatformBase>? RelatedTo { get; set; }
 
     [DataMember(Order = 23)]
-    public virtual DataObjects<MemberBase>? Members { get; set; }
+    public virtual DataObjects<ServiceBase>? Services { get; set; }
 
     [DataMember(Order = 24)]
     public virtual Default? Default { get; set; }

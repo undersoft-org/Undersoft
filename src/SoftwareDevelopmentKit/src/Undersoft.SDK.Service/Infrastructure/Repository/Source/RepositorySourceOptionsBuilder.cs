@@ -5,17 +5,25 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository.Source
 {
     public static class RepositorySourceOptionsBuilder
     {
-        public static void AddEntityFrameworkSourceProvider<TSourceProvider>(SourceProvider provider) where TSourceProvider : class, ISourceProviderConfiguration
+        public static void AddRootEntityFrameworkSourceProvider<TSourceProvider>(SourceProvider provider) where TSourceProvider : class, ISourceProviderConfiguration
         {
-            var sourceConfiguration = typeof(TSourceProvider).New<TSourceProvider>();
+            var sourceConfiguration = typeof(TSourceProvider).New<TSourceProvider>(ServiceManager.GetRootManager().Registry);
             sourceConfiguration.AddSourceProvider(provider);
             ServiceManager.AddRootObject<ISourceProviderConfiguration>(sourceConfiguration);
         }
 
-        public static void AddEntityFrameworkSourceProvider(SourceProvider provider)
+        public static ISourceProviderConfiguration AddEntityFrameworkSourceProvider(SourceProvider provider)
         {
             var sourceConfiguration = ServiceManager.GetRootObject<ISourceProviderConfiguration>();
             sourceConfiguration.AddSourceProvider(provider);
+            return sourceConfiguration;
+        }
+
+        public static ISourceProviderConfiguration AddEntityFrameworkSourceProvider(this IServiceRegistry registry, SourceProvider provider)
+        {
+            var sourceConfiguration = registry.GetObject<ISourceProviderConfiguration>();
+            sourceConfiguration.AddSourceProvider(provider);
+            return sourceConfiguration;
         }
 
         public static DbContextOptionsBuilder<TContext> BuildOptions<TContext>(

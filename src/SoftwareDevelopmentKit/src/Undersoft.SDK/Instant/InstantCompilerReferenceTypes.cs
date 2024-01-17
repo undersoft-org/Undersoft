@@ -13,9 +13,9 @@
     public class InstantCompilerReferenceTypes : InstantCompiler
     {
         public InstantCompilerReferenceTypes(
-            InstantCreator instantFigure,
+            InstantCreator instantInstantCreator,
             ISeries<RubricModel> rubricBuilders
-        ) : base(instantFigure, rubricBuilders) { }
+        ) : base(instantInstantCreator, rubricBuilders) { }
 
         public override Type CompileInstantType(string typeName)
         {
@@ -76,7 +76,7 @@
 
                         if (fb != null)
                         {
-                            ResolveFigureAttributes(fb, attributeAtMember);
+                            ResolveInstantCreatorAttributes(fb, attributeAtMember);
 
                             PropertyBuilder pi = createProperty(tb, fb, fp.Type, fp.Name);
 

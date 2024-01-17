@@ -33,7 +33,7 @@
 
         public int FieldId
         {
-            get => Rubric.FigureFieldId;
+            get => Rubric.InstantCreatorFieldId;
         }
 
         public MathSet Formuler { get; set; }

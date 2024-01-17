@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Undersoft.SDK.Security.Identity;
 
-namespace Undersoft.SDK.Service.Application.Account;
+namespace Undersoft.SDK.Service.Server.Account;
 
 public class AccountCredentials : Credentials
 {

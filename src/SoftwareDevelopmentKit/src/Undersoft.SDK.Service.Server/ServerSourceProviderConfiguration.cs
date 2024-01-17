@@ -8,8 +8,6 @@ namespace Undersoft.SDK.Service.Server
 {
     public class ServerSourceProviderConfiguration : ISourceProviderConfiguration
     {
-        public ServerSourceProviderConfiguration() { }
-
         public ServerSourceProviderConfiguration(IServiceRegistry registry) { _registry = registry; }
 
         IServiceRegistry _registry { get; set; }
@@ -51,6 +49,7 @@ namespace Undersoft.SDK.Service.Server
                         break;
                 }
                 _registry.AddEntityFrameworkProxies();
+
                 DataStoreRegistry.SourceProviders.Add((int)provider, provider);
             }
             return _registry;

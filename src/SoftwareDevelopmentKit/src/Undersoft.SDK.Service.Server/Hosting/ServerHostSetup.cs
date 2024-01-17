@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using ProtoBuf.Grpc.Server;
 using Undersoft.SDK.Service.Server;
 
-namespace Undersoft.SDK.Service.Application.Hosting;
+namespace Undersoft.SDK.Service.Server.Hosting;
 
 using Logging;
 using Microsoft.AspNetCore.Routing;
@@ -23,15 +23,16 @@ public class ServerHostSetup : IServerHostSetup
     IEndpointRouteBuilder _routeBuilder;
     IServiceManager _serviceManager;
 
-    public ServerHostSetup(IApplicationBuilder application) 
-    { 
+    public ServerHostSetup(IApplicationBuilder application)
+    {
         _application = application;
         _serviceManager = _application.ApplicationServices.GetService<IServiceManager>();
     }
 
-    public ServerHostSetup(IApplicationBuilder application, IWebHostEnvironment environment) : this(application)
+    public ServerHostSetup(IApplicationBuilder application, IWebHostEnvironment environment)
+        : this(application)
     {
-        _environment = environment;        
+        _environment = environment;
     }
 
     public IServerHostSetup RebuildProviders()
@@ -52,18 +53,23 @@ public class ServerHostSetup : IServerHostSetup
     {
         _application.UseEndpoints(endpoints =>
         {
-            var method = typeof(GrpcEndpointRouteBuilderExtensions).GetMethods().Where(m => m.Name.Contains("MapGrpcService")).FirstOrDefault().GetGenericMethodDefinition();
+            var method = typeof(GrpcEndpointRouteBuilderExtensions)
+                .GetMethods()
+                .Where(m => m.Name.Contains("MapGrpcService"))
+                .FirstOrDefault()
+                .GetGenericMethodDefinition();
             ISeries<Type> serviceContracts = GrpcDataServerRegistry.ServiceContracts;
             if (serviceContracts.Any())
             {
                 foreach (var serviceContract in serviceContracts)
-                    method.MakeGenericMethod(serviceContract).Invoke(endpoints, new object[] { endpoints });
+                    method
+                        .MakeGenericMethod(serviceContract)
+                        .Invoke(endpoints, new object[] { endpoints });
 
                 endpoints.MapCodeFirstGrpcReflectionService();
             }
 
-            _serviceManager.Registry
-                   .MergeServices();
+            _serviceManager.Registry.MergeServices();
 
             endpoints.MapControllers();
 
@@ -94,7 +100,7 @@ public class ServerHostSetup : IServerHostSetup
 
     public IServerHostSetup UseDataMigrations()
     {
-        using (IServiceScope scope = ServiceManager.GetRootProvider().CreateScope())
+        using (IServiceScope scope = _serviceManager.CreateScope())
         {
             try
             {
@@ -103,7 +109,11 @@ public class ServerHostSetup : IServerHostSetup
             }
             catch (Exception ex)
             {
-                this.Error<Applog>("DataServer migration initial create - unable to connect the database engine", null, ex);
+                this.Error<Applog>(
+                    "DataServer migration initial create - unable to connect the database engine",
+                    null,
+                    ex
+                );
             }
         }
 
@@ -120,7 +130,7 @@ public class ServerHostSetup : IServerHostSetup
 
     public IServerHostSetup UseInternalProvider()
     {
-        _serviceManager.Registry.MergeServices();
+        _serviceManager.Registry.MergeServices(true);
         _application.ApplicationServices = _serviceManager.BuildInternalProvider();
         return this;
     }
@@ -130,8 +140,7 @@ public class ServerHostSetup : IServerHostSetup
         UseHeaderForwarding();
 
         if (_environment.IsDevelopment())
-            _application
-                .UseDeveloperExceptionPage();
+            _application.UseDeveloperExceptionPage();
 
         _application
             .UseHttpsRedirection()
@@ -145,9 +154,7 @@ public class ServerHostSetup : IServerHostSetup
         if (apiVersions != null)
             UseSwaggerSetup(apiVersions);
 
-        _application
-            .UseAuthentication()        
-            .UseAuthorization();
+        _application.UseAuthentication().UseAuthorization();
 
         UseJwtMiddleware();
 
@@ -172,8 +179,9 @@ public class ServerHostSetup : IServerHostSetup
 
         var ao = _serviceManager.GetConfiguration().Identity;
 
-        _application.UseSwagger().UseSwaggerUI(
-            s =>
+        _application
+            .UseSwagger()
+            .UseSwaggerUI(s =>
             {
                 s.SwaggerEndpoint($"{ao.ServiceBaseUrl}/swagger/v1/swagger.json", ao.ServiceName);
                 //s.OAuthClientId(ao.SwaggerClientId);

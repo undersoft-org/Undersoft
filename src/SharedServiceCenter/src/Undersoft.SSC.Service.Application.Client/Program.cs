@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Undersoft.SDK.Service.Application.Services;
-using Undersoft.SSC.Service.Application.UI;
 using Undersoft.SDK.Service;
-using Undersoft.SSC.Service.Clients;
+using Undersoft.SDK.Service.Application.Services;
+using Undersoft.SSC.Infrastructure.Clients;
 
 namespace Undersoft.SSC.Service.Application.Client
 {
@@ -22,10 +21,10 @@ namespace Undersoft.SSC.Service.Application.Client
                 .ConfigureServices(
                     AppDomain.CurrentDomain.GetAssemblies(),
                     null,
-                    new[] { typeof(OpenDataService) }
+                    new[] { typeof(ApplicationClient) }
                 ).Manager;
 
-            var provider = await manager.BuildInternalProvider().UseDataServices();
+            var _provider = await manager.BuildInternalProvider().UseDataServices();
 
             builder.ConfigureContainer(
                 manager.GetProviderFactory(),

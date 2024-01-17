@@ -20,7 +20,7 @@
             this.series = series;
         }
 
-        public IInstantSeries Figures
+        public IInstantSeries InstantSeriesCreator
         {
             get { return series; }
             set { series = value; }
@@ -32,7 +32,7 @@
         {
             foreach (InstantSeriesSortTerm term in terms)
             {
-                term.Figures = Figures;
+                term.InstantSeriesCreator = InstantSeriesCreator;
                 term.Index = ((IList)this).Add(term);
             }
         }
@@ -44,7 +44,7 @@
 
         public new int Add(InstantSeriesSortTerm value)
         {
-            value.Figures = Figures;
+            value.InstantSeriesCreator = InstantSeriesCreator;
             value.Index = ((IList)this).Add(value);
             return value.Index;
         }

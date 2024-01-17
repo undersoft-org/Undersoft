@@ -10,6 +10,7 @@ using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Relation;
 using Undersoft.SDK.Service.Infrastructure.Repository.Client.Remote;
 using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Infrastructure.Store.Relation;
 using Undersoft.SDK.Service.Infrastructure.Store.Remote;
 
 public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore, TTarget>, IRepositoryLink<TStore, TOrigin, TTarget>
@@ -112,12 +113,12 @@ public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore,
 
     public override Towards Towards => relation.Towards;
 
-    public Expression<Func<IRemoteLink<TOrigin, TTarget>, object>> MiddleKey 
+    public Expression<Func<IRelatedLink<TOrigin, TTarget>, object>> MiddleKey 
     { 
         get => relation.MiddleKey;
         set => relation.MiddleKey = value;
     }
-    public Expression<Func<TOrigin, IEnumerable<IRemoteLink<TOrigin, TTarget>>>> MiddleSet
+    public Expression<Func<TOrigin, IEnumerable<IRelatedLink<TOrigin, TTarget>>>> MiddleSet
     {
         get => relation.MiddleSet;
         set => relation.MiddleSet = value;

@@ -29,7 +29,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         rubricCount = this.rubricBuilders.Count;
     }
 
-    void resolveFigureDisplayAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+    void resolveInstantCreatorDisplayAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
     {
         object[] o = mi.GetCustomAttributes(typeof(DisplayRubricAttribute), false);
         if ((o != null) && o.Any())
@@ -39,15 +39,15 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
             mr.DisplayName = fda.Name;
 
             if (fb != null)
-                CreateFigureDisplayAttribute(fb, fda);
+                CreateInstantCreatorDisplayAttribute(fb, fda);
         }
         else if (mr.DisplayName != null)
         {
-            CreateFigureDisplayAttribute(fb, new DisplayRubricAttribute(mr.DisplayName));
+            CreateInstantCreatorDisplayAttribute(fb, new DisplayRubricAttribute(mr.DisplayName));
         }
     }
 
-    void resolveFigureIdentityAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+    void resolveInstantCreatorIdentityAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
     {
         if (!mr.IsKey)
         {
@@ -65,7 +65,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
                 Identities.Add(mr.IdentityOrder, mr);
 
                 if (fb != null)
-                    CreateFigureIdentityAttribute(fb, fia);
+                    CreateInstantCreatorIdentityAttribute(fb, fia);
             }
             else if (mr.IsIdentity)
             {
@@ -75,7 +75,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
                 Identities.Add(mr.IdentityOrder, mr);
 
                 if (fb != null)
-                    CreateFigureIdentityAttribute(
+                    CreateInstantCreatorIdentityAttribute(
                         fb,
                         new IdentityRubricAttribute
                         {
@@ -87,7 +87,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         }
     }
 
-    void resolveFigureKeyAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+    void resolveInstantCreatorKeyAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
     {
         object[] o = mi.GetCustomAttributes(typeof(KeyAttribute), false);
         if ((o == null) || !o.Any())
@@ -110,7 +110,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
             mr.Required = true;
 
             if (fb != null)
-                CreateFigureKeyAttribute(fb, fka);
+                CreateInstantCreatorKeyAttribute(fb, fka);
         }
         else if (mr.IsKey)
         {
@@ -123,7 +123,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
             Identities.Add(mr.IdentityOrder, mr);
 
             if (fb != null)
-                CreateFigureKeyAttribute(
+                CreateInstantCreatorKeyAttribute(
                     fb,
                     new KeyRubricAttribute
                     {
@@ -134,7 +134,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         }
     }
 
-    void resolveFigureRquiredAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+    void resolveInstantCreatorRquiredAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
     {
         object[] o = mi.GetCustomAttributes(typeof(RequiredRubricAttribute), false);
         if ((o != null) && o.Any())
@@ -142,16 +142,16 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
             mr.Required = true;
 
             if (fb != null)
-                CreateFigureRequiredAttribute(fb);
+                CreateInstantCreatorRequiredAttribute(fb);
         }
         else if (mr.Required)
         {
             if (fb != null)
-                CreateFigureRequiredAttribute(fb);
+                CreateInstantCreatorRequiredAttribute(fb);
         }
     }
 
-    void resolveFigureTreatmentAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+    void resolveInstantCreatorTreatmentAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
     {
         object[] o = mi.GetCustomAttributes(typeof(RubricAggregateAttribute), false);
         if ((o != null) && o.Any())
@@ -162,11 +162,11 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
             mr.AggregationOperand = fta.SummaryOperand;
 
             if (fb != null)
-                CreateFigureTreatmentAttribute(fb, fta);
+                CreateInstantCreatorTreatmentAttribute(fb, fta);
         }
         else if (mr.AggregationOperand != AggregationOperand.None)
         {
-            CreateFigureTreatmentAttribute(
+            CreateInstantCreatorTreatmentAttribute(
                 fb,
                 new RubricAggregateAttribute { SummaryOperand = mr.AggregationOperand }
             );
@@ -181,7 +181,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
 
     public abstract void CreateFieldsAndProperties(TypeBuilder tb);
 
-    public void CreateFigureAsAttribute(FieldBuilder field, InstantAsAttribute attrib)
+    public void CreateInstantCreatorAsAttribute(FieldBuilder field, InstantAsAttribute attrib)
     {
         field.SetCustomAttribute(
             new CustomAttributeBuilder(
@@ -193,14 +193,14 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         );
     }
 
-    public void CreateFigureDisplayAttribute(FieldBuilder field, DisplayRubricAttribute attrib)
+    public void CreateInstantCreatorDisplayAttribute(FieldBuilder field, DisplayRubricAttribute attrib)
     {
         field.SetCustomAttribute(
             new CustomAttributeBuilder(figureDisplayCtor, new object[] { attrib.Name })
         );
     }
 
-    public void CreateFigureIdentityAttribute(
+    public void CreateInstantCreatorIdentityAttribute(
         FieldBuilder field,
         IdentityRubricAttribute attrib
     )
@@ -219,7 +219,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         );
     }
 
-    public void CreateFigureKeyAttribute(FieldBuilder field, KeyRubricAttribute attrib)
+    public void CreateInstantCreatorKeyAttribute(FieldBuilder field, KeyRubricAttribute attrib)
     {
         field.SetCustomAttribute(
             new CustomAttributeBuilder(
@@ -235,14 +235,14 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         );
     }
 
-    public void CreateFigureRequiredAttribute(FieldBuilder field)
+    public void CreateInstantCreatorRequiredAttribute(FieldBuilder field)
     {
         field.SetCustomAttribute(
             new CustomAttributeBuilder(figureRequiredCtor, Type.EmptyTypes)
         );
     }
 
-    public void CreateFigureTreatmentAttribute(
+    public void CreateInstantCreatorTreatmentAttribute(
         FieldBuilder field,
         RubricAggregateAttribute attrib
     )
@@ -292,7 +292,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         ILGenerator il = getter.GetILGenerator();
 
         il.Emit(OpCodes.Ldarg_0);
-        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.FigureField);
+        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.InstantCreatorField);
         il.EmitCall(OpCodes.Call, typeof(Uscn).GetMethod("get_Empty"), null);
         il.Emit(OpCodes.Ret);
     }
@@ -324,7 +324,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         ILGenerator il = method.GetILGenerator();
 
         il.Emit(OpCodes.Ldarg_0);
-        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.FigureField);
+        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.InstantCreatorField);
         il.Emit(OpCodes.Ldarg_1);
         il.EmitCall(
             OpCodes.Call,
@@ -352,7 +352,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
 
         ILGenerator il = method.GetILGenerator();
         il.Emit(OpCodes.Ldarg_0);
-        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.FigureField);
+        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.InstantCreatorField);
         il.EmitCall(OpCodes.Call, typeof(Uscn).GetMethod("GetIdBytes"), null);
         il.Emit(OpCodes.Ret);
     }
@@ -376,7 +376,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         ILGenerator il = method.GetILGenerator();
 
         il.Emit(OpCodes.Ldarg_0);
-        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.FigureField);
+        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.InstantCreatorField);
         il.EmitCall(OpCodes.Call, typeof(Uscn).GetMethod("GetId"), null);
         il.Emit(OpCodes.Ret);
     }
@@ -400,7 +400,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         ILGenerator il = method.GetILGenerator();
 
         il.Emit(OpCodes.Ldarg_0);
-        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.FigureField);
+        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.InstantCreatorField);
         il.EmitCall(OpCodes.Call, typeof(Uscn).GetMethod("GetTypeId"), null);
         il.Emit(OpCodes.Ret);
     }
@@ -447,7 +447,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
 
         il.Emit(OpCodes.Ldarg_0);
         il.Emit(OpCodes.Ldarg_1);
-        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.FigureField);
+        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.InstantCreatorField);
         il.EmitCall(OpCodes.Call, typeof(Uscn).GetMethod("SetId"), null);
         il.Emit(OpCodes.Ret);
     }
@@ -472,7 +472,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
 
         il.Emit(OpCodes.Ldarg_0);
         il.Emit(OpCodes.Ldarg_1);
-        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.FigureField);
+        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.InstantCreatorField);
         il.EmitCall(OpCodes.Call, typeof(Uscn).GetMethod("SetTypeId"), null);
         il.Emit(OpCodes.Ret);
     }
@@ -506,7 +506,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         ILGenerator il = getter.GetILGenerator();
 
         il.Emit(OpCodes.Ldarg_0);
-        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.FigureField);
+        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.InstantCreatorField);
         il.EmitCall(OpCodes.Call, typeof(Uscn).GetProperty("Id").GetGetMethod(), null);
         il.Emit(OpCodes.Ret);
 
@@ -528,7 +528,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         il = setter.GetILGenerator();
 
         il.Emit(OpCodes.Ldarg_0);
-        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.FigureField);
+        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.InstantCreatorField);
         il.Emit(OpCodes.Ldarg_1);
         il.EmitCall(OpCodes.Call, typeof(Uscn).GetProperty("Id").GetSetMethod(), null);
         il.Emit(OpCodes.Ret);
@@ -563,7 +563,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         ILGenerator il = getter.GetILGenerator();
 
         il.Emit(OpCodes.Ldarg_0);
-        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.FigureField);
+        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.InstantCreatorField);
         il.EmitCall(OpCodes.Call, typeof(Uscn).GetProperty("TypeId").GetGetMethod(), null);
         il.Emit(OpCodes.Ret);
 
@@ -585,7 +585,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         il = setter.GetILGenerator();
 
         il.Emit(OpCodes.Ldarg_0);
-        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.FigureField);
+        il.Emit(OpCodes.Ldflda, rubricBuilders[0].Member.InstantCreatorField);
         il.Emit(OpCodes.Ldarg_1);
         il.EmitCall(OpCodes.Call, typeof(Uscn).GetProperty("TypeId").GetSetMethod(), null);
         il.Emit(OpCodes.Ret);
@@ -603,15 +603,15 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
             && !(((IMemberRubric)mi).MemberInfo is PropertyBuilder)
         )
         {
-            resolveFigureKeyAttributes(fb, mi, mr);
+            resolveInstantCreatorKeyAttributes(fb, mi, mr);
 
-            resolveFigureIdentityAttributes(fb, mi, mr);
+            resolveInstantCreatorIdentityAttributes(fb, mi, mr);
 
-            resolveFigureRquiredAttributes(fb, mi, mr);
+            resolveInstantCreatorRquiredAttributes(fb, mi, mr);
 
-            resolveFigureDisplayAttributes(fb, mi, mr);
+            resolveInstantCreatorDisplayAttributes(fb, mi, mr);
 
-            resolveFigureTreatmentAttributes(fb, mi, mr);
+            resolveInstantCreatorTreatmentAttributes(fb, mi, mr);
         }
     }
 
@@ -622,9 +622,9 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
     )
     {
         MemberInfo _member = member.RubricInfo;
-        if ((member is MemberRubric) && (member.FigureField != null))
+        if ((member is MemberRubric) && (member.InstantCreatorField != null))
         {
-            _member = member.FigureField;
+            _member = member.InstantCreatorField;
         }
 
         object[] o = _member.GetCustomAttributes(typeof(MarshalAsAttribute), false);
@@ -634,7 +634,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
             if ((o != null) && o.Any())
             {
                 InstantAsAttribute faa = (InstantAsAttribute)o.First();
-                CreateFigureAsAttribute(
+                CreateInstantCreatorAsAttribute(
                     field,
                     new InstantAsAttribute(UnmanagedType.ByValArray)
                     {
@@ -647,7 +647,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
                 int size = 64;
                 if (member.RubricSize > 0)
                     size = member.RubricSize;
-                CreateFigureAsAttribute(
+                CreateInstantCreatorAsAttribute(
                     field,
                     new InstantAsAttribute(UnmanagedType.ByValArray) { SizeConst = size }
                 );
@@ -673,9 +673,9 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
     )
     {
         MemberInfo _member = member.RubricInfo;
-        if ((member is MemberRubric) && (member.FigureField != null))
+        if ((member is MemberRubric) && (member.InstantCreatorField != null))
         {
-            _member = member.FigureField;
+            _member = member.InstantCreatorField;
         }
 
         object[] o = _member.GetCustomAttributes(typeof(MarshalAsAttribute), false);
@@ -685,7 +685,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
             if ((o != null) && o.Any())
             {
                 InstantAsAttribute maa = (InstantAsAttribute)o.First();
-                CreateFigureAsAttribute(
+                CreateInstantCreatorAsAttribute(
                     field,
                     new InstantAsAttribute(UnmanagedType.ByValTStr)
                     {
@@ -698,7 +698,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
                 int size = 64;
                 if (member.RubricSize > 0)
                     size = member.RubricSize;
-                CreateFigureAsAttribute(
+                CreateInstantCreatorAsAttribute(
                     field,
                     new InstantAsAttribute(UnmanagedType.ByValTStr) { SizeConst = size }
                 );

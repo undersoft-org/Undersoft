@@ -84,41 +84,41 @@
         {
             foreach (WorkAspect aspect in AsValues())
             {
-                if (aspect.Workator == null)
+                if (aspect.Workspace == null)
                 {
-                    aspect.Workator = new Workspace(aspect);
+                    aspect.Workspace = new Workspace(aspect);
                 }
-                if (!aspect.Workator.Ready)
+                if (!aspect.Workspace.Ready)
                 {
                     aspect.Allocate();
                 }
             }
         }
 
-        public void Run(string laborName, params object[] input)
+        public void Run(string workName, params object[] input)
         {
-            WorkItem[] labors = AsValues()
-                .Where(m => m.ContainsKey(laborName))
+            WorkItem[] works = AsValues()
+                .Where(m => m.ContainsKey(workName))
                 .SelectMany(w => w.AsValues())
                 .ToArray();
 
-            foreach (WorkItem labor in labors)
-                labor.Invoke(input);
+            foreach (WorkItem work in works)
+                work.Invoke(input);
         }
 
-        public void Run(IDictionary<string, object[]> laborsAndInputs)
+        public void Run(IDictionary<string, object[]> worksAndParams)
         {
-            foreach (KeyValuePair<string, object[]> worker in laborsAndInputs)
+            foreach (KeyValuePair<string, object[]> workAndParam in worksAndParams)
             {
-                object input = worker.Value;
-                string workerName = worker.Key;
-                WorkItem[] workerWorks = AsValues()
-                    .Where(m => m.ContainsKey(workerName))
+                object input = workAndParam.Value;
+                string workName = workAndParam.Key;
+                WorkItem[] works = AsValues()
+                    .Where(m => m.ContainsKey(workName))
                     .SelectMany(w => w.AsValues())
                     .ToArray();
 
-                foreach (WorkItem objc in workerWorks)
-                    objc.Execute(input);
+                foreach (WorkItem work in works)
+                    work.Execute(input);
             }
         }
     }

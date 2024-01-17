@@ -50,7 +50,7 @@ public class RelatedSetToRemoteSet<TLeft, TRight>
     {
         _modelBuilder = modelBuilder;
         _firstBuilder = _modelBuilder.Entity<TLeft>();
-        //_secondBuilder = _modelBuilder.Entity<TRight>();
+        _secondBuilder = _modelBuilder.Entity<TRight>();
         _relationBuilder = _modelBuilder.Entity<Data.Relation.RemoteLink<TLeft, TRight>>();
         _expandSite = expandSite;
 

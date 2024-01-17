@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 
-namespace Undersoft.SDK.Service.Application.Hosting
+namespace Undersoft.SDK.Service.Server.Hosting
 {
     public interface IServerHostSetup
     {

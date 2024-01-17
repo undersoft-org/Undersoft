@@ -31,10 +31,10 @@ namespace Undersoft.SDK.Instant
 
         public ISeries<RubricModel> rubricBuilders;
 
-        public InstantCompiler(InstantCreator instantFigure, ISeries<RubricModel> rubricBuilders)
+        public InstantCompiler(InstantCreator instantInstantCreator, ISeries<RubricModel> rubricBuilders)
         {
             this.rubricBuilders = rubricBuilders;
-            figure = instantFigure;
+            figure = instantInstantCreator;
             length = rubricBuilders.Count;
         }
 
@@ -658,7 +658,7 @@ namespace Undersoft.SDK.Instant
 
         public abstract TypeBuilder GetTypeBuilder(string typeName);
 
-        public virtual void ResolveFigureAttributes(FieldBuilder fb, MemberRubric mr)
+        public virtual void ResolveInstantCreatorAttributes(FieldBuilder fb, MemberRubric mr)
         {
             MemberInfo mi = mr.RubricInfo;
             if (
@@ -685,9 +685,9 @@ namespace Undersoft.SDK.Instant
         )
         {
             MemberInfo _member = member.RubricInfo;
-            if ((member is MemberRubric) && (member.FigureField != null))
+            if ((member is MemberRubric) && (member.InstantCreatorField != null))
             {
-                _member = member.FigureField;
+                _member = member.InstantCreatorField;
             }
 
             object[] o = _member.GetCustomAttributes(typeof(MarshalAsAttribute), false);
@@ -736,9 +736,9 @@ namespace Undersoft.SDK.Instant
         )
         {
             MemberInfo _member = member.RubricInfo;
-            if ((member is MemberRubric) && (member.FigureField != null))
+            if ((member is MemberRubric) && (member.InstantCreatorField != null))
             {
-                _member = member.FigureField;
+                _member = member.InstantCreatorField;
             }
 
             object[] o = _member.GetCustomAttributes(typeof(MarshalAsAttribute), false);

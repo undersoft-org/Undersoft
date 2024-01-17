@@ -2,7 +2,7 @@ using System.Drawing;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Undersoft.SDK;
-using Undersoft.SSC.Entities.Members;
+using Undersoft.SSC.Domain.Entities;
 
 namespace Undersoft.SSC.Service.Contracts.Locations;
 

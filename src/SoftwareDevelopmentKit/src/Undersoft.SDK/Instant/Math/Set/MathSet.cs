@@ -72,7 +72,7 @@
         }
         public int FieldId
         {
-            get => Rubric.FigureFieldId;
+            get => Rubric.InstantCreatorFieldId;
         }
 
         public int rowCount { get; set; }

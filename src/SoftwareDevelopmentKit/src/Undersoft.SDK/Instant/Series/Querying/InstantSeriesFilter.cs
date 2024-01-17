@@ -32,7 +32,7 @@
             termsReducer = new InstantSeriesFilterTerms(series);
         }
 
-        public IInstantSeries Figures
+        public IInstantSeries InstantSeriesCreator
         {
             get { return series; }
             set { series = value; }

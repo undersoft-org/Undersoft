@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Uniques
 {
-    public interface IUniqueCode : IIdentifiable
+    public interface ICode : IIdentifiable
     {
         Uscn Code { get; }
     }

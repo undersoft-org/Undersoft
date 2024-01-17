@@ -35,7 +35,7 @@ public abstract class OpenDataActionRemoteController<TStore, TKind, TDto, TModel
     }
 
     [HttpPost(StoreRoutes.OpenDataRoute+"/[controller]/{kind}")]
-    public virtual async Task<IActionResult> Post([FromODataUri] string kind, ODataActionParameters parameters)
+    public virtual async Task<IActionResult> Post([FromRoute] string kind, [FromBody] ODataActionParameters parameters)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -53,8 +53,8 @@ public abstract class OpenDataActionRemoteController<TStore, TKind, TDto, TModel
         return NotFound(kind);
     }
 
-    [HttpGet(StoreRoutes.OpenDataRoute + "/[controller]/{kind}")]
-    public virtual async Task<IActionResult> Get([FromODataUri] string kind)
+    [HttpGet(StoreRoutes.OpenDataRoute+"/[controller]/{kind}")]
+    public virtual async Task<IActionResult> Get([FromRoute] string kind)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);

@@ -3,15 +3,17 @@ using Undersoft.SDK.Uniques;
 using System.Security.Claims;
 using Undersoft.SDK.Security.Identity;
 
-namespace Undersoft.SDK.Service.Application.Account
+namespace Undersoft.SDK.Service.Server.Account
 {
-    public interface IAccount<TKey> : IOrigin where TKey : IEquatable<TKey>
+    public interface IAccount : IOrigin
     {
-        IdentityUser<TKey> Info { get; set; }
+        long UserId { get; set; }
 
-        Registry<AccountRole<TKey>> Roles { get; set; }
+        AccountUser User { get; set; }
 
-        Registry<AccountClaim<TKey>> Claims { get; set; }
+        Listing<Role> Roles { get; set; }
+
+        Listing<AccountClaim> Claims { get; set; }
 
         IEnumerable<Claim> GetClaims();
 

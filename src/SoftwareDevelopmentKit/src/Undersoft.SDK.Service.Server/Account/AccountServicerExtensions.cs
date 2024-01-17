@@ -1,4 +1,4 @@
-﻿namespace Undersoft.SDK.Service.Application.Account;
+﻿namespace Undersoft.SDK.Service.Server.Account;
 
 public static class AccountServicerExtensions
 {

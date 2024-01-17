@@ -2,12 +2,10 @@
 using Undersoft.SDK.Uniques;
 using System.Security.Claims;
 
-namespace Undersoft.SDK.Service.Application.Account
+namespace Undersoft.SDK.Service.Server.Account
 {
-    public interface IAccountClaim<TKey> : IUniqueIdentifiable where TKey : IEquatable<TKey>
+    public interface IAccountClaim : IIdentifiable
     {
-        IdentityUserClaim<TKey> Info { get; set; }
-
         Claim Claim { get; }
     }
 }

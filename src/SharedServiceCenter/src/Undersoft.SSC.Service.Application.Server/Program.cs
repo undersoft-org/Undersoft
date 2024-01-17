@@ -6,7 +6,7 @@ namespace Undersoft.SSC.Service.Application.Server;
 public class Program
 {
     static string[] _args = new string[0];
-    static IWebHost? _webapi;
+    static IHost? _host;
 
     public static void Main(string[] args)
     {
@@ -14,22 +14,24 @@ public class Program
         Launch();
     }
 
-    static IWebHost Build()
+    static IHost Build()
     {
+        var builder = new HostBuilder();
 
-        var builder = new WebHostBuilder();
+        builder.Info<Runlog>("Starting Shared Service Center Web Server Server ....");
 
-        builder.Info<Runlog>("Starting Shared Client Center Web Server Server ....");
-
-        _webapi = builder
+        _host = builder.ConfigureWebHost(builder => builder
             .UseContentRoot(Directory.GetCurrentDirectory())
             .UseConfiguration(ServiceConfigurationHelper.BuildConfiguration())
             .UseKestrel()
+            .ConfigureKestrel((c, o) => o
+                .Configure(c.Configuration
+                .GetSection("Kestrel")))
             .UseStaticWebAssets()
-            .UseStartup<Startup>()
+            .UseStartup<Startup>())
             .Build();
 
-        return _webapi;
+        return _host;
     }
     public static void Launch()
     {
@@ -39,17 +41,17 @@ public class Program
         }
         catch (Exception exception)
         {
-            Log.Error<Runlog>(null, "Shared Client Center Web Server Server terminated unexpectedly ....", exception);
+            Log.Error<Runlog>(null, "Shared Service Center Web Server Server terminated unexpectedly ....", exception);
         }
         finally
         {
-            Log.Info<Runlog>(null, "Shared Client Center Web Server Server shutted down ....");
+            Log.Info<Runlog>(null, "Shared Service Center Web Server Server shutted down ....");
         }
     }
 
     public static async Task Restart()
     {
-        Log.Info<Runlog>(null, "Restarting Shared Client Center Web Server Server ....");
+        Log.Info<Runlog>(null, "Restarting Shared Service Center Web Server Server ....");
 
         Task.WaitAll(Shutdown());
 
@@ -58,11 +60,11 @@ public class Program
 
     public static async Task Shutdown()
     {
-        Log.Info<Runlog>(null, "Shutting down Shared Client Center Web Server Server ....");
+        Log.Info<Runlog>(null, "Shutting down Shared Service Center Web Server Server ....");
 
-        _webapi.Info<Runlog>("Stopping Shared Client Center Web Server Server ....");
+        _host.Info<Runlog>("Stopping Shared Service Center Web Server Server ....");
 
-        if (_webapi != null)
-            await _webapi.StopAsync(TimeSpan.FromSeconds(5));
+        if (_host != null)
+            await _host.StopAsync(TimeSpan.FromSeconds(5));
     }
 }

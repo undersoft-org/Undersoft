@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Undersoft.SDK.Service.Server.Controller.Crud;
 using Undersoft.SDK.Service.Server.Controller.Open;
-using Undersoft.SDK.Service.Server.Controller.Stream;
-using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SSC.Entities.Members;
+using Undersoft.SSC.Domain.Entities;
+
 
 namespace Undersoft.SSC.Service.Server.Controllers
 {
@@ -24,11 +23,3 @@ namespace Undersoft.SSC.Service.Server.Controllers
     }
 }
 
-namespace Undersoft.SSC.Service.Server.Controllers
-{
-    public class MemberStreamController
-        : StreamDataController<long, IEntryStore, IReportStore, Member, Contracts.Member>
-    {
-        public MemberStreamController() : base() { }
-    }
-}

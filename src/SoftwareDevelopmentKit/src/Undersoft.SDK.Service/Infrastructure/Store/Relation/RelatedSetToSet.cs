@@ -71,8 +71,12 @@ public class RelatedSetToSet<TLeft, TRight>
 
         if (leftTableName != null)
             LEFT_TABLE_NAME = leftTableName;
+        else if (leftName != null)
+            LEFT_TABLE_NAME = leftName;
         if (rightTableName != null)
-            RIGHT_TABLE_NAME = rightTableName;
+            RIGHT_TABLE_NAME = leftTableName;
+        else if (rightName != null)
+            RIGHT_TABLE_NAME = rightName;
         if (leftName != null)
             LEFT_NAME = leftName;
         if (rightName != null)
@@ -87,11 +91,6 @@ public class RelatedSetToSet<TLeft, TRight>
 
     public ModelBuilder Configure(bool autoinclude = false)
     {
-        //if (LEFT_SCHEMA != null && RIGHT_NAME != null)
-        //{
-        //    _firstBuilder.ToTable(LEFT_TABLE_NAME, LEFT_SCHEMA);
-        //    _secondBuilder.ToTable(RIGHT_TABLE_NAME, RIGHT_SCHEMA);
-        //}
         _relationBuilder.ToTable(RELATION_TABLE_NAME, DataStoreSchema.RelationSchema);
 
         _firstBuilder

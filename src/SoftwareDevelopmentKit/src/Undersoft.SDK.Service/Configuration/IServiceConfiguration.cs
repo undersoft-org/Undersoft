@@ -28,11 +28,11 @@ public interface IServiceConfiguration : IConfiguration
     IEnumerable<IConfigurationSection> Sources();
     string Title { get; }
     IConfigurationSection Repository();
-    IConfigurationSection IdentityServer();
+    IConfigurationSection AccountServer();
     string IdentityServerBaseUrl();
     string IdentityServiceName();
     string[] IdentityServerScopes();
     string[] IdentityServerRoles();
-    IdentityOptions GetIdentityConfiguration();
-    IdentityOptions Identity { get; }
+    AccountServerOptions GetIdentityConfiguration();
+    AccountServerOptions Identity { get; }
 }

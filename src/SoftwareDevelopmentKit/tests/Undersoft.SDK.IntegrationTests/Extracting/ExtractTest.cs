@@ -39,7 +39,7 @@ public class ExtractTest
             {
                 var field = fom.GetType()
                     .GetField(
-                        rubric.FigureField.Name,
+                        rubric.RubricName,
                         BindingFlags.NonPublic | BindingFlags.Instance
                     );
                 if (field == null)

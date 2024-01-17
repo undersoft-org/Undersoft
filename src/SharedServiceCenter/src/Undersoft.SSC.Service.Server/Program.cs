@@ -1,27 +1,26 @@
-using Undersoft.SDK.Service.Application.Hosting;
 using Undersoft.SDK.Service.Configuration;
+using Undersoft.SDK.Service.Server.Hosting;
 
 namespace Undersoft.SSC.Service.Server;
 
 public class Program
 {
-    static string[] _arguments = new string[0];
-    static ServerHost _superServer = new ServerHost();
-    static ISeries<ServerHost> _servers = new Registry<ServerHost>();
+    static string[] _args = new string[0];
+    static IHost? _host;
 
-    public static void Main(string[] arguments)
+    public static void Main(string[] args)
     {
-        _arguments = arguments;
+        _args = args;
         Launch();
     }
 
-    static IHost ServerBuild()
+    static IHost Build()
     {
         var builder = new HostBuilder();
 
         builder.Info<Runlog>("Starting Undersoft.SSC.Service.Server ....");
 
-        return builder.ConfigureWebHost((wh) => wh
+        _host = builder.ConfigureWebHost((wh) => wh
             .UseContentRoot(Directory.GetCurrentDirectory())
             .UseConfiguration(ServiceConfigurationHelper.BuildConfiguration())
             .UseKestrel()
@@ -30,15 +29,15 @@ public class Program
                 .GetSection("Kestrel")))            
             .UseStartup<Startup>())
             .Build();
+
+        return _host;
     }
 
-    public static async void Launch()
+    public static void Launch()
     {
         try
-        {                
-            _superServer.Host = ServerBuild();
-            _superServer.Host.Start();
-            await _superServer.Host.WaitForShutdownAsync();
+        {
+            Build().Run();
         }
         catch (Exception exception)
         {
@@ -63,9 +62,9 @@ public class Program
     {
         Log.Info<Runlog>(null, "Shutting down Undersoft.SSC.Service.Server ....");
 
-        _superServer.Info<Runlog>("Stopping Undersoft.SSC.Service.Server ....");
+        _host.Info<Runlog>("Stopping Undersoft.SSC.Service.Server ....");
 
-        if(_superServer.Host != null)
-            await _superServer.Host.StopAsync(TimeSpan.FromSeconds(5));
+        if(_host != null)
+            await _host.StopAsync(TimeSpan.FromSeconds(5));
     }
 }

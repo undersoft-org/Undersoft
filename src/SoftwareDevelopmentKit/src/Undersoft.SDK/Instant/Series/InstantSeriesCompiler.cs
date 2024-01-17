@@ -23,15 +23,15 @@
         private FieldBuilder structTypeField;
         private FieldBuilder tableField;
 
-        public InstantSeriesCompiler(InstantSeriesCreator instantFigures, bool safeThread)
+        public InstantSeriesCompiler(InstantSeriesCreator instantInstantSeriesCreator, bool safeThread)
         {
-            series = instantFigures;
+            series = instantInstantSeriesCreator;
             if (safeThread)
                 seriesType = typeof(InstantRegistry);
             series.BaseType = seriesType;
         }
 
-        public Type CompileFigureType(string typeName)
+        public Type CompileInstantType(string typeName)
         {
             TypeBuilder tb = GetTypeBuilder(typeName);
 
@@ -47,9 +47,9 @@
 
             CreateKeyRubricsField(tb, typeof(MemberRubrics), "KeyRubrics");
 
-            CreateFigureTypeField(tb, typeof(Type), "InstantType");
+            CreateInstantTypeField(tb, typeof(Type), "InstantType");
 
-            CreateFigureSizeField(tb, typeof(int), "InstantSize");
+            CreateInstantSizeField(tb, typeof(int), "InstantSize");
 
             CreateNewInstantObject(tb, "NewInstant");
 
@@ -471,7 +471,7 @@
             return tb.DefineField("_" + name, type, FieldAttributes.Public);
         }
 
-        private void CreateFigureSizeField(TypeBuilder tb, Type type, string name)
+        private void CreateInstantSizeField(TypeBuilder tb, Type type, string name)
         {
             FieldBuilder fb = CreateField(tb, type, name);
             structSizeField = fb;
@@ -529,7 +529,7 @@
             il.Emit(OpCodes.Ret);
         }
 
-        private void CreateFigureTypeField(TypeBuilder tb, Type type, string name)
+        private void CreateInstantTypeField(TypeBuilder tb, Type type, string name)
         {
             FieldBuilder fb = CreateField(tb, type, name);
             structTypeField = fb;

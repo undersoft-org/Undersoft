@@ -9,12 +9,21 @@ using Microsoft.Extensions.Options;
 using Undersoft.SDK.Logging;
 using Undersoft.SDK.Uniques;
 using System.Security.Claims;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Undersoft.SDK.Service.Application.Account;
+namespace Undersoft.SDK.Service.Server.Account;
 
-public class AccountClaim<TKey> : UniqueIdentifiable, IAccountClaim<TKey> where TKey : IEquatable<TKey>
+public class AccountClaim : IdentityUserClaim<long>, IIdentifiable, IAccountClaim
 {
-    public IdentityUserClaim<TKey> Info { get; set; } = new IdentityUserClaim<TKey>();
+    public AccountClaim() : base() { Id = Unique.NewId; }
 
-    public Claim Claim => Info.ToClaim();
+    public new long Id { get; set; }
+
+    public long TypeId { get; set; }
+
+    public long AccountId { get; set; }
+    public virtual Account Account { get; set; }
+
+    [NotMapped]
+    public Claim Claim { get => this.ToClaim(); set => InitializeFromClaim(value); }
 }

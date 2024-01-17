@@ -112,7 +112,7 @@
             Stage = (FilterStage)Enum.ToObject(typeof(FilterStage), stage);
         }
 
-        public IInstantSeries Figures
+        public IInstantSeries InstantSeriesCreator
         {
             get { return series; }
             set

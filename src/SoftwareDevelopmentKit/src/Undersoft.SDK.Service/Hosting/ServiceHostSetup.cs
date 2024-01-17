@@ -41,7 +41,7 @@ namespace Undersoft.SDK.Service.Host
 
         public IServiceHostSetup UseDataMigrations()
         {
-            using (var session = ServiceManager.NewSession())
+            using (var session = sm.CreateScope())
             {
                 try
                 {

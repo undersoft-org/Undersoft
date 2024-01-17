@@ -2,7 +2,7 @@
 
 namespace Undersoft.SDK.Uniques
 {
-    public interface IUniqueObject : IUniqueCode
+    public interface IUniqueObject : ICode
     {
         int Ordinal { get; set; }
 

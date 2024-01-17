@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Undersoft.SDK.Service.Application.Hosting;
+namespace Undersoft.SDK.Service.Server.Hosting;
 
 using Service.Host;
 using Undersoft.SDK.Service.Infrastructure.Repository;

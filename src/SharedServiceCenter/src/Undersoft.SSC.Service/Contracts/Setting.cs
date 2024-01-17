@@ -1,7 +1,7 @@
 using System.Runtime.Serialization;
 using Undersoft.SDK.Service.Data.Contract;
 using Undersoft.SDK.Service.Data.Object.Setting;
-using Undersoft.SSC.Entities.Enums;
+using Undersoft.SSC.Domain.Entities.Enums;
 
 namespace Undersoft.SSC.Service.Contracts
 {

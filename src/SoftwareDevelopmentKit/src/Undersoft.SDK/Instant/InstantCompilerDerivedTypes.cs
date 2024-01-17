@@ -12,8 +12,8 @@
 
     public class InstantCompilerDerivedTypes : InstantCompiler
     {
-        public InstantCompilerDerivedTypes(InstantCreator instantFigure, ISeries<RubricModel> rubricBuilders)
-            : base(instantFigure, rubricBuilders) { }
+        public InstantCompilerDerivedTypes(InstantCreator instantInstantCreator, ISeries<RubricModel> rubricBuilders)
+            : base(instantInstantCreator, rubricBuilders) { }
 
         public override Type CompileInstantType(string typeName)
         {
@@ -112,13 +112,13 @@
                         if (m.Field != null)
                         {
                             if (!(m.Field.IsBackingField))
-                                ResolveFigureAttributes(null, new MemberRubric(m.Field));
+                                ResolveInstantCreatorAttributes(null, new MemberRubric(m.Field));
                             else if (m.Property != null)
-                                ResolveFigureAttributes(null, new MemberRubric(m.Property));
+                                ResolveInstantCreatorAttributes(null, new MemberRubric(m.Property));
                         }
                         else if (m.Property != null)
                         {
-                            ResolveFigureAttributes(null, new MemberRubric(m.Property));
+                            ResolveInstantCreatorAttributes(null, new MemberRubric(m.Property));
                         }
                     }
                 );

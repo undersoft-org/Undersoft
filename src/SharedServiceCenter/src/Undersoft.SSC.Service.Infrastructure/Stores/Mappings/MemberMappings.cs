@@ -4,12 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 {
     using SDK.Service.Infrastructure.Store;
-    using SSC.Entities.Members;
     using Undersoft.SDK.Service.Infrastructure.Store.Relation;
-    using Undersoft.SSC.Entities.Members.Locations;
-    using Undersoft.SSC.Entities.Activities;
-    using Undersoft.SSC.Entities.Resources;
-    using Undersoft.SSC.Entities.Schedules;
+    using Undersoft.SSC.Domain.Entities;
+    using Undersoft.SSC.Domain.Entities.Locations;
 
     public class MemberMappings : EntityTypeMapping<Member>
     {
@@ -21,57 +18,43 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 
             modelBuilder
                 .ApplyIdentifiers<Member>()
-                .RelateSetToRemoteSet<Member, Activity>(r => r.ActivityNode)
-                .RelateSetToRemoteSet<Member, Resource>(r => r.ResourceNode)
-                .RelateSetToRemoteSet<Member, Schedule>(r => r.ScheduleNode)
-                .RelateSetToSet<Member, MemberSetting>(
+                .RelateSetToSet<Member, Activity>(
+                    r => r.Members,
+                    r => r.Activities
+                )
+                .RelateSetToSet<Member, Resource>(
+                    r => r.Members,
+                    r => r.Resources
+                )
+                .RelateSetToSet<Member, Schedule>(
+                    r => r.Members,
+                    r => r.Schedules
+                )
+                .RelateSetToSet<Member, Setting>(
                     r => r.Members,
                     r => r.Settings,
                     ExpandSite.OnRight
                 )
-                .RelateOneToOne<Member, MemberLocation>(
+                .RelateOneToOne<Member, Location>(
                     r => r.Member,
                     r => r.Location,
                     ExpandSite.OnRight
                 )
-                .RelateSetToSet<Member, MemberDetail>(
+                .RelateSetToSet<Member, Detail>(
                     r => r.Members,
                     r => r.Details,
                     ExpandSite.OnRight
                 )
-                .RelateOneToSet<MemberLocation, Endpoint>(
-                    r => r.Location,
-                    r => r.Endpoints,
-                    ExpandSite.OnRight
-                )
-                .RelateOneToSet<MemberLocation, Position>(
-                    r => r.Location,
-                    r => r.Positions,
-                    ExpandSite.OnRight
-                )
-                .RelateOneToSet<MemberLocation, Address>(
-                    r => r.Location,
-                    r => r.Addresses,
-                    ExpandSite.OnRight
-                )
-                .RelateOneToSet<MemberDefault, Member>(
+                .RelateOneToSet<Default, Member>(
                     r => r.Default,
                     r => r.Members,
                     ExpandSite.OnLeft
                 )
                 .RelateSetToSet<Member, Member>(
                     r => r.RelatedFrom,
+                    nameof(Member),
                     r => r.RelatedTo,
-                    ExpandSite.OnRight
-                )
-                .RelateSetToSet<MemberSetting, MemberSetting>(
-                    r => r.RelatedFrom,
-                    r => r.RelatedTo,
-                    ExpandSite.OnRight
-                )
-                .RelateSetToSet<MemberDetail, MemberDetail>(
-                    r => r.RelatedFrom,
-                    r => r.RelatedTo,
+                    nameof(Member),
                     ExpandSite.OnRight
                 );
             ;

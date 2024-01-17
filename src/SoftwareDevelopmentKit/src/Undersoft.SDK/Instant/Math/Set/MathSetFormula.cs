@@ -47,7 +47,7 @@
             set { computer = value; }
         }
 
-        public int FigureFieldId
+        public int InstantCreatorFieldId
         {
             get => memberRubric.FieldId;
         }
@@ -256,7 +256,7 @@
                 }
 
                 if (
-                    erubric.FigureFieldId == FormulaSet.FigureFieldId
+                    erubric.InstantCreatorFieldId == FormulaSet.InstantCreatorFieldId
                     && !RoutineSet.FormulaSet.Contains(erubric)
                 )
                     RoutineSet.FormulaSet.Add(erubric);

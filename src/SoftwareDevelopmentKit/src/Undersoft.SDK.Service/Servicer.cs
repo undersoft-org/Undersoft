@@ -14,6 +14,8 @@ public class Servicer : ServiceManager, IServicer, IMediator
 
     public Servicer() : base() { }
 
+    public Servicer(IServiceManager serviceManager) : base(serviceManager) { }
+
     protected override void Dispose(bool disposing)
     {
         if (!disposedValue)

@@ -7,7 +7,7 @@
     {
         #region Fields
 
-        public IInstantSeries Figures;
+        public IInstantSeries InstantSeriesCreator;
         public InstantSeriesSortTerms Terms;
 
         #endregion
@@ -16,7 +16,7 @@
 
         public InstantSeriesSort(IInstantSeries series)
         {
-            this.Figures = series;
+            this.InstantSeriesCreator = series;
             Terms = new InstantSeriesSortTerms(series);
         }
 

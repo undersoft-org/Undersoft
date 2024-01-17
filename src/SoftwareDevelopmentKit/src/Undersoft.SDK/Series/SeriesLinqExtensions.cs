@@ -202,6 +202,21 @@
             return Task.Run(() => items.ToCatalog(callback));
         }
 
+        public static Task<Listing<TItem>> ToListingAsync<TItem>(this IEnumerable<TItem> items, IInvoker callback = null) where TItem : IIdentifiable
+        {
+            return Task.Run(() => items.ToListing(callback));
+        }
+
+        public static Listing<TItem> ToListing<TItem>(this IEnumerable<TItem> items, IInvoker callback = null) where TItem : IIdentifiable
+        {
+            var listing = new Listing<TItem>(items);
+
+            if (callback == null) return listing;
+
+            callback.InvokeAsync(listing);
+            return listing;
+        }
+
         public static Registry<TItem> ToRegistry<TItem>(this IEnumerable<TItem> items, bool repeatable = false, IInvoker callback = null)
         {
             var registry = new Registry<TItem>(items, 31, repeatable);

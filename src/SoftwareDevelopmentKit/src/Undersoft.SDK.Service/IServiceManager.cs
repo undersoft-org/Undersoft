@@ -38,12 +38,13 @@ namespace Undersoft.SDK.Service
         IEnumerable<T> GetServices<T>() where T : class;
         Lazy<IEnumerable<T>> GetServicesLazy<T>() where T : class;
         IServiceScope GetSession();
+        IServiceScope CreateScope();
         IServiceManager GetManager();
         object GetSingleton(Type type);
         T GetSingleton<T>() where T : class;
         ObjectFactory NewFactory(Type instanceType, Type[] constrTypes);
         ObjectFactory NewFactory<T>(Type[] constrTypes);
         T NewRootService<T>(params object[] parameters) where T : class;
-        IServiceScope NewSubSession();
+        IServiceScope NewSession();
     }
 }

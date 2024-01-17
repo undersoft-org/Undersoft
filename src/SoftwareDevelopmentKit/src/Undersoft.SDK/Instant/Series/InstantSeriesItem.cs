@@ -17,28 +17,28 @@
 
         public InstantSeriesItem(IInstantSeries series)
         {
-            Figures = series;
+            InstantSeriesCreator = series;
         }
 
         public InstantSeriesItem(object key, IInstant value, IInstantSeries series) : base(key, value)
         {
-            Figures = series;
+            InstantSeriesCreator = series;
         }
 
         public InstantSeriesItem(ulong key, IInstant value, IInstantSeries series) : base(key, value)
         {
-            Figures = series;
+            InstantSeriesCreator = series;
         }
 
         public InstantSeriesItem(IInstant value, IInstantSeries series) : base(value)
         {
-            Figures = series;
+            InstantSeriesCreator = series;
             CompactKey();
         }
 
         public InstantSeriesItem(ISeriesItem<IInstant> value, IInstantSeries series) : base(value)
         {
-            Figures = series;
+            InstantSeriesCreator = series;
             CompactKey();
         }
 
@@ -111,9 +111,9 @@
 
         public override byte[] GetBytes()
         {
-            if (!Figures.Prime && presets != null)
+            if (!InstantSeriesCreator.Prime && presets != null)
             {
-                IInstant f = Figures.NewInstant();
+                IInstant f = InstantSeriesCreator.NewInstant();
                 f.PutFrom(this);
                 f.Code = value.Code;
                 byte[] ba = f.GetBytes();
@@ -131,7 +131,7 @@
 
         public override int[] UniqueOrdinals()
         {
-            return Figures.KeyRubrics.Ordinals;
+            return InstantSeriesCreator.KeyRubrics.Ordinals;
         }
 
         public override object[] UniqueValues()
@@ -147,7 +147,7 @@
             long key = value.Id;
             if (key == 0)
             {
-                IRubrics r = Figures.KeyRubrics;
+                IRubrics r = InstantSeriesCreator.KeyRubrics;
                 var objs = r.Ordinals.Select(x => value[x]).ToArray();
                 if (objs.Any())
                 {
@@ -174,11 +174,11 @@
             set => this.value.Code = value;
         }
 
-        public IInstantSeries Figures { get; set; }
+        public IInstantSeries InstantSeriesCreator { get; set; }
 
         public object GetPreset(int fieldId)
         {
-            if (presets != null && !Figures.Prime)
+            if (presets != null && !InstantSeriesCreator.Prime)
             {
                 object val = presets.Get(fieldId);
                 if (val != null)
@@ -189,9 +189,9 @@
 
         public object GetPreset(string propertyName)
         {
-            if (presets != null && !Figures.Prime)
+            if (presets != null && !InstantSeriesCreator.Prime)
             {
-                MemberRubric rubric = Figures.Rubrics[propertyName.UniqueKey()];
+                MemberRubric rubric = InstantSeriesCreator.Rubrics[propertyName.UniqueKey()];
                 if (rubric != null)
                 {
                     object val = presets.Get(rubric.FieldId);
@@ -213,7 +213,7 @@
         {
             if (GetPreset(fieldId).Equals(value))
                 return;
-            if (!Figures.Prime)
+            if (!InstantSeriesCreator.Prime)
             {
                 if (presets == null)
                     presets = new Catalog<object>(9);
@@ -225,7 +225,7 @@
 
         public void SetPreset(string propertyName, object value)
         {
-            MemberRubric rubric = Figures.Rubrics[propertyName.UniqueKey()];
+            MemberRubric rubric = InstantSeriesCreator.Rubrics[propertyName.UniqueKey()];
             if (rubric != null)
                 SetPreset(rubric.FieldId, value);
             else

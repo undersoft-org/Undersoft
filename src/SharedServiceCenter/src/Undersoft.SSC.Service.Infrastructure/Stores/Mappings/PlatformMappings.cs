@@ -4,13 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 {
     using SDK.Service.Infrastructure.Store;
-    using SSC.Entities.Platforms;
     using Undersoft.SDK.Service.Infrastructure.Store.Relation;
-    using Undersoft.SSC.Entities.Platforms.Locations;
-    using Undersoft.SSC.Entities.Activities;
-    using Undersoft.SSC.Entities.Resources;
-    using Undersoft.SSC.Entities.Schedules;
-    using Undersoft.SSC.Entities.Members;
+    using Undersoft.SSC.Domain.Entities;
+    using Undersoft.SSC.Domain.Entities.Locations;
 
     public class PlatformMappings : EntityTypeMapping<Platform>
     {
@@ -22,56 +18,38 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 
             modelBuilder
                 .ApplyIdentifiers<Platform>()
-                .RelateSetToRemoteSet<Platform, Member>(r => r.MemberNode)
-                .RelateSetToRemoteSet<Platform, Activity>(r => r.ActivityNode)
-                .RelateSetToRemoteSet<Platform, Resource>(r => r.ResourceNode)
-                .RelateSetToRemoteSet<Platform, Schedule>(r => r.ScheduleNode)
-                .RelateSetToSet<Platform, PlatformSetting>(
+                .RelateSetToSet<Platform, Member>(
+                    r => r.Platforms,
+                    r => r.Members,
+                    ExpandSite.OnRight
+                )
+                .RelateSetToSet<Platform, Setting>(
                     r => r.Platforms,
                     r => r.Settings,
                     ExpandSite.OnRight
                 )
-                .RelateOneToOne<Platform, PlatformLocation>(
+                .RelateOneToOne<Platform, Location>(
                     r => r.Platform,
                     r => r.Location,
                     ExpandSite.OnRight
                 )
-                .RelateSetToSet<Platform, PlatformDetail>(
+                .RelateSetToSet<Platform, Detail>(
                     r => r.Platforms,
                     r => r.Details,
                     ExpandSite.OnRight
                 )
-                .RelateOneToSet<PlatformLocation, Endpoint>(
-                    r => r.Location,
-                    r => r.Endpoints,
-                    ExpandSite.OnRight
-                )
-                .RelateOneToSet<PlatformLocation, Position>(
-                    r => r.Location,
-                    r => r.Positions,
-                    ExpandSite.OnRight
-                )
-                .RelateOneToSet<PlatformDefault, Platform>(
+                .RelateOneToSet<Default, Platform>(
                     r => r.Default,
                     r => r.Platforms,
                     ExpandSite.OnLeft
                 )
                 .RelateSetToSet<Platform, Platform>(
                     r => r.RelatedFrom,
+                    nameof(Platform),
                     r => r.RelatedTo,
-                    ExpandSite.OnRight
-                )
-                .RelateSetToSet<PlatformSetting, PlatformSetting>(
-                    r => r.RelatedFrom,
-                    r => r.RelatedTo,
-                    ExpandSite.OnRight
-                )
-                .RelateSetToSet<PlatformDetail, PlatformDetail>(
-                    r => r.RelatedFrom,
-                    r => r.RelatedTo,
+                    nameof(Platform),
                     ExpandSite.OnRight
                 );
-            ;
         }
     }
 }

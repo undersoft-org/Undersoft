@@ -4,6 +4,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Store.Remote;
 
 using Undersoft.SDK.Service.Data.Relation;
 using Undersoft.SDK.Service.Data.Object;
+using Undersoft.SDK.Service.Infrastructure.Store.Relation;
 
 public interface IRemoteRelation<TOrigin, TTarget> : IRemoteRelation where TOrigin : class, IOrigin, IInnerProxy where TTarget : class, IOrigin, IInnerProxy
 {
@@ -11,9 +12,9 @@ public interface IRemoteRelation<TOrigin, TTarget> : IRemoteRelation where TOrig
 
     Expression<Func<TTarget, object>> TargetKey { get; set; }
 
-    Expression<Func<IRemoteLink<TOrigin, TTarget>, object>> MiddleKey { get; set; }
+    Expression<Func<IRelatedLink<TOrigin, TTarget>, object>> MiddleKey { get; set; }
 
-    Expression<Func<TOrigin, IEnumerable<IRemoteLink<TOrigin, TTarget>>>> MiddleSet { get; set; }
+    Expression<Func<TOrigin, IEnumerable<IRelatedLink<TOrigin, TTarget>>>> MiddleSet { get; set; }
 
     Func<TOrigin, Expression<Func<TTarget, bool>>> Predicate { get; set; }
 

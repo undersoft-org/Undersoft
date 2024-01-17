@@ -30,7 +30,7 @@
 
         public int WorkersCount { get; set; }
 
-        public Workspace Workator { get; set; }
+        public Workspace Workspace { get; set; }
 
         public string Name { get; set; }
 
@@ -231,23 +231,23 @@
 
         public void Close(bool SafeClose)
         {
-            Workator.Close(SafeClose);
+            Workspace.Close(SafeClose);
         }
 
         public WorkAspect Allocate(int workersCount = 1)
         {
-            Workator.Allocate(workersCount);
+            Workspace.Allocate(workersCount);
             return this;
         }
 
         public void Run(WorkItem labor)
         {
-            Workator.Run(labor);
+            Workspace.Run(labor);
         }
 
         public void Reset(int workersCount = 1)
         {
-            Workator.Reset(workersCount);
+            Workspace.Reset(workersCount);
         }
     }
 }

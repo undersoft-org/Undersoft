@@ -67,7 +67,7 @@
             if (Type == null)
             {
                 var ifc = new InstantSeriesCompiler(this, threadSafe);
-                compiledType = ifc.CompileFigureType(Name);
+                compiledType = ifc.CompileInstantType(Name);
                 Type = compiledType.New().GetType();
                 key = Unique.NewId;
             }

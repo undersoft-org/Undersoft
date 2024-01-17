@@ -53,8 +53,8 @@
                     : member
             )
         {
-            FigureType = member.FigureType;
-            FigureField = member.FigureField;
+            InstantType = member.InstantType;
+            InstantCreatorField = member.InstantCreatorField;
             FieldId = member.FieldId;
             RubricOffset = member.RubricOffset;
             IsKey = member.IsKey;
@@ -93,8 +93,8 @@
             dst.RubricId = RubricId;
             dst.Visible = Visible;
             dst.Editable = Editable;
-            dst.FigureType = FigureType;
-            dst.FigureField = FigureField;
+            dst.InstantType = InstantType;
+            dst.InstantCreatorField = InstantCreatorField;
             dst.FieldId = FieldId;
             dst.RubricOffset = RubricOffset;
             dst.IsKey = IsKey;
@@ -169,21 +169,7 @@
         }
 
         public override Type DeclaringType =>
-            (FigureType != null) ? FigureType : RubricInfo.DeclaringType;
-
-        public object DeltaMark
-        {
-            get
-            {
-                if (!deltamarkset)
-                {
-                    deltamark = RubricType.Default();
-                    deltamarkset = true;
-                }
-
-                return deltamark;
-            }
-        }
+            (InstantType != null) ? InstantType : RubricInfo.DeclaringType;
 
         public string DisplayName { get; set; }
 
@@ -193,9 +179,9 @@
 
         public int FieldId { get; set; }
 
-        public FieldInfo FigureField { get; set; }
+        public FieldInfo InstantCreatorField { get; set; }
 
-        public Type FigureType { get; set; }
+        public Type InstantType { get; set; }
 
         public MethodInfo Getter =>
             (MemberType == MemberTypes.Property) ? ((PropertyRubric)RubricInfo).GetMethod : null;

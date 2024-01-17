@@ -5,7 +5,7 @@ namespace Undersoft.SDK.Service.Server.Controller.Stream;
 
 using Operation.Command;
 using Operation.Query;
-
+using Undersoft.SDK.Service.Client;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Query;

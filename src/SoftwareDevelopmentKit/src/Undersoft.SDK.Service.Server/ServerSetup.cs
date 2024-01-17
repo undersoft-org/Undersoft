@@ -16,7 +16,7 @@ using Account;
 using Documentation;
 using Infrastructure.Repository.Source;
 using Infrastructure.Store;
-using Undersoft.SDK.Service.Application.Account;
+using Undersoft.SDK.Service.Server.Account;
 
 public partial class ServerSetup : ServiceSetup, IServerSetup
 {
@@ -76,9 +76,9 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
 
     public override IServiceSetup AddSourceProviderConfiguration()
     {
-        registry.AddObject<ISourceProviderConfiguration>(
-            new ServerSourceProviderConfiguration()
-        );
+        var sspc = new ServerSourceProviderConfiguration(manager.Registry);
+        registry.AddObject<ISourceProviderConfiguration>(sspc);
+        ServiceManager.AddRootObject<ISourceProviderConfiguration>(sspc);
 
         return this;
     }
@@ -92,7 +92,7 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
     public IServerSetup AddAccountServer<TContext>() where TContext : DbContext
     {
         registry.Services
-            .AddIdentity<IdentityUser<long>, IdentityRole<long>>(options =>
+            .AddIdentity<AccountUser, Role>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
                 options.Tokens.ProviderMap.Add(

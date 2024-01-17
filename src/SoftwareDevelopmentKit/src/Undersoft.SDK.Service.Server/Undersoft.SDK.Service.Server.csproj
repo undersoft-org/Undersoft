@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>Undersoft.SDK.Service.Application</RootNamespace>
+    <RootNamespace>Undersoft.SDK.Service.Server</RootNamespace>
     <Company>Undersoft</Company>
     <Authors>Dariusz Hanc</Authors>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -44,7 +44,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.23" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.2.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc9.14" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.33.0" />

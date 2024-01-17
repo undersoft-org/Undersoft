@@ -1,5 +1,5 @@
 using System.Runtime.Serialization;
-using Undersoft.SSC.Entities.Enums;
+using Undersoft.SSC.Domain.Entities.Enums;
 using Undersoft.SSC.Service.Contracts.Locations;
 
 namespace Undersoft.SSC.Service.Contracts;

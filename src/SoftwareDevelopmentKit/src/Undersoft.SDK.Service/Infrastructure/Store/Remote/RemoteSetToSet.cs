@@ -4,6 +4,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Store.Remote;
 
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Relation;
+using Undersoft.SDK.Service.Infrastructure.Store.Relation;
 using Uniques;
 
 public class RemoteSetToSet<TOrigin, TTarget> : RemoteRelation<TOrigin, TTarget>
@@ -11,13 +12,13 @@ public class RemoteSetToSet<TOrigin, TTarget> : RemoteRelation<TOrigin, TTarget>
     where TTarget : class, IOrigin, IInnerProxy
 {
     private Expression<Func<TTarget, object>> targetKey;
-    private Func<IRemoteLink<TOrigin, TTarget>, object> middleKey;
-    private Func<TOrigin, IEnumerable<IRemoteLink<TOrigin, TTarget>>> middleSet;
+    private Func<IRelatedLink<TOrigin, TTarget>, object> middleKey;
+    private Func<TOrigin, IEnumerable<IRelatedLink<TOrigin, TTarget>>> middleSet;
 
     public RemoteSetToSet() : base() { }
 
     public RemoteSetToSet(
-        Expression<Func<IRemoteLink<TOrigin, TTarget>, object>> middlekey,
+        Expression<Func<IRelatedLink<TOrigin, TTarget>, object>> middlekey,
         Expression<Func<TTarget, object>> targetkey
     ) : base()
     {
@@ -35,7 +36,7 @@ public class RemoteSetToSet<TOrigin, TTarget> : RemoteRelation<TOrigin, TTarget>
     {
         var innerProxy = ((IInnerProxy)entity);
         var nodeRubric = innerProxy.Proxy.Rubrics
-            .Where(r => r.RubricType == typeof(IRemoteLink<TOrigin, TTarget>))
+            .Where(r => r.RubricType == typeof(IRelatedLink<TOrigin, TTarget>))
             .FirstOrDefault();
 
         if (nodeRubric == null)
@@ -43,7 +44,7 @@ public class RemoteSetToSet<TOrigin, TTarget> : RemoteRelation<TOrigin, TTarget>
 
         return LinqExtension.GetWhereInExpression(
             TargetKey,
-            ((IEnumerable<IRemoteLink<TOrigin, TTarget>>)innerProxy[nodeRubric.RubricId])?.Select(middleKey)
+            ((IEnumerable<IRelatedLink<TOrigin, TTarget>>)innerProxy[nodeRubric.RubricId])?.Select(middleKey)
         );
     }
 }

@@ -29,8 +29,8 @@ public class RepositoryManager : Registry<IDataStoreContext>, IDisposable, IAsyn
 
     static RepositoryManager()
     {
-        ServiceManager.AddRootObject<IRepositorySources>(new RepositorySources());
-        ServiceManager.AddRootObject<IRepositoryClients>(new RepositoryClients());
+        //ServiceManager.AddRootObject<IRepositorySources>(new RepositorySources());
+        //ServiceManager.AddRootObject<IRepositoryClients>(new RepositoryClients());
     }
     public RepositoryManager() : base()
     {

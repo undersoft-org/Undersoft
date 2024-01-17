@@ -12,8 +12,8 @@
 
     public class InstantCompilerValueTypes : InstantCompiler
     {
-        public InstantCompilerValueTypes(InstantCreator instantFigure, ISeries<RubricModel> rubricBuilders)
-            : base(instantFigure, rubricBuilders) { }
+        public InstantCompilerValueTypes(InstantCreator instantInstantCreator, ISeries<RubricModel> rubricBuilders)
+            : base(instantInstantCreator, rubricBuilders) { }
 
         public override Type CompileInstantType(string typeName)
         {
@@ -78,7 +78,7 @@
 
                     if (fb != null)
                     {
-                        ResolveFigureAttributes(fb, attributeAtMember);
+                        ResolveInstantCreatorAttributes(fb, attributeAtMember);
 
                         PropertyBuilder pi = null;
                         if (fp.Type != typeof(string))

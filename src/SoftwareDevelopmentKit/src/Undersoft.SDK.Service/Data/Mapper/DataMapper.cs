@@ -117,7 +117,7 @@ namespace Undersoft.SDK.Service.Data.Mapper
                             var tp = new TypePair(s.GetMemberType(), dp.GetMemberType());
                             if (
                                 checkRepeated.Add(
-                                    (tp.DestinationType.FullName + tp.SourceType.FullName).UniqueKey32()
+                                    (tp.DestinationType.FullName + tp.SourceType.FullName).UniqueKey()
                                 )
                             )
                                 TryCreateMap(tp);

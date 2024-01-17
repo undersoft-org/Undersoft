@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Undersoft.SDK.Service.Hosting;
 
-namespace Undersoft.SDK.Service.Application.Hosting;
+namespace Undersoft.SDK.Service.Server.Hosting;
 
 public class ServerHost : DataObject
 {

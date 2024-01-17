@@ -15,8 +15,8 @@ public class ServiceConfiguration : IServiceConfiguration
     private IConfiguration config;
     public IServiceCollection Services;
 
-    private IdentityOptions _identity;
-    public IdentityOptions Identity => _identity ??= GetIdentityConfiguration();
+    private AccountServerOptions _identity;
+    public AccountServerOptions Identity => _identity ??= GetIdentityConfiguration();
 
     private RepositoryOptions _repository;
     public RepositoryOptions Repositories => _repository ??= GetRepositoryConfiguration(); 
@@ -185,40 +185,40 @@ public class ServiceConfiguration : IServiceConfiguration
         return config.GetSection(key);
     }
 
-    public IConfigurationSection IdentityServer()
+    public IConfigurationSection AccountServer()
     {
-        return config.GetSection("Identity");
+        return config.GetSection("AccountServer");
     }
 
     public string IdentityServerBaseUrl()
     {
-        return IdentityServer().GetValue<string>("ServerBaseUrl");
+        return AccountServer().GetValue<string>("ServerBaseUrl");
     }
 
     public string IdentityServiceName()
     {
-        return IdentityServer().GetValue<string>("ServiceName");
+        return AccountServer().GetValue<string>("ServiceName");
     }
 
     public string[] IdentityServerScopes()
     {
-        return IdentityServer()?.GetValue<string[]>("Scopes");
+        return AccountServer()?.GetValue<string[]>("Scopes");
     }
 
     public string[] IdentityServerClaims()
     {
-        return IdentityServer()?.GetValue<string[]>("Claims");
+        return AccountServer()?.GetValue<string[]>("Claims");
     }
 
     public string[] IdentityServerRoles()
     {
-        return IdentityServer()?.GetValue<string[]>("Roles");
+        return AccountServer()?.GetValue<string[]>("Roles");
     }
 
-    public IdentityOptions GetIdentityConfiguration()
+    public AccountServerOptions GetIdentityConfiguration()
     {
-        var identity = new IdentityOptions();
-        config.Bind("Identity", identity);
+        var identity = new AccountServerOptions();
+        config.Bind("AccountServer", identity);
         return identity;
     }
 

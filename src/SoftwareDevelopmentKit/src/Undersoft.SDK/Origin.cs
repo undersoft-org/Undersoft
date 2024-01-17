@@ -10,7 +10,7 @@ namespace Undersoft.SDK
 {
     [DataContract]
     [StructLayout(LayoutKind.Sequential)]
-    public class Origin : Identifiable, IOrigin
+    public class Origin : Identifiable, IOrigin, IUnique
     {
         public Origin() : base(true) { }
 

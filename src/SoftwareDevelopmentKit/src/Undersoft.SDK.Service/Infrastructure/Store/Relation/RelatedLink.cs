@@ -7,7 +7,7 @@ using Uniques;
 
 using Undersoft.SDK.Service.Data.Object;
 
-public class RelatedLink<TLeft, TRight> : DataObject, IRelatedNode<TLeft, TRight> where TLeft : class, IOrigin, IInnerProxy where TRight : class, IOrigin, IInnerProxy
+public class RelatedLink<TLeft, TRight> : DataObject, IRelatedLink<TLeft, TRight> where TLeft : class, IOrigin, IInnerProxy where TRight : class, IOrigin, IInnerProxy
 {
     public virtual long RightEntityId { get; set; }
 

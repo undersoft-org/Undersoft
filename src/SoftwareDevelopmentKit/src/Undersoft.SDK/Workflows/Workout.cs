@@ -37,11 +37,11 @@
                 Aspect.AddWork(am);
             Aspect.Allocate(workersCount);
 
-            Workspace = Aspect.Workator;
+            Workspace = Aspect.Workspace;
             foreach (WorkItem am in Aspect)
                 am.Run(am.ParameterValues);
 
-            Aspect.Workator.Close(safeClose);
+            Aspect.Workspace.Close(safeClose);
         }
 
         public Workout(int workersCount, bool safeClose, IInvoker method, params object[] input)
@@ -49,7 +49,7 @@
             Case = new WorkCase();
             Aspect = Case.Aspect("FirstWorkNow").AddWork(method).Aspect.Allocate(workersCount);
 
-            Workspace = Aspect.Workator;
+            Workspace = Aspect.Workspace;
             Work = Aspect.AsValues().FirstOrDefault();
             Case.Run(method.Name, input);
             Workspace.Close(safeClose);
@@ -67,7 +67,7 @@
             Case = new WorkCase();
             Aspect = Case.Aspect("FirstWorkNow").AddWork(am).Aspect.Allocate(workersCount);
 
-            Workspace = Aspect.Workator;
+            Workspace = Aspect.Workspace;
             Work = Aspect.AsValues().FirstOrDefault();
             Case.Run(am.Name, input);
             Workspace.Close(safeClose);
@@ -85,7 +85,7 @@
             Aspect = Case.Aspect("FirstWorkNow").AddWork(method).Aspect.Allocate(workersCount);
             Case.Aspect("SecondWorkNow").AddWork(evoker).Aspect.Allocate(evokerCount);
 
-            Workspace = Aspect.Workator;
+            Workspace = Aspect.Workspace;
             Work = Aspect.AsValues().FirstOrDefault();
             Work.FlowTo(Case.AsValues().Skip(1).FirstOrDefault().AsValues().FirstOrDefault());
             Case.Run(method.Name, method.ParameterValues);
@@ -172,7 +172,7 @@
 
         public void Close(bool safeClose = false)
         {
-            Aspect.Workator.Close(safeClose);
+            Aspect.Workspace.Close(safeClose);
         }
 
         public void Run()

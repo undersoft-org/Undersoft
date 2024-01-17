@@ -16,7 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Server\Undersoft.SDK.Service.Server.csproj" />
     <ProjectReference Include="..\Undersoft.SSC.Service.Infrastructure\Undersoft.SSC.Service.Infrastructure.csproj" />
+    <ProjectReference Include="..\Undersoft.SSC.Service\Undersoft.SSC.Service.csproj" />
   </ItemGroup>
   
   <ItemGroup>

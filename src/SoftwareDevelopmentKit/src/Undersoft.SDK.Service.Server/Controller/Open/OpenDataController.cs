@@ -57,7 +57,7 @@ public abstract class OpenDataController<TKey, TEntry, TReport, TEntity, TDto>
     }
 
     [EnableQuery]
-    public async Task<UniqueOne<TDto>> Get([FromODataUri] TKey key)
+    public async Task<UniqueOne<TDto>> Get([FromRoute] TKey key)
     {
         return new UniqueOne<TDto>(await _servicer.Send(new FindQuery<TReport, TEntity, TDto>(_keymatcher(key))));
     }
@@ -73,7 +73,7 @@ public abstract class OpenDataController<TKey, TEntry, TReport, TEntity, TDto>
         return !result.IsValid ? UnprocessableEntity(result.ErrorMessages.ToArray()) : Ok(result.Id as object);
     }
 
-    public async Task<IActionResult> Patch([FromODataUri] TKey key, TDto dto)
+    public async Task<IActionResult> Patch([FromRoute] TKey key, TDto dto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -86,7 +86,7 @@ public abstract class OpenDataController<TKey, TEntry, TReport, TEntity, TDto>
         return !result.IsValid ? UnprocessableEntity(result.ErrorMessages.ToArray()) : Ok(result.Id as object);
     }
 
-    public async Task<IActionResult> Put([FromODataUri] TKey key, TDto dto)
+    public async Task<IActionResult> Put([FromRoute] TKey key, TDto dto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -99,7 +99,7 @@ public abstract class OpenDataController<TKey, TEntry, TReport, TEntity, TDto>
         return !result.IsValid ? UnprocessableEntity(result.ErrorMessages.ToArray()) : Ok(result.Id as object);
     }
 
-    public async Task<IActionResult> Delete([FromODataUri] TKey key)
+    public async Task<IActionResult> Delete([FromRoute] TKey key)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
