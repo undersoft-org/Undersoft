@@ -19,7 +19,7 @@ using Undersoft.SDK.Service.Server.Operation.Remote;
 [RemoteResult]
 [RemoteOpenDataService]
 public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel>
-    : ODataController, IOpenDataRemoteController<TKey, TDto, TModel> 
+    : ODataController, IOpenDataRemoteController<TKey, TDto, TModel>
     where TModel : class, IDataObject
     where TDto : class, IDataObject
     where TStore : IDataServiceStore
@@ -57,14 +57,12 @@ public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel>
         _publishMode = publishMode;
     }
 
-    [HttpGet]
     [EnableQuery]
     public virtual IQueryable<TModel> Get()
     {
         return _servicer.Send(new RemoteGetQuery<TStore, TDto, TModel>()).Result;
     }
 
-    [HttpGet]
     [EnableQuery]
     public virtual async Task<UniqueOne<TModel>> Get([FromODataUri] TKey key)
     {

@@ -12,14 +12,8 @@ public class Service : ServiceBase
     [DataMember(Order = 19)]
     public virtual DataObjects<ServiceBase>? RelatedTo { get; set; }
 
-    [DataMember(Order = 23)]
-    public virtual DataObjects<InfrastructureBase>? Infrastructures { get; set; }
-    
-    [DataMember(Order = 23)]
-    public virtual DataObjects<PlatformBase>? Platforms { get; set; }
-
-    [DataMember(Order = 23)]
-    public virtual DataObjects<EquipmentBase>? Equipment { get; set; }
+    [DataMember(Order = 24)]
+    public virtual DataObjects<ApplicationBase>? Applications { get; set; }
 
     [DataMember(Order = 24)]
     public virtual Default? Default { get; set; }

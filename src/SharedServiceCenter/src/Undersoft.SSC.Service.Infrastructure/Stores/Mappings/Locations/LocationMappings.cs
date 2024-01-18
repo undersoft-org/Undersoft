@@ -17,11 +17,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings.Locations
             builder.ToTable(TABLE_NAME, DataStoreSchema.LocalSchema);
 
             modelBuilder
-                .RelateOneToSet<Location, Address>(
-                    r => r.Location,
-                    r => r.Addresses,
-                    ExpandSite.OnRight
-                )
                 .RelateOneToSet<Location, Endpoint>(
                     r => r.Location,
                     r => r.Endpoints,

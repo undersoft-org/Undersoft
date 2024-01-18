@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System.Linq.Expressions;
@@ -52,7 +51,7 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataCo
 
     [EnableQuery]
     [HttpGet]
-    public virtual async Task<UniqueOne<TDto>> Get([FromODataUri] TKey key)
+    public virtual async Task<UniqueOne<TDto>> Get([FromRoute] TKey key)
     {
         return new UniqueOne<TDto>(await _servicer.Send(new FindQuery<TStore, TEntity, TDto>(_keymatcher(key))));
     }
@@ -77,7 +76,7 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataCo
     }
 
     [HttpPatch]
-    public virtual async Task<IActionResult> Patch([FromODataUri] TKey key, TDto dto)
+    public virtual async Task<IActionResult> Patch([FromRoute] TKey key, TDto dto)
     {
         bool isValid = false;
 
@@ -98,7 +97,7 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataCo
     }
 
     [HttpPut]
-    public virtual async Task<IActionResult> Put([FromODataUri] TKey key, TDto dto)
+    public virtual async Task<IActionResult> Put([FromRoute] TKey key, TDto dto)
     {
         bool isValid = false;
 
@@ -120,7 +119,7 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataCo
     }
 
     [HttpDelete]
-    public virtual async Task<IActionResult> Delete([FromODataUri] TKey key)
+    public virtual async Task<IActionResult> Delete([FromRoute] TKey key)
     {
         bool isValid = false;
 

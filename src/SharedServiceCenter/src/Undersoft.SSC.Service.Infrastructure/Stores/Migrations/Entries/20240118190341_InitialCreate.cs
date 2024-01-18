@@ -21,32 +21,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 name: "Identifier");
 
             migrationBuilder.CreateTable(
-                name: "Currencies",
-                schema: "Local",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    CurrencyCode = table.Column<string>(type: "text", nullable: true),
-                    Rate = table.Column<double>(type: "double precision", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Currencies", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Defaults",
                 schema: "Local",
                 columns: table => new
@@ -67,31 +41,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Defaults", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Languages",
-                schema: "Local",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    LanguageCode = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Languages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -193,70 +142,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 });
 
             migrationBuilder.CreateTable(
-                name: "Equipment",
-                schema: "Local",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    DefaultId = table.Column<long>(type: "bigint", nullable: true),
-                    LocationId = table.Column<long>(type: "bigint", nullable: true),
-                    Group = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Equipment", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Equipment_Defaults_DefaultId",
-                        column: x => x.DefaultId,
-                        principalSchema: "Local",
-                        principalTable: "Defaults",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Infrastructures",
-                schema: "Local",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    DefaultId = table.Column<long>(type: "bigint", nullable: true),
-                    LocationId = table.Column<long>(type: "bigint", nullable: true),
-                    Group = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Infrastructures", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Infrastructures_Defaults_DefaultId",
-                        column: x => x.DefaultId,
-                        principalSchema: "Local",
-                        principalTable: "Defaults",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Members",
                 schema: "Local",
                 columns: table => new
@@ -282,38 +167,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     table.PrimaryKey("PK_Members", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Members_Defaults_DefaultId",
-                        column: x => x.DefaultId,
-                        principalSchema: "Local",
-                        principalTable: "Defaults",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Platforms",
-                schema: "Local",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    DefaultId = table.Column<long>(type: "bigint", nullable: true),
-                    LocationId = table.Column<long>(type: "bigint", nullable: true),
-                    Group = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Platforms", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Platforms_Defaults_DefaultId",
                         column: x => x.DefaultId,
                         principalSchema: "Local",
                         principalTable: "Defaults",
@@ -451,47 +304,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 });
 
             migrationBuilder.CreateTable(
-                name: "Countries",
-                schema: "Local",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    CountryCode = table.Column<string>(type: "text", nullable: true),
-                    Continent = table.Column<string>(type: "text", nullable: true),
-                    TimeZone = table.Column<string>(type: "text", nullable: true),
-                    CurrencyId = table.Column<long>(type: "bigint", nullable: true),
-                    LanguageId = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Countries", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Countries_Currencies_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalSchema: "Local",
-                        principalTable: "Currencies",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Countries_Languages_LanguageId",
-                        column: x => x.LanguageId,
-                        principalSchema: "Local",
-                        principalTable: "Languages",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ActivityAndActivity",
                 schema: "Relation",
                 columns: table => new
@@ -601,7 +413,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 });
 
             migrationBuilder.CreateTable(
-                name: "Identifier<Application>",
+                name: "ApplicationIdentifiers",
+                schema: "Identifier",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false),
@@ -624,14 +437,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Identifier<Application>", x => x.Id);
+                    table.PrimaryKey("PK_ApplicationIdentifiers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Identifier<Application>_Applications_ObjectId",
+                        name: "FK_ApplicationIdentifiers_Applications_ObjectId",
                         column: x => x.ObjectId,
                         principalSchema: "Local",
                         principalTable: "Applications",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -781,224 +594,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 });
 
             migrationBuilder.CreateTable(
-                name: "EquipmentAndDetails",
-                schema: "Relation",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EquipmentAndDetails", x => new { x.LeftEntityId, x.RightEntityId });
-                    table.ForeignKey(
-                        name: "FK_EquipmentAndDetails_Details_RightEntityId",
-                        column: x => x.RightEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Details",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_EquipmentAndDetails_Equipment_LeftEntityId",
-                        column: x => x.LeftEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Equipment",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EquipmentAndEquipment",
-                schema: "Relation",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EquipmentAndEquipment", x => new { x.LeftEntityId, x.RightEntityId });
-                    table.ForeignKey(
-                        name: "FK_EquipmentAndEquipment_Equipment_LeftEntityId",
-                        column: x => x.LeftEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Equipment",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_EquipmentAndEquipment_Equipment_RightEntityId",
-                        column: x => x.RightEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Equipment",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EquipmentIdentifiers",
-                schema: "Identifier",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    ObjectId = table.Column<long>(type: "bigint", nullable: false),
-                    Kind = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Value = table.Column<string>(type: "text", nullable: true),
-                    Key = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EquipmentIdentifiers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_EquipmentIdentifiers_Equipment_ObjectId",
-                        column: x => x.ObjectId,
-                        principalSchema: "Local",
-                        principalTable: "Equipment",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InfrastructureAndInfrastructure",
-                schema: "Relation",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InfrastructureAndInfrastructure", x => new { x.LeftEntityId, x.RightEntityId });
-                    table.ForeignKey(
-                        name: "FK_InfrastructureAndInfrastructure_Infrastructures_LeftEntityId",
-                        column: x => x.LeftEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Infrastructures",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_InfrastructureAndInfrastructure_Infrastructures_RightEntity~",
-                        column: x => x.RightEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Infrastructures",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InfrastructureIdentifiers",
-                schema: "Identifier",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    ObjectId = table.Column<long>(type: "bigint", nullable: false),
-                    Kind = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Value = table.Column<string>(type: "text", nullable: true),
-                    Key = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InfrastructureIdentifiers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InfrastructureIdentifiers_Infrastructures_ObjectId",
-                        column: x => x.ObjectId,
-                        principalSchema: "Local",
-                        principalTable: "Infrastructures",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InfrastructuresAndDetails",
-                schema: "Relation",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InfrastructuresAndDetails", x => new { x.LeftEntityId, x.RightEntityId });
-                    table.ForeignKey(
-                        name: "FK_InfrastructuresAndDetails_Details_RightEntityId",
-                        column: x => x.RightEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Details",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_InfrastructuresAndDetails_Infrastructures_LeftEntityId",
-                        column: x => x.LeftEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Infrastructures",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ApplicationsAndMembers",
                 schema: "Relation",
                 columns: table => new
@@ -1029,80 +624,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ApplicationsAndMembers_Members_RightEntityId",
-                        column: x => x.RightEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Members",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EquipmentAndMembers",
-                schema: "Relation",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EquipmentAndMembers", x => new { x.LeftEntityId, x.RightEntityId });
-                    table.ForeignKey(
-                        name: "FK_EquipmentAndMembers_Equipment_LeftEntityId",
-                        column: x => x.LeftEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Equipment",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_EquipmentAndMembers_Members_RightEntityId",
-                        column: x => x.RightEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Members",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InfrastructuresAndMembers",
-                schema: "Relation",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InfrastructuresAndMembers", x => new { x.LeftEntityId, x.RightEntityId });
-                    table.ForeignKey(
-                        name: "FK_InfrastructuresAndMembers_Infrastructures_LeftEntityId",
-                        column: x => x.LeftEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Infrastructures",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_InfrastructuresAndMembers_Members_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "Local",
                         principalTable: "Members",
@@ -1252,152 +773,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         column: x => x.LeftEntityId,
                         principalSchema: "Local",
                         principalTable: "Members",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PlatformAndPlatform",
-                schema: "Relation",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PlatformAndPlatform", x => new { x.LeftEntityId, x.RightEntityId });
-                    table.ForeignKey(
-                        name: "FK_PlatformAndPlatform_Platforms_LeftEntityId",
-                        column: x => x.LeftEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Platforms",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_PlatformAndPlatform_Platforms_RightEntityId",
-                        column: x => x.RightEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Platforms",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PlatformIdentifiers",
-                schema: "Identifier",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    ObjectId = table.Column<long>(type: "bigint", nullable: false),
-                    Kind = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Value = table.Column<string>(type: "text", nullable: true),
-                    Key = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PlatformIdentifiers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PlatformIdentifiers_Platforms_ObjectId",
-                        column: x => x.ObjectId,
-                        principalSchema: "Local",
-                        principalTable: "Platforms",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PlatformsAndDetails",
-                schema: "Relation",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PlatformsAndDetails", x => new { x.LeftEntityId, x.RightEntityId });
-                    table.ForeignKey(
-                        name: "FK_PlatformsAndDetails_Details_RightEntityId",
-                        column: x => x.RightEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Details",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_PlatformsAndDetails_Platforms_LeftEntityId",
-                        column: x => x.LeftEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Platforms",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PlatformsAndMembers",
-                schema: "Relation",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PlatformsAndMembers", x => new { x.LeftEntityId, x.RightEntityId });
-                    table.ForeignKey(
-                        name: "FK_PlatformsAndMembers_Members_RightEntityId",
-                        column: x => x.RightEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Members",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_PlatformsAndMembers_Platforms_LeftEntityId",
-                        column: x => x.LeftEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Platforms",
                         principalColumn: "Id");
                 });
 
@@ -1842,67 +1217,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 });
 
             migrationBuilder.CreateTable(
-                name: "Identifier<Service>",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    ObjectId = table.Column<long>(type: "bigint", nullable: false),
-                    Kind = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Value = table.Column<string>(type: "text", nullable: true),
-                    Key = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Identifier<Service>", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Identifier<Service>_Services_ObjectId",
-                        column: x => x.ObjectId,
-                        principalSchema: "Local",
-                        principalTable: "Services",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InfrastructureService",
-                schema: "Local",
-                columns: table => new
-                {
-                    InfrastructuresId = table.Column<long>(type: "bigint", nullable: false),
-                    ServicesId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InfrastructureService", x => new { x.InfrastructuresId, x.ServicesId });
-                    table.ForeignKey(
-                        name: "FK_InfrastructureService_Infrastructures_InfrastructuresId",
-                        column: x => x.InfrastructuresId,
-                        principalSchema: "Local",
-                        principalTable: "Infrastructures",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_InfrastructureService_Services_ServicesId",
-                        column: x => x.ServicesId,
-                        principalSchema: "Local",
-                        principalTable: "Services",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Locations",
                 schema: "Local",
                 columns: table => new
@@ -1926,15 +1240,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     PhoneNumber = table.Column<string>(type: "text", nullable: true),
                     Notices = table.Column<string>(type: "text", nullable: true),
                     MemberId = table.Column<long>(type: "bigint", nullable: true),
-                    PlatformId = table.Column<long>(type: "bigint", nullable: true),
                     ActivityId = table.Column<long>(type: "bigint", nullable: true),
                     ResourceId = table.Column<long>(type: "bigint", nullable: true),
                     ScheduleId = table.Column<long>(type: "bigint", nullable: true),
                     ServiceId = table.Column<long>(type: "bigint", nullable: true),
                     ApplicationId = table.Column<long>(type: "bigint", nullable: true),
-                    LocationId = table.Column<long>(type: "bigint", nullable: true),
-                    EquipmentId = table.Column<long>(type: "bigint", nullable: true),
-                    InfrastructureId = table.Column<long>(type: "bigint", nullable: true)
+                    LocationId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1952,28 +1263,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         principalTable: "Applications",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Locations_Equipment_LocationId",
-                        column: x => x.LocationId,
-                        principalSchema: "Local",
-                        principalTable: "Equipment",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Locations_Infrastructures_LocationId",
-                        column: x => x.LocationId,
-                        principalSchema: "Local",
-                        principalTable: "Infrastructures",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_Locations_Members_LocationId",
                         column: x => x.LocationId,
                         principalSchema: "Local",
                         principalTable: "Members",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Locations_Platforms_LocationId",
-                        column: x => x.LocationId,
-                        principalSchema: "Local",
-                        principalTable: "Platforms",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Locations_Resources_LocationId",
@@ -2033,6 +1326,41 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 });
 
             migrationBuilder.CreateTable(
+                name: "ServiceIdentifiers",
+                schema: "Identifier",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    TypeId = table.Column<long>(type: "bigint", nullable: false),
+                    OriginId = table.Column<int>(type: "integer", nullable: false),
+                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Index = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    ObjectId = table.Column<long>(type: "bigint", nullable: false),
+                    Kind = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Value = table.Column<string>(type: "text", nullable: true),
+                    Key = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceIdentifiers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ServiceIdentifiers_Services_ObjectId",
+                        column: x => x.ObjectId,
+                        principalSchema: "Local",
+                        principalTable: "Services",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ServicesAndDetails",
                 schema: "Relation",
                 columns: table => new
@@ -2070,43 +1398,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 });
 
             migrationBuilder.CreateTable(
-                name: "ServicesAndEquipment",
-                schema: "Relation",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ServicesAndEquipment", x => new { x.LeftEntityId, x.RightEntityId });
-                    table.ForeignKey(
-                        name: "FK_ServicesAndEquipment_Equipment_RightEntityId",
-                        column: x => x.RightEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Equipment",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ServicesAndEquipment_Services_LeftEntityId",
-                        column: x => x.LeftEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Services",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ServicesAndMembers",
                 schema: "Relation",
                 columns: table => new
@@ -2137,43 +1428,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ServicesAndMembers_Services_LeftEntityId",
-                        column: x => x.LeftEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Services",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ServicesAndPlatforms",
-                schema: "Relation",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ServicesAndPlatforms", x => new { x.LeftEntityId, x.RightEntityId });
-                    table.ForeignKey(
-                        name: "FK_ServicesAndPlatforms_Platforms_RightEntityId",
-                        column: x => x.RightEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Platforms",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ServicesAndPlatforms_Services_LeftEntityId",
                         column: x => x.LeftEntityId,
                         principalSchema: "Local",
                         principalTable: "Services",
@@ -2255,80 +1509,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 });
 
             migrationBuilder.CreateTable(
-                name: "EquipmentAndSettings",
-                schema: "Relation",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EquipmentAndSettings", x => new { x.LeftEntityId, x.RightEntityId });
-                    table.ForeignKey(
-                        name: "FK_EquipmentAndSettings_Equipment_LeftEntityId",
-                        column: x => x.LeftEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Equipment",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_EquipmentAndSettings_Settings_RightEntityId",
-                        column: x => x.RightEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Settings",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InfrastructuresAndSettings",
-                schema: "Relation",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InfrastructuresAndSettings", x => new { x.LeftEntityId, x.RightEntityId });
-                    table.ForeignKey(
-                        name: "FK_InfrastructuresAndSettings_Infrastructures_LeftEntityId",
-                        column: x => x.LeftEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Infrastructures",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_InfrastructuresAndSettings_Settings_RightEntityId",
-                        column: x => x.RightEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Settings",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MembersAndSettings",
                 schema: "Relation",
                 columns: table => new
@@ -2359,43 +1539,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_MembersAndSettings_Settings_RightEntityId",
-                        column: x => x.RightEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Settings",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PlatformsAndSettings",
-                schema: "Relation",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PlatformsAndSettings", x => new { x.LeftEntityId, x.RightEntityId });
-                    table.ForeignKey(
-                        name: "FK_PlatformsAndSettings_Platforms_LeftEntityId",
-                        column: x => x.LeftEntityId,
-                        principalSchema: "Local",
-                        principalTable: "Platforms",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_PlatformsAndSettings_Settings_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "Local",
                         principalTable: "Settings",
@@ -2586,85 +1729,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 });
 
             migrationBuilder.CreateTable(
-                name: "CountryStates",
-                schema: "Local",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    StateCode = table.Column<string>(type: "text", nullable: true),
-                    TimeZone = table.Column<string>(type: "text", nullable: true),
-                    CountryId = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CountryStates", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CountryStates_Countries_CountryId",
-                        column: x => x.CountryId,
-                        principalSchema: "Local",
-                        principalTable: "Countries",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Coordinates",
-                schema: "Local",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: false),
-                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Place = table.Column<string>(type: "text", nullable: true),
-                    Height = table.Column<int>(type: "integer", nullable: true),
-                    Width = table.Column<int>(type: "integer", nullable: true),
-                    Length = table.Column<int>(type: "integer", nullable: true),
-                    X = table.Column<int>(type: "integer", nullable: true),
-                    Y = table.Column<int>(type: "integer", nullable: true),
-                    Z = table.Column<int>(type: "integer", nullable: true),
-                    Size = table.Column<int>(type: "integer", nullable: true),
-                    Latitue = table.Column<double>(type: "double precision", nullable: true),
-                    Longitude = table.Column<double>(type: "double precision", nullable: true),
-                    Altitude = table.Column<double>(type: "double precision", nullable: true),
-                    Volume = table.Column<int>(type: "integer", nullable: false),
-                    Block = table.Column<int>(type: "integer", nullable: false),
-                    Sector = table.Column<int>(type: "integer", nullable: false),
-                    Cluster = table.Column<int>(type: "integer", nullable: false),
-                    Level = table.Column<int>(type: "integer", nullable: false),
-                    LocationId = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Coordinates", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Coordinates_Locations_LocationId",
-                        column: x => x.LocationId,
-                        principalSchema: "Local",
-                        principalTable: "Locations",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Endpoints",
                 schema: "Local",
                 columns: table => new
@@ -2704,7 +1768,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 });
 
             migrationBuilder.CreateTable(
-                name: "Addresses",
+                name: "Positions",
                 schema: "Local",
                 columns: table => new
                 {
@@ -2720,37 +1784,29 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    CityName = table.Column<string>(type: "varchar", maxLength: 50, nullable: false),
-                    StreetName = table.Column<string>(type: "varchar", maxLength: 100, nullable: false),
-                    BuildingNumber = table.Column<string>(type: "varchar", maxLength: 20, nullable: true),
-                    ApartmentNumber = table.Column<string>(type: "varchar", maxLength: 20, nullable: false),
-                    Postcode = table.Column<string>(type: "varchar", maxLength: 12, nullable: false),
-                    Notices = table.Column<string>(type: "varchar", maxLength: 150, nullable: true),
-                    AddressType = table.Column<int>(type: "integer", nullable: false),
-                    CountryId = table.Column<long>(type: "bigint", nullable: true),
-                    StateId = table.Column<long>(type: "bigint", nullable: true),
-                    CountryStateId = table.Column<long>(type: "bigint", nullable: true),
-                    Place = table.Column<int>(type: "integer", nullable: true),
+                    Place = table.Column<string>(type: "text", nullable: true),
+                    Height = table.Column<int>(type: "integer", nullable: true),
+                    Width = table.Column<int>(type: "integer", nullable: true),
                     Length = table.Column<int>(type: "integer", nullable: true),
+                    X = table.Column<int>(type: "integer", nullable: true),
+                    Y = table.Column<int>(type: "integer", nullable: true),
+                    Z = table.Column<int>(type: "integer", nullable: true),
+                    Size = table.Column<int>(type: "integer", nullable: true),
+                    Latitue = table.Column<double>(type: "double precision", nullable: true),
+                    Longitude = table.Column<double>(type: "double precision", nullable: true),
+                    Altitude = table.Column<double>(type: "double precision", nullable: true),
+                    Volume = table.Column<int>(type: "integer", nullable: false),
+                    Block = table.Column<int>(type: "integer", nullable: false),
+                    Sector = table.Column<int>(type: "integer", nullable: false),
+                    Cluster = table.Column<int>(type: "integer", nullable: false),
+                    Level = table.Column<int>(type: "integer", nullable: false),
                     LocationId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.PrimaryKey("PK_Positions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Addresses_Countries_CountryId",
-                        column: x => x.CountryId,
-                        principalSchema: "Local",
-                        principalTable: "Countries",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Addresses_CountryStates_CountryStateId",
-                        column: x => x.CountryStateId,
-                        principalSchema: "Local",
-                        principalTable: "CountryStates",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Addresses_Locations_LocationId",
+                        name: "FK_Positions_Locations_LocationId",
                         column: x => x.LocationId,
                         principalSchema: "Local",
                         principalTable: "Locations",
@@ -2807,28 +1863,22 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 column: "ObjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Addresses_CountryId",
-                schema: "Local",
-                table: "Addresses",
-                column: "CountryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Addresses_CountryStateId",
-                schema: "Local",
-                table: "Addresses",
-                column: "CountryStateId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Addresses_LocationId",
-                schema: "Local",
-                table: "Addresses",
-                column: "LocationId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ApplicationAndApplication_RightEntityId",
                 schema: "Relation",
                 table: "ApplicationAndApplication",
                 column: "RightEntityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApplicationIdentifiers_Key",
+                schema: "Identifier",
+                table: "ApplicationIdentifiers",
+                column: "Key");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApplicationIdentifiers_ObjectId",
+                schema: "Identifier",
+                table: "ApplicationIdentifiers",
+                column: "ObjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Applications_DefaultId",
@@ -2866,30 +1916,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 schema: "Relation",
                 table: "ApplicationsAndSettings",
                 column: "RightEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Coordinates_LocationId",
-                schema: "Local",
-                table: "Coordinates",
-                column: "LocationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Countries_CurrencyId",
-                schema: "Local",
-                table: "Countries",
-                column: "CurrencyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Countries_LanguageId",
-                schema: "Local",
-                table: "Countries",
-                column: "LanguageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CountryStates_CountryId",
-                schema: "Local",
-                table: "CountryStates",
-                column: "CountryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Defaults_Index",
@@ -2934,120 +1960,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 schema: "Local",
                 table: "Endpoints",
                 column: "LocationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Equipment_DefaultId",
-                schema: "Local",
-                table: "Equipment",
-                column: "DefaultId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Equipment_Index",
-                schema: "Local",
-                table: "Equipment",
-                column: "Index",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EquipmentAndDetails_RightEntityId",
-                schema: "Relation",
-                table: "EquipmentAndDetails",
-                column: "RightEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EquipmentAndEquipment_RightEntityId",
-                schema: "Relation",
-                table: "EquipmentAndEquipment",
-                column: "RightEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EquipmentAndMembers_RightEntityId",
-                schema: "Relation",
-                table: "EquipmentAndMembers",
-                column: "RightEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EquipmentAndSettings_RightEntityId",
-                schema: "Relation",
-                table: "EquipmentAndSettings",
-                column: "RightEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EquipmentIdentifiers_Key",
-                schema: "Identifier",
-                table: "EquipmentIdentifiers",
-                column: "Key");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EquipmentIdentifiers_ObjectId",
-                schema: "Identifier",
-                table: "EquipmentIdentifiers",
-                column: "ObjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Identifier<Application>_ObjectId",
-                table: "Identifier<Application>",
-                column: "ObjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Identifier<Service>_ObjectId",
-                table: "Identifier<Service>",
-                column: "ObjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InfrastructureAndInfrastructure_RightEntityId",
-                schema: "Relation",
-                table: "InfrastructureAndInfrastructure",
-                column: "RightEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InfrastructureIdentifiers_Key",
-                schema: "Identifier",
-                table: "InfrastructureIdentifiers",
-                column: "Key");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InfrastructureIdentifiers_ObjectId",
-                schema: "Identifier",
-                table: "InfrastructureIdentifiers",
-                column: "ObjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Infrastructures_DefaultId",
-                schema: "Local",
-                table: "Infrastructures",
-                column: "DefaultId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Infrastructures_Index",
-                schema: "Local",
-                table: "Infrastructures",
-                column: "Index",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InfrastructuresAndDetails_RightEntityId",
-                schema: "Relation",
-                table: "InfrastructuresAndDetails",
-                column: "RightEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InfrastructuresAndMembers_RightEntityId",
-                schema: "Relation",
-                table: "InfrastructuresAndMembers",
-                column: "RightEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InfrastructuresAndSettings_RightEntityId",
-                schema: "Relation",
-                table: "InfrastructuresAndSettings",
-                column: "RightEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InfrastructureService_ServicesId",
-                schema: "Local",
-                table: "InfrastructureService",
-                column: "ServicesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Locations_LocationId",
@@ -3118,53 +2030,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 column: "RightEntityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlatformAndPlatform_RightEntityId",
-                schema: "Relation",
-                table: "PlatformAndPlatform",
-                column: "RightEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PlatformIdentifiers_Key",
-                schema: "Identifier",
-                table: "PlatformIdentifiers",
-                column: "Key");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PlatformIdentifiers_ObjectId",
-                schema: "Identifier",
-                table: "PlatformIdentifiers",
-                column: "ObjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Platforms_DefaultId",
+                name: "IX_Positions_LocationId",
                 schema: "Local",
-                table: "Platforms",
-                column: "DefaultId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Platforms_Index",
-                schema: "Local",
-                table: "Platforms",
-                column: "Index",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PlatformsAndDetails_RightEntityId",
-                schema: "Relation",
-                table: "PlatformsAndDetails",
-                column: "RightEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PlatformsAndMembers_RightEntityId",
-                schema: "Relation",
-                table: "PlatformsAndMembers",
-                column: "RightEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PlatformsAndSettings_RightEntityId",
-                schema: "Relation",
-                table: "PlatformsAndSettings",
-                column: "RightEntityId");
+                table: "Positions",
+                column: "LocationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RelatedFromAndRelatedTo_RightEntityId",
@@ -3277,6 +2146,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 column: "RightEntityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ServiceIdentifiers_Key",
+                schema: "Identifier",
+                table: "ServiceIdentifiers",
+                column: "Key");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceIdentifiers_ObjectId",
+                schema: "Identifier",
+                table: "ServiceIdentifiers",
+                column: "ObjectId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Services_DefaultId",
                 schema: "Local",
                 table: "Services",
@@ -3296,21 +2177,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 column: "RightEntityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ServicesAndEquipment_RightEntityId",
-                schema: "Relation",
-                table: "ServicesAndEquipment",
-                column: "RightEntityId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ServicesAndMembers_RightEntityId",
                 schema: "Relation",
                 table: "ServicesAndMembers",
-                column: "RightEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ServicesAndPlatforms_RightEntityId",
-                schema: "Relation",
-                table: "ServicesAndPlatforms",
                 column: "RightEntityId");
 
             migrationBuilder.CreateIndex(
@@ -3368,12 +2237,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 schema: "Identifier");
 
             migrationBuilder.DropTable(
-                name: "Addresses",
-                schema: "Local");
-
-            migrationBuilder.DropTable(
                 name: "ApplicationAndApplication",
                 schema: "Relation");
+
+            migrationBuilder.DropTable(
+                name: "ApplicationIdentifiers",
+                schema: "Identifier");
 
             migrationBuilder.DropTable(
                 name: "ApplicationsAndDetails",
@@ -3392,10 +2261,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 schema: "Relation");
 
             migrationBuilder.DropTable(
-                name: "Coordinates",
-                schema: "Local");
-
-            migrationBuilder.DropTable(
                 name: "DetailAndDetail",
                 schema: "Relation");
 
@@ -3405,56 +2270,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 
             migrationBuilder.DropTable(
                 name: "Endpoints",
-                schema: "Local");
-
-            migrationBuilder.DropTable(
-                name: "EquipmentAndDetails",
-                schema: "Relation");
-
-            migrationBuilder.DropTable(
-                name: "EquipmentAndEquipment",
-                schema: "Relation");
-
-            migrationBuilder.DropTable(
-                name: "EquipmentAndMembers",
-                schema: "Relation");
-
-            migrationBuilder.DropTable(
-                name: "EquipmentAndSettings",
-                schema: "Relation");
-
-            migrationBuilder.DropTable(
-                name: "EquipmentIdentifiers",
-                schema: "Identifier");
-
-            migrationBuilder.DropTable(
-                name: "Identifier<Application>");
-
-            migrationBuilder.DropTable(
-                name: "Identifier<Service>");
-
-            migrationBuilder.DropTable(
-                name: "InfrastructureAndInfrastructure",
-                schema: "Relation");
-
-            migrationBuilder.DropTable(
-                name: "InfrastructureIdentifiers",
-                schema: "Identifier");
-
-            migrationBuilder.DropTable(
-                name: "InfrastructuresAndDetails",
-                schema: "Relation");
-
-            migrationBuilder.DropTable(
-                name: "InfrastructuresAndMembers",
-                schema: "Relation");
-
-            migrationBuilder.DropTable(
-                name: "InfrastructuresAndSettings",
-                schema: "Relation");
-
-            migrationBuilder.DropTable(
-                name: "InfrastructureService",
                 schema: "Local");
 
             migrationBuilder.DropTable(
@@ -3486,24 +2301,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 schema: "Relation");
 
             migrationBuilder.DropTable(
-                name: "PlatformAndPlatform",
-                schema: "Relation");
-
-            migrationBuilder.DropTable(
-                name: "PlatformIdentifiers",
-                schema: "Identifier");
-
-            migrationBuilder.DropTable(
-                name: "PlatformsAndDetails",
-                schema: "Relation");
-
-            migrationBuilder.DropTable(
-                name: "PlatformsAndMembers",
-                schema: "Relation");
-
-            migrationBuilder.DropTable(
-                name: "PlatformsAndSettings",
-                schema: "Relation");
+                name: "Positions",
+                schema: "Local");
 
             migrationBuilder.DropTable(
                 name: "RelatedFromAndRelatedTo",
@@ -3554,19 +2353,15 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 schema: "Relation");
 
             migrationBuilder.DropTable(
+                name: "ServiceIdentifiers",
+                schema: "Identifier");
+
+            migrationBuilder.DropTable(
                 name: "ServicesAndDetails",
                 schema: "Relation");
 
             migrationBuilder.DropTable(
-                name: "ServicesAndEquipment",
-                schema: "Relation");
-
-            migrationBuilder.DropTable(
                 name: "ServicesAndMembers",
-                schema: "Relation");
-
-            migrationBuilder.DropTable(
-                name: "ServicesAndPlatforms",
                 schema: "Relation");
 
             migrationBuilder.DropTable(
@@ -3576,10 +2371,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
             migrationBuilder.DropTable(
                 name: "SettingIdentifiers",
                 schema: "Identifier");
-
-            migrationBuilder.DropTable(
-                name: "CountryStates",
-                schema: "Local");
 
             migrationBuilder.DropTable(
                 name: "Locations",
@@ -3594,10 +2385,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 schema: "Local");
 
             migrationBuilder.DropTable(
-                name: "Countries",
-                schema: "Local");
-
-            migrationBuilder.DropTable(
                 name: "Activities",
                 schema: "Local");
 
@@ -3606,19 +2393,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 schema: "Local");
 
             migrationBuilder.DropTable(
-                name: "Equipment",
-                schema: "Local");
-
-            migrationBuilder.DropTable(
-                name: "Infrastructures",
-                schema: "Local");
-
-            migrationBuilder.DropTable(
                 name: "Members",
-                schema: "Local");
-
-            migrationBuilder.DropTable(
-                name: "Platforms",
                 schema: "Local");
 
             migrationBuilder.DropTable(
@@ -3631,14 +2406,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 
             migrationBuilder.DropTable(
                 name: "Services",
-                schema: "Local");
-
-            migrationBuilder.DropTable(
-                name: "Currencies",
-                schema: "Local");
-
-            migrationBuilder.DropTable(
-                name: "Languages",
                 schema: "Local");
 
             migrationBuilder.DropTable(

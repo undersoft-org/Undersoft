@@ -1,6 +1,4 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using Undersoft.SDK.Service.Data.Object.Detail;
-using Undersoft.SSC.Service.Contracts.Locations;
+﻿using Undersoft.SDK.Service.Data.Object.Detail;
 
 namespace Undersoft.SSC.Service.Contracts.Details;
 
@@ -14,9 +12,6 @@ public class Amount : DataObject
     public string? Description { get; set; }
 
     public AmountKind? Kind { get; set; }
-
-    public long CurrencyId { get; set; }
-    public virtual Currency? Currency { get; set; }
 
     public DateTime DateFrom { get; set; }
     public DateTime DateTo { get; set; }

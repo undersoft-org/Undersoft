@@ -13,7 +13,7 @@ using Undersoft.SSC.Service.Infrastructure.Stores;
 namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 {
     [DbContext(typeof(EntryStore))]
-    [Migration("20240117233504_InitialCreate")]
+    [Migration("20240118190341_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,21 +24,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("InfrastructureService", b =>
-                {
-                    b.Property<long>("InfrastructuresId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ServicesId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("InfrastructuresId", "ServicesId");
-
-                    b.HasIndex("ServicesId");
-
-                    b.ToTable("InfrastructureService", "Local");
-                });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Activity>", b =>
                 {
@@ -193,9 +178,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Key");
+
                     b.HasIndex("ObjectId");
 
-                    b.ToTable("Identifier<Application>");
+                    b.ToTable("ApplicationIdentifiers", "Identifier");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Detail>", b =>
@@ -278,166 +265,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.ToTable("DetailIdentifiers", "Identifier");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Equipment>", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<long>("Key")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Kind")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<long>("ObjectId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.Property<string>("Value")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Key");
-
-                    b.HasIndex("ObjectId");
-
-                    b.ToTable("EquipmentIdentifiers", "Identifier");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Infrastructure>", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<long>("Key")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Kind")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<long>("ObjectId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.Property<string>("Value")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Key");
-
-                    b.HasIndex("ObjectId");
-
-                    b.ToTable("InfrastructureIdentifiers", "Identifier");
-                });
-
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
                     b.Property<long>("Id")
@@ -516,86 +343,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasIndex("ObjectId");
 
                     b.ToTable("MemberIdentifiers", "Identifier");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Platform>", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<long>("Key")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Kind")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<long>("ObjectId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.Property<string>("Value")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Key");
-
-                    b.HasIndex("ObjectId");
-
-                    b.ToTable("PlatformIdentifiers", "Identifier");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Resource>", b =>
@@ -831,9 +578,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Key");
+
                     b.HasIndex("ObjectId");
 
-                    b.ToTable("Identifier<Service>");
+                    b.ToTable("ServiceIdentifiers", "Identifier");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Setting>", b =>
@@ -1606,558 +1355,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.ToTable("DetailAndDetail", "Relation");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Equipment, Undersoft.SSC.Domain.Entities.Detail>", b =>
-                {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("LeftEntityId", "RightEntityId");
-
-                    b.HasIndex("RightEntityId");
-
-                    b.ToTable("EquipmentAndDetails", "Relation");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Equipment, Undersoft.SSC.Domain.Entities.Equipment>", b =>
-                {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("LeftEntityId", "RightEntityId");
-
-                    b.HasIndex("RightEntityId");
-
-                    b.ToTable("EquipmentAndEquipment", "Relation");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Equipment, Undersoft.SSC.Domain.Entities.Member>", b =>
-                {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("LeftEntityId", "RightEntityId");
-
-                    b.HasIndex("RightEntityId");
-
-                    b.ToTable("EquipmentAndMembers", "Relation");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Equipment, Undersoft.SSC.Domain.Entities.Setting>", b =>
-                {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("LeftEntityId", "RightEntityId");
-
-                    b.HasIndex("RightEntityId");
-
-                    b.ToTable("EquipmentAndSettings", "Relation");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Infrastructure, Undersoft.SSC.Domain.Entities.Detail>", b =>
-                {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("LeftEntityId", "RightEntityId");
-
-                    b.HasIndex("RightEntityId");
-
-                    b.ToTable("InfrastructuresAndDetails", "Relation");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Infrastructure, Undersoft.SSC.Domain.Entities.Infrastructure>", b =>
-                {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("LeftEntityId", "RightEntityId");
-
-                    b.HasIndex("RightEntityId");
-
-                    b.ToTable("InfrastructureAndInfrastructure", "Relation");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Infrastructure, Undersoft.SSC.Domain.Entities.Member>", b =>
-                {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("LeftEntityId", "RightEntityId");
-
-                    b.HasIndex("RightEntityId");
-
-                    b.ToTable("InfrastructuresAndMembers", "Relation");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Infrastructure, Undersoft.SSC.Domain.Entities.Setting>", b =>
-                {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("LeftEntityId", "RightEntityId");
-
-                    b.HasIndex("RightEntityId");
-
-                    b.ToTable("InfrastructuresAndSettings", "Relation");
-                });
-
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Activity>", b =>
                 {
                     b.Property<long?>("LeftEntityId")
@@ -2570,282 +1767,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasIndex("RightEntityId");
 
                     b.ToTable("MembersAndSettings", "Relation");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Platform, Undersoft.SSC.Domain.Entities.Detail>", b =>
-                {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("LeftEntityId", "RightEntityId");
-
-                    b.HasIndex("RightEntityId");
-
-                    b.ToTable("PlatformsAndDetails", "Relation");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Platform, Undersoft.SSC.Domain.Entities.Member>", b =>
-                {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("LeftEntityId", "RightEntityId");
-
-                    b.HasIndex("RightEntityId");
-
-                    b.ToTable("PlatformsAndMembers", "Relation");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Platform, Undersoft.SSC.Domain.Entities.Platform>", b =>
-                {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("LeftEntityId", "RightEntityId");
-
-                    b.HasIndex("RightEntityId");
-
-                    b.ToTable("PlatformAndPlatform", "Relation");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Platform, Undersoft.SSC.Domain.Entities.Setting>", b =>
-                {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("LeftEntityId", "RightEntityId");
-
-                    b.HasIndex("RightEntityId");
-
-                    b.ToTable("PlatformsAndSettings", "Relation");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Detail>", b =>
@@ -3469,75 +2390,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.ToTable("ServicesAndDetails", "Relation");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Equipment>", b =>
-                {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("LeftEntityId", "RightEntityId");
-
-                    b.HasIndex("RightEntityId");
-
-                    b.ToTable("ServicesAndEquipment", "Relation");
-                });
-
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
                     b.Property<long?>("LeftEntityId")
@@ -3605,75 +2457,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasIndex("RightEntityId");
 
                     b.ToTable("ServicesAndMembers", "Relation");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Platform>", b =>
-                {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("LeftEntityId", "RightEntityId");
-
-                    b.HasIndex("RightEntityId");
-
-                    b.ToTable("ServicesAndPlatforms", "Relation");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Service>", b =>
@@ -4173,156 +2956,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.ToTable("Details", "Local");
                 });
 
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Equipment", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long?>("DefaultId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Group")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<long?>("LocationId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DefaultId");
-
-                    b.HasIndex("Index")
-                        .IsUnique();
-
-                    b.ToTable("Equipment", "Local");
-                });
-
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Infrastructure", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long?>("DefaultId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Group")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<long?>("LocationId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DefaultId");
-
-                    b.HasIndex("Index")
-                        .IsUnique();
-
-                    b.ToTable("Infrastructures", "Local");
-                });
-
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Location", b =>
                 {
                     b.Property<long>("Id")
@@ -4354,18 +2987,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
-                    b.Property<long?>("EquipmentId")
-                        .HasColumnType("bigint");
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnOrder(10);
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<long?>("InfrastructureId")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("Label")
                         .HasMaxLength(32)
@@ -4406,9 +3033,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.Property<int>("PhoneType")
                         .HasColumnType("integer");
 
-                    b.Property<long?>("PlatformId")
-                        .HasColumnType("bigint");
-
                     b.Property<long?>("ResourceId")
                         .HasColumnType("bigint");
 
@@ -4433,350 +3057,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .IsUnique();
 
                     b.ToTable("Locations", "Local");
-                });
-
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Locations.Address", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("AddressType")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ApartmentNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar");
-
-                    b.Property<string>("BuildingNumber")
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar");
-
-                    b.Property<string>("CityName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar");
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<long?>("CountryId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("CountryStateId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<int?>("Length")
-                        .HasColumnType("integer");
-
-                    b.Property<long?>("LocationId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<string>("Notices")
-                        .HasMaxLength(150)
-                        .HasColumnType("varchar");
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<int?>("Place")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Postcode")
-                        .IsRequired()
-                        .HasMaxLength(12)
-                        .HasColumnType("varchar");
-
-                    b.Property<long?>("StateId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("StreetName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar");
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CountryId");
-
-                    b.HasIndex("CountryStateId");
-
-                    b.HasIndex("LocationId");
-
-                    b.ToTable("Addresses", "Local");
-                });
-
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Locations.Country", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<string>("Continent")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CountryCode")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long?>("CurrencyId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<long?>("LanguageId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<string>("TimeZone")
-                        .HasColumnType("text");
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CurrencyId");
-
-                    b.HasIndex("LanguageId");
-
-                    b.ToTable("Countries", "Local");
-                });
-
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Locations.CountryState", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<long?>("CountryId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<string>("StateCode")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TimeZone")
-                        .HasColumnType("text");
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CountryId");
-
-                    b.ToTable("CountryStates", "Local");
-                });
-
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Locations.Currency", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<string>("CurrencyCode")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<double>("Rate")
-                        .HasColumnType("double precision");
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Currencies", "Local");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Locations.Endpoint", b =>
@@ -4870,73 +3150,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasIndex("LocationId");
 
                     b.ToTable("Endpoints", "Local");
-                });
-
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Locations.Language", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<string>("LanguageCode")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Languages", "Local");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Locations.Position", b =>
@@ -5050,7 +3263,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("Coordinates", "Local");
+                    b.ToTable("Positions", "Local");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Member", b =>
@@ -5126,81 +3339,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .IsUnique();
 
                     b.ToTable("Members", "Local");
-                });
-
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Platform", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long?>("DefaultId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Group")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<long?>("LocationId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DefaultId");
-
-                    b.HasIndex("Index")
-                        .IsUnique();
-
-                    b.ToTable("Platforms", "Local");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Resource", b =>
@@ -5504,21 +3642,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.ToTable("Settings", "Local");
                 });
 
-            modelBuilder.Entity("InfrastructureService", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Infrastructure", null)
-                        .WithMany()
-                        .HasForeignKey("InfrastructuresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Service", null)
-                        .WithMany()
-                        .HasForeignKey("ServicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Activity>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "Object")
@@ -5535,7 +3658,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Application", "Object")
                         .WithMany("Identifiers")
                         .HasForeignKey("ObjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Object");
@@ -5552,42 +3675,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.Navigation("Object");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Equipment>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Equipment", "Object")
-                        .WithMany("Identifiers")
-                        .HasForeignKey("ObjectId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Object");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Infrastructure>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Infrastructure", "Object")
-                        .WithMany("Identifiers")
-                        .HasForeignKey("ObjectId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Object");
-                });
-
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "Object")
-                        .WithMany("Identifiers")
-                        .HasForeignKey("ObjectId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Object");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Platform>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Platform", "Object")
                         .WithMany("Identifiers")
                         .HasForeignKey("ObjectId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -5623,7 +3713,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "Object")
                         .WithMany("Identifiers")
                         .HasForeignKey("ObjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Object");
@@ -5810,142 +3900,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Equipment, Undersoft.SSC.Domain.Entities.Detail>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Equipment", "LeftEntity")
-                        .WithMany()
-                        .HasForeignKey("LeftEntityId")
-                        .IsRequired();
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
-                        .WithMany()
-                        .HasForeignKey("RightEntityId")
-                        .IsRequired();
-
-                    b.Navigation("LeftEntity");
-
-                    b.Navigation("RightEntity");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Equipment, Undersoft.SSC.Domain.Entities.Equipment>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Equipment", "LeftEntity")
-                        .WithMany()
-                        .HasForeignKey("LeftEntityId")
-                        .IsRequired();
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Equipment", "RightEntity")
-                        .WithMany()
-                        .HasForeignKey("RightEntityId")
-                        .IsRequired();
-
-                    b.Navigation("LeftEntity");
-
-                    b.Navigation("RightEntity");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Equipment, Undersoft.SSC.Domain.Entities.Member>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Equipment", "LeftEntity")
-                        .WithMany()
-                        .HasForeignKey("LeftEntityId")
-                        .IsRequired();
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Member", "RightEntity")
-                        .WithMany()
-                        .HasForeignKey("RightEntityId")
-                        .IsRequired();
-
-                    b.Navigation("LeftEntity");
-
-                    b.Navigation("RightEntity");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Equipment, Undersoft.SSC.Domain.Entities.Setting>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Equipment", "LeftEntity")
-                        .WithMany()
-                        .HasForeignKey("LeftEntityId")
-                        .IsRequired();
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
-                        .WithMany()
-                        .HasForeignKey("RightEntityId")
-                        .IsRequired();
-
-                    b.Navigation("LeftEntity");
-
-                    b.Navigation("RightEntity");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Infrastructure, Undersoft.SSC.Domain.Entities.Detail>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Infrastructure", "LeftEntity")
-                        .WithMany()
-                        .HasForeignKey("LeftEntityId")
-                        .IsRequired();
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
-                        .WithMany()
-                        .HasForeignKey("RightEntityId")
-                        .IsRequired();
-
-                    b.Navigation("LeftEntity");
-
-                    b.Navigation("RightEntity");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Infrastructure, Undersoft.SSC.Domain.Entities.Infrastructure>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Infrastructure", "LeftEntity")
-                        .WithMany()
-                        .HasForeignKey("LeftEntityId")
-                        .IsRequired();
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Infrastructure", "RightEntity")
-                        .WithMany()
-                        .HasForeignKey("RightEntityId")
-                        .IsRequired();
-
-                    b.Navigation("LeftEntity");
-
-                    b.Navigation("RightEntity");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Infrastructure, Undersoft.SSC.Domain.Entities.Member>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Infrastructure", "LeftEntity")
-                        .WithMany()
-                        .HasForeignKey("LeftEntityId")
-                        .IsRequired();
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Member", "RightEntity")
-                        .WithMany()
-                        .HasForeignKey("RightEntityId")
-                        .IsRequired();
-
-                    b.Navigation("LeftEntity");
-
-                    b.Navigation("RightEntity");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Infrastructure, Undersoft.SSC.Domain.Entities.Setting>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Infrastructure", "LeftEntity")
-                        .WithMany()
-                        .HasForeignKey("LeftEntityId")
-                        .IsRequired();
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
-                        .WithMany()
-                        .HasForeignKey("RightEntityId")
-                        .IsRequired();
-
-                    b.Navigation("LeftEntity");
-
-                    b.Navigation("RightEntity");
-                });
-
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Activity>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
@@ -6034,74 +3988,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
-                        .WithMany()
-                        .HasForeignKey("LeftEntityId")
-                        .IsRequired();
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
-                        .WithMany()
-                        .HasForeignKey("RightEntityId")
-                        .IsRequired();
-
-                    b.Navigation("LeftEntity");
-
-                    b.Navigation("RightEntity");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Platform, Undersoft.SSC.Domain.Entities.Detail>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Platform", "LeftEntity")
-                        .WithMany()
-                        .HasForeignKey("LeftEntityId")
-                        .IsRequired();
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
-                        .WithMany()
-                        .HasForeignKey("RightEntityId")
-                        .IsRequired();
-
-                    b.Navigation("LeftEntity");
-
-                    b.Navigation("RightEntity");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Platform, Undersoft.SSC.Domain.Entities.Member>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Platform", "LeftEntity")
-                        .WithMany()
-                        .HasForeignKey("LeftEntityId")
-                        .IsRequired();
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Member", "RightEntity")
-                        .WithMany()
-                        .HasForeignKey("RightEntityId")
-                        .IsRequired();
-
-                    b.Navigation("LeftEntity");
-
-                    b.Navigation("RightEntity");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Platform, Undersoft.SSC.Domain.Entities.Platform>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Platform", "LeftEntity")
-                        .WithMany()
-                        .HasForeignKey("LeftEntityId")
-                        .IsRequired();
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Platform", "RightEntity")
-                        .WithMany()
-                        .HasForeignKey("RightEntityId")
-                        .IsRequired();
-
-                    b.Navigation("LeftEntity");
-
-                    b.Navigation("RightEntity");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Platform, Undersoft.SSC.Domain.Entities.Setting>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Platform", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
                         .IsRequired();
@@ -6269,23 +4155,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Equipment>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
-                        .WithMany()
-                        .HasForeignKey("LeftEntityId")
-                        .IsRequired();
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Equipment", "RightEntity")
-                        .WithMany()
-                        .HasForeignKey("RightEntityId")
-                        .IsRequired();
-
-                    b.Navigation("LeftEntity");
-
-                    b.Navigation("RightEntity");
-                });
-
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
@@ -6294,23 +4163,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "RightEntity")
-                        .WithMany()
-                        .HasForeignKey("RightEntityId")
-                        .IsRequired();
-
-                    b.Navigation("LeftEntity");
-
-                    b.Navigation("RightEntity");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Platform>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
-                        .WithMany()
-                        .HasForeignKey("LeftEntityId")
-                        .IsRequired();
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Platform", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
                         .IsRequired();
@@ -6400,24 +4252,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.Navigation("Default");
                 });
 
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Equipment", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Default", "Default")
-                        .WithMany("Equipment")
-                        .HasForeignKey("DefaultId");
-
-                    b.Navigation("Default");
-                });
-
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Infrastructure", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Default", "Default")
-                        .WithMany("Infrastructures")
-                        .HasForeignKey("DefaultId");
-
-                    b.Navigation("Default");
-                });
-
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Location", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "Activity")
@@ -6428,19 +4262,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .WithOne("Location")
                         .HasForeignKey("Undersoft.SSC.Domain.Entities.Location", "LocationId");
 
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Equipment", "Equipment")
-                        .WithOne("Location")
-                        .HasForeignKey("Undersoft.SSC.Domain.Entities.Location", "LocationId");
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Infrastructure", "Infrastructure")
-                        .WithOne("Location")
-                        .HasForeignKey("Undersoft.SSC.Domain.Entities.Location", "LocationId");
-
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "Member")
-                        .WithOne("Location")
-                        .HasForeignKey("Undersoft.SSC.Domain.Entities.Location", "LocationId");
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Platform", "Platform")
                         .WithOne("Location")
                         .HasForeignKey("Undersoft.SSC.Domain.Entities.Location", "LocationId");
 
@@ -6460,64 +4282,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 
                     b.Navigation("Application");
 
-                    b.Navigation("Equipment");
-
-                    b.Navigation("Infrastructure");
-
                     b.Navigation("Member");
-
-                    b.Navigation("Platform");
 
                     b.Navigation("Resource");
 
                     b.Navigation("Schedule");
 
                     b.Navigation("Service");
-                });
-
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Locations.Address", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Locations.Country", "Country")
-                        .WithMany("Addresses")
-                        .HasForeignKey("CountryId");
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Locations.CountryState", "CountryState")
-                        .WithMany("Addresses")
-                        .HasForeignKey("CountryStateId");
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Location", "Location")
-                        .WithMany("Addresses")
-                        .HasForeignKey("LocationId");
-
-                    b.Navigation("Country");
-
-                    b.Navigation("CountryState");
-
-                    b.Navigation("Location");
-                });
-
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Locations.Country", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Locations.Currency", "Currency")
-                        .WithMany("Countries")
-                        .HasForeignKey("CurrencyId");
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Locations.Language", "Language")
-                        .WithMany("Countries")
-                        .HasForeignKey("LanguageId");
-
-                    b.Navigation("Currency");
-
-                    b.Navigation("Language");
-                });
-
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Locations.CountryState", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Locations.Country", "Country")
-                        .WithMany("CountryStates")
-                        .HasForeignKey("CountryId");
-
-                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Locations.Endpoint", b =>
@@ -6542,15 +4313,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Default", "Default")
                         .WithMany("Members")
-                        .HasForeignKey("DefaultId");
-
-                    b.Navigation("Default");
-                });
-
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Platform", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Default", "Default")
-                        .WithMany("Platforms")
                         .HasForeignKey("DefaultId");
 
                     b.Navigation("Default");
@@ -6616,13 +4378,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 
                     b.Navigation("Details");
 
-                    b.Navigation("Equipment");
-
-                    b.Navigation("Infrastructures");
-
                     b.Navigation("Members");
-
-                    b.Navigation("Platforms");
 
                     b.Navigation("Resources");
 
@@ -6638,59 +4394,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.Navigation("Identifiers");
                 });
 
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Equipment", b =>
-                {
-                    b.Navigation("Identifiers");
-
-                    b.Navigation("Location");
-                });
-
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Infrastructure", b =>
-                {
-                    b.Navigation("Identifiers");
-
-                    b.Navigation("Location");
-                });
-
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Location", b =>
                 {
-                    b.Navigation("Addresses");
-
                     b.Navigation("Endpoints");
 
                     b.Navigation("Positions");
                 });
 
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Locations.Country", b =>
-                {
-                    b.Navigation("Addresses");
-
-                    b.Navigation("CountryStates");
-                });
-
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Locations.CountryState", b =>
-                {
-                    b.Navigation("Addresses");
-                });
-
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Locations.Currency", b =>
-                {
-                    b.Navigation("Countries");
-                });
-
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Locations.Language", b =>
-                {
-                    b.Navigation("Countries");
-                });
-
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Member", b =>
-                {
-                    b.Navigation("Identifiers");
-
-                    b.Navigation("Location");
-                });
-
-            modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Platform", b =>
                 {
                     b.Navigation("Identifiers");
 

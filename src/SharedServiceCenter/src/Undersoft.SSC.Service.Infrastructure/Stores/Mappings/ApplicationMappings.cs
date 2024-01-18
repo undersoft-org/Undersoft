@@ -5,7 +5,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 {
     using SDK.Service.Infrastructure.Store;
     using Undersoft.SDK.Service.Infrastructure.Store.Relation;
-    using Undersoft.SSC.Domain.Entities.Locations;
     using Undersoft.SSC.Domain.Entities;
 
     public class ApplicationMappings : EntityTypeMapping<Application>
@@ -17,7 +16,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
             builder.ToTable(TABLE_NAME, DataStoreSchema.LocalSchema);
 
             modelBuilder
-                .ApplyIdentifiers<Platform>()
+                .ApplyIdentifiers<Application>()
                 .RelateSetToSet<Application, Service>(r => r.Applications, r => r.Services)
                 .RelateSetToSet<Application, Member>(r => r.Applications, r => r.Members)
                 .RelateSetToSet<Application, Setting>(

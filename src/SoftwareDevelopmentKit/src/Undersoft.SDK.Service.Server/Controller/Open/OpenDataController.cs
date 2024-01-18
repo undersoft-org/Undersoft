@@ -4,7 +4,6 @@ using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Server.Controller.Open;
 
-using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Operation.Command;
 using Operation.Query;
@@ -67,7 +66,7 @@ public abstract class OpenDataController<TKey, TEntry, TReport, TEntity, TDto>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer 
+        var result = await _servicer
             .Send(new Create<TEntry, TEntity, TDto>(_publishMode, dto));
 
         return !result.IsValid ? UnprocessableEntity(result.ErrorMessages.ToArray()) : Ok(result.Id as object);

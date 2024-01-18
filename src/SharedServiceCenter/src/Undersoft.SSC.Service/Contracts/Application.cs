@@ -15,10 +15,10 @@ public class Application : ApplicationBase
     [DataMember(Order = 23)]
     public virtual DataObjects<ServiceBase>? Services { get; set; }
 
-    [DataMember(Order = 24)]
+    [DataMember(Order = 25)]
     public virtual Default? Default { get; set; }
 
-    [DataMember(Order = 25)]
+    [DataMember(Order = 26)]
     public virtual Location? Location { get; set; }
 }
 

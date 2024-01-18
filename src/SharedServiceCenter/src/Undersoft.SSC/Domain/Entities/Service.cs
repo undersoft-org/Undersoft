@@ -15,13 +15,7 @@ public class Service : OpenEntity<Service, Detail, Setting, ServiceGroup>
 
     public virtual RelatedSet<Member>? Members { get; set; }
 
-    public virtual RelatedSet<Platform>? Platforms { get; set; }
-
-    public virtual RelatedSet<Equipment>? Equipment { get; set; }    
-
-    public virtual RelatedSet<Infrastructure>? Infrastructures { get; set; }
-
-    [Remote] 
+    [Remote]
     public virtual RemoteSet<Application>? Applications { get; set; }
 
     public virtual long? DefaultId { get; set; }

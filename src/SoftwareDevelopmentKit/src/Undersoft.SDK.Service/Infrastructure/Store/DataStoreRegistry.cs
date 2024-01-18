@@ -78,7 +78,7 @@ public static class DataStoreRegistry
             {
                 var clrType = entityType.ClrType;
 
-                if (clrType != null && clrType.GetInterfaces().Contains(typeof(IEntity)))
+                if (clrType != null && (clrType.IsAssignableTo(typeof(IEntity)) || clrType.IsAssignableTo(typeof(Identifier))))
                 {
                     dbEntityTypes.Put(clrType.FullName, entityType);
 

@@ -21,13 +21,7 @@ public class Detail : ObjectDetail<Detail, DetailKind>, IEntity, ISerializableJs
 
     public virtual RelatedSet<Application>? Applications { get; set; }
 
-    public virtual RelatedSet<Platform>? Platforms { get; set; }
-
     public virtual RelatedSet<Service>? Services { get; set; }
-
-    public virtual RelatedSet<Equipment>? Equipment { get; set; }
-
-    public virtual RelatedSet<Infrastructure>? Infrastructures { get; set; }
 
     public virtual long DefaultId { get; set; }
     public virtual Default? Default { get; set; }

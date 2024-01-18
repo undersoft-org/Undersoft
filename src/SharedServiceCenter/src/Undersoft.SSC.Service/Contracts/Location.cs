@@ -31,9 +31,9 @@ public class Location : DataObject
     [DataMember(Order = 19)]
     public virtual string? SocialMedia { get; set; }
 
-    [DataMember(Order = 20)]
-    public virtual DataObjects<Address>? Addresses { get; set; }
-
     [DataMember(Order = 21)]
     public virtual DataObjects<Endpoint>? Endpoints { get; set; }
+    [DataMember(Order = 21)]
+    public virtual DataObjects<Position>? Positions { get; set; }
+
 }

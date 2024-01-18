@@ -8,7 +8,7 @@ using Undersoft.SSC.Domain.Entities.Locations;
 
 public class PositionMappings : EntityTypeMapping<Position>
 {
-    private const string TABLE_NAME = "Coordinates";
+    private const string TABLE_NAME = "Positions";
 
     public override void Configure(EntityTypeBuilder<Position> builder)
     {

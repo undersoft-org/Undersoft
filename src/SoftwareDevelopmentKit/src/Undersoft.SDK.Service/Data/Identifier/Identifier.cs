@@ -3,8 +3,6 @@ using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace Undersoft.SDK.Service.Data.Identifier;
-
-using Data.Entity;
 using Undersoft.SDK.Service.Data.Object;
 
 [DataContract]

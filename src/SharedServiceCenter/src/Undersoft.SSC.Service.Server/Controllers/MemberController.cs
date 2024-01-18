@@ -1,25 +1,37 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Undersoft.SDK.Service.Server.Controller.Crud;
 using Undersoft.SDK.Service.Server.Controller.Open;
-using Undersoft.SSC.Domain.Entities;
-
+using Undersoft.SDK.Service.Server.Controller.Stream;
 
 namespace Undersoft.SSC.Service.Server.Controllers
 {
     [AllowAnonymous]
+    [ODataRouteComponent(StoreRoutes.OpenDataRoute)]
     public class MemberController
-        : OpenDataController<long, IEntryStore, IReportStore, Member, Contracts.Member>
+        : OpenDataController<long, IEntryStore, IReportStore, Domain.Entities.Member, Contracts.Member>
     {
-        public MemberController(IServicer ultimatr) : base(ultimatr) { }
+        public MemberController(IServicer ultimatr)
+            : base(ultimatr) { }
     }
 }
 
 namespace Undersoft.SSC.Service.Server.Controllers
 {
+    [AllowAnonymous]
     public class MembersController
-        : CrudDataController<long, IEntryStore, IReportStore, Member, Contracts.Member>
+        : CrudDataController<long, IEntryStore, IReportStore, Domain.Entities.Member, Contracts.Member>
     {
-        public MembersController(IServicer ultimatr) : base(ultimatr) { }
+        public MembersController(IServicer ultimatr)
+            : base(ultimatr) { }
     }
 }
 
+namespace Undersoft.SSC.Service.Server.Controllers
+{
+    public class MemberStreamController
+        : StreamDataController<long, IEntryStore, IReportStore, Domain.Entities.Member, Contracts.Member>
+    {
+        public MemberStreamController() : base() { }
+    }
+}
