@@ -13,7 +13,7 @@ using Undersoft.SSC.Service.Infrastructure.Stores;
 namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 {
     [DbContext(typeof(ReportStore))]
-    [Migration("20240117165500_InitialCreate")]
+    [Migration("20240117233536_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,6 +62,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<long>("Key")
                         .HasColumnType("bigint");
 
@@ -88,25 +95,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("ObjectId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -142,6 +142,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<long>("Key")
                         .HasColumnType("bigint");
 
@@ -168,25 +175,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("ObjectId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -220,6 +220,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<long>("Key")
                         .HasColumnType("bigint");
 
@@ -246,25 +253,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("ObjectId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -300,6 +300,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<long>("Key")
                         .HasColumnType("bigint");
 
@@ -326,25 +333,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("ObjectId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -380,6 +380,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<long>("Key")
                         .HasColumnType("bigint");
 
@@ -406,25 +413,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("ObjectId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -460,6 +460,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<long>("Key")
                         .HasColumnType("bigint");
 
@@ -486,25 +493,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("ObjectId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -540,6 +540,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<long>("Key")
                         .HasColumnType("bigint");
 
@@ -566,25 +573,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("ObjectId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -620,6 +620,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<long>("Key")
                         .HasColumnType("bigint");
 
@@ -646,25 +653,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("ObjectId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -700,6 +700,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<long>("Key")
                         .HasColumnType("bigint");
 
@@ -726,25 +733,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("ObjectId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -780,6 +780,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<long>("Key")
                         .HasColumnType("bigint");
 
@@ -806,25 +813,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("ObjectId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -858,6 +858,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<long>("Key")
                         .HasColumnType("bigint");
 
@@ -884,25 +891,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("ObjectId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -918,10 +918,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Activity>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -944,6 +944,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -958,25 +965,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -987,10 +987,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -1013,6 +1013,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -1027,25 +1034,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -1056,10 +1056,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Resource>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -1082,6 +1082,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -1096,25 +1103,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -1125,10 +1125,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -1151,6 +1151,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -1165,25 +1172,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -1194,10 +1194,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Application, Undersoft.SSC.Domain.Entities.Application>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -1220,6 +1220,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -1234,25 +1241,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -1263,10 +1263,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Application, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -1289,6 +1289,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -1303,25 +1310,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -1332,10 +1332,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Application, Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -1358,6 +1358,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -1372,25 +1379,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -1401,10 +1401,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Application, Undersoft.SSC.Domain.Entities.Service>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -1427,6 +1427,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -1441,25 +1448,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -1470,10 +1470,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Application, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -1496,6 +1496,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -1510,25 +1517,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -1539,10 +1539,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Detail, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -1565,6 +1565,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -1579,25 +1586,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -1608,10 +1608,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Equipment, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -1634,6 +1634,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -1648,25 +1655,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -1677,10 +1677,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Equipment, Undersoft.SSC.Domain.Entities.Equipment>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -1703,6 +1703,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -1717,25 +1724,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -1746,10 +1746,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Equipment, Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -1772,6 +1772,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -1786,25 +1793,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -1815,10 +1815,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Equipment, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -1841,6 +1841,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -1855,25 +1862,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -1884,10 +1884,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Infrastructure, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -1910,6 +1910,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -1924,25 +1931,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -1953,10 +1953,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Infrastructure, Undersoft.SSC.Domain.Entities.Infrastructure>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -1979,6 +1979,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -1993,25 +2000,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -2022,10 +2022,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Infrastructure, Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -2048,6 +2048,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -2062,25 +2069,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -2091,10 +2091,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Infrastructure, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -2117,6 +2117,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -2131,25 +2138,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -2160,10 +2160,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Activity>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -2186,6 +2186,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -2200,25 +2207,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -2229,10 +2229,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -2255,6 +2255,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -2269,25 +2276,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -2298,10 +2298,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -2324,6 +2324,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -2338,25 +2345,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -2367,10 +2367,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Resource>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -2393,6 +2393,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -2407,25 +2414,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -2436,10 +2436,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Schedule>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -2462,6 +2462,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -2476,25 +2483,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -2505,10 +2505,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -2531,6 +2531,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -2545,25 +2552,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -2574,10 +2574,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Platform, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -2600,6 +2600,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -2614,25 +2621,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -2643,10 +2643,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Platform, Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -2669,6 +2669,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -2683,25 +2690,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -2712,10 +2712,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Platform, Undersoft.SSC.Domain.Entities.Platform>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -2738,6 +2738,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -2752,25 +2759,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -2781,10 +2781,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Platform, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -2807,6 +2807,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -2821,25 +2828,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -2850,10 +2850,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -2876,6 +2876,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -2890,25 +2897,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -2919,10 +2919,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Resource>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -2945,6 +2945,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -2959,25 +2966,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -2988,10 +2988,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Schedule>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -3014,6 +3014,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -3028,25 +3035,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -3057,10 +3057,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -3083,6 +3083,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -3097,25 +3104,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -3126,10 +3126,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Activity>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -3152,6 +3152,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -3166,25 +3173,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -3195,10 +3195,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -3221,6 +3221,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -3235,25 +3242,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -3264,10 +3264,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Schedule>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -3290,6 +3290,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -3304,25 +3311,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -3333,10 +3333,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -3359,6 +3359,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -3373,25 +3380,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -3402,10 +3402,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -3428,6 +3428,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -3442,25 +3449,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -3471,10 +3471,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Equipment>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -3497,6 +3497,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -3511,25 +3518,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -3540,10 +3540,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -3566,6 +3566,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -3580,25 +3587,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -3609,10 +3609,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Platform>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -3635,6 +3635,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -3649,25 +3656,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -3678,10 +3678,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Service>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -3704,6 +3704,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -3718,25 +3725,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -3747,10 +3747,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -3773,6 +3773,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -3787,25 +3794,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -3816,10 +3816,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Setting, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
-                    b.Property<long>("LeftEntityId")
+                    b.Property<long?>("LeftEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RightEntityId")
+                    b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CodeNo")
@@ -3842,6 +3842,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -3856,25 +3863,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("LeftEntityId", "RightEntityId");
 
@@ -3911,6 +3911,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<int>("Group")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -3928,31 +3935,24 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
 
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
+
                     b.HasKey("Id");
 
                     b.HasIndex("DefaultId");
 
-                    b.HasIndex("Ordinal")
+                    b.HasIndex("Index")
                         .IsUnique();
 
                     b.ToTable("Activities", "Local");
@@ -3986,6 +3986,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<int>("Group")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -4003,31 +4010,24 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
 
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
+
                     b.HasKey("Id");
 
                     b.HasIndex("DefaultId");
 
-                    b.HasIndex("Ordinal")
+                    b.HasIndex("Index")
                         .IsUnique();
 
                     b.ToTable("Applications", "Local");
@@ -4055,6 +4055,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -4069,29 +4076,22 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
 
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
+
                     b.HasKey("Id");
 
-                    b.HasIndex("Ordinal")
+                    b.HasIndex("Index")
                         .IsUnique();
 
                     b.ToTable("Defaults", "Local");
@@ -4125,6 +4125,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<JsonDocument>("Document")
                         .HasColumnType("jsonb");
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<int>("Kind")
                         .HasColumnType("integer");
 
@@ -4145,21 +4152,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
@@ -4172,7 +4167,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
                     b.HasIndex("DefaultId");
 
-                    b.HasIndex("Ordinal")
+                    b.HasIndex("Index")
                         .IsUnique();
 
                     b.ToTable("Details", "Local");
@@ -4206,6 +4201,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<int>("Group")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -4223,31 +4225,24 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
 
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
+
                     b.HasKey("Id");
 
                     b.HasIndex("DefaultId");
 
-                    b.HasIndex("Ordinal")
+                    b.HasIndex("Index")
                         .IsUnique();
 
                     b.ToTable("Equipment", "Local");
@@ -4281,6 +4276,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<int>("Group")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -4298,31 +4300,24 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
 
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
+
                     b.HasKey("Id");
 
                     b.HasIndex("DefaultId");
 
-                    b.HasIndex("Ordinal")
+                    b.HasIndex("Index")
                         .IsUnique();
 
                     b.ToTable("Infrastructures", "Local");
@@ -4362,6 +4357,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long?>("EquipmentId")
                         .HasColumnType("bigint");
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<long?>("InfrastructureId")
                         .HasColumnType("bigint");
 
@@ -4394,21 +4396,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<string>("Notices")
                         .HasColumnType("text");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
@@ -4431,6 +4421,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("Id");
 
@@ -4485,6 +4480,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -4509,21 +4511,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasMaxLength(150)
                         .HasColumnType("varchar");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<int?>("Place")
                         .HasColumnType("integer");
@@ -4544,6 +4534,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("Id");
 
@@ -4587,6 +4582,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long?>("CurrencyId")
                         .HasColumnType("bigint");
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -4607,21 +4609,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<string>("TimeZone")
                         .HasColumnType("text");
@@ -4629,6 +4619,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("Id");
 
@@ -4664,6 +4659,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -4681,21 +4683,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<string>("StateCode")
                         .HasColumnType("text");
@@ -4706,6 +4696,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("Id");
 
@@ -4739,6 +4734,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<string>("CurrencyCode")
                         .HasColumnType("text");
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -4756,21 +4758,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<double>("Rate")
                         .HasColumnType("double precision");
@@ -4778,6 +4768,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("Id");
 
@@ -4812,6 +4807,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<string>("IP")
                         .HasColumnType("text");
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -4835,21 +4837,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<string>("OS")
                         .HasColumnType("text");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<string[]>("Parameters")
                         .HasColumnType("text[]");
@@ -4866,6 +4856,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.Property<string>("URI")
                         .HasColumnType("text");
@@ -4899,6 +4894,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -4919,25 +4921,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("Id");
 
@@ -4978,6 +4973,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<int?>("Height")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -5007,21 +5009,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<string>("Place")
                         .HasColumnType("text");
@@ -5035,6 +5025,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.Property<int>("Volume")
                         .HasColumnType("integer");
@@ -5086,6 +5081,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<int>("Group")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -5103,31 +5105,24 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
 
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
+
                     b.HasKey("Id");
 
                     b.HasIndex("DefaultId");
 
-                    b.HasIndex("Ordinal")
+                    b.HasIndex("Index")
                         .IsUnique();
 
                     b.ToTable("Members", "Local");
@@ -5161,6 +5156,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<int>("Group")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -5178,31 +5180,24 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
 
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
+
                     b.HasKey("Id");
 
                     b.HasIndex("DefaultId");
 
-                    b.HasIndex("Ordinal")
+                    b.HasIndex("Index")
                         .IsUnique();
 
                     b.ToTable("Platforms", "Local");
@@ -5236,6 +5231,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<int>("Group")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -5253,31 +5255,24 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
 
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
+
                     b.HasKey("Id");
 
                     b.HasIndex("DefaultId");
 
-                    b.HasIndex("Ordinal")
+                    b.HasIndex("Index")
                         .IsUnique();
 
                     b.ToTable("Resources", "Local");
@@ -5311,6 +5306,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<int>("Group")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -5328,31 +5330,24 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
 
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
+
                     b.HasKey("Id");
 
                     b.HasIndex("DefaultId");
 
-                    b.HasIndex("Ordinal")
+                    b.HasIndex("Index")
                         .IsUnique();
 
                     b.ToTable("Schedules", "Local");
@@ -5386,6 +5381,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<int>("Group")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -5403,31 +5405,24 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
 
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
+
                     b.HasKey("Id");
 
                     b.HasIndex("DefaultId");
 
-                    b.HasIndex("Ordinal")
+                    b.HasIndex("Index")
                         .IsUnique();
 
                     b.ToTable("Services", "Local");
@@ -5461,6 +5456,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<JsonDocument>("Document")
                         .HasColumnType("jsonb");
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<int>("Kind")
                         .HasColumnType("integer");
 
@@ -5481,21 +5483,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
@@ -5508,7 +5498,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
                     b.HasIndex("DefaultId");
 
-                    b.HasIndex("Ordinal")
+                    b.HasIndex("Index")
                         .IsUnique();
 
                     b.ToTable("Settings", "Local");
@@ -5655,13 +5645,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5674,13 +5662,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5693,13 +5679,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5712,13 +5696,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5731,13 +5713,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Application", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Application", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5750,13 +5730,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Application", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5769,13 +5747,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Application", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5788,13 +5764,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Application", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5807,13 +5781,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Application", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5826,13 +5798,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5845,13 +5815,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Equipment", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5864,13 +5832,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Equipment", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Equipment", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5883,13 +5849,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Equipment", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5902,13 +5866,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Equipment", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5921,13 +5883,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Infrastructure", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5940,13 +5900,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Infrastructure", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Infrastructure", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5959,13 +5917,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Infrastructure", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5978,13 +5934,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Infrastructure", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -5997,13 +5951,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6016,13 +5968,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6035,13 +5985,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6054,13 +6002,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6073,13 +6019,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6092,13 +6036,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6111,13 +6053,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Platform", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6130,13 +6070,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Platform", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6149,13 +6087,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Platform", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Platform", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6168,13 +6104,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Platform", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6187,13 +6121,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6206,13 +6138,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6225,13 +6155,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6244,13 +6172,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6263,13 +6189,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6282,13 +6206,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6301,13 +6223,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6320,13 +6240,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6339,13 +6257,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6358,13 +6274,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Equipment", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6377,13 +6291,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6396,13 +6308,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Platform", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6415,13 +6325,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6434,13 +6342,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");
@@ -6453,13 +6359,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LeftEntity");

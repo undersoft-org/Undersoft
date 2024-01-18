@@ -1,10 +1,8 @@
 ﻿using Undersoft.SDK.Security.Identity;
-using Undersoft.SSC.Infrastructure.Clients;
 using Undersoft.SDK.Service.Server;
-using Undersoft.SDK.Service.Server.Account;
 using Undersoft.SDK.Service.Server.Hosting;
+using Undersoft.SSC.Service.Clients;
 using Undersoft.SSC.Service.Infrastructure.Stores;
-using Undersoft.SSC.Service.Contracts.Details;
 
 namespace Undersoft.SSC.Service.Server;
 
@@ -47,6 +45,7 @@ public class Startup
         app.UseServerSetup(env)
             .UseApiServerSetup(new string[] { "v1.0" })
             .UseInternalProvider()
-            .UseDataMigrations();
+            .UseDataMigrations()
+            .UseDataServices();
     }
 }

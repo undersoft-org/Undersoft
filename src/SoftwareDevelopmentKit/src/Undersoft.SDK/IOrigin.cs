@@ -16,8 +16,8 @@ namespace Undersoft.SDK
         string Creator { get; set; }
         DateTime Modified { get; set; }
         string Modifier { get; set; }
-        int OriginKey { get; set; }
-        string OriginName { get; set; }
+        int OriginId { get; set; }
+        string TypeName { get; set; }
         DateTime Time { get; set; }
         long AutoId();
         byte GetPriority();

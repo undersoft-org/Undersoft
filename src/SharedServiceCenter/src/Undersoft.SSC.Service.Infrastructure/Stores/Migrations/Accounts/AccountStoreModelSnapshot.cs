@@ -51,6 +51,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
                     b.Property<string>("Label")
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
@@ -65,25 +72,18 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(7);
 
-                    b.Property<int>("Ordinal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Ordinal"));
-
-                    b.Property<int>("OriginKey")
+                    b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<string>("OriginName")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(5);
 
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");

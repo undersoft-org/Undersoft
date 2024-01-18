@@ -16,11 +16,14 @@ namespace Undersoft.SDK
 
         public Origin(bool autoId) : base(autoId) { }
 
-        [StringLength(32)]
-        [DataMember(Order = 5)]
-        [Column(Order = 5)]
-        [InstantAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-        public virtual string OriginName { get; set; }
+        [IdentityRubric]
+        [DataMember(Order = 3)]
+        [Column(Order = 3)]
+        public virtual int OriginId
+        {
+            get => (int)code.OriginId;
+            set => code.SetOriginId(value);
+        }
 
         [IdentityRubric]
         [Column(TypeName = "timestamp", Order = 6)]
@@ -51,7 +54,7 @@ namespace Undersoft.SDK
         [DataMember(Order = 10)]
         [Column(Order = 10)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public virtual int Ordinal { get; set; }
+        public virtual int Index { get; set; }
 
         [Column(Order = 11)]
         [StringLength(32)]

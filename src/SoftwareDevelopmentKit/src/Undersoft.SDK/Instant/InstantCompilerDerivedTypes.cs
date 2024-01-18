@@ -23,7 +23,7 @@
 
             CreateFieldsAndProperties(tb);
 
-            //CreateValueArrayProperty(tb);
+            CreateValueArrayProperty(tb);
 
             CreateItemByIntProperty(tb);
 

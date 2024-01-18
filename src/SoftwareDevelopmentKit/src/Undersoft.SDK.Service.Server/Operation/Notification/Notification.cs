@@ -25,8 +25,8 @@ public abstract class Notification<TCommand> : Event, INotification where TComma
         AggregateType = aggregateTypeFullName;
         EventType = eventTypeFullName;
         var entity = (Entity)command.Entity;
-        OriginKey = entity.OriginKey;
-        OriginName = entity.OriginName;
+        OriginId = entity.OriginId;
+        TypeName = entity.TypeName;
         Modifier = entity.Modifier;
         Modified = entity.Modified;
         Creator = entity.Creator;

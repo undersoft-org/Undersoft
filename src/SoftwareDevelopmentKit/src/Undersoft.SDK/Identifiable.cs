@@ -67,14 +67,11 @@ namespace Undersoft.SDK
             }
         }
 
-        [IdentityRubric]
-        [DataMember(Order = 3)]
-        [Column(Order = 3)]
-        public virtual int OriginKey
-        {
-            get => (int)code.OriginKey;
-            set => code.SetOriginKey(value);
-        }
+        [StringLength(128)]
+        [DataMember(Order = 5)]
+        [Column(Order = 5)]
+        [InstantAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+        public virtual string TypeName { get; set; }
 
         [Required]
         [IdentityRubric]

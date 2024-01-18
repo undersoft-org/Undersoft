@@ -55,7 +55,7 @@
             }
         }
 
-        public long OriginKey
+        public long OriginId
         {
             get
             {
@@ -449,9 +449,9 @@
            return TypeId = seed;
         }
 
-        public long SetOriginKey(int key)
+        public long SetOriginId(int key)
         {
-            return OriginKey = key;
+            return OriginId = key;
         }
 
         public long GetTypeId()

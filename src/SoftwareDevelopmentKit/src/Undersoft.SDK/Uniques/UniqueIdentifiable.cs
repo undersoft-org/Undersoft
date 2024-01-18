@@ -75,10 +75,10 @@ public abstract class UniqueIdentifiable : InnerProxy, IUniqueIdentifiable
     [NotMapped]
     [JsonIgnore]
     [IgnoreDataMember]
-    public override int OriginKey
+    public override int OriginId
     {
-        get { return (int)code.OriginKey; }
-        set { code.SetOriginKey(value); }
+        get { return (int)code.OriginId; }
+        set { code.SetOriginId(value); }
     }
 
     [NotMapped]

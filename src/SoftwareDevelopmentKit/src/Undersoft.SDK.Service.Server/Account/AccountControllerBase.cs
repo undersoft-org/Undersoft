@@ -24,7 +24,7 @@ namespace Undersoft.SDK.Service.Server.Account
     {
         public AccountControllerBase(IServicer servicer) : base(servicer) { }
 
-        [HttpGet($"{StoreRoutes.OpenDataRoute}/[controller]/{nameof(AccountAction.SignIn)}")]
+        [HttpGet($"{StoreRoutes.OpenDataRoute}/Authorization/{nameof(AccountAction.SignIn)}")]
         public virtual async Task<IActionResult> SignIn([FromHeader] string authorization)
         {
             var encoding = Encoding.GetEncoding("iso-8859-1");
@@ -53,7 +53,7 @@ namespace Undersoft.SDK.Service.Server.Account
                 : Ok(result.Response);
         }
 
-        [HttpPost($"{StoreRoutes.OpenDataRoute}/[controller]/{nameof(AccountAction.SignIn)}")]
+        [HttpPost($"{StoreRoutes.OpenDataRoute}/Authorization/{nameof(AccountAction.SignIn)}")]
         public virtual async Task<IActionResult> SignIn(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -75,7 +75,7 @@ namespace Undersoft.SDK.Service.Server.Account
                 : Created(result.Response);
         }
 
-        [HttpPost($"{StoreRoutes.OpenDataRoute}/[controller]/{nameof(AccountAction.SignUp)}")]
+        [HttpPost($"{StoreRoutes.OpenDataRoute}/Authorization/{nameof(AccountAction.SignUp)}")]
         public virtual async Task<IActionResult> SignUp(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -99,7 +99,7 @@ namespace Undersoft.SDK.Service.Server.Account
                 : Created(result.Response);
         }
 
-        [HttpPost($"{StoreRoutes.OpenDataRoute}/[controller]/{nameof(AccountAction.SignOut)}")]
+        [HttpPost($"{StoreRoutes.OpenDataRoute}/Authorization/{nameof(AccountAction.SignOut)}")]
         public virtual async Task<IActionResult> SignOut(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -123,7 +123,7 @@ namespace Undersoft.SDK.Service.Server.Account
                 : Created(result.Response);
         }
 
-        [HttpPost($"{StoreRoutes.OpenDataRoute}/[controller]/{nameof(AccountAction.Renew)}")]
+        [HttpPost($"{StoreRoutes.OpenDataRoute}/Authorization/{nameof(AccountAction.Renew)}")]
         public virtual async Task<IActionResult> Renew(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -147,7 +147,7 @@ namespace Undersoft.SDK.Service.Server.Account
                 : Ok(result.Response);
         }
 
-        [HttpPost($"{StoreRoutes.OpenDataRoute}/[controller]/{nameof(AccountAction.SetPassword)}")]
+        [HttpPost($"{StoreRoutes.OpenDataRoute}/Authorization/{nameof(AccountAction.SetPassword)}")]
         public virtual async Task<IActionResult> SetPassword(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -165,7 +165,7 @@ namespace Undersoft.SDK.Service.Server.Account
                 : Created(result.Response);
         }
 
-        [HttpPost($"{StoreRoutes.OpenDataRoute}/[controller]/{nameof(AccountAction.ConfirmPassword)}")]
+        [HttpPost($"{StoreRoutes.OpenDataRoute}/Authorization/{nameof(AccountAction.ConfirmPassword)}")]
         public virtual async Task<IActionResult> ConfirmPassword(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -184,7 +184,7 @@ namespace Undersoft.SDK.Service.Server.Account
                 : Created(result.Response);
         }
 
-        [HttpPost($"{StoreRoutes.OpenDataRoute}/[controller]/{nameof(AccountAction.ConfirmEmail)}")]
+        [HttpPost($"{StoreRoutes.OpenDataRoute}/Authorization/{nameof(AccountAction.ConfirmEmail)}")]
         public virtual async Task<IActionResult> ConfirmEmail(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
@@ -203,7 +203,7 @@ namespace Undersoft.SDK.Service.Server.Account
                 : Created(result.Response);
         }
 
-        [HttpPost($"{StoreRoutes.OpenDataRoute}/[controller]/{nameof(AccountAction.CompleteRegistration)}")]
+        [HttpPost($"{StoreRoutes.OpenDataRoute}/Authorization/{nameof(AccountAction.CompleteRegistration)}")]
         public virtual async Task<IActionResult> CompleteRegistration(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)

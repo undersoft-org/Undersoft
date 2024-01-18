@@ -216,7 +216,7 @@
             set => VirtualInfo.RubricAttributes = value;
         }
 
-        public int RubricId { get => (int)OriginKey; set => OriginKey = value; }
+        public int RubricId { get => (int)OriginId; set => OriginId = value; }
 
         public MemberInfo RubricInfo { get; set; }
 
@@ -268,8 +268,8 @@
         public long TypeId { get => (long)code.TypeId; set => code.TypeId = (long)value; }
         public DateTime Modified { get; set; }
         public string Modifier { get; set; }
-        public int OriginKey { get => (int)code.OriginKey; set => code.OriginKey = (uint)value; }
-        public string OriginName { get; set; }
+        public int OriginId { get => (int)code.OriginId; set => code.OriginId = (uint)value; }
+        public string TypeName { get; set; }
         public DateTime Time { get => DateTime.FromBinary(code.Time); set => code.Time = value.ToBinary(); }
     }
 }

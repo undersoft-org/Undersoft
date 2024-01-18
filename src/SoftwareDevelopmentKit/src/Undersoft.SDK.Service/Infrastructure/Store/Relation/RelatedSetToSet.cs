@@ -97,9 +97,9 @@ public class RelatedSetToSet<TLeft, TRight>
             .HasMany<TRight>(RIGHT_NAME)
             .WithMany(LEFT_NAME)
             .UsingEntity<RelatedLink<TLeft, TRight>>(
-                j => j.HasOne(a => a.RightEntity).WithMany(),
+                j => j.HasOne(a => a.RightEntity).WithMany().OnDelete(DeleteBehavior.ClientSetNull),
 
-                j => j.HasOne(a => a.LeftEntity).WithMany(),
+                j => j.HasOne(a => a.LeftEntity).WithMany().OnDelete(DeleteBehavior.ClientSetNull),
 
                 j =>
                 {

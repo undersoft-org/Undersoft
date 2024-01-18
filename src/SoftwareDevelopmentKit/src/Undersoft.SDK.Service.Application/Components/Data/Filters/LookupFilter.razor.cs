@@ -40,7 +40,7 @@ public partial class LookupFilter
 
         if (Type == null)
         {
-            throw new InvalidOperationException("the Parameter Type must be set.");
+            throw new InvalidOperationException("the Parameter TypeName must be set.");
         }
 
         if (TableFilter != null)

@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using System.Runtime.Intrinsics.X86;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Application.Services;
-using Undersoft.SSC.Infrastructure.Clients;
+using Undersoft.SSC.Service.Clients;
+using Undersoft.SSC.Service.Application.UI.Pages;
 
 namespace Undersoft.SSC.Service.Application.Client
 {

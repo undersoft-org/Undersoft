@@ -156,8 +156,6 @@ public class ExtractTest
     [Fact]
     public unsafe void Extract_StructModel_Test()
     {
-        Assemblies.ResolveExecuting();
-
         StructModel[] structure = new StructModel[]
         {
             new StructModel(83948930),

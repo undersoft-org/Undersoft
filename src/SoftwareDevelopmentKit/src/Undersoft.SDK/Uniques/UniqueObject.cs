@@ -83,10 +83,10 @@ namespace Undersoft.SDK.Uniques
         public virtual string Label { get; set; }
 
         [NotMapped]
-        public override int OriginKey
+        public override int OriginId
         {
-            get { return (int)code.OriginKey; }
-            set { code.OriginKey = (uint)value; }
+            get { return (int)code.OriginId; }
+            set { code.OriginId = (uint)value; }
         }
 
         [KeyRubric]

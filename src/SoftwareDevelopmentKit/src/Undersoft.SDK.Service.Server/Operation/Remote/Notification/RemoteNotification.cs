@@ -22,8 +22,8 @@ public abstract class RemoteNotification<TCommand> : Event, INotification where 
         AggregateType = aggregateTypeFullName;
         EventType = eventTypeFullName;
         var dto = command.Contract;
-        OriginKey = dto.OriginKey;
-        OriginName = dto.OriginName;
+        OriginId = dto.OriginId;
+        TypeName = dto.TypeName;
         Modifier = dto.Modifier;
         Modified = dto.Modified;
         Creator = dto.Creator;

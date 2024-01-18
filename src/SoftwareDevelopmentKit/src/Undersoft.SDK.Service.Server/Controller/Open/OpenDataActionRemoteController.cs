@@ -5,15 +5,11 @@ namespace Undersoft.SDK.Service.Server.Controller.Open;
 
 using Microsoft.AspNetCore.OData.Formatter;
 using Operation.Command;
-
 using System.Text.Json;
 using Undersoft.SDK.Service;
-using Undersoft.SDK.Service.Server.Controller.Crud;
-using Undersoft.SDK.Service.Server.Documentation;
-using Undersoft.SDK.Service.Server.Operation.Remote.Command;
-using Undersoft.SDK.Service.Data;
-using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Client.Remote;
+using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Server.Operation.Remote.Command;
 
 [RemoteOpenDataActionService]
 public abstract class OpenDataActionRemoteController<TStore, TKind, TDto, TModel>

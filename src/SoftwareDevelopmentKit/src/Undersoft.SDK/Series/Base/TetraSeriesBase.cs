@@ -1313,12 +1313,12 @@ namespace Undersoft.SDK.Series.Base
         public string Creator { get; set; }
         public DateTime Modified { get; set; }
         public string Modifier { get; set; }
-        public int OriginKey
+        public int OriginId
         {
-            get => (int)code.OriginKey;
-            set => code.OriginKey = (uint)value;
+            get => (int)code.OriginId;
+            set => code.OriginId = (uint)value;
         }
-        public string OriginName { get; set; }
+        public string TypeName { get; set; }
         public DateTime Time
         {
             get => DateTime.FromBinary(code.Time);

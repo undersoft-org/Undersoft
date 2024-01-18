@@ -21,7 +21,7 @@ using Undersoft.SDK.Service.Infrastructure.Store.Remote;
 public class RemoteRepository<TStore, TEntity>
     : RemoteRepository<TEntity>,
         IRemoteRepository<TStore, TEntity>
-    where TEntity : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
     public RemoteRepository(IRepositoryContextPool<OpenDataService<TStore>> pool)

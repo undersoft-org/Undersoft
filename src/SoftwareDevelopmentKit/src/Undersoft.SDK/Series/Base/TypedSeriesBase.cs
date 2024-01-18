@@ -1610,8 +1610,8 @@
         public string Creator { get; set; }
         public DateTime Modified { get; set; }
         public string Modifier { get; set; }
-        public int OriginKey { get => (int)serialcode.OriginKey; set => serialcode.OriginKey = (uint)value; }
-        public string OriginName { get; set; }
+        public int OriginId { get => (int)serialcode.OriginId; set => serialcode.OriginId = (uint)value; }
+        public string TypeName { get; set; }
         public DateTime Time { get => DateTime.FromBinary(serialcode.Time); set => serialcode.Time = value.ToBinary(); }
 
         public virtual long AutoId()

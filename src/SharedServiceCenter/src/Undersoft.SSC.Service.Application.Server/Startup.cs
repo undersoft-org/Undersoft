@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.OData;
 using Undersoft.SDK.Service.Server;
 using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SSC.Infrastructure.Clients;
+using Undersoft.SSC.Service.Clients;
 using Undersoft.SDK.Service.Server.Hosting;
 using Undersoft.SSC.Service.Infrastructure.Stores;
 

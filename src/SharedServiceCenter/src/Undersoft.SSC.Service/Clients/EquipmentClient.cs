@@ -3,7 +3,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Infrastructure.Store.Remote;
 using Undersoft.SSC.Domain.Entities;
 
-namespace Undersoft.SSC.Infrastructure.Clients;
+namespace Undersoft.SSC.Service.Clients;
 
 public class EquipmentClient : ServiceClient
 {

@@ -3,8 +3,9 @@
     using System.Linq;
     using System.Reflection;
     using System.Runtime.InteropServices;
+    using Undersoft.SDK.Instant.Plugins;
 
-    public static class Assemblies
+    public static partial class Assemblies
     {
         public static string AssemblyCode
         {
@@ -25,6 +26,36 @@
 
                 return ((GuidAttribute)attributes[0]).Value.ToUpper();
             }
+        }
+
+        public static Type ForceFindType(string name, string nameSpace = null)
+        {   
+            var asms = AppDomain.CurrentDomain.GetAssemblies();
+            var namespaceFirstBlock = AppDomain.CurrentDomain.FriendlyName.Split('.').First();
+            var plugin = new Plugin();
+            foreach (var asm in asms)
+            {
+                if (!asm.IsDynamic)
+                {
+                    foreach (var refassembly in asm.GetReferencedAssemblies())
+                    {
+                        var types = plugin.LoadFromAssemblyName(refassembly)?.GetExportedTypes();
+                        if (types != null)
+                            foreach (var extype in types)
+                            {
+                                if (
+                                    namespaceFirstBlock.Equals(extype.Namespace.Split('.').First())
+                                    && (nameSpace == null || extype.Namespace == nameSpace)
+                                )
+                                {
+                                    if (extype.Name.Equals(name))
+                                        return extype;
+                                }
+                            }
+                    }
+                }
+            }
+            return null;
         }
 
         public static Type FindType(string name, string nameSpace = null)
@@ -218,25 +249,6 @@
                             typeList.Add(type);
             }
             return typeList;
-        }
-
-        public static void ResolveExecuting()
-        {
-            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
-            {
-                String resourceName =
-                    "AssemblyLoadingAndReflection." + new AssemblyName(args.Name).Name + ".dll";
-                using (
-                    var stream = Assembly
-                        .GetExecutingAssembly()
-                        .GetManifestResourceStream(resourceName)
-                )
-                {
-                    Byte[] assemblyData = new Byte[stream.Length];
-                    stream.Read(assemblyData, 0, assemblyData.Length);
-                    return Assembly.Load(assemblyData);
-                }
-            };
-        }
+        }      
     }
 }

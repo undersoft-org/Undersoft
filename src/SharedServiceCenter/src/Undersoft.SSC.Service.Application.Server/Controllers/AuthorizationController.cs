@@ -11,11 +11,11 @@ using Undersoft.SDK.Service.Server.Controller.Open;
 namespace Undersoft.SSC.Service.Application.Server.Controllers
 {
     [AllowAnonymous]
-    [Route($"{StoreRoutes.CrudDataRoute}/[controller]")]
-    public class AccountController
+    [Route($"{StoreRoutes.CrudDataRoute}/Accounts/Authorization")]
+    public class AccountAuthorizationController
         : CrudDataActionRemoteController<IDataStore, AccountAction, Authorization, Authorization>
     {
-        public AccountController(IServicer servicer) : base(servicer) { }
+        public AccountAuthorizationController(IServicer servicer) : base(servicer) { }
     }
 }
 namespace Undersoft.SSC.Service.Application.Server.Controllers

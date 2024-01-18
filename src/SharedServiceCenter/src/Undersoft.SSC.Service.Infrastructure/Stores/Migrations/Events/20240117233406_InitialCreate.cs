@@ -20,14 +20,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false),
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    OriginKey = table.Column<int>(type: "integer", nullable: false),
+                    OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    OriginName = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
                     Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
                     Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    Ordinal = table.Column<int>(type: "integer", nullable: false)
+                    Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
                     EventVersion = table.Column<long>(type: "bigint", nullable: false),

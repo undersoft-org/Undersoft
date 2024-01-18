@@ -156,12 +156,12 @@ namespace System
             return null;
         }
 
-        public static IList<Type> GetGenericImplementationTypes(this Type seqType) 
+        public static IList<Type> GetImplementedGenericTypes(this Type seqType) 
         {
             return Assemblies.FindTypes(seqType);
         }
 
-        public static IList<Type> GetImplementatedTypes(this Type seqType)
+        public static IList<Type> GetAssignableTypes(this Type seqType)
         {
             return Assemblies.FindTypes(new Type[] { seqType });
         }
