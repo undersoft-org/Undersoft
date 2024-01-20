@@ -240,7 +240,7 @@ public partial class ServiceSetup : IServiceSetup
         return this;
     }
 
-    public IServiceSetup AddImplementations(Assembly[] assemblies = null)
+    public IServiceSetup AddImplementations()
     {
         registry.AddScoped<IServicer, Servicer>();
         registry.AddScoped<IAuthorization, Authorization>();
@@ -275,9 +275,9 @@ public partial class ServiceSetup : IServiceSetup
         return this;
     }
 
-    public IServiceSetup AddRepositoryClients(Assembly[] assemblies = null)
+    public IServiceSetup AddRepositoryClients()
     {        
-        assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
         Type[] serviceTypes = assemblies.SelectMany(a => a.DefinedTypes).Select(t => t.UnderlyingSystemType).ToArray();
         return AddRepositoryClients(serviceTypes);
     }
@@ -357,9 +357,9 @@ public partial class ServiceSetup : IServiceSetup
         return this;
     }
 
-    public IServiceSetup AddRepositorySources(Assembly[] assemblies = null)
+    public IServiceSetup AddRepositorySources()
     {
-        assemblies ??= Assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
+       var assemblies  = Assemblies = AppDomain.CurrentDomain.GetAssemblies();
         Type[] storeTypes = assemblies.SelectMany(a => a.DefinedTypes).Select(t => t.UnderlyingSystemType).ToArray();
         return AddRepositorySources(storeTypes);
     }
@@ -449,9 +449,9 @@ public partial class ServiceSetup : IServiceSetup
         return this;
     }
 
-    public virtual IServiceSetup ConfigureServices(Assembly[] assemblies = null, Type[] sourceTypes = null, Type[] clientTypes = null)
+    public virtual IServiceSetup ConfigureServices(Type[] sourceTypes = null, Type[] clientTypes = null)
     {
-        Assemblies ??= assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
+        Assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
         AddLogging();
 
@@ -464,14 +464,14 @@ public partial class ServiceSetup : IServiceSetup
         if(sourceTypes != null)
             AddRepositorySources(sourceTypes);
         else
-            AddRepositorySources(Assemblies);
+            AddRepositorySources();
 
         if(clientTypes != null)
             AddRepositoryClients(clientTypes);
         else
-            AddRepositoryClients(Assemblies);   
+            AddRepositoryClients();   
 
-        AddImplementations(Assemblies);
+        AddImplementations();
 
         AddCaching();
 

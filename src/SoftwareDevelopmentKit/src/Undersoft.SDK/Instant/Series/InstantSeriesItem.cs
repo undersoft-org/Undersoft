@@ -13,44 +13,35 @@
     [StructLayout(LayoutKind.Sequential)]
     public class InstantSeriesItem : SeriesItemBase<IInstant>, IInstant, IEquatable<IInstant>, IComparable<IInstant>
     {
-        private ISeries<object> presets;
-
-        public InstantSeriesItem(IInstantSeries series)
+        public InstantSeriesItem()
         {
-            InstantSeriesCreator = series;
         }
 
-        public InstantSeriesItem(object key, IInstant value, IInstantSeries series) : base(key, value)
+        public InstantSeriesItem(object key, IInstant value) : base(key, value)
         {
-            InstantSeriesCreator = series;
         }
 
-        public InstantSeriesItem(ulong key, IInstant value, IInstantSeries series) : base(key, value)
-        {
-            InstantSeriesCreator = series;
+        public InstantSeriesItem(ulong key, IInstant value) : base(key, value)
+        { 
         }
 
-        public InstantSeriesItem(IInstant value, IInstantSeries series) : base(value)
+        public InstantSeriesItem(IInstant value) : base(value)
         {
-            InstantSeriesCreator = series;
-            CompactKey();
         }
 
-        public InstantSeriesItem(ISeriesItem<IInstant> value, IInstantSeries series) : base(value)
+        public InstantSeriesItem(ISeriesItem<IInstant> value) : base(value)
         {
-            InstantSeriesCreator = series;
-            CompactKey();
         }
 
         public object this[int fieldId]
         {
-            get => GetPreset(fieldId);
-            set => SetPreset(fieldId, value);
+            get => value[fieldId];
+            set => this.value[fieldId] = value;
         }
         public object this[string propertyName]
         {
-            get => GetPreset(propertyName);
-            set => SetPreset(propertyName, value);
+            get => value[propertyName];
+            set => this.value[propertyName] = value;
         }
 
         public override void Set(object key, IInstant value)
@@ -62,6 +53,7 @@
         public override void Set(IInstant value)
         {
             this.value = value;
+
         }
 
         public override void Set(ISeriesItem<IInstant> item)
@@ -86,7 +78,7 @@
 
         public override int GetHashCode()
         {
-            return Value.GetIdBytes().BitAggregate64to32().ToInt32();
+            return Value.Id.GetBytes().BitAggregate64to32().ToInt32();
         }
 
         public override int CompareTo(object other)
@@ -109,59 +101,6 @@
             return (int)(Id - other.Id);
         }
 
-        public override byte[] GetBytes()
-        {
-            if (!InstantSeriesCreator.Prime && presets != null)
-            {
-                IInstant f = InstantSeriesCreator.NewInstant();
-                f.PutFrom(this);
-                f.Code = value.Code;
-                byte[] ba = f.GetBytes();
-                f = null;
-                return ba;
-            }
-            else
-                return value.GetBytes();
-        }
-
-        public unsafe override byte[] GetIdBytes()
-        {
-            return value.GetIdBytes();
-        }
-
-        public override int[] UniqueOrdinals()
-        {
-            return InstantSeriesCreator.KeyRubrics.Ordinals;
-        }
-
-        public override object[] UniqueValues()
-        {
-            int[] ordinals = UniqueOrdinals();
-            if (ordinals != null)
-                return ordinals.Select(x => value[x]).ToArray();
-            return null;
-        }
-
-        public override long CompactKey()
-        {
-            long key = value.Id;
-            if (key == 0)
-            {
-                IRubrics r = InstantSeriesCreator.KeyRubrics;
-                var objs = r.Ordinals.Select(x => value[x]).ToArray();
-                if (objs.Any())
-                {
-                    key = objs.UniqueKey64(r.BinarySizes, r.BinarySize);
-                }
-                else
-                {
-                    key = Unique.NewId;
-                }
-                value.Id = key;
-            }
-            return key;
-        }
-
         public override long Id
         {
             get => value.Id;
@@ -174,73 +113,16 @@
             set => this.value.Code = value;
         }
 
-        public IInstantSeries InstantSeriesCreator { get; set; }
+        public IInstantSeries InstantSeries { get; set; }
 
-        public object GetPreset(int fieldId)
+        public override byte[] GetBytes()
         {
-            if (presets != null && !InstantSeriesCreator.Prime)
-            {
-                object val = presets.Get(fieldId);
-                if (val != null)
-                    return val;
-            }
-            return value[fieldId];
+            return value.GetBytes();
         }
 
-        public object GetPreset(string propertyName)
+        public override byte[] GetIdBytes()
         {
-            if (presets != null && !InstantSeriesCreator.Prime)
-            {
-                MemberRubric rubric = InstantSeriesCreator.Rubrics[propertyName.UniqueKey()];
-                if (rubric != null)
-                {
-                    object val = presets.Get(rubric.FieldId);
-                    if (val != null)
-                        return val;
-                }
-                else
-                    throw new IndexOutOfRangeException("Field doesn't exist");
-            }
-            return value[propertyName];
+            return value.Id.GetBytes();
         }
-
-        public ISeriesItem<object>[] GetPresets()
-        {
-            return presets.AsItems().ToArray();
-        }
-
-        public void SetPreset(int fieldId, object value)
-        {
-            if (GetPreset(fieldId).Equals(value))
-                return;
-            if (!InstantSeriesCreator.Prime)
-            {
-                if (presets == null)
-                    presets = new Catalog<object>(9);
-                presets.Put(fieldId, value);
-            }
-            else
-                this.value[fieldId] = value;
-        }
-
-        public void SetPreset(string propertyName, object value)
-        {
-            MemberRubric rubric = InstantSeriesCreator.Rubrics[propertyName.UniqueKey()];
-            if (rubric != null)
-                SetPreset(rubric.FieldId, value);
-            else
-                throw new IndexOutOfRangeException("Field doesn't exist");
-        }
-
-        public void WritePresets()
-        {
-            foreach (var c in presets.AsItems())
-                value[(int)c.Id] = c.Value;
-            presets = null;
-        }
-
-        public bool HavePresets => presets != null ? true : false;
-
-        public object[] ValueArray { get => presets.ToArray(); set => presets.Put(value) ; }
     }
 }

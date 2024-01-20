@@ -108,7 +108,7 @@ public abstract class Repository : IRepository
         return serialcode.GetIdBytes();
     }
 
-    public bool Equals(IUnique other)
+    public bool AreEqually(IUnique other)
     {
         return serialcode.Equals(other);
     }

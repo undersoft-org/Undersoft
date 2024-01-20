@@ -138,16 +138,6 @@
             return ((IOrigin)origin).SetId(id);
         }
 
-        public byte[] GetBytes()
-        {
-            return ((IUnique)code).GetBytes();
-        }
-
-        public byte[] GetIdBytes()
-        {
-            return ((IUnique)code).GetIdBytes();
-        }
-
         public bool Equals(IUnique other)
         {
             return ((IEquatable<IUnique>)code).Equals(other);

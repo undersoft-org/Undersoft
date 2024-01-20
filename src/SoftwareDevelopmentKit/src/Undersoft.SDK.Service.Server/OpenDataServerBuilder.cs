@@ -16,7 +16,7 @@ using Undersoft.SDK.Service.Client.Remote;
 namespace Undersoft.SDK.Service.Server;
 
 public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuilder<TStore>
-    where TStore : IDataServiceStore
+    where TStore : IDataStore
 {
     IServiceRegistry _registry;
     protected ODataConventionModelBuilder odataBuilder;
@@ -103,7 +103,9 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
                 if (
                     genTypes[3].IsAssignableTo(typeof(IOrigin))
                     && (
-                        genTypes[1].IsAssignableTo(StoreType)
+                        genTypes[1].IsAssignableFrom(StoreType)
+                        || genTypes[1].IsAssignableTo(StoreType) ||
+                         genTypes[0].IsAssignableFrom(StoreType)
                         || genTypes[0].IsAssignableTo(StoreType)
                     )
                 )
@@ -196,19 +198,26 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
         if (actionSetAdded)
             return;
 
-        var name = typeof(TAuth).Name;  
+        var name = typeof(TAuth).Name;
+
+        //odataBuilder
+        //    .EntityType<TAuth>()
+        //   .Action("Execute")
+        //     .ReturnsFromEntitySet<TAuth>(name)
+        //   .Parameter<TAuth>(name);
+
 
         odataBuilder
             .EntityType<TAuth>()
-            .Function("SignIn")
-            .Returns<string>()
+           .Action("Action")
+             .ReturnsFromEntitySet<TAuth>(name)
+           .Parameter<TAuth>(name);
+
+        odataBuilder
+             .EntityType<TAuth>()
+            .Function("Function")
+              .ReturnsFromEntitySet<TAuth>(name)
             .Parameter<string>(name);
-
-        odataBuilder
-            .EntityType<TAuth>()
-            .Action("SignIn")
-            .ReturnsFromEntitySet<TAuth>(name)
-            .Parameter<TAuth>(name);
 
         odataBuilder
             .EntityType<TAuth>()
@@ -231,7 +240,7 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
         odataBuilder
             .EntityType<TAuth>()
             .Action("ConfirmEmail")
-            .ReturnsFromEntitySet<TAuth>(name)
+             .ReturnsFromEntitySet<TAuth>(name)
             .Parameter<TAuth>(name);
 
         odataBuilder

@@ -53,7 +53,7 @@ public static class ServiceConfigurationExtensions
 
     private static ServiceRegistrationActionList GetOrCreateRegistrationActionList(IServiceRegistry services)
     {
-        var actionList = services.GetSingleton<IServiceRegistryObject<ServiceRegistrationActionList>>()?.Value;
+        var actionList = services.GetSingleton<IServiceObject<ServiceRegistrationActionList>>()?.Value;
         if (actionList == null)
         {
             actionList = new ServiceRegistrationActionList();

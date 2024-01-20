@@ -17,8 +17,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 
             modelBuilder
                 .ApplyIdentifiers<Application>()
-                .RelateSetToSet<Application, Service>(r => r.Applications, r => r.Services)
-                .RelateSetToSet<Application, Member>(r => r.Applications, r => r.Members)
+                .RelateSetToSet<Application, Service>(r => r.Applications, r => r.Services, ExpandSite.OnRight)
+                .RelateSetToSet<Application, Member>(r => r.Applications, r => r.Members, ExpandSite.OnRight)
                 .RelateSetToSet<Application, Setting>(
                     r => r.Applications,
                     r => r.Settings,

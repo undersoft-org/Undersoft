@@ -3,25 +3,15 @@
     using System.Collections.Generic;
     using Undersoft.SDK.Uniques;
 
-    public abstract class CatalogSeries<V> : SeriesBase<V>
+    public abstract class ChainBase<V> : SeriesBase<V>
     {
-        protected CatalogSeries() : base() { }
+        protected ChainBase() : base() { }
 
-        protected CatalogSeries(int capacity = 17, HashBits bits = HashBits.bit64) : base(capacity, bits)
+        protected ChainBase(int capacity = 17, HashBits bits = HashBits.bit64) : base(capacity, bits)
         { }
 
-        protected CatalogSeries(
-            IEnumerable<IUnique<V>> collection,
-            int capacity = 17,
-            HashBits bits = HashBits.bit64
-        ) : base(capacity, bits)
-        {
-            if (collection != null)
-                foreach (IUnique<V> c in collection)
-                    Add(c);
-        }
 
-        protected CatalogSeries(
+        protected ChainBase(
             IEnumerable<V> collection,
             int capacity = 17,
             HashBits bits = HashBits.bit64
@@ -32,18 +22,7 @@
                     Add(c);
         }
 
-        protected CatalogSeries(
-            IList<IUnique<V>> collection,
-            int capacity = 17,
-            HashBits bits = HashBits.bit64
-        ) : base((capacity > collection.Count) ? capacity : collection.Count, bits)
-        {
-            if (collection != null)
-                foreach (IUnique<V> c in collection)
-                    Add(c);
-        }
-
-        protected CatalogSeries(IList<V> collection, int capacity = 17, HashBits bits = HashBits.bit64)
+        protected ChainBase(IList<V> collection, int capacity = 17, HashBits bits = HashBits.bit64)
             : base((capacity > collection.Count) ? capacity : collection.Count, bits)
         {
             if (collection != null)

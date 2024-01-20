@@ -3,10 +3,10 @@
     using Undersoft.SDK;
     using Uniques;
 
-    public interface ITypedSeries<V> : ISeries<V> where V : IOrigin
+    public interface ITypedSeries<V> : ISeries<V> where V : IIdentifiable
     {
         V this[object key, long seed] { get; set; }
-        V this[IUnique key, long seed] { get; set; }
+        V this[IIdentifiable key, long seed] { get; set; }
 
         bool ContainsKey(object key, long seed);
 

@@ -85,8 +85,8 @@
         public override void Set(V value)
         {
             this.value = value;
-            if (this.value is IUnique<V>)
-                _key = ((IUnique<V>)value).CompactKey();
+            if (this.value is IUnique)
+                _key = ((IUnique<V>)value).Id;
         }
     }
 }

@@ -20,7 +20,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
                 .ApplyIdentifiers<Activity>()
                 .RelateSetToSet<Activity, Resource>(
                     r => r.Activities,
-                    r => r.Resources
+                    r => r.Resources,
+                    ExpandSite.OnRight
                 )
                 .RelateOneToSet<Default, Activity>(
                     r => r.Default,

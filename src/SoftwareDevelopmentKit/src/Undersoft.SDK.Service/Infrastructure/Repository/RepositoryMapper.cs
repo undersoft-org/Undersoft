@@ -38,7 +38,7 @@ public partial class Repository<TEntity>
     )
     {
         return Task.Run(
-            () => (ISeries<TEntity>)Mapper.Map(model, entity).ToRegistry(),
+            () => (ISeries<TEntity>)Mapper.Map(model, entity).ToCatalog(),
             Cancellation
         );
     }
@@ -48,7 +48,7 @@ public partial class Repository<TEntity>
         IEnumerable<TDto> model
     )
     {
-        return Task.Run(() => (ISeries<TDto>)(Mapper.Map(entity, model).ToRegistry()), Cancellation);
+        return Task.Run(() => (ISeries<TDto>)(Mapper.Map(entity, model).ToCatalog()), Cancellation);
     }
 
     public virtual Task<TDto> MapTo<TDto>(TEntity entity)
@@ -88,7 +88,7 @@ public partial class Repository<TEntity>
     }
 
     public virtual Task<IList<TEntity>> MapFrom<TDto>(IEnumerable<TDto> model)
-    {       
+    {
         return Task.Run(() => Mapper.Map<TDto[], IList<TEntity>>(model.Commit()), Cancellation);
     }
 
@@ -101,7 +101,7 @@ public partial class Repository<TEntity>
     public virtual Task<ISeries<TDto>> HashMapTo<TDto>(IEnumerable<object> entity)
     {
         return Task.Run(
-            () => (ISeries<TDto>)(Mapper.Map<IEnumerable<TDto>>(entity.ToArray())).ToRegistry(),
+            () => (ISeries<TDto>)(Mapper.Map<IEnumerable<TDto>>(entity.ToArray())).ToCatalog(),
             Cancellation
         );
     }
@@ -109,7 +109,7 @@ public partial class Repository<TEntity>
     public virtual Task<ISeries<TDto>> HashMapTo<TDto>(IEnumerable<TEntity> entity)
     {
         return Task.Run(
-            () => (ISeries<TDto>)(Mapper.Map<IEnumerable<TDto>>(entity.ToArray())).ToRegistry(),
+            () => (ISeries<TDto>)(Mapper.Map<IEnumerable<TDto>>(entity.ToArray())).ToCatalog(),
             Cancellation
         );
     }

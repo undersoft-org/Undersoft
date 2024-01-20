@@ -4,7 +4,7 @@ namespace Undersoft.SDK.Series
 {
     using Base;
 
-    public class Registry<V> : BaseRegistry<V>
+    public class Registry<V> : RegistryBase<V>
     {
         public Registry(IEnumerable<V> collection, int capacity = 17, bool repeatable = false)
             : base(collection, capacity, repeatable) { }

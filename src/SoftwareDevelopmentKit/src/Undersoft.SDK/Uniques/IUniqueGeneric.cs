@@ -2,12 +2,12 @@
 {
     public interface IUnique<V> : IUnique
     {
-        V UniqueObject { get; set; }
+        V UniqueValue { get; set; }
 
-        int[] UniqueOrdinals();
+        //int[] UniqueOrdinals();
 
-        long CompactKey();
+        //long CompactKey();
 
-        object[] UniqueValues();
+        //object[] UniqueValues();
     }
 }

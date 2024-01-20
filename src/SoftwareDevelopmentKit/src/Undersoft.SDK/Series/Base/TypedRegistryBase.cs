@@ -5,7 +5,7 @@
     using Undersoft.SDK;
     using Undersoft.SDK.Uniques;
 
-    public abstract class BaseTypedRegistry<V> : RegistryTypedSeries<V> where V : IOrigin
+    public abstract class TypedRegistryBase<V> : TypedListingBase<V> where V : IIdentifiable
     {
         const int WAIT_READ_TIMEOUT = 5000;
         const int WAIT_REHASH_TIMEOUT = 5000;
@@ -16,27 +16,27 @@
         internal readonly SemaphoreSlim writePass = new SemaphoreSlim(1);
         internal int readers;
 
-        public BaseTypedRegistry() : base(17, HashBits.bit64) { }
+        public TypedRegistryBase() : base(17, HashBits.bit64) { }
 
-        public BaseTypedRegistry(int capacity = 17, HashBits bits = HashBits.bit64)
+        public TypedRegistryBase(int capacity = 17, HashBits bits = HashBits.bit64)
             : base(capacity, bits) { }
 
-        public BaseTypedRegistry(bool repeatable, int capacity = 17, HashBits bits = HashBits.bit64)
+        public TypedRegistryBase(bool repeatable, int capacity = 17, HashBits bits = HashBits.bit64)
       : base(repeatable, capacity, bits) { }
 
-        public BaseTypedRegistry(
-            IEnumerable<IOrigin<V>> collection,
+        public TypedRegistryBase(
+            IEnumerable<IIdentifiable> collection,
             int capacity = 17,
             bool repeatable = false,
             HashBits bits = HashBits.bit64
         ) : this((int)(collection.Count() * 1.5), bits)
         {
             if (collection != null)
-                foreach (IUnique<V> c in collection)
-                    Add(c);
+                foreach (var c in collection)
+                    Add(c.Id, c);
         }
 
-        public BaseTypedRegistry(
+        public TypedRegistryBase(
             IEnumerable<V> collection,
             int capacity = 17,
             bool repeatable = false,
@@ -48,7 +48,7 @@
                     InnerAdd(c);
         }
 
-        public BaseTypedRegistry(
+        public TypedRegistryBase(
             IList<IUnique<V>> collection,
             int capacity = 17,
             bool repeatable = false,
@@ -60,7 +60,7 @@
                     Add(c);
         }
 
-        public BaseTypedRegistry(
+        public TypedRegistryBase(
             IList<V> collection,
             int capacity = 17,
             bool repeatable = false,

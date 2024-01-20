@@ -4,9 +4,9 @@
     using Undersoft.SDK;
     using Undersoft.SDK.Uniques;
 
-    public abstract class CatalogTypedSeries<V> : TypedSeriesBase<V> where V : IOrigin  
+    public abstract class TypedChainBase<V> : TypedSeriesBase<V> where V : IIdentifiable  
     {
-        public CatalogTypedSeries(
+        public TypedChainBase(
             IEnumerable<IUnique<V>> collection,
             int capacity = 17,
             HashBits bits = HashBits.bit64
@@ -16,7 +16,7 @@
                 this.Add(c);
         }
 
-        public CatalogTypedSeries(
+        public TypedChainBase(
             IEnumerable<V> collection,
             int capacity = 17,
             HashBits bits = HashBits.bit64
@@ -26,7 +26,7 @@
                 this.Add(c);
         }
 
-        public CatalogTypedSeries(
+        public TypedChainBase(
             IList<IUnique<V>> collection,
             int capacity = 17,
             HashBits bits = HashBits.bit64
@@ -36,14 +36,14 @@
                 this.Add(c);
         }
 
-        public CatalogTypedSeries(IList<V> collection, int capacity = 17, HashBits bits = HashBits.bit64)
+        public TypedChainBase(IList<V> collection, int capacity = 17, HashBits bits = HashBits.bit64)
             : base(capacity > collection.Count ? capacity : collection.Count, bits)
         {
             foreach (var c in collection)
                 this.Add(c);
         }
 
-        public CatalogTypedSeries(int capacity = 17, HashBits bits = HashBits.bit64)
+        public TypedChainBase(int capacity = 17, HashBits bits = HashBits.bit64)
             : base(capacity, bits) { }
 
         public override ISeriesItem<V> GetItem(int index)

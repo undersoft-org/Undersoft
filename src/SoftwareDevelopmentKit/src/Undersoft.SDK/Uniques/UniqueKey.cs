@@ -3,6 +3,7 @@
 using Hashing;
 
 using System.Collections;
+using Undersoft.SDK.Extracting;
 
 public enum HashBits
 {
@@ -17,9 +18,9 @@ public interface IUniqueKey
 
     public Byte[] Bytes(IList obj, long seed = 0);
 
-    public Byte[] Bytes(IUnique obj);
+    public Byte[] Bytes(IIdentifiable obj);
 
-    public Byte[] Bytes(Object obj, long seed = 0);
+    public Byte[] Bytes(object obj, long seed = 0);
 
     public Byte[] Bytes(string obj, long seed = 0);
 
@@ -27,13 +28,11 @@ public interface IUniqueKey
 
     public Int64 Key(IList obj, long seed = 0);
 
-    public Int64 Key(IUnique obj);
+    public Int64 Key(IIdentifiable obj);
 
-    public Int64 Key(IUnique obj, long seed);
+    public Int64 Key(IIdentifiable obj, long seed);    
 
-    public Int64 Key<V>(IUnique<V> obj);
-
-    public Int64 Key(Object obj, long seed = 0);
+    public Int64 Key(object obj, long seed = 0);
 
     public Int64 Key(string obj, long seed = 0);
 }
@@ -57,9 +56,9 @@ public class UniqueKey32 : UniqueKey
         return ComputeBytes((byte*)obj.ToPointer(), length, seed);
     }
 
-    public override Byte[] Bytes(IUnique obj)
+    public override Byte[] Bytes(IIdentifiable obj)
     {
-        return obj.GetBytes();
+        return obj.Id.GetBytes();
     }
 
     public override Byte[] Bytes(Object obj, long seed = 0)
@@ -112,24 +111,14 @@ public class UniqueKey32 : UniqueKey
         return ComputeKey((byte*)obj.ToPointer(), length, seed);
     }
 
-    public override Int64 Key(IUnique obj)
+    public override Int64 Key(IIdentifiable obj)
     {
-        return obj.UniqueKey();
+        return obj.Id;
     }
 
-    public override Int64 Key(IUnique obj, long seed)
+    public override Int64 Key(IIdentifiable obj, long seed)
     {
-        return Key(obj.GetBytes(), seed);
-    }
-
-    public override Int64 Key<V>(IUnique<V> obj)
-    {
-        return obj.CompactKey();
-    }
-
-    public override Int64 Key<V>(IUnique<V> obj, long seed)
-    {
-        return Key(obj.UniqueValues(), seed);
+        return Key(obj.Id.GetBytes(), seed);
     }
 
     public override Int64 Key(Object obj, long seed = 0)
@@ -177,9 +166,9 @@ public class UniqueKey64 : UniqueKey
         return ComputeBytes((byte*)obj.ToPointer(), length, seed);
     }
 
-    public override Byte[] Bytes(IUnique obj)
+    public override Byte[] Bytes(IIdentifiable obj)
     {
-        return obj.GetBytes();
+        return obj.Id.GetBytes();
     }
 
     public override Byte[] Bytes(Object obj, long seed = 0)
@@ -232,24 +221,14 @@ public class UniqueKey64 : UniqueKey
         return ComputeKey((byte*)obj.ToPointer(), length, seed);
     }
 
-    public override Int64 Key(IUnique obj)
+    public override Int64 Key(IIdentifiable obj)
     {
         return obj.Id;
     }
 
-    public override Int64 Key(IUnique obj, long seed)
+    public override Int64 Key(IIdentifiable obj, long seed)
     {
-        return ComputeKey(obj.GetIdBytes(), seed);
-    }
-
-    public override Int64 Key<V>(IUnique<V> obj)
-    {
-        return obj.CompactKey();
-    }
-
-    public override Int64 Key<V>(IUnique<V> obj, long seed)
-    {
-        return Key(obj.UniqueValues(), seed);
+        return ComputeKey(obj.Id.GetBytes(), seed);
     }
 
     public override Int64 Key(Object obj, long seed = 0)
@@ -310,9 +289,9 @@ public abstract class UniqueKey : IUniqueKey
         return unique.Bytes(obj, length, seed);
     }
 
-    public virtual Byte[] Bytes(IUnique obj)
+    public virtual Byte[] Bytes(IIdentifiable obj)
     {
-        return obj.GetBytes();
+        return obj.Id.GetBytes();
     }
 
     public virtual Byte[] Bytes(Object obj, long seed = 0)
@@ -365,26 +344,16 @@ public abstract class UniqueKey : IUniqueKey
         return unique.Key(obj, length, seed);
     }
 
-    public virtual Int64 Key(IUnique obj)
+    public virtual Int64 Key(IIdentifiable obj)
     {
         return obj.Id;
     }
 
-    public virtual Int64 Key(IUnique obj, long seed)
+    public virtual Int64 Key(IIdentifiable obj, long seed)
     {
         if (obj.TypeId != seed)
             obj.TypeId = seed;
-        return unique.ComputeKey(obj.GetIdBytes(), seed);
-    }
-
-    public virtual Int64 Key<V>(IUnique<V> obj)
-    {
-        return obj.CompactKey();
-    }
-
-    public virtual Int64 Key<V>(IUnique<V> obj, long seed)
-    {
-        return unique.Key(obj.UniqueValues(), seed);
+        return unique.ComputeKey(obj.Id.GetBytes(), seed);
     }
 
     public virtual Int64 Key(Object obj, long seed = 0)

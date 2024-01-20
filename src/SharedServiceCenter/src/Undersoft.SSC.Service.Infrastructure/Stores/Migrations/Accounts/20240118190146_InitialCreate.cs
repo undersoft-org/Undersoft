@@ -11,11 +11,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "Account");
+                name: "Accounts");
 
             migrationBuilder.CreateTable(
                 name: "Roles",
-                schema: "Account",
+                schema: "Accounts",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -32,7 +32,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
             migrationBuilder.CreateTable(
                 name: "RoleClaims",
-                schema: "Account",
+                schema: "Accounts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -49,14 +49,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     table.ForeignKey(
                         name: "FK_RoleClaims_Roles_AccountRoleId",
                         column: x => x.AccountRoleId,
-                        principalSchema: "Account",
+                        principalSchema: "Accounts",
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_RoleClaims_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "Account",
+                        principalSchema: "Accounts",
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -64,7 +64,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
             migrationBuilder.CreateTable(
                 name: "AccountClaims",
-                schema: "Account",
+                schema: "Accounts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -82,7 +82,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
             migrationBuilder.CreateTable(
                 name: "AccountLogins",
-                schema: "Account",
+                schema: "Accounts",
                 columns: table => new
                 {
                     LoginProvider = table.Column<string>(type: "text", nullable: false),
@@ -99,7 +99,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
             migrationBuilder.CreateTable(
                 name: "AccountRoles",
-                schema: "Account",
+                schema: "Accounts",
                 columns: table => new
                 {
                     AccountId = table.Column<long>(type: "bigint", nullable: false),
@@ -115,14 +115,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     table.ForeignKey(
                         name: "FK_AccountRoles_Roles_AccountRoleId",
                         column: x => x.AccountRoleId,
-                        principalSchema: "Account",
+                        principalSchema: "Accounts",
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AccountRoles_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "Account",
+                        principalSchema: "Accounts",
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -130,7 +130,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
             migrationBuilder.CreateTable(
                 name: "Accounts",
-                schema: "Account",
+                schema: "Accounts",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false),
@@ -156,7 +156,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
             migrationBuilder.CreateTable(
                 name: "AccountUsers",
-                schema: "Account",
+                schema: "Accounts",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -184,14 +184,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     table.ForeignKey(
                         name: "FK_AccountUsers_Accounts_AccountId",
                         column: x => x.AccountId,
-                        principalSchema: "Account",
+                        principalSchema: "Accounts",
                         principalTable: "Accounts",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "AccountTokens",
-                schema: "Account",
+                schema: "Accounts",
                 columns: table => new
                 {
                     UserId = table.Column<long>(type: "bigint", nullable: false),
@@ -208,14 +208,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     table.ForeignKey(
                         name: "FK_AccountTokens_Accounts_AccountId",
                         column: x => x.AccountId,
-                        principalSchema: "Account",
+                        principalSchema: "Accounts",
                         principalTable: "Accounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AccountTokens_AccountUsers_UserId",
                         column: x => x.UserId,
-                        principalSchema: "Account",
+                        principalSchema: "Accounts",
                         principalTable: "AccountUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -223,147 +223,147 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccountClaims_AccountId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "AccountClaims",
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccountClaims_UserId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "AccountClaims",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccountLogins_UserId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "AccountLogins",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccountRoles_AccountRoleId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "AccountRoles",
                 column: "AccountRoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccountRoles_RoleId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "AccountRoles",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccountRoles_UserId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "AccountRoles",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_UserId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "Accounts",
                 column: "UserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccountTokens_AccountId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "AccountTokens",
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
-                schema: "Account",
+                schema: "Accounts",
                 table: "AccountUsers",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccountUsers_AccountId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "AccountUsers",
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
-                schema: "Account",
+                schema: "Accounts",
                 table: "AccountUsers",
                 column: "NormalizedUserName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_AccountRoleId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "RoleClaims",
                 column: "AccountRoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "RoleClaims",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
-                schema: "Account",
+                schema: "Accounts",
                 table: "Roles",
                 column: "NormalizedName",
                 unique: true);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AccountClaims_Accounts_AccountId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "AccountClaims",
                 column: "AccountId",
-                principalSchema: "Account",
+                principalSchema: "Accounts",
                 principalTable: "Accounts",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AccountClaims_AccountUsers_UserId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "AccountClaims",
                 column: "UserId",
-                principalSchema: "Account",
+                principalSchema: "Accounts",
                 principalTable: "AccountUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AccountLogins_AccountUsers_UserId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "AccountLogins",
                 column: "UserId",
-                principalSchema: "Account",
+                principalSchema: "Accounts",
                 principalTable: "AccountUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AccountRoles_Accounts_AccountId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "AccountRoles",
                 column: "AccountId",
-                principalSchema: "Account",
+                principalSchema: "Accounts",
                 principalTable: "Accounts",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AccountRoles_AccountUsers_UserId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "AccountRoles",
                 column: "UserId",
-                principalSchema: "Account",
+                principalSchema: "Accounts",
                 principalTable: "AccountUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Accounts_AccountUsers_UserId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "Accounts",
                 column: "UserId",
-                principalSchema: "Account",
+                principalSchema: "Accounts",
                 principalTable: "AccountUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
@@ -373,40 +373,40 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_AccountUsers_Accounts_AccountId",
-                schema: "Account",
+                schema: "Accounts",
                 table: "AccountUsers");
 
             migrationBuilder.DropTable(
                 name: "AccountClaims",
-                schema: "Account");
+                schema: "Accounts");
 
             migrationBuilder.DropTable(
                 name: "AccountLogins",
-                schema: "Account");
+                schema: "Accounts");
 
             migrationBuilder.DropTable(
                 name: "AccountRoles",
-                schema: "Account");
+                schema: "Accounts");
 
             migrationBuilder.DropTable(
                 name: "AccountTokens",
-                schema: "Account");
+                schema: "Accounts");
 
             migrationBuilder.DropTable(
                 name: "RoleClaims",
-                schema: "Account");
+                schema: "Accounts");
 
             migrationBuilder.DropTable(
                 name: "Roles",
-                schema: "Account");
+                schema: "Accounts");
 
             migrationBuilder.DropTable(
                 name: "Accounts",
-                schema: "Account");
+                schema: "Accounts");
 
             migrationBuilder.DropTable(
                 name: "AccountUsers",
-                schema: "Account");
+                schema: "Accounts");
         }
     }
 }

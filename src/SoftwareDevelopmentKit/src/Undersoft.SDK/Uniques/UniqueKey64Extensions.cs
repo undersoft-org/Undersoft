@@ -277,9 +277,9 @@
             return obj.Id.GetBytes();
         }
 
-        public static Byte[] UniqueBytes64(this IUnique obj)
+        public static Byte[] UniqueBytes64(this IIdentifiable obj)
         {
-            return obj.GetIdBytes();
+            return obj.Id.GetBytes();
         }
 
         public static Byte[] UniqueBytes64(this Object obj, long seed = 0)
@@ -289,8 +289,8 @@
 
             var t = obj.GetType();
 
-            if (t.IsAssignableTo(typeof(IUnique)))
-                return ((IUnique)obj).GetIdBytes();
+            if (t.IsAssignableTo(typeof(IIdentifiable)))
+                return ((IIdentifiable)obj).Id.GetBytes();
             if (t.IsValueType)
                 return getValueTypeHashBytes64((ValueType)obj, seed);
             if (t == typeof(string))
@@ -374,19 +374,14 @@
             return UniqueKey64(obj, seed);
         }
 
-        public static Int64 UniqueKey(this IUnique obj)
+        public static Int64 UniqueKey(this IIdentifiable obj)
         {
             return obj.Id;
         }
 
-        public static Int64 UniqueKey(this IUnique obj, long seed)
+        public static Int64 UniqueKey(this IIdentifiable obj, long seed)
         {
-            return (long)Hasher64.ComputeKey(obj.GetIdBytes(), seed);
-        }
-
-        public static Int64 UniqueKey<V>(this IUnique<V> obj, long seed)
-        {
-            return UniqueKey64(obj.UniqueValues(), seed);
+            return (long)Hasher64.ComputeKey(obj.Id.GetBytes(), seed);
         }
 
         public static Int64 UniqueKey(this Object obj, long seed = 0)
@@ -549,29 +544,14 @@
             return (long)Hasher64.ComputeKey((byte*)ptr.ToPointer(), length, seed);
         }
 
-        public static Int64 UniqueKey64(this IUnique obj)
+        public static Int64 UniqueKey64(this IIdentifiable obj)
         {
             return obj.Id;
         }
 
-        public static Int64 UniqueKey64(this IOrigin obj)
-        {
-            return obj.Id;
-        }
-
-        public static Int64 UniqueKey64(this IOrigin obj, long seed)
+        public static Int64 UniqueKey64(this IIdentifiable obj, long seed)
         {
             return (long)Hasher64.ComputeKey(obj.Id.GetBytes(), seed);
-        }
-
-        public static Int64 UniqueKey64(this IUnique obj, long seed)
-        {
-            return (long)Hasher64.ComputeKey(obj.GetIdBytes(), seed);
-        }
-
-        public static Int64 UniqueKey64<V>(this IUnique<V> obj, long seed)
-        {
-            return UniqueKey64(obj.UniqueValues(), seed);
         }
 
         public static Int64 UniqueKey64(this Object obj, long seed = 0)

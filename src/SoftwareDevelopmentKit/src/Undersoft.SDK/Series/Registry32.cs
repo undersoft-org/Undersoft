@@ -4,18 +4,8 @@
     using Undersoft.SDK.Uniques;
     using Base;
 
-    public class Registry32<V> : BaseRegistry<V>
+    public class Registry32<V> : RegistryBase<V>
     {
-        public Registry32(
-            IEnumerable<IUnique<V>> collection,
-            int capacity = 17,
-            bool repeatable = false
-        ) : this(repeatable, capacity)
-        {
-            foreach (var c in collection)
-                this.Add(c);
-        }
-
         public Registry32(IEnumerable<V> collection, int capacity = 17, bool repeatable = false)
             : this(repeatable, capacity)
         {

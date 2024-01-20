@@ -4,22 +4,9 @@
     using Undersoft.SDK.Uniques;
     using Base;
 
-    public class Registry64<V> : BaseRegistry<V>
+    public class Registry64<V> : RegistryBase<V>
     {
-        public Registry64(IEnumerable<IUnique<V>> collection, int capacity = 17) : this(capacity)
-        {
-            foreach (var c in collection)
-                this.Add(c);
-        }
-
         public Registry64(IEnumerable<V> collection, int capacity = 17) : this(capacity)
-        {
-            foreach (var c in collection)
-                this.Add(c);
-        }
-
-        public Registry64(IList<IUnique<V>> collection, int capacity = 17)
-            : this(capacity > collection.Count ? capacity : collection.Count)
         {
             foreach (var c in collection)
                 this.Add(c);

@@ -20,8 +20,7 @@ namespace Undersoft.SSC.Service.Application.Client
 
             var manager = builder.Services
                 .AddServiceSetup(builder.Configuration)
-                .ConfigureServices(
-                    AppDomain.CurrentDomain.GetAssemblies(),
+                .ConfigureServices(                   
                     null,
                     new[] { typeof(ApplicationClient) }
                 ).Manager;

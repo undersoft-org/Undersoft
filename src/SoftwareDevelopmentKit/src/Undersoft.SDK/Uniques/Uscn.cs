@@ -655,6 +655,11 @@
             return (int)(Id - g.Id);
         }
 
+        public int CompareTo(IIdentifiable g)
+        {
+            return (int)(Id - g.Id);
+        }
+
         public bool Equals(long g)
         {
             return (Id == g);
@@ -674,12 +679,12 @@
             return ReferenceEquals(Id, value);
         }
 
-        public bool Equals(Uscn g)
+        public bool Equals(IUnique g)
         {
             return (Id == g.Id);
         }
 
-        public bool Equals(IUnique g)
+        public bool Equals(IIdentifiable g)
         {
             return (Id == g.Id);
         }
@@ -810,34 +815,19 @@
             }
         }
 
-        public bool EqualsContent(Uscn g)
+        public bool Equals(Uscn g)
         {
-            ulong pchblockA,
-                pchblockB,
-                pchblockC,
-                pchblockD;
-            bool result;
-
             if (g.IsEmpty)
                 return false;
-            fixed (byte* pbyte = sbytes)
-            {
-                pchblockA = *((ulong*)&pbyte[0]);
-                pchblockB = *((ulong*)&pbyte[8]);
-                pchblockC = *((ulong*)&pbyte[16]);
-                pchblockD = *((ulong*)&pbyte[24]);
-            }
-
+            fixed (byte* spbyte = sbytes)
             fixed (byte* pbyte = g.GetBytes())
             {
-                result =
-                    (pchblockA == *((ulong*)&pbyte[0]))
-                    && (pchblockB == *((ulong*)&pbyte[8]))
-                    && (pchblockC == *((ulong*)&pbyte[16]))
-                    && (pchblockD == *((ulong*)&pbyte[24]));
+                return
+               *((ulong*)&spbyte[0]) == *((ulong*)&pbyte[0]) &&
+               *((ulong*)&spbyte[8]) == *((ulong*)&pbyte[8]) &&
+               *((ulong*)&spbyte[16]) == *((ulong*)&pbyte[16]) &&
+               *((ulong*)&spbyte[24]) == *((ulong*)&pbyte[24]);
             }
-
-            return result;
         }
 
         public bool Equals(BitVector32 other)
@@ -852,7 +842,7 @@
 
         public bool Equals(IUniqueStructure other)
         {
-            return EqualsContent(new Uscn(other.GetBytes()));
+            return base.Equals(new Uscn(other.GetBytes()));
         }
 
         public void Dispose()

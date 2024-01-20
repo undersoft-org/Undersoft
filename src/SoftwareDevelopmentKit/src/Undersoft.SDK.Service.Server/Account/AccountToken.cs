@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Undersoft.SDK.Service.Server.Account;
+namespace Undersoft.SDK.Service.Server.Accounts;
 
 public class AccountToken : IdentityUserToken<long>, IIdentifiable
 {

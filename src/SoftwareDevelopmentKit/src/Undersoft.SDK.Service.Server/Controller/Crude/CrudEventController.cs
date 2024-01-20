@@ -12,7 +12,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 [CrudDataService]
 [ApiController]
-[Route($"{StoreRoutes.CrudEventRoute}/Events")]
+[Route($"{StoreRoutes.CrudEventRoute}/[controller]")]
 public abstract class CrudEventController<TKey, TStore, TEntity, TDto> : ControllerBase
     where TDto : class, IDataObject
     where TEntity : class, IDataObject
@@ -40,10 +40,12 @@ public abstract class CrudEventController<TKey, TStore, TEntity, TDto> : Control
     }
 
     [HttpGet]
-    public virtual async Task<IActionResult> Get()
+    public virtual async Task<IActionResult> Get([FromHeader] int page, [FromHeader] int limit)
     {
         return Ok(
-            await _servicer.Send(new Get<TStore, TEntity, TDto>(0, 0)).ConfigureAwait(true)
+            await _servicer
+                .Send(new Get<TStore, TEntity, TDto>((page - 1) * limit, limit))
+                .ConfigureAwait(true)
         );
     }
 
@@ -53,21 +55,12 @@ public abstract class CrudEventController<TKey, TStore, TEntity, TDto> : Control
         Task<TDto> query =
             _keymatcher == null
                 ? _servicer.Send(new Find<TStore, TEntity, TDto>(key))
-                : _servicer.Send(new Find<TStore, TEntity, TDto>(_keymatcher(key)));
+                : _servicer.Send(new Find<TStore, TEntity, TDto>(_keymatcher(key))); 
 
         return Ok(await query.ConfigureAwait(false));
     }
 
-    [HttpGet("{offset}/{limit}")]
-    public virtual async Task<IActionResult> Get([FromRoute] int offset, [FromRoute] int limit)
-    {
-        return Ok(
-            await _servicer
-                .Send(new Get<TStore, TEntity, TDto>(offset, limit))
-                .ConfigureAwait(true)
-        );
-    }
-
+    
     [HttpPost]
     public virtual async Task<IActionResult> Post([FromBody] TDto[] dtos)
     {
@@ -86,8 +79,8 @@ public abstract class CrudEventController<TKey, TStore, TEntity, TDto> : Control
         return !isValid ? UnprocessableEntity(response) : Ok(response);
     }
 
-    [HttpPost("query/{offset}/{limit}")]
-    public virtual async Task<IActionResult> Post([FromRoute] int offset, [FromRoute] int limit, [FromBody] QuerySet query)
+    [HttpPost("query")]
+    public virtual async Task<IActionResult> Postt([FromBody] QuerySet query)
     {
         query.FilterItems.ForEach(
             (fi) =>
@@ -101,8 +94,8 @@ public abstract class CrudEventController<TKey, TStore, TEntity, TDto> : Control
             await _servicer
                 .Send(
                     new Filter<TStore, TEntity, TDto>(
-                        offset,
-                        limit,
+                        0,
+                        0,
                         new FilterExpression<TEntity>(query.FilterItems).Create(),
                         new SortExpression<TEntity>(query.SortItems)
                     )

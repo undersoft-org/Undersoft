@@ -7,7 +7,7 @@ public class Execute<TStore, TType, TInput, TKind> : ActionCommand<TInput, TKind
     where TInput : class
     where TType : class
     where TKind : Enum
-    where TStore : IDataServiceStore
+    where TStore : IDataServerStore
 {
     public Execute(TKind publishPattern) : base(CommandMode.Invoke, publishPattern) { }
 

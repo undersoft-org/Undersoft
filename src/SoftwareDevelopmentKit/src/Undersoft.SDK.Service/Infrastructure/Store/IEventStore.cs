@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Service.Infrastructure.Store
 {
-    public interface IEventStore : IStore
+    public interface IEventStore : IDataStore
     {
 
     }

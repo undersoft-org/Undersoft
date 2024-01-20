@@ -2,36 +2,36 @@
 
 using Undersoft.SDK;
 
-public interface IDataCache : ITypedSeries<IOrigin>
+public interface IDataCache : ITypedSeries<IIdentifiable>
 {
-    ITypedSeries<IOrigin> CacheSet<T>() where T : IOrigin;
+    ITypedSeries<IIdentifiable> CacheSet<T>() where T : IIdentifiable;
 
-    T Lookup<T>(T item) where T : IOrigin;
+    T Lookup<T>(T item) where T : IIdentifiable;
 
-    ISeries<IOrigin> Lookup<T>(Func<ITypedSeries<IOrigin>, ISeries<IOrigin>> selector) where T : IOrigin;
+    ISeries<IIdentifiable> Lookup<T>(Func<ITypedSeries<IIdentifiable>, ISeries<IIdentifiable>> selector) where T : IIdentifiable;
 
-    T Lookup<T>(object keys) where T : IOrigin;
+    T Lookup<T>(object keys) where T : IIdentifiable;
 
-    ISeries<IOrigin> Lookup<T>(Tuple<string, object> valueNamePair) where T : IOrigin;
+    ISeries<IIdentifiable> Lookup<T>(Tuple<string, object> valueNamePair) where T : IIdentifiable;
 
-    T Lookup<T>(T item, params string[] propertyNames) where T : IOrigin;
+    T Lookup<T>(T item, params string[] propertyNames) where T : IIdentifiable;
 
-    T[] Lookup<T>(Func<ISeries<IOrigin>, IOrigin> key, params Func<ITypedSeries<IOrigin>, ISeries<IOrigin>>[] selectors)
-        where T : IOrigin;
+    T[] Lookup<T>(Func<ISeries<IIdentifiable>, IIdentifiable> key, params Func<ITypedSeries<IIdentifiable>, ISeries<IIdentifiable>>[] selectors)
+        where T : IIdentifiable;
 
-    T[] Lookup<T>(object key, params Tuple<string, object>[] valueNamePairs) where T : IOrigin;
+    T[] Lookup<T>(object key, params Tuple<string, object>[] valueNamePairs) where T : IIdentifiable;
 
-    ISeries<IOrigin> Lookup<T>(object key, string propertyNames) where T : IOrigin;
+    ISeries<IIdentifiable> Lookup<T>(object key, string propertyNames) where T : IIdentifiable;
 
-    IEnumerable<T> Memorize<T>(IEnumerable<T> items) where T : IOrigin;
+    IEnumerable<T> Memorize<T>(IEnumerable<T> items) where T : IIdentifiable;
 
-    T Memorize<T>(T item) where T : IOrigin;
+    T Memorize<T>(T item) where T : IIdentifiable;
 
-    T Memorize<T>(T item, params string[] names) where T : IOrigin;
+    T Memorize<T>(T item, params string[] names) where T : IIdentifiable;
 
-    Task<T> MemorizeAsync<T>(T item) where T : IOrigin;
+    Task<T> MemorizeAsync<T>(T item) where T : IIdentifiable;
 
-    Task<T> MemorizeAsync<T>(T item, params string[] names) where T : IOrigin;
+    Task<T> MemorizeAsync<T>(T item, params string[] names) where T : IIdentifiable;
 
-    ITypedSeries<IOrigin> Catalog { get; }
+    ITypedSeries<IIdentifiable> Catalog { get; }
 }

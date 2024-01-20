@@ -11,7 +11,7 @@ using System.Text;
 using NetTopologySuite.Algorithm;
 using Microsoft.Extensions.Options;
 
-namespace Undersoft.SDK.Service.Server.Account;
+namespace Undersoft.SDK.Service.Server.Accounts;
 
 public class AccountTokenOptions : IOptions<AccountTokenOptions>
 {

@@ -8,7 +8,7 @@
     using Undersoft.SDK.Instant.Math;
     using Undersoft.SDK.Instant.Math.Formulas;
 
-    public class MathSetFormula : IUnique
+    public class MathSetFormula : IIdentifiable
     {
         [NonSerialized]
         private CombinedFormula formula;

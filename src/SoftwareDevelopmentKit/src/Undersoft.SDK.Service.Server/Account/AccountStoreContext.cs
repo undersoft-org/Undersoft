@@ -5,7 +5,7 @@ using Undersoft.SDK.Logging;
 using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Uniques;
 
-namespace Undersoft.SDK.Service.Server.Account;
+namespace Undersoft.SDK.Service.Server.Accounts;
 
 public partial class AccountStore<TStore, TContext> : AccountStoreContext<TStore>
     where TStore : IDataServerStore
@@ -34,7 +34,7 @@ public partial class AccountStoreContext<TStore>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.HasDefaultSchema("Account");
+        builder.HasDefaultSchema("Accounts");
         builder
             .ApplyMapping<Account>(new AccountMappings())
             .ApplyMapping<AccountClaim>(new AccountClaimMappings())

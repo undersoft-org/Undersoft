@@ -218,7 +218,7 @@ namespace Undersoft.SDK.Service
         {
             if (provider == null)
             {
-                provider = GetObject<IServiceProvider>();
+                provider = registry.GetProvider();
                 if (provider == null)
                     provider = BuildInternalProvider();
             }
@@ -228,6 +228,11 @@ namespace Undersoft.SDK.Service
         public IServiceProviderFactory<IServiceCollection> GetProviderFactory()
         {
             return GetObject<IServiceProviderFactory<IServiceCollection>>();
+        }
+
+        public IServiceProvider CreateProviderFromFacotry()
+        {
+            return Registry.BuildServiceProviderFromFactory<IServiceCollection>();
         }
 
         public static IServiceProviderFactory<IServiceCollection> GetRootProviderFactory()

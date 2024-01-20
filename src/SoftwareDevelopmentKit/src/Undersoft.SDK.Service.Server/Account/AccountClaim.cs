@@ -11,7 +11,7 @@ using Undersoft.SDK.Uniques;
 using System.Security.Claims;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Undersoft.SDK.Service.Server.Account;
+namespace Undersoft.SDK.Service.Server.Accounts;
 
 public class AccountClaim : IdentityUserClaim<long>, IIdentifiable, IAccountClaim
 {

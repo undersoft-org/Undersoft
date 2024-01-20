@@ -9,7 +9,7 @@ public class Executed<TStore, TType, TDto, TKind> : ActionNotification<ActionCom
     where TType : class
     where TDto : class, IOrigin
     where TKind : Enum
-    where TStore : IDataServiceStore
+    where TStore : IDataServerStore
 {
     public Executed(Execute<TStore, TType, TDto, TKind> command) : base(command)
     {

@@ -7,7 +7,7 @@ using Undersoft.SDK;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
-public class DataCache : TypedCache<IOrigin>, IDataCache
+public class DataCache : TypedCache<IIdentifiable>, IDataCache
 {
     public DataCache() : this(TimeSpan.FromMinutes(15), null, 259)
     {
@@ -27,13 +27,13 @@ public class DataCache : TypedCache<IOrigin>, IDataCache
     protected override T InnerMemorize<T>(T item)
     {
         int group = typeof(T).GetDataTypeId();
-        if (!cache.TryGet(group, out IOrigin deck))
+        if (!cache.TryGet(group, out IIdentifiable deck))
         {
-            deck = new TypedRegistry<IOrigin>();
+            deck = new TypedRegistry<IIdentifiable>();
 
             cache.Add(group, deck);
 
-            ((ITypedSeries<IOrigin>)deck).Put(item);
+            ((ITypedSeries<IIdentifiable>)deck).Put(item);
 
             cache.Add(item);
 
@@ -42,7 +42,7 @@ public class DataCache : TypedCache<IOrigin>, IDataCache
 
         if (!cache.ContainsKey(item))
         {
-            ((ITypedSeries<IOrigin>)deck).Put(item);
+            ((ITypedSeries<IIdentifiable>)deck).Put(item);
 
             cache.Add(item);
         }

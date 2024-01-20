@@ -4,7 +4,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 namespace Undersoft.SDK.Service.Server;
 
-public interface IDataServerBuilder<TStore> : IDataServerBuilder where TStore : IDataServiceStore { }
+public interface IDataServerBuilder<TStore> : IDataServerBuilder where TStore : IDataStore { }
 
 public interface IDataServerBuilder : IDisposable, IAsyncDisposable
 {

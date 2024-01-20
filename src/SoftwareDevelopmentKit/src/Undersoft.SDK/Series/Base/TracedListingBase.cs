@@ -8,8 +8,8 @@
     using Invoking;
     using Instant.Updating;
 
-    public class BaseTracedRegistry<V>
-        : RegistrySeries<V>,
+    public class TracedListingBase<V>
+        : ListingBase<V>,
             ITracedSeries,
             INotifyPropertyChanged,
             INotifyPropertyChanging,
@@ -17,34 +17,21 @@
     {
         int readers;
 
-        public BaseTracedRegistry() : this(false, 17, HashBits.bit64) { }
+        public TracedListingBase() : this(false, 17, HashBits.bit64) { }
 
-        public BaseTracedRegistry(int capacity = 17, HashBits bits = HashBits.bit64)
+        public TracedListingBase(int capacity = 17, HashBits bits = HashBits.bit64)
             : base(capacity, bits)
         {
             Initialize();
         }
 
-        public BaseTracedRegistry(bool repeatable, int capacity = 17, HashBits bits = HashBits.bit64)
+        public TracedListingBase(bool repeatable, int capacity = 17, HashBits bits = HashBits.bit64)
             : base(repeatable, capacity, bits)
         {
             Initialize();
         }
 
-        public BaseTracedRegistry(
-            IEnumerable<IUnique<V>> collection,
-            int capacity = 17,
-            bool repeatable = false,
-            HashBits bits = HashBits.bit64
-        ) : this(repeatable, capacity, bits)
-        {
-            Initialize();
-            if (collection != null)
-                foreach (IUnique<V> c in collection)
-                    Add(c);
-        }
-
-        public BaseTracedRegistry(
+        public TracedListingBase(
             IEnumerable<V> collection,
             int capacity = 17,
             bool repeatable = false,
@@ -59,7 +46,7 @@
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public override event PropertyChangedEventHandler PropertyChanged;
 
         public event PropertyChangingEventHandler PropertyChanging;
 
@@ -339,8 +326,8 @@
 
         public void Initialize()
         {
-            NoticeChange = new Invoker<BaseTracedRegistry<V>>(this, a => a.OnPropertyChanged);
-            NoticeChanging = new Invoker<BaseTracedRegistry<V>>(
+            NoticeChange = new Invoker<TracedListingBase<V>>(this, a => a.OnPropertyChanged);
+            NoticeChanging = new Invoker<TracedListingBase<V>>(
                 this,
                 a => a.OnPropertyChanging
             );

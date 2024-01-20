@@ -16,7 +16,7 @@ public class ExecutedHandler<TStore, TType, TDto, TKind>
     where TType : class
     where TDto :  class, IOrigin
     where TKind : Enum
-    where TStore : IDataServiceStore
+    where TStore : IDataStore
 {
     protected readonly IStoreRepository<Event> _eventStore;
 

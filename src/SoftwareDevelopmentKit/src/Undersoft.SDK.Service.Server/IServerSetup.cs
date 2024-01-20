@@ -10,7 +10,7 @@ namespace Undersoft.SDK.Service.Server
         IServerSetup AddDataServer<TServiceStore>(
             DataServerTypes dataServiceTypes,
             Action<DataServerBuilder> builder = null
-        ) where TServiceStore : IDataServiceStore;
+        ) where TServiceStore : IDataStore;
         IServerSetup AddAccountServer<TContext>() where TContext : DbContext;
         IServerSetup AddIdentityAuthentication();
         IServerSetup AddIdentityAuthorization();

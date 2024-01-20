@@ -13,7 +13,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 public abstract class OpenDataActionController<TStore, TKind, TType, TDto>
     : ODataController, IOpenDataActionController<TStore, TKind, TType, TDto> where TDto : class where TKind : struct, Enum
     where TType : class
-    where TStore : IDataServiceStore
+    where TStore : IDataServerStore
 {
     protected readonly IServicer _servicer;
     protected readonly TKind _kind;

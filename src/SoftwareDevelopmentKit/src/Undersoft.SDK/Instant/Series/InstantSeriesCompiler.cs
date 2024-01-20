@@ -272,7 +272,7 @@
                 new Type[] { type }
             );
 
-            PropertyInfo iprop = seriesType.GetProperty("InstantSeriesCreator");
+            PropertyInfo iprop = seriesType.GetProperty("InstantSeries");
 
             MethodInfo accessor = iprop.GetGetMethod();
 
@@ -359,7 +359,7 @@
                 new Type[] { type }
             );
 
-            PropertyInfo iprop = seriesType.GetProperty("InstantSeriesCreator");
+            PropertyInfo iprop = seriesType.GetProperty("InstantSeries");
 
             MethodInfo accessor = iprop.GetGetMethod();
 

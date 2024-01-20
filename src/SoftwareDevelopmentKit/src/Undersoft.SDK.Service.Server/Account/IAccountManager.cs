@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Security.Claims;
 using Undersoft.SDK.Security.Identity;
 
-namespace Undersoft.SDK.Service.Server.Account
+namespace Undersoft.SDK.Service.Server.Accounts
 {
     public interface IAccountManager
     {

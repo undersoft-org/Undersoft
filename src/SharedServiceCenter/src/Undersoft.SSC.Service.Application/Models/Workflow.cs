@@ -9,5 +9,5 @@ public class Workflow : ModelBase<Service, Detail, Setting, MemberGroup>, IModel
     public Workflow() { Group = MemberGroup.Servitizer; }
 
     [Detail]
-    public Contracts.Details.Account? Identity { get; set; }
+    public Contracts.Account? Identity { get; set; }
 }

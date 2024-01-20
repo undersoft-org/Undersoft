@@ -10,7 +10,7 @@
     using Uniques.Hashing;
     
 
-    public partial class MemberRubrics : RegistrySeries<MemberRubric>, IRubrics
+    public partial class MemberRubrics : ListingBase<MemberRubric>, IRubrics
     {
         private int binarySize;
         private int[] binarySizes;

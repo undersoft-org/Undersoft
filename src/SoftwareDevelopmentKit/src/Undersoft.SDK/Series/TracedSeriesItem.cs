@@ -92,7 +92,7 @@
             if (this.value == null)
             {
                 _proxy = new Updater<V>(value);
-                this.value = _proxy.Entry;
+                this.value = _proxy.Preset;
             }
             else
             {
@@ -105,12 +105,6 @@
         public override void Set(V value)
         {
             Set(value.UniqueKey64(), value);
-        }
-
-        public override V UniqueObject
-        {
-            get => base.UniqueObject;
-            set => value.PatchTo(_proxy.EntryProxy);
         }
 
         public override V Value

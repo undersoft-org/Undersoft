@@ -4,7 +4,7 @@
     using Undersoft.SDK.Uniques;
     using Base;
 
-    public class Catalog<V> : BaseCatalog<V>
+    public class Catalog<V> : CatalogBase<V>
     {
         public Catalog(
             IEnumerable<ISeriesItem<V>> collection,

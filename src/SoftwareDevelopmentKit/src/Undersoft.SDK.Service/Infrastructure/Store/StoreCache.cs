@@ -19,12 +19,12 @@ public class StoreCache<TStore> : DataCache, IStoreCache<TStore>
             base.cache = cache;
             int seed = typeof(TStore).UniqueKey32();
             TypeId = seed;
-            if (!base.Catalog.TryGet(seed, out IOrigin deck))
+            if (!base.Catalog.TryGet(seed, out IIdentifiable deck))
             {
-                deck = new TypedRegistry<IOrigin>();
+                deck = new TypedRegistry<IIdentifiable>();
                 base.Catalog.Add(seed, deck);
             }
-            this.cache = (ITypedSeries<IOrigin>)deck;
+            this.cache = (ITypedSeries<IIdentifiable>)deck;
         }
     }
 
@@ -37,18 +37,18 @@ public class StoreCache<TStore> : DataCache, IStoreCache<TStore>
         {
             int seed = typeof(TStore).UniqueKey32();
             TypeId = seed;
-            if (!base.Catalog.TryGet(seed, out IOrigin deck))
+            if (!base.Catalog.TryGet(seed, out IIdentifiable deck))
             {
-                deck = new TypedRegistry<IOrigin>();
+                deck = new TypedRegistry<IIdentifiable>();
                 base.Catalog.Add(seed, deck);
             }
-            cache = (ITypedSeries<IOrigin>)deck;
+            cache = (ITypedSeries<IIdentifiable>)deck;
         }
     }
 
-    protected override ITypedSeries<IOrigin> cache { get; set; }
+    protected override ITypedSeries<IIdentifiable> cache { get; set; }
 
-    public override ITypedSeries<IOrigin> Catalog => cache;
+    public override ITypedSeries<IIdentifiable> Catalog => cache;
 
     public IDataMapper Mapper { get; set; }
 }

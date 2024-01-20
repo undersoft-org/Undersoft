@@ -48,10 +48,10 @@ public class CrudDataController<TKey, TEntry, TReport, TEntity, TDto>
     }
 
     [HttpGet]
-    public virtual async Task<IActionResult> Get()
+    public virtual async Task<IActionResult> Get([FromHeader] int page, [FromHeader] int limit)
     {
         return Ok(
-            await _servicer.Send(new Get<TReport, TEntity, TDto>(0, 0)).ConfigureAwait(true)
+            await _servicer.Send(new Get<TReport, TEntity, TDto>((page - 1) * limit, limit)).ConfigureAwait(true)
         );
     }
 
@@ -70,20 +70,10 @@ public class CrudDataController<TKey, TEntry, TReport, TEntity, TDto>
                 : _servicer.Send(new Find<TReport, TEntity, TDto>(_keymatcher(key)));
 
         return Ok(await query.ConfigureAwait(false));
-    }
+    } 
 
-    [HttpGet("{offset}/{limit}")]
-    public virtual async Task<IActionResult> Get([FromRoute] int offset, [FromRoute] int limit)
-    {
-        return Ok(
-            await _servicer
-                .Send(new Get<TReport, TEntity, TDto>(offset, limit))
-                .ConfigureAwait(true)
-        );
-    }
-
-    [HttpPost("query/{offset}/{limit}")]
-    public virtual async Task<IActionResult> Post([FromRoute] int offset, [FromRoute] int limit, [FromBody] QuerySet query)
+    [HttpPost("query")]
+    public virtual async Task<IActionResult> Post([FromBody] QuerySet query)
     {
         query.FilterItems.ForEach(
             (fi) =>
@@ -96,7 +86,7 @@ public class CrudDataController<TKey, TEntry, TReport, TEntity, TDto>
         return Ok(
             await _servicer
                 .Send(
-                    new Filter<TReport, TEntity, TDto>(offset, limit,
+                    new Filter<TReport, TEntity, TDto>(0, 0,
                         new FilterExpression<TEntity>(query.FilterItems).Create(),
                         new SortExpression<TEntity>(query.SortItems)
                     )

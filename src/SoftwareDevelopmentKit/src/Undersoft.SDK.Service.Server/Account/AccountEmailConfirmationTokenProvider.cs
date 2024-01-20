@@ -11,7 +11,7 @@ using Undersoft.SDK.Logging;
 using Undersoft.SDK.Series;
 using Undersoft.SDK.Uniques;
 
-namespace Undersoft.SDK.Service.Server.Account;
+namespace Undersoft.SDK.Service.Server.Accounts;
 
 public class AccountEmailConfirmationTokenProvider<TUser>
                               : DataProtectorTokenProvider<TUser> where TUser : class

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Undersoft.SDK.Service.Server.Account
+namespace Undersoft.SDK.Service.Server.Accounts
 {
     using SDK.Service.Infrastructure.Store;
     using Undersoft.SDK.Service.Infrastructure.Store.Relation;

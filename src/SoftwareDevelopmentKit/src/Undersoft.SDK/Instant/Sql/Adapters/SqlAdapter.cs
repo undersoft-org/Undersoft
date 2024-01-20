@@ -50,7 +50,7 @@
                 IInstantSeries deck = null;
                 if (cards.Any())
                 {
-                    deck = cards.ElementAt(0).InstantSeriesCreator;
+                    deck = cards.ElementAt(0).InstantSeries;
                     if (_cn.State == ConnectionState.Closed)
                         _cn.Open();
                     try

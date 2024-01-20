@@ -14,17 +14,15 @@ public interface ICrudDataController<TKey, TEntity, TDto> where TDto : class, ID
     [HttpDelete("{key}")]
     Task<IActionResult> Delete([FromRoute] TKey key, [FromBody] TDto dto);
     [HttpGet]
-    Task<IActionResult> Get();
-    [HttpGet("{offset}/{limit}")]
-    Task<IActionResult> Get([FromRoute] int offset, [FromRoute] int limit);
+    Task<IActionResult> Get([FromHeader] int page, [FromHeader] int limit);
     [HttpGet("{key}")]
     Task<IActionResult> Get([FromRoute] TKey key);
     [HttpPatch]
     Task<IActionResult> Patch([FromBody] TDto[] dtos);
     [HttpPatch("{key}")]
     Task<IActionResult> Patch([FromRoute] TKey key, [FromBody] TDto dto);
-    [HttpPost("{offset}/{limit}")]
-    Task<IActionResult> Post([FromRoute] int offset, [FromRoute] int limit, [FromBody] QuerySet query);
+    [HttpPost]
+    Task<IActionResult> Post([FromBody] QuerySet query);
     [HttpPost]
     Task<IActionResult> Post([FromBody] TDto[] dtos);
     [HttpPost("{key}")]

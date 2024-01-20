@@ -1,10 +1,11 @@
 using System.Runtime.Serialization;
+using Undersoft.SDK.Service.Data.Contract;
 using Undersoft.SSC.Service.Contracts.Base;
 
 namespace Undersoft.SSC.Service.Contracts;
 
 [DataContract]
-public class Service : ServiceBase
+public class Service : ServiceBase, IContract
 {
     [DataMember(Order = 18)]
     public virtual DataObjects<ServiceBase>? RelatedFrom { get; set; }

@@ -4,7 +4,7 @@ using System.Security.Claims;
 using Undersoft.SDK.Security.Identity;
 using Undersoft.SDK.Service.Data.Contract;
 
-namespace Undersoft.SDK.Service.Server.Account;
+namespace Undersoft.SDK.Service.Server.Accounts;
 
 public class AccountUser : IdentityUser<long>, IAccountUser
 {

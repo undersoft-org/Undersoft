@@ -4,7 +4,7 @@
     using Undersoft.SDK.Uniques;
     using Base;
 
-    public class Catalog64<V> : BaseCatalog<V>
+    public class Catalog64<V> : CatalogBase<V>
     {
         public Catalog64(IEnumerable<ISeriesItem<V>> collection, int capacity = 9) : this(capacity)
         {

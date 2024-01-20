@@ -10,7 +10,7 @@ using System.Security.Cryptography;
 using System.Text;
 using NetTopologySuite.Algorithm;
 
-namespace Undersoft.SDK.Service.Server.Account;
+namespace Undersoft.SDK.Service.Server.Accounts;
 
 public class AccountTokenGenerator
 {

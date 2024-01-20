@@ -31,7 +31,7 @@ public class ProxyCompiler : ProxyCompilerBase
 
         CreateSerialCodeProperty(tb, typeof(Uscn), "Code");
 
-        //CreateValueArrayProperty(tb);
+       // CreateValueArrayProperty(tb);
 
         CreateItemByIntProperty(tb);
 
@@ -41,9 +41,9 @@ public class ProxyCompiler : ProxyCompilerBase
 
         CreateTypeIdProperty(tb);
 
-        CreateGetUniqueBytesMethod(tb);
+       // CreateGetUniqueBytesMethod(tb);
 
-        CreateGetBytesMethod(tb);
+       // CreateGetBytesMethod(tb);
 
         CreateEqualsMethod(tb);
 
@@ -856,7 +856,7 @@ public class ProxyCompiler : ProxyCompilerBase
 
     public override void CreateValueArrayProperty(TypeBuilder tb)
     {
-        PropertyInfo prop = typeof(IInstant).GetProperty("ValueArray");
+        PropertyInfo prop = typeof(IValueArray).GetProperty("ValueArray");
 
         MethodInfo accessor = prop.GetGetMethod();
 

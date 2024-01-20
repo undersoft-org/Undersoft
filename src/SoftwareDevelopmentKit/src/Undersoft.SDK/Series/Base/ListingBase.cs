@@ -3,39 +3,27 @@
     using System.Collections.Generic;
     using Undersoft.SDK.Uniques;
 
-    public abstract class RegistrySeries<V> : SeriesBase<V>
+    public abstract class ListingBase<V> : SeriesBase<V>
     {
         protected ISeriesItem<V>[] vector;
         protected bool repeatable;
         protected int repeated;
 
-        public RegistrySeries() : this(17, HashBits.bit64) { }
+        public ListingBase() : this(17, HashBits.bit64) { }
 
-        public RegistrySeries(int capacity = 17, HashBits bits = HashBits.bit64) : base(capacity, bits)
+        public ListingBase(int capacity = 17, HashBits bits = HashBits.bit64) : base(capacity, bits)
         {
             vector = EmptyVector(capacity);
         }
 
-        public RegistrySeries(bool repeatable, int capacity = 17, HashBits bits = HashBits.bit64)
+        public ListingBase(bool repeatable, int capacity = 17, HashBits bits = HashBits.bit64)
             : base(capacity, bits)
         {
             this.repeatable = repeatable;
             vector = EmptyVector(capacity);
         }
 
-        public RegistrySeries(
-            IEnumerable<IUnique<V>> collection,
-            int capacity = 17,
-            bool repeatable = false,
-            HashBits bits = HashBits.bit64
-        ) : this(repeatable, capacity, bits)
-        {
-            if (collection != null)
-                foreach (IUnique<V> c in collection)
-                    Add(c);
-        }
-
-        public RegistrySeries(
+        public ListingBase(
             IEnumerable<V> collection,
             int capacity = 17,
             bool repeatable = false,
@@ -226,7 +214,7 @@
                 if (mem.Equals(key))
                 {
                     if (repeatable)
-                        while ((mem != null) || !ValueEquals(mem.Value, item))
+                        while ((mem != null) || !Equals(mem.Value, item))
                             mem = mem.Next;
 
                     if (!mem.Removed)
@@ -251,7 +239,7 @@
 
             do
             {
-                if (ValueEquals(_item.Value, item))
+                if (Equals(_item.Value, item))
                     return _item.Index;
 
                 _item = _item.Next;
@@ -448,7 +436,7 @@
                         return default(V);
                     do
                     {
-                        if (ValueEquals(_item.Value, item))
+                        if (Equals(_item.Value, item))
                         {
                             if (_item.Next != null)
                                 _item = swapRepeated(_item);
@@ -690,11 +678,6 @@
         public override bool Contains(ISeriesItem<V> item)
         {
             return IndexOf(item.Id, item.Value) > -1;
-        }
-
-        public override bool Contains(IUnique<V> item)
-        {
-            return IndexOf(unique.Key(item), item.UniqueObject) > -1;
         }
 
         public override bool Contains(V item)

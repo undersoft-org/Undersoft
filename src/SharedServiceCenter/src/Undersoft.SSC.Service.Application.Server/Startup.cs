@@ -33,7 +33,7 @@ public class Startup
                 },
                 new[] { typeof(ServiceClient) }
             )
-            .AddDataServer<IDataServiceStore>(DataServerTypes.All);
+            .AddDataServer<IDataStore>(DataServerTypes.All);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

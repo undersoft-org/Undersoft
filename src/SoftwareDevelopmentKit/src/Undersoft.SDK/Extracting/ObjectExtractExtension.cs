@@ -175,13 +175,11 @@ public static class ObjectExtractExtenstion
     public unsafe static Byte[] GetBytes(this Object objvalue, bool forKeys = false)
     {
         Type t = objvalue.GetType();
-        if (t.IsAssignableTo(typeof(IUnique)))
-        {
-            if (forKeys)
-                return ((IUnique)objvalue).GetIdBytes();
-            return ((IUnique)objvalue).GetBytes();
-        }
 
+        if (forKeys)
+            if (t.IsAssignableTo(typeof(IIdentifiable)))                  
+                return ((IIdentifiable)objvalue).Id.GetBytes();      
+        
         if (t.IsValueType)
         {
             if (t.IsPrimitive)

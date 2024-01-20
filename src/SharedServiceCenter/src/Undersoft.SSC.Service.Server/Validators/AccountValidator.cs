@@ -1,7 +1,6 @@
 ﻿using Undersoft.SDK.Service.Server.Operation.Command;
 using Undersoft.SDK.Service.Server.Operation.Command.Validator;
-using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SSC.Service.Contracts;
+using Undersoft.SSC.Domain.Entities;
 
 namespace Undersoft.SSC.Service.Server.Validators;
 
@@ -29,14 +28,14 @@ public class MemberValidator : CommandSetValidator<Member>
             CommandMode.Create,
             () =>
             {
-            ValidateNotExist<IEntryStore, Member>(
-                (cmd) =>
-                    (e) => (e.Label == cmd.Label)
-                        || (e.Identifiers[IdKind.Email].Value == cmd.Identifiers[IdKind.Email].Value
-                        || (e.Identifiers[IdKind.Name].Value == cmd.Identifiers[IdKind.Name].Value)
-                        || (e.Identifiers[IdKind.Phone].Value == cmd.Identifiers[IdKind.Phone].Value)),
-                "Members already exists"
-                );
+                ValidateNotExist<IEntryStore, Member>(
+                    (cmd) =>
+                        (e) => (e.Label == cmd.Label)
+                            || (e.Identifiers[IdKind.Email].Value == cmd.Identifiers[IdKind.Email].Value
+                            || (e.Identifiers[IdKind.Name].Value == cmd.Identifiers[IdKind.Name].Value)
+                            || (e.Identifiers[IdKind.Phone].Value == cmd.Identifiers[IdKind.Phone].Value)),
+                    "Members already exists"
+                    );
             }
         );
         ValidationScope(

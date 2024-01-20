@@ -13,21 +13,20 @@ namespace Undersoft.SDK.Series.Base
     using Undersoft.SDK;
 
     public abstract class TetraSeriesBase<V>
-        : UniqueKey,
+        : Identifiable,
             ICollection<V>,
             IList<V>,
             ISeries<V>,
             ICollection<ISeriesItem<V>>,
             IList<ISeriesItem<V>>,
             IProducerConsumerCollection<V>,
-            IDisposable,
-            ICollection<IUnique<V>>,
-            IOrigin
+            IDisposable,            
+            IIdentifiable
     {
         static protected readonly float CONFLICTS_PERCENT_LIMIT = 0.25f;
         static protected readonly float REMOVED_PERCENT_LIMIT = 0.15f;
 
-        protected Uscn code;
+        protected IUniqueKey unique = Unique.Bit64;
         protected ISeriesItem<V> first,
             last;
         protected TetraTable<V> table;
@@ -73,7 +72,7 @@ namespace Undersoft.SDK.Series.Base
             --removed;
         }
 
-        public TetraSeriesBase(int capacity = 16, HashBits bits = HashBits.bit64) : base(bits)
+        public TetraSeriesBase(int capacity = 16, HashBits bits = HashBits.bit64) 
         {
             size = capacity;
             minSize = capacity;
@@ -182,7 +181,7 @@ namespace Undersoft.SDK.Series.Base
             return InnerGet(unique.Key(key));
         }
 
-        public virtual V Get(IUnique key)
+        public virtual V Get(IIdentifiable key)
         {
             return InnerGet(unique.Key(key));
         }
@@ -240,7 +239,7 @@ namespace Undersoft.SDK.Series.Base
             return false;
         }
 
-        public bool TryGet(IUnique key, out ISeriesItem<V> output)
+        public bool TryGet(IIdentifiable key, out ISeriesItem<V> output)
         {
             return catalogImplementation.TryGet(key, out output);
         }
@@ -283,15 +282,10 @@ namespace Undersoft.SDK.Series.Base
             return InnerGetItem(key);
         }
 
-        public ISeriesItem<V> GetItem(IUnique key)
+        public ISeriesItem<V> GetItem(IIdentifiable key)
         {
             return catalogImplementation.GetItem(key);
-        }
-
-        public ISeriesItem<V> GetItem(IUnique<V> key)
-        {
-            return catalogImplementation.GetItem(key);
-        }
+        }        
 
         public ISeriesItem<V> Set(object key, V value)
         {
@@ -303,25 +297,15 @@ namespace Undersoft.SDK.Series.Base
             return catalogImplementation.Set(key, value);
         }
 
-        public ISeriesItem<V> Set(IUnique key, V value)
+        public ISeriesItem<V> Set(IIdentifiable key, V value)
         {
             return catalogImplementation.Set(key, value);
-        }
-
-        public ISeriesItem<V> Set(IUnique<V> key, V value)
-        {
-            return catalogImplementation.Set(key, value);
-        }
+        }        
 
         public ISeriesItem<V> Set(V value)
         {
             return catalogImplementation.Set(value);
-        }
-
-        public ISeriesItem<V> Set(IUnique<V> value)
-        {
-            return catalogImplementation.Set(value);
-        }
+        }        
 
         public ISeriesItem<V> Set(ISeriesItem<V> value)
         {
@@ -341,12 +325,7 @@ namespace Undersoft.SDK.Series.Base
         public int Set(IEnumerable<ISeriesItem<V>> values)
         {
             return catalogImplementation.Set(values);
-        }
-
-        public int Set(IEnumerable<IUnique<V>> values)
-        {
-            return catalogImplementation.Set(values);
-        }
+        }        
 
         public ISeriesItem<V> EnsureGet(object key, Func<long, V> sureaction)
         {
@@ -358,7 +337,7 @@ namespace Undersoft.SDK.Series.Base
             return catalogImplementation.EnsureGet((object)key, sureaction);
         }
 
-        public ISeriesItem<V> EnsureGet(IUnique key, Func<long, V> sureaction)
+        public ISeriesItem<V> EnsureGet(IIdentifiable key, Func<long, V> sureaction)
         {
             return catalogImplementation.EnsureGet((object)key, sureaction);
         }
@@ -451,29 +430,6 @@ namespace Undersoft.SDK.Series.Base
                 Put(item);
         }
 
-        public virtual ISeriesItem<V> Put(IUnique<V> value)
-        {
-            if (value is ISeriesItem<V>)
-                return InnerPut((ISeriesItem<V>)value);
-            return InnerPut(value.CompactKey(), value.UniqueObject);
-        }
-
-        public virtual void Put(IList<IUnique<V>> value)
-        {
-            foreach (IUnique<V> item in value)
-            {
-                Put(item);
-            }
-        }
-
-        public virtual void Put(IEnumerable<IUnique<V>> value)
-        {
-            foreach (IUnique<V> item in value)
-            {
-                Put(item);
-            }
-        }
-
         protected abstract bool InnerAdd(long key, V value);
         protected abstract bool InnerAdd(V value);
         protected abstract bool InnerAdd(ISeriesItem<V> value);
@@ -531,29 +487,6 @@ namespace Undersoft.SDK.Series.Base
         {
             foreach (V item in items)
                 Add(item);
-        }
-
-        public virtual void Add(IUnique<V> value)
-        {
-            if (value is ISeriesItem<V>)
-                InnerAdd((ISeriesItem<V>)value);
-            InnerAdd(unique.Key(value), value.UniqueObject);
-        }
-
-        public virtual void Add(IList<IUnique<V>> value)
-        {
-            foreach (IUnique<V> item in value)
-            {
-                Add(item);
-            }
-        }
-
-        public virtual void Add(IEnumerable<IUnique<V>> value)
-        {
-            foreach (IUnique<V> item in value)
-            {
-                Add(item);
-            }
         }
 
         public virtual bool TryAdd(V value)
@@ -768,7 +701,7 @@ namespace Undersoft.SDK.Series.Base
             return InnerContainsKey(key);
         }
 
-        public virtual bool ContainsKey(IUnique key)
+        public virtual bool ContainsKey(IIdentifiable key)
         {
             return InnerContainsKey(unique.Key(key));
         }
@@ -776,12 +709,7 @@ namespace Undersoft.SDK.Series.Base
         public virtual bool Contains(ISeriesItem<V> item)
         {
             return InnerContainsKey(item.Id);
-        }
-
-        public virtual bool Contains(IUnique<V> item)
-        {
-            return InnerContainsKey(unique.Key(item));
-        }
+        }        
 
         public virtual bool Contains(V item)
         {
@@ -860,12 +788,7 @@ namespace Undersoft.SDK.Series.Base
         public virtual bool Remove(ISeriesItem<V> item)
         {
             return InnerRemove(item.Id).Equals(default(V)) ? false : true;
-        }
-
-        public virtual bool Remove(IUnique<V> item)
-        {
-            return TryRemove(unique.Key(item));
-        }
+        }        
 
         public virtual bool TryRemove(object key)
         {
@@ -958,23 +881,7 @@ namespace Undersoft.SDK.Series.Base
             else
                 foreach (V ves in this.AsValues())
                     array[i++] = ves;
-        }
-
-        public virtual void CopyTo(IUnique<V>[] array, int arrayIndex)
-        {
-            int c = count,
-                i = arrayIndex,
-                l = array.Length;
-            if (l - i < c)
-            {
-                c = l - i;
-                foreach (ISeriesItem<V> ves in this.AsItems().Take(c))
-                    array[i++] = ves;
-            }
-            else
-                foreach (ISeriesItem<V> ves in this)
-                    array[i++] = ves;
-        }
+        }        
 
         public virtual V[] ToArray()
         {
@@ -1025,12 +932,7 @@ namespace Undersoft.SDK.Series.Base
         public virtual IEnumerable<ISeriesItem<V>> AsItems()
         {
             return (IEnumerable<ISeriesItem<V>>)this;
-        }
-
-        public virtual IEnumerable<IUnique<V>> AsIdentifiers()
-        {
-            return (IEnumerable<IUnique<V>>)this;
-        }
+        }        
 
         public virtual IEnumerator<ISeriesItem<V>> GetEnumerator()
         {
@@ -1040,12 +942,7 @@ namespace Undersoft.SDK.Series.Base
         IEnumerator<V> IEnumerable<V>.GetEnumerator()
         {
             return new SeriesItemEnumerator<V>(this);
-        }
-
-        IEnumerator<IUnique<V>> IEnumerable<IUnique<V>>.GetEnumerator()
-        {
-            return new SeriesItemKeyEnumerator<V>(this);
-        }
+        }        
 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -1195,8 +1092,6 @@ namespace Undersoft.SDK.Series.Base
         private bool disposedValue = false;
         private ISeries<V> catalogImplementation;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -1218,82 +1113,17 @@ namespace Undersoft.SDK.Series.Base
             Dispose(true);
         }
 
-        public bool Equals(IUnique? other)
+        public bool Equals(IUnique other)
         {
             return code.Equals(other);
         }
 
-        public int CompareTo(IUnique? other)
+        public int CompareTo(IUnique other)
         {
             return code.CompareTo(other);
         }
 
-        public IUnique Empty => Usid.Empty;
-
-        public new long Id
-        {
-            get => code.Id;
-            set => code.Id = value;
-        }
-
-        public long TypeId
-        {
-            get => code.TypeId;
-            set => code.TypeId = value;
-        }
-
-        public byte[] GetBytes()
-        {
-            return code.GetBytes();
-        }
-
-        public byte[] GetIdBytes()
-        {
-            return code.GetIdBytes();
-        }
-
-        public virtual long AutoId()
-        {
-            return Id = (long)(Unique.NewId);
-        }
-
-        public byte GetPriority()
-        {
-            return code.GetPriority();
-        }
-
-        public TEntity Sign<TEntity>(TEntity entity) where TEntity : class, IOrigin
-        {
-            entity.AutoId();
-            Stamp(entity);
-            Created = Time;
-            return entity;
-        }
-
-        public TEntity Stamp<TEntity>(TEntity entity) where TEntity : class, IOrigin
-        {
-            entity.Time = DateTime.Now;
-            return entity;
-        }
-
-        public long SetId(long id)
-        {
-            long longid = id;
-            long key = Id;
-            if (longid != 0 && key != longid)
-                return (Id = longid);
-            return AutoId();
-        }
-
-        public long SetId(object id)
-        {
-            if (id == null)
-                return AutoId();
-            else if (id.GetType().IsPrimitive)
-                return SetId((long)id);
-            else
-                return SetId((long)id.UniqueKey64());
-        }
+        public IUnique Empty => Usid.Empty;   
 
         public Type ItemType
         {
@@ -1304,34 +1134,18 @@ namespace Undersoft.SDK.Series.Base
 
         public IQueryProvider Provider { get; protected set; }
 
-        public string CodeNo
-        {
-            get => code.ToString();
-            set => code.FromTetrahex(value.ToCharArray());
-        }
         public DateTime Created { get; set; }
+        
         public string Creator { get; set; }
+        
         public DateTime Modified { get; set; }
+        
         public string Modifier { get; set; }
+        
         public int OriginId
         {
             get => (int)code.OriginId;
             set => code.OriginId = (uint)value;
-        }
-        public string TypeName { get; set; }
-        public DateTime Time
-        {
-            get => DateTime.FromBinary(code.Time);
-            set => code.Time = value.ToBinary();
-        }
-        public void GetFlag(StateFlags state)
-        {
-            code.GetFlag(state);
-        }
-
-        public void SetFlag(StateFlags state, bool flag)
-        {
-            code.SetFlag(state, flag);
         }
     }
 }

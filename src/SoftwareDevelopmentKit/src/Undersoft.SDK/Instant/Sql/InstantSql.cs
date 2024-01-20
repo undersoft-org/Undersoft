@@ -4,7 +4,7 @@ using Undersoft.SDK.Series.Base;
 
 namespace Undersoft.SDK.Instant.Sql
 {
-    public class InstantSql<T> : RegistrySeries<IProxy<T>>
+    public class InstantSql<T> : ListingBase<IProxy<T>>
     {
         public InstantSql() { }
 
@@ -18,7 +18,7 @@ namespace Undersoft.SDK.Instant.Sql
         public InstantSqlContext Context { get; }
     }
 
-    public class Sqlset : RegistrySeries<IProxy>
+    public class Sqlset : ListingBase<IProxy>
     {
         public Sqlset() { }
 

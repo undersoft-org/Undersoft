@@ -9,7 +9,7 @@ namespace Undersoft.SSC.Service.Server;
 public class Startup
 {
     public IConfiguration Configuration { get; }
-    public IServiceManager ServiceManager { get; set; }
+    public IServiceManager? ServiceManager { get; set; }
 
     public Startup(IConfiguration configuration)
     {
@@ -29,13 +29,13 @@ public class Startup
                     typeof(EventStore),
                     typeof(EntryStore),
                     typeof(ReportStore)
-                },
-                new[] { typeof(ApplicationClient) }
+                }
+                //, new[] { typeof(ApplicationClient) }
             )
             .AddAccountServer<AccountStore>()
-            .AddDataServer<IDataServiceStore>(
-                DataServerTypes.All,
-                builder => builder.AddAccountServices<Authorization>()
+            .AddDataServer<IDataStore>(
+                DataServerTypes.All
+                ,builder => builder.AddAccountServices<Authorization>()
             );
         ServiceManager = setup.Manager;
     }

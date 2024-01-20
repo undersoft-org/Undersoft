@@ -17,7 +17,7 @@ using System.Security.Claims;
 using Claim = System.Security.Claims.Claim;
 using Undersoft.SDK.Security.Identity;
 
-namespace Undersoft.SDK.Service.Server.Account;
+namespace Undersoft.SDK.Service.Server.Accounts;
 
 public class AccountManager : TypedRegistry<IAccount>, IAccountManager
 {

@@ -7,7 +7,7 @@
     using Instant.Rubrics;
     using Undersoft.SDK.Instant.Series;
 
-    public class MathSetRoutine : RegistrySeries<MathSetFormula>
+    public class MathSetRoutine : ListingBase<MathSetFormula>
     {
         public MathSetRoutine(IInstantSeries data)
         {

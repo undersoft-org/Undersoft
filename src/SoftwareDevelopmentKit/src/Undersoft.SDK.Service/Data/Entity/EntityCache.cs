@@ -10,7 +10,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 namespace Undersoft.SDK.Service.Data.Entity
 {
     public class EntityCache<TStore, TEntity> : StoreCache<TStore>, IEntityCache<TStore, TEntity>
-        where TEntity : IOrigin
+        where TEntity : IIdentifiable
     {
         public EntityCache(IStoreCache<TStore> datacache) : base()
         {
@@ -19,21 +19,21 @@ namespace Undersoft.SDK.Service.Data.Entity
                 Mapper = datacache.Mapper;
                 base.cache = datacache;
                 int seed = typeof(TEntity).GetDataTypeId();
-                if (!base.Catalog.TryGet(seed, out IOrigin deck))
+                if (!base.Catalog.TryGet(seed, out IIdentifiable deck))
                 {
-                    deck = new TypedRegistry<IOrigin>();
+                    deck = new TypedRegistry<IIdentifiable>();
                     base.Catalog.Add(seed, deck);
                 }
-                cache = (ITypedSeries<IOrigin>)deck;
+                cache = (ITypedSeries<IIdentifiable>)deck;
 
                 TypeId = seed;
                 base.TypeId = typeof(TStore).GetDataTypeId();
             }
         }
 
-        protected override ITypedSeries<IOrigin> cache { get; set; }
+        protected override ITypedSeries<IIdentifiable> cache { get; set; }
 
-        public ITypedSeries<IOrigin> CacheSet()
+        public ITypedSeries<IIdentifiable> CacheSet()
         {
             return CacheSet<TEntity>();
         }
@@ -43,14 +43,14 @@ namespace Undersoft.SDK.Service.Data.Entity
             return Lookup<TEntity>(keys);
         }
 
-        public ISeries<IOrigin> Lookup(Tuple<string, object> valueNamePair)
+        public ISeries<IIdentifiable> Lookup(Tuple<string, object> valueNamePair)
         {
             return Lookup<TEntity>(
-                (m) => (ISeries<IOrigin>)m.Get(valueNamePair.Item2, valueNamePair.Item1.UniqueKey32())
+                (m) => (ISeries<IIdentifiable>)m.Get(valueNamePair.Item2, valueNamePair.Item1.UniqueKey32())
             );
         }
 
-        public ISeries<IOrigin> Lookup(Func<ITypedSeries<IOrigin>, ISeries<IOrigin>> selector)
+        public ISeries<IIdentifiable> Lookup(Func<ITypedSeries<IIdentifiable>, ISeries<IIdentifiable>> selector)
         {
             return Lookup<TEntity>(selector);
         }
@@ -66,14 +66,14 @@ namespace Undersoft.SDK.Service.Data.Entity
         }
 
         public TEntity[] Lookup(
-            Func<ISeries<IOrigin>, IOrigin> key,
-            params Func<ITypedSeries<IOrigin>, ISeries<IOrigin>>[] selectors
+            Func<ISeries<IIdentifiable>, IIdentifiable> key,
+            params Func<ITypedSeries<IIdentifiable>, ISeries<IIdentifiable>>[] selectors
         )
         {
             return Lookup<TEntity>(key, selectors);
         }
 
-        public ISeries<IOrigin> Lookup(object key, string propertyNames)
+        public ISeries<IIdentifiable> Lookup(object key, string propertyNames)
         {
             return Lookup<TEntity>(key, propertyNames);
         }
@@ -108,7 +108,7 @@ namespace Undersoft.SDK.Service.Data.Entity
             return await MemorizeAsync<TEntity>(item, names);
         }
 
-        public override ITypedSeries<IOrigin> Catalog => cache;
+        public override ITypedSeries<IIdentifiable> Catalog => cache;
 
         public override long TypeId { get; set; }
     }

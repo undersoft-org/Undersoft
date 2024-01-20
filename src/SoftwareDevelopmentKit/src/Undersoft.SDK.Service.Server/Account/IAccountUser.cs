@@ -3,7 +3,7 @@ using Undersoft.SDK.Uniques;
 using System.Security.Claims;
 using Undersoft.SDK.Security.Identity;
 
-namespace Undersoft.SDK.Service.Server.Account
+namespace Undersoft.SDK.Service.Server.Accounts
 {
     public interface IAccountUser : IIdentifiable
     {

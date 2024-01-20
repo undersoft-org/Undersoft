@@ -83,12 +83,6 @@ public class CacheSeriesItem<V> : SeriesItemBase<V>
         }
     }
 
-    public override V UniqueObject
-    {
-        get => this.Value;
-        set => this.Value = value;
-    }
-
     public override int CompareTo(ISeriesItem<V> other)
     {
         return (int)(Id - other.Id);
@@ -147,7 +141,7 @@ public class CacheSeriesItem<V> : SeriesItemBase<V>
     public override void Set(V value)
     {
         this.Value = value;
-        if (this.value is IUnique<V>)
-            _key = ((IUnique<V>)value).CompactKey();
+        if (IsUnique)
+            _key = ((IUnique)value).Id;
     }
 }

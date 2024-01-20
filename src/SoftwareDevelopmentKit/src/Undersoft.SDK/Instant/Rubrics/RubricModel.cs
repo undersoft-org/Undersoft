@@ -4,11 +4,12 @@
     using System.Reflection;
     using Undersoft.SDK.Uniques;
 
-    public class RubricModel : IUnique
+    public class RubricModel : Identifiable
     {
-        public RubricModel(MemberRubric member)
+        public RubricModel(MemberRubric member) : base()
         {
             SetMember(member);
+            Id = Name.UniqueKey();            
         }
 
         public MemberInfo SetMember(MemberRubric member)
@@ -56,42 +57,5 @@
         public MethodInfo Getter { get; set; }
         public MethodInfo Setter { get; set; }
         public Type FieldType { get; set; }
-
-        public IUnique Empty => throw new NotImplementedException();
-        public long Id
-        {
-            get => Name.UniqueKey64();
-            set => throw new NotImplementedException();
-        }
-        public long TypeId
-        {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
-        }
-        public string CodeNo
-        {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
-        }
-
-        public int CompareTo(IUnique other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Equals(IUnique other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public byte[] GetBytes()
-        {
-            throw new NotImplementedException();
-        }
-
-        public byte[] GetIdBytes()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

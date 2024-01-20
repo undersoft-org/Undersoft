@@ -19,8 +19,7 @@
 
         public T PatchFrom(T source)
         {
-            ((object)this).PatchFrom(source);
-            base.PatchSelf();
+            source.PatchTo(this.source);
             return (T)(base.source.Target);
         }
 
@@ -38,8 +37,7 @@
 
         public T PutFrom(T source)
         {
-            ((object)this).PutFrom(source);
-            base.PutSelf();
+            source.PutFrom(this.source);
             return (T)(base.source.Target);
         }
 

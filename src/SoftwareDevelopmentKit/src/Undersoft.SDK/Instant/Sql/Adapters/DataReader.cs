@@ -23,7 +23,7 @@
             m_resultset = resultset.Rubrics;
             x_size = resultset.Rubrics.Count;
             m_values = resultset
-                .Select(p => new object[] { p.Code }.Concat(((IValueArray)p).ValueArray).ToArray())
+                .Select(p => (((IValueArray)p).ValueArray).ToArray())
                 .ToArray();
             y_size = m_values.Length;
         }
@@ -32,10 +32,10 @@
         {
             if (resultset.Length > 0)
             {
-                m_resultset = resultset.First().InstantSeriesCreator.Rubrics;
+                m_resultset = resultset.First().InstantSeries.Rubrics;
                 x_size = m_resultset.Count;
                 m_values = resultset
-                    .Select(p => new object[] { p.Code }.Concat(p.ValueArray).ToArray())
+                    .Select(p => (((IValueArray)p.Value).ValueArray).ToArray())
                     .ToArray();
                 y_size = m_values.Length;
             }

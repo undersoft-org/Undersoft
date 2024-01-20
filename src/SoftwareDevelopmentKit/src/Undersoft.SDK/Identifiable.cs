@@ -18,11 +18,12 @@ namespace Undersoft.SDK
 
         public Identifiable(bool autoId)
         {
+            IsNew = true;
+
             if (!autoId)
                 return;
 
             code.SetId(Unique.NewId);
-            IsNew = true;
         }
 
         [NotMapped]
@@ -146,6 +147,16 @@ namespace Undersoft.SDK
             else
                 return SetId(id.UniqueKey64());
         }
+
+        //public int CompareTo(IIdentifiable other)
+        //{
+        //    return ((IComparable<IUnique>)code).CompareTo(other);
+        //}
+
+        //public bool Equals(IIdentifiable other)
+        //{
+        //    return ((IEquatable<IIdentifiable>)code).Equals(other);
+        //}
     }
 
 

@@ -10,7 +10,7 @@ public class Contract : Member, IModel
     public Contract() { Group = MemberGroup.Organization; }
 
     [Detail]
-    public Contracts.Details.Account? Identity { get; set; }
+    public Contracts.Account? Identity { get; set; }
 
     [Detail]
     public Personal? Personal { get; set; }

@@ -5,7 +5,7 @@
     using Undersoft.SDK;
     using Undersoft.SDK.Uniques;
 
-    public abstract class BaseTypedCatalog<V> : CatalogTypedSeries<V> where V : IOrigin
+    public abstract class TypedCatalogBase<V> : TypedChainBase<V> where V : IIdentifiable
     {
         protected static readonly int WAIT_READ_TIMEOUT = 5000;
         protected static readonly int WAIT_REHASH_TIMEOUT = 5000;
@@ -16,7 +16,7 @@
         protected ManualResetEventSlim writeAccess = new ManualResetEventSlim(true, 128);
         protected SemaphoreSlim writePass = new SemaphoreSlim(1);
 
-        public BaseTypedCatalog(
+        public TypedCatalogBase(
             IEnumerable<IUnique<V>> collection,
             int capacity = 17,
             HashBits bits = HashBits.bit64
@@ -26,7 +26,7 @@
                 this.Add(c);
         }
 
-        public BaseTypedCatalog(
+        public TypedCatalogBase(
             IEnumerable<V> collection,
             int capacity = 17,
             HashBits bits = HashBits.bit64
@@ -36,7 +36,7 @@
                 this.Add(c);
         }
 
-        public BaseTypedCatalog(
+        public TypedCatalogBase(
             IList<IUnique<V>> collection,
             int capacity = 17,
             HashBits bits = HashBits.bit64
@@ -46,14 +46,14 @@
                 this.Add(c);
         }
 
-        public BaseTypedCatalog(IList<V> collection, int capacity = 17, HashBits bits = HashBits.bit64)
+        public TypedCatalogBase(IList<V> collection, int capacity = 17, HashBits bits = HashBits.bit64)
             : this(capacity > collection.Count ? capacity : collection.Count, bits)
         {
             foreach (var c in collection)
                 this.Add(c);
         }
 
-        public BaseTypedCatalog(int capacity = 17, HashBits bits = HashBits.bit64)
+        public TypedCatalogBase(int capacity = 17, HashBits bits = HashBits.bit64)
             : base(capacity, bits) { }
 
         public override void Clear()

@@ -11,7 +11,7 @@
     using Math;
     using Undersoft.SDK.Instant.Math;
 
-    public abstract class InstantRegistry : BaseRegistry<IInstant>, IInstantSeries
+    public abstract class InstantRegistry : RegistryBase<IInstant>, IInstantSeries
     {
         public IInstantCreator Instant { get; set; }
 
@@ -37,27 +37,27 @@
 
         public override ISeriesItem<IInstant> EmptyItem()
         {
-            return new InstantSeriesItem(this);
+            return new InstantSeriesItem();
         }
 
         public override ISeriesItem<IInstant> NewItem(long key, IInstant value)
         {
-            return new InstantSeriesItem(key, value, this);
+            return new InstantSeriesItem(key, value);
         }
 
         public override ISeriesItem<IInstant> NewItem(object key, IInstant value)
         {
-            return new InstantSeriesItem(key, value, this);
+            return new InstantSeriesItem(key, value);
         }
 
         public override ISeriesItem<IInstant> NewItem(IInstant value)
         {
-            return new InstantSeriesItem(value, this);
+            return new InstantSeriesItem(value);
         }
 
         public override ISeriesItem<IInstant> NewItem(ISeriesItem<IInstant> value)
         {
-            return new InstantSeriesItem(value, this);
+            return new InstantSeriesItem(value);
         }
 
         public override ISeriesItem<IInstant>[] EmptyTable(int size)

@@ -12,6 +12,8 @@
         private static readonly int BACK_LOG_HOURS = -1;
         private static readonly int BACK_LOG_MINUTES = -1;
         private static readonly JsonSerializerOptions jsonOptions;
+        private static Task loggingTask;
+        private static CancellationTokenSource cancellation = new CancellationTokenSource();
         private static int _logLevel = 2;
         private static bool cleaningEnabled = false;
         private static DateTime clearLogTime;
@@ -89,7 +91,7 @@
             if (!threadLive)
             {
                 threadLive = true;
-                Task.Run(logging);
+                loggingTask = Task.Run(logging, cancellation.Token);
             }
         }
 
@@ -103,9 +105,8 @@
                     await Task.Delay(1000);
                     int count = logQueue.Count;
                     for (int i = 0; i < count; i++)
-                    {
-                        Starlog log;
-                        if (logQueue.TryDequeue(out log))
+                    {                 
+                        if (logQueue.TryDequeue(out Starlog log))
                         {
                             if (handler != null)
                             {
@@ -118,7 +119,17 @@
                         ClearLog();
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex) 
+            {
+                Stop();
+                throw ex;
+            }
+        }
+
+        private static void Stop()
+        {
+            cancellation.Cancel();
+            threadLive = false;
         }
 
         private static JsonSerializerOptions JsonOptionsBuilder()

@@ -9,7 +9,7 @@ namespace Undersoft.SDK
     {
     }
 
-    public interface IOrigin : IUnique, INotifyPropertyChanged
+    public interface IOrigin : IIdentifiable, INotifyPropertyChanged
     {
         string CodeNo { get; set; }
         DateTime Created { get; set; }

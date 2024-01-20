@@ -18,7 +18,7 @@ public class ScheduleMappings : EntityTypeMapping<Schedule>
 
         modelBuilder
             .ApplyIdentifiers<Schedule>()
-            .RelateSetToSet<Schedule, Activity>(r => r.Schedules, r => r.Activities)
+            .RelateSetToSet<Schedule, Activity>(r => r.Schedules, r => r.Activities, ExpandSite.OnRight)
             .RelateSetToSet<Schedule, Setting>(
                 r => r.Schedules,
                 r => r.Settings,

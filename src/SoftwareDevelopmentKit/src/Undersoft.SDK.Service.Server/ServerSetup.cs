@@ -11,12 +11,12 @@ using System.Reflection;
 
 namespace Undersoft.SDK.Service.Server;
 
-using Account.Email;
-using Account;
+using Accounts.Email;
+using Accounts;
 using Documentation;
 using Infrastructure.Repository.Source;
 using Infrastructure.Store;
-using Undersoft.SDK.Service.Server.Account;
+using Undersoft.SDK.Service.Server.Accounts;
 
 public partial class ServerSetup : ServiceSetup, IServerSetup
 {
@@ -43,7 +43,7 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
     public IServerSetup AddDataServer<TServiceStore>(
         DataServerTypes dataServerTypes,
         Action<DataServerBuilder> builder = null
-    ) where TServiceStore : IDataServiceStore
+    ) where TServiceStore : IDataStore
     {
         DataServerBuilder.ServiceTypes = dataServerTypes;
         if ((dataServerTypes & DataServerTypes.OData) > 0)
@@ -241,15 +241,13 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
         Type[] clientTypes = null
     )
     {
-        Assemblies ??= assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
-
-        base.ConfigureServices(Assemblies, sourceTypes, clientTypes)
+        base.ConfigureServices(sourceTypes, clientTypes)
             .Services.AddHttpContextAccessor();
 
-        AddServerSetupInternalImplementations(Assemblies);
-        AddServerSetupInternalActionImplementations(Assemblies);
-        AddServerSetupRemoteImplementations(Assemblies);
-        AddServerSetupRemoteActionImplementations(Assemblies);
+        AddServerSetupInternalImplementations();
+        AddServerSetupInternalActionImplementations();
+        AddServerSetupRemoteImplementations();
+        AddServerSetupRemoteActionImplementations();
 
         if (includeSwagger)
             AddSwagger();

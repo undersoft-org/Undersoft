@@ -20,15 +20,15 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
                 .ApplyIdentifiers<Member>()
                 .RelateSetToSet<Member, Activity>(
                     r => r.Members,
-                    r => r.Activities
+                    r => r.Activities ,ExpandSite.OnRight
                 )
                 .RelateSetToSet<Member, Resource>(
                     r => r.Members,
-                    r => r.Resources
+                    r => r.Resources, ExpandSite.OnRight
                 )
                 .RelateSetToSet<Member, Schedule>(
                     r => r.Members,
-                    r => r.Schedules
+                    r => r.Schedules, ExpandSite.OnRight
                 )
                 .RelateSetToSet<Member, Setting>(
                     r => r.Members,

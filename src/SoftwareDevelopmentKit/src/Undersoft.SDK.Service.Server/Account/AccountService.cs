@@ -1,7 +1,7 @@
 ﻿using Undersoft.SDK.Logging;
 using Undersoft.SDK.Security.Identity;
 
-namespace Undersoft.SDK.Service.Server.Account;
+namespace Undersoft.SDK.Service.Server.Accounts;
 
 public class AccountService
 {

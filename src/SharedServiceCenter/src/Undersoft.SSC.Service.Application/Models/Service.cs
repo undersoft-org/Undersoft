@@ -9,5 +9,5 @@ public class Service : ModelBase<Service, Detail, Setting, MemberGroup>, IModel
     public Service() { Group = MemberGroup.Servitizer; }
 
     [Detail]
-    public Contracts.Details.Account? Identity { get; set; }
+    public Contracts.Account? Identity { get; set; }
 }

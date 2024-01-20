@@ -5,15 +5,15 @@
     using Undersoft.SDK.Series;
     using Undersoft.SDK.Uniques;
 
-    public abstract class RegistryTypedSeries<V> : TypedSeriesBase<V> where V : IOrigin
+    public abstract class TypedListingBase<V> : TypedSeriesBase<V> where V : IIdentifiable
     {
         protected ISeriesItem<V>[] vector;
         protected bool repeatable;
         protected int repeated;
 
-        public RegistryTypedSeries() : this(17, HashBits.bit64) { }
+        public TypedListingBase() : this(17, HashBits.bit64) { }
 
-        public RegistryTypedSeries(
+        public TypedListingBase(
             IEnumerable<IUnique<V>> collection,
             int capacity = 17,
             bool repeatable = false,
@@ -24,7 +24,7 @@
                 this.Add(c);
         }
 
-        public RegistryTypedSeries(
+        public TypedListingBase(
             IEnumerable<V> collection,
             int capacity = 17,
             bool repeatable = false,
@@ -35,14 +35,14 @@
                 this.Add(c);
         }
 
-        public RegistryTypedSeries(bool repeatable, int capacity = 17, HashBits bits = HashBits.bit64)
+        public TypedListingBase(bool repeatable, int capacity = 17, HashBits bits = HashBits.bit64)
             : base(capacity, bits)
         {
             this.repeatable = repeatable;
             vector = EmptyVector(capacity);
         }
 
-        public RegistryTypedSeries(int capacity = 17, HashBits bits = HashBits.bit64)
+        public TypedListingBase(int capacity = 17, HashBits bits = HashBits.bit64)
             : base(capacity, bits)
         {
             vector = EmptyVector(capacity);
@@ -331,7 +331,7 @@
 
         protected override bool InnerAdd(V value)
         {
-            long key = unique.Key(value, (long)value.TypeId);
+            long key = unique.Key(value, value.TypeId);
 
             ulong pos = getPosition(key);
             ISeriesItem<V> item = table[pos];
@@ -489,7 +489,7 @@
 
         protected override ISeriesItem<V> InnerPut(V value)
         {
-            long key = unique.Key(value, (long)value.TypeId);
+            long key = unique.Key(value, value.TypeId);
             ulong pos = getPosition(key);
             ISeriesItem<V> item = table[pos];
 
@@ -618,7 +618,7 @@
 
         public override bool Contains(IUnique<V> item)
         {
-            return IndexOf(unique.Key(item), item.UniqueObject) > -1;
+            return IndexOf(unique.Key(item), item.UniqueValue) > -1;
         }
 
         public override bool Contains(V item)

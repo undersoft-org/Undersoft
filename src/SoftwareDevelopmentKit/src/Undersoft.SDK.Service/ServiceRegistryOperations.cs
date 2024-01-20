@@ -96,8 +96,9 @@ namespace Undersoft.SDK.Service
         public IServiceProvider GetProvider()
         {
             return (
-                (IServiceRegistryObject<IServiceProvider>)
-                    Get<IServiceRegistryObject<IServiceProvider>>()?.ImplementationInstance
+                (IServiceObject<IServiceProvider>)(
+                    Get<IServiceObject<IServiceProvider>>()?.ImplementationInstance
+                )
             ).Value;
         }
 

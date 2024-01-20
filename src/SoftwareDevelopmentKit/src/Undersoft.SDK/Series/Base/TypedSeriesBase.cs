@@ -9,13 +9,13 @@
     using System.ComponentModel;
     using Undersoft.SDK;
 
-    public abstract class TypedSeriesBase<V> : UniqueKey, IOrigin, ITypedSeries<V> where V : IOrigin
+    public abstract class TypedSeriesBase<V> : Identifiable, IIdentifiable, ITypedSeries<V> where V : IIdentifiable
     {
         internal const float RESIZING_VECTOR = 1.766f;
         internal const float CONFLICTS_PERCENT_LIMIT = 0.22f;
         internal const float REMOVED_PERCENT_LIMIT = 0.15f;
 
-        protected Uscn serialcode;
+        protected IUniqueKey unique = Unique.Bit64;
         protected ISeriesItem<V> first,
             last;
         protected ISeriesItem<V>[] table;
@@ -68,8 +68,11 @@
             --removed;
         }
 
-        public TypedSeriesBase(int capacity = 17, HashBits bits = HashBits.bit64) : base(bits)
+        public TypedSeriesBase(int capacity = 17, HashBits bits = HashBits.bit64)
         {
+            if (bits != HashBits.bit64)
+                unique = Unique.Bit32;
+
             size = capacity;
             minSize = capacity;
             maxId = (uint)(size - 1);
@@ -77,7 +80,7 @@
             first = EmptyItem();
             last = first;
             ValueEquals = getValueComparer();
-            serialcode = new Uscn(typeof(V).UniqueKey64());
+            code = new Uscn(typeof(V).UniqueKey64());
         }
 
         public TypedSeriesBase(
@@ -90,7 +93,7 @@
         }
 
         public TypedSeriesBase(
-            IList<IUnique<V>> collection,
+            IList<V> collection,
             int capacity = 17,
             HashBits bits = HashBits.bit64
         ) : this(capacity > collection.Count ? capacity : collection.Count, bits)
@@ -109,7 +112,7 @@
         }
 
         public TypedSeriesBase(
-            IEnumerable<IUnique<V>> collection,
+            IEnumerable<V> collection,
             int capacity = 17,
             HashBits bits = HashBits.bit64
         ) : this(capacity, bits)
@@ -205,7 +208,7 @@
                     throw new NotSupportedException();
             }
         }
-        public virtual V this[IUnique key]
+        public virtual V this[IIdentifiable key]
         {
             get => InnerGet(unique.Key(key, key.TypeId));
             set => InnerPut(unique.Key(key, key.TypeId), value);
@@ -220,7 +223,7 @@
             get => InnerGet(unique.Key(key, seed));
             set => InnerPut(unique.Key(key, seed), value);
         }
-        public virtual V this[IUnique key, long seed]
+        public virtual V this[IIdentifiable key, long seed]
         {
             get => InnerGet(unique.Key(key, seed));
             set => InnerPut(unique.Key(key, seed), value);
@@ -270,7 +273,7 @@
             return InnerGet(unique.Key(key, seed));
         }
 
-        public virtual V Get(IUnique key)
+        public virtual V Get(IIdentifiable key)
         {
             return InnerGet(unique.Key(key, key.TypeId));
         }
@@ -363,7 +366,7 @@
             return false;
         }
 
-        public bool TryGet(IUnique key, out ISeriesItem<V> output)
+        public bool TryGet(IIdentifiable key, out ISeriesItem<V> output)
         {
             return InnerTryGet(unique.Key(key, key.TypeId), out output);
         }
@@ -399,7 +402,7 @@
             return InnerGetItem(key);
         }
 
-        public ISeriesItem<V> GetItem(IUnique key)
+        public ISeriesItem<V> GetItem(IIdentifiable key)
         {
             return InnerGetItem(unique.Key(key, key.TypeId));
         }
@@ -435,7 +438,7 @@
             return massDeckImplementation.Set(key, value);
         }
 
-        public ISeriesItem<V> Set(IUnique key, V value)
+        public ISeriesItem<V> Set(IIdentifiable key, V value)
         {
             return InnerSet(unique.Key(key, key.TypeId), value);
         }
@@ -447,12 +450,12 @@
 
         public ISeriesItem<V> Set(V value)
         {
-            return InnerSet(unique.Key(value, (long)value.TypeId), value);
+            return InnerSet(unique.Key(value, value.TypeId), value);
         }
 
         public ISeriesItem<V> Set(IUnique<V> value)
         {
-            return InnerSet(unique.Key(value, value.TypeId), value.UniqueObject);
+            return InnerSet(unique.Key(value, value.TypeId), value.UniqueValue);
         }
 
         public ISeriesItem<V> Set(ISeriesItem<V> value)
@@ -527,7 +530,7 @@
             return (!TryGet(key, out ISeriesItem<V> item)) ? Put(key, sureaction.Invoke(key)) : item;
         }
 
-        public ISeriesItem<V> EnsureGet(IUnique key, Func<long, V> sureaction)
+        public ISeriesItem<V> EnsureGet(IIdentifiable key, Func<long, V> sureaction)
         {
             long _key = unique.Key(key, key.TypeId);
             return (!TryGet(_key, out ISeriesItem<V> item)) ? Put(key, sureaction.Invoke(_key)) : item;
@@ -676,7 +679,7 @@
 
         public virtual ISeriesItem<V> Put(IUnique<V> value)
         {
-            return InnerPut(unique.Key(value, value.TypeId), value.UniqueObject);
+            return InnerPut(unique.Key(value, value.TypeId), value.UniqueValue);
         }
 
         public virtual void Put(IList<IUnique<V>> value)
@@ -797,7 +800,7 @@
 
         public virtual void Add(IUnique<V> value)
         {
-            InnerAdd(unique.Key(value, value.TypeId), value.UniqueObject);
+            InnerAdd(unique.Key(value, value.TypeId), value.UniqueValue);
         }
 
         public virtual void Add(IList<IUnique<V>> value)
@@ -1093,7 +1096,7 @@
             return InnerContainsKey(key);
         }
 
-        public virtual bool ContainsKey(IUnique key)
+        public virtual bool ContainsKey(IIdentifiable key)
         {
             return InnerContainsKey(unique.Key(key, key.TypeId));
         }
@@ -1582,37 +1585,37 @@
             Dispose(true);
         }
 
-        public bool Equals(IUnique? other)
+        public bool Equals(IUnique other)
         {
-            return serialcode.Equals(other);
+            return code.Equals(other);
         }
 
-        public int CompareTo(IUnique? other)
+        public int CompareTo(IUnique other)
         {
-            return serialcode.CompareTo(other);
+            return code.CompareTo(other);
         }
 
         public IUnique Empty => Usid.Empty;
 
         public virtual long Id
         {
-            get => serialcode.Id;
-            set => serialcode.Id = value;
+            get => code.Id;
+            set => code.Id = value;
         }
 
         public virtual long TypeId
         {
-            get => serialcode.TypeId;
-            set => serialcode.TypeId = value;
+            get => code.TypeId;
+            set => code.TypeId = value;
         }
-        public string CodeNo { get => serialcode.ToString(); set => serialcode.FromTetrahex(value.ToCharArray()); }
+        public string CodeNo { get => code.ToString(); set => code.FromTetrahex(value.ToCharArray()); }
         public DateTime Created { get; set; }
         public string Creator { get; set; }
         public DateTime Modified { get; set; }
         public string Modifier { get; set; }
-        public int OriginId { get => (int)serialcode.OriginId; set => serialcode.OriginId = (uint)value; }
+        public int OriginId { get => (int)code.OriginId; set => code.OriginId = (uint)value; }
         public string TypeName { get; set; }
-        public DateTime Time { get => DateTime.FromBinary(serialcode.Time); set => serialcode.Time = value.ToBinary(); }
+        public DateTime Time { get => DateTime.FromBinary(code.Time); set => code.Time = value.ToBinary(); }
 
         public virtual long AutoId()
         {
@@ -1621,59 +1624,69 @@
 
         public byte GetPriority()
         {
-            return serialcode.GetPriority();
-        }
-
-        public TEntity Sign<TEntity>(TEntity entity) where TEntity : class, IOrigin
-        {
-            entity.AutoId();
-            Stamp(entity);
-            Created = Time;
-            return entity;
-        }
-
-        public TEntity Stamp<TEntity>(TEntity entity) where TEntity : class, IOrigin
-        {
-            entity.Time = DateTime.Now;
-            return entity;
-        }
-
-        public long SetId(long id)
-        {
-            long longid = id;
-            long key = Id;
-            if (longid != 0 && key != longid)
-                return (Id = longid);
-            return AutoId();
-        }
-
-        public long SetId(object id)
-        {
-            if (id == null)
-                return AutoId();
-            else if (id.GetType().IsPrimitive)
-                return SetId((long)id);
-            else
-                return SetId((long)id.UniqueKey64());
+            return code.GetPriority();
         }
 
         public byte[] GetBytes()
         {
-            return serialcode.GetBytes();
+            return code.GetBytes();
         }
 
         public byte[] GetIdBytes()
         {
-            return serialcode.GetIdBytes();
-        }
-        public void GetFlag(StateFlags state)
-        {
-            serialcode.GetFlag(state);
+            return code.GetIdBytes();
         }
 
-        public void SetFlag(StateFlags state, bool flag)
-        {
-            serialcode.SetFlag(state, flag);
-        }
+        //public TEntity Sign<TEntity>(TEntity entity) where TEntity : class, IIdentifiable
+        //{
+        //    entity.AutoId();
+        //    Stamp(entity);
+        //    Created = Time;
+        //    return entity;
+        //}
+
+        //public TEntity Stamp<TEntity>(TEntity entity) where TEntity : class, IIdentifiable
+        //{
+        //    entity.Time = DateTime.Now;
+        //    return entity;
+        //}
+
+        //public long SetId(long id)
+        //{
+        //    long longid = id;
+        //    long key = Id;
+        //    if (longid != 0 && key != longid)
+        //        return (Id = longid);
+        //    return AutoId();
+        //}
+
+        //public long SetId(object id)
+        //{
+        //    if (id == null)
+        //        return AutoId();
+        //    else if (id.GetType().IsPrimitive)
+        //        return SetId((long)id);
+        //    else
+        //        return SetId((long)id.UniqueKey64());
+        //}
+
+        //public byte[] GetBytes()
+        //{
+        //    return serialcode.GetBytes();
+        //}
+
+        //public byte[] GetIdBytes()
+        //{
+        //    return serialcode.GetIdBytes();
+        //}
+        //public void GetFlag(StateFlags state)
+        //{
+        //    serialcode.GetFlag(state);
+        //}
+
+        //public void SetFlag(StateFlags state, bool flag)
+        //{
+        //    serialcode.SetFlag(state, flag);
+        //}
     }
 }

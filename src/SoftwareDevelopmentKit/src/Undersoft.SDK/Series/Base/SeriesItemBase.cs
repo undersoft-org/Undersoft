@@ -67,7 +67,7 @@
             set => isUnique = value;
         }
 
-        public virtual V UniqueObject
+        public virtual V UniqueValue
         {
             get => value;
             set => this.value = value;
@@ -77,21 +77,16 @@
         {
             get
             {
-                if (IsUnique)
-                {
-                    var uniqueValue = (IUnique)UniqueObject;
-                    if (uniqueValue.TypeId == 0)
-                        uniqueValue.TypeId = typeof(V).UniqueKey32();
-                    return uniqueValue.TypeId;
-                }
+                if (IsUnique && (((IUnique)value).TypeId != 0))
+                    return ((IUnique)value).TypeId;
+
                 return typeof(V).UniqueKey32();
             }
             set
             {
                 if (IsUnique)
                 {
-                    var uniqueValue = (IUnique)UniqueObject;
-                    uniqueValue.TypeId = value;
+                    ((IUnique)this.value).TypeId = value;
                 }
             }
         }
@@ -102,10 +97,10 @@
             set => this.value = value;
         }
 
-        public virtual long CompactKey()
-        {
-            return (IsUnique) ? ((IUnique)UniqueObject).Id : Id;
-        }
+        //public virtual long CompactKey()
+        //{
+        //    return (IsUnique) ? ((IUnique)UniqueValue).Id : Id;
+        //}
 
         public virtual int CompareTo(ISeriesItem<V> other)
         {
@@ -169,15 +164,15 @@
 
         public abstract void Set(V value);
 
-        public virtual int[] UniqueOrdinals()
-        {
-            return null;
-        }
+        //public virtual int[] UniqueOrdinals()
+        //{
+        //    return null;
+        //}
 
-        public virtual object[] UniqueValues()
-        {
-            return new object[] { Id };
-        }
+        //public virtual object[] UniqueValues()
+        //{
+        //    return new object[] { Id };
+        //}
 
         public virtual ISeriesItem<V> MoveNext(ISeriesItem<V> item)
         {

@@ -12,7 +12,7 @@ public class User : ModelBase<User, Detail, Setting, MemberGroup>, IModel
     public User() { Group = MemberGroup.User; }
 
     [Detail]
-    public Contracts.Details.Account? Identity { get; set; }
+    public Contracts.Account? Identity { get; set; }
 
     [Detail]
     public Personal? Personal { get; set; }

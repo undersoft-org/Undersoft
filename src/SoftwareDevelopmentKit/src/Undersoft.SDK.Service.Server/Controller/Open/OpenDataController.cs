@@ -4,6 +4,8 @@ using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Server.Controller.Open;
 
+using Microsoft.AspNetCore.OData.Formatter;
+using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Operation.Command;
 using Operation.Query;
@@ -13,8 +15,9 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Server.Documentation;
 using Undersoft.SDK.Uniques;
 
-[IgnoreApi]
+//[IgnoreApi]
 [OpenDataService]
+[ODataAttributeRouting]
 public abstract class OpenDataController<TKey, TEntry, TReport, TEntity, TDto>
     : ODataController, IOpenDataController<TKey, TEntity, TDto>
     where TDto : class, IDataObject

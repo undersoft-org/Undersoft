@@ -16,7 +16,7 @@ using Undersoft.SDK.Service.Client;
 
 public class GrpcDataServerBuilder<TServiceStore>
     : DataServerBuilder,
-        IDataServerBuilder<TServiceStore> where TServiceStore : IDataServiceStore
+        IDataServerBuilder<TServiceStore> where TServiceStore : IDataStore
 {
     static bool grpcadded = false;
     IServiceRegistry _registry;

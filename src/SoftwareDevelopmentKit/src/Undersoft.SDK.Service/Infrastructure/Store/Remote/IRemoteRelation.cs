@@ -21,7 +21,7 @@ public interface IRemoteRelation<TOrigin, TTarget> : IRemoteRelation where TOrig
     Expression<Func<TTarget, bool>> CreatePredicate(object entity);
 }
 
-public interface IRemoteRelation : IUnique
+public interface IRemoteRelation : IIdentifiable
 {
     Towards Towards { get; set; }
 

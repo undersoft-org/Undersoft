@@ -19,11 +19,11 @@ using Undersoft.SDK.Service.Client.Remote;
 
 public partial class ServerSetup
 {
-    public IServerSetup AddServerSetupRemoteImplementations(Assembly[] assemblies)
+    public IServerSetup AddServerSetupRemoteImplementations()
     {
         IServiceRegistry service = registry;
 
-        assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
         var controllerTypes = assemblies
             .SelectMany(

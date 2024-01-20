@@ -4,7 +4,7 @@
     using System.Threading;
     using Undersoft.SDK.Uniques;
 
-    public abstract class BaseCatalog<V> : CatalogSeries<V>
+    public abstract class CatalogBase<V> : ChainBase<V>
     {
         internal const int WAIT_READ_TIMEOUT = 5000;
 
@@ -19,23 +19,12 @@
         internal readonly ManualResetEventSlim writeAccess = new ManualResetEventSlim(true, 128);
         internal readonly SemaphoreSlim writePass = new SemaphoreSlim(1);
 
-        protected BaseCatalog() : base() { }
+        protected CatalogBase() : base() { }
 
-        protected BaseCatalog(int capacity = 17, HashBits bits = HashBits.bit64)
-            : base(capacity, bits) { }
+        protected CatalogBase(int capacity = 17, HashBits bits = HashBits.bit64)
+            : base(capacity, bits) { }    
 
-        protected BaseCatalog(
-            IEnumerable<IUnique<V>> collection,
-            int capacity = 17,
-            HashBits bits = HashBits.bit64
-        ) : this(capacity, bits)
-        {
-            if (collection != null)
-                foreach (IUnique<V> c in collection)
-                    Add(c);
-        }
-
-        protected BaseCatalog(
+        protected CatalogBase(
             IEnumerable<V> collection,
             int capacity = 17,
             HashBits bits = HashBits.bit64
@@ -44,19 +33,9 @@
             if (collection != null)
                 foreach (V c in collection)
                     Add(c);
-        }
+        }    
 
-        protected BaseCatalog(
-            IList<IUnique<V>> collection,
-            int capacity = 17,
-            HashBits bits = HashBits.bit64
-        ) : this((capacity > collection.Count) ? capacity : collection.Count, bits)
-        {
-            foreach (IUnique<V> c in collection)
-                Add(c);
-        }
-
-        protected BaseCatalog(IList<V> collection, int capacity = 17, HashBits bits = HashBits.bit64)
+        protected CatalogBase(IList<V> collection, int capacity = 17, HashBits bits = HashBits.bit64)
             : this((capacity > collection.Count) ? capacity : collection.Count, bits)
         {
             foreach (V c in collection)

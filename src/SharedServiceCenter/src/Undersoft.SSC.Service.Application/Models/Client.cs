@@ -11,7 +11,7 @@ public class Client : ModelBase<Client, Detail, Setting, MemberGroup>, IModel
     public Client() { Group = MemberGroup.Client; }
 
     [Detail]
-    public Contracts.Details.Account? Identity { get; set; }
+    public Contracts.Account? Identity { get; set; }
 
     [Setting]
     public ProfileSetting? Profile { get; set; }

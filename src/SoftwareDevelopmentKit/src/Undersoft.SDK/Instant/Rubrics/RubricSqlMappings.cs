@@ -5,7 +5,7 @@
     using Undersoft.SDK.Uniques;
 
     [Serializable]
-    public class RubricSqlMappings : RegistrySeries<RubricSqlMapping>
+    public class RubricSqlMappings : ListingBase<RubricSqlMapping>
     {
         public override ISeriesItem<RubricSqlMapping>[] EmptyVector(int size)
         {

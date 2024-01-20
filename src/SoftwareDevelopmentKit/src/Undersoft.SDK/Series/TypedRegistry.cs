@@ -5,7 +5,7 @@
     using Undersoft.SDK;
     using Uniques;
 
-    public class TypedRegistry<V> : BaseTypedRegistry<V> where V : IOrigin
+    public class TypedRegistry<V> : TypedRegistryBase<V> where V : IIdentifiable
     {
         public TypedRegistry(IEnumerable<V> collection, int capacity = 17, bool repeatable = false)
             : base(collection, capacity, repeatable) { }

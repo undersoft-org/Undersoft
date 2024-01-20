@@ -4,7 +4,7 @@
     using System.Reflection;
 
     public interface IUniqueStructure
-        : IUnique,
+        : IIdentifiable,
             IEquatable<BitVector32>,
             IEquatable<DateTime>,
             IEquatable<IUniqueStructure>

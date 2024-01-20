@@ -615,16 +615,6 @@ public class Updater : IUpdater
         set => source.TypeId = value;
     }
 
-    public byte[] GetBytes()
-    {
-        return source.GetBytes();
-    }
-
-    public byte[] GetIdBytes()
-    {
-        return source.GetIdBytes();
-    }
-
     public object this[string propertyName]
     {
         get => GetPreset(propertyName);
@@ -670,7 +660,7 @@ public class Updater : IUpdater
         {
             int id = 0;
             var rubric = Rubrics[propertyName];
-            if (rubric != null && trackset.Contains(id = Rubrics[propertyName].RubricId))
+            if (rubric != null && trackset.Contains(id = rubric.RubricId))
             {
                 return preset[id];
             }

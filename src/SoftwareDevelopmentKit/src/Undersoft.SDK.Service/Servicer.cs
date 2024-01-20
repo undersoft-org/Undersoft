@@ -153,47 +153,47 @@ public class Servicer : ServiceManager, IServicer, IMediator
         return await Mediator.Send(request, cancellationToken);
     }
 
-    public Task<R> Serve<T, R>(Func<T, Task<R>> function) where T : class
+    public async Task<R> Serve<T, R>(Func<T, Task<R>> function) where T : class
     {
-        return Task.Run(async () =>
+        return await Task.Run(() =>
         {
-            using (Servicer us = new Servicer())
+            using (var us = CreateScope())
             {
-                return await function.Invoke(us.GetService<T>());
+                return function.Invoke(us.ServiceProvider.GetService<T>());
             }
         });
     }
 
-    public Task Serve<T>(Func<T, Task> function) where T : class
+    public async Task Serve<T>(Func<T, Task> function) where T : class
     {
-        return Task.Run(async () =>
+        await Task.Run(() =>
         {
-            using (Servicer us = new Servicer())
+            using (var scope = CreateScope())
             {
-                await function.Invoke(us.GetService<T>());
+                function.Invoke(scope.ServiceProvider.GetService<T>());
             }
         });
     }
 
-    public Task Serve<T>(string methodname, params object[] parameters) where T : class
+    public async Task Serve<T>(string methodname, params object[] parameters) where T : class
     {
-        return Task.Run(() =>
+        await Task.Run(async () =>
         {
-            using (Servicer us = new Servicer())
+            using (var us = CreateScope())
             {
-                Invoker deputy = new Invoker(us.EnsureGetRootService<T>(), methodname);
-                return deputy.Invoke(parameters);
+                Invoker deputy = new Invoker(us.ServiceProvider.GetService<T>(), methodname);
+                return await deputy.InvokeAsync(parameters);
             }
         });
     }
 
-    public Task<R> Serve<T, R>(string methodname, params object[] parameters) where T : class
+    public async Task<R> Serve<T, R>(string methodname, params object[] parameters) where T : class
     {
-        return Task.Run(async () =>
+        return await Task.Run(async () =>
         {
-            using (Servicer us = new Servicer())
+            using (var us = CreateScope())
             {
-                Invoker deputy = new Invoker(us.EnsureGetRootService<T>(), methodname);
+                Invoker deputy = new Invoker(us.ServiceProvider.GetService<T>(), methodname);
                 return await deputy.InvokeAsync<R>(parameters);
             }
         });

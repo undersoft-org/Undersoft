@@ -202,14 +202,29 @@
             return Task.Run(() => items.ToCatalog(callback));
         }
 
-        public static Task<Listing<TItem>> ToListingAsync<TItem>(this IEnumerable<TItem> items, IInvoker callback = null) where TItem : IIdentifiable
+        public static Task<Listing<TItem>> ToListingAsync<TItem>(this IEnumerable<TItem> items, IInvoker callback = null) 
         {
             return Task.Run(() => items.ToListing(callback));
         }
 
-        public static Listing<TItem> ToListing<TItem>(this IEnumerable<TItem> items, IInvoker callback = null) where TItem : IIdentifiable
+        public static Listing<TItem> ToListing<TItem>(this IEnumerable<TItem> items, IInvoker callback = null)
         {
             var listing = new Listing<TItem>(items);
+
+            if (callback == null) return listing;
+
+            callback.InvokeAsync(listing);
+            return listing;
+        }
+
+        public static Task<Chain<TItem>> ToChainAsync<TItem>(this IEnumerable<TItem> items, IInvoker callback = null)
+        {
+            return Task.Run(() => items.ToChain(callback));
+        }
+
+        public static Chain<TItem> ToChain<TItem>(this IEnumerable<TItem> items, IInvoker callback = null)
+        {
+            var listing = new Chain<TItem>(items);
 
             if (callback == null) return listing;
 

@@ -5,7 +5,7 @@ using Undersoft.SDK.Service.Data.Entity;
 using Undersoft.SDK.Service.Data.Object;
 
 [DataContract]
-public class Event : DataObject, IEvent
+public class Event : DataObject, IEvent, IEntity
 {
     [DataMember(Order = 12)]
     public virtual uint EventVersion { get; set; }

@@ -11,14 +11,15 @@ namespace Undersoft.SDK.Series.Base
     using System.ComponentModel;
     using Undersoft.SDK;
 
-    public abstract class SeriesBase<V> : UniqueKey, IOrigin, ISeries<V>, ISet<V>, IAsyncDisposable
+    public abstract class SeriesBase<V> : Identifiable, IIdentifiable, ISeries<V>, ISet<V>, IAsyncDisposable
     {
 
         internal const float RESIZING_VECTOR = 1.766F;
         internal const float CONFLICTS_PERCENT_LIMIT = 0.222F;
         internal const float REMOVED_PERCENT_LIMIT = 0.15F;
 
-        protected Uscn serialcode;
+        protected IUniqueKey unique = Unique.Bit64;
+
         protected ISeriesItem<V> first, last;
         protected ISeriesItem<V>[] table;
         protected readonly int minSize;
@@ -64,23 +65,25 @@ namespace Undersoft.SDK.Series.Base
             --removed;
         }
 
-        protected SeriesBase(int capacity = 17, HashBits bits = HashBits.bit64) : base(bits)
+        protected SeriesBase(int capacity = 17, HashBits bits = HashBits.bit64)
         {
+            if (bits != HashBits.bit64)
+                unique = Unique.Bit32;
+
             size = capacity;
             minSize = capacity;
             maxId = (uint)(capacity - 1);
             table = EmptyTable(capacity);
             first = EmptyItem();
             last = first;
-            ValueEquals = getValueComparer();
-            serialcode = new Uscn(typeof(V).UniqueKey64());
+            Equal = getValueComparer();
         }
         protected SeriesBase(IList<ISeriesItem<V>> collection, int capacity = 17, HashBits bits = HashBits.bit64) : this(capacity > collection.Count ? capacity : collection.Count, bits)
         {
             if (collection != null)
                 this.Add(collection);
         }
-        protected SeriesBase(IList<IUnique<V>> collection, int capacity = 17, HashBits bits = HashBits.bit64) : this(capacity > collection.Count ? capacity : collection.Count, bits)
+        protected SeriesBase(IList<V> collection, int capacity = 17, HashBits bits = HashBits.bit64) : this(capacity > collection.Count ? capacity : collection.Count, bits)
         {
             if (collection != null)
                 foreach (var c in collection)
@@ -91,7 +94,7 @@ namespace Undersoft.SDK.Series.Base
             if (collection != null)
                 this.Add(collection);
         }
-        protected SeriesBase(IEnumerable<IUnique<V>> collection, int capacity = 17, HashBits bits = HashBits.bit64) : this(capacity, bits)
+        protected SeriesBase(IEnumerable<V> collection, int capacity = 17, HashBits bits = HashBits.bit64) : this(capacity, bits)
         {
             if (collection != null)
                 foreach (var c in collection)
@@ -114,7 +117,7 @@ namespace Undersoft.SDK.Series.Base
         public virtual bool IsSynchronized { get; set; }
         public virtual bool IsRepeatable { get => false; }
         public virtual object SyncRoot { get; set; }
-        public virtual Func<V, V, bool> ValueEquals { get; }
+        public virtual Func<V, V, bool> Equal { get; }
 
         public virtual V this[int index]
         {
@@ -131,7 +134,7 @@ namespace Undersoft.SDK.Series.Base
             get => InnerGet(unique.Key(key));
             set => InnerPut(unique.Key(key), value);
         }
-        public virtual V this[IUnique key]
+        public virtual V this[IIdentifiable key]
         {
             get => InnerGet(unique.Key(key));
             set => InnerPut(unique.Key(key), value);
@@ -167,13 +170,9 @@ namespace Undersoft.SDK.Series.Base
         {
             return InnerGet(unique.Key(key));
         }
-        public virtual V Get(IUnique key)
+        public virtual V Get(IIdentifiable key)
         {
             return InnerGet(unique.Key(key));
-        }
-        public virtual V Get(IUnique<V> key)
-        {
-            return InnerGet(key.CompactKey());
         }
 
         protected virtual bool InnerTryGet(long key, out ISeriesItem<V> output)
@@ -204,13 +203,9 @@ namespace Undersoft.SDK.Series.Base
         {
             return InnerTryGet(unique.Key(key), out output);
         }
-        public virtual bool TryGet(IUnique key, out ISeriesItem<V> output)
+        public virtual bool TryGet(IIdentifiable key, out ISeriesItem<V> output)
         {
-            return InnerTryGet(unique.Key(key), out output);
-        }
-        public virtual bool TryGet(IUnique<V> key, out ISeriesItem<V> output)
-        {
-            return InnerTryGet(key.CompactKey(), out output);
+            return InnerTryGet(key.Id, out output);
         }
 
         public virtual bool TryGet(object key, out V output)
@@ -233,18 +228,10 @@ namespace Undersoft.SDK.Series.Base
             output = default(V);
             return false;
         }
-        public virtual bool TryGet(IUnique key, out V output)
+        public virtual bool TryGet(IIdentifiable key, out V output)
         {
             output = default;
-            if (!InnerTryGet(unique.Key(key), out ISeriesItem<V> _output))
-                return false;
-            output = _output.Value;
-            return true;
-        }
-        public virtual bool TryGet(IUnique<V> key, out V output)
-        {
-            output = default;
-            if (!InnerTryGet(key.CompactKey(), out ISeriesItem<V> _output))
+            if (!InnerTryGet(key.Id, out ISeriesItem<V> _output))
                 return false;
             output = _output.Value;
             return true;
@@ -275,13 +262,9 @@ namespace Undersoft.SDK.Series.Base
         {
             return InnerGetItem(unique.Key(key));
         }
-        public virtual ISeriesItem<V> GetItem(IUnique key)
+        public virtual ISeriesItem<V> GetItem(IIdentifiable key)
         {
             return InnerGetItem(unique.Key(key, key.TypeId));
-        }
-        public virtual ISeriesItem<V> GetItem(IUnique<V> key)
-        {
-            return InnerGetItem(key.CompactKey());
         }
         public abstract ISeriesItem<V> GetItem(int index);
 
@@ -296,15 +279,9 @@ namespace Undersoft.SDK.Series.Base
             return (!TryGet(key, out ISeriesItem<V> item)) ?
                 Put(key, sureaction.Invoke(key)) : item;
         }
-        public virtual ISeriesItem<V> EnsureGet(IUnique key, Func<long, V> sureaction)
+        public virtual ISeriesItem<V> EnsureGet(IIdentifiable key, Func<long, V> sureaction)
         {
             long _key = unique.Key(key);
-            return (!TryGet(_key, out ISeriesItem<V> item)) ?
-                Put(key, sureaction.Invoke(_key)) : item;
-        }
-        public virtual ISeriesItem<V> EnsureGet(IUnique<V> key, Func<long, V> sureaction)
-        {
-            long _key = key.CompactKey();
             return (!TryGet(_key, out ISeriesItem<V> item)) ?
                 Put(key, sureaction.Invoke(_key)) : item;
         }
@@ -335,21 +312,13 @@ namespace Undersoft.SDK.Series.Base
         {
             return InnerSet(key, value);
         }
-        public virtual ISeriesItem<V> Set(IUnique key, V value)
+        public virtual ISeriesItem<V> Set(IIdentifiable key, V value)
         {
             return InnerSet(unique.Key(key), value);
-        }
-        public virtual ISeriesItem<V> Set(IUnique<V> key, V value)
-        {
-            return InnerSet(key.CompactKey(), value);
         }
         public virtual ISeriesItem<V> Set(V value)
         {
             return InnerSet(value);
-        }
-        public virtual ISeriesItem<V> Set(IUnique<V> value)
-        {
-            return InnerSet(value.CompactKey(), value.UniqueObject);
         }
         public virtual ISeriesItem<V> Set(ISeriesItem<V> value)
         {
@@ -382,17 +351,6 @@ namespace Undersoft.SDK.Series.Base
             foreach (var value in values)
             {
                 if (InnerSet(value) != null)
-                    count++;
-            }
-
-            return count;
-        }
-        public virtual int Set(IEnumerable<IUnique<V>> values)
-        {
-            int count = 0;
-            foreach (var value in values)
-            {
-                if (Set(value) != null)
                     count++;
             }
 
@@ -441,8 +399,6 @@ namespace Undersoft.SDK.Series.Base
         }
         public virtual void Put(object value)
         {
-            if (value is IUnique<V>)
-                Put((IUnique<V>)value);
             if (value is V)
                 Put((V)value);
             else if (value is ISeriesItem<V>)
@@ -458,24 +414,7 @@ namespace Undersoft.SDK.Series.Base
         {
             foreach (V item in items)
                 InnerPut(item);
-        }
-        public virtual ISeriesItem<V> Put(IUnique<V> value)
-        {
-            return InnerPut(unique.Key(value), value.UniqueObject);
-        }
-        public virtual void Put(IList<IUnique<V>> value)
-        {
-            int i = 0, c = value.Count;
-            while (i < c)
-                Put(value[i++]);
-        }
-        public virtual void Put(IEnumerable<IUnique<V>> value)
-        {
-            foreach (IUnique<V> item in value)
-            {
-                Put(item);
-            }
-        }
+        }        
 
         protected abstract bool InnerAdd(long key, V value);
         protected abstract bool InnerAdd(V value);
@@ -525,23 +464,6 @@ namespace Undersoft.SDK.Series.Base
         {
             foreach (V item in items)
                 Add(item);
-        }
-        public virtual void Add(IUnique<V> value)
-        {
-            InnerAdd(unique.Key(value), value.UniqueObject);
-        }
-        public virtual void Add(IList<IUnique<V>> value)
-        {
-            int i = 0, c = value.Count;
-            while (i < c)
-                Add(value[i++]);
-        }
-        public virtual void Add(IEnumerable<IUnique<V>> value)
-        {
-            foreach (IUnique<V> item in value)
-            {
-                Add(item);
-            }
         }
         public virtual bool TryAdd(V value)
         {
@@ -811,7 +733,7 @@ namespace Undersoft.SDK.Series.Base
         {
             return InnerContainsKey(key);
         }
-        public virtual bool ContainsKey(IUnique key)
+        public virtual bool ContainsKey(IIdentifiable key)
         {
             return InnerContainsKey(unique.Key(key));
         }
@@ -819,11 +741,7 @@ namespace Undersoft.SDK.Series.Base
         public virtual bool Contains(ISeriesItem<V> item)
         {
             return InnerContainsKey(item.Id);
-        }
-        public virtual bool Contains(IUnique<V> item)
-        {
-            return InnerContainsKey(unique.Key(item));
-        }
+        }        
         public virtual bool Contains(V item)
         {
             return InnerContainsKey(unique.Key(item));
@@ -871,7 +789,7 @@ namespace Undersoft.SDK.Series.Base
                     if (mem.Removed)
                         return default(V);
 
-                    if (ValueEquals(mem.Value, item))
+                    if (Equals(mem.Value, item))
                     {
                         mem.Removed = true;
                         removedIncrement();
@@ -894,11 +812,7 @@ namespace Undersoft.SDK.Series.Base
         public virtual bool Remove(ISeriesItem<V> item)
         {
             return InnerRemove(item.Id).Equals(default(V)) ? false : true;
-        }
-        public virtual bool Remove(IUnique<V> item)
-        {
-            return InnerRemove(unique.Key(item)).Equals(default(V)) ? false : true;
-        }
+        }        
         public virtual bool TryRemove(object key)
         {
             V result = InnerRemove(unique.Key(key));
@@ -951,20 +865,7 @@ namespace Undersoft.SDK.Series.Base
             else
                 foreach (ISeriesItem<V> ves in this)
                     array[i++] = ves;
-        }
-        public virtual void CopyTo(IUnique<V>[] array, int arrayIndex)
-        {
-            int c = count, i = arrayIndex, l = array.Length;
-            if (l - i < c)
-            {
-                c = l - i;
-                foreach (ISeriesItem<V> ves in this.Take(c))
-                    array[i++] = ves;
-            }
-            else
-                foreach (ISeriesItem<V> ves in this)
-                    array[i++] = ves;
-        }
+        }        
         public virtual void CopyTo(Array array, int index)
         {
             int c = count, i = index, l = array.Length;
@@ -1043,7 +944,7 @@ namespace Undersoft.SDK.Series.Base
         protected virtual int IndexOf(long key, V value)
         {
             var item = GetItem(key);
-            if (item != null && ValueEquals(item.Value, value))
+            if (item != null && Equals(item.Value, value))
                 return item.Index;
             return -1;
         }
@@ -1202,7 +1103,7 @@ namespace Undersoft.SDK.Series.Base
 
         protected bool disposedValue = false;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public virtual event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void Dispose(bool disposing)
         {
@@ -1246,45 +1147,30 @@ namespace Undersoft.SDK.Series.Base
 
         public virtual bool Equals(IUnique other)
         {
-            return serialcode.Equals(other);
+            return code.Equals(other);
         }
 
-        public virtual int CompareTo(IUnique? other)
+        public virtual int CompareTo(IUnique other)
         {
-            return serialcode.CompareTo(other);
+            return code.CompareTo(other);
         }
 
         public IUnique Empty => Usid.Empty;
 
-        public virtual long Id
-        {
-            get => serialcode.Id;
-            set => serialcode.Id = value;
-        }
-
-        public virtual long TypeId
-        {
-            get => serialcode.TypeId;
-            set => serialcode.TypeId = value;
-        }
-        
-        public string CodeNo { get => serialcode.ToString(); set => serialcode.FromTetrahex(value.ToCharArray()); }
         public DateTime Created { get; set; }
         public string Creator { get; set; }
         public DateTime Modified { get; set; }
         public string Modifier { get; set; }
-        public int OriginId { get => (int)serialcode.OriginId; set => serialcode.OriginId = (uint)value; }
-        public string TypeName { get; set; }
-        public DateTime Time { get => DateTime.FromBinary(serialcode.Time); set => serialcode.Time = value.ToBinary(); }
+        public int OriginId { get => (int)code.OriginId; set => code.OriginId = (uint)value; }
 
         public virtual byte[] GetBytes()
         {
-            return serialcode.GetBytes();
+            return code.GetBytes();
         }
 
         public virtual byte[] GetIdBytes()
         {
-            return serialcode.GetIdBytes();
+            return code.GetIdBytes();
         }
 
         public virtual void ExceptWith(IEnumerable<V> other)
@@ -1326,59 +1212,6 @@ namespace Undersoft.SDK.Series.Base
         public virtual void UnionWith(IEnumerable<V> other)
         {
             this.Add(other);
-        }
-
-        public virtual long AutoId()
-        {
-            return Id = (long)(Unique.NewId);
-        }
-
-        public byte GetPriority()
-        {
-            return serialcode.GetPriority();
-        }
-
-        public TEntity Sign<TEntity>(TEntity entity) where TEntity : class, IOrigin
-        {
-            entity.AutoId();
-            Stamp(entity);
-            Created = Time;
-            return entity;
-        }
-
-        public TEntity Stamp<TEntity>(TEntity entity) where TEntity : class, IOrigin
-        {
-            entity.Time = DateTime.Now;
-            return entity;
-        }
-
-        public long SetId(long id)
-        {
-            long longid = id;
-            long key = Id;
-            if (longid != 0 && key != longid)
-                return (Id = longid);
-            return AutoId();
-        }
-
-        public long SetId(object id)
-        {
-            if (id == null)
-                return AutoId();
-            else if (id.GetType().IsPrimitive)
-                return SetId((long)id);
-            else
-                return SetId((long)id.UniqueKey64());
-        }
-
-        public void GetFlag(StateFlags state)
-        {
-            serialcode.GetFlag(state);
-        }
-
-        public void SetFlag(StateFlags state, bool flag)
-        {
-            serialcode.SetFlag(state, flag);
-        }
+        }      
     }
 }

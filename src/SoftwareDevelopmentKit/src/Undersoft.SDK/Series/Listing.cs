@@ -1,44 +1,50 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Undersoft.SDK.Series.Base;
 using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Series;
 
-public class Listing<TUnique> : KeyedCollection<long, TUnique>, IFindableSeries, IListing<TUnique> where TUnique : IIdentifiable
+public class Listing<V> : ListingBase<V>
 {
-    public Listing() : base()
-    {
+    public Listing(IEnumerable<V> collection, int capacity = 17, bool repeatable = false)
+        : base(collection, capacity, repeatable) { }
 
-    }
-    public Listing(IEnumerable<TUnique> list)
-    {
-        foreach (var item in list)
-            Add(item);
-    }
+    public Listing(bool repeatable = false, int capacity = 17) : base(repeatable, capacity) { }
 
-    protected override long GetKeyForItem(TUnique item)
+    public override ISeriesItem<V> EmptyItem()
     {
-        if (item.Id == 0)
-            return (long)(item.Id = (long)Unique.NewId);
-        return (long)item.Id;
+        return new SeriesItem<V>();
     }
 
-    public TUnique Single
+    public override ISeriesItem<V>[] EmptyTable(int size)
     {
-        get => this.FirstOrDefault();
+        return new SeriesItem<V>[size];
     }
 
-    public object this[object key]
+    public override ISeriesItem<V>[] EmptyVector(int size)
     {
-        get
-        {
-            TryGetValue((long)key.UniqueKey64(), out TUnique result);
-            return result;
-        }
-        set
-        {
-            Dictionary[(long)key.UniqueKey64()] = (TUnique)value;
-        }
+        return new SeriesItem<V>[size];
+    }
+
+    public override ISeriesItem<V> NewItem(ISeriesItem<V> item)
+    {
+        return new SeriesItem<V>(item);
+    }
+
+    public override ISeriesItem<V> NewItem(object key, V value)
+    {
+        return new SeriesItem<V>(key, value);
+    }
+
+    public override ISeriesItem<V> NewItem(long key, V value)
+    {
+        return new SeriesItem<V>(key, value);
+    }
+
+    public override ISeriesItem<V> NewItem(V value)
+    {
+        return new SeriesItem<V>(value);
     }
 }

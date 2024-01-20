@@ -8,7 +8,7 @@ using Instant.Rubrics;
 using Invoking;
 using Undersoft.SDK;
 
-public class TypedCache<V> : BaseTypedRegistry<V> where V : IOrigin
+public class TypedCache<V> : TypedRegistryBase<V> where V : IIdentifiable
 {
     private readonly Catalog<Timer> timers = new Catalog<Timer>();
 
@@ -23,27 +23,7 @@ public class TypedCache<V> : BaseTypedRegistry<V> where V : IOrigin
     }
 
     public TypedCache(
-        IEnumerable<IOrigin<V>> collection,
-        TimeSpan? lifeTime = null,
-        IInvoker callback = null,
-        int capacity = 17
-    ) : base(collection, capacity)
-    {
-        setupExpiration(lifeTime, callback);
-    }
-
-    public TypedCache(
         IEnumerable<V> collection,
-        TimeSpan? lifeTime = null,
-        IInvoker callback = null,
-        int capacity = 17
-    ) : base(collection, capacity)
-    {
-        setupExpiration(lifeTime, callback);
-    }
-
-    public TypedCache(
-        IList<IOrigin<V>> collection,
         TimeSpan? lifeTime = null,
         IInvoker callback = null,
         int capacity = 17
@@ -103,12 +83,12 @@ public class TypedCache<V> : BaseTypedRegistry<V> where V : IOrigin
         return new CacheSeriesItem<V>(value, duration, callback);
     }
 
-    protected virtual ITypedSeries<IOrigin> cache { get; set; }
+    protected virtual ITypedSeries<IIdentifiable> cache { get; set; }
 
-    protected virtual T InnerMemorize<T>(T item) where T : IOrigin
+    protected virtual T InnerMemorize<T>(T item) where T : IIdentifiable
     {
         int group = GetDataTypeId(typeof(T));
-        if (!cache.TryGet(group, out IOrigin catalog))
+        if (!cache.TryGet(group, out IIdentifiable catalog))
         {
             ProxyCreator sleeve = ProxyFactory.GetCreator(GetDataType(typeof(T)), group);
             sleeve.Create();
@@ -117,15 +97,15 @@ public class TypedCache<V> : BaseTypedRegistry<V> where V : IOrigin
 
             IProxy isleeve = item.ToProxy();
 
-            catalog = new TypedRegistry<IOrigin>();
+            catalog = new Registry<T>();
 
             foreach (MemberRubric keyRubric in keyrubrics)
             {
-                Registry<IOrigin> subcatalog = new Registry<IOrigin>();
+                Registry<IIdentifiable> subcatalog = new Registry<IIdentifiable>();
 
                 subcatalog.Add(item);
 
-                ((ITypedSeries<IOrigin>)catalog).Put(
+                ((ITypedSeries<IIdentifiable>)catalog).Put(
                     isleeve[keyRubric.RubricId],
                     keyRubric.RubricName.UniqueKey32(),
                     subcatalog);
@@ -140,7 +120,7 @@ public class TypedCache<V> : BaseTypedRegistry<V> where V : IOrigin
 
         if (!cache.ContainsKey(item))
         {
-            ITypedSeries<IOrigin> _catalog = (ITypedSeries<IOrigin>)catalog;
+            ITypedSeries<IIdentifiable> _catalog = (ITypedSeries<IIdentifiable>)catalog;
 
             IProxy isleeve = item.ToProxy();
 
@@ -149,17 +129,17 @@ public class TypedCache<V> : BaseTypedRegistry<V> where V : IOrigin
                 if (!_catalog.TryGet(
                     isleeve[keyRubric.RubricId],
                     keyRubric.RubricName.UniqueKey32(),
-                    out IOrigin outcatalog))
+                    out IIdentifiable outcatalog))
                 {
-                    outcatalog = new Registry<IOrigin>();
+                    outcatalog = new Registry<IIdentifiable>();
 
-                    ((ISeries<IOrigin>)outcatalog).Put(item);
+                    ((ISeries<IIdentifiable>)outcatalog).Put(item);
 
                     _catalog.Put(isleeve[keyRubric.RubricId], keyRubric.RubricName.UniqueKey32(), outcatalog);
                 }
                 else
                 {
-                    ((ISeries<IOrigin>)outcatalog).Put(item);
+                    ((ISeries<IIdentifiable>)outcatalog).Put(item);
                 }
             }
             cache.Add(item);
@@ -168,7 +148,7 @@ public class TypedCache<V> : BaseTypedRegistry<V> where V : IOrigin
         return item;
     }
 
-    protected virtual T InnerMemorize<T>(T item, params string[] names) where T : IOrigin
+    protected virtual T InnerMemorize<T>(T item, params string[] names) where T : IIdentifiable
     {
         Memorize(item);
 
@@ -176,62 +156,62 @@ public class TypedCache<V> : BaseTypedRegistry<V> where V : IOrigin
 
         MemberRubric[] keyrubrics = sleeve.Rubrics.Where(p => names.Contains(p.RubricName)).ToArray();
 
-        ITypedSeries<IOrigin> _catalog = (ITypedSeries<IOrigin>)cache.Get((ulong)item.TypeId);
+        ITypedSeries<IIdentifiable> _catalog = (ITypedSeries<IIdentifiable>)cache.Get((ulong)item.TypeId);
 
         foreach (MemberRubric keyRubric in keyrubrics)
         {
-            if (!_catalog.TryGet(sleeve[keyRubric.RubricId], keyRubric.RubricName.UniqueKey32(), out IOrigin outcatalog))
+            if (!_catalog.TryGet(sleeve[keyRubric.RubricId], keyRubric.RubricName.UniqueKey32(), out IIdentifiable outcatalog))
             {
-                outcatalog = new Registry<IOrigin>();
+                outcatalog = new Registry<IIdentifiable>();
 
-                ((ISeries<IOrigin>)outcatalog).Put(item);
+                ((ISeries<IIdentifiable>)outcatalog).Put(item);
 
                 _catalog.Put(sleeve[keyRubric.RubricId], keyRubric.RubricName.UniqueKey32(), outcatalog);
             }
             else
             {
-                ((ISeries<IOrigin>)outcatalog).Put(item);
+                ((ISeries<IIdentifiable>)outcatalog).Put(item);
             }
         }
 
         return item;
     }      
 
-    public virtual ITypedSeries<IOrigin> CacheSet<T>() where T : IOrigin
+    public virtual ITypedSeries<IIdentifiable> CacheSet<T>() where T : IIdentifiable
     {
-        if (cache.TryGet(GetDataTypeId(typeof(T)), out IOrigin catalog))
-            return (ITypedSeries<IOrigin>)catalog;
+        if (cache.TryGet(GetDataTypeId(typeof(T)), out IIdentifiable catalog))
+            return (ITypedSeries<IIdentifiable>)catalog;
         return null;
     }
 
-    public virtual T Lookup<T>(object keys) where T : IOrigin
+    public virtual T Lookup<T>(object keys) where T : IIdentifiable
     {
-        if (cache.TryGet(keys, GetDataTypeId(typeof(T)), out IOrigin output))
+        if (cache.TryGet(keys, GetDataTypeId(typeof(T)), out IIdentifiable output))
             return (T)output;
         return default;
     }
 
-    public virtual ISeries<IOrigin> Lookup<T>(Tuple<string, object> valueNamePair) where T : IOrigin
-    { return Lookup<T>((m) => (ISeries<IOrigin>)m.Get(valueNamePair.Item2, valueNamePair.Item2.UniqueKey32())); }
+    public virtual ISeries<IIdentifiable> Lookup<T>(Tuple<string, object> valueNamePair) where T : IIdentifiable
+    { return Lookup<T>((m) => (ISeries<IIdentifiable>)m.Get(valueNamePair.Item2, valueNamePair.Item2.UniqueKey32())); }
 
-    public virtual ISeries<IOrigin> Lookup<T>(Func<ITypedSeries<IOrigin>, ISeries<IOrigin>> selector) where T : IOrigin
+    public virtual ISeries<IIdentifiable> Lookup<T>(Func<ITypedSeries<IIdentifiable>, ISeries<IIdentifiable>> selector) where T : IIdentifiable
     { return selector(CacheSet<T>()); }
 
-    public virtual T Lookup<T>(T item) where T : IOrigin
+    public virtual T Lookup<T>(T item) where T : IIdentifiable
     {
         IProxy shell = item.ToProxy();
         IRubrics mrs = shell.Rubrics.KeyRubrics;
         T[] result = new T[mrs.Count];
         int i = 0;
-        if (cache.TryGet(GetDataTypeId(typeof(T)), out IOrigin catalog))
+        if (cache.TryGet(GetDataTypeId(typeof(T)), out IIdentifiable catalog))
         {
             foreach (MemberRubric mr in mrs)
             {
-                if (((ITypedSeries<IOrigin>)catalog).TryGet(
+                if (((ITypedSeries<IIdentifiable>)catalog).TryGet(
                     shell[mr.RubricId],
                     mr.RubricName.UniqueKey32(),
-                    out IOrigin outcatalog))
-                    if (((ISeries<IOrigin>)outcatalog).TryGet(item, out IOrigin output))
+                    out IIdentifiable outcatalog))
+                    if (((ISeries<IIdentifiable>)outcatalog).TryGet(item, out IIdentifiable output))
                         result[i++] = (T)output;
             }
         }
@@ -241,28 +221,28 @@ public class TypedCache<V> : BaseTypedRegistry<V> where V : IOrigin
         return result[0];
     }
 
-    public virtual T[] Lookup<T>(object key, params Tuple<string, object>[] valueNamePairs) where T : IOrigin
+    public virtual T[] Lookup<T>(object key, params Tuple<string, object>[] valueNamePairs) where T : IIdentifiable
     {
         return Lookup<T>(
             (k) => k[key],
             valueNamePairs.ForEach(
-                (vnp) => new Func<ITypedSeries<IOrigin>, ISeries<IOrigin>>(
-                    (m) => (ISeries<IOrigin>)m
+                (vnp) => new Func<ITypedSeries<IIdentifiable>, ISeries<IIdentifiable>>(
+                    (m) => (ISeries<IIdentifiable>)m
                                                                     .Get(vnp.Item2, vnp.Item1.UniqueKey32())))
                 .ToArray());
     }
 
     public virtual T[] Lookup<T>(
-        Func<ISeries<IOrigin>, IOrigin> key,
-        params Func<ITypedSeries<IOrigin>, ISeries<IOrigin>>[] selectors)
-        where T : IOrigin
+        Func<ISeries<IIdentifiable>, IIdentifiable> key,
+        params Func<ITypedSeries<IIdentifiable>, ISeries<IIdentifiable>>[] selectors)
+        where T : IIdentifiable
     {
-        if (cache.TryGet(GetDataTypeId(typeof(T)), out IOrigin catalog))
+        if (cache.TryGet(GetDataTypeId(typeof(T)), out IIdentifiable catalog))
         {
             T[] result = new T[selectors.Length];
             for (int i = 0; i < selectors.Length; i++)
             {
-                result[i] = (T)key(selectors[i]((ITypedSeries<IOrigin>)catalog));
+                result[i] = (T)key(selectors[i]((ITypedSeries<IIdentifiable>)catalog));
             }
             return result;
         }
@@ -270,29 +250,29 @@ public class TypedCache<V> : BaseTypedRegistry<V> where V : IOrigin
         return default;
     }
 
-    public virtual ISeries<IOrigin> Lookup<T>(object key, string propertyNames) where T : IOrigin
+    public virtual ISeries<IIdentifiable> Lookup<T>(object key, string propertyNames) where T : IIdentifiable
     {
-        if (CacheSet<T>().TryGet(key, propertyNames.UniqueKey32(), out IOrigin outcatalog))
-            return (ISeries<IOrigin>)outcatalog;
+        if (CacheSet<T>().TryGet(key, propertyNames.UniqueKey32(), out IIdentifiable outcatalog))
+            return (ISeries<IIdentifiable>)outcatalog;
         return default;
     }
 
-    public virtual T Lookup<T>(T item, params string[] propertyNames) where T : IOrigin
+    public virtual T Lookup<T>(T item, params string[] propertyNames) where T : IIdentifiable
     {
         IProxy ilValuator = item.ToProxy();
         MemberRubric[] mrs = ilValuator.Rubrics.Where(p => propertyNames.Contains(p.RubricName)).ToArray();
         T[] result = new T[mrs.Length];
 
-        if (cache.TryGet(GetDataTypeId(typeof(T)), out IOrigin catalog))
+        if (cache.TryGet(GetDataTypeId(typeof(T)), out IIdentifiable catalog))
         {
             int i = 0;
             foreach (MemberRubric mr in mrs)
             {
-                if (((ITypedSeries<IOrigin>)catalog).TryGet(
+                if (((ITypedSeries<IIdentifiable>)catalog).TryGet(
                     ilValuator[mr.RubricId],
                     mr.RubricName.UniqueKey32(),
-                    out IOrigin outcatalog))
-                    if (((ISeries<IOrigin>)outcatalog).TryGet(item, out IOrigin output))
+                    out IIdentifiable outcatalog))
+                    if (((ISeries<IIdentifiable>)outcatalog).TryGet(item, out IIdentifiable output))
                         result[i++] = (T)output;
             }
         }
@@ -302,27 +282,27 @@ public class TypedCache<V> : BaseTypedRegistry<V> where V : IOrigin
         return result[0];
     }
 
-    public virtual IEnumerable<T> Memorize<T>(IEnumerable<T> items) where T : IOrigin
+    public virtual IEnumerable<T> Memorize<T>(IEnumerable<T> items) where T : IIdentifiable
     { return items.ForEach(p => Memorize(p)); }
 
-    public virtual T Memorize<T>(T item) where T : IOrigin
+    public virtual T Memorize<T>(T item) where T : IIdentifiable
     {
         return InnerMemorize(item);
     }
 
-    public virtual T Memorize<T>(T item, params string[] names) where T : IOrigin
+    public virtual T Memorize<T>(T item, params string[] names) where T : IIdentifiable
     {
         if (InnerMemorize(item) != null)
             return InnerMemorize(item, names);
         return default(T);
     }
 
-    public virtual async Task<T> MemorizeAsync<T>(T item) where T : IOrigin
+    public virtual async Task<T> MemorizeAsync<T>(T item) where T : IIdentifiable
     { return await Task.Run(() => Memorize(item)); }
-    public virtual async Task<T> MemorizeAsync<T>(T item, params string[] names) where T : IOrigin
+    public virtual async Task<T> MemorizeAsync<T>(T item, params string[] names) where T : IIdentifiable
     { return await Task.Run(() => Memorize(item, names)); }
 
-    public virtual ITypedSeries<IOrigin> Catalog => cache;
+    public virtual ITypedSeries<IIdentifiable> Catalog => cache;
 
     public virtual Type GetDataType(object obj)
     {

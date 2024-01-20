@@ -41,7 +41,7 @@ namespace Undersoft.SDK.Service
          string connectionString)
         {
             switch (provider)
-            {                
+            {
                 case SourceProvider.MemoryDb:
                     return builder.UseInternalServiceProvider(new ServiceManager())
                         .UseInMemoryDatabase(connectionString)
@@ -54,6 +54,8 @@ namespace Undersoft.SDK.Service
                     break;
             }
 
+            builder.ConfigureWarnings(warnings => warnings
+                    .Ignore(CoreEventId.RedundantIndexRemoved));
             return builder;
         }
     }

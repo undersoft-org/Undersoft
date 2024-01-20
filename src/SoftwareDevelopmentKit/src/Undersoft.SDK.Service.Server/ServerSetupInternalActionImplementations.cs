@@ -16,11 +16,11 @@ using Undersoft.SDK.Service.Client;
 
 public partial class ServerSetup
 {
-    public IServerSetup AddServerSetupInternalActionImplementations(Assembly[] assemblies)
+    public IServerSetup AddServerSetupInternalActionImplementations()
     {
         IServiceRegistry service = registry;
 
-        assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
         IServiceCollection deck = service
             .AddTransient<ISeries<IModel>, Registry<IModel>>()

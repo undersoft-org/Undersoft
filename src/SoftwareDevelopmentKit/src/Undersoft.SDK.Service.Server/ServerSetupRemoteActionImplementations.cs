@@ -14,11 +14,11 @@ using Undersoft.SDK.Service.Server.Operation.Command;
 
 public partial class ServerSetup
 {
-    public IServerSetup AddServerSetupRemoteActionImplementations(Assembly[] assemblies)
+    public IServerSetup AddServerSetupRemoteActionImplementations()
     {
         IServiceRegistry service = registry;
 
-        assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
         var controllerTypes = assemblies
             .SelectMany(

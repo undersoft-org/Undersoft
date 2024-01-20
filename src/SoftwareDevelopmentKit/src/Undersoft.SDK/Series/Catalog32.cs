@@ -3,7 +3,7 @@
     using Undersoft.SDK.Uniques;
     using Base;
 
-    public class Catalog32<V> : BaseCatalog<V>
+    public class Catalog32<V> : CatalogBase<V>
     {
         public Catalog32(int _catalogSize = 9, HashBits bits = HashBits.bit64) : base(_catalogSize, bits)
         { }

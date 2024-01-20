@@ -5,7 +5,7 @@ using Undersoft.SDK.Uniques;
 namespace Undersoft.SDK.Series.Base
 {
 
-    public abstract class BaseRegistry<V> : RegistrySeries<V>
+    public abstract class RegistryBase<V> : ListingBase<V>
     {
         const int WAIT_READ_TIMEOUT = 5000;
         const int WAIT_REHASH_TIMEOUT = 5000;
@@ -19,31 +19,20 @@ namespace Undersoft.SDK.Series.Base
         readonly SemaphoreSlim writePass = new SemaphoreSlim(1);
 
 
-        public BaseRegistry() : this(false, 17, HashBits.bit64)
+        public RegistryBase() : this(false, 17, HashBits.bit64)
         {
         }
-        public BaseRegistry(int capacity = 17, HashBits bits = HashBits.bit64) : base(capacity, bits)
+        public RegistryBase(int capacity = 17, HashBits bits = HashBits.bit64) : base(capacity, bits)
         {
         }
-        public BaseRegistry(bool repeatable, int capacity = 17, HashBits bits = HashBits.bit64) : base(
+        public RegistryBase(bool repeatable, int capacity = 17, HashBits bits = HashBits.bit64) : base(
             repeatable,
             capacity,
             bits)
         {
         }
 
-        public BaseRegistry(
-            IEnumerable<IUnique<V>> collection,
-            int capacity = 17,
-            bool repeatable = false,
-            HashBits bits = HashBits.bit64) : this(repeatable, capacity, bits)
-        {
-            if (collection != null)
-                foreach (IUnique<V> c in collection)
-                    Add(c);
-        }
-
-        public BaseRegistry(
+        public RegistryBase(
             IEnumerable<V> collection,
             int capacity = 17,
             bool repeatable = false,

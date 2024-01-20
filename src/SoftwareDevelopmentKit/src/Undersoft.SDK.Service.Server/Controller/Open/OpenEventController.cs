@@ -5,13 +5,18 @@ using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Server.Controller.Open;
 
+using Microsoft.AspNetCore.OData.Formatter;
 using Operation.Command;
 using Operation.Query;
+using System.Text.Json;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Security.Identity;
+using Microsoft.AspNetCore.OData.Routing.Attributes;
 
 [OpenDataService]
-public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataController, IOpenEventController<TKey, TEntity, TDto> where TDto : class, IDataObject
+[ODataRouteComponent]
+public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataController, IOpenEventController<TKey, TEntity, TDto> where TDto : class, IDataObject, new()
     where TEntity : class, IDataObject
     where TStore : IDataServerStore
 {
@@ -43,20 +48,17 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataCo
     }
 
     [EnableQuery]
-    [HttpGet]
     public virtual IQueryable<TDto> Get()
     {
         return _servicer.Send(new GetQuery<TStore, TEntity, TDto>()).Result;
     }
 
     [EnableQuery]
-    [HttpGet]
     public virtual async Task<UniqueOne<TDto>> Get([FromRoute] TKey key)
     {
         return new UniqueOne<TDto>(await _servicer.Send(new FindQuery<TStore, TEntity, TDto>(_keymatcher(key))));
     }
 
-    [HttpPost]
     public virtual async Task<IActionResult> Post(TDto dto)
     {
         bool isValid = false;
@@ -75,7 +77,6 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataCo
                : Created(response);
     }
 
-    [HttpPatch]
     public virtual async Task<IActionResult> Patch([FromRoute] TKey key, TDto dto)
     {
         bool isValid = false;
@@ -96,7 +97,6 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataCo
                : Updated(response);
     }
 
-    [HttpPut]
     public virtual async Task<IActionResult> Put([FromRoute] TKey key, TDto dto)
     {
         bool isValid = false;
@@ -118,7 +118,6 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataCo
                : Updated(response);
     }
 
-    [HttpDelete]
     public virtual async Task<IActionResult> Delete([FromRoute] TKey key)
     {
         bool isValid = false;
@@ -136,5 +135,29 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataCo
         return !isValid
                ? UnprocessableEntity(response)
                : Ok(response);
+    }
+
+    [HttpPost(StoreRoutes.OpenDataRoute + "/[controller]({action})")]
+    public virtual async Task<IActionResult> Execute([FromRoute] string action ,ODataActionParameters parameters)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var dto = ((JsonElement)parameters[typeof(TDto).Name]).Deserialize<TDto>();
+
+        AccountAction actionEnum = AccountAction.None;
+        if (!Enum.TryParse<AccountAction>(action, out actionEnum))
+            return BadRequest(ModelState);
+
+        var result = await _servicer.Send(
+            new Execute<TStore, TDto, TDto, AccountAction>(
+                actionEnum,
+                dto
+            )
+        );
+
+        return !result.IsValid
+            ? UnprocessableEntity(result.ErrorMessages)
+            : Created(result.Response);
     }
 }

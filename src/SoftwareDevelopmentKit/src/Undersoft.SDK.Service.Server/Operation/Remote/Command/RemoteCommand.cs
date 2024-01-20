@@ -6,7 +6,7 @@ using Undersoft.SDK.Service.Data.Event;
 
 namespace Undersoft.SDK.Service.Server.Operation.Remote.Command;
 
-public class RemoteCommand<TModel> : RemoteCommandBase, IRequest<RemoteCommand<TModel>>, IUnique where TModel : class, IDataObject
+public class RemoteCommand<TModel> : RemoteCommandBase, IRequest<RemoteCommand<TModel>>, IIdentifiable where TModel : class, IDataObject
 {
     [JsonIgnore]
     public override TModel Model => base.Model as TModel;
@@ -31,26 +31,6 @@ public class RemoteCommand<TModel> : RemoteCommandBase, IRequest<RemoteCommand<T
 
     protected RemoteCommand(CommandMode commandMode, EventPublishMode publishMode, params object[] keys)
         : base(commandMode, publishMode, keys) { }
-
-    public byte[] GetBytes()
-    {
-        return Model.GetBytes();
-    }
-
-    public byte[] GetIdBytes()
-    {
-        return Model.GetIdBytes();
-    }
-
-    public bool Equals(IUnique other)
-    {
-        return Model.Equals(other);
-    }
-
-    public int CompareTo(IUnique other)
-    {
-        return Model.CompareTo(other);
-    }
 
     public override long Id
     {

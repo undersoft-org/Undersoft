@@ -39,7 +39,7 @@ public partial class ServiceRegistry
     public ServiceObject AddObject(Type type)
     {
         Type oaType = typeof(ServiceObject<>).MakeGenericType(type);
-        Type iaType = typeof(IServiceRegistryObject<>).MakeGenericType(type);
+        Type iaType = typeof(IServiceObject<>).MakeGenericType(type);
 
         ServiceObject accessor = (ServiceObject)oaType.New();
 
@@ -57,7 +57,7 @@ public partial class ServiceRegistry
     public ServiceObject AddObject(Type type, object obj)
     {
         Type oaType = typeof(ServiceObject<>).MakeGenericType(type);
-        Type iaType = typeof(IServiceRegistryObject<>).MakeGenericType(type);
+        Type iaType = typeof(IServiceObject<>).MakeGenericType(type);
 
         ServiceObject accessor = (ServiceObject)oaType.New(obj);
 
@@ -88,7 +88,7 @@ public partial class ServiceRegistry
         }
 
         Put(ServiceDescriptor.Singleton(typeof(ServiceObject<T>), accessor));
-        Put(ServiceDescriptor.Singleton(typeof(IServiceRegistryObject<T>), accessor));
+        Put(ServiceDescriptor.Singleton(typeof(IServiceObject<T>), accessor));
 
         if (accessor.Value != null)
             this.AddSingleton<T>(accessor.Value);
@@ -105,7 +105,7 @@ public partial class ServiceRegistry
     public T GetObject<T>()
         where T : class
     {
-        return GetSingleton<IServiceRegistryObject<T>>()?.Value;
+        return GetSingleton<IServiceObject<T>>()?.Value;
     }
 
     public T GetRequiredObject<T>()

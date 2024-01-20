@@ -16,7 +16,7 @@
             IProducerConsumerCollection<V>,
             IDisposable,
             IUnique,
-            IFindableSeries<V>, IOrigin
+            IFindableSeries<V>, IIdentifiable
     {
         ISeriesItem<V> First { get; }
         ISeriesItem<V> Last { get; }
@@ -30,47 +30,39 @@
 
         bool ContainsKey(long key);
         bool ContainsKey(object key);
-        bool ContainsKey(IUnique key);
+        bool ContainsKey(IIdentifiable key);
 
         bool Contains(ISeriesItem<V> item);
-        bool Contains(IUnique<V> item);
         bool Contains(long key, V item);
 
         V Get(object key);
         V Get(long key);
-        V Get(IUnique key);
-        V Get(IUnique<V> key);
+        V Get(IIdentifiable key);
 
         bool TryGet(object key, out ISeriesItem<V> output);
         bool TryGet(object key, out V output);
         bool TryGet(long key, out V output);
-        bool TryGet(IUnique key, out ISeriesItem<V> output);
-        bool TryGet(IUnique<V> key, out ISeriesItem<V> output);
+        bool TryGet(IIdentifiable key, out ISeriesItem<V> output);
 
         new V this[int index] { get; set; }
 
         ISeriesItem<V> GetItem(int id);
         ISeriesItem<V> GetItem(object key);
         ISeriesItem<V> GetItem(long key);
-        ISeriesItem<V> GetItem(IUnique key);
-        ISeriesItem<V> GetItem(IUnique<V> key);
+        ISeriesItem<V> GetItem(IIdentifiable key);
 
         ISeriesItem<V> Set(object key, V value);
         ISeriesItem<V> Set(long key, V value);
-        ISeriesItem<V> Set(IUnique key, V value);
-        ISeriesItem<V> Set(IUnique<V> key, V value);
+        ISeriesItem<V> Set(IIdentifiable key, V value);
         ISeriesItem<V> Set(V value);
-        ISeriesItem<V> Set(IUnique<V> value);
         ISeriesItem<V> Set(ISeriesItem<V> value);
         int Set(IEnumerable<V> values);
         int Set(IList<V> values);
         int Set(IEnumerable<ISeriesItem<V>> values);
-        int Set(IEnumerable<IUnique<V>> values);
 
         ISeriesItem<V> EnsureGet(object key, Func<long, V> ensureaction);
         ISeriesItem<V> EnsureGet(long key, Func<long, V> ensureaction);
-        ISeriesItem<V> EnsureGet(IUnique key, Func<long, V> ensureaction);
-        ISeriesItem<V> EnsureGet(IUnique<V> key, Func<long, V> ensureaction);
+        ISeriesItem<V> EnsureGet(IIdentifiable key, Func<long, V> ensureaction);
 
         ISeriesItem<V> New();
         ISeriesItem<V> New(long key);
@@ -83,9 +75,6 @@
         void Add(IEnumerable<ISeriesItem<V>> items);
         void Add(IList<V> items);
         void Add(IEnumerable<V> items);
-        void Add(IUnique<V> items);
-        void Add(IList<IUnique<V>> items);
-        void Add(IEnumerable<IUnique<V>> items);
 
         bool Enqueue(object key, V value);
         void Enqueue(ISeriesItem<V> item);
@@ -106,14 +95,10 @@
         void Put(IList<V> items);
         void Put(IEnumerable<V> items);
         ISeriesItem<V> Put(V value);
-        ISeriesItem<V> Put(IUnique<V> items);
-        void Put(IList<IUnique<V>> items);
-        void Put(IEnumerable<IUnique<V>> items);
 
         V Remove(object key);
         bool Remove(object key, V item);
         bool Remove(ISeriesItem<V> item);
-        bool Remove(IUnique<V> item);
         bool TryRemove(object key);
 
         void Renew(IEnumerable<V> items);
@@ -138,7 +123,6 @@
         ISeriesItem<V> NewItem(ISeriesItem<V> item);
 
         void CopyTo(ISeriesItem<V>[] array, int destIndex);
-        void CopyTo(IUnique<V>[] array, int arrayIndex);
 
         new void Clear();
 

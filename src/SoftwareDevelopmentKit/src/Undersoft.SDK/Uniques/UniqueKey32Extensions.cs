@@ -83,7 +83,7 @@
             return ptr.UniqueKey32(length, seed);
         }
 
-        public static Int32 GetHashCode(this IOrigin obj, long seed = 0)
+        public static Int32 GetHashCode(this IIdentifiable obj, long seed = 0)
         {
             return obj.UniqueBytes32(seed).ToInt32();
         }
@@ -226,14 +226,9 @@
             return Hasher32.ComputeBytes((byte*)ptr.ToPointer(), length, seed);
         }
 
-        public static Byte[] UniqueBytes32(this IOrigin obj)
+        public static Byte[] UniqueBytes32(this IIdentifiable obj)
         {
             return obj.Id.GetBytes().BitAggregate64to32();
-        }
-
-        public static Byte[] UniqueBytes32(this IUnique obj)
-        {
-            return obj.GetIdBytes().BitAggregate64to32();
         }
 
         public static Byte[] UniqueBytes32(this Object obj, long seed = 0)
@@ -243,8 +238,8 @@
 
             var t = obj.GetType();
 
-            if (t.IsAssignableTo(typeof(IUnique)))
-                return ((IUnique)obj).GetIdBytes();
+            if (t.IsAssignableTo(typeof(IIdentifiable)))
+                return ((IIdentifiable)obj).Id.GetBytes();
             if (t.IsValueType)
                 return getValueTypeUniqueBytes32((ValueType)obj, seed);
             if (t == typeof(string))
@@ -415,29 +410,14 @@
             return Hasher32.ComputeKey((byte*)ptr.ToPointer(), length, seed);
         }
 
-        public static Int32 UniqueKey32(this IOrigin obj)
+        public static Int32 UniqueKey32(this IIdentifiable obj)
         {
             return obj.UniqueBytes32().ToInt32();
         }
 
-        public static Int32 UniqueKey32(this IOrigin obj, long seed)
+        public static Int32 UniqueKey32(this IIdentifiable obj, long seed)
         {
             return Hasher32.ComputeKey(obj.Id.GetBytes(), seed);
-        }
-
-        public static Int32 UniqueKey32(this IUnique obj)
-        {
-            return obj.UniqueBytes32().ToInt32();
-        }
-
-        public static Int32 UniqueKey32(this IUnique obj, long seed)
-        {
-            return Hasher32.ComputeKey(obj.GetIdBytes(), seed);
-        }
-
-        public static Int32 UniqueKey32<V>(this IUnique<V> obj, long seed)
-        {
-            return UniqueKey32(obj.UniqueValues(), seed);
         }
 
         public static Int32 UniqueKey32(this Object obj, long seed = 0)

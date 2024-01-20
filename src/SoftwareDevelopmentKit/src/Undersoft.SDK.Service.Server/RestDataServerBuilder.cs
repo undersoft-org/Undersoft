@@ -9,7 +9,7 @@ using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Client;
 
-public class RestDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuilder<TStore> where TStore : IDataServiceStore
+public class RestDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuilder<TStore> where TStore : IDataStore
 {
     IServiceRegistry _registry;
 

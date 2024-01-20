@@ -1,4 +1,4 @@
-﻿namespace Undersoft.SDK.Service.Server.Account.Email;
+﻿namespace Undersoft.SDK.Service.Server.Accounts.Email;
 
 public class AccountEmailSenderOptions
 {

@@ -5,7 +5,7 @@
     using Base;
     using Undersoft.SDK;
 
-    public class TypedCatalog<V> : BaseTypedCatalog<V> where V : IOrigin
+    public class TypedCatalog<V> : TypedCatalogBase<V> where V : IOrigin
     {
         public TypedCatalog(
             IEnumerable<ISeriesItem<V>> collection,

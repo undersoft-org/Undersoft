@@ -155,19 +155,9 @@ public abstract class UniqueIdentifiable : InnerProxy, IUniqueIdentifiable
         return code.Equals(other);
     }
 
-    public override byte[] GetBytes()
-    {
-        return this.GetStructureBytes();
-    }
-
     public bool GetFlag(ushort position)
     {
         return code.GetFlagBit(position);
-    }
-
-    public override byte[] GetIdBytes()
-    {
-        return code.GetIdBytes();
     }
 
     public void SetFlag(ushort position)

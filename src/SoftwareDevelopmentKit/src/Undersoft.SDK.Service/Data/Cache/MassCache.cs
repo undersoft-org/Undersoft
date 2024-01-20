@@ -21,33 +21,33 @@ public static class GlobalCache
         );
     }
 
-    public static async Task<T> Lookup<T>(object keys) where T : IOrigin
+    public static async Task<T> Lookup<T>(object keys) where T : IIdentifiable
     {
         return await Task.Run((Func<T>)(() =>
         {
-            if (Catalog.TryGet(keys, (long)DataObjectExtensions.GetDataTypeId(typeof(T)), out IOrigin output))
+            if (Catalog.TryGet(keys, (long)DataObjectExtensions.GetDataTypeId(typeof(T)), out IIdentifiable output))
                 return (T)output;
             return default;
         }));
     }
 
-    public static T ToCache<T>(this T item) where T : IOrigin
+    public static T ToCache<T>(this T item) where T : IIdentifiable
     {
         return Catalog.Memorize(item);
     }
 
-    public static T ToCache<T>(this T item, params string[] names) where T : IOrigin
+    public static T ToCache<T>(this T item, params string[] names) where T : IIdentifiable
     {
         return Catalog.Memorize(item, names);
     }
 
-    public static async Task<T> ToCacheAsync<T>(this T item) where T : IOrigin
+    public static async Task<T> ToCacheAsync<T>(this T item) where T : IIdentifiable
     {
         return await Task.Run(() => item.ToCache()).ConfigureAwait(false);
     }
 
     public static async Task<T> ToCacheAsync<T>(this T item, params string[] names)
-        where T : IOrigin
+        where T : IIdentifiable
     {
         return await Task.Run(() => item.ToCache(names)).ConfigureAwait(false);
     }

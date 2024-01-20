@@ -14,29 +14,24 @@
         private static UniqueKey64 bit64 = new UniqueKey64();
         private static object holder = new object();
         private static long keyNumber = (long)DateTime.Now.Ticks;
-        private static ConcurrentQueue<ulong> keys = new ConcurrentQueue<ulong>();
+        private static ConcurrentQueue<long> keys;
         private static Random randomSeed = new Random((int)(DateTime.Now.Ticks.UniqueKey32()));
 
         static Unique()
         {
+            keys = new ConcurrentQueue<long>();
             generate();
         }
 
-        public static UniqueKey32 Bit32
-        {
-            get => bit32;
-        }
+        public static UniqueKey32 Bit32 => bit32;
 
-        public static UniqueKey64 Bit64
-        {
-            get => bit64;
-        }
+        public static UniqueKey64 Bit64 => bit64;  
 
         public static long NewId
         {
             get
             {
-                ulong key = 0;
+                long key = 0;
                 int counter = 0;
                 bool loop = false;
                 while (counter < WAIT_LOOPS)
@@ -52,7 +47,7 @@
                         break;
                     }
                 }
-                return (long)key;
+                return key;
             }
         }
 
@@ -65,7 +60,7 @@
                 for (int i = 0; i < count; i++)
                 {
                     long keyNo = nextKeyNumber();
-                    keys.Enqueue(Hasher64.ComputeKey(((byte*)&keyNo), 8, seed));
+                    keys.Enqueue((long)Hasher64.ComputeKey(((byte*)&keyNo), 8, seed));
                 }
             }
         }

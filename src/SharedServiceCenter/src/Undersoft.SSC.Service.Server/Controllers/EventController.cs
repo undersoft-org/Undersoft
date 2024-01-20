@@ -3,10 +3,12 @@ using Undersoft.SDK.Service.Server.Controller.Crud;
 using Undersoft.SDK.Service.Server.Controller.Open;
 using Undersoft.SDK.Service.Server.Controller.Stream;
 using Undersoft.SDK.Service.Infrastructure.Store;
+using Microsoft.AspNetCore.OData.Routing.Attributes;
 
 namespace Undersoft.SSC.Service.Server.Controllers
 {
     [AllowAnonymous]
+    [ODataRouteComponent(StoreRoutes.OpenDataRoute)]
     public class EventController : OpenEventController<long, IEventStore, Event, Event>
     {
         public EventController(IServicer ultimatr) : base(ultimatr) { }

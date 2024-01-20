@@ -9,12 +9,14 @@
     {
         object this[string propertyName] { get; set; }
 
-        object this[int fieldId] { get; set; }        
+        object this[int fieldId] { get; set; }
 
+        [IgnoreDataMember]
+        [JsonIgnore]
         Uscn Code { get; set; }
     }
 
-    public interface IValueArray : IInstant
+    public interface IValueArray 
     {
         object[] ValueArray { get; set; }
     }

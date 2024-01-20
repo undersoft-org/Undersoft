@@ -20,11 +20,11 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 public partial class ServerSetup
 {
-    public IServerSetup AddServerSetupInternalImplementations(Assembly[] assemblies)
+    public IServerSetup AddServerSetupInternalImplementations()
     {
         IServiceRegistry service = registry;
 
-        assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
+        Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
         service.AddValidatorsFromAssemblies(assemblies, ServiceLifetime.Singleton, null, true);
 

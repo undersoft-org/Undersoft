@@ -4,7 +4,7 @@ namespace Undersoft.SDK.Estimating
 {
     using Uniques;
 
-    public class EstimatorItem: UniqueObject
+    public class EstimatorItem: Identifiable
     {
         public string Name;
         public double[] Vector;

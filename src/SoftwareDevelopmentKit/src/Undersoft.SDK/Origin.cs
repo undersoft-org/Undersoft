@@ -89,16 +89,6 @@ namespace Undersoft.SDK
 
         }
 
-        public virtual byte[] GetBytes()
-        {
-            return ((IUnique)code).GetBytes();
-        }
-
-        public virtual byte[] GetIdBytes()
-        {
-            return ((IUnique)code).GetIdBytes();
-        }
-
         public virtual bool Equals(IUnique other)
         {
             return ((IEquatable<IUnique>)code).Equals(other);

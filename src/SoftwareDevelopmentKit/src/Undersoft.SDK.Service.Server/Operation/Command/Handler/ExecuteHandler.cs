@@ -12,7 +12,7 @@ public class ExecuteHandler<TStore, TType, TDto, TKind>
     where TType : class
     where TDto : class, IOrigin
     where TKind : Enum
-    where TStore : IDataServiceStore
+    where TStore : IDataServerStore
 {
     protected readonly IServicer _servicer;
     protected readonly TType _service;

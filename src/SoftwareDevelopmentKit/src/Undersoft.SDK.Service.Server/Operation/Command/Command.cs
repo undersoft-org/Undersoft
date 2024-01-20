@@ -7,7 +7,7 @@ using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Object;
 using Uniques;
 
-public class Command<TDto> : CommandBase, IRequest<Command<TDto>>, IUnique where TDto : class, IDataObject
+public class Command<TDto> : CommandBase, IRequest<Command<TDto>>, IIdentifiable where TDto : class, IDataObject
 {
     [JsonIgnore]
     public override TDto Contract => base.Contract as TDto;
@@ -33,25 +33,6 @@ public class Command<TDto> : CommandBase, IRequest<Command<TDto>>, IUnique where
     protected Command(CommandMode commandMode, EventPublishMode publishMode, params object[] keys)
         : base(commandMode, publishMode, keys) { }
 
-    public byte[] GetBytes()
-    {
-        return Contract.GetBytes();
-    }
-
-    public byte[] GetIdBytes()
-    {
-        return Contract.GetIdBytes();
-    }
-
-    public bool Equals(IUnique other)
-    {
-        return Contract.Equals(other);
-    }
-
-    public int CompareTo(IUnique other)
-    {
-        return Contract.CompareTo(other);
-    }
 
     public override long Id
     {

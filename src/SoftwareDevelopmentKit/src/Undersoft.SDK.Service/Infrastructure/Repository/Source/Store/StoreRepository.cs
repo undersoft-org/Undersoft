@@ -349,7 +349,7 @@ public class StoreRepository<TStore, TEntity>
     : StoreRepository<TEntity>,
         IStoreRepository<TStore, TEntity>
     where TEntity : class, IDataObject, IInnerProxy
-    where TStore : IStore
+    where TStore : IDataStore
 {
     public StoreRepository(
         IRepositoryContextPool<DataStoreContext<TStore>> pool,

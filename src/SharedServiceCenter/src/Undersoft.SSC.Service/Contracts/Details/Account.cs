@@ -1,9 +1,15 @@
-﻿using Undersoft.SDK.Security.Identity;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Undersoft.SDK;
+using Undersoft.SDK.Security.Identity;
 using Undersoft.SDK.Service.Data.Object.Detail;
 
-namespace Undersoft.SSC.Service.Contracts.Details;
+namespace Undersoft.SSC.Service.Contracts;
 
-[Detail]
-public class Account : Authorization
+public class Account : InnerProxy, IDataObject
 {
+    [NotMapped]
+    public Credentials Credentials { get; set; } = new Credentials();
+
+    [NotMapped]
+    public AuthorizationNotes Notes { get; set; } = new AuthorizationNotes();
 }
