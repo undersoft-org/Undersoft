@@ -15,7 +15,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository.Client
             get => base[contextName.UniqueKey64()];
             set => base.Set(contextName.UniqueKey64(), value);
         }
-        public IRepositoryClient this[OpenDataServiceContext context]
+        public IRepositoryClient this[OpenDataContext context]
         {
             get => base[context.GetType()];
             set => base.Set(context.GetType(), value);
@@ -30,7 +30,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository.Client
         {
             return base[contextType];
         }
-        public IRepositoryClient<TContext> Get<TContext>() where TContext : OpenDataServiceContext
+        public IRepositoryClient<TContext> Get<TContext>() where TContext : OpenDataContext
         {
             return (IRepositoryClient<TContext>)base[typeof(TContext)];
         }
@@ -39,7 +39,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository.Client
         {
             return base.TryGet(contextType, out repoSource);
         }
-        public bool TryGet<TContext>(out IRepositoryClient<TContext> repoSource) where TContext : OpenDataServiceContext
+        public bool TryGet<TContext>(out IRepositoryClient<TContext> repoSource) where TContext : OpenDataContext
         {
             if (!TryGet(typeof(TContext), out IRepositoryClient _repo))
             {
@@ -58,12 +58,12 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository.Client
         {
             return base.Add(repoSource.ContextType, repoSource);
         }
-        public bool TryAdd<TContext>(IRepositoryClient<TContext> repoSource) where TContext : OpenDataServiceContext
+        public bool TryAdd<TContext>(IRepositoryClient<TContext> repoSource) where TContext : OpenDataContext
         {
             return base.Add(typeof(TContext), repoSource);
         }
 
-        public IRepositoryClient<TContext> Add<TContext>(IRepositoryClient<TContext> repoSource) where TContext : OpenDataServiceContext
+        public IRepositoryClient<TContext> Add<TContext>(IRepositoryClient<TContext> repoSource) where TContext : OpenDataContext
         {
             return (IRepositoryClient<TContext>)base.Put(typeof(TContext), repoSource).Value;
         }
@@ -72,7 +72,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository.Client
             base.Put(repoSource.ContextType, repoSource);
         }
 
-        public bool Remove<TContext>() where TContext : OpenDataServiceContext
+        public bool Remove<TContext>() where TContext : OpenDataContext
         {
             return TryRemove(typeof(TContext));
         }
@@ -81,18 +81,18 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository.Client
         {
             return Get(contextType).Count;
         }
-        public int PoolCount<TContext>() where TContext : OpenDataServiceContext
+        public int PoolCount<TContext>() where TContext : OpenDataContext
         {
             return Get<TContext>().Count;
         }
 
         public IRepositoryClient<TContext> Put<TContext>(IRepositoryClient<TContext> repoSource)
-            where TContext : OpenDataServiceContext
+            where TContext : OpenDataContext
         {
             return (IRepositoryClient<TContext>)base.Put(typeof(TContext), repoSource).Value;
         }
 
-        public IRepositoryClient<TContext> New<TContext>(Uri route) where TContext : OpenDataServiceContext
+        public IRepositoryClient<TContext> New<TContext>(Uri route) where TContext : OpenDataContext
         {
             return Add(new RepositoryClient<TContext>(route));
         }

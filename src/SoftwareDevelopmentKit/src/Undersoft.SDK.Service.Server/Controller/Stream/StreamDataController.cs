@@ -11,7 +11,7 @@ using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
-[StreamDataService]
+[StreamData]
 public abstract class StreamDataController<TKey, TEntry, TReport, TEntity, TDto> : IStreamDataController<TDto>
     where TDto : class, IDataObject
     where TEntity : class, IDataObject

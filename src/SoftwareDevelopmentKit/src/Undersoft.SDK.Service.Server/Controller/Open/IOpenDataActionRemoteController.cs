@@ -5,12 +5,11 @@ namespace Undersoft.SDK.Service.Server.Controller.Open;
 
 using Uniques;
 
-public interface IOpenDataActionRemoteController<TStore, TKind, TDto, TModel>
-    where TDto : class, IOrigin
-    where TModel : class, IOrigin
-    where TKind : Enum
+public interface IOpenDataActionRemoteController<TStore, TDto, TModel>
+    where TDto : class
+    where TModel : class
 {
-    Task<IActionResult> Post([FromODataUri] string kind, ODataActionParameters dto);
+    Task<IActionResult> Post([FromRoute] string method, ODataActionParameters dto);
 
-    Task<IActionResult> Get([FromODataUri] string kind);
+    Task<IActionResult> Get([FromRoute] string method, [FromRoute] string parameter);
 }

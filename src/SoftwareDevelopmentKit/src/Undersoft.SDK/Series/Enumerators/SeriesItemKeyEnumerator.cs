@@ -27,7 +27,7 @@
             get { return Entry.Value; }
         }
 
-        IUnique<V> IEnumerator<IUnique<V>>.Current => Entry;
+        IUnique<V> IEnumerator<IUnique<V>>.Current => null;
 
         public void Dispose()
         {

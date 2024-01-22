@@ -8,6 +8,7 @@
     using System.ServiceModel;
     using System.ComponentModel;
     using Undersoft.SDK;
+    using System.Linq.Expressions;
 
     public abstract class TypedSeriesBase<V> : Identifiable, IIdentifiable, ITypedSeries<V> where V : IIdentifiable
     {
@@ -1279,22 +1280,6 @@
                     array[i++] = ves;
         }
 
-        public virtual void CopyTo(IUnique<V>[] array, int arrayIndex)
-        {
-            int c = count,
-                i = arrayIndex,
-                l = array.Length;
-            if (l - i < c)
-            {
-                c = l - i;
-                foreach (ISeriesItem<V> ves in this.AsItems().Take(c))
-                    array[i++] = ves;
-            }
-            else
-                foreach (ISeriesItem<V> ves in this)
-                    array[i++] = ves;
-        }
-
         public virtual void CopyTo(Array array, int index)
         {
             int c = count,
@@ -1563,8 +1548,6 @@
 
         private ITypedSeries<V> massDeckImplementation;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -1597,35 +1580,26 @@
 
         public IUnique Empty => Usid.Empty;
 
-        public virtual long Id
-        {
-            get => code.Id;
-            set => code.Id = value;
-        }
-
-        public virtual long TypeId
-        {
-            get => code.TypeId;
-            set => code.TypeId = value;
-        }
-        public string CodeNo { get => code.ToString(); set => code.FromTetrahex(value.ToCharArray()); }
         public DateTime Created { get; set; }
         public string Creator { get; set; }
         public DateTime Modified { get; set; }
         public string Modifier { get; set; }
         public int OriginId { get => (int)code.OriginId; set => code.OriginId = (uint)value; }
-        public string TypeName { get; set; }
-        public DateTime Time { get => DateTime.FromBinary(code.Time); set => code.Time = value.ToBinary(); }
 
-        public virtual long AutoId()
+        public Type ElementType => typeof(V);
+
+        //public Expression Expression => this.AsQueryable().Expression;
+
+        //public IQueryProvider Provider => query ??= new EnumerableQuery<V>(this);
+
+        public bool ContainsListCollection => true;
+
+        public IList GetList()
         {
-            return Id = (long)(Unique.NewId);
+            return (IList)this;
         }
 
-        public byte GetPriority()
-        {
-            return code.GetPriority();
-        }
+        //private EnumerableQuery<V> query;
 
         public byte[] GetBytes()
         {

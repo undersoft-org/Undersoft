@@ -48,15 +48,15 @@
 
         public WorkNoteBox Box { get; set; }
 
-        public object[] ParameterValues
+        public object[] Arguments
         {
-            get => Worker.Process.ParameterValues;
-            set => Worker.Process.ParameterValues = value;
+            get => Worker.Process.Arguments;
+            set => Worker.Process.Arguments = value;
         }
         public object this[int fieldId]
         {
-            get => ParameterValues[fieldId];
-            set => ParameterValues[fieldId] = value;
+            get => Arguments[fieldId];
+            set => Arguments[fieldId] = value;
         }
         public object this[string propertyName]
         {
@@ -64,14 +64,14 @@
             {
                 for (int i = 0; i < Parameters.Length; i++)
                     if (Parameters[i].Name == propertyName)
-                        return ParameterValues[i];
+                        return Arguments[i];
                 return null;
             }
             set
             {
                 for (int i = 0; i < Parameters.Length; i++)
                     if (Parameters[i].Name == propertyName)
-                        ParameterValues[i] = value;
+                        Arguments[i] = value;
             }
         }
 
@@ -88,8 +88,8 @@
         }
         public object[] ValueArray
         {
-            get => ParameterValues;
-            set => ParameterValues = value;
+            get => Arguments;
+            set => Arguments = value;
         }
 
         public InvokerDelegate MethodInvoker => Process.MethodInvoker;

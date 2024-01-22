@@ -156,7 +156,7 @@ public class RepositorySource : Registry<IRepositoryContext>, IRepositorySource
     }
 
     public virtual TContext CreateContext<TContext>(DbContextOptions options)
-        where TContext : DbContext
+        where TContext : IDataStoreContext
     {
         Options ??= options;
         contextType ??= typeof(TContext);
@@ -199,7 +199,7 @@ public class RepositorySource : Registry<IRepositoryContext>, IRepositorySource
         return new ValueTask(Task.Run(() => Dispose(true)));
     }
 
-    public TContext GetContext<TContext>() where TContext : DbContext
+    public TContext GetContext<TContext>() where TContext : IDataStoreContext
     {
         return (TContext)Context;
     }
@@ -368,12 +368,12 @@ public class RepositorySource : Registry<IRepositoryContext>, IRepositorySource
         return Context.Save(asTransaction, token);
     }
 
-    public object EntitySet<TEntity>() where TEntity : class, IUniqueIdentifiable
+    public IQueryable<TEntity> EntitySet<TEntity>() where TEntity : class
     {
         return Context.EntitySet<TEntity>();
     }
 
-    public object EntitySet(Type entityType)
+    public IQueryable EntitySet(Type entityType)
     {
         return Context.EntitySet(entityType);
     }

@@ -17,7 +17,7 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
 
 namespace Undersoft.SSC.Service.Server.Controllers
 {
-    public class EventsController : CrudEventController<long, IEventStore, Event, Event>
+    public class EventsController : ApiEventController<long, IEventStore, Event, Event>
     {
         public EventsController(IServicer ultimatr) : base(ultimatr) { }
     }

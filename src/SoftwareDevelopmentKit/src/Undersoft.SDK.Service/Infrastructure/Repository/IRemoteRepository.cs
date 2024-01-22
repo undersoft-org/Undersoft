@@ -11,16 +11,15 @@ public interface IRemoteRepository<TStore, TEntity> : IRemoteRepository<TEntity>
 
 public interface IRemoteRepository<TEntity> : IRepository<TEntity> where TEntity : class, IOrigin, IInnerProxy
 {
-    OpenDataServiceContext Context { get; }
+    OpenDataContext Context { get; }
     string FullName { get; }
     string Name { get; }
 
-    Task<TEntity> ActionAsync<TModel, TKind>(TEntity payload, TKind kind) where TKind : Enum;
-    Task<TEntity> ActionAsync<TModel, TKind>(TEntity[] payloads, TKind kind) where TKind : Enum;
+    Task<TEntity> ActionAsync<TModel>(string method, params object[] parameters);
     Task<IEnumerable<TEntity>> FindMany(params object[] keys);
     DataServiceQuery<TEntity> FindQuery(params object[] keys);
     DataServiceQuerySingle<TEntity> FindQuerySingle(params object[] keys);
-    Task<TEntity> FunctionAsync<TModel, TKind>(TKind kind) where TKind : Enum;
+    Task<TEntity> FunctionAsync<TModel>(string method, params object[] parameter);
     string KeyString(params object[] keys);
     void SetSecurityToken(string token);
     object TracePatching(object item, string propertyName = null, Type type = null);

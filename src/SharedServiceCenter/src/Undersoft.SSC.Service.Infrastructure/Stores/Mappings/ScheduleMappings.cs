@@ -14,7 +14,7 @@ public class ScheduleMappings : EntityTypeMapping<Schedule>
 
     public override void Configure(EntityTypeBuilder<Schedule> builder)
     {
-        builder.ToTable(TABLE_NAME, DataStoreSchema.LocalSchema);
+        builder.ToTable(TABLE_NAME, DataStoreSchema.DomainSchema);
 
         modelBuilder
             .ApplyIdentifiers<Schedule>()

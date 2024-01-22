@@ -14,7 +14,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 
         public override void Configure(EntityTypeBuilder<Default> builder)
         {
-            builder.ToTable(TABLE_NAME, DataStoreSchema.LocalSchema);
+            builder.ToTable(TABLE_NAME, DataStoreSchema.DomainSchema);
 
             modelBuilder
                 .RelateOneToSet<Default, Detail>(

@@ -21,7 +21,7 @@ public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore,
     IRemoteRelation<TOrigin, TTarget> relation;
 
     public RepositoryLink(
-        IRepositoryContextPool<OpenDataService<TStore>> pool,
+        IRepositoryContextPool<OpenDataClient<TStore>> pool,
         IEntityCache<TStore, TTarget> cache,
         IRemoteRelation<TOrigin, TTarget> relation,
         IRemoteSynchronizer synchronizer) : base(pool, cache)
@@ -35,10 +35,10 @@ public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore,
 
     public void Load(object origin) { Load(origin, dsContext); }
 
-    public void Load<T>(IEnumerable<T> origins, OpenDataServiceContext context) where T : class
+    public void Load<T>(IEnumerable<T> origins, OpenDataContext context) where T : class
     { origins.ForEach((o) => Load(o, context)); }
 
-    public void Load(object origin, OpenDataServiceContext context)
+    public void Load(object origin, OpenDataContext context)
     {
         IInnerProxy _entity = (IInnerProxy)origin;
         int rubricId = RemoteRubric.RubricId;
@@ -77,7 +77,7 @@ public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore,
 
     public async Task LoadAsync(object origin) { await Task.Run(() => Load(origin, dsContext), Cancellation); }
 
-    public async ValueTask LoadAsync(object origin, OpenDataServiceContext context, CancellationToken token)
+    public async ValueTask LoadAsync(object origin, OpenDataContext context, CancellationToken token)
     { await Task.Run(() => Load(origin, context), token); }
 
     public override Task<int> Save(bool asTransaction, CancellationToken token = default)
@@ -113,10 +113,10 @@ public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore,
 
     public override Towards Towards => relation.Towards;
 
-    public Expression<Func<IRelatedLink<TOrigin, TTarget>, object>> MiddleKey 
+    public Expression<Func<IRelatedLink<TOrigin, TTarget>, object>> JoinKey 
     { 
-        get => relation.MiddleKey;
-        set => relation.MiddleKey = value;
+        get => relation.JoinKey;
+        set => relation.JoinKey = value;
     }
     public Expression<Func<TOrigin, IEnumerable<IRelatedLink<TOrigin, TTarget>>>> MiddleSet
     {

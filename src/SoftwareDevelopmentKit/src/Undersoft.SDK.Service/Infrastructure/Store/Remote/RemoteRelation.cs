@@ -18,21 +18,17 @@ public abstract class RemoteRelation<TOrigin, TTarget> : RemoteRelation, IRemote
 {
     public RemoteRelation()
     {
-        Id = typeof(TTarget).Name.UniqueKey64();
-        TypeId = typeof(TOrigin).FullName.UniqueKey32();
         Name = typeof(TOrigin).Name + '_' + typeof(TTarget).Name;
+        Id = Name.UniqueKey();
 
-        OpenDataServiceRegistry.Remotes.Add(TypeId, this);
-
-        OpenDataServiceRegistry.Remotes.Add(typeof(TTarget).Name.UniqueKey64(TypeId), this);
-
-        ServiceManager.AddRootObject<IRemoteRelation<TOrigin, TTarget>>(this);
+        OpenDataRegistry.Remotes.Add(TypeId, this);
+        OpenDataRegistry.Remotes.Add(typeof(TOrigin).FullName.UniqueKey32(), this);
     }
 
     public virtual string Name { get; set; }
 
     public virtual Expression<Func<TOrigin, object>> SourceKey { get; set; }
-    public virtual Expression<Func<IRelatedLink<TOrigin, TTarget>, object>> MiddleKey { get; set; }
+    public virtual Expression<Func<IRelatedLink<TOrigin, TTarget>, object>> JoinKey { get; set; }
     public virtual Expression<Func<TTarget, object>> TargetKey { get; set; }
 
     public virtual Func<TOrigin, Expression<Func<TTarget, bool>>> Predicate { get; set; }

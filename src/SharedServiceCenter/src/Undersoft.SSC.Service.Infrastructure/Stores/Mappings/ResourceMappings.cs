@@ -14,7 +14,7 @@ public class ResourceMappings : EntityTypeMapping<Resource>
 
     public override void Configure(EntityTypeBuilder<Resource> builder)
     {
-        builder.ToTable(TABLE_NAME, DataStoreSchema.LocalSchema);
+        builder.ToTable(TABLE_NAME, DataStoreSchema.DomainSchema);
 
         modelBuilder
                  .ApplyIdentifiers<Resource>()

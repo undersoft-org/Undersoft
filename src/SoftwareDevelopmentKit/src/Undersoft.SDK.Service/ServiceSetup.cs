@@ -324,8 +324,8 @@ public partial class ServiceSetup : IServiceSetup
             IRepositoryClient repoClient = (IRepositoryClient)
                 repoType.New(provider, _connectionString);
 
-            Type storeDbType = typeof(OpenDataService<>).MakeGenericType(
-                OpenDataServiceRegistry.GetLinkedStoreTypes(contextType)
+            Type storeDbType = typeof(OpenDataClient<>).MakeGenericType(
+                OpenDataRegistry.GetLinkedStoreTypes(contextType)
             );
             Type storeRepoType = typeof(RepositoryClient<>).MakeGenericType(storeDbType);
 
@@ -513,7 +513,7 @@ public partial class ServiceSetup : IServiceSetup
 
     private string AddDataClientPrefix(Type contextType, string routePrefix = null)
     {
-        Type iface = OpenDataServiceRegistry.GetLinkedStoreTypes(contextType);
+        Type iface = OpenDataRegistry.GetLinkedStoreTypes(contextType);
         return GetStoreRoutes(iface, routePrefix);
     }
 
@@ -543,7 +543,7 @@ public partial class ServiceSetup : IServiceSetup
         }
         else if (iface == typeof(IAccountStore))
         {
-            return StoreRoutes.OpenIdentityRoute;
+            return StoreRoutes.OpenAuthRoute;
         }
         else
         {

@@ -15,6 +15,9 @@ public class Application : OpenEntity<Application, Detail, Setting, ApplicationG
 
     [Remote]
     public virtual RemoteSet<Service>? Services { get; set; }
+    public virtual RemoteSet<
+        RelatedLink<Service, Application>
+    >? ServicesToApplications { get; set; }
 
     public virtual RelatedSet<Member>? Members { get; set; }
 

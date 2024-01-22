@@ -319,7 +319,7 @@ public static class DataStoreRegistry
             if (clrType != null && clrType.GetInterfaces().Contains(typeof(IEntity)))
             {
                 ContextSetEntityMethod ??= context.GetType().GetMethods().Where(m => m.IsGenericMethod &&
-                        m.Name == "Set" && !m.GetParameters().Any()).ToArray().FirstOrDefault().MakeGenericMethod(clrType);
+                        m.Name == "EntitySet" && !m.GetParameters().Any()).ToArray().FirstOrDefault().MakeGenericMethod(clrType);
 
                 object dbset = ContextSetEntityMethod.Invoke(context, (object[])null);
 
@@ -333,7 +333,7 @@ public static class DataStoreRegistry
         return context.GetEntitySet(entityType.Name);
     }
 
-    public static DbSet<TEntity> GetEntitySet<TEntity>(this IDataStoreContext context) where TEntity : class, IUniqueIdentifiable
+    public static DbSet<TEntity> GetEntitySet<TEntity>(this IDataStoreContext context) where TEntity : class, IDataObject
     {
         var entityType = context.GetEntityType<TEntity>();
         if (entityType != null)

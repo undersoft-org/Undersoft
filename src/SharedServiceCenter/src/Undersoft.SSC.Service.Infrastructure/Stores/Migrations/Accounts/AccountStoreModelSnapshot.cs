@@ -23,7 +23,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.Accounts", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.Account", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -355,11 +355,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.ToTable("RoleClaims", "Accounts");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.Accounts", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.Account", b =>
                 {
                     b.HasOne("Undersoft.SDK.Service.Server.Accounts.AccountUser", "User")
                         .WithOne()
-                        .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.Accounts", "UserId")
+                        .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.Account", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -368,7 +368,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
             modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.AccountClaim", b =>
                 {
-                    b.HasOne("Undersoft.SDK.Service.Server.Accounts.Accounts", "Accounts")
+                    b.HasOne("Undersoft.SDK.Service.Server.Accounts.Account", "Account")
                         .WithMany("Claims")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -380,7 +380,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Accounts");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.AccountLogin", b =>
@@ -394,7 +394,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
             modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.AccountRole", b =>
                 {
-                    b.HasOne("Undersoft.SDK.Service.Server.Accounts.Accounts", "Accounts")
+                    b.HasOne("Undersoft.SDK.Service.Server.Accounts.Account", "Account")
                         .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -418,14 +418,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Accounts");
+                    b.Navigation("Account");
 
                     b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.AccountToken", b =>
                 {
-                    b.HasOne("Undersoft.SDK.Service.Server.Accounts.Accounts", "Accounts")
+                    b.HasOne("Undersoft.SDK.Service.Server.Accounts.Account", "Account")
                         .WithMany("Tokens")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -437,16 +437,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Accounts");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.AccountUser", b =>
                 {
-                    b.HasOne("Undersoft.SDK.Service.Server.Accounts.Accounts", "Accounts")
+                    b.HasOne("Undersoft.SDK.Service.Server.Accounts.Account", "Account")
                         .WithMany()
                         .HasForeignKey("AccountId");
 
-                    b.Navigation("Accounts");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.RoleClaim", b =>
@@ -466,7 +466,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.Accounts", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.Account", b =>
                 {
                     b.Navigation("Claims");
 

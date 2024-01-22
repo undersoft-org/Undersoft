@@ -12,6 +12,6 @@ public class EndpointMappings : EntityTypeMapping<Endpoint>
 
     public override void Configure(EntityTypeBuilder<Endpoint> builder)
     {
-        builder.ToTable(TABLE_NAME, DataStoreSchema.LocalSchema);
+        builder.ToTable(TABLE_NAME, DataStoreSchema.DomainSchema);
     }
 }

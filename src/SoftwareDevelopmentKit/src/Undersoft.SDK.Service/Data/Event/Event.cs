@@ -1,11 +1,13 @@
 ﻿namespace Undersoft.SDK.Service.Data.Event;
 
 using System.Runtime.Serialization;
+using Undersoft.SDK.Service.Data.Contract;
 using Undersoft.SDK.Service.Data.Entity;
+using Undersoft.SDK.Service.Data.Model;
 using Undersoft.SDK.Service.Data.Object;
 
 [DataContract]
-public class Event : DataObject, IEvent, IEntity
+public class Event : DataObject, IEvent, IEntity, IContract
 {
     [DataMember(Order = 12)]
     public virtual uint EventVersion { get; set; }

@@ -13,11 +13,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 
         public override void Configure(EntityTypeBuilder<Application> builder)
         {
-            builder.ToTable(TABLE_NAME, DataStoreSchema.LocalSchema);
+            builder.ToTable(TABLE_NAME, DataStoreSchema.DomainSchema);
 
             modelBuilder
                 .ApplyIdentifiers<Application>()
-                .RelateSetToSet<Application, Service>(r => r.Applications, r => r.Services, ExpandSite.OnRight)
+                .RalateSetToSetExplicitly<Service, Application>(r => r.Services, r => r.Applications, ExpandSite.OnRight)
                 .RelateSetToSet<Application, Member>(r => r.Applications, r => r.Members, ExpandSite.OnRight)
                 .RelateSetToSet<Application, Setting>(
                     r => r.Applications,

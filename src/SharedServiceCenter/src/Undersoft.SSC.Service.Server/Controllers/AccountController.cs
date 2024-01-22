@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Undersoft.SSC.Service.Server.Controllers
 {
     [AllowAnonymous]
-    [ODataRouteComponent(StoreRoutes.OpenDataRoute)]
-    public class AccountController : OpenEventController<long, IAccountStore, Account, Contracts.Account>
+    public class AccountController
+        : OpenDataController<long, IAccountStore, Account, Contracts.Account>
     {
         public AccountController(IServicer ultimatr) : base(ultimatr) { }
     }
@@ -19,8 +19,9 @@ namespace Undersoft.SSC.Service.Server.Controllers
 
 namespace Undersoft.SSC.Service.Server.Controllers
 {
-    [Route($"{StoreRoutes.CrudDataRoute}/[controller]")]
-    public class AccountsController : CrudEventController<long, IAccountStore, Account, Contracts.Account>
+    [Route($"{StoreRoutes.CrudAuthRoute}/[controller]")]
+    public class AccountsController
+        : ApiDataController<long, IAccountStore, Account, Contracts.Account>
     {
         public AccountsController(IServicer ultimatr) : base(ultimatr) { }
     }

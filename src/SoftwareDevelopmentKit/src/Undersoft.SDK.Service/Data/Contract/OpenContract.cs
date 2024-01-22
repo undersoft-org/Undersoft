@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
 namespace Undersoft.SDK.Service.Data.Contract;
+
 using Identifier;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Object.Detail;

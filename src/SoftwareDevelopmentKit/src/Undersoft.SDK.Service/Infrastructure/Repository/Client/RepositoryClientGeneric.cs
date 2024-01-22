@@ -6,7 +6,7 @@ using Configuration;
 using Undersoft.SDK.Service.Client;
 using Undersoft.SDK.Service.Infrastructure.Repository.Source;
 
-public class RepositoryClient<TContext> : RepositoryClient, IRepositoryClient<TContext> where TContext : OpenDataServiceContext
+public class RepositoryClient<TContext> : RepositoryClient, IRepositoryClient<TContext> where TContext : OpenDataContext
 {
     public RepositoryClient() { }
     public RepositoryClient(IServiceConfiguration config) : this()

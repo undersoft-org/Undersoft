@@ -10,7 +10,6 @@ using Operation.Remote.Command.Handler;
 using Operation.Remote.Notification;
 using Operation.Remote.Notification.Handler;
 using Undersoft.SDK.Service.Client.Remote;
-using Undersoft.SDK.Service.Server.Operation.Command;
 
 public partial class ServerSetup
 {
@@ -57,9 +56,9 @@ public partial class ServerSetup
 
                 service.AddTransient(
                   typeof(IRequest<>).MakeGenericType(
-                      typeof(ActionCommand<,>).MakeGenericType(_viewmodel, _method)
+                      typeof(Invocation<,>).MakeGenericType(_viewmodel, _method)
                   ),
-                  typeof(ActionCommand<,>).MakeGenericType(_viewmodel, _method)
+                  typeof(Invocation<,>).MakeGenericType(_viewmodel, _method)
               );
 
                 service.AddTransient(
@@ -67,17 +66,17 @@ public partial class ServerSetup
                        new[]
                        {
                             typeof(RemoteExecute<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method),
-                            typeof(ActionCommand<,>).MakeGenericType(_viewmodel, _method)
+                            typeof(Invocation<,>).MakeGenericType(_viewmodel, _method)
                        }
                    ),
-                   typeof(RemoteExecuteHandler<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method)
+                   typeof(RemoteInvokeHandler<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method)
                );
 
                 service.AddTransient(
                  typeof(INotificationHandler<>).MakeGenericType(
-                     typeof(RemoteExecuted<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method)
+                     typeof(RemoteInvoked<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method)
                  ),
-                 typeof(RemoteExecutedHandler<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method)
+                 typeof(RemoteInvokedHandler<,,,>).MakeGenericType(store, dtoType, _viewmodel, _method)
                 );
             }
         }

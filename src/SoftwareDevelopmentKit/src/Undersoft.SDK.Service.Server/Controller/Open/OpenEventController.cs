@@ -14,8 +14,8 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Security.Identity;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 
-[OpenDataService]
-[ODataRouteComponent]
+[OpenData]
+[ODataAttributeRouting]
 public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataController, IOpenEventController<TKey, TEntity, TDto> where TDto : class, IDataObject, new()
     where TEntity : class, IDataObject
     where TStore : IDataServerStore
@@ -137,27 +137,23 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataCo
                : Ok(response);
     }
 
-    [HttpPost(StoreRoutes.OpenDataRoute + "/[controller]({action})")]
-    public virtual async Task<IActionResult> Execute([FromRoute] string action ,ODataActionParameters parameters)
+    [HttpPost(StoreRoutes.OpenEventRoute +"/Event({method})")]
+    public virtual async Task<IActionResult> Action([FromRoute] string method, [FromBody] ODataActionParameters parameters)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         var dto = ((JsonElement)parameters[typeof(TDto).Name]).Deserialize<TDto>();
 
-        AccountAction actionEnum = AccountAction.None;
-        if (!Enum.TryParse<AccountAction>(action, out actionEnum))
-            return BadRequest(ModelState);
-
         var result = await _servicer.Send(
-            new Execute<TStore, TDto, TDto, AccountAction>(
-                actionEnum,
+            new Invoke<TStore, TDto, TDto, AccountAction>(
+                method,
                 dto
             )
         );
 
         return !result.IsValid
             ? UnprocessableEntity(result.ErrorMessages)
-            : Created(result.Response);
+            : Ok(result.Response);
     }
 }

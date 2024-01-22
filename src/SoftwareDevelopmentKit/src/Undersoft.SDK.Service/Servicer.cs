@@ -86,13 +86,13 @@ public class Servicer : ServiceManager, IServicer, IMediator
 
     public Task Run<T>(string methodname, params object[] parameters) where T : class
     {
-        Invoker deputy = new Invoker(EnsureGetRootService<T>(), methodname);
+        Invoker deputy = new Invoker(GetService<T>(), methodname);
         return deputy.InvokeAsync(parameters);
     }
 
     public Task<R> Run<T, R>(string methodname, params object[] parameters) where T : class
     {
-        Invoker deputy = new Invoker(EnsureGetRootService<T>(), methodname);
+        Invoker deputy = new Invoker(GetService<T>(), methodname);
         return deputy.InvokeAsync<R>(parameters);
     }
 

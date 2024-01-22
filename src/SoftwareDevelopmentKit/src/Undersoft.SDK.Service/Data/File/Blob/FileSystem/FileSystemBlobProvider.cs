@@ -20,7 +20,7 @@ public class FileSystemBlobProvider : BlobProviderBase
 
         if (!args.OverrideExisting && await ExistsAsync(filePath))
         {
-            throw new BlobAlreadyExistsException($"Saving BLOB '{args.BlobName}' does already exists in the container '{args.ContainerName}'! Set {nameof(args.OverrideExisting)} if it should be overwritten.");
+            throw new BlobAlreadyExistsException($"Saving BLOB '{args.BlobName}' does already exists in the container '{args.ContainerName}'! EntitySet {nameof(args.OverrideExisting)} if it should be overwritten.");
         }
 
         var dirname = Path.GetDirectoryName(filePath);

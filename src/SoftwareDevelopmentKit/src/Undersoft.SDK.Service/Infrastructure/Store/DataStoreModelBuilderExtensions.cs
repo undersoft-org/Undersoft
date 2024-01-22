@@ -168,18 +168,7 @@ public static class DataStoreModelBuilderExtensions
         ).Configure(autoinclude);
     }
 
-    public static ModelBuilder RelateSetToRemoteSet<TLeft, TRight>(
-        this ModelBuilder builder,
-        ExpandSite expandSite = ExpandSite.None,
-        string dbSchema = null
-    )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
-    {
-        return new RelatedSetToRemoteSet<TLeft, TRight>(builder, expandSite, dbSchema).Configure();
-    }
-
-    public static ModelBuilder RelateSetToRemoteSet<TLeft, TRight>(
+    public static ModelBuilder RalateSetToSetExplicitly<TLeft, TRight>(
         this ModelBuilder builder,
         string leftName,
         string rightName,
@@ -189,7 +178,7 @@ public static class DataStoreModelBuilderExtensions
         where TLeft : class, IDataObject
         where TRight : class, IDataObject
     {
-        return new RelatedSetToRemoteSet<TLeft, TRight>(
+        return new RelatedSetToSetExplicitly<TLeft, TRight>(
             builder,
             leftName,
             rightName,
@@ -198,43 +187,26 @@ public static class DataStoreModelBuilderExtensions
         ).Configure();
     }
 
-    public static ModelBuilder RelateSetToRemoteSet<TLeft, TRight>(
+    public static ModelBuilder RalateSetToSetExplicitly<TLeft, TRight>(
         this ModelBuilder builder,
-        Expression<Func<TLeft, object>> leftMember,
+        Expression<Func<TRight, object>> leftMember,
+         Expression<Func<TLeft, object>> righMember,
         ExpandSite expandSite = ExpandSite.None,
         string dbSchema = null
     )
         where TLeft : class, IDataObject
         where TRight : class, IDataObject
     {
-        return new RelatedSetToRemoteSet<TLeft, TRight>(
+        return new RelatedSetToSetExplicitly<TLeft, TRight>(
             builder,
             LinqExtension.GetMemberName(leftMember),
+            LinqExtension.GetMemberName(righMember),
             expandSite,
             dbSchema
         ).Configure();
     }
 
-    public static ModelBuilder RelateSetToRemoteSet<TLeft, TRight>(
-        this ModelBuilder builder,
-        Expression<Func<TLeft, object>> leftMember,
-        string leftName,
-        ExpandSite expandSite = ExpandSite.None,
-        string dbSchema = null
-    )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
-    {
-        return new RelatedSetToRemoteSet<TLeft, TRight>(
-            builder,
-            LinqExtension.GetMemberName(leftMember),
-            leftName,
-            expandSite,
-            dbSchema
-        ).Configure();
-    }
-
-    public static ModelBuilder RelateSetToRemoteSet<TLeft, TRight>(
+    public static ModelBuilder RalateSetToSetExplicitly<TLeft, TRight>(
         this ModelBuilder builder,
         string leftName,
         string leftTableName,
@@ -247,10 +219,12 @@ public static class DataStoreModelBuilderExtensions
         where TLeft : class, IDataObject
         where TRight : class, IDataObject
     {
-        return new RelatedSetToRemoteSet<TLeft, TRight>(
+        return new RelatedSetToSetExplicitly<TLeft, TRight>(
             builder,
             leftName,
             leftTableName,
+            rightName,
+            rightTableName,
             expandSite,
             parentSchema,
             childSchema

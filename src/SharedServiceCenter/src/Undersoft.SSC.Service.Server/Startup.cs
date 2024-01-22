@@ -9,7 +9,6 @@ namespace Undersoft.SSC.Service.Server;
 public class Startup
 {
     public IConfiguration Configuration { get; }
-    public IServiceManager? ServiceManager { get; set; }
 
     public Startup(IConfiguration configuration)
     {
@@ -33,11 +32,9 @@ public class Startup
                 //, new[] { typeof(ApplicationClient) }
             )
             .AddAccountServer<AccountStore>()
-            .AddDataServer<IDataStore>(
-                DataServerTypes.All
-                ,builder => builder.AddAccountServices<Authorization>()
-            );
-        ServiceManager = setup.Manager;
+            .AddDataServer<IDataStore>(DataServerTypes.All)
+            .AddDataServer<IAccountStore>(DataServerTypes.All, builder => builder.AddAccountServices<Authorization>())
+            .AddDataServer<IEventStore>(DataServerTypes.All);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

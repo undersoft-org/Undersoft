@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
+using System.Collections;
 using Undersoft.SDK.Logging;
 using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Uniques;
@@ -75,14 +77,77 @@ public partial class AccountStoreContext<TStore>
         });
     }
 
-    public object EntitySet<TEntity>() where TEntity : class, IUniqueIdentifiable
-    {
-        return Set<TEntity>();
+    public IQueryable<TEntity> EntitySet<TEntity>() where TEntity : class
+    {                        
+        return base.Set<TEntity>();
     }
 
-    public object EntitySet(Type type)
+    public IQueryable EntitySet(Type type)
     {
-        return this.GetEntitySet(type);
+        return (IQueryable)this.GetEntitySet(type);
+    }
+
+    public IQueryable<TEntity> Query<TEntity>() where TEntity : class
+    {
+        return (IQueryable<TEntity>)EntitySet<TEntity>();
+    }
+
+    public new TEntity Add<TEntity>(TEntity entity) where TEntity : class
+    {
+        return base.Add<TEntity>(entity).Entity;
+    }
+
+    public async new ValueTask<TEntity> AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken) where TEntity : class
+    {
+        return await ValueTask.FromResult((await base.AddAsync<TEntity>(entity)).Entity);
+    }
+
+    public new object Add(object entity)
+    {
+        return base.Add(entity).Entity;
+    }
+
+    public new TEntity Update<TEntity>(TEntity entity) where TEntity : class
+    {
+        return base.Update(entity).Entity;
+    }
+
+    public new TEntity Remove<TEntity>(TEntity entity) where TEntity : class
+    {
+        return base.Update(entity).Entity;
+    }
+
+    public new object Attach(object entity)
+    {
+        return base.Attach(entity).Entity;
+    }
+
+    public new TEntity Attach<TEntity>(TEntity entity) where TEntity : class
+    {
+        return base.Attach(entity).Entity;
+    }
+
+    public object AttachProperty(object entity, string propertyName, Type type = null)
+    {
+        if (type == null)
+        {
+            Attach(entity);
+            return entity;
+        }
+        else if (type.IsAssignableTo(typeof(IEnumerable)))
+        {
+            var list = Entry(entity).Collection(propertyName);
+            Attach(list.EntityEntry.Entity);
+            list.Load();
+            return list.CurrentValue;
+        }
+        else
+        {
+            var obj = Entry(entity).Reference(propertyName);
+            Attach(obj.EntityEntry.Entity);
+            obj.Load();
+            return obj.CurrentValue;
+        }
     }
 
     public virtual Task<int> Save(bool asTransaction, CancellationToken token = default)
@@ -160,4 +225,6 @@ public partial class AccountStoreContext<TStore>
 
         return -1;
     }
+
+
 }

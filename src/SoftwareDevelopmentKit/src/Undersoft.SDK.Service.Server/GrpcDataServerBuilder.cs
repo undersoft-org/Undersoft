@@ -39,7 +39,7 @@ public class GrpcDataServerBuilder<TServiceStore>
                 a =>
                     a.GetTypes()
                         .Where(
-                            type => type.GetCustomAttribute<StreamDataServiceAttribute>() != null
+                            type => type.GetCustomAttribute<StreamDataAttribute>() != null
                         )
                         .ToArray()
             )

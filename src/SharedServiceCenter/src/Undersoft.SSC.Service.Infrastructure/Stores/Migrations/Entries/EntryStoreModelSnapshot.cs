@@ -100,7 +100,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 
                     b.HasIndex("ObjectId");
 
-                    b.ToTable("ActivityIdentifiers", "Identifier");
+                    b.ToTable("ActivityIdentifiers", "identifiers");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Application>", b =>
@@ -180,7 +180,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 
                     b.HasIndex("ObjectId");
 
-                    b.ToTable("ApplicationIdentifiers", "Identifier");
+                    b.ToTable("ApplicationIdentifiers", "identifiers");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Detail>", b =>
@@ -260,7 +260,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 
                     b.HasIndex("ObjectId");
 
-                    b.ToTable("DetailIdentifiers", "Identifier");
+                    b.ToTable("DetailIdentifiers", "identifiers");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Member>", b =>
@@ -340,7 +340,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 
                     b.HasIndex("ObjectId");
 
-                    b.ToTable("MemberIdentifiers", "Identifier");
+                    b.ToTable("MemberIdentifiers", "identifiers");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Resource>", b =>
@@ -420,7 +420,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 
                     b.HasIndex("ObjectId");
 
-                    b.ToTable("ResourceIdentifiers", "Identifier");
+                    b.ToTable("ResourceIdentifiers", "identifiers");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Schedule>", b =>
@@ -500,7 +500,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 
                     b.HasIndex("ObjectId");
 
-                    b.ToTable("ScheduleIdentifiers", "Identifier");
+                    b.ToTable("ScheduleIdentifiers", "identifiers");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Service>", b =>
@@ -580,7 +580,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 
                     b.HasIndex("ObjectId");
 
-                    b.ToTable("ServiceIdentifiers", "Identifier");
+                    b.ToTable("ServiceIdentifiers", "identifiers");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Setting>", b =>
@@ -660,16 +660,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 
                     b.HasIndex("ObjectId");
 
-                    b.ToTable("SettingIdentifiers", "Identifier");
+                    b.ToTable("SettingIdentifiers", "identifiers");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Activity>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -687,10 +685,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -702,6 +696,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -716,6 +713,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -725,20 +725,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("ActivityAndActivity", "Relation");
+                    b.ToTable("ActivityToActivity", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -756,10 +756,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -771,6 +767,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -785,6 +784,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -794,20 +796,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("ActivitiesAndDetails", "Relation");
+                    b.ToTable("ActivitiesToDetails", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Resource>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -825,10 +827,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -840,6 +838,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -854,6 +855,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -863,20 +867,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("ActivitiesAndResources", "Relation");
+                    b.ToTable("ActivitiesToResources", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -894,10 +898,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -909,6 +909,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -923,6 +926,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -932,20 +938,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("ActivitiesAndSettings", "Relation");
+                    b.ToTable("ActivitiesToSettings", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Application, Undersoft.SSC.Domain.Entities.Application>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -963,10 +969,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -978,6 +980,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -992,6 +997,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -1001,20 +1009,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("ApplicationAndApplication", "Relation");
+                    b.ToTable("ApplicationToApplication", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Application, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -1032,10 +1040,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -1047,6 +1051,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -1061,6 +1068,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -1070,20 +1080,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("ApplicationsAndDetails", "Relation");
+                    b.ToTable("ApplicationsToDetails", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Application, Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -1101,10 +1111,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -1116,6 +1122,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -1129,76 +1138,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnOrder(5);
-
-                    b.HasKey("LeftEntityId", "RightEntityId");
-
-                    b.HasIndex("RightEntityId");
-
-                    b.ToTable("ApplicationsAndMembers", "Relation");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Application, Undersoft.SSC.Domain.Entities.Service>", b =>
-                {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
 
                     b.Property<long?>("RightEntityId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("CodeNo")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(4);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(9);
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnOrder(10);
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(11);
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("timestamp")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnOrder(7);
-
-                    b.Property<int>("OriginId")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(3);
-
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -1208,20 +1151,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("ApplicationsAndServices", "Relation");
+                    b.ToTable("ApplicationsToMembers", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Application, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -1239,10 +1182,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -1254,6 +1193,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -1268,6 +1210,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -1277,20 +1222,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("ApplicationsAndSettings", "Relation");
+                    b.ToTable("ApplicationsToSettings", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Detail, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -1308,10 +1253,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -1323,6 +1264,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -1337,6 +1281,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -1346,20 +1293,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("DetailAndDetail", "Relation");
+                    b.ToTable("DetailToDetail", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Activity>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -1377,10 +1324,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -1392,6 +1335,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -1406,6 +1352,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -1415,20 +1364,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("MembersAndActivities", "Relation");
+                    b.ToTable("MembersToActivities", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -1446,10 +1395,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -1461,6 +1406,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -1475,6 +1423,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -1484,20 +1435,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("MembersAndDetails", "Relation");
+                    b.ToTable("MembersToDetails", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -1515,10 +1466,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -1530,6 +1477,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -1544,6 +1494,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -1553,20 +1506,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("MemberAndMember", "Relation");
+                    b.ToTable("MemberToMember", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Resource>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -1584,10 +1537,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -1599,6 +1548,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -1613,6 +1565,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -1622,20 +1577,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("MembersAndResources", "Relation");
+                    b.ToTable("MembersToResources", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Schedule>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -1653,10 +1608,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -1668,6 +1619,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -1682,6 +1636,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -1691,20 +1648,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("MembersAndSchedules", "Relation");
+                    b.ToTable("MembersToSchedules", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -1722,10 +1679,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -1737,6 +1690,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -1751,6 +1707,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -1760,20 +1719,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("MembersAndSettings", "Relation");
+                    b.ToTable("MembersToSettings", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -1791,10 +1750,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -1806,6 +1761,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -1820,6 +1778,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -1829,20 +1790,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("ResourcesAndDetails", "Relation");
+                    b.ToTable("ResourcesToDetails", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Resource>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -1860,10 +1821,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -1875,6 +1832,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -1889,6 +1849,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -1898,20 +1861,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("ResourceAndResource", "Relation");
+                    b.ToTable("ResourceToResource", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Schedule>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -1929,10 +1892,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -1944,6 +1903,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -1958,6 +1920,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -1967,20 +1932,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("ResourcesAndSchedules", "Relation");
+                    b.ToTable("ResourcesToSchedules", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -1998,10 +1963,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -2013,6 +1974,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -2027,6 +1991,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -2036,20 +2003,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("ResourcesAndSettings", "Relation");
+                    b.ToTable("ResourcesToSettings", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Activity>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -2067,10 +2034,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -2082,6 +2045,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -2096,6 +2062,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -2105,20 +2074,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("SchedulesAndActivities", "Relation");
+                    b.ToTable("SchedulesToActivities", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -2136,10 +2105,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -2151,6 +2116,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -2165,6 +2133,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -2174,20 +2145,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("SchedulesAndDetails", "Relation");
+                    b.ToTable("SchedulesToDetails", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Schedule>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -2205,10 +2176,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -2220,6 +2187,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -2234,6 +2204,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -2243,20 +2216,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("ScheduleAndSchedule", "Relation");
+                    b.ToTable("ScheduleToSchedule", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -2274,10 +2247,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -2289,6 +2258,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -2303,6 +2275,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -2312,20 +2287,91 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("SchedulesAndSettings", "Relation");
+                    b.ToTable("SchedulesToSettings", "relations");
+                });
+
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Application>", b =>
+                {
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("CodeNo")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnOrder(4);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp")
+                        .HasColumnOrder(8);
+
+                    b.Property<string>("Creator")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnOrder(9);
+
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
+                    b.Property<string>("Label")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("timestamp")
+                        .HasColumnOrder(6);
+
+                    b.Property<string>("Modifier")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnOrder(7);
+
+                    b.Property<int>("OriginId")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(3);
+
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TypeId")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
+
+                    b.HasIndex("RightEntityId");
+
+                    b.ToTable("ServicesToApplications", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -2343,10 +2389,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -2358,6 +2400,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -2372,6 +2417,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -2381,20 +2429,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("ServicesAndDetails", "Relation");
+                    b.ToTable("ServicesToDetails", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -2412,10 +2460,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -2427,6 +2471,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -2441,6 +2488,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -2450,20 +2500,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("ServicesAndMembers", "Relation");
+                    b.ToTable("ServicesToMembers", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Service>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -2481,10 +2531,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -2496,6 +2542,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -2510,6 +2559,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -2519,20 +2571,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("ServiceAndService", "Relation");
+                    b.ToTable("ServiceToService", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -2550,10 +2602,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -2565,6 +2613,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -2579,6 +2630,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -2588,20 +2642,20 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("ServicesAndSettings", "Relation");
+                    b.ToTable("ServicesToSettings", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Setting, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
-                    b.Property<long?>("LeftEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RightEntityId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -2619,10 +2673,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(9);
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -2634,6 +2684,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(11);
+
+                    b.Property<long?>("LeftEntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -2648,6 +2701,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<long?>("RightEntityId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -2657,11 +2713,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(5);
 
-                    b.HasKey("LeftEntityId", "RightEntityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeftEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("RelatedFromAndRelatedTo", "Relation");
+                    b.ToTable("SettingToSetting", "relations");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Activity", b =>
@@ -2736,7 +2794,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasIndex("Index")
                         .IsUnique();
 
-                    b.ToTable("Activities", "Local");
+                    b.ToTable("Activities", "domain");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Application", b =>
@@ -2811,7 +2869,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasIndex("Index")
                         .IsUnique();
 
-                    b.ToTable("Applications", "Local");
+                    b.ToTable("Applications", "domain");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Default", b =>
@@ -2875,7 +2933,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasIndex("Index")
                         .IsUnique();
 
-                    b.ToTable("Defaults", "Local");
+                    b.ToTable("Defaults", "domain");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Detail", b =>
@@ -2951,7 +3009,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasIndex("Index")
                         .IsUnique();
 
-                    b.ToTable("Details", "Local");
+                    b.ToTable("Details", "domain");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Location", b =>
@@ -3054,7 +3112,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasIndex("LocationId")
                         .IsUnique();
 
-                    b.ToTable("Locations", "Local");
+                    b.ToTable("Locations", "domain");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Locations.Endpoint", b =>
@@ -3100,7 +3158,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.Property<long?>("LocationId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Method")
+                    b.Property<string>("Invoke")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Modified")
@@ -3119,7 +3177,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
-                    b.Property<string[]>("Parameters")
+                    b.Property<string[]>("Arguments")
                         .HasColumnType("text[]");
 
                     b.Property<int?>("Port")
@@ -3147,7 +3205,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("Endpoints", "Local");
+                    b.ToTable("Endpoints", "domain");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Locations.Position", b =>
@@ -3261,7 +3319,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("Positions", "Local");
+                    b.ToTable("Positions", "domain");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Member", b =>
@@ -3336,7 +3394,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasIndex("Index")
                         .IsUnique();
 
-                    b.ToTable("Members", "Local");
+                    b.ToTable("Members", "domain");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Resource", b =>
@@ -3411,7 +3469,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasIndex("Index")
                         .IsUnique();
 
-                    b.ToTable("Resources", "Local");
+                    b.ToTable("Resources", "domain");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Schedule", b =>
@@ -3486,7 +3544,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasIndex("Index")
                         .IsUnique();
 
-                    b.ToTable("Schedules", "Local");
+                    b.ToTable("Schedules", "domain");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Service", b =>
@@ -3561,7 +3619,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasIndex("Index")
                         .IsUnique();
 
-                    b.ToTable("Services", "Local");
+                    b.ToTable("Services", "domain");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Setting", b =>
@@ -3637,7 +3695,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasIndex("Index")
                         .IsUnique();
 
-                    b.ToTable("Settings", "Local");
+                    b.ToTable("Settings", "domain");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Activity>", b =>
@@ -3733,12 +3791,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -3750,12 +3808,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -3767,12 +3825,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -3784,12 +3842,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -3801,12 +3859,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Application", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Application", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -3818,12 +3876,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Application", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -3835,29 +3893,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Application", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
-
-                    b.Navigation("LeftEntity");
-
-                    b.Navigation("RightEntity");
-                });
-
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Application, Undersoft.SSC.Domain.Entities.Service>", b =>
-                {
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Application", "LeftEntity")
-                        .WithMany()
-                        .HasForeignKey("LeftEntityId")
-                        .IsRequired();
-
-                    b.HasOne("Undersoft.SSC.Domain.Entities.Service", "RightEntity")
-                        .WithMany()
-                        .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -3869,12 +3910,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Application", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -3886,12 +3927,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -3903,12 +3944,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -3920,12 +3961,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -3937,12 +3978,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -3954,12 +3995,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -3971,12 +4012,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -3988,12 +4029,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -4005,12 +4046,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -4022,12 +4063,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -4039,12 +4080,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -4056,12 +4097,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -4073,12 +4114,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -4090,12 +4131,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -4107,12 +4148,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -4124,12 +4165,29 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("LeftEntity");
+
+                    b.Navigation("RightEntity");
+                });
+
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Application>", b =>
+                {
+                    b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
+                        .WithMany("ServicesToApplications")
+                        .HasForeignKey("LeftEntityId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Undersoft.SSC.Domain.Entities.Application", "RightEntity")
+                        .WithMany("ServicesToApplications")
+                        .HasForeignKey("RightEntityId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -4141,12 +4199,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -4158,12 +4216,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -4175,12 +4233,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -4192,12 +4250,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -4209,12 +4267,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("LeftEntity");
 
@@ -4366,6 +4424,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.Navigation("Identifiers");
 
                     b.Navigation("Location");
+
+                    b.Navigation("ServicesToApplications");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Default", b =>
@@ -4425,6 +4485,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.Navigation("Identifiers");
 
                     b.Navigation("Location");
+
+                    b.Navigation("ServicesToApplications");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Setting", b =>

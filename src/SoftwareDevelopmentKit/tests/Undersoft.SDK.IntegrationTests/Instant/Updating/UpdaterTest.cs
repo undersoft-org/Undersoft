@@ -120,10 +120,6 @@ namespace Undersoft.SDK.IntegrationTests.Instant.Updating
             dataObject0.PutTo(updater1.Source);
             dataObject0.PutFrom(mock);
 
-            var c = updater5.Preset;
-            c.City = "dfdfhdsdh";
-            c.FacebookId = "dfklsdfk";
-
             ((Agreement)_Proxy0).TypeId = 1005L;
             var uk = _Proxy0.Id;
             var k2 = _Proxy0["Id"];

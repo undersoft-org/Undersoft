@@ -27,7 +27,7 @@ public class RestDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
                 a =>
                     a.GetTypes()
                         .Where(
-                            type => type.GetCustomAttribute<CrudDataServiceAttribute>()
+                            type => type.GetCustomAttribute<ApiDataAttribute>()
                                     != null
                         )
                         .ToArray())
@@ -44,10 +44,10 @@ public class RestDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
             var genTypes = controllerType.BaseType.GenericTypeArguments;
 
             if (genTypes.Length > 4 && genTypes[1].IsAssignableTo(StoreType) && genTypes[2].IsAssignableTo(StoreType))
-                ifaceType = typeof(ICrudDataController<,,>).MakeGenericType(new[] { genTypes[0], genTypes[3], genTypes[4] });
+                ifaceType = typeof(IApiDataController<,,>).MakeGenericType(new[] { genTypes[0], genTypes[3], genTypes[4] });
             else if (genTypes.Length > 3)
                 if (genTypes[3].IsAssignableTo(typeof(IDataObject)) && genTypes[1].IsAssignableTo(StoreType))
-                    ifaceType = typeof(ICrudDataController<,,>).MakeGenericType(new[] { genTypes[0], genTypes[2], genTypes[3] });
+                    ifaceType = typeof(IApiDataController<,,>).MakeGenericType(new[] { genTypes[0], genTypes[2], genTypes[3] });
                 else
                     continue;
         }

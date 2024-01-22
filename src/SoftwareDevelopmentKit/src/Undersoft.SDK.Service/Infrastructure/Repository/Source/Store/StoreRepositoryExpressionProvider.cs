@@ -6,23 +6,18 @@ using System.Reflection;
 namespace Undersoft.SDK.Service.Infrastructure.Repository.Source.Store;
 
 using Undersoft.SDK;
+using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class StoreRepositoryExpressionProvider<TEntity> : IQueryProvider
     where TEntity : class, IOrigin
 {
     private readonly Type queryType;
-    private IQueryable<TEntity> query;
+    private IDataStoreContext _context;
 
-    public StoreRepositoryExpressionProvider(DbSet<TEntity> dbSet)
+    public StoreRepositoryExpressionProvider(IDataStoreContext context)
     {
         queryType = typeof(StoreRepository<>);
-        query = dbSet;
-    }
-
-    public StoreRepositoryExpressionProvider(DataServiceQuery<TEntity> targetDsSet)
-    {
-        queryType = typeof(StoreRepository<>);
-        query = targetDsSet;
+        _context = context;
     }
 
     public IQueryable CreateQuery(Expression expression)
@@ -56,12 +51,15 @@ public class StoreRepositoryExpressionProvider<TEntity> : IQueryProvider
 
     public TResult Execute<TResult>(Expression expression)
     {
-        IQueryable<TEntity> newRoot = query;
+        IQueryable<TEntity> newRoot = _context.Query<TEntity>();
         var treeCopier = new StoreRepositoryExpressionVisitor(newRoot);
         var newExpressionTree = treeCopier.Visit(expression);
         var isEnumerable =
-            typeof(TResult).IsGenericType
-            && typeof(TResult).GetGenericTypeDefinition() == typeof(IEnumerable<TEntity>);
+            (
+                typeof(TResult).IsGenericType
+                && typeof(TResult).GetGenericTypeDefinition() == typeof(IEnumerable<TEntity>)
+            )
+            || typeof(TResult).Name == "IEnumerable`1";
         if (isEnumerable)
         {
             return (TResult)newRoot.Provider.CreateQuery(newExpressionTree);

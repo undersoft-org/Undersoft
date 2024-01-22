@@ -5,7 +5,7 @@ using Rubrics;
 
 public interface IUpdater : IInstant
 {
-    IProxy Preset { get; }
+    //IProxy Preset { get; }
     IProxy Source { get; }
 
     IRubrics Rubrics { get; set; }

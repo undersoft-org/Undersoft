@@ -19,7 +19,7 @@ public static class DataObjectExtensions
         while (type.IsAssignableTo(typeof(IProxyTargetAccessor)))
             type = type.UnderlyingSystemType.BaseType;
         if (type == typeof(IEdmEntityType))
-            return OpenDataServiceRegistry.MappedTypes[((IEdmEntityType)type).FullTypeName()];
+            return OpenDataRegistry.MappedTypes[((IEdmEntityType)type).FullTypeName()];
         return type;
     }
 

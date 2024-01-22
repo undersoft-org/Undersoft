@@ -13,7 +13,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 
         public override void Configure(EntityTypeBuilder<Detail> builder)
         {
-            builder.ToTable(TABLE_NAME, DataStoreSchema.LocalSchema);
+            builder.ToTable(TABLE_NAME, DataStoreSchema.DomainSchema);
 
             modelBuilder
                 .ApplyIdentifiers<Detail>()

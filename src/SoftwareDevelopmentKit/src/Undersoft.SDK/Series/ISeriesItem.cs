@@ -11,8 +11,8 @@ namespace Undersoft.SDK.Series
             IEquatable<object>,
             IEquatable<long>,
             IComparable<object>,
-            IUnique<V>,
             IDisposable,
+            IIdentifiable,
             IEnumerable<V>
     {
         bool Repeated { get; set; }

@@ -77,11 +77,11 @@
             if (this.value == null)
             {
                 _proxy = new Updater<V>(item.Value);
-                value = _proxy.Preset;
+                value = item.Value;
             }
             else
             {
-                value.PatchTo(_proxy.EntryProxy);
+                value.PatchTo(_proxy);
             }
 
             _key = item.Id;
@@ -92,11 +92,11 @@
             if (this.value == null)
             {
                 _proxy = new Updater<V>(value);
-                this.value = _proxy.Preset;
+                this.value = value;
             }
             else
             {
-                value.PatchTo(_proxy.EntryProxy);
+                value.PatchTo(_proxy);
             }
 
             _key = key.UniqueKey64();
@@ -110,7 +110,7 @@
         public override V Value
         {
             get => base.Value;
-            set => value.PatchTo(_proxy.EntryProxy);
+            set => value.PatchTo(_proxy);
         }
     }
 }

@@ -12,6 +12,6 @@ public class PositionMappings : EntityTypeMapping<Position>
 
     public override void Configure(EntityTypeBuilder<Position> builder)
     {
-        builder.ToTable(TABLE_NAME, DataStoreSchema.LocalSchema);
+        builder.ToTable(TABLE_NAME, DataStoreSchema.DomainSchema);
     }
 }

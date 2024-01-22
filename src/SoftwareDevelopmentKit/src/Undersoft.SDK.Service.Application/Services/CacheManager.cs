@@ -377,7 +377,7 @@ internal class CacheManager : ICacheManager
         void SetValue()
         {
             var type = model.GetType();
-            var cacheKey = ($"Lambda-Set-{type.FullName}", typeof(TModel), fieldName, typeof(TValue));
+            var cacheKey = ($"Lambda-EntitySet-{type.FullName}", typeof(TModel), fieldName, typeof(TValue));
             var invoker = Instance.GetOrCreate(cacheKey, entry =>
             {
                 entry.SetDynamicAssemblyPolicy(type);

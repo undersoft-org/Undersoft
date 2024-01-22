@@ -12,11 +12,12 @@
             IEnumerable,
             ICollection,
             ICollection<V>,
-            IList<V>,
+            IList<V>,        
             IProducerConsumerCollection<V>,
             IDisposable,
             IUnique,
-            IFindableSeries<V>, IIdentifiable
+            IFindableSeries<V>, 
+            IIdentifiable
     {
         ISeriesItem<V> First { get; }
         ISeriesItem<V> Last { get; }

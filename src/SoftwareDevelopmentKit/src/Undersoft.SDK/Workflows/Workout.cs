@@ -39,7 +39,7 @@
 
             Workspace = Aspect.Workspace;
             foreach (WorkItem am in Aspect)
-                am.Run(am.ParameterValues);
+                am.Run(am.Arguments);
 
             Aspect.Workspace.Close(safeClose);
         }
@@ -88,7 +88,7 @@
             Workspace = Aspect.Workspace;
             Work = Aspect.AsValues().FirstOrDefault();
             Work.FlowTo(Case.AsValues().Skip(1).FirstOrDefault().AsValues().FirstOrDefault());
-            Case.Run(method.Name, method.ParameterValues);
+            Case.Run(method.Name, method.Arguments);
             Workspace.Close(safeClose);
         }
 

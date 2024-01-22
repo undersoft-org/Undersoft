@@ -8,9 +8,9 @@ using Uniques;
 public interface IRelatedLink<TLeft, TRight> : IDataObject where TLeft : class, IOrigin, IInnerProxy where TRight : class, IOrigin, IInnerProxy
 {
     [JsonIgnore]
-    TLeft? LeftEntity { get; set; }
+    TLeft LeftEntity { get; set; }
     long? LeftEntityId { get; set; }
     [JsonIgnore]
-    TRight? RightEntity { get; set; }
+    TRight RightEntity { get; set; }
     long? RightEntityId { get; set; }
 }

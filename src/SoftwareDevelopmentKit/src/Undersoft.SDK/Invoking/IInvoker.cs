@@ -3,21 +3,14 @@ using System.Threading.Tasks;
 
 namespace Undersoft.SDK.Invoking
 {
+    using Undersoft.SDK.Instant;
     using Uniques;
 
-    public interface IInvoker : IUnique
+    public interface IInvoker : IInvokable
     {
-        string Name { get; set; }
-
-        string QualifiedName { get; set; }
-
         object TargetObject { get; set; }
 
-        MethodInfo Info { get; set; }
-
         ParameterInfo[] Parameters { get; set; }
-
-        object[] ParameterValues { get; set; }
 
         InvokerDelegate MethodInvoker { get; }
 

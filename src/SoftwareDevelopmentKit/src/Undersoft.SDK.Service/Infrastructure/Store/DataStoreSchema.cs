@@ -2,10 +2,10 @@
 {
     public static class DataStoreSchema
     {
-        public static string LocalSchema { get; } = "Local";
-        public static string RemoteSchema { get; } = "Remote";
-        public static string IdentifierSchema { get; } = "Identifier";
-        public static string RelationSchema { get; } = "Relation";
-        public static string PropertySchema { get; } = "Property";
+        public static string DomainSchema { get; } = "domain";
+        public static string RemoteSchema { get; } = "remote";
+        public static string IdentifierSchema { get; } = "identifiers";
+        public static string RelationSchema { get; } = "relations";
+        public static string PropertySchema { get; } = "properties";
     }
 }

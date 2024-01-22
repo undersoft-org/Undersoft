@@ -15,7 +15,6 @@
         private bool disposedValue = false;
         private ISeriesItem<V> extended;
         private ISeriesItem<V> next;
-        private ISeries<V> catalog;
 
         public SeriesItemBase() { }
 
@@ -95,12 +94,7 @@
         {
             get => value;
             set => this.value = value;
-        }
-
-        //public virtual long CompactKey()
-        //{
-        //    return (IsUnique) ? ((IUnique)UniqueValue).Id : Id;
-        //}
+        }  
 
         public virtual int CompareTo(ISeriesItem<V> other)
         {
@@ -163,16 +157,6 @@
         }
 
         public abstract void Set(V value);
-
-        //public virtual int[] UniqueOrdinals()
-        //{
-        //    return null;
-        //}
-
-        //public virtual object[] UniqueValues()
-        //{
-        //    return new object[] { Id };
-        //}
 
         public virtual ISeriesItem<V> MoveNext(ISeriesItem<V> item)
         {

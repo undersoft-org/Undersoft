@@ -79,10 +79,10 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
                     a.GetTypes()
                         .Where(
                             type =>
-                                type.GetCustomAttribute<OpenDataServiceAttribute>() != null
-                                || type.GetCustomAttribute<OpenDataActionServiceAttribute>() != null
+                                type.GetCustomAttribute<OpenDataAttribute>() != null
+                                || type.GetCustomAttribute<OpenServiceAttribute>() != null
                                 || type.GetCustomAttribute<RemoteOpenDataServiceAttribute>() != null
-                                || type.GetCustomAttribute<RemoteOpenDataActionServiceAttribute>()
+                                || type.GetCustomAttribute<OpenServiceRemoteAttribute>()
                                     != null
                         )
             )
@@ -103,9 +103,7 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
                 if (
                     genTypes[3].IsAssignableTo(typeof(IOrigin))
                     && (
-                        genTypes[1].IsAssignableFrom(StoreType)
-                        || genTypes[1].IsAssignableTo(StoreType) ||
-                         genTypes[0].IsAssignableFrom(StoreType)
+                         genTypes[1].IsAssignableTo(StoreType)                         
                         || genTypes[0].IsAssignableTo(StoreType)
                     )
                 )
@@ -133,7 +131,9 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
             b.RouteOptions.EnableQualifiedOperationCall = true;
             b.RouteOptions.EnableUnqualifiedOperationCall = true;
             b.RouteOptions.EnableKeyInParenthesis = true;
-            b.RouteOptions.EnableKeyAsSegment = false;
+            b.RouteOptions.EnableControllerNameCaseInsensitive = true;
+            b.RouteOptions.EnableNonParenthesisForEmptyParameterFunction = true;
+            b.RouteOptions.EnableActionNameCaseInsensitive = true;
             b.RouteOptions.EnableControllerNameCaseInsensitive = true;
             b.EnableQueryFeatures(PageLimit).AddRouteComponents(route, model);
         });
@@ -179,7 +179,7 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
         }
         else if (StoreType == typeof(IAccountStore))
         {
-            return StoreRoutes.OpenIdentityRoute;
+            return StoreRoutes.OpenAuthRoute;
         }
         else
         {
@@ -208,13 +208,12 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
 
 
         odataBuilder
-            .EntityType<TAuth>()
            .Action("Action")
              .ReturnsFromEntitySet<TAuth>(name)
            .Parameter<TAuth>(name);
 
         odataBuilder
-             .EntityType<TAuth>()
+            .EntityType<TAuth>()
             .Function("Function")
               .ReturnsFromEntitySet<TAuth>(name)
             .Parameter<string>(name);

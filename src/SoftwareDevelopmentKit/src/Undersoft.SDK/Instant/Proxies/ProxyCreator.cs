@@ -95,7 +95,7 @@ public class ProxyCreator : IInstantCreator
 
         Type = obj.GetType();
 
-        Rubrics.Select(
+        Rubrics.ForEach(
             (f, y) => new object[]
             {
                 f.FieldId = y,

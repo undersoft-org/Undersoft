@@ -7,9 +7,10 @@ using Command;
 using Logging;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Object;
+using Undersoft.SDK.Service.Server.Operation.Invocation;
 using Uniques;
 
-public abstract class RemoteActionNotification<TCommand> : Event, INotification where TCommand : ActionCommandBase
+public abstract class RemoteActionNotification<TCommand> : Event, INotification where TCommand : InvocationBase
 {
     public TCommand Command { get; }
 
@@ -27,6 +28,6 @@ public abstract class RemoteActionNotification<TCommand> : Event, INotification 
         PublishStatus = EventPublishStatus.Ready;
         PublishTime = Log.Clock;
 
-        EventData = JsonSerializer.SerializeToUtf8Bytes((ActionCommandBase)command);
+        EventData = JsonSerializer.SerializeToUtf8Bytes((InvocationBase)command);
     }
 }

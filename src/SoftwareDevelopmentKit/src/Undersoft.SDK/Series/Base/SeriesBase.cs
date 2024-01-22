@@ -10,8 +10,9 @@ namespace Undersoft.SDK.Series.Base
     using Enumerators;
     using System.ComponentModel;
     using Undersoft.SDK;
+    using System.Linq.Expressions;
 
-    public abstract class SeriesBase<V> : Identifiable, IIdentifiable, ISeries<V>, ISet<V>, IAsyncDisposable
+    public abstract class SeriesBase<V> : Identifiable, IIdentifiable, ISeries<V>, ISet<V>, IAsyncDisposable, IListSource
     {
 
         internal const float RESIZING_VECTOR = 1.766F;
@@ -1133,12 +1134,12 @@ namespace Undersoft.SDK.Series.Base
                 last = null;
                 table = null;
 
-            })).ConfigureAwait(false);
+            }));
         }
 
         public async ValueTask DisposeAsync()
         {
-            await DisposeAsyncCore().ConfigureAwait(false);
+            await DisposeAsyncCore();
 
             Dispose(false);
 
@@ -1155,13 +1156,30 @@ namespace Undersoft.SDK.Series.Base
             return code.CompareTo(other);
         }
 
-        public IUnique Empty => Usid.Empty;
-
         public DateTime Created { get; set; }
+        
         public string Creator { get; set; }
+        
         public DateTime Modified { get; set; }
+        
         public string Modifier { get; set; }
+        
         public int OriginId { get => (int)code.OriginId; set => code.OriginId = (uint)value; }
+
+        public Type ElementType => typeof(V);
+
+        //public Expression Expression => this.AsQueryable().Expression;
+
+        //public IQueryProvider Provider => query ??= new EnumerableQuery<V>(this);
+
+        public bool ContainsListCollection => true;
+
+        public IList GetList()
+        {
+            return (IList)this;
+        }
+
+        //private EnumerableQuery<V> query;
 
         public virtual byte[] GetBytes()
         {
@@ -1175,43 +1193,46 @@ namespace Undersoft.SDK.Series.Base
 
         public virtual void ExceptWith(IEnumerable<V> other)
         {
-            throw new NotImplementedException();
+            this.AsItems().ForOnly(e => other.Contains(e.Value), e => Remove(e));
         }
         public virtual void IntersectWith(IEnumerable<V> other)
         {
-            throw new NotImplementedException();
+            this.AsItems().ForOnly(e => !other.Contains(e.Value), (e) => Remove(e));
         }
         public virtual bool IsProperSubsetOf(IEnumerable<V> other)
         {
-            throw new NotImplementedException();
+            return (this.Count < other.Count()) && this.All(e => other.Contains(e));
         }
         public virtual bool IsProperSupersetOf(IEnumerable<V> other)
         {
-            throw new NotImplementedException();
+            return (this.Count > other.Count()) && other.All(e => this.Contains(e));
         }
         public virtual bool IsSubsetOf(IEnumerable<V> other)
         {
-            throw new NotImplementedException();
+           return (this.Count <= other.Count()) && this.All(e => other.Contains(e));
         }
         public virtual bool IsSupersetOf(IEnumerable<V> other)
         {
-            throw new NotImplementedException();
+           return (this.Count >= other.Count()) && other.All(e => this.Contains(e));
         }
         public virtual bool Overlaps(IEnumerable<V> other)
         {
-            throw new NotImplementedException();
+            return this.Any(e => other.Contains(e));
         }
         public virtual bool SetEquals(IEnumerable<V> other)
         {
-            throw new NotImplementedException();
+            return ReferenceEquals(this, other) || (this.Count == other.Count()) && this.All(e => other.Contains(e));
         }
         public virtual void SymmetricExceptWith(IEnumerable<V> other)
         {
-            other.ForOnly(e => Contains(e), (e) => Remove(e));
+            var toRemove = this.AsItems().ForOnly(e => other.Contains(e.Value), (e) => e).ToListing();
+            other.ForOnly(e => !this.Contains(e), e => this.Add(e));
+            toRemove.ForEach(r => Remove(r));
         }
         public virtual void UnionWith(IEnumerable<V> other)
         {
             this.Add(other);
-        }      
-    }
+        }
+
+    }   
 }

@@ -7,6 +7,7 @@ using Instant.Proxies;
 using Instant.Updating;
 using Logging;
 using Series;
+using System.Text.Json;
 using Undersoft.SDK.Security.Identity;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Client;
@@ -24,14 +25,14 @@ public class RemoteRepository<TStore, TEntity>
     where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
-    public RemoteRepository(IRepositoryContextPool<OpenDataService<TStore>> pool)
+    public RemoteRepository(IRepositoryContextPool<OpenDataClient<TStore>> pool)
         : base(pool.ContextPool)
     {
         mapper = DataMapper.GetMapper();
     }
 
     public RemoteRepository(
-        IRepositoryContextPool<OpenDataService<TStore>> pool,
+        IRepositoryContextPool<OpenDataClient<TStore>> pool,
         IEntityCache<TStore, TEntity> cache
     ) : base(pool.ContextPool)
     {
@@ -40,7 +41,7 @@ public class RemoteRepository<TStore, TEntity>
     }
 
     public RemoteRepository(
-        IRepositoryContextPool<OpenDataService<TStore>> pool,
+        IRepositoryContextPool<OpenDataClient<TStore>> pool,
         IEntityCache<TStore, TEntity> cache,
         IAuthorization authorization
     ) : base(pool.ContextPool)
@@ -56,7 +57,8 @@ public class RemoteRepository<TStore, TEntity>
     }
 }
 
-public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRepository<TEntity> where TEntity : class, IOrigin, IInnerProxy
+public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRepository<TEntity>
+    where TEntity : class, IOrigin, IInnerProxy
 {
     ISeries<DataServiceRequest> _batchset;
     protected DataServiceQuery<TEntity> dsQuery;
@@ -81,7 +83,7 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
         }
     }
 
-    public RemoteRepository(OpenDataServiceContext context) : base(context)
+    public RemoteRepository(OpenDataContext context) : base(context)
     {
         if (dsContext != null)
         {
@@ -305,7 +307,7 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
         return -1;
     }
 
-    protected OpenDataServiceContext dsContext => (OpenDataServiceContext)InnerContext;
+    protected OpenDataContext dsContext => (OpenDataContext)InnerContext;
 
     public override object TracePatching(object item, string propertyName = null, Type type = null)
     {
@@ -403,7 +405,7 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
         return Query;
     }
 
-    public OpenDataServiceContext Context => dsContext;
+    public OpenDataContext Context => dsContext;
 
     public override string Name => Context.GetMappedName(ElementType);
 
@@ -411,51 +413,43 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
 
     public override DataServiceQuery<TEntity> Query => dsContext.CreateQuery<TEntity>(Name, true);
 
-    public async Task<TEntity> FunctionAsync<TModel, TKind>(TKind kind) where TKind : Enum
+    public async Task<TEntity> FunctionAsync<TModel>(string method)
     {
-        return await InvokeAsync(
-            typeof(TModel).Name,
-            kind
-        );
+        return await InvokeAsync(typeof(TModel).Name, method);
     }
 
-    public async Task<TEntity> ActionAsync<TModel, TKind>(TEntity payload, TKind kind)
-        where TKind : Enum
+    public async Task<TEntity> ActionAsync<TService>(string method, ISeries<IArgument> arguments)
     {
-        return await InvokeAsync(
-            new BodyOperationParameter(Name, payload),
-            typeof(TModel).Name,
-            kind
-        );
+        var payload = typeof(TService)
+            .GetMethod(method)
+            .GetParameters()
+            .ForEach(p => new BodyOperationParameter(p.Name, arguments[p.Name]))
+            .Commit();
+
+        return await InvokeAsync(payload, typeof(TEntity).Name, method);
     }
 
-    public async Task<TEntity> ActionAsync<TModel, TKind>(TEntity[] payloads, TKind kind)
-        where TKind : Enum
-    {
-        return await InvokeAsync(
-            new BodyOperationParameter(Name, payloads),
-            typeof(TModel).Name,
-            kind
-        );
-    }
-
-    private async Task<TEntity> InvokeAsync<TKind>(string entityName, TKind kind) where TKind : Enum
+    private async Task<TEntity> InvokeAsync(string entityName, string method)
     {
         var action = dsContext.CreateFunctionQuerySingle<TEntity>(
             dsContext.BaseUri.OriginalString,
-            entityName + "/" + kind.ToString(),
+            entityName + "(" + method + ")",
             true
         );
         var result = await action.GetValueAsync();
         return result;
     }
 
-    private async Task<TEntity> InvokeAsync<TKind>(BodyOperationParameter parameter, string entityName, TKind kind) where TKind : Enum
+    private async Task<TEntity> InvokeAsync(
+        BodyOperationParameter[] parameters,
+        string entityName,
+        string method
+    )
     {
         var action = new DataServiceActionQuerySingle<TEntity>(
             dsContext,
-            dsContext.BaseUri.OriginalString + "/" + entityName + "/" + kind.ToString(),
-            new BodyOperationParameter[] { parameter }
+            dsContext.BaseUri.OriginalString + "/" + entityName + "(" + method + ")",
+            parameters
         );
         var result = await action.GetValueAsync();
         return result;

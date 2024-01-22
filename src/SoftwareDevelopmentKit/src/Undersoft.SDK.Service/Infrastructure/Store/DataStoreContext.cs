@@ -4,8 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Undersoft.SDK.Logging;
 
 namespace Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SDK.Service;
 
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Polly;
+using System.Collections;
+using Undersoft.SDK.Service;
+using Undersoft.SDK.Service.Data.Object;
 using Uniques;
 
 public class DataStoreContext<TStore> : DataStoreContext, IDataStoreContext<TStore>
@@ -34,19 +38,77 @@ public class DataStoreContext : DbContext, IDataStoreContext, IResettableService
         this.servicer = servicer;
     }
 
-    public IQueryable<TEntity> Query<TEntity>() where TEntity : class, IUniqueIdentifiable
+    public IQueryable<TEntity> Query<TEntity>() where TEntity : class
     {
-        return Set<TEntity>();
+        return EntitySet<TEntity>();
     }
 
-    public object EntitySet<TEntity>() where TEntity : class, IUniqueIdentifiable
-    {
-        return Set<TEntity>();
+    public IQueryable<TEntity> EntitySet<TEntity>() where TEntity : class
+    {        
+        return base.Set<TEntity>();
     }
 
-    public object EntitySet(Type type)
+    public IQueryable EntitySet(Type type)
     {
-        return this.GetEntitySet(type);
+        return (IQueryable)this.GetEntitySet(type);
+    }
+
+    public new TEntity Add<TEntity>(TEntity entity) where TEntity : class
+    {
+        return base.Add<TEntity>(entity).Entity;
+    }
+
+    public object AttachProperty(object item, string propertyName, Type type = null)
+    {
+        if (type == null)
+        {
+            Attach(item);
+            return item;
+        }
+        else if (type.IsAssignableTo(typeof(IEnumerable)))
+        {
+            var list = Entry(item).Collection(propertyName);
+            Attach(list.EntityEntry.Entity);
+            list.Load();
+            return list.CurrentValue;
+        }
+        else
+        {
+            var obj = Entry(item).Reference(propertyName);
+            Attach(obj.EntityEntry.Entity);
+            obj.Load();
+            return obj.CurrentValue;
+        }
+    }
+
+    public async new ValueTask<TEntity> AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken) where TEntity : class
+    {
+        return await ValueTask.FromResult((await base.AddAsync<TEntity>(entity)).Entity);
+    }
+
+    public new object Add(object entity)
+    {
+        return base.Add(entity).Entity;
+    }
+
+    public new TEntity Update<TEntity>(TEntity entity) where TEntity : class
+    {
+        return base.Update(entity).Entity;
+    }
+
+    public new TEntity Remove<TEntity>(TEntity entity) where TEntity : class
+    {
+        return base.Update(entity).Entity;
+    }
+
+    public new object Attach(object entity)
+    {
+        return base.Attach(entity).Entity;
+    }
+
+    public new TEntity Attach<TEntity>(TEntity entity) where TEntity : class
+    {
+        return base.Attach(entity).Entity;
     }
 
     public virtual Task<int> Save(bool asTransaction, CancellationToken token = default)

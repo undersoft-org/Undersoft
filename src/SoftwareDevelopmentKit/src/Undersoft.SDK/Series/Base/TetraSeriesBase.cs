@@ -1130,10 +1130,6 @@ namespace Undersoft.SDK.Series.Base
             get { return typeof(V); }
         }
 
-        public Expression Expression { get; set; }
-
-        public IQueryProvider Provider { get; protected set; }
-
         public DateTime Created { get; set; }
         
         public string Creator { get; set; }
@@ -1147,5 +1143,20 @@ namespace Undersoft.SDK.Series.Base
             get => (int)code.OriginId;
             set => code.OriginId = (uint)value;
         }
+
+        public Type ElementType => typeof(V);
+
+        //public Expression Expression => this.AsQueryable().Expression;
+
+        //public IQueryProvider Provider => query ??= new EnumerableQuery<V>(this);
+
+        public bool ContainsListCollection => true;
+
+        public IList GetList()
+        {
+            return (IList)this;
+        }
+
+        //private EnumerableQuery<V> query;
     }
 }

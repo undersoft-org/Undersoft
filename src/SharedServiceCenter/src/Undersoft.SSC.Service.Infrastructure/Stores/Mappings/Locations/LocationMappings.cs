@@ -14,7 +14,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings.Locations
 
         public override void Configure(EntityTypeBuilder<Location> builder)
         {
-            builder.ToTable(TABLE_NAME, DataStoreSchema.LocalSchema);
+            builder.ToTable(TABLE_NAME, DataStoreSchema.DomainSchema);
 
             modelBuilder
                 .RelateOneToSet<Location, Endpoint>(

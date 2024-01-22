@@ -15,7 +15,7 @@ public class Updater : IUpdater
     protected HashSet<int> trackset;
     protected ProxyCreator creator;
     protected IProxy source;
-    protected IProxy preset;
+    //protected IProxy preset;
     protected Type type => creator.BaseType;
     protected int patchNotEqualTypesCount = 0;
     protected int putNotEqualTypesCount = 0;
@@ -29,11 +29,11 @@ public class Updater : IUpdater
         set => source = value;
     }
 
-    public IProxy Preset
-    {
-        get => ((preset == null) ? preset = creator.Create(source) : preset);
-        set => preset = value;
-    }
+    //public IProxy Preset
+    //{
+    //    get => ((preset == null) ? preset = creator.Create(source) : preset);
+    //    set => preset = value;
+    //}
 
     public Action<Updater, object> UpdatingRoutine { get; set; }
 
@@ -227,46 +227,6 @@ public class Updater : IUpdater
                 changes = PatchEqualTypes(target);
         }
         return changes;
-    }
-
-    public void SafeMapPreset()
-    {
-        var presetShell = creator.Create(preset);
-
-        presetShell.Rubrics
-            .Select(
-                v =>
-                    preset.Rubrics.ContainsKey(v.RubricName)
-                        ? preset[v.RubricName] = presetShell[v.RubricId]
-                        : null
-            )
-            .ToArray();
-    }
-
-    public void SafeMapEntry()
-    {
-        var presetShell = creator.Create(preset);
-
-        preset.Rubrics
-            .Select(
-                v =>
-                    presetShell.Rubrics.ContainsKey(v.RubricName)
-                        ? presetShell[v.RubricName] = preset[v.RubricId]
-                        : null
-            )
-            .ToArray();
-    }
-
-    public void SafeMapDevisor()
-    {
-        Rubrics
-            .Select(
-                v =>
-                    preset.Rubrics.ContainsKey(v.RubricName)
-                        ? preset[v.RubricName] = source[v.RubricId]
-                        : null
-            )
-            .ToArray();
     }
 
     public object Clone()
@@ -617,14 +577,14 @@ public class Updater : IUpdater
 
     public object this[string propertyName]
     {
-        get => GetPreset(propertyName);
-        set => SetPreset(propertyName, value);
+        get => source[propertyName];
+        set => source[propertyName] = value;
     }
 
     public object this[int fieldId]
     {
-        get => GetPreset(fieldId);
-        set => SetPreset(fieldId, value);
+        get => source[fieldId];
+        set => source[fieldId] = value;
     }
 
     public Uscn Code
@@ -645,67 +605,67 @@ public class Updater : IUpdater
         set => source.Target = value;
     }
 
-    public object GetPreset(int fieldId)
-    {
-        if (trackset != null && trackset.Contains(fieldId))
-        {
-            return preset[fieldId];
-        }
-        return source[fieldId];
-    }
+    //public object GetPreset(int fieldId)
+    //{
+    //    if (trackset != null && trackset.Contains(fieldId))
+    //    {
+    //        return preset[fieldId];
+    //    }
+    //    return source[fieldId];
+    //}
 
-    public object GetPreset(string propertyName)
-    {
-        if (trackset != null)
-        {
-            int id = 0;
-            var rubric = Rubrics[propertyName];
-            if (rubric != null && trackset.Contains(id = rubric.RubricId))
-            {
-                return preset[id];
-            }
-            else
-                return null;
-        }
+    //public object GetPreset(string propertyName)
+    //{
+    //    if (trackset != null)
+    //    {
+    //        int id = 0;
+    //        var rubric = Rubrics[propertyName];
+    //        if (rubric != null && trackset.Contains(id = rubric.RubricId))
+    //        {
+    //            return preset[id];
+    //        }
+    //        else
+    //            return null;
+    //    }
 
-        return source[propertyName];
-    }
+    //    return source[propertyName];
+    //}
 
-    public int[] GetPresets()
-    {
-        return trackset.ToArray();
-    }
+    //public int[] GetPresets()
+    //{
+    //    return trackset.ToArray();
+    //}
 
-    public void SetPreset(int fieldId, object value)
-    {
-        if (GetPreset(fieldId).Equals(value))
-            return;
+    //public void SetPreset(int fieldId, object value)
+    //{
+    //    if (GetPreset(fieldId).Equals(value))
+    //        return;
 
-        if (trackset == null)
-            trackset = new HashSet<int>();
+    //    if (trackset == null)
+    //        trackset = new HashSet<int>();
 
-        trackset.Add(fieldId);
-        preset[fieldId] = value;
-    }
+    //    trackset.Add(fieldId);
+    //    preset[fieldId] = value;
+    //}
 
-    public void SetPreset(string propertyName, object value)
-    {
-        if (GetPreset(propertyName).Equals(value))
-            return;
+    //public void SetPreset(string propertyName, object value)
+    //{
+    //    if (GetPreset(propertyName).Equals(value))
+    //        return;
 
-        if (trackset == null)
-            trackset = new HashSet<int>();
+    //    if (trackset == null)
+    //        trackset = new HashSet<int>();
 
-        int id = Rubrics[propertyName].RubricId;
-        trackset.Add(id);
-        preset[id] = value;
-    }
+    //    int id = Rubrics[propertyName].RubricId;
+    //    trackset.Add(id);
+    //    preset[id] = value;
+    //}
 
-    public void WritePresets()
-    {
-        trackset.ForEach((id) => source[id] = preset[id]).Commit();
-        trackset.Clear();
-    }
+    //public void WritePresets()
+    //{
+    //    trackset.ForEach((id) => source[id] = preset[id]).Commit();
+    //    trackset.Clear();
+    //}
 
-    public bool HavePresets => trackset != null;   
+    //public bool HavePresets => trackset != null;   
 }

@@ -12,18 +12,30 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
 {
     [AllowAnonymous]
     [ODataRouteComponent(StoreRoutes.OpenDataRoute)]
-    public class MemberIdentifierController : OpenDataController<long, IEntryStore, IReportStore, Identifier<Member>, Identifier<MemberBase>>
+    public class MemberIdentifierController
+        : OpenCqrsController<
+            long,
+            IEntryStore,
+            IReportStore,
+            Identifier<Member>,
+            Identifier<MemberBase>
+        >
     {
-        public MemberIdentifierController(IServicer ultimatr)
-            : base(ultimatr) { }
+        public MemberIdentifierController(IServicer ultimatr) : base(ultimatr) { }
     }
 }
 
 namespace Undersoft.SSC.Service.Application.Server.Controllers
 {
-    public class MemberIdentifiersController : CrudDataController<long, IEntryStore, IReportStore, Identifier<Member>, Identifier<MemberBase>>
+    public class MemberIdentifiersController
+        : ApiCqrsController<
+            long,
+            IEntryStore,
+            IReportStore,
+            Identifier<Member>,
+            Identifier<MemberBase>
+        >
     {
-        public MemberIdentifiersController(IServicer ultimatr)
-            : base(ultimatr) { }
+        public MemberIdentifiersController(IServicer ultimatr) : base(ultimatr) { }
     }
 }

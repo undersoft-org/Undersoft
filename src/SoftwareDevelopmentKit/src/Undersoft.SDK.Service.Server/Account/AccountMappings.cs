@@ -12,7 +12,7 @@ namespace Undersoft.SDK.Service.Server.Accounts
 
         public override void Configure(EntityTypeBuilder<Account> builder)
         {
-            builder.ToTable(TABLE_NAME, DataStoreSchema.LocalSchema);
+            builder.ToTable(TABLE_NAME, DataStoreSchema.DomainSchema);
 
             builder
                 .HasMany<Role>(r => r.Roles)

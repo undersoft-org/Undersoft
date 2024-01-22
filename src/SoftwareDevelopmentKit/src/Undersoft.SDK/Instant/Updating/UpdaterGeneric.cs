@@ -60,11 +60,11 @@
             return clone;
         }
 
-        public IProxy EntryProxy => source;
-        public IProxy PresetProxy => (IProxy)Preset;
+        //public IProxy EntryProxy => source;
+        //public IProxy PresetProxy => (IProxy)Preset;
 
-        public T Entry => (T)((preset == null) ? preset = creator.Create(Target) : preset);
-        public new T Preset => (T)((preset == null) ? preset = creator.Create(source) : preset);
+        //public T Entry => (T)((preset == null) ? preset = creator.Create(Target) : preset);
+        //public new T Preset => (T)((preset == null) ? preset = creator.Create(source) : preset);
 
         public T Devisor
         {

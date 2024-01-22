@@ -13,7 +13,7 @@ using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 [RemoteResult]
-[StreamDataService]
+[StreamData]
 public abstract class StreamEventController<TKey, TStore, TEntity, TDto> : IStreamDataController<TDto> where TDto : class, IDataObject
     where TEntity : class, IDataObject
     where TStore : IDataServerStore

@@ -35,7 +35,7 @@ public partial class ServerSetup
                                 type.GetCustomAttributes()
                                     .Any(
                                         a =>
-                                            a.GetType().IsAssignableTo(typeof(DataActionServiceAttribute))
+                                            a.GetType().IsAssignableTo(typeof(ServiceAttribute))
                                     )
                         )
                         .ToArray()
@@ -62,25 +62,25 @@ public partial class ServerSetup
             {
                 service.AddTransient(
                          typeof(IRequest<>).MakeGenericType(
-                             typeof(ActionCommand<,>).MakeGenericType(dtoType, _method)
+                             typeof(Invocation<,>).MakeGenericType(dtoType, _method)
                          ),
-                         typeof(ActionCommand<,>).MakeGenericType(dtoType, _method)
+                         typeof(Invocation<,>).MakeGenericType(dtoType, _method)
                      );
 
                 service.AddTransient(
                    typeof(IRequestHandler<,>).MakeGenericType(
                        new[]
                        {
-                            typeof(Execute<,,,>).MakeGenericType(store, actionType, dtoType, _method),
-                            typeof(ActionCommand<,>).MakeGenericType(dtoType, _method)
+                            typeof(Invoke<,,,>).MakeGenericType(store, actionType, dtoType, _method),
+                            typeof(Invocation<,>).MakeGenericType(dtoType, _method)
                        }
                    ),
-                   typeof(ExecuteHandler<,,,>).MakeGenericType(store, actionType, dtoType, _method)
+                   typeof(InvokeHandler<,,,>).MakeGenericType(store, actionType, dtoType, _method)
                );
 
                 service.AddTransient(
                  typeof(INotificationHandler<>).MakeGenericType(
-                     typeof(Executed<,,,>).MakeGenericType(store, actionType, dtoType, _method)
+                     typeof(Invoked<,,,>).MakeGenericType(store, actionType, dtoType, _method)
                  ),
                  typeof(ExecutedHandler<,,,>).MakeGenericType(store, actionType, dtoType, _method)
                 );

@@ -220,7 +220,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Store.Remote
             )
         {
             this.context = context;
-            name = OpenDataServiceRegistry.MappedNames[typeof(TEntity)];
+            name = OpenDataRegistry.MappedNames[typeof(TEntity)];
             if (name != null)
                 _query = context.CreateQuery<TEntity>(typeof(TEntity).Name);
 

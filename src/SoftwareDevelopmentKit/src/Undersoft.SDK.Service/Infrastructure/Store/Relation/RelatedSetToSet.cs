@@ -39,18 +39,7 @@ public class RelatedSetToSet<TLeft, TRight>
         string rightName,
         ExpandSite expandSite = ExpandSite.None,
         string dbSchema = null
-    )
-        : this(
-            modelBuilder,
-            leftName,
-            null,
-            rightName,
-            null,
-            expandSite,
-            dbSchema,
-            dbSchema
-        )
-    { }
+    ) : this(modelBuilder, leftName, null, rightName, null, expandSite, dbSchema, dbSchema) { }
 
     public RelatedSetToSet(
         ModelBuilder modelBuilder,
@@ -86,7 +75,7 @@ public class RelatedSetToSet<TLeft, TRight>
         if (childSchema != null)
             RIGHT_SCHEMA = childSchema;
 
-        RELATION_TABLE_NAME = LEFT_TABLE_NAME + "And" + RIGHT_TABLE_NAME;
+        RELATION_TABLE_NAME = LEFT_TABLE_NAME + "To" + RIGHT_TABLE_NAME;
     }
 
     public ModelBuilder Configure(bool autoinclude = false)
@@ -97,13 +86,23 @@ public class RelatedSetToSet<TLeft, TRight>
             .HasMany<TRight>(RIGHT_NAME)
             .WithMany(LEFT_NAME)
             .UsingEntity<RelatedLink<TLeft, TRight>>(
-                j => j.HasOne(a => a.RightEntity).WithMany().OnDelete(DeleteBehavior.ClientSetNull),
-
-                j => j.HasOne(a => a.LeftEntity).WithMany().OnDelete(DeleteBehavior.ClientSetNull),
-
+                j =>
+                    j.HasOne<TRight>(a => a.RightEntity)
+                        .WithMany()
+                        .HasForeignKey(k => k.RightEntityId)
+                        .HasPrincipalKey(p => p.Id)
+                        .OnDelete(DeleteBehavior.Cascade),
+                j =>
+                    j.HasOne<TLeft>(a => a.LeftEntity)
+                        .WithMany()
+                        .HasForeignKey(k => k.LeftEntityId)
+                        .HasPrincipalKey(p => p.Id)
+                        .OnDelete(DeleteBehavior.Cascade),
                 j =>
                 {
-                    j.HasKey(k => new { k.LeftEntityId, k.RightEntityId });
+                    j.HasKey(a => a.Id);
+                    j.HasIndex(a => a.LeftEntityId);
+                    j.HasIndex(a => a.RightEntityId);
                 }
             );
 

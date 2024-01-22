@@ -10,7 +10,13 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
     [AllowAnonymous]
     [ODataRouteComponent(StoreRoutes.OpenDataRoute)]
     public class ServiceController
-        : OpenDataController<long, IEntryStore, IReportStore, Domain.Entities.Service, Contracts.Service>
+        : OpenCqrsController<
+            long,
+            IEntryStore,
+            IReportStore,
+            Domain.Entities.Service,
+            Contracts.Service
+        >
     {
         public ServiceController(IServicer ultimatr) : base(ultimatr) { }
     }
@@ -19,7 +25,13 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
 namespace Undersoft.SSC.Service.Application.Server.Controllers
 {
     public class ServicesController
-        : CrudDataController<long, IEntryStore, IReportStore, Domain.Entities.Service, Contracts.Service>
+        : ApiCqrsController<
+            long,
+            IEntryStore,
+            IReportStore,
+            Domain.Entities.Service,
+            Contracts.Service
+        >
     {
         public ServicesController(IServicer ultimatr) : base(ultimatr) { }
     }

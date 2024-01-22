@@ -5,28 +5,27 @@
 
     public class SqlMutator
     {
-        private InstantSqlDb sqaf;
+        private InstantSqlDb _sqldb;
 
         public SqlMutator() { }
 
-        public SqlMutator(InstantSqlDb insql)
+        public SqlMutator(InstantSqlDb sqldb)
         {
-            sqaf = insql;
+            _sqldb = sqldb;
         }
 
-        public ISeries<ISeries<IInstant>> Delete(string SqlConnectString, IInstantSeries cards)
+        public ISeries<ISeries<IInstant>> Delete(string SqlConnectString, IInstantSeries series)
         {
             try
             {
-                if (sqaf == null)
-                    sqaf = new InstantSqlDb(SqlConnectString);
+                if (_sqldb == null)
+                    _sqldb = new InstantSqlDb(SqlConnectString);
                 try
                 {
-                    bool buildmap = true;
-                    if (cards.Count > 0)
+                    if (series.Count > 0)
                     {
                         BulkPrepareType prepareType = BulkPrepareType.Drop;
-                        return sqaf.Delete(cards, true, buildmap, prepareType);
+                        return _sqldb.Delete(series, true, true, prepareType);
                     }
                     return null;
                 }
@@ -41,31 +40,30 @@
             }
         }
 
-        public ISeries<ISeries<IInstant>> Set(string SqlConnectString, IInstantSeries cards, bool Renew)
+        public ISeries<ISeries<IInstant>> Set(string SqlConnectString, IInstantSeries series, bool renew)
         {
             try
             {
-                if (sqaf == null)
-                    sqaf = new InstantSqlDb(SqlConnectString);
+                if (_sqldb == null)
+                    _sqldb = new InstantSqlDb(SqlConnectString);
                 try
                 {
-                    bool buildmap = true;
-                    if (cards.Count > 0)
+                    if (series.Count > 0)
                     {
                         BulkPrepareType prepareType = BulkPrepareType.Drop;
 
-                        if (Renew)
+                        if (renew)
                             prepareType = BulkPrepareType.Trunc;
 
-                        var ds = sqaf.Update(cards, true, buildmap, true, null, prepareType);
-                        if (ds != null)
+                        var result = _sqldb.Update(series, true, true, true, null, prepareType);
+                        if (result != null)
                         {
-                            IInstantSeries im = (IInstantSeries)Instances.New(cards.GetType());
-                            im.Rubrics = cards.Rubrics;
-                            im.InstantType = cards.InstantType;
-                            im.InstantSize = cards.InstantSize;
-                            im.Add(ds["Failed"].AsValues());
-                            return sqaf.Insert(im, true, false, prepareType);
+                            IInstantSeries postseries = (IInstantSeries)Instances.New(series.GetType());
+                            postseries.Rubrics = series.Rubrics;
+                            postseries.InstantType = series.InstantType;
+                            postseries.InstantSize = series.InstantSize;
+                            postseries.Add(result["Failed"].AsValues());
+                            return _sqldb.Insert(postseries, true, false, prepareType);
                         }
                         else
                             return null;

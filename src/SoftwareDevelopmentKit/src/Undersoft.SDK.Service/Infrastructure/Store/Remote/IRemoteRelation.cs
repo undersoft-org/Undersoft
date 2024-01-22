@@ -12,7 +12,7 @@ public interface IRemoteRelation<TOrigin, TTarget> : IRemoteRelation where TOrig
 
     Expression<Func<TTarget, object>> TargetKey { get; set; }
 
-    Expression<Func<IRelatedLink<TOrigin, TTarget>, object>> MiddleKey { get; set; }
+    Expression<Func<IRelatedLink<TOrigin, TTarget>, object>> JoinKey { get; set; }
 
     Expression<Func<TOrigin, IEnumerable<IRelatedLink<TOrigin, TTarget>>>> MiddleSet { get; set; }
 

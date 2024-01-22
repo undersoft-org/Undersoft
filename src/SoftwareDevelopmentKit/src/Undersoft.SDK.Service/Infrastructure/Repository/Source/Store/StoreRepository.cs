@@ -15,9 +15,9 @@ using Undersoft.SDK.Service.Infrastructure.Repository.Source;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepository<TEntity>
-    where TEntity : class, IDataObject, IInnerProxy
+    where TEntity : class, IDataObject
 {
-    DbSet<TEntity> _dbSet;
+    IQueryable<TEntity> _query;
 
     public StoreRepository() : base() { }
 
@@ -26,12 +26,12 @@ public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepos
         TrackingEvents();
     }
 
-    public StoreRepository(DataStoreContext dbContext) : base(dbContext)
+    public StoreRepository(DataStoreContext context) : base(context)
     {
         TrackingEvents();
 
         Expression = Expression.Constant(this.AsEnumerable());
-        Provider = new StoreRepositoryExpressionProvider<TEntity>(dbSet);
+        Provider = new StoreRepositoryExpressionProvider<TEntity>(context);
     }
 
     public StoreRepository(IRepositoryContextPool context) : base(context)
@@ -46,17 +46,15 @@ public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepos
         Expression = expression;
     }
 
-    protected DataStoreContext dbContext => (DataStoreContext)InnerContext;
-
-    protected DbSet<TEntity> dbSet => _dbSet ??= dbContext.Set<TEntity>();
+    protected IDataStoreContext store => (IDataStoreContext)InnerContext;
 
     private TEntity lookup(params object[] keys)
     {
         var item = cache.Lookup<TEntity>(keys);
         if (item != null)
-            return dbSet.Attach(item).Entity;
+            return store.Attach(item);
         else
-            return dbSet.Find(keys);
+            return store.Find<TEntity>(keys);
     }
 
     public override TEntity this[params object[] keys]
@@ -70,7 +68,7 @@ public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepos
             if (entity != null)
                 current = value.PatchTo(Stamp(entity));
             else
-                current = dbSet.Add(Sign(value)).Entity;
+                current = store.Add(Sign(value));
         }
     }
 
@@ -156,39 +154,39 @@ public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepos
 
     public override TEntity Add(TEntity entity)
     {
-        return dbSet.Add(Sign(entity)).Entity;
+        return store.Add(Sign(entity));
     }
 
     public override TEntity Update(TEntity entity)
     {
-        return dbSet.Update(Stamp(entity)).Entity;
+        return store.Update(Stamp(entity));
     }
 
     public override IAsyncEnumerable<TEntity> AddAsync(IEnumerable<TEntity> entity)
     {
-        return entity.ForEachAsync((e) => dbSet.Add(Sign(e)).Entity);
+        return entity.ForEachAsync((e) => store.Add(Sign(e)));
     }
 
     public void AutoTransaction(bool enable)
     {
-        dbContext.Database.AutoTransactionsEnabled = enable;
+        store.Database.AutoTransactionsEnabled = enable;
     }
 
     public IDbContextTransaction BeginTransaction()
     {
-        return dbContext.Database.BeginTransaction();
+        return store.Database.BeginTransaction();
     }
 
     public Task<IDbContextTransaction> BeginTransactionAsync()
     {
-        return dbContext.Database.BeginTransactionAsync(Cancellation);
+        return store.Database.BeginTransactionAsync(Cancellation);
     }
 
     public void ChangeDetecting(bool enable = true)
     {
         if (InnerContext != null)
         {
-            dbContext.ChangeTracker.AutoDetectChangesEnabled = enable;
+            store.ChangeTracker.AutoDetectChangesEnabled = enable;
         }
     }
 
@@ -204,30 +202,25 @@ public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepos
 
     public override TEntity Delete(TEntity entity)
     {
-        EntityEntry<TEntity> entry = dbContext.Entry(entity);
-        if (entry == null || entry.State == EntityState.Detached)
-            entry = dbSet.Attach(entity);
-
-        entry.State = EntityState.Deleted;
-        return entry.Entity;
+        return store.Remove(entity);
     }
 
     public void LazyLoading(bool enable)
     {
-        dbContext.ChangeTracker.LazyLoadingEnabled = enable;
+        store.ChangeTracker.LazyLoadingEnabled = enable;
     }
 
     public override TEntity NewEntry(params object[] parameters)
     {
-        return dbSet.Add(Sign(typeof(TEntity).New<TEntity>(parameters))).Entity;
+        return store.Add(Sign(typeof(TEntity).New<TEntity>(parameters)));
     }
 
     public void QueryTracking(bool enable)
     {
         if (!enable)
-            dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            store.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         else
-            dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+            store.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
     }
 
     public void TrackingEvents(bool enable = true)
@@ -236,15 +229,15 @@ public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepos
         {
             if (enable)
             {
-                dbContext.ChangeTracker.StateChanged += AuditStateEvent;
-                dbContext.ChangeTracker.StateChanged += LoadRemoteEvent;
-                dbContext.ChangeTracker.Tracked += LoadRemoteEvent;
+                store.ChangeTracker.StateChanged += AuditStateEvent;
+                store.ChangeTracker.StateChanged += LoadRemoteEvent;
+                store.ChangeTracker.Tracked += LoadRemoteEvent;
             }
             else
             {
-                dbContext.ChangeTracker.StateChanged -= AuditStateEvent;
-                dbContext.ChangeTracker.StateChanged -= LoadRemoteEvent;
-                dbContext.ChangeTracker.Tracked -= LoadRemoteEvent;
+                store.ChangeTracker.StateChanged -= AuditStateEvent;
+                store.ChangeTracker.StateChanged -= LoadRemoteEvent;
+                store.ChangeTracker.Tracked -= LoadRemoteEvent;
             }
         }
     }
@@ -255,25 +248,7 @@ public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepos
         Type type = null
     )
     {
-        if (type == null)
-        {
-            dbContext.Attach(item);
-            return item;
-        }
-        else if (type.IsAssignableTo(typeof(ICollection)))
-        {
-            var list = dbContext.Entry(item).Collection(propertyName);
-            dbContext.Attach(list.EntityEntry.Entity);
-            list.Load();
-            return list.CurrentValue;
-        }
-        else
-        {
-            var obj = dbContext.Entry(item).Reference(propertyName);
-            dbContext.Attach(obj.EntityEntry.Entity);
-            obj.Load();
-            return obj.CurrentValue;
-        }
+        return store.AttachProperty(item, propertyName, type);
     }
 
     public override IQueryable<TEntity> AsQueryable()
@@ -281,19 +256,19 @@ public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepos
         return Query;
     }
 
-    public override IQueryable<TEntity> Query => dbSet;
+    public override IQueryable<TEntity> Query => _query ??= store.EntitySet<TEntity>();
 
     protected override async Task<int> saveAsTransaction(
         CancellationToken token = default
     )
     {
         await using (
-            IDbContextTransaction tr = await dbContext.Database.BeginTransactionAsync(token)
+            IDbContextTransaction tr = await store.Database.BeginTransactionAsync(token)
         )
         {
             try
             {
-                int changes = await dbContext.SaveChangesAsync(token);
+                int changes = await store.Save(true, token);
 
                 await tr.CommitAsync(token);
 
@@ -308,7 +283,7 @@ public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepos
                         e
                     );
                 tr.Failure<Datalog>(
-                    $"{$"Fail on update database transaction Id:{tr.TransactionId}, using context:{dbContext.GetType().Name},"}{$" context Id:{dbContext.ContextId}, TimeStamp:{DateTime.Now.ToString()}, changes made count"}"
+                    $"{$"Fail on update database transaction Id:{tr.TransactionId}, using context:{store.GetType().Name},"}{$" TimeStamp:{DateTime.Now.ToString()}, changes made count"}"
                 );
 
                 await tr.RollbackAsync(token);
@@ -326,18 +301,18 @@ public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepos
     {
         try
         {
-            return await dbContext.SaveChangesAsync(token);
+            return await store.SaveChangesAsync(token);
         }
         catch (DbUpdateException e)
         {
             if (e is DbUpdateConcurrencyException)
-                dbContext.Warning<Datalog>(
+                store.Warning<Datalog>(
                     $"{$"Concurrency update exception data changed by: {e.Source}, "}{$"entries involved in detail data object"}",
                     e.Entries,
                     e
                 );
-            dbContext.Failure<Datalog>(
-                $"{$"Fail on update database, using context:{dbContext.GetType().Name}, "}{$"context Id: {dbContext.ContextId}, TimeStamp: {DateTime.Now.ToString()}"}"
+            store.Failure<Datalog>(
+                $"{$"Fail on update database, using context:{store.GetType().Name}, "}{$"TimeStamp: {DateTime.Now.ToString()}"}"
             );
         }
 

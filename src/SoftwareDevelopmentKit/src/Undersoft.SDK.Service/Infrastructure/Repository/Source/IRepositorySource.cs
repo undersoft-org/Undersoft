@@ -1,31 +1,42 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Infrastructure.Repository;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 namespace Undersoft.SDK.Service.Infrastructure.Repository.Source
 {
-    public interface IRepositorySource<TStore, TEntity> : IRepositorySource where TEntity : class, IUniqueIdentifiable
+    public interface IRepositorySource<TStore, TEntity> : IRepositorySource where TEntity : class
     {
         IQueryable<TEntity> FromSql(string sql, params object[] parameters);
 
-        DbSet<TEntity> EntitySet();
+        IQueryable<TEntity> EntitySet();
     }
 
     public interface IRepositorySource : IRepositoryContextPool
     {
         IDataStoreContext Context { get; }
+        
         DbContextOptions Options { get; }
+
         bool Pooled { get; }
 
         void AcquireAccess();
+        
         IDataStoreContext CreateContext(DbContextOptions options);
+        
         IDataStoreContext CreateContext(Type contextType, DbContextOptions options);
-        TContext CreateContext<TContext>(DbContextOptions options) where TContext : DbContext;
+        
+        TContext CreateContext<TContext>(DbContextOptions options) where TContext : IDataStoreContext;
+        
         void CreatePool<TContext>();
-        object EntitySet(Type entityType);
-        object EntitySet<TEntity>() where TEntity : class, IUniqueIdentifiable;
-        TContext GetContext<TContext>() where TContext : DbContext;
+
+        IQueryable EntitySet(Type entityType);
+
+        IQueryable<TEntity> EntitySet<TEntity>() where TEntity : class;
+        
+        TContext GetContext<TContext>() where TContext : IDataStoreContext;
+        
         void ReleaseAccess();
     }
 

@@ -289,7 +289,7 @@ internal static class ComponentProperties
                 {
                     throw new InvalidOperationException(
                         $"The type '{targetType.FullName}' declares more than one parameter matching the " +
-                        $"name '{propertyName.ToLowerInvariant()}'. Parameter names are case-insensitive and must be unique.");
+                        $"name '{propertyName.ToLowerInvariant()}'. Argument names are case-insensitive and must be unique.");
                 }
 
                 _underlyingWriters.Add(propertyName, propertySetter);

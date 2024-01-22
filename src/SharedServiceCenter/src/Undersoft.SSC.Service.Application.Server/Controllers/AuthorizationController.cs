@@ -11,16 +11,17 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
     [AllowAnonymous]
     [Route($"{StoreRoutes.CrudDataRoute}/Accounts/Authorization")]
     public class AccountsController
-        : CrudDataActionRemoteController<IDataStore, AccountAction, Authorization, Authorization>
+        : ApiServiceRemoteController<IDataStore, AccountAction, Authorization, Authorization>
     {
         public AccountsController(IServicer servicer) : base(servicer) { }
     }
 }
+
 namespace Undersoft.SSC.Service.Application.Server.Controllers
 {
     [AllowAnonymous]
     public class AuthorizationController
-       : OpenDataActionRemoteController<IDataStore, AccountAction, Authorization, Authorization>
+        : OpenServiceRemoteController<IDataStore, AccountAction, Authorization, Authorization>
     {
         public AuthorizationController(IServicer servicer) : base(servicer) { }
     }
