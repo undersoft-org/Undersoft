@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Service.Infrastructure.Store
 {
-    public interface IReportStore : IDataStore, IEntityStore
+    public interface IEntityStore : IDataStore
     {
 
     }

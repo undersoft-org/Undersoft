@@ -17,7 +17,6 @@ using Undersoft.SDK.Service.Server.Operation.Remote.Command;
 using Undersoft.SDK.Service.Server.Operation.Remote.Invocation;
 
 [OpenServiceRemote]
-[ODataAttributeRouting]
 public abstract class OpenServiceRemoteController<TStore, TService, TDto>
     : ODataController,
         IOpenDataActionRemoteController<TStore, TService, TDto>
@@ -34,28 +33,25 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
         _servicer = servicer;
     }
 
-    [HttpGet("{method}")]
-    public virtual async Task<IActionResult> Get(
-        [FromRoute] string method,
-        [FromRoute] ODataParameterValue argument
+    [HttpGet]
+    [ODataRouteComponent("Function(Method={name})")]
+    public virtual async Task<IActionResult> Function(
+        [FromODataUri] string name
     )
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         var result = await _servicer.Send(
-            new RemoteFunction<TStore, TService, TDto>(
-                method,
-                new Arguments(new Argument(argument.EdmType.ShortQualifiedName(), argument.Value))
-            )
-        );
+            new RemoteFunction<TStore, TService, TDto>(name));
 
         return !result.IsValid ? BadRequest(result.ErrorMessages) : Ok(result.Response);
     }
 
-    [HttpPost("{method}")]
-    public virtual async Task<IActionResult> Post(
-        [FromRoute] string method,
+    [HttpPost]
+    [ODataRouteComponent("Action(Method={name})")]
+    public virtual async Task<IActionResult> Action(
+        [FromODataUri] string name,
         [FromBody] ODataActionParameters parameters
     )
     {
@@ -63,7 +59,7 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
             return BadRequest(ModelState);
 
         var result = await _servicer.Send(
-            new RemoteAction<TStore, TService, TDto>(method, (Dictionary<string, object>)parameters)
+            new RemoteAction<TStore, TService, TDto>(name, (Dictionary<string, object>)parameters)
         );
 
         return (!result.IsValid ? BadRequest(result.ErrorMessages) : Ok(result.Response));

@@ -42,7 +42,7 @@ namespace Undersoft.SDK.Service.Server
             return this;
         }
 
-        public virtual IDataServerBuilder AddAccountServices<TAuth>() where TAuth : class
+        public virtual IDataServerBuilder AddInvocations<TAuth>() where TAuth : class
         {
             return this;
         }

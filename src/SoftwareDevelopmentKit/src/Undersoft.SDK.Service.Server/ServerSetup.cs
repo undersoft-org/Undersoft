@@ -244,10 +244,10 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
         base.ConfigureServices(sourceTypes, clientTypes)
             .Services.AddHttpContextAccessor();
 
-        AddServerSetupInternalImplementations();
-        AddServerSetupInternalActionImplementations();
-        AddServerSetupRemoteImplementations();
-        AddServerSetupRemoteActionImplementations();
+        AddServerSetupCqrsImplementations();
+        AddServerSetupInvocationImplementations();
+        AddServerSetupRemoteCqrsImplementations();
+        AddServerSetupRemoteInvocationImplementations();
 
         if (includeSwagger)
             AddSwagger();

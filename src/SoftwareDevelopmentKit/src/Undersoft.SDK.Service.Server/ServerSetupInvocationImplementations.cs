@@ -16,7 +16,7 @@ using Undersoft.SDK.Service.Server.Operation.Invocation.Notification.Handler;
 
 public partial class ServerSetup
 {
-    public IServerSetup AddServerSetupInternalActionImplementations()
+    public IServerSetup AddServerSetupInvocationImplementations()
     {
         IServiceRegistry service = registry;
 
@@ -51,11 +51,10 @@ public partial class ServerSetup
         {
             var genericTypes = controllerType.BaseType.GenericTypeArguments;
             var store = genericTypes[0];
-            var actionType = genericTypes[2];
-            var dtoType = genericTypes[3];
-            var _method = genericTypes[1];
+            var actionType = genericTypes[1];
+            var dtoType = genericTypes[2];
 
-            if (duplicateCheck.Add(store.Name + actionType.Name + dtoType.Name + _method.Name))
+            if (duplicateCheck.Add(store.Name + actionType.Name + dtoType.Name))
             {
                 service.AddTransient(
                     typeof(IRequest<>).MakeGenericType(

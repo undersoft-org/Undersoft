@@ -15,9 +15,7 @@ using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Uniques;
 
-//[IgnoreApi]
 [OpenData]
-[ODataAttributeRouting]
 public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto>
     : OpenDataController<TKey, TEntry, TEntity, TDto>
     where TDto : class, IDataObject

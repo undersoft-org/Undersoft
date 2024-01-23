@@ -1,30 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Undersoft.SDK.Service.Server.Controller.Crud;
-using Operation.Remote.Command;
 using Undersoft.SDK;
 using Undersoft.SDK.Service;
-using Undersoft.SDK.Service.Server.Operation.Command;
-using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Client.Remote;
+using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Server.Operation.Invocation;
-using System.Text.Json;
-using Undersoft.SDK.Service.Server.Operation.Remote.Invocation;
 
-[ApiController]
 [ApiServiceRemote]
-public abstract class ApiServiceRemoteController<TStore, TService, TModel>
+public abstract class ApiServiceController<TStore, TService, TModel>
     : ControllerBase,
         IApiServiceRemoteController<TStore, TService, TModel>
     where TModel : class, IOrigin
     where TService : class
-    where TStore : IDataServiceStore
+    where TStore : IDataServerStore
 {    
     protected readonly IServicer _servicer;    
 
-    protected ApiServiceRemoteController() { }
+    protected ApiServiceController() { }
 
-    protected ApiServiceRemoteController(
+    protected ApiServiceController(
         IServicer servicer
     )
     {
@@ -38,7 +33,7 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
             return BadRequest(ModelState);
                                    
             var result = await _servicer.Send(
-                new RemoteAction<TStore, TService, TModel>(method, new Arguments(dto))
+                new Action<TStore, TService, TModel>(method, new Arguments(dto))
             );
 
             return !result.IsValid
@@ -53,7 +48,7 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
             return BadRequest(ModelState);
 
             var result = await _servicer.Send(
-                new RemoteFunction<TStore, TService, TModel>(method)
+                new Function<TStore, TService, TModel>(method)
             );
 
             return !result.IsValid

@@ -14,7 +14,7 @@ using Undersoft.SDK.Service.Server.Operation.Remote.Invocation.Notification.Hand
 
 public partial class ServerSetup
 {
-    public IServerSetup AddServerSetupRemoteActionImplementations()
+    public IServerSetup AddServerSetupRemoteInvocationImplementations()
     {
         IServiceRegistry service = registry;
 
@@ -51,11 +51,10 @@ public partial class ServerSetup
         {
             var genericTypes = controllerType.BaseType.GenericTypeArguments;
             var store = genericTypes[0];
-            var _viewmodel = genericTypes[3];
-            var dtoType = genericTypes[2];
-            var _method = genericTypes[1];
+            var _viewmodel = genericTypes[2];
+            var dtoType = genericTypes[1];
 
-            if (duplicateCheck.Add(store.Name + _viewmodel.Name + dtoType.Name + _method.Name))
+            if (duplicateCheck.Add(store.Name + _viewmodel.Name + dtoType.Name))
             {
                 service.AddTransient(
                     typeof(IRequest<>).MakeGenericType(

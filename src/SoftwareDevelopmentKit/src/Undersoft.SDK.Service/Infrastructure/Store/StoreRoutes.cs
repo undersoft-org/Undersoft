@@ -11,12 +11,15 @@
         public const string OpenDataRoute = "open/data";
         public const string StreamEventRoute = "stream";
         public const string StreamDataRoute = "stream/data";
-        public const string CrudEventRoute = "crud";
-        public const string CrudDataRoute = "crud/data";
-        public const string CrudAuthRoute = "crud/auth";
+        public const string ApiEventRoute = "api";
+        public const string ApiDataRoute = "api/data";
+        public const string ApiAuthRoute = "api/auth";
         public const string OpenAuthRoute = "open/auth";
-        public const string CrudServiceRoute = "crud/service";
-        public const string OpenServiceRoute = "open/service";
-        public const string StreamServiceRoute = "stream/service";
+        public const string ApiServiceRoute = "api/srvc";
+        public const string OpenServiceRoute = "open/srvc";
+        public const string StreamServiceRoute = "stream/srvc";
+        public const string ApiAppRoute = "api/app";
+        public const string OpenAppRoute = "open/app";
+        public const string StreamAppRoute = "stream/app";
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Undersoft.SDK.Service.Server.Controller.Crud;
 using Undersoft.SDK.Service.Server.Controller.Open;
@@ -7,7 +8,6 @@ using Undersoft.SSC.Domain.Entities;
 namespace Undersoft.SSC.Service.Server.Controllers
 {
     [AllowAnonymous]
-    [ODataRouteComponent(StoreRoutes.OpenDataRoute)]
     public class MemberIdentifierController
         : OpenCqrsController<long, IEntryStore, IReportStore, Identifier<Member>, Identifier<Contracts.Member>>
     {
@@ -17,6 +17,7 @@ namespace Undersoft.SSC.Service.Server.Controllers
 
 namespace Undersoft.SSC.Service.Server.Controllers
 {
+    [Route($"{StoreRoutes.ApiDataRoute}/MemberIdentifier")]
     public class MemberIdentifiersController
         : ApiCqrsController<long, IEntryStore, IReportStore, Identifier<Member>, Identifier<Contracts.Member>>
     {

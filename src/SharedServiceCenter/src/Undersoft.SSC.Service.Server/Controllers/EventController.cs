@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Undersoft.SDK.Service.Server.Controller.Crud;
 using Undersoft.SDK.Service.Server.Controller.Open;
@@ -15,6 +16,7 @@ namespace Undersoft.SSC.Service.Server.Controllers
 
 namespace Undersoft.SSC.Service.Server.Controllers
 {
+    [Route($"{StoreRoutes.ApiEventRoute}/Event")]
     public class EventsController : ApiEventController<long, IEventStore, Event, Event>
     {
         public EventsController(IServicer ultimatr) : base(ultimatr) { }

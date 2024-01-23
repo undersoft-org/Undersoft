@@ -12,7 +12,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 [ApiController]
 [ApiData]
-[Route($"{StoreRoutes.CrudDataRoute}/[controller]")]
+[Route($"{StoreRoutes.ApiDataRoute}/[controller]")]
 public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto> : ApiDataController<TKey, TEntry, TEntity, TDto>
     where TDto : class, IDataObject
     where TEntity : class, IDataObject

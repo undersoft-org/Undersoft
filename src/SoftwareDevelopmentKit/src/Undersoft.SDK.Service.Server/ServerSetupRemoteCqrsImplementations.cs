@@ -18,7 +18,7 @@ using Undersoft.SDK.Service.Server.Operation.Remote.Command.Notification.Handler
 
 public partial class ServerSetup
 {
-    public IServerSetup AddServerSetupRemoteImplementations()
+    public IServerSetup AddServerSetupRemoteCqrsImplementations()
     {
         IServiceRegistry service = registry;
 

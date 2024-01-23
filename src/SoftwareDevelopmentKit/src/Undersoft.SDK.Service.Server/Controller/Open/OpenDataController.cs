@@ -17,12 +17,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Server.Documentation;
 using Undersoft.SDK.Uniques;
 
-
-
-
-//[IgnoreApi]
 [OpenData]
-[ODataAttributeRouting]
 public abstract class OpenDataController<TKey, TStore, TEntity, TDto>
     : ODataController, IOpenDataController<TKey, TEntity, TDto>
     where TDto : class, IDataObject

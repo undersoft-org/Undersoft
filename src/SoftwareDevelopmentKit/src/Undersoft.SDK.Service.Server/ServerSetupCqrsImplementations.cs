@@ -20,7 +20,7 @@ using Undersoft.SDK.Service.Server.Operation.Command.Notification.Handler;
 
 public partial class ServerSetup
 {
-    public IServerSetup AddServerSetupInternalImplementations()
+    public IServerSetup AddServerSetupCqrsImplementations()
     {
         IServiceRegistry service = registry;
 

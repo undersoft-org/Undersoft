@@ -19,7 +19,7 @@ namespace Undersoft.SSC.Service.Server.Controllers
 
 namespace Undersoft.SSC.Service.Server.Controllers
 {
-    [Route($"{StoreRoutes.CrudAuthRoute}/[controller]")]
+    [Route($"{StoreRoutes.ApiAuthRoute}/Account")]
     public class AccountsController
         : ApiDataController<long, IAccountStore, Account, Contracts.Account>
     {

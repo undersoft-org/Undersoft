@@ -16,5 +16,5 @@ public interface IDataServerBuilder : IDisposable, IAsyncDisposable
 
     IDataServerBuilder AddDataServices<TContext>() where TContext : DbContext;
 
-    IDataServerBuilder AddAccountServices<TAuth>() where TAuth : class;
+    IDataServerBuilder AddInvocations<TAuth>() where TAuth : class;
 }

@@ -21,7 +21,7 @@
         private static DateTime clearLogTime;
         private static ILogHandler handler { get; set; }
 
-        private static Catalog<Starlog> logQueue = new Catalog<Starlog>();
+        private static ConcurrentQueue<Starlog> logQueue = new ConcurrentQueue<Starlog>();
 
         private static bool threadLive;
 
@@ -112,12 +112,12 @@
                         syncInterval = SYNC_CLOCK_INTERVAL;
                     }
                     await Task.Delay(1000);
-                    int count = logQueue.Count;
-                    for (int i = 0; i < count; i++)
-                    {                 
-                        if (logQueue.TryDequeue(out Starlog log))
+                    if (handler != null)
+                    {
+                        int count = logQueue.Count;
+                        for (int i = 0; i < count; i++)
                         {
-                            if (handler != null)
+                            if (logQueue.TryDequeue(out Starlog log))
                             {
                                 handler.Write(log);
                             }

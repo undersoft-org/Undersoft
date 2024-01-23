@@ -12,7 +12,6 @@ using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 [OpenData]
-[ODataAttributeRouting]
 public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataController, IOpenEventController<TKey, TEntity, TDto> where TDto : class, IDataObject, new()
     where TEntity : class, IDataObject
     where TStore : IDataServerStore

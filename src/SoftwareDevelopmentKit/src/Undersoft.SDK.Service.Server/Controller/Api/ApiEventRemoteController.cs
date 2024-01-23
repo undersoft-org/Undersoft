@@ -16,7 +16,7 @@ using Undersoft.SDK.Service.Client.Remote;
 [RemoteResult]
 [RemoteCrudDataService]
 [ApiController]
-[Route($"{StoreRoutes.CrudEventRoute}/Events")]
+[Route($"{StoreRoutes.ApiEventRoute}/Events")]
 public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
     : ControllerBase,
         IApiEventRemoteController<TKey, TDto, TModel>

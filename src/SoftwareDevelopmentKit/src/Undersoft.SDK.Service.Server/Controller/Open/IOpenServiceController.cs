@@ -7,7 +7,7 @@ using Uniques;
 
 public interface IOpenServiceController<TKey, TService, TDto> where TDto : class
 {
-    Task<IActionResult> Post([FromRoute] string method, [FromBody] ODataActionParameters parameters);
+    Task<IActionResult> Action([FromBody] ODataActionParameters parameters);
 
-    Task<IActionResult> Get([FromRoute] string method, [FromRoute] ODataParameterValue parameter);
+    Task<IActionResult> Function([FromRoute] string name);
 }

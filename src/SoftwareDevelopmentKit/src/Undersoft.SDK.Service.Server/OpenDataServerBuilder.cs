@@ -30,7 +30,8 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
         StoreType = typeof(TStore);
     }
 
-    public OpenDataServerBuilder(IServiceRegistry registry, string routePrefix, int pageLimit) : this(registry)
+    public OpenDataServerBuilder(IServiceRegistry registry, string routePrefix, int pageLimit)
+        : this(registry)
     {
         RoutePrefix += "/" + routePrefix;
         PageLimit = pageLimit;
@@ -82,8 +83,7 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
                                 type.GetCustomAttribute<OpenDataAttribute>() != null
                                 || type.GetCustomAttribute<OpenServiceAttribute>() != null
                                 || type.GetCustomAttribute<RemoteOpenDataServiceAttribute>() != null
-                                || type.GetCustomAttribute<OpenServiceRemoteAttribute>()
-                                    != null
+                                || type.GetCustomAttribute<OpenServiceRemoteAttribute>() != null
                         )
             )
             .ToArray();
@@ -101,9 +101,9 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
             else if (genTypes.Length > 3)
             {
                 if (
-                    genTypes[3].IsAssignableTo(typeof(IOrigin))
+                    genTypes[3].IsAssignableTo(typeof(IIdentifiable))
                     && (
-                         genTypes[1].IsAssignableTo(StoreType)                         
+                        genTypes[1].IsAssignableTo(StoreType)
                         || genTypes[0].IsAssignableTo(StoreType)
                     )
                 )
@@ -113,7 +113,7 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
             }
             else if (genTypes.Length > 2)
                 if (
-                    genTypes[2].IsAssignableTo(typeof(IDataObject))
+                    genTypes[2].IsAssignableTo(typeof(IIdentifiable))
                     && genTypes[0].IsAssignableTo(StoreType)
                 )
                     EntitySet(genTypes[2]);
@@ -132,9 +132,9 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
             b.RouteOptions.EnableUnqualifiedOperationCall = true;
             b.RouteOptions.EnableKeyInParenthesis = true;
             b.RouteOptions.EnableControllerNameCaseInsensitive = true;
-            b.RouteOptions.EnableNonParenthesisForEmptyParameterFunction = true;
             b.RouteOptions.EnableActionNameCaseInsensitive = true;
             b.RouteOptions.EnableControllerNameCaseInsensitive = true;
+            b.RouteOptions.EnableKeyAsSegment = false;
             b.EnableQueryFeatures(PageLimit).AddRouteComponents(route, model);
         });
         AddODataSupport(mvc);
@@ -187,73 +187,27 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
         }
     }
 
-    public override IDataServerBuilder AddAccountServices<TAuth>() where TAuth : class
+    public override IDataServerBuilder AddInvocations<TAuth>() where TAuth : class
     {
-        AddAuthorizationActions<TAuth>();
-        return base.AddAccountServices<TAuth>();
+        SetFunctionAndAction<TAuth>();
+        return base.AddInvocations<TAuth>();
     }
 
-    private void AddAuthorizationActions<TAuth>() where TAuth : class
+    private void SetFunctionAndAction<TAuth>() where TAuth : class
     {
         if (actionSetAdded)
             return;
 
         var name = typeof(TAuth).Name;
 
-        //odataBuilder
-        //    .EntityType<TAuth>()
-        //   .Action("Execute")
-        //     .ReturnsFromEntitySet<TAuth>(name)
-        //   .Parameter<TAuth>(name);
+        var action = odataBuilder.EntitySet<TAuth>(name).EntityType.Collection.Action("Action");
+        action.ReturnsCollectionFromEntitySet<TAuth>(name);
+        action.Parameter<string>("Method");
+        action.Parameter<TAuth>(name);
 
-
-        odataBuilder
-           .Action("Action")
-             .ReturnsFromEntitySet<TAuth>(name)
-           .Parameter<TAuth>(name);
-
-        odataBuilder
-            .EntityType<TAuth>()
-            .Function("Function")
-              .ReturnsFromEntitySet<TAuth>(name)
-            .Parameter<string>(name);
-
-        odataBuilder
-            .EntityType<TAuth>()
-            .Action("SignUp")
-            .ReturnsFromEntitySet<TAuth>(name)
-            .Parameter<TAuth>(name);
-
-        odataBuilder
-            .EntityType<TAuth>()
-            .Action("SignOut")
-            .ReturnsFromEntitySet<TAuth>(name)
-            .Parameter<TAuth>(name);
-
-        odataBuilder
-            .EntityType<TAuth>()
-            .Action("Renew")
-            .ReturnsFromEntitySet<TAuth>(name)
-            .Parameter<TAuth>(name);
-
-        odataBuilder
-            .EntityType<TAuth>()
-            .Action("ConfirmEmail")
-             .ReturnsFromEntitySet<TAuth>(name)
-            .Parameter<TAuth>(name);
-
-        odataBuilder
-            .EntityType<TAuth>()
-            .Action("ResetPassword")
-            .ReturnsFromEntitySet<TAuth>(name)
-            .Parameter<TAuth>(name);
-
-        odataBuilder
-            .EntityType<TAuth>()
-            .Action("CompleteRegistration")
-            .ReturnsFromEntitySet<TAuth>(name)
-            .Parameter<TAuth>(name);
-
+        var function = odataBuilder.EntitySet<TAuth>(name).EntityType.Function("Function");
+        function.ReturnsFromEntitySet<TAuth>(name);
+      
         actionSetAdded = true;
     }
 }

@@ -10,7 +10,7 @@ using Undersoft.SDK.Service.Server.Controller.Open;
 namespace Undersoft.SSC.Service.Application.Server.Controllers
 {
     [AllowAnonymous]
-    [Route($"{StoreRoutes.CrudDataRoute}/Accounts/Authorization")]
+    [Route($"{StoreRoutes.ApiDataRoute}/Accounts/Authorization")]
     public class AccountsController
         : ApiServiceRemoteController<IDataStore, AccountService, Contracts.Account>
     {

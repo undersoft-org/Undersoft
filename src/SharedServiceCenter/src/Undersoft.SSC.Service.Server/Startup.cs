@@ -1,5 +1,6 @@
 ﻿using Undersoft.SDK.Security.Identity;
 using Undersoft.SDK.Service.Server;
+using Undersoft.SDK.Service.Server.Accounts;
 using Undersoft.SDK.Service.Server.Hosting;
 using Undersoft.SSC.Service.Clients;
 using Undersoft.SSC.Service.Infrastructure.Stores;
@@ -32,8 +33,8 @@ public class Startup
                 //, new[] { typeof(ApplicationClient) }
             )
             .AddAccountServer<AccountStore>()
-            .AddDataServer<IDataStore>(DataServerTypes.All)
-            .AddDataServer<IAccountStore>(DataServerTypes.All, builder => builder.AddAccountServices<Authorization>())
+            .AddDataServer<IEntityStore>(DataServerTypes.All)
+            .AddDataServer<IAccountStore>(DataServerTypes.All, builder => builder.AddInvocations<Authorization>())
             .AddDataServer<IEventStore>(DataServerTypes.All);
     }
 

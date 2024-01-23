@@ -9,7 +9,7 @@ using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Client;
 
-public class RestDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuilder<TStore> where TStore : IDataStore
+public class RestDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuilder<TStore>  where TStore :  IDataStore
 {
     IServiceRegistry _registry;
 
@@ -63,11 +63,11 @@ public class RestDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
     {
         if (StoreType == typeof(IEventStore))
         {
-            return StoreRoutes.CrudEventRoute;
+            return StoreRoutes.ApiEventRoute;
         }
         else
         {
-            return StoreRoutes.CrudDataRoute;
+            return StoreRoutes.ApiDataRoute;
         }
     }
 }

@@ -14,7 +14,7 @@ using Undersoft.SDK.Service.Server.Operation.Remote;
 [RemoteResult]
 [RemoteCrudDataService]
 [ApiController]
-[Route($"{StoreRoutes.CrudDataRoute}/[controller]")]
+[Route($"{StoreRoutes.ApiDataRoute}/[controller]")]
 public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel>
     : ControllerBase,
         IApiDataRemoteController<TKey, TDto, TModel>
