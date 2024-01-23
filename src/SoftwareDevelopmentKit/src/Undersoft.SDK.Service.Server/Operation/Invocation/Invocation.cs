@@ -21,9 +21,6 @@ public class Invocation<TDto> : InvocationBase, IRequest<Invocation<TDto>> where
 
     protected Invocation() { }
 
-    protected Invocation(object argument, CommandMode commandMode, Type serviceType, string method)
-        : base(argument, commandMode, serviceType, method) { }
-
     protected Invocation(CommandMode commandMode, Type serviceType, string method) : base(commandMode, serviceType, method) { }
 
     protected Invocation(CommandMode commandMode, Type serviceType, string method, Arguments arguemnts)
@@ -31,16 +28,6 @@ public class Invocation<TDto> : InvocationBase, IRequest<Invocation<TDto>> where
 
     protected Invocation(CommandMode commandMode, Type serviceType, string method, params object[] arguments)
        : base(commandMode, serviceType, method, arguments) { }
-
-    public byte[] GetBytes()
-    {
-        return Data.GetBytes();
-    }
-
-    public bool Equals(IUnique other)
-    {
-        return Data.Equals(other);
-    }
 
     public int CompareTo(IUnique other)
     {

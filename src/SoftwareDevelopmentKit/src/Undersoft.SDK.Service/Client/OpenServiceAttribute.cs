@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Undersoft.SDK.Service.Client
 {
-    public class OpenServiceAttribute : ServiceAttribute
+    public class OpenServiceAttribute : ServiceClientAttribute
     {
         public OpenServiceAttribute() { }
     }

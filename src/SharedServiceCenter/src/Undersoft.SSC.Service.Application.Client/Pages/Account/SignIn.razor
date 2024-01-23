@@ -3,6 +3,10 @@
 @inject IAuthenticationStateService _authService
 @inject NavigationManager navigationManager
 
+@using Undersoft.SDK.Invoking;
+@using Undersoft.SDK.Service.Client;
+@using Undersoft.SSC.Service.Application
+
 <h3>Sign in</h3>
 
 <EditForm Model="auth" OnValidSubmit="Authorize">
@@ -32,7 +36,7 @@
 
     private async Task Authorize()
     {
-            auth = (await _repository.ActionAsync<Models.Account, AccountAction>(auth, AccountAction.SignIn));
+            auth = (await _repository.Action<IAccountAction>(a => a.SignIn, new Argument(nameof(Authorization), auth)));
 
         if (auth != null)
             await _authService.SignIn(auth);

@@ -13,15 +13,15 @@ namespace Undersoft.SDK.Invoking
 
         string QualifiedName { get; set; }
 
-        string MethodName { get; set; }
+        string MethodName { get; }
 
         AssemblyName AssemblyName { get; }       
 
-        string TypeName { get; set; }
+        string TypeName { get; }
 
         Type Type { get; }
 
-        MethodInfo Info { get; }
+        MethodInfo Info { get; set; }
 
         Arguments Arguments { get; set; }
 

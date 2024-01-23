@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Undersoft.SDK.Service.Client
 {
-    public class StreamDataAttribute : DataAttribute
+    public class StreamDataAttribute : DataClientAttribute
     {
         public StreamDataAttribute() { }
     }

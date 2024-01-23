@@ -20,17 +20,17 @@ public class EventInvoker : Invoker, IInvoker
         RepositoryEvents.Registry.Put("On" + eventon, this);
     }
 
-    public override Task Publish(params object[] parameters)
+    public override Task Fire(params object[] parameters)
     {
         if (RepositoryEvents.Registry.TryGet("On" + StateOn.ToString(), out ISeriesItem<IInvoker> card))
-            return card.ForEachAsync((c) => { c.Publish(true, TargetObject, parameters); });
+            return card.ForEachAsync((c) => { c.Fire(true, TargetObject, parameters); });
         return null;
     }
 
     public override Task Invoke(params object[] parameters)
     {
         if (RepositoryEvents.Registry.TryGet("On" + StateOn.ToString(), out ISeriesItem<IInvoker> card))
-            return card.ForEachAsync((c) => { c.Publish(true, TargetObject, parameters); });
+            return card.ForEachAsync((c) => { c.Fire(true, TargetObject, parameters); });
         return null;
     }
 }

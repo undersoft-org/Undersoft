@@ -58,10 +58,7 @@ public class Servicer : ServiceManager, IServicer, IMediator
         await base.DisposeAsyncCore().ConfigureAwait(false);
     }
 
-    public async Task Publish(
-        object notification,
-        CancellationToken cancellationToken = default
-    )
+    public async Task Publish(object notification, CancellationToken cancellationToken = default)
     {
         await Serve<IMediator>(async (m) => await m.Publish(notification, cancellationToken));
     }
@@ -92,8 +89,24 @@ public class Servicer : ServiceManager, IServicer, IMediator
 
     public Task<R> Run<T, R>(string methodname, params object[] parameters) where T : class
     {
-        Invoker deputy = new Invoker(GetService<T>(), methodname);
+        Invoker deputy = new Invoker(
+            GetService<T>(),
+            methodname,
+            parameters.ForEach(p => p.GetType()).Commit()
+        );
         return deputy.InvokeAsync<R>(parameters);
+    }
+
+    public Task Run<T>(string methodname, Arguments arguments) where T : class
+    {
+        Invoker deputy = new Invoker(GetService<T>(), methodname, arguments.TypeArray);
+        return deputy.InvokeAsync(arguments);
+    }
+
+    public Task<R> Run<T, R>(string methodname, Arguments arguments) where T : class
+    {
+        Invoker deputy = new Invoker(GetService<T>(), methodname, arguments.TypeArray);
+        return deputy.InvokeAsync<R>(arguments);
     }
 
     public async Task Save(bool asTransaction = false)
@@ -118,10 +131,7 @@ public class Servicer : ServiceManager, IServicer, IMediator
         return changes;
     }
 
-    public async Task<int> SaveEndpoint(
-        IRepositorySource endpoint,
-        bool asTransaction = false
-    )
+    public async Task<int> SaveEndpoint(IRepositorySource endpoint, bool asTransaction = false)
     {
         return await endpoint.Save(asTransaction);
     }
@@ -145,10 +155,7 @@ public class Servicer : ServiceManager, IServicer, IMediator
         return await Mediator.Send(request, cancellationToken);
     }
 
-    public async Task<object> Send(
-        object request,
-        CancellationToken cancellationToken = default
-    )
+    public async Task<object> Send(object request, CancellationToken cancellationToken = default)
     {
         return await Mediator.Send(request, cancellationToken);
     }
@@ -181,8 +188,10 @@ public class Servicer : ServiceManager, IServicer, IMediator
         {
             using (var us = CreateScope())
             {
-                Invoker deputy = new Invoker(us.ServiceProvider.GetService<T>(), methodname);
-                return await deputy.InvokeAsync(parameters);
+                return await new Invoker(
+                     us.ServiceProvider.GetService<T>(),
+                     methodname
+                 ).InvokeAsync(parameters);
             }
         });
     }
@@ -193,8 +202,40 @@ public class Servicer : ServiceManager, IServicer, IMediator
         {
             using (var us = CreateScope())
             {
-                Invoker deputy = new Invoker(us.ServiceProvider.GetService<T>(), methodname);
-                return await deputy.InvokeAsync<R>(parameters);
+                return await new Invoker(
+                  us.ServiceProvider.GetService<T>(),
+                  methodname                  
+              ).InvokeAsync<R>(parameters);
+            }
+        });
+    }
+
+    public async Task Serve<T>(string methodname, Arguments arguments) where T : class
+    {
+        await Task.Run(async () =>
+        {
+            using (var us = CreateScope())
+            {
+                return await new Invoker(
+                    us.ServiceProvider.GetService<T>(),
+                    methodname,
+                    arguments.TypeArray
+                ).InvokeAsync(arguments);
+            }
+        });
+    }
+
+    public async Task<R> Serve<T, R>(string methodname, Arguments arguments) where T : class
+    {
+        return await Task.Run(async () =>
+        {
+            using (var us = CreateScope())
+            {
+                return await new Invoker(
+                    us.ServiceProvider.GetService<T>(),
+                    methodname,
+                    arguments.TypeArray
+                ).InvokeAsync<R>(arguments);
             }
         });
     }
@@ -208,6 +249,4 @@ public class Servicer : ServiceManager, IServicer, IMediator
     {
         return GetRegistry().GetObject<T>();
     }
-
-
 }

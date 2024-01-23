@@ -9,7 +9,7 @@ public interface IOpenDataActionRemoteController<TStore, TDto, TModel>
     where TDto : class
     where TModel : class
 {
-    Task<IActionResult> Post([FromRoute] string method, ODataActionParameters dto);
+    Task<IActionResult> Post([FromRoute] string method, [FromBody] ODataActionParameters arguments);
 
-    Task<IActionResult> Get([FromRoute] string method, [FromRoute] string parameter);
+    Task<IActionResult> Get([FromRoute] string method, [FromRoute] ODataParameterValue arguments);
 }

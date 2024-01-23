@@ -44,7 +44,7 @@ namespace Undersoft.SDK.Service.Server.Accounts
 
             var result = await _servicer
                 .Send(
-                    new Invoke<TStore, TService, TDto>(
+                    new Action<TStore, TService, TDto>(
                         method,
                         identityDetails
                     )
@@ -67,7 +67,7 @@ namespace Undersoft.SDK.Service.Server.Accounts
             };
      
             var result = await _servicer.Send(
-                new Invoke<TStore, TService, TDto>(
+                new Action<TStore, TService, TDto>(
                     method,
                     identityDetails
                 )

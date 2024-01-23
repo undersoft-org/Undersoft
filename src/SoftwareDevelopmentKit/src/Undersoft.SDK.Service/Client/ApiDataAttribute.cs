@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Undersoft.SDK.Service.Client
 {
-    public class ApiDataAttribute : DataAttribute
+    public class ApiDataAttribute : DataClientAttribute
     {
         public ApiDataAttribute() { }
     }

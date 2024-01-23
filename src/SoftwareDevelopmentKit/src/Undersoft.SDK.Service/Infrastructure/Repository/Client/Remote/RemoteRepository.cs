@@ -413,23 +413,34 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
 
     public override DataServiceQuery<TEntity> Query => dsContext.CreateQuery<TEntity>(Name, true);
 
-    public async Task<TEntity> FunctionAsync<TModel>(string method)
+    public async Task<TEntity> Function<TService>(Expression<Func<TService, Delegate>> method, Argument argument)
     {
-        return await InvokeAsync(typeof(TModel).Name, method);
+        return await Function(LinqExtension.GetMemberName(method), argument);
     }
 
-    public async Task<TEntity> ActionAsync<TService>(string method, ISeries<IArgument> arguments)
+    public async Task<TEntity> Action<TService>(Expression<Func<TService, Delegate>> method, Arguments arguments)
     {
-        var payload = typeof(TService)
-            .GetMethod(method)
-            .GetParameters()
-            .ForEach(p => new BodyOperationParameter(p.Name, arguments[p.Name]))
-            .Commit();
-
-        return await InvokeAsync(payload, typeof(TEntity).Name, method);
+        return await Action(LinqExtension.GetMemberName(method), arguments);
     }
 
-    private async Task<TEntity> InvokeAsync(string entityName, string method)
+    public async Task<TEntity> Action<TService>(Expression<Func<TService, Delegate>> method, Argument argument)
+    {
+        return await Action(LinqExtension.GetMemberName(method), new Arguments(argument));
+    }
+
+    public async Task<TEntity> Function(string method, Argument argument)
+    {
+        return await FunctionAsync(typeof(TEntity).Name, method);
+    }
+
+    public async Task<TEntity> Action(string method, Arguments arguments)
+    {
+        var payload = arguments.ForEach(p => new BodyOperationParameter(p.Name, p.Value)).Commit();
+
+        return await ActionAsync(payload, typeof(TEntity).Name, method);
+    }
+
+    private async Task<TEntity> FunctionAsync(string entityName, string method)
     {
         var action = dsContext.CreateFunctionQuerySingle<TEntity>(
             dsContext.BaseUri.OriginalString,
@@ -440,7 +451,7 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
         return result;
     }
 
-    private async Task<TEntity> InvokeAsync(
+    private async Task<TEntity> ActionAsync(
         BodyOperationParameter[] parameters,
         string entityName,
         string method

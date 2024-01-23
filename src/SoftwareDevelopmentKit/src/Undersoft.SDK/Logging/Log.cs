@@ -5,12 +5,14 @@
     using System.Text.Json;
     using System.Text.Json.Serialization;
     using System.Threading;
+    using Undersoft.SDK.Series;
 
     public static partial class Log
     {
         private static readonly int BACK_LOG_DAYS = -1;
         private static readonly int BACK_LOG_HOURS = -1;
         private static readonly int BACK_LOG_MINUTES = -1;
+        private static readonly int SYNC_CLOCK_INTERVAL = 15;
         private static readonly JsonSerializerOptions jsonOptions;
         private static Task loggingTask;
         private static CancellationTokenSource cancellation = new CancellationTokenSource();
@@ -19,11 +21,11 @@
         private static DateTime clearLogTime;
         private static ILogHandler handler { get; set; }
 
-        private static ConcurrentQueue<Starlog> logQueue = new ConcurrentQueue<Starlog>();
+        private static Catalog<Starlog> logQueue = new Catalog<Starlog>();
 
         private static bool threadLive;
 
-        public static DateTime Clock = DateTime.Now;
+        public static DateTime Clock = DateTime.UtcNow;
 
         static Log()
         {
@@ -99,9 +101,16 @@
         {
             try
             {
+                int syncInterval = SYNC_CLOCK_INTERVAL;
                 while (threadLive)
                 {
-                    Clock = DateTime.Now;
+                    if (--syncInterval > 0)                    
+                        Clock = Clock.AddMilliseconds(1005);                    
+                    else
+                    {
+                        Clock = DateTime.UtcNow;
+                        syncInterval = SYNC_CLOCK_INTERVAL;
+                    }
                     await Task.Delay(1000);
                     int count = logQueue.Count;
                     for (int i = 0; i < count; i++)

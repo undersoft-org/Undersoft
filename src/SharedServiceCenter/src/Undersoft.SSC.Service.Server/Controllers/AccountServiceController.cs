@@ -10,7 +10,7 @@ namespace Undersoft.SSC.Service.Server.Controllers
     [AllowAnonymous]
     [ODataRouteComponent(StoreRoutes.OpenAuthRoute+"/Account")]
     public class AccountServiceController
-        : OpenServiceController<IAccountStore, AccountService, Contracts.Account>
+        : OpenServiceController<IAccountStore, AccountService, Account>
     {
         public AccountServiceController(IServicer servicer) : base(servicer) { }
     }

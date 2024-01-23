@@ -5,14 +5,11 @@ using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Server.Controller.Open;
 
-using Microsoft.AspNetCore.OData.Formatter;
+using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Operation.Command;
 using Operation.Query;
-using System.Text.Json;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SDK.Security.Identity;
-using Microsoft.AspNetCore.OData.Routing.Attributes;
 
 [OpenData]
 [ODataAttributeRouting]
@@ -59,7 +56,7 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataCo
         return new UniqueOne<TDto>(await _servicer.Send(new FindQuery<TStore, TEntity, TDto>(_keymatcher(key))));
     }
 
-    public virtual async Task<IActionResult> Post(TDto dto)
+    public virtual async Task<IActionResult> Post([FromBody] TDto dto)
     {
         bool isValid = false;
 
@@ -77,7 +74,7 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataCo
                : Created(response);
     }
 
-    public virtual async Task<IActionResult> Patch([FromRoute] TKey key, TDto dto)
+    public virtual async Task<IActionResult> Patch([FromRoute] TKey key, [FromBody] TDto dto)
     {
         bool isValid = false;
 
@@ -97,7 +94,7 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataCo
                : Updated(response);
     }
 
-    public virtual async Task<IActionResult> Put([FromRoute] TKey key, TDto dto)
+    public virtual async Task<IActionResult> Put([FromRoute] TKey key, [FromBody] TDto dto)
     {
         bool isValid = false;
 
@@ -135,25 +132,5 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto> : ODataCo
         return !isValid
                ? UnprocessableEntity(response)
                : Ok(response);
-    }
-
-    [HttpPost(StoreRoutes.OpenEventRoute +"/Event({method})")]
-    public virtual async Task<IActionResult> Action([FromRoute] string method, [FromBody] ODataActionParameters parameters)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var dto = ((JsonElement)parameters[typeof(TDto).Name]).Deserialize<TDto>();
-
-        var result = await _servicer.Send(
-            new Invoke<TStore, TDto, TDto, AccountAction>(
-                method,
-                dto
-            )
-        );
-
-        return !result.IsValid
-            ? UnprocessableEntity(result.ErrorMessages)
-            : Ok(result.Response);
     }
 }

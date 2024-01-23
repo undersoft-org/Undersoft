@@ -3160,7 +3160,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long?>("LocationId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Invoke")
+                    b.Property<string>("Action")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Modified")

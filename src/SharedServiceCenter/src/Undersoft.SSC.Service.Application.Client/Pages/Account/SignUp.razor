@@ -4,6 +4,7 @@
 @inject IRemoteRepository<IDataStore, Authorization> _repository
 @inject NavigationManager navigationManager
 
+@using Undersoft.SDK.Invoking;
 @using Undersoft.SDK.Service.Client;
 @using Undersoft.SSC.Service.Application
 
@@ -45,7 +46,7 @@
 
     private async Task Authorize()
     {
-        var userToken = await _repository.ActionAsync<Authorization, AccountAction>(auth, AccountAction.SignUp);
+        var userToken = await _repository.Action<IAccountAction>(a => a.SignUp, new Argument(nameof(Authorization), auth));
 
         navigationManager.NavigateTo("");
     }

@@ -2,12 +2,12 @@
 using MediatR;
 
 namespace Undersoft.SDK.Service.Server.Operation.Command.Handler;
-using Logging;
-using Notification;
 
-using Undersoft.SDK.Service.Server.Operation.Remote.Command;
+using Logging;
 using Undersoft.SDK.Service.Infrastructure.Repository;
 using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Server.Operation.Remote.Command;
+using Undersoft.SDK.Service.Server.Operation.Remote.Command.Notification;
 
 public class RemoteUpsertHandler<TStore, TDto, TModel>
     : IRequestHandler<RemoteUpsert<TStore, TDto, TModel>, RemoteCommand<TModel>>
@@ -44,7 +44,10 @@ public class RemoteUpsertHandler<TStore, TDto, TModel>
                             request.Conditions
                         );
                     else
-                        request.Contract = await _repository.PutBy(request.Model, request.Predicate);
+                        request.Contract = await _repository.PutBy(
+                            request.Model,
+                            request.Predicate
+                        );
 
                     if (request.Contract == null)
                         throw new Exception(

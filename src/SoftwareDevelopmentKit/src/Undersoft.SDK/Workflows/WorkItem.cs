@@ -40,6 +40,22 @@
 
         public string QualifiedName { get; set; }
 
+        public string MethodName => Info.Name;
+
+        public override string TypeName { get => Type.FullName; }
+
+        public Uscn Code
+        {
+            get => code;
+            set => code = value;
+        }
+
+        public Type ReturnType => Info.ReturnType;
+
+        public Type Type => TargetObject.GetType();
+
+        public AssemblyName AssemblyName => Type.Assembly.GetName();
+
         public Worker Worker { get; set; }
 
         public WorkAspect Aspect { get; set; }
@@ -48,31 +64,20 @@
 
         public WorkNoteBox Box { get; set; }
 
-        public object[] Arguments
+        public Arguments Arguments
         {
             get => Worker.Process.Arguments;
             set => Worker.Process.Arguments = value;
         }
         public object this[int fieldId]
         {
-            get => Arguments[fieldId];
-            set => Arguments[fieldId] = value;
+            get => Worker.Process[fieldId];
+            set => Worker.Process[fieldId] = value;
         }
         public object this[string propertyName]
         {
-            get
-            {
-                for (int i = 0; i < Parameters.Length; i++)
-                    if (Parameters[i].Name == propertyName)
-                        return Arguments[i];
-                return null;
-            }
-            set
-            {
-                for (int i = 0; i < Parameters.Length; i++)
-                    if (Parameters[i].Name == propertyName)
-                        Arguments[i] = value;
-            }
+            get => Worker.Process[propertyName];
+            set => Worker.Process[propertyName] = value;
         }
 
         public MethodInfo Info
@@ -88,8 +93,8 @@
         }
         public object[] ValueArray
         {
-            get => Arguments;
-            set => Arguments = value;
+            get => Arguments.ValueArray;
+            set => Worker.Process.ValueArray = value;
         }
 
         public InvokerDelegate MethodInvoker => Process.MethodInvoker;
@@ -392,9 +397,9 @@
             ((IWorker)Worker).SetOutput(value);
         }
 
-        public Task Publish(params object[] parameters)
+        public Task Fire(params object[] parameters)
         {
-            return Process.Publish(parameters);
+            return Process.Fire(parameters);
         }
 
         public object Execute(object target, params object[] parameters)
@@ -412,9 +417,9 @@
             return Process.InvokeAsync<T>(target, parameters);
         }
 
-        public Task Publish(bool firstAsTarget, object target, params object[] parameters)
+        public Task Fire(bool firstAsTarget, object target, params object[] parameters)
         {
-            return Process.Publish(firstAsTarget, target, parameters);
+            return Process.Fire(firstAsTarget, target, parameters);
         }
 
         public object Invoke(bool firstAsTarget, object target, params object[] parameters)

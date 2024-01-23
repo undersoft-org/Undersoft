@@ -16,8 +16,8 @@ namespace Undersoft.SDK.Invoking
 
         Delegate Method { get; }
 
-        Task Publish(params object[] parameters);
-        Task Publish(bool firstAsTarget, object target, params object[] parameters);
+        Task Fire(params object[] parameters);
+        Task Fire(bool firstAsTarget, object target, params object[] parameters);
 
         object Invoke(params object[] parameters);
         object Invoke(bool firstAsTarget, object target, params object[] parameters);

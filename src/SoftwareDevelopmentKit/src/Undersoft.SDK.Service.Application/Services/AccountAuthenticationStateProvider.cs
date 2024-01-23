@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using System.Text.Json;
+using Undersoft.SDK.Invoking;
 using Undersoft.SDK.Security.Identity;
 using Undersoft.SDK.Series;
 
@@ -11,7 +12,7 @@ public class AccountAuthenticationStateProvider : AuthenticationStateProvider, I
 {
     private readonly IJSRuntime js;
     private readonly IAuthorization _authorization;
-    private readonly IRemoteRepository<IDataStore, Authorization> _repository;
+    private readonly IRemoteRepository<IAccountStore, Authorization> _repository;
     private readonly string TOKENKEY = "TOKENKEY";
     private readonly string EXPIRATIONTOKENKEY = "EXPIRATIONTOKENKEY";
 
@@ -20,7 +21,7 @@ public class AccountAuthenticationStateProvider : AuthenticationStateProvider, I
 
     public AccountAuthenticationStateProvider(
         IJSRuntime js,
-        IRemoteRepository<IDataStore, Authorization> repository,
+        IRemoteRepository<IAccountStore, Authorization> repository,
         IAuthorization authorization
     )
     {
@@ -50,7 +51,7 @@ public class AccountAuthenticationStateProvider : AuthenticationStateProvider, I
             }
             if (IsTokenExpired(expirationTime.AddMinutes(-5)))
             {
-                var auth = (await _repository.FunctionAsync<Authorization, AccountAction>(AccountAction.Renew));
+                var auth = (await _repository.Function("Renew", new Argument("Authorization", token)));
                 if (auth != null)
                 {
                     _authorization.Credentials = auth.Credentials;
@@ -120,7 +121,9 @@ public class AccountAuthenticationStateProvider : AuthenticationStateProvider, I
 
     public async Task SignOut()
     {
-        await _repository.ActionAsync<Authorization, AccountAction>((Authorization)_authorization, AccountAction.SignOut);
+        var arg = new Arguments();
+        arg.Put(new Argument("Authorization", _authorization));
+        await _repository.Action("SignOut", arg);
         await CleanUp();
         NotifyAuthenticationStateChanged(Task.FromResult(Anonymous));
     }

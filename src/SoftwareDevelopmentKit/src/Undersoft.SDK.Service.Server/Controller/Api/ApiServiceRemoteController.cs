@@ -9,6 +9,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Client.Remote;
 using Undersoft.SDK.Service.Server.Operation.Invocation;
 using System.Text.Json;
+using Undersoft.SDK.Service.Server.Operation.Remote.Invocation;
 
 [ApiController]
 [RemoteCrudDataActionService]
@@ -38,11 +39,11 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
             return BadRequest(ModelState);
                                    
             var result = await _servicer.Send(
-                new RemoteInvoke<TStore, TService, TModel>(method)
+                new RemoteAction<TStore, TService, TModel>(method)
             );
 
             return !result.IsValid
-                ? UnprocessableEntity(result.ErrorMessages)
+                ? BadRequest(result.ErrorMessages)
                 : Ok(result.Response);
     }
 
@@ -53,11 +54,11 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
             return BadRequest(ModelState);
 
             var result = await _servicer.Send(
-                new RemoteInvoke<TStore, TService, TModel>(method)
+                new RemoteFunction<TStore, TService, TModel>(method)
             );
 
             return !result.IsValid
-                ? UnprocessableEntity(result.ErrorMessages)
+                ? BadRequest(result.ErrorMessages)
                 : Ok(result.Response);
 
     }

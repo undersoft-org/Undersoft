@@ -17,11 +17,7 @@ public abstract class InvocationBase : IInvocation
     public virtual object Return { get; set; }
 
     [JsonIgnore]
-    public virtual object Response
-    {
-        get => data;
-        set => data = value;
-    }
+    public virtual object Response { get; set; }
 
     [JsonIgnore]
     public ValidationResult Result { get; set; }

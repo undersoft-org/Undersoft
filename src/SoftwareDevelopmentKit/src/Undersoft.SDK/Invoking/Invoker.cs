@@ -5,53 +5,6 @@ using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Invoking
 {
-    #region Delegates
-
-    public delegate object InvokerDelegate(object target, params object[] parameters);
-
-    public delegate R InvokerDelegate<T, R>(T target, params object[] parameters);
-
-    #endregion
-
-    public class Invoker<T> : Invoker
-    {
-        public Invoker() : base(typeof(T)) { }
-
-        public Invoker(params object[] constructorParams) : base(typeof(T), constructorParams) { }
-
-        public Invoker(IInvokable invoke) : base(invoke.TypeName, invoke.MethodName) { }
-
-        public Invoker(Func<T, Delegate> method)
-            : base(typeof(T), method(typeof(T).New<T>()).Method.Name) { }
-
-        public Invoker(Func<T, Delegate> method, params object[] constructorParams)
-            : base(
-                typeof(T),
-                method(typeof(T).New<T>(constructorParams)).Method.Name,
-                constructorParams
-            ) { }
-
-        public Invoker(Func<T, Delegate> method, params Type[] parameterTypes)
-            : base(typeof(T), method(typeof(T).New<T>()).Method.Name, parameterTypes) { }
-
-        public Invoker(T targetObject, Func<T, Delegate> method)
-            : base(targetObject, method(targetObject).Method.Name) { }
-
-        public Invoker(Type[] parameterTypes, params object[] constructorParams)
-            : base(typeof(T), parameterTypes, constructorParams) { }
-
-        public Invoker(string methodName) : base(typeof(T), methodName) { }
-
-        public Invoker(string methodName, params Type[] parameterTypes)
-            : base(typeof(T), methodName, parameterTypes) { }
-
-        public Invoker(string methodName, Type[] parameterTypes, params object[] constructorParams)
-            : base(typeof(T), methodName, parameterTypes, constructorParams) { }
-
-        public Invoker(string methodName, params object[] constructorParams)
-            : base(typeof(T), methodName, constructorParams) { }
-    }
-
     public class Invoker : Origin, IInvoker
     {
         private Uscn serialcode;
@@ -200,7 +153,9 @@ namespace Undersoft.SDK.Invoking
 
         public string Name { get; set; }
 
-        public string MethodName { get; set; }
+        public string MethodName => Info.Name;
+
+        public override string TypeName { get => Type.FullName; }
 
         public string QualifiedName { get; set; }
 
@@ -273,12 +228,12 @@ namespace Undersoft.SDK.Invoking
 
         public AssemblyName AssemblyName => Type.Assembly.GetName();
 
-        public virtual Task Publish(params object[] parameters)
+        public virtual Task Fire(params object[] parameters)
         {
             try
             {
                 return Task.Run(
-                    () => (Method ?? invoking(Info)).DynamicInvoke(TargetObject, parameters)
+                    () => (Method ?? InvokingIL.Create(Info)).DynamicInvoke(TargetObject, parameters)
                 );
             }
             catch (Exception e)
@@ -287,7 +242,7 @@ namespace Undersoft.SDK.Invoking
             }
         }
 
-        public virtual Task Publish(bool withTarget, object target, params object[] parameters)
+        public virtual Task Fire(bool withTarget, object target, params object[] parameters)
         {
             try
             {
@@ -299,7 +254,7 @@ namespace Undersoft.SDK.Invoking
 
                 if (Method == null)
                 {
-                    Method = invoking(Info);
+                    Method = InvokingIL.Create(Info);
                 }
 
                 return Task.Run(() => Method.DynamicInvoke(target, parameters));
@@ -316,7 +271,7 @@ namespace Undersoft.SDK.Invoking
             {
                 if (Method == null)
                 {
-                    Method = invoking(Info);
+                    Method = InvokingIL.Create(Info);
                 }
 
                 var obj = Method.DynamicInvoke(TargetObject, parameters);
@@ -340,7 +295,7 @@ namespace Undersoft.SDK.Invoking
                 }
                 if (Method == null)
                 {
-                    Method = invoking(Info);
+                    Method = InvokingIL.Create(Info);
                 }
 
                 var obj = Method.DynamicInvoke(target, parameters);
@@ -353,13 +308,13 @@ namespace Undersoft.SDK.Invoking
             }
         }
 
-        public virtual T Execute<T>(params object[] parameters)
+        public virtual T Invoke<T>(params object[] parameters)
         {
             try
             {
                 if (Method == null)
                 {
-                    Method = invoking(Info);
+                    Method = InvokingIL.Create(Info);
                 }
 
                 var obj = Method.DynamicInvoke(TargetObject, parameters);
@@ -372,7 +327,7 @@ namespace Undersoft.SDK.Invoking
             }
         }
 
-        public virtual T Execute<T>(bool withTarget, object target, params object[] parameters)
+        public virtual T Invoke<T>(bool withTarget, object target, params object[] parameters)
         {
             try
             {
@@ -383,7 +338,7 @@ namespace Undersoft.SDK.Invoking
                 }
                 if (Method == null)
                 {
-                    Method = invoking(Info);
+                    Method = InvokingIL.Create(Info);
                 }
 
                 var obj = Method.DynamicInvoke(target, parameters);
@@ -433,7 +388,7 @@ namespace Undersoft.SDK.Invoking
         {
             try
             {
-                return await Task.Run<T>(() => Execute<T>(parameters));
+                return await Task.Run<T>(() => Invoke<T>(parameters));
             }
             catch (Exception e)
             {
@@ -454,7 +409,7 @@ namespace Undersoft.SDK.Invoking
                     parameters = new[] { target }.Concat(parameters).ToArray();
                     target = TargetObject;
                 }
-                return await Task.Run<T>(() => Execute<T>(target, parameters));
+                return await Task.Run<T>(() => Invoke<T>(target, parameters));
             }
             catch (Exception e)
             {
@@ -469,22 +424,22 @@ namespace Undersoft.SDK.Invoking
                     arg => arguments.ContainsKey(arg.Id) ? arg.Value = arguments[arg.Id] : arg.Value
                 )
                 .Commit();
-            return await InvokeAsync(
-                Arguments.OrderBy(p => p.Position).Select(p => p.Value).ToArray()
-            );
+            return await InvokeAsync(Arguments.ValueArray);
         }
 
-        public virtual async Task<object> InvokeAsync(bool withTarget, object target, Arguments arguments)
+        public virtual async Task<object> InvokeAsync(
+            bool withTarget,
+            object target,
+            Arguments arguments
+        )
         {
             Arguments
                 .ForEach(
                     arg => arguments.ContainsKey(arg.Id) ? arg.Value = arguments[arg.Id] : arg.Value
                 )
                 .Commit();
-            return await InvokeAsync(withTarget, target,
-                Arguments.OrderBy(p => p.Position).Select(p => p.Value).ToArray()
-            );
-        }       
+            return await InvokeAsync(withTarget, target, Arguments.ValueArray);
+        }
 
         public virtual async Task<T> InvokeAsync<T>(Arguments arguments)
         {
@@ -493,21 +448,21 @@ namespace Undersoft.SDK.Invoking
                     arg => arguments.ContainsKey(arg.Id) ? arg.Value = arguments[arg.Id] : arg.Value
                 )
                 .Commit();
-            return await InvokeAsync<T>(
-                Arguments.OrderBy(p => p.Position).Select(p => p.Value).ToArray()
-            );
+            return await InvokeAsync<T>(Arguments.ValueArray);
         }
 
-        public virtual async Task<T> InvokeAsync<T>(bool withTarget, object target, Arguments arguments)
+        public virtual async Task<T> InvokeAsync<T>(
+            bool withTarget,
+            object target,
+            Arguments arguments
+        )
         {
             Arguments
                 .ForEach(
                     arg => arguments.ContainsKey(arg.Id) ? arg.Value = arguments[arg.Id] : arg.Value
                 )
                 .Commit();
-            return await InvokeAsync<T>(withTarget, target,
-                Arguments.OrderBy(p => p.Position).Select(p => p.Value).ToArray()
-            );
+            return await InvokeAsync<T>(withTarget, target, Arguments.ValueArray);
         }
 
         public object ConvertType(object source, Type destination)
@@ -636,177 +591,7 @@ namespace Undersoft.SDK.Invoking
         public static string GetQualifiedName<T>(string methodName, params Type[] parameterTypes)
         {
             return GetQualifiedName(typeof(T), methodName, parameterTypes);
-        }
-
-        private Delegate invoking(MethodInfo methodInfo)
-        {
-            DynamicMethod dynamicMethod = new DynamicMethod(
-                string.Empty,
-                typeof(object),
-                new Type[] { typeof(object), typeof(object[]) },
-                methodInfo.DeclaringType.Module
-            );
-
-            ILGenerator il = dynamicMethod.GetILGenerator();
-            ParameterInfo[] ps = methodInfo.GetParameters();
-
-            Type[] paramTypes = new Type[ps.Length];
-            for (int i = 0; i < paramTypes.Length; i++)
-            {
-                if (ps[i].ParameterType.IsByRef)
-                    paramTypes[i] = ps[i].ParameterType.GetElementType();
-                else
-                    paramTypes[i] = ps[i].ParameterType;
-            }
-            LocalBuilder[] locals = new LocalBuilder[paramTypes.Length];
-
-            for (int i = 0; i < paramTypes.Length; i++)
-            {
-                locals[i] = il.DeclareLocal(paramTypes[i], true);
-            }
-
-            for (int i = 0; i < paramTypes.Length; i++)
-            {
-                il.Emit(OpCodes.Ldarg_1);
-                directint(il, i);
-                il.Emit(OpCodes.Ldelem_Ref);
-                casting(il, paramTypes[i]);
-                il.Emit(OpCodes.Stloc, locals[i]);
-            }
-
-            if (!methodInfo.IsStatic)
-            {
-                il.Emit(OpCodes.Ldarg_0);
-            }
-
-            for (int i = 0; i < paramTypes.Length; i++)
-            {
-                if (ps[i].ParameterType.IsByRef)
-                    il.Emit(OpCodes.Ldloca_S, locals[i]);
-                else
-                    il.Emit(OpCodes.Ldloc, locals[i]);
-            }
-
-            if (methodInfo.IsStatic)
-                il.EmitCall(OpCodes.Call, methodInfo, null);
-            else
-                il.EmitCall(OpCodes.Callvirt, methodInfo, null);
-
-            if (methodInfo.ReturnType == typeof(void))
-                il.Emit(OpCodes.Ldnull);
-            else
-                boxing(il, methodInfo.ReturnType);
-
-            for (int i = 0; i < paramTypes.Length; i++)
-            {
-                if (ps[i].ParameterType.IsByRef)
-                {
-                    il.Emit(OpCodes.Ldarg_1);
-                    directint(il, i);
-                    il.Emit(OpCodes.Ldloc, locals[i]);
-                    if (locals[i].LocalType.IsValueType)
-                        il.Emit(OpCodes.Box, locals[i].LocalType);
-                    il.Emit(OpCodes.Stelem_Ref);
-                }
-            }
-
-            il.Emit(OpCodes.Ret);
-
-            Delegate invoker = (InvokerDelegate)
-                dynamicMethod.CreateDelegate(typeof(InvokerDelegate));
-
-            return invoker;
-        }
-
-        private static void casting(ILGenerator il, Type type)
-        {
-            if (type.IsValueType)
-            {
-                il.Emit(OpCodes.Unbox_Any, type);
-            }
-            else
-            {
-                il.Emit(OpCodes.Castclass, type);
-            }
-        }
-
-        private static void boxing(ILGenerator il, Type type)
-        {
-            if (type.IsValueType)
-            {
-                il.Emit(OpCodes.Box, type);
-            }
-        }
-
-        private static void directint(ILGenerator il, int value)
-        {
-            switch (value)
-            {
-                case -1:
-                    il.Emit(OpCodes.Ldc_I4_M1);
-                    return;
-                case 0:
-                    il.Emit(OpCodes.Ldc_I4_0);
-                    return;
-                case 1:
-                    il.Emit(OpCodes.Ldc_I4_1);
-                    return;
-                case 2:
-                    il.Emit(OpCodes.Ldc_I4_2);
-                    return;
-                case 3:
-                    il.Emit(OpCodes.Ldc_I4_3);
-                    return;
-                case 4:
-                    il.Emit(OpCodes.Ldc_I4_4);
-                    return;
-                case 5:
-                    il.Emit(OpCodes.Ldc_I4_5);
-                    return;
-                case 6:
-                    il.Emit(OpCodes.Ldc_I4_6);
-                    return;
-                case 7:
-                    il.Emit(OpCodes.Ldc_I4_7);
-                    return;
-                case 8:
-                    il.Emit(OpCodes.Ldc_I4_8);
-                    return;
-            }
-
-            if (value > -129 && value < 128)
-            {
-                il.Emit(OpCodes.Ldc_I4_S, (SByte)value);
-            }
-            else
-            {
-                il.Emit(OpCodes.Ldc_I4, value);
-            }
-        }
-    }
-
-    public class Deputies : Registry<Invoker> { }
-
-    public class ModificationEventArgs : EventArgs
-    {
-        #region Fields
-
-        public readonly object Original;
-        public readonly StateOn StateOn;
-        public readonly object Current;
-
-        #endregion
-
-        #region Constructors
-
-        public ModificationEventArgs(StateOn eventon, object oldItem, object newItem)
-        {
-            StateOn = eventon;
-            Original = oldItem;
-            Current = newItem;
-        }
-
-        #endregion
+        }        
     }
 
     public enum ChangeState
