@@ -11,7 +11,7 @@ namespace Undersoft.SDK.Service
         T CallService<T>() where T : class;
         IAsyncEnumerable<object> CreateStream(object request, CancellationToken cancellationToken = default);
         IAsyncEnumerable<TResponse> CreateStream<TResponse>(IStreamRequest<TResponse> request, CancellationToken cancellationToken = default);
-        Lazy<R> Deserve<T, R>(Func<T, R> function)
+        Lazy<R> LazyServe<T, R>(Func<T, R> function)
             where T : class
             where R : class;
         ValueTask DisposeAsyncCore();
@@ -28,6 +28,8 @@ namespace Undersoft.SDK.Service
         Task<int> SaveEndpoints(bool asTransaction = false);
         Task<object> Send(object request, CancellationToken cancellationToken = default);
         Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default);
+        Task<object> Execute(object request, CancellationToken cancellationToken = default);
+        Task<TResponse> Execute<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default);
         Task<R> Serve<T, R>(Func<T, Task<R>> function) where T : class;
         Task<R> Serve<T, R>(string methodname, params object[] parameters) where T : class;
         Task Serve<T>(Func<T, Task> function) where T : class;

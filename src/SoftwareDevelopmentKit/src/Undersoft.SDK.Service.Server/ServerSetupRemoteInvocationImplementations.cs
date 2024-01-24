@@ -5,6 +5,7 @@ using System.Reflection;
 
 namespace Undersoft.SDK.Service.Server;
 
+using Castle.Core.Internal;
 using Undersoft.SDK.Service.Client.Remote;
 using Undersoft.SDK.Service.Server.Operation.Invocation;
 using Undersoft.SDK.Service.Server.Operation.Remote.Invocation;
@@ -31,7 +32,7 @@ public partial class ServerSetup
                                         a =>
                                             a.GetType()
                                                 .IsAssignableTo(
-                                                    typeof(RemoteDataActionServiceAttribute)
+                                                    typeof(ServiceRemoteAttribute)
                                                 )
                                     )
                         )
@@ -49,12 +50,28 @@ public partial class ServerSetup
 
         foreach (var controllerType in controllerTypes)
         {
+            Type store = null, _viewmodel = null, dtoType = null;
             var genericTypes = controllerType.BaseType.GenericTypeArguments;
-            var store = genericTypes[0];
-            var _viewmodel = genericTypes[2];
-            var dtoType = genericTypes[1];
-
-            if (duplicateCheck.Add(store.Name + _viewmodel.Name + dtoType.Name))
+            if (genericTypes.Length > 3)
+            {
+                if (genericTypes.Length > 5)
+                {
+                    store = genericTypes[1];
+                    _viewmodel = genericTypes[3];
+                    dtoType = genericTypes[4];
+                }
+                else
+                {
+                    store = genericTypes[1];
+                    _viewmodel = genericTypes[2];
+                    dtoType = genericTypes[3];
+                }
+            }
+            else
+                continue;
+            
+            var concatNames = store.FullName + _viewmodel.FullName + dtoType.FullName;
+            if (!concatNames.IsNullOrEmpty() && duplicateCheck.Add(concatNames))
             {
                 service.AddTransient(
                     typeof(IRequest<>).MakeGenericType(

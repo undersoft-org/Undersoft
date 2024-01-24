@@ -9,5 +9,7 @@ public interface IOpenServiceController<TKey, TService, TDto> where TDto : class
 {
     Task<IActionResult> Action([FromBody] ODataActionParameters parameters);
 
-    Task<IActionResult> Function([FromRoute] string name);
+    Task<IActionResult> Access([FromBody] ODataActionParameters parameters);
+
+    Task<IActionResult> Setup([FromBody] ODataActionParameters parameters);
 }

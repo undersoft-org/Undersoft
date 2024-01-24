@@ -14,7 +14,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Client.Remote;
 
 [RemoteResult]
-[RemoteCrudDataService]
+[ApiDataRemote]
 [ApiController]
 [Route($"{StoreRoutes.ApiEventRoute}/Events")]
 public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
@@ -88,7 +88,7 @@ public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Send(new RemoteCreateSet<TStore, TDto, TModel>(_publishMode, dtos))
+            .Execute(new RemoteCreateSet<TStore, TDto, TModel>(_publishMode, dtos))
             .ConfigureAwait(false);
 
         object[] response = result
@@ -110,7 +110,7 @@ public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
 
         return Ok(
             await _servicer
-                .Send(
+                .Execute(
                     new RemoteFilter<TStore, TDto, TModel>(
                         offset,
                         limit,
@@ -133,7 +133,7 @@ public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
         _keysetter(key).Invoke(dto);
 
         var result = await _servicer
-            .Send(new RemoteCreateSet<TStore, TDto, TModel>(_publishMode, new[] { dto }))
+            .Execute(new RemoteCreateSet<TStore, TDto, TModel>(_publishMode, new[] { dto }))
             .ConfigureAwait(false);
 
         var response = result
@@ -151,7 +151,7 @@ public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Send(
+            .Execute(
                 new RemoteChangeSet<TStore, TDto, TModel>(EventPublishMode.PropagateCommand, dtos)
             )
             .ConfigureAwait(false);
@@ -171,7 +171,7 @@ public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Send(
+            .Execute(
                 new RemoteChange<TStore, TDto, TModel>(EventPublishMode.PropagateCommand, dto, key)
             )
             .ConfigureAwait(false);
@@ -189,7 +189,7 @@ public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Send(new RemoteUpdateSet<TStore, TDto, TModel>(_publishMode, dtos, _predicate))
+            .Execute(new RemoteUpdateSet<TStore, TDto, TModel>(_publishMode, dtos, _predicate))
             .ConfigureAwait(false);
 
         var response = result
@@ -209,7 +209,7 @@ public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
         _keysetter(key).Invoke(dto);
 
         var result = await _servicer
-            .Send(
+            .Execute(
                 new RemoteUpdateSet<TStore, TDto, TModel>(_publishMode, new[] { dto }, _predicate)
             )
             .ConfigureAwait(false);
@@ -229,7 +229,7 @@ public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Send(
+            .Execute(
                 new RemoteDeleteSet<TStore, TDto, TModel>(EventPublishMode.PropagateCommand, dtos)
             )
             .ConfigureAwait(false);
@@ -251,7 +251,7 @@ public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
         _keysetter(key).Invoke(dto);
 
         var result = await _servicer
-            .Send(
+            .Execute(
                 new RemoteDeleteSet<TStore, TDto, TModel>(
                     EventPublishMode.PropagateCommand,
                     new[] { dto }

@@ -42,6 +42,8 @@ public class RemoteCommandSet<TModel>
 
     public object Output => Commands.ForEach(c => c.Result.IsValid ? c.Id as object : c.Result);
 
+    public Delegate Processings { get; set; }
+
     IEnumerable<IRemoteCommand> IRemoteCommandSet.Commands
     {
         get => this.Cast<IRemoteCommand>();

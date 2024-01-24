@@ -14,7 +14,8 @@ namespace Undersoft.SSC.Service.Server.Controllers
             IEntryStore,
             IReportStore,
             Domain.Entities.Member,
-            Contracts.Member
+            Contracts.Member,
+            ServiceManager
         >
     {
         public MemberController(IServicer ultimatr) : base(ultimatr) { }
@@ -31,7 +32,8 @@ namespace Undersoft.SSC.Service.Server.Controllers
             IEntryStore,
             IReportStore,
             Domain.Entities.Member,
-            Contracts.Member
+            Contracts.Member,
+            ServiceManager
         >
     {
         public MembersController(IServicer ultimatr) : base(ultimatr) { }

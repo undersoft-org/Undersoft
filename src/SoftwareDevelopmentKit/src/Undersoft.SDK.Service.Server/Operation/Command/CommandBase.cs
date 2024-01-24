@@ -16,6 +16,8 @@ public abstract class CommandBase : ICommand
 
     public object[] Keys { get; set; }
 
+    public Delegate Processings {  get; set; }
+
     [JsonIgnore]
     public virtual IDataObject Entity
     {

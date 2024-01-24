@@ -8,6 +8,9 @@ public class GetQuery<TStore, TEntity, TDto> : Query<TStore, TEntity, IQueryable
     where TEntity : class, IDataObject
     where TStore : IDataServerStore
 {
+    public GetQuery(Func<IRepository<TEntity>, IQueryable<TEntity>> transformations)
+        : base(transformations) { }
+
     public GetQuery(params Expression<Func<TEntity, object>>[] expanders) : base(expanders) { }
 
     public GetQuery(
@@ -15,8 +18,9 @@ public class GetQuery<TStore, TEntity, TDto> : Query<TStore, TEntity, IQueryable
         params Expression<Func<TEntity, object>>[] expanders
     ) : base(sortTerms, expanders) { }
 
-    public GetQuery(Expression<Func<TEntity, bool>> predicate,
-    SortExpression<TEntity> sortTerms,
+    public GetQuery(
+        Expression<Func<TEntity, bool>> predicate,
+        SortExpression<TEntity> sortTerms,
         params Expression<Func<TEntity, object>>[] expanders
     ) : base(predicate, sortTerms, expanders) { }
 }

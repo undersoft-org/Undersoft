@@ -6,8 +6,8 @@ using System.Linq;
 
 namespace Undersoft.SDK.Service.Client.Remote
 {
-    public class RemoteCrudDataServiceAttribute : RemoteDataServiceAttribute
+    public class ApiDataRemoteAttribute : DataRemoteAttribute
     {
-        public RemoteCrudDataServiceAttribute() { }
+        public ApiDataRemoteAttribute() { }
     }
 }

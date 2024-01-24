@@ -18,7 +18,8 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
             IEntryStore,
             IReportStore,
             Identifier<Member>,
-            Identifier<MemberBase>
+            Identifier<MemberBase>,
+            ServiceManager
         >
     {
         public MemberIdentifierController(IServicer ultimatr) : base(ultimatr) { }
@@ -33,7 +34,8 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
             IEntryStore,
             IReportStore,
             Identifier<Member>,
-            Identifier<MemberBase>
+            Identifier<MemberBase>,
+            ServiceManager
         >
     {
         public MemberIdentifiersController(IServicer ultimatr) : base(ultimatr) { }

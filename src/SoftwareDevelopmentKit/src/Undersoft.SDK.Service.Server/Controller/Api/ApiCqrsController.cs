@@ -13,11 +13,12 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 [ApiController]
 [ApiData]
 [Route($"{StoreRoutes.ApiDataRoute}/[controller]")]
-public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto> : ApiDataController<TKey, TEntry, TEntity, TDto>
+public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> : ApiDataController<TKey, TEntry, TEntity, TDto, TService>
     where TDto : class, IDataObject
     where TEntity : class, IDataObject
     where TEntry : IDataServerStore
     where TReport : IDataServerStore
+    where TService : class
 { 
     protected ApiCqrsController() { }
 
@@ -96,7 +97,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto> : ApiDataCo
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Send(new CreateSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Execute(new CreateSet<TEntry, TEntity, TDto>
                                                     (_publishMode, dtos)).ConfigureAwait(false);
 
         object[] response = result.ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
@@ -114,7 +115,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto> : ApiDataCo
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Send(new CreateSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Execute(new CreateSet<TEntry, TEntity, TDto>
                                                 (_publishMode, new[] { dto }))
                                                     .ConfigureAwait(false);
 
@@ -134,7 +135,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto> : ApiDataCo
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Send(new ChangeSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Execute(new ChangeSet<TEntry, TEntity, TDto>
                                                                 (_publishMode, dtos, _predicate))
                                                                     .ConfigureAwait(false);
         var response = result.ForEach(c => (isValid = c.IsValid)
@@ -154,7 +155,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto> : ApiDataCo
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Send(new ChangeSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Execute(new ChangeSet<TEntry, TEntity, TDto>
                                               (_publishMode, new[] { dto }, _predicate))
                                                  .ConfigureAwait(false);
 
@@ -174,7 +175,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto> : ApiDataCo
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Send(new UpdateSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Execute(new UpdateSet<TEntry, TEntity, TDto>
                                                                     (_publishMode, dtos, _predicate))
                                                                                 .ConfigureAwait(false);
 
@@ -193,7 +194,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto> : ApiDataCo
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Send(new UpdateSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Execute(new UpdateSet<TEntry, TEntity, TDto>
                                                     (_publishMode, new[] { dto }, _predicate))
                                                         .ConfigureAwait(false);
 
@@ -213,7 +214,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto> : ApiDataCo
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Send(new DeleteSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Execute(new DeleteSet<TEntry, TEntity, TDto>
                                                             (_publishMode, dtos))
                                                              .ConfigureAwait(false);
 
@@ -235,7 +236,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto> : ApiDataCo
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Send(new DeleteSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Execute(new DeleteSet<TEntry, TEntity, TDto>
                                                              (_publishMode, new[] { dto }))
                                                                     .ConfigureAwait(false);
 

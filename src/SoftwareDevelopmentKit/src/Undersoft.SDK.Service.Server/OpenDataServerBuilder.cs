@@ -82,7 +82,7 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
                             type =>
                                 type.GetCustomAttribute<OpenDataAttribute>() != null
                                 || type.GetCustomAttribute<OpenServiceAttribute>() != null
-                                || type.GetCustomAttribute<RemoteOpenDataServiceAttribute>() != null
+                                || type.GetCustomAttribute<OpenDataRemoteAttribute>() != null
                                 || type.GetCustomAttribute<OpenServiceRemoteAttribute>() != null
                         )
             )
@@ -135,7 +135,8 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
             b.RouteOptions.EnableActionNameCaseInsensitive = true;
             b.RouteOptions.EnableControllerNameCaseInsensitive = true;
             b.RouteOptions.EnableKeyAsSegment = false;
-            b.EnableQueryFeatures(PageLimit).AddRouteComponents(route, model);
+            b.EnableQueryFeatures(PageLimit)
+             .AddRouteComponents(route, model);
         });
         AddODataSupport(mvc);
         _registry.MergeServices(true);
@@ -195,19 +196,24 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
 
     private void SetFunctionAndAction<TAuth>() where TAuth : class
     {
-        if (actionSetAdded)
-            return;
-
         var name = typeof(TAuth).Name;
 
         var action = odataBuilder.EntitySet<TAuth>(name).EntityType.Collection.Action("Action");
-        action.ReturnsCollectionFromEntitySet<TAuth>(name);
-        action.Parameter<string>("Method");
+        action.ReturnsCollectionFromEntitySet<TAuth>(name);        
+        action.Parameter<string>("TypeName");
+        action.Parameter<string>("Name"); 
         action.Parameter<TAuth>(name);
 
-        var function = odataBuilder.EntitySet<TAuth>(name).EntityType.Function("Function");
-        function.ReturnsFromEntitySet<TAuth>(name);
-      
-        actionSetAdded = true;
+        var access = odataBuilder.EntitySet<TAuth>(name).EntityType.Collection.Action("Access");
+        access.ReturnsCollectionFromEntitySet<TAuth>(name);
+        access.Parameter<string>("TypeName");
+        access.Parameter<string>("Name");
+        access.Parameter<TAuth>(name);
+
+        var setup = odataBuilder.EntitySet<TAuth>(name).EntityType.Collection.Action("Setup");
+        setup.ReturnsCollectionFromEntitySet<TAuth>(name);
+        setup.Parameter<string>("TypeName");
+        setup.Parameter<string>("Name");
+        setup.Parameter<TAuth>(name);
     }
 }

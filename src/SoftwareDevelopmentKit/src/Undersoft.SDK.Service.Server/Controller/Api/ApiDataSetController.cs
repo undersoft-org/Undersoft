@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Text.Json;
 
-namespace Undersoft.SDK.Service.Server.Controller.Crud;
+namespace Undersoft.SDK.Service.Server.Controller.Api;
 
 using Operation.Command;
 using Operation.Query;
@@ -11,12 +11,13 @@ using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Server.Controller.Crud;
 
 [ApiController]
 [ApiData]
 [Route($"{StoreRoutes.ApiDataRoute}/[controller]")]
-public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
-    : ApiServiceController<TStore, TService, TDto>, IApiDataController<TKey, TEntity, TDto>
+public class ApiDataSetController<TKey, TStore, TEntity, TDto, TService>
+    : ApiServiceController<TStore, TService, TDto>, IApiDataSetController<TKey, TEntity, TDto> 
     where TDto : class, IDataObject
     where TEntity : class, IDataObject
     where TStore : IDataServerStore
@@ -28,16 +29,14 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
     protected IServicer _servicer;
     protected EventPublishMode _publishMode;
 
-    protected ApiDataController() { }
+    protected ApiDataSetController() { }
 
-    protected ApiDataController(IServicer servicer) : base(servicer) { }    
-
-    protected ApiDataController(
+    protected ApiDataSetController(
         IServicer servicer,
         EventPublishMode publishMode = EventPublishMode.PropagateCommand
     ) : this(servicer, null, k => e => e.SetId(k), null, publishMode) { }
 
-    protected ApiDataController(
+    protected ApiDataSetController(
         IServicer servicer,
         Func<TDto, Expression<Func<TEntity, bool>>> predicate,
         Func<TKey, Func<TDto, object>> keysetter,
@@ -50,9 +49,9 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
         _servicer = servicer;
         _publishMode = publishMode;
     }
-       
-    public virtual Func<IRepository<TEntity>, IQueryable<TEntity>> Transformations { get; set; }   
-       
+
+    public virtual Func<IRepository<TEntity>, IQueryable<TEntity>> Transformations { get; set; }
+
     [HttpGet]
     public virtual async Task<IActionResult> Get([FromHeader] int page, [FromHeader] int limit)
     {
@@ -66,17 +65,6 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
     {
         return Ok(await Task.Run(() => _servicer.use<TStore, TEntity>().Count()));
     }
-
-    [HttpGet("{key}")]
-    public virtual async Task<IActionResult> Get([FromRoute] TKey key)
-    {
-        Task<TDto> query =
-            _keymatcher == null
-                ? _servicer.Send(new Find<TStore, TEntity, TDto>(key) {  Processings = Transformations })
-                : _servicer.Send(new Find<TStore, TEntity, TDto>(_keymatcher(key)));
-
-        return Ok(await query.ConfigureAwait(false));
-    } 
 
     [HttpPost("query")]
     public virtual async Task<IActionResult> Post([FromBody] QuerySet query)
@@ -117,28 +105,6 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
         return !isValid ? UnprocessableEntity(response) : Ok(response);
     }
 
-    [HttpPost("{key}")]
-    public virtual async Task<IActionResult> Post([FromRoute] TKey key, [FromBody] TDto dto)
-    {
-        bool isValid = false;
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        _keysetter(key).Invoke(dto);
-
-        var result = await _servicer.Execute(new CreateSet<TStore, TEntity, TDto>
-                                                (_publishMode, new[] { dto }))
-                                                    .ConfigureAwait(false);
-
-        var response = result.ForEach(c => (isValid = c.IsValid)
-                                              ? c.Id as object
-                                              : c.ErrorMessages).ToArray();
-        return !isValid
-               ? UnprocessableEntity(response)
-               : Ok(response);
-    }
-
     [HttpPatch]
     public virtual async Task<IActionResult> Patch([FromBody] TDto[] dtos)
     {
@@ -150,27 +116,6 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
         var result = await _servicer.Execute(new ChangeSet<TStore, TEntity, TDto>
                                                                 (_publishMode, dtos, _predicate))
                                                                     .ConfigureAwait(false);
-        var response = result.ForEach(c => (isValid = c.IsValid)
-                                              ? c.Id as object
-                                              : c.ErrorMessages).ToArray();
-        return !isValid
-               ? UnprocessableEntity(response)
-               : Ok(response);
-    }
-
-    [HttpPatch("{key}")]
-    public virtual async Task<IActionResult> Patch([FromRoute] TKey key, [FromBody] TDto dto)
-    {
-        bool isValid = false;
-
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-
-        _keysetter(key).Invoke(dto);
-
-        var result = await _servicer.Execute(new ChangeSet<TStore, TEntity, TDto>
-                                              (_publishMode, new[] { dto }, _predicate))
-                                                 .ConfigureAwait(false);
-
         var response = result.ForEach(c => (isValid = c.IsValid)
                                               ? c.Id as object
                                               : c.ErrorMessages).ToArray();
@@ -196,28 +141,6 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
         return !isValid ? UnprocessableEntity(response) : Ok(response);
     }
 
-    [HttpPut("{key}")]
-    public virtual async Task<IActionResult> Put([FromRoute] TKey key, [FromBody] TDto dto)
-    {
-        bool isValid = false;
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        _keysetter(key).Invoke(dto);
-
-        var result = await _servicer.Execute(new UpdateSet<TStore, TEntity, TDto>
-                                                    (_publishMode, new[] { dto }, _predicate))
-                                                        .ConfigureAwait(false);
-
-        var response = result.ForEach(c => (isValid = c.IsValid)
-                                              ? c.Id as object
-                                              : c.ErrorMessages).ToArray();
-        return !isValid
-               ? UnprocessableEntity(response)
-               : Ok(response);
-    }
-
     [HttpDelete]
     public virtual async Task<IActionResult> Delete([FromBody] TDto[] dtos)
     {
@@ -237,27 +160,4 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
                ? UnprocessableEntity(response)
                : Ok(response);
     }
-
-    [HttpDelete("{key}")]
-    public virtual async Task<IActionResult> Delete([FromRoute] TKey key, [FromBody] TDto dto)
-    {
-        bool isValid = false;
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        _keysetter(key).Invoke(dto);
-
-        var result = await _servicer.Execute(new DeleteSet<TStore, TEntity, TDto>
-                                                             (_publishMode, new[] { dto }))
-                                                                    .ConfigureAwait(false);
-
-        var response = result.ForEach(c => (isValid = c.IsValid)
-                                               ? c.Id as object
-                                               : c.ErrorMessages).ToArray();
-        return !isValid
-               ? UnprocessableEntity(response)
-               : Ok(response);
-    }
-
 }

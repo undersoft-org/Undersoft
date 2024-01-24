@@ -70,7 +70,7 @@ public abstract class ApiEventController<TKey, TStore, TEntity, TDto> : Controll
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Send(new CreateSet<TStore, TEntity, TDto>(_publishMode, dtos))
+            .Execute(new CreateSet<TStore, TEntity, TDto>(_publishMode, dtos))
             .ConfigureAwait(false);
 
         object[] response = result
@@ -92,7 +92,7 @@ public abstract class ApiEventController<TKey, TStore, TEntity, TDto> : Controll
 
         return Ok(
             await _servicer
-                .Send(
+                .Execute(
                     new Filter<TStore, TEntity, TDto>(
                         0,
                         0,
@@ -115,7 +115,7 @@ public abstract class ApiEventController<TKey, TStore, TEntity, TDto> : Controll
         _keysetter(key).Invoke(dto);
 
         var result = await _servicer
-            .Send(new CreateSet<TStore, TEntity, TDto>(_publishMode, new[] { dto }))
+            .Execute(new CreateSet<TStore, TEntity, TDto>(_publishMode, new[] { dto }))
             .ConfigureAwait(false);
 
         var response = result
@@ -133,7 +133,7 @@ public abstract class ApiEventController<TKey, TStore, TEntity, TDto> : Controll
             return BadRequest(ModelState);
 
         CommandSet<TDto> result = await _servicer
-            .Send(new ChangeSet<TStore, TEntity, TDto>(EventPublishMode.PropagateCommand, dtos))
+            .Execute(new ChangeSet<TStore, TEntity, TDto>(EventPublishMode.PropagateCommand, dtos))
             .ConfigureAwait(false);
 
         object[] response = result
@@ -151,7 +151,7 @@ public abstract class ApiEventController<TKey, TStore, TEntity, TDto> : Controll
             return BadRequest(ModelState);
 
         Command<TDto> result = await _servicer
-            .Send(new Change<TStore, TEntity, TDto>(EventPublishMode.PropagateCommand, dto, key))
+            .Execute(new Change<TStore, TEntity, TDto>(EventPublishMode.PropagateCommand, dto, key))
             .ConfigureAwait(false);
 
         object response = result.IsValid ? result.Id as object : result.ErrorMessages;
@@ -166,7 +166,7 @@ public abstract class ApiEventController<TKey, TStore, TEntity, TDto> : Controll
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Send(new UpdateSet<TStore, TEntity, TDto>
+        var result = await _servicer.Execute(new UpdateSet<TStore, TEntity, TDto>
                                                                     (_publishMode, dtos, _predicate))
                                                                                 .ConfigureAwait(false);
 
@@ -185,7 +185,7 @@ public abstract class ApiEventController<TKey, TStore, TEntity, TDto> : Controll
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Send(new UpdateSet<TStore, TEntity, TDto>
+        var result = await _servicer.Execute(new UpdateSet<TStore, TEntity, TDto>
                                                     (_publishMode, new[] { dto }, _predicate))
                                                         .ConfigureAwait(false);
 
@@ -206,7 +206,7 @@ public abstract class ApiEventController<TKey, TStore, TEntity, TDto> : Controll
             return BadRequest(ModelState);
 
         CommandSet<TDto> result = await _servicer
-            .Send(new DeleteSet<TStore, TEntity, TDto>(EventPublishMode.PropagateCommand, dtos))
+            .Execute(new DeleteSet<TStore, TEntity, TDto>(EventPublishMode.PropagateCommand, dtos))
             .ConfigureAwait(false);
 
         object[] response = result
@@ -226,7 +226,7 @@ public abstract class ApiEventController<TKey, TStore, TEntity, TDto> : Controll
         _keysetter(key).Invoke(dto);
 
         var result = await _servicer
-            .Send(
+            .Execute(
                 new DeleteSet<TStore, TEntity, TDto>(
                     EventPublishMode.PropagateCommand,
                     new[] { dto }

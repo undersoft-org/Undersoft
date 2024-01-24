@@ -10,7 +10,7 @@ namespace Undersoft.SSC.Service.Server.Controllers
 {
     [AllowAnonymous]
     public class ServiceController
-        : OpenCqrsController<long, IEntryStore, IReportStore, Domain.Entities.Service, Contracts.Service>
+        : OpenCqrsController<long, IEntryStore, IReportStore, Domain.Entities.Service, Contracts.Service, ServiceManager>
     {
         public ServiceController(IServicer ultimatr) : base(ultimatr) { }
     }
@@ -20,7 +20,7 @@ namespace Undersoft.SSC.Service.Server.Controllers
 {
     [Route($"{StoreRoutes.ApiDataRoute}/Service")]
     public class ServicesController
-        : ApiCqrsController<long, IEntryStore, IReportStore, Domain.Entities.Service, Contracts.Service>
+        : ApiCqrsController<long, IEntryStore, IReportStore, Domain.Entities.Service, Contracts.Service, ServiceManager>
     {
         public ServicesController(IServicer ultimatr) : base(ultimatr) { }
     }

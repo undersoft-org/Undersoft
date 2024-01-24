@@ -30,12 +30,22 @@ public class Startup
                     typeof(EntryStore),
                     typeof(ReportStore)
                 }
-                //, new[] { typeof(ApplicationClient) }
+            //, new[] { typeof(ApplicationClient) }
             )
             .AddAccountServer<AccountStore>()
-            .AddDataServer<IEntityStore>(DataServerTypes.All)
-            .AddDataServer<IAccountStore>(DataServerTypes.All, builder => builder.AddInvocations<Authorization>())
-            .AddDataServer<IEventStore>(DataServerTypes.All);
+            .AddDataServer<IEntityStore>(
+                DataServerTypes.All,
+                builder => builder.AddInvocations<Contracts.Member>()
+                                  .AddInvocations<Contracts.Service>()
+            )
+            .AddDataServer<IAccountStore>(
+                DataServerTypes.All,
+                builder => builder.AddInvocations<Contracts.Account>()
+            )
+            .AddDataServer<IEventStore>(
+                DataServerTypes.All,
+                builder => builder.AddInvocations<Event>()
+            );
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

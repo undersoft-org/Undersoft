@@ -16,6 +16,8 @@ public abstract class InvocationBase : IInvocation
 
     public virtual object Return { get; set; }
 
+    public Delegate Processings { get; set; }
+
     [JsonIgnore]
     public virtual object Response { get; set; }
 

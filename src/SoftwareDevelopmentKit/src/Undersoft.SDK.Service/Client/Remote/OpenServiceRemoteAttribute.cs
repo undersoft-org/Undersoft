@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Undersoft.SDK.Service.Client.Remote
 {
-    public class OpenServiceRemoteAttribute : RemoteDataActionServiceAttribute
+    public class OpenServiceRemoteAttribute : ServiceRemoteAttribute
     {
         public OpenServiceRemoteAttribute() { }
     }

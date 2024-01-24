@@ -3,25 +3,21 @@ using Microsoft.AspNetCore.OData.Query;
 using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Server.Controller.Open;
-
-using Microsoft.AspNetCore.OData.Formatter;
-using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Operation.Command;
 using Operation.Query;
-using System.Text.Json;
-using Undersoft.SDK.Security.Identity;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Uniques;
 
 [OpenData]
-public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto>
-    : OpenDataController<TKey, TEntry, TEntity, TDto>
-    where TDto : class, IDataObject
+public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService>
+    : OpenDataController<TKey, TEntry, TEntity, TDto, TService>
+    where TDto : class, IDataObject, new()
     where TEntity : class, IDataObject
     where TEntry : IDataServerStore
     where TReport : IDataServerStore
+    where TService : class
 {
     protected OpenCqrsController() { }
 
@@ -36,11 +32,10 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto>
         Func<TKey, Func<TDto, object>> keysetter,
         Func<TKey, Expression<Func<TEntity, bool>>> keymatcher,
         EventPublishMode publishMode = EventPublishMode.PropagateCommand
-    )
+    ) : base(servicer)
     {
         _keymatcher = keymatcher;
         _keysetter = keysetter;
-        _servicer = servicer;
         _publishMode = publishMode;
     }
 
@@ -63,7 +58,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Send(new Create<TEntry, TEntity, TDto>(_publishMode, dto));
+        var result = await _servicer.Execute(new Create<TEntry, TEntity, TDto>(_publishMode, dto));
 
         return !result.IsValid
             ? UnprocessableEntity(result.ErrorMessages.ToArray())
@@ -77,7 +72,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto>
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Send(
+        var result = await _servicer.Execute(
             new Change<TEntry, TEntity, TDto>(_publishMode, dto, _predicate)
         );
 
@@ -93,7 +88,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto>
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Send(
+        var result = await _servicer.Execute(
             new Update<TEntry, TEntity, TDto>(_publishMode, dto, _predicate)
         );
 
@@ -107,7 +102,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Send(new Delete<TEntry, TEntity, TDto>(_publishMode, key));
+        var result = await _servicer.Execute(new Delete<TEntry, TEntity, TDto>(_publishMode, key));
 
         return !result.IsValid
             ? UnprocessableEntity(result.ErrorMessages.ToArray())

@@ -137,8 +137,8 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
         registry.AddTransient<AccountChangeEmailTokenProvider<IdentityUser>>();
         registry.AddTransient<AccountRegistrationProcessTokenProvider<IdentityUser>>();
 
-        AddIdentityAuthentication();
-        AddIdentityAuthorization();
+        AddAuthentication();
+        AddAuthorization();
 
         registry.AddScoped<IAccountManager, AccountManager>();
         registry.AddScoped<AccountService>();
@@ -148,7 +148,7 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
         return this;
     }
 
-    public IServerSetup AddIdentityAuthentication()
+    public IServerSetup AddAuthentication()
     {
         var jwtOptions = new AccountTokenOptions();
         var jwtFactory = new AccountTokenGenerator(30, jwtOptions);
@@ -176,7 +176,7 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
         return this;
     }
 
-    public IServerSetup AddIdentityAuthorization()
+    public IServerSetup AddAuthorization()
     {
         var ic = configuration.Identity;
 

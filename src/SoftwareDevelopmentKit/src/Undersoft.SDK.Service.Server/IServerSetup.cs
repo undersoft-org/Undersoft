@@ -12,8 +12,8 @@ namespace Undersoft.SDK.Service.Server
             Action<DataServerBuilder> builder = null
         ) where TServiceStore : IDataStore;
         IServerSetup AddAccountServer<TContext>() where TContext : DbContext;
-        IServerSetup AddIdentityAuthentication();
-        IServerSetup AddIdentityAuthorization();
+        IServerSetup AddAuthentication();
+        IServerSetup AddAuthorization();
         IServerSetup UseDataServices();
         IServerSetup AddApiVersions(string[] apiVersions);
         IServerSetup ConfigureServer(bool includeSwagger, Assembly[] assemblies = null, Type[] sourceTypes = null, Type[] clientTypes = null);

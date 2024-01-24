@@ -6,8 +6,8 @@ using System.Linq;
 
 namespace Undersoft.SDK.Service.Client.Remote
 {
-    public class RemoteStreamDataServiceAttribute : RemoteDataServiceAttribute
+    public class ServiceRemoteAttribute : Attribute
     {
-        public RemoteStreamDataServiceAttribute() { }
+        public ServiceRemoteAttribute() { }
     }
 }

@@ -147,16 +147,6 @@ namespace Undersoft.SDK
             else
                 return SetId(id.UniqueKey64());
         }
-
-        //public int CompareTo(IIdentifiable other)
-        //{
-        //    return ((IComparable<IUnique>)code).CompareTo(other);
-        //}
-
-        //public bool Equals(IIdentifiable other)
-        //{
-        //    return ((IEquatable<IIdentifiable>)code).Equals(other);
-        //}
     }
 
 

@@ -36,9 +36,6 @@ public class ObjectDetail<TDetail, TKind> : DataObject, ISerializableJsonDocumen
     [DataMember(Order = 12)]
     public virtual JsonDocument Document { get; set; }
 
-    [DataMember(Order = 13)]
-    public virtual string TypeName { get; set; }
-
     [DataMember(Order = 14)]
     public virtual string Name { get; set; }
 

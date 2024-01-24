@@ -14,6 +14,8 @@ public abstract class RemoteCommandBase : IRemoteCommand
 
     public object[] Keys { get; set; }
 
+    public Delegate Processings { get; set; }
+
     [JsonIgnore]
     public virtual IDataObject Contract
     {

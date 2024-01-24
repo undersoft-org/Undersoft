@@ -10,7 +10,7 @@ using Undersoft.SDK.Service.Server.Controller.Open;
 namespace Undersoft.SSC.Service.Application.Server.Controllers
 {
     [AllowAnonymous]
-    [Route($"{StoreRoutes.ApiDataRoute}/Accounts/Authorization")]
+    [Route($"{StoreRoutes.ApiAuthRoute}/Account")]
     public class AccountsController
         : ApiServiceRemoteController<IDataStore, AccountService, Contracts.Account>
     {
@@ -21,9 +21,9 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
 namespace Undersoft.SSC.Service.Application.Server.Controllers
 {
     [AllowAnonymous]
-    public class AuthorizationController
+    public class AccountController
         : OpenServiceRemoteController<IDataStore, AccountService, Contracts.Account>
     {
-        public AuthorizationController(IServicer servicer) : base(servicer) { }
+        public AccountController(IServicer servicer) : base(servicer) { }
     }
 }

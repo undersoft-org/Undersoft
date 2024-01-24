@@ -34,7 +34,7 @@ public partial class ServerSetup
                                     .Any(
                                         a =>
                                             a.GetType()
-                                                .IsAssignableTo(typeof(RemoteDataServiceAttribute))
+                                                .IsAssignableTo(typeof(DataRemoteAttribute))
                                     )
                         )
                         .ToArray()
@@ -51,8 +51,8 @@ public partial class ServerSetup
         {
             var genericTypes = controllerType.BaseType.GenericTypeArguments;
             var store = genericTypes[1];
-            var model = genericTypes[3];
-            var dto = genericTypes[2];
+            var model = genericTypes[2];
+            var dto = genericTypes[3];
 
             service.AddTransient(
                 typeof(IRequest<>).MakeGenericType(

@@ -19,6 +19,11 @@ public abstract class Query<TStore, TEntity, TResult> : IRequest<TResult>, IQuer
 
     public int Count { get; set; } = 0;
 
+    public Delegate Processings { get; set; }
+
+    public Func<IRepository<TEntity>, IQueryable<TEntity>> Transformations 
+        => (Func<IRepository<TEntity>, IQueryable<TEntity>>)Processings;
+
     public object[] Keys { get; }
 
     [JsonIgnore]
@@ -37,6 +42,11 @@ public abstract class Query<TStore, TEntity, TResult> : IRequest<TResult>, IQuer
     public Query(object[] keys)
     {
         Keys = keys;
+    }
+
+    public Query(Func<IRepository<TEntity>, IQueryable<TEntity>> transformations)
+    {
+        Processings = transformations;
     }
 
     public Query(object[] keys, params Expression<Func<TEntity, object>>[] expanders)

@@ -1,9 +1,7 @@
 ﻿namespace Undersoft.SDK.Invoking
 {
     using System.Reflection;
-    using System.Runtime.InteropServices;
     using Undersoft.SDK.Series;
-    using Undersoft.SDK.Uniques;
 
     public class Arguments : Listing<Argument>
     {
@@ -15,5 +13,10 @@
         public object[] ValueArray => this.OrderBy(a => a.Position).Select(a => a.Value).ToArray();
 
         public Type[] TypeArray => this.OrderBy(a => a.Position).Select(a => a.Type).ToArray();
+
+        public Argument New(string name, object value) 
+        {
+           return this.Put(new Argument(name, value)).Value;
+        }
     }
 }

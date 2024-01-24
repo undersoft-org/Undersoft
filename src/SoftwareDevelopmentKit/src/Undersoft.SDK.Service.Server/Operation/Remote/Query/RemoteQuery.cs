@@ -17,6 +17,8 @@ public abstract class RemoteQuery<TStore, TDto, TResult> : IRequest<TResult>, IR
 
     public int Count { get; set; } = 0;
 
+    public Delegate Processings { get; set; }
+
     public object[] Keys { get; }
 
     [JsonIgnore]

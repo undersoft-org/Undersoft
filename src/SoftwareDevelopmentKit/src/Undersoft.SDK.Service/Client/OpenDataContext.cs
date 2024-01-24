@@ -9,13 +9,12 @@ namespace Undersoft.SDK.Service.Client
     public partial class OpenDataContext : DataServiceContext
     {
         private ISecurityString _securityString;
-        
+
         public OpenDataContext(Uri serviceUri) : base(serviceUri)
         {
             MergeOption = MergeOption.AppendOnly;
             HttpRequestTransportMode = HttpRequestTransportMode.HttpClient;
             IgnoreResourceNotFoundException = true;
-            //EntityParameterSendOption = EntityParameterSendOption.SendOnlySetProperties;
             KeyComparisonGeneratesFilterQuery = false;
             DisableInstanceAnnotationMaterialization = true;
             EnableWritingODataAnnotationWithoutPrefix = false;
@@ -52,9 +51,7 @@ namespace Undersoft.SDK.Service.Client
 
         public IEdmModel GetServiceModel()
         {
-            string t = GetType().FullName;
-            OpenDataRegistry.EdmModels.TryGet(t, out IEdmModel edmModel);
-            return edmModel;
+            return OpenDataRegistry.EdmModels.Get(GetType().FullName);
         }
 
         protected virtual IEdmModel OnModelCreating(IEdmModel builder)
@@ -69,16 +66,13 @@ namespace Undersoft.SDK.Service.Client
 
         public void SetSecurityString(string securityString)
         {
+            _securityString = null;
+
             if (securityString != null)
             {
                 var strings = securityString.Split(" ");
                 string prefix = strings.Length > 0 ? strings[0] : null;
-                var token = strings.LastOrDefault();
-                _securityString = new SecurityString(token, prefix);
-            }
-            else
-            {
-                _securityString = null;
+                _securityString = new SecurityString(strings.LastOrDefault(), prefix);
             }
         }
 

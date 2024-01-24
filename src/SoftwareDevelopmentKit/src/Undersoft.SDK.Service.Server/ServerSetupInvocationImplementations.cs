@@ -50,9 +50,9 @@ public partial class ServerSetup
         foreach (var controllerType in controllerTypes)
         {
             var genericTypes = controllerType.BaseType.GenericTypeArguments;
-            var store = genericTypes[0];
-            var actionType = genericTypes[1];
-            var dtoType = genericTypes[2];
+            var store = genericTypes[1];
+            var actionType = genericTypes[4];
+            var dtoType = genericTypes[3];
 
             if (duplicateCheck.Add(store.Name + actionType.Name + dtoType.Name))
             {

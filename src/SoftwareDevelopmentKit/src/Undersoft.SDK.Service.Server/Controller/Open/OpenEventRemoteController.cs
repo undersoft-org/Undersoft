@@ -15,7 +15,7 @@ using Operation.Remote.Query;
 using Undersoft.SDK.Service.Client.Remote;
 
 [IgnoreApi]
-[RemoteOpenDataService]
+[OpenDataRemote]
 [ODataRouteComponent(StoreRoutes.OpenEventRoute)]
 public abstract class OpenEventRemoteController<TKey, TStore, TDto, TModel> : ODataController, IOpenEventRemoteController<TKey, TModel> where TModel : class, IDataObject
     where TDto : class, IDataObject
@@ -69,7 +69,7 @@ public abstract class OpenEventRemoteController<TKey, TStore, TDto, TModel> : OD
 
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var result = await _servicer.Send(new RemoteCreateSet<TStore, TDto, TModel>
+        var result = await _servicer.Execute(new RemoteCreateSet<TStore, TDto, TModel>
                                                 (_publishMode, new[] { dto }))
                                                     .ConfigureAwait(false);
 
@@ -90,7 +90,7 @@ public abstract class OpenEventRemoteController<TKey, TStore, TDto, TModel> : OD
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Send(new RemoteChangeSet<TStore, TDto, TModel>
+        var result = await _servicer.Execute(new RemoteChangeSet<TStore, TDto, TModel>
                                               (_publishMode, new[] { dto }, _predicate))
                                                  .ConfigureAwait(false);
 
@@ -112,7 +112,7 @@ public abstract class OpenEventRemoteController<TKey, TStore, TDto, TModel> : OD
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Send(new RemoteUpdateSet<TStore, TDto, TModel>
+        var result = await _servicer.Execute(new RemoteUpdateSet<TStore, TDto, TModel>
                                                     (_publishMode, new[] { dto }, _predicate))
                                                         .ConfigureAwait(false);
 
@@ -132,7 +132,7 @@ public abstract class OpenEventRemoteController<TKey, TStore, TDto, TModel> : OD
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Send(new RemoteDeleteSet<TStore, TDto, TModel>
+        var result = await _servicer.Execute(new RemoteDeleteSet<TStore, TDto, TModel>
                                                              (_publishMode, key))
                                                                     .ConfigureAwait(false);
 

@@ -3,17 +3,10 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Undersoft.SDK.Service.Server.Controller.Open;
 
-using FluentValidation.Results;
 using Microsoft.AspNetCore.OData.Formatter;
-using Microsoft.AspNetCore.OData.Routing.Attributes;
-using Microsoft.OData.Edm;
-using Operation.Command;
-using System.Text.Json;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Client.Remote;
 using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SDK.Service.Server.Operation.Invocation;
-using Undersoft.SDK.Service.Server.Operation.Remote.Command;
 using Undersoft.SDK.Service.Server.Operation.Remote.Invocation;
 
 [OpenServiceRemote]
@@ -33,33 +26,46 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
         _servicer = servicer;
     }
 
-    [HttpGet]
-    [ODataRouteComponent("Function(Method={name})")]
-    public virtual async Task<IActionResult> Function(
-        [FromODataUri] string name
+    [HttpPost]
+    public virtual async Task<IActionResult> Access([FromBody]
+       ODataActionParameters arguments
     )
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Send(
-            new RemoteFunction<TStore, TService, TDto>(name));
+        var result = await _servicer.Execute(
+            new RemoteAction<TStore, TService, TDto>(arguments["Name"].ToString(), new Arguments((Dictionary<string, object>)arguments))
+        );
 
-        return !result.IsValid ? BadRequest(result.ErrorMessages) : Ok(result.Response);
+        return (!result.IsValid ? BadRequest(result.ErrorMessages) : Ok(result.Response));
     }
 
     [HttpPost]
-    [ODataRouteComponent("Action(Method={name})")]
-    public virtual async Task<IActionResult> Action(
-        [FromODataUri] string name,
-        [FromBody] ODataActionParameters parameters
-    )
+    public virtual async Task<IActionResult> Action([FromBody]
+       ODataActionParameters arguments
+ )
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var result = await _servicer.Execute(
+            new RemoteAction<TStore, TService, TDto>(arguments["Name"].ToString(), new Arguments((Dictionary<string, object>)arguments))
+        );
+
+        return (!result.IsValid ? BadRequest(result.ErrorMessages) : Ok(result.Response));
+    }
+
+    [HttpPost]
+    public virtual async Task<IActionResult> Setup([FromBody]
+       ODataActionParameters arguments
+)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         var result = await _servicer.Send(
-            new RemoteAction<TStore, TService, TDto>(name, (Dictionary<string, object>)parameters)
+            new RemoteAction<TStore, TService, TDto>(arguments["Name"].ToString(), new Arguments((Dictionary<string, object>)arguments))
         );
 
         return (!result.IsValid ? BadRequest(result.ErrorMessages) : Ok(result.Response));

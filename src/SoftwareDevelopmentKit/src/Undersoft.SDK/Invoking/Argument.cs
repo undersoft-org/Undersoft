@@ -2,6 +2,8 @@
 {
     using System.Reflection;
     using System.Runtime.InteropServices;
+    using System.Runtime.Serialization;
+    using System.Text.Json.Serialization;
     using Undersoft.SDK.Uniques;
 
     [Serializable]
@@ -28,6 +30,8 @@
 
         public int Position { get; set; }
 
+        [JsonIgnore]
+        [IgnoreDataMember]
         public Type Type => _type ??= Value.GetType();
 
         public void Set(ParameterInfo item)

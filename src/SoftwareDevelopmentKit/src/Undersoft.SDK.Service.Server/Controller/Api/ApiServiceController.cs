@@ -26,14 +26,14 @@ public abstract class ApiServiceController<TStore, TService, TModel>
         _servicer = servicer;            
     }
 
-    [HttpPost("{method}")]
-    public virtual async Task<IActionResult> Post([FromRoute] string method, [FromBody] Dictionary<string, object> dto)
+    [HttpPost("Action")]
+    public virtual async Task<IActionResult> Action([FromBody] Arguments arguments)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
                                    
-            var result = await _servicer.Send(
-                new Action<TStore, TService, TModel>(method, new Arguments(dto))
+            var result = await _servicer.Execute(
+                new Action<TStore, TService, TModel>(arguments["Name"].ToString(), arguments)
             );
 
             return !result.IsValid
@@ -41,19 +41,35 @@ public abstract class ApiServiceController<TStore, TService, TModel>
                 : Ok(result.Response);
     }
 
-    [HttpGet("{method}")]
-    public virtual async Task<IActionResult> Get([FromRoute] string method)
+    [HttpPost("Access")]
+    public virtual async Task<IActionResult> Access([FromBody] Arguments arguments)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-            var result = await _servicer.Send(
-                new Function<TStore, TService, TModel>(method)
-            );
+        var result = await _servicer.Execute(
+            new Action<TStore, TService, TModel>(arguments["Name"].ToString(), arguments)
+        );
 
-            return !result.IsValid
-                ? BadRequest(result.ErrorMessages)
-                : Ok(result.Response);
-
+        return !result.IsValid
+            ? BadRequest(result.ErrorMessages)
+            : Ok(result.Response);
     }
+
+    [HttpPost("Setup")]
+    public virtual async Task<IActionResult> Setup([FromBody] Arguments arguments)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var result = await _servicer.Execute(
+            new Action<TStore, TService, TModel>(arguments["Name"].ToString(), arguments)
+        );
+
+        return !result.IsValid
+            ? BadRequest(result.ErrorMessages)
+            : Ok(result.Response);
+    }
+
+
 }

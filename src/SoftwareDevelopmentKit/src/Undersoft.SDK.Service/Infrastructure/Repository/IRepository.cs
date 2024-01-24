@@ -22,7 +22,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository
         IQueryable<object> this[Expression<Func<TEntity, object>> selector, Expression<Func<TEntity, bool>> predicate] { get; }
         IQueryable<object> this[Expression<Func<TEntity, object>> selector, Expression<Func<TEntity, object>>[] expanders] { get; }
         IQueryable<TEntity> this[Expression<Func<TEntity, object>> selector, IEnumerable<object> values] { get; }
-        IGrouping<dynamic, TEntity> this[Func<IQueryable<TEntity>, IGrouping<dynamic, TEntity>> groupByObject, Expression<Func<TEntity, bool>> predicate] { get; }
+        IQueryable<IGrouping<dynamic, TEntity>> this[Func<IQueryable<TEntity>, IQueryable<IGrouping<dynamic, TEntity>>> groupByObject, Expression<Func<TEntity, bool>> predicate] { get; }
         IQueryable<TEntity> this[IQueryable<TEntity> query, Expression<Func<TEntity, bool>> predicate] { get; }
         IQueryable<object> this[IQueryable<TEntity> query, Expression<Func<TEntity, int, object>> selector] { get; }
         IQueryable<object> this[IQueryable<TEntity> query, Expression<Func<TEntity, object>> selector] { get; }

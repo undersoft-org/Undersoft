@@ -1168,18 +1168,12 @@ namespace Undersoft.SDK.Series.Base
 
         public Type ElementType => typeof(V);
 
-        //public Expression Expression => this.AsQueryable().Expression;
-
-        //public IQueryProvider Provider => query ??= new EnumerableQuery<V>(this);
-
         public bool ContainsListCollection => true;
 
         public IList GetList()
         {
             return (IList)this;
         }
-
-        //private EnumerableQuery<V> query;
 
         public virtual byte[] GetBytes()
         {

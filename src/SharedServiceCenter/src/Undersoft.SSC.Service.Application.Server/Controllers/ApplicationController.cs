@@ -15,7 +15,7 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
             IEntryStore,
             IReportStore,
             Domain.Entities.Application,
-            Contracts.Application
+            Contracts.Application, ServiceManager
         >
     {
         public ApplicationController(IServicer ultimatr) : base(ultimatr) { }
@@ -30,7 +30,7 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
             IEntryStore,
             IReportStore,
             Domain.Entities.Application,
-            Contracts.Application
+            Contracts.Application, ServiceManager
         >
     {
         public ApplicationsController(IServicer ultimatr) : base(ultimatr) { }

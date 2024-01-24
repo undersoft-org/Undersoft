@@ -44,6 +44,8 @@ public class CommandSet<TDto>
 
     public object Output => Commands.ForEach(c => c.Result.IsValid ? c.Id as object : c.Result);
 
+    public Delegate Processings { get; set; }
+
     IEnumerable<ICommand> ICommandSet.Commands
     {
         get => this.Cast<ICommand>();
