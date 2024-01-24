@@ -33,9 +33,9 @@
 
             CreateTypeKeyProperty(tb);
 
-            CreateGetUniqueBytesMethod(tb);
+            //CreateGetUniqueBytesMethod(tb);
 
-            CreateGetBytesMethod(tb);
+            //CreateGetBytesMethod(tb);
 
             CreateEqualsMethod(tb);
 
@@ -126,7 +126,7 @@
 
         public override void CreateGetBytesMethod(TypeBuilder tb)
         {
-            MethodInfo createArray = typeof(IUnique).GetMethod("GetBytes");
+            MethodInfo createArray = typeof(IByteable).GetMethod("GetBytes");
 
             ParameterInfo[] args = createArray.GetParameters();
             Type[] argTypes = Array.ConvertAll(args, a => a.ParameterType);
@@ -190,7 +190,7 @@
 
         public override void CreateGetUniqueBytesMethod(TypeBuilder tb)
         {
-            MethodInfo createArray = typeof(IUnique).GetMethod("GetIdBytes");
+            MethodInfo createArray = typeof(IInstant).GetMethod("GetIdBytes");
 
             ParameterInfo[] args = createArray.GetParameters();
             Type[] argTypes = Array.ConvertAll(args, a => a.ParameterType);
@@ -816,6 +816,7 @@
             );
 
             tb.AddInterfaceImplementation(typeof(IValueArray));
+            tb.AddInterfaceImplementation(typeof(IInstant));
 
             tb.SetParent(figure.BaseType);
 

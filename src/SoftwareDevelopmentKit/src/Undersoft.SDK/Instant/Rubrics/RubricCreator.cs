@@ -31,13 +31,11 @@
                         fieldProperty.SetMember(member);
                 }
             );
-            int order = 0;
             rubricBuilders.ForEach(
-                (fp) =>
-                {
-                    order++;
-                    fp.Member.RubricId = order;
-                    fp.Member.FieldId = order;
+                (fp, x) =>
+                {                   
+                    fp.Member.RubricId = x;
+                    fp.Member.FieldId = x;
                 }
             );
 

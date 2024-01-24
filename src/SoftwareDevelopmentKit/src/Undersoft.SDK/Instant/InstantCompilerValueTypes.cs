@@ -33,7 +33,7 @@
 
             CreateTypeKeyProperty(tb);
 
-            CreateGetUniqueBytesMethod(tb);
+            //CreateGetUniqueBytesMethod(tb);
 
             CreateGetBytesMethod(tb);
 
@@ -73,7 +73,7 @@
                         tb,
                         attributeAtMember,
                         fp.FieldType,
-                        '_' + fp.Name
+                        '_' + fp.Name.ToLowerInvariant()
                     );
 
                     if (fb != null)
@@ -104,7 +104,7 @@
 
         public override void CreateGetBytesMethod(TypeBuilder tb)
         {
-            MethodInfo createArray = typeof(IUnique).GetMethod("GetBytes");
+            MethodInfo createArray = typeof(IByteable).GetMethod("GetBytes");
 
             ParameterInfo[] args = createArray.GetParameters();
             Type[] argTypes = Array.ConvertAll(args, a => a.ParameterType);
@@ -621,6 +621,8 @@
                 )
             );
 
+            tb.AddInterfaceImplementation(typeof(IInstant));
+            tb.AddInterfaceImplementation(typeof(IByteable));
             tb.AddInterfaceImplementation(typeof(IValueArray));
 
             return tb;
@@ -672,7 +674,12 @@
 
             MethodBuilder getter = tb.DefineMethod(
                 "get_" + name,
-                MethodAttributes.Public | MethodAttributes.HideBySig,
+                 MethodAttributes.Public
+                    | MethodAttributes.SpecialName
+                    | MethodAttributes.HideBySig
+                    | MethodAttributes.Virtual
+                    | MethodAttributes.NewSlot
+                    | MethodAttributes.Final,
                 type,
                 Type.EmptyTypes
             );
@@ -686,7 +693,12 @@
 
             MethodBuilder setter = tb.DefineMethod(
                 "set_" + name,
-                MethodAttributes.Public | MethodAttributes.HideBySig,
+                MethodAttributes.Public
+                    | MethodAttributes.SpecialName
+                    | MethodAttributes.HideBySig
+                    | MethodAttributes.Virtual
+                    | MethodAttributes.NewSlot
+                    | MethodAttributes.Final,
                 typeof(void),
                 new Type[] { type }
             );

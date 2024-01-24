@@ -176,6 +176,7 @@
                 }
                 mr.RubricName = "code";
             }
+            Size = Rubrics.BinarySize;
         }
 
         private void compileInstantType(InstantCompiler compiler)
@@ -184,8 +185,19 @@
             compiledType = fcvt.CompileInstantType(Name);
             Rubrics.KeyRubrics.Add(fcvt.Identities.Values);
             Type = compiledType.New().GetType();
-            
-            //Size = Marshal.SizeOf(Type);
+            if (mode == InstantType.ValueType)
+            {
+                try
+                {
+                    Size = Marshal.SizeOf(Type);
+                }
+                catch(Exception ex) 
+                {
+                    Size = Rubrics.BinarySize;
+                }
+            }
+            else
+                Size = Rubrics.BinarySize;
         }
 
         private MemberRubric[] createMemberRurics(IList<MemberInfo> membersInfo)

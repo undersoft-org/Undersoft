@@ -20,4 +20,9 @@
     {
         object[] ValueArray { get; set; }
     }
+
+    public interface IByteable
+    {
+        byte[] GetBytes();
+    }
 }

@@ -6,6 +6,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SSC.Service.Clients;
 using Undersoft.SDK.Service.Server.Hosting;
 using Undersoft.SSC.Service.Infrastructure.Stores;
+using Undersoft.SDK.Service.Data.Event;
 
 public class Startup
 {
@@ -30,10 +31,22 @@ public class Startup
                     typeof(EventStore),
                     typeof(ReportStore),
                     typeof(EntryStore)
-                },
-                new[] { typeof(ServiceClient) }
+                }
+                //,new[] { typeof(ServiceClient) }
             )
-            .AddDataServer<IDataStore>(DataServerTypes.All);
+            .AddDataServer<IEntityStore>(
+                DataServerTypes.All,
+                builder => builder.AddInvocations<Contracts.Member>()
+                                  .AddInvocations<Contracts.Application>()
+            )
+            .AddDataServer<IAccountStore>(
+                DataServerTypes.All,
+                builder => builder.AddInvocations<Contracts.Account>()
+            )
+            .AddDataServer<IEventStore>(
+                DataServerTypes.All,
+                builder => builder.AddInvocations<Event>()
+            );
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

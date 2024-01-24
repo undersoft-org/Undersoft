@@ -9,6 +9,7 @@
     using Undersoft.SDK.Series;
     using Uniques;
     using Rubrics;
+    using Microsoft.IdentityModel.Tokens;
 
     public class InstantCompilerReferenceTypes : InstantCompiler
     {
@@ -35,7 +36,7 @@
 
             CreateTypeKeyProperty(tb);
 
-            CreateGetUniqueBytesMethod(tb);
+            // CreateGetUniqueBytesMethod(tb);
 
             CreateGetBytesMethod(tb);
 
@@ -49,56 +50,50 @@
         public override void CreateFieldsAndProperties(TypeBuilder tb)
         {
             int i = 0;
-            rubricBuilders
-                .ForEach(
-                    (fp) =>
+            rubricBuilders.ForEach(
+                (fp) =>
+                {
+                    MemberRubric attributeAtMember = null;
+
+                    if (fp.Field != null)
                     {
-                        MemberRubric attributeAtMember = null;
-
-                        if (fp.Field != null)
-                        {
-                            if (!(fp.Field.IsBackingField))
-                                attributeAtMember = new MemberRubric(fp.Field);
-                            else if (fp.Property != null)
-                                attributeAtMember = new MemberRubric(fp.Property);
-                        }
-                        else
-                        {
+                        if (!(fp.Field.IsBackingField))
+                            attributeAtMember = new MemberRubric(fp.Field);
+                        else if (fp.Property != null)
                             attributeAtMember = new MemberRubric(fp.Property);
-                        }
+                    }
+                    else
+                    {
+                        attributeAtMember = new MemberRubric(fp.Property);
+                    }
 
-                        FieldBuilder fb = createField(
-                            tb,
-                            attributeAtMember,
-                            fp.Type,
-                            '_' + fp.Name
+                    FieldBuilder fb = createField(tb, attributeAtMember, fp.Type, '_' + fp.Name.ToLowerInvariant());
+
+                    if (fb != null)
+                    {
+                        ResolveInstantCreatorAttributes(fb, attributeAtMember);
+
+                        PropertyBuilder pi = createProperty(tb, fb, fp.Type, fp.Name);
+
+                        pi.SetCustomAttribute(
+                            new CustomAttributeBuilder(
+                                dataMemberCtor,
+                                new object[0],
+                                dataMemberProps,
+                                new object[2] { i++, fp.Name }
+                            )
                         );
 
-                        if (fb != null)
-                        {
-                            ResolveInstantCreatorAttributes(fb, attributeAtMember);
-
-                            PropertyBuilder pi = createProperty(tb, fb, fp.Type, fp.Name);
-
-                            pi.SetCustomAttribute(
-                                new CustomAttributeBuilder(
-                                    dataMemberCtor,
-                                    new object[0],
-                                    dataMemberProps,
-                                    new object[2] { i++, fp.Name }
-                                )
-                            );
-
-                            fp.SetMember(new MemberRubric(fb));
-                            fp.SetMember(new MemberRubric(pi));
-                        }
+                        fp.SetMember(new MemberRubric(fb));
+                        fp.SetMember(new MemberRubric(pi));
                     }
-                );
+                }
+            );
         }
 
         public override void CreateGetBytesMethod(TypeBuilder tb)
         {
-            MethodInfo createArray = typeof(IUnique).GetMethod("GetBytes");
+            MethodInfo createArray = typeof(IByteable).GetMethod("GetBytes");
 
             ParameterInfo[] args = createArray.GetParameters();
             Type[] argTypes = Array.ConvertAll(args, a => a.ParameterType);
@@ -365,7 +360,9 @@
             var field = rubricBuilders.FirstOrDefault(
                 p =>
                     p.Field != null
-                    && p.Field.FieldName.ToLower().Equals(name, StringComparison.InvariantCultureIgnoreCase)
+                    && p.Field.FieldName
+                        .ToLower()
+                        .Equals(name, StringComparison.InvariantCultureIgnoreCase)
             );
             if (field != null)
             {
@@ -525,10 +522,9 @@
 
         public override TypeBuilder GetTypeBuilder(string typeName)
         {
-            string typeSignature =
-                (typeName != null && typeName != "") ? typeName : Unique.NewId.ToString();
-            AssemblyName an = new AssemblyName(typeSignature);
+            string typeSignature = !typeName.IsNullOrEmpty() ? typeName : Unique.NewId.ToString();
 
+            AssemblyName an = new AssemblyName(typeSignature);
             AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(
                 an,
                 AssemblyBuilderAccess.RunAndCollect
@@ -563,6 +559,8 @@
                 )
             );
 
+            tb.AddInterfaceImplementation(typeof(IInstant));
+            tb.AddInterfaceImplementation(typeof(IByteable));
             tb.AddInterfaceImplementation(typeof(IValueArray));
 
             return tb;
@@ -580,8 +578,7 @@
                 FieldBuilder fb = tb.DefineField(
                     fieldName,
                     type,
-                    FieldAttributes.Private
-                        | FieldAttributes.HasDefault
+                    FieldAttributes.Private | FieldAttributes.HasDefault
                 );
 
                 if (type == typeof(string))
@@ -613,7 +610,12 @@
 
             MethodBuilder getter = tb.DefineMethod(
                 "get_" + name,
-                MethodAttributes.Public | MethodAttributes.HideBySig,
+                MethodAttributes.Public
+                    | MethodAttributes.SpecialName
+                    | MethodAttributes.HideBySig
+                    | MethodAttributes.Virtual
+                    | MethodAttributes.NewSlot
+                    | MethodAttributes.Final,
                 type,
                 Type.EmptyTypes
             );
@@ -627,7 +629,12 @@
 
             MethodBuilder setter = tb.DefineMethod(
                 "set_" + name,
-                MethodAttributes.Public | MethodAttributes.HideBySig,
+                  MethodAttributes.Public
+                    | MethodAttributes.SpecialName
+                    | MethodAttributes.HideBySig
+                    | MethodAttributes.Virtual
+                    | MethodAttributes.NewSlot
+                    | MethodAttributes.Final,
                 typeof(void),
                 new Type[] { type }
             );

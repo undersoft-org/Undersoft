@@ -43,6 +43,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Appli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Undersoft.SSC.Service.Application.Hybrid", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Application.Hybrid\Undersoft.SSC.Service.Application.Hybrid.csproj", "{0277C6AA-0776-4A54-8C44-D74ABC026D20}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Undersoft.SDK.IntegrationalTests", "src\SoftwareDevelopmentKit\tests\Undersoft.SDK.IntegrationalTests\Undersoft.SDK.IntegrationalTests.csproj", "{384220B9-CD6A-45E7-9C01-90DEF2A790BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,6 +117,10 @@ Global
 		{0277C6AA-0776-4A54-8C44-D74ABC026D20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0277C6AA-0776-4A54-8C44-D74ABC026D20}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0277C6AA-0776-4A54-8C44-D74ABC026D20}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{384220B9-CD6A-45E7-9C01-90DEF2A790BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{384220B9-CD6A-45E7-9C01-90DEF2A790BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{384220B9-CD6A-45E7-9C01-90DEF2A790BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{384220B9-CD6A-45E7-9C01-90DEF2A790BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -138,6 +144,7 @@ Global
 		{3A61F41A-A32A-4CD7-B3F4-84C17A0A2F3A} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
 		{5613584F-E077-4AAF-A14C-275B8B009B23} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
 		{0277C6AA-0776-4A54-8C44-D74ABC026D20} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
+		{384220B9-CD6A-45E7-9C01-90DEF2A790BD} = {F9FE065B-486D-4802-A960-68421E802341}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F31728AB-97C6-4E0D-B412-898579AA77AD}

@@ -5,6 +5,6 @@ namespace Undersoft.SSC.Service.Application.Models;
 
 public class Notification : Member, IModel
 {
-    public Notification() { Group = MemberGroup.Servitizer; }
+    public Notification() { Group = MemberGroup.Broker; }
 
 }
