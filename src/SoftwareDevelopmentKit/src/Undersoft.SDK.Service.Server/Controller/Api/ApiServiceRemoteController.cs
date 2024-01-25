@@ -46,7 +46,6 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
             : Ok(result.Response);
     }
 
-
     [HttpPost("Access")]
     public virtual async Task<IActionResult> Access([FromBody] Arguments arguments)
     {

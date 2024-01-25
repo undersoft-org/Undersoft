@@ -1,4 +1,5 @@
 ﻿using Undersoft.SDK.Logging;
+using Undersoft.SDK.Security;
 using Undersoft.SDK.Security.Identity;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
@@ -78,16 +79,27 @@ public class AccountService : IAccountAccess
 
         if (account.Credentials.Authenticated)
         {
-            var principal = await _manager.SignIn.CreateUserPrincipalAsync(
-                await _manager.User.FindByEmailAsync(account.Credentials.Email)
+            var token = await _manager.RenewToken(
+                identity.Credentials.SessionToken
             );
-            if (_manager.SignIn.IsSignedIn(principal))
-                await _manager.SignIn.SignOutAsync();
-            account.Notes = new AuthorizationNotes()
+            if (token != null)
             {
-                Success = "Signed out",
-                Status = SigningStatus.SignedOut
-            };
+                account.Credentials.SessionToken = token;
+                account.Notes = new AuthorizationNotes()
+                {
+                    Success = "Token renewed",
+                    Status = SigningStatus.Succeed
+                };
+            }
+            else
+            {
+                account.Credentials.SessionToken = null;
+                account.Notes = new AuthorizationNotes()
+                {
+                    Errors = "Invalid token ",
+                    Status = SigningStatus.Failure
+                };
+            }
         }
         return account;
     }
@@ -104,7 +116,7 @@ public class AccountService : IAccountAccess
         creds.PatchFrom(_creds);
         creds.Authenticated = true;
         creds.Authorized = isAuthorized;
-        return new Authorization() { Credentials = creds };
+        return account;
     }
 
     public async Task<IAuthorization> Authorize(IAuthorization account)
@@ -112,7 +124,6 @@ public class AccountService : IAccountAccess
         var _creds = account?.Credentials;
         if (_creds.Authenticated)
         {
-
             if (await _manager.CheckPassword(_creds.Email, _creds.Password) == null)
             {
                 _creds.Password = null;

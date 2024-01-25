@@ -25,7 +25,7 @@ public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
     where TStore : IDataServiceStore
 {
     protected Func<TKey, Func<TModel, object>> _keysetter = k => e => e.SetId(k);
-    protected Func<TKey, Expression<Func<TDto, bool>>> _keymatcher = k => e => k.Equals(e.Id);
+    protected Func<TKey, Expression<Func<TDto, bool>>> _keymatcher;
     protected Func<TModel, Expression<Func<TDto, bool>>> _predicate;
     protected readonly IServicer _servicer;
     protected readonly EventPublishMode _publishMode;
@@ -110,7 +110,7 @@ public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
 
         return Ok(
             await _servicer
-                .Entry(
+                .Report(
                     new RemoteFilter<TStore, TDto, TModel>(
                         offset,
                         limit,

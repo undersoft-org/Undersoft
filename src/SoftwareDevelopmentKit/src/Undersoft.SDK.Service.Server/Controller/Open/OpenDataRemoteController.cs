@@ -30,7 +30,7 @@ public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel, TServ
     protected Func<TKey, Func<TModel, object>> _keysetter = k => e => e.SetId(k);
     protected Func<TKey, Expression<Func<TDto, bool>>> _keymatcher = k => e => k.Equals(e.Id);
     protected Func<TModel, Expression<Func<TDto, bool>>> _predicate;
-    protected readonly EventPublishMode _publishMode;
+    protected readonly EventPublishMode _publishMode = EventPublishMode.PropagateCommand;
 
     protected OpenDataRemoteController() { }
 

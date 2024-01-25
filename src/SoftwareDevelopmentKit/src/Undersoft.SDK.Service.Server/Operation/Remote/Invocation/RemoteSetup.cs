@@ -8,18 +8,18 @@ using Undersoft.SDK.Service.Server.Operation.Invocation;
 
 namespace Undersoft.SDK.Service.Server.Operation.Remote.Invocation;
 
-public class RemoteFunction<TStore, TService, TModel> : Invocation<TModel>
+public class RemoteSetup<TStore, TService, TModel> : Invocation<TModel>
     where TService : class
     where TModel : class
     where TStore : IDataServiceStore
 {
-    public RemoteFunction() : base() { }
+    public RemoteSetup() : base() { }
 
-    public RemoteFunction(string method) : base(CommandMode.Invoke, typeof(TService), method) { }
+    public RemoteSetup(string method) : base(CommandMode.Invoke, typeof(TService), method) { }
 
-    public RemoteFunction(string method, Arguments arguments)
+    public RemoteSetup(string method, Arguments arguments)
      : base(CommandMode.Invoke, typeof(TService), method, arguments) { }
 
-    public RemoteFunction(string method, params object[] arguments)
+    public RemoteSetup(string method, params object[] arguments)
     : base(CommandMode.Invoke, typeof(TService), method, arguments) { }
 }

@@ -33,11 +33,10 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
         Func<TKey, Func<TDto, object>> keysetter,
         Func<TKey, Expression<Func<TEntity, bool>>> keymatcher,
         EventPublishMode publishMode = EventPublishMode.PropagateCommand
-    )
+    ) : base(servicer)
     {
         _keymatcher = keymatcher;
         _keysetter = keysetter;
-        _servicer = servicer;
         _publishMode = publishMode;
     }
 
@@ -58,12 +57,10 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
     [HttpGet("{key}")]
     public override async Task<IActionResult> Get([FromRoute] TKey key)
     {
-        Task<TDto> query =
-            _keymatcher == null
-                ? _servicer.Report(new Find<TReport, TEntity, TDto>(key))
-                : _servicer.Report(new Find<TReport, TEntity, TDto>(_keymatcher(key)));
-
-        return Ok(await query.ConfigureAwait(false));
+        return Ok(
+           _keymatcher == null
+               ? await _servicer.Report(new Find<TReport, TEntity, TDto>(key)).ConfigureAwait(false)
+               : await _servicer.Report(new Find<TReport, TEntity, TDto>(_keymatcher(key))).ConfigureAwait(false));
     }
 
     [HttpPost("query")]

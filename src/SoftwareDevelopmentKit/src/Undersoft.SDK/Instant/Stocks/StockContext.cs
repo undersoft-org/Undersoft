@@ -6,7 +6,7 @@ namespace Undersoft.SDK.Instant.Stocks
     using System.IO;
     using System.Runtime.InteropServices;
     using Undersoft.SDK.Instant.Proxies;
-    using Undersoft.SDK.Security.Identity;
+    using Undersoft.SDK.Security;
 
     public unsafe class StockContext : InnerProxy, IStockContext, IDisposable
     {

@@ -8,7 +8,7 @@ using Instant.Updating;
 using Logging;
 using Series;
 using System.Text.Json;
-using Undersoft.SDK.Security.Identity;
+using Undersoft.SDK.Security;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Client;
 using Undersoft.SDK.Service.Data.Entity;
@@ -412,59 +412,6 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
     public override string FullName => Context.GetMappedFullName(ElementType);
 
     public override DataServiceQuery<TEntity> Query => dsContext.CreateQuery<TEntity>(Name, true);
-
-    public async Task<TEntity> Function<TService>(Expression<Func<TService, Delegate>> method, Argument argument)
-    {
-        return await Function(LinqExtension.GetMemberName(method), argument);
-    }
-
-    public async Task<TEntity> Action<TService>(Expression<Func<TService, Delegate>> method, Arguments arguments)
-    {
-        return await Action(LinqExtension.GetMemberName(method), arguments);
-    }
-
-    public async Task<TEntity> Action<TService>(Expression<Func<TService, Delegate>> method, Argument argument)
-    {
-        return await Action(LinqExtension.GetMemberName(method), new Arguments(argument));
-    }
-
-    public async Task<TEntity> Function(string method, Argument argument)
-    {
-        return await FunctionAsync(typeof(TEntity).Name, method);
-    }
-
-    public async Task<TEntity> Action(string method, Arguments arguments)
-    {
-        var payload = arguments.ForEach(p => new BodyOperationParameter(p.Name, p.Value)).Commit();
-
-        return await ActionAsync(payload, typeof(TEntity).Name, method);
-    }
-
-    private async Task<TEntity> FunctionAsync(string entityName, string method)
-    {
-        var action = dsContext.CreateFunctionQuerySingle<TEntity>(
-            dsContext.BaseUri.OriginalString,
-            entityName + "(" + method + ")",
-            true
-        );
-        var result = await action.GetValueAsync();
-        return result;
-    }
-
-    private async Task<TEntity> ActionAsync(
-        BodyOperationParameter[] parameters,
-        string entityName,
-        string method
-    )
-    {
-        var action = new DataServiceActionQuerySingle<TEntity>(
-            dsContext,
-            dsContext.BaseUri.OriginalString + "/" + entityName + "(" + method + ")",
-            parameters
-        );
-        var result = await action.GetValueAsync();
-        return result;
-    }
 
     public void SetSecurityToken(string token)
     {

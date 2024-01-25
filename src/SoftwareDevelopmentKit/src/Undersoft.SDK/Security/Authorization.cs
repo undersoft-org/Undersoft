@@ -1,19 +1,23 @@
-﻿using Undersoft.SDK;
-using Undersoft.SDK.Security;
+﻿using Undersoft.SDK.Instant.Proxies;
+using Undersoft.SDK.Instant.Updating;
 
-namespace Undersoft.SSC.Service.Application.Models
+namespace Undersoft.SDK.Security
 {
     [Serializable]
-    public class Access : DataObject, IInnerProxy, IAuthorization
+    public class Authorization : Origin, IInnerProxy, IAuthorization
     {
+        public Credentials Credentials { get; set; } = new Credentials();
+
+        public AuthorizationNotes Notes { get; set; } = new AuthorizationNotes();
+
+        public bool Authorized { get; set; }
+
+        public bool Authenticated { get; set; }
+
         public void Map(object user)
         {
             this.PatchFrom(user);
         }
-
-        public Credentials Credentials { get; set; } = new Credentials();
-
-        public AuthorizationNotes Notes { get; set; } = new AuthorizationNotes();
 
         IProxy IInnerProxy.Proxy => throw new NotImplementedException();
 

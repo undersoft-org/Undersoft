@@ -19,8 +19,7 @@ public abstract class ApiEventController<TKey, TStore, TEntity, TDto> : Controll
     where TStore : IDataServerStore
 {
     protected Func<TKey, Func<TDto, object>> _keysetter = k => e => e.SetId(k);
-    protected Func<TKey, Expression<Func<TEntity, bool>>> _keymatcher = k =>
-        e => k.Equals(e.Id);
+    protected Func<TKey, Expression<Func<TEntity, bool>>> _keymatcher;
     protected Func<TDto, Expression<Func<TEntity, bool>>> _predicate;
     protected readonly IServicer _servicer;
     protected readonly EventPublishMode _publishMode;
@@ -59,7 +58,6 @@ public abstract class ApiEventController<TKey, TStore, TEntity, TDto> : Controll
 
         return Ok(await query.ConfigureAwait(false));
     }
-
     
     [HttpPost]
     public virtual async Task<IActionResult> Post([FromBody] TDto[] dtos)
@@ -92,7 +90,7 @@ public abstract class ApiEventController<TKey, TStore, TEntity, TDto> : Controll
 
         return Ok(
             await _servicer
-                .Entry(
+                .Report(
                     new Filter<TStore, TEntity, TDto>(
                         0,
                         0,

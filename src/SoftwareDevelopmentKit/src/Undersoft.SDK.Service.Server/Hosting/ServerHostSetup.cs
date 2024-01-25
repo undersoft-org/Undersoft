@@ -58,7 +58,9 @@ public class ServerHostSetup : IServerHostSetup
                 .Where(m => m.Name.Contains("MapGrpcService"))
                 .FirstOrDefault()
                 .GetGenericMethodDefinition();
+
             ISeries<Type> serviceContracts = GrpcDataServerRegistry.ServiceContracts;
+
             if (serviceContracts.Any())
             {
                 foreach (var serviceContract in serviceContracts)
@@ -74,9 +76,10 @@ public class ServerHostSetup : IServerHostSetup
             endpoints.MapControllers();
 
             if (useRazorPages)
+            {
                 endpoints.MapRazorPages();
-
-            endpoints.MapFallbackToFile("/index.html");
+                endpoints.MapFallbackToFile("/index.html");
+            }
         });
 
         return this;
@@ -140,7 +143,8 @@ public class ServerHostSetup : IServerHostSetup
         UseHeaderForwarding();
 
         if (_environment.IsDevelopment())
-            _application.UseDeveloperExceptionPage();
+            _application
+                .UseDeveloperExceptionPage();
 
         _application
             .UseHttpsRedirection()
@@ -154,7 +158,9 @@ public class ServerHostSetup : IServerHostSetup
         if (apiVersions != null)
             UseSwaggerSetup(apiVersions);
 
-        _application.UseAuthentication().UseAuthorization();
+        _application
+            .UseAuthentication()
+            .UseAuthorization();
 
         UseJwtMiddleware();
 

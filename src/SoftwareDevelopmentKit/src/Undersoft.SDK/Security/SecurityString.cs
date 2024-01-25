@@ -4,9 +4,9 @@ using System.Text;
 using Undersoft.SDK.Extracting;
 using Undersoft.SDK.Instant.Updating;
 
-namespace Undersoft.SDK.Security.Identity
+namespace Undersoft.SDK.Security
 {
-     [Serializable]
+    [Serializable]
     public class SecurityString : ISecurityString
     {
         private string _value;
@@ -14,15 +14,15 @@ namespace Undersoft.SDK.Security.Identity
         private string _prefix;
 
         public SecurityString() { }
-        
-        public SecurityString (string value, string prefix = null, string type = null) 
+
+        public SecurityString(string value, string prefix = null, string type = null)
         {
             _value = value;
             _type = type;
             _prefix = prefix;
         }
 
-        private void Set(string value) 
+        private void Set(string value)
         {
             var encoding = Encoding.GetEncoding("iso-8859-1");
             _value = Convert.ToBase64String(encoding.GetBytes(value));
@@ -31,12 +31,12 @@ namespace Undersoft.SDK.Security.Identity
         private string Get(string value)
         {
             var encoding = Encoding.GetEncoding("iso-8859-1");
-            return encoding.GetString(Convert.FromBase64String(value));            
+            return encoding.GetString(Convert.FromBase64String(value));
         }
 
         public string Decoded { get => Get(_value); set => Set(value); }
 
-        public string Encoded { get => _prefix + _value; set => _value = value; } 
+        public string Encoded { get => _prefix + _value; set => _value = value; }
 
-    }   
+    }
 }

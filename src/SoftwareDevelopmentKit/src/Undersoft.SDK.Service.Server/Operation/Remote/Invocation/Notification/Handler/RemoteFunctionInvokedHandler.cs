@@ -7,17 +7,17 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 namespace Undersoft.SDK.Service.Server.Operation.Remote.Invocation.Notification.Handler;
 
-public class RemoteFunctionInvokedHandler<TStore, TService, TModel>
-    : INotificationHandler<RemoteFunctionInvoked<TStore, TService, TModel>>
+public class RemoteSetupInvokedHandler<TStore, TService, TModel>
+    : INotificationHandler<RemoteSetupInvoked<TStore, TService, TModel>>
     where TService : class
     where TModel : class, IOrigin
     where TStore : IDataServiceStore
 {
     protected readonly IStoreRepository<Event> _eventStore;
 
-    public RemoteFunctionInvokedHandler() { }
+    public RemoteSetupInvokedHandler() { }
 
-    public RemoteFunctionInvokedHandler(
+    public RemoteSetupInvokedHandler(
         IStoreRepository<IEventStore, Event> eventStore
     )
     {
@@ -25,7 +25,7 @@ public class RemoteFunctionInvokedHandler<TStore, TService, TModel>
     }
 
     public virtual Task Handle(
-        RemoteFunctionInvoked<TStore, TService, TModel> request,
+        RemoteSetupInvoked<TStore, TService, TModel> request,
         CancellationToken cancellationToken
     )
     {

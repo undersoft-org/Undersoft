@@ -1,11 +1,11 @@
 ﻿@page "/account/signin"
-@inject IRemoteRepository<IAccountStore, Account> _repository
 @inject IAuthenticationStateService _service
 @inject NavigationManager _navigation
 
+@using Account = Undersoft.SDK.Security.Identity.Account;
 @using Undersoft.SDK.Invoking;
 @using Undersoft.SDK.Service.Client;
-@using Undersoft.SSC.Service.Application
+@using Undersoft.SSC.Service.Application;
 
 <h3>Sign in</h3>
 
@@ -36,10 +36,7 @@
 
     private async Task Access()
     {
-        account = (await _repository.Action<IAccountAccess>(a => a.SignIn, new Argument(nameof(Account), account)));
-
-        if (account != null)
-            await _service.SignIn(account);
+        await _service.SignIn(account);
 
         _navigation.NavigateTo("");
     }

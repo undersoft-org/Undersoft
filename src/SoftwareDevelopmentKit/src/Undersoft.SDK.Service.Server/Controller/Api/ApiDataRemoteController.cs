@@ -10,22 +10,23 @@ using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Client.Remote;
 using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Server.Operation.Remote;
+using Microsoft.Extensions.DependencyInjection;
 
 [RemoteResult]
 [ApiDataRemote]
 [ApiController]
 [Route($"{StoreRoutes.ApiDataRoute}/[controller]")]
-public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel>
-    : ControllerBase,
+public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel, TService>
+    : ApiServiceRemoteController<TStore, TService, TModel>,
         IApiDataRemoteController<TKey, TDto, TModel>
     where TModel : class, IDataObject
     where TDto : class, IDataObject
     where TStore : IDataServiceStore
+    where TService : class
 {
     protected Func<TKey, Func<TModel, object>> _keysetter = k => e => e.SetId(k);
     protected Func<TKey, Expression<Func<TDto, bool>>> _keymatcher;
     protected Func<TModel, Expression<Func<TDto, bool>>> _predicate;
-    protected readonly IServicer _servicer;
     protected readonly EventPublishMode _publishMode;
 
     protected ApiDataRemoteController() { }
@@ -46,11 +47,10 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel>
         Func<TKey, Func<TModel, object>> keysetter,
         Func<TKey, Expression<Func<TDto, bool>>> keymatcher,
         EventPublishMode publishMode = EventPublishMode.PropagateCommand
-    )
+    ) : base(servicer)
     {
         _keymatcher = keymatcher;
         _keysetter = keysetter;
-        _servicer = servicer;
         _publishMode = publishMode;
     }
 
@@ -71,12 +71,10 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel>
     [HttpGet("{key}")]
     public virtual async Task<IActionResult> Get(TKey key)
     {
-        Task<TModel> query =
-            _keymatcher == null
-                ? _servicer.Report(new RemoteFind<TStore, TDto, TModel>(key))
-                : _servicer.Report(new RemoteFind<TStore, TDto, TModel>(_keymatcher(key)));
-
-        return Ok(await query.ConfigureAwait(false));
+        return Ok(
+           _keymatcher == null
+               ? await _servicer.Report(new RemoteFind<TStore, TDto, TModel>(key)).ConfigureAwait(false)
+               : await _servicer.Report(new RemoteFind<TStore, TDto, TModel>(_keymatcher(key))).ConfigureAwait(false));
     }
 
     [HttpPost("query")]
@@ -92,7 +90,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel>
 
         return Ok(
             await _servicer
-                .Entry(
+                .Report(
                     new RemoteFilter<TStore, TDto, TModel>(
                         0,
                         0,

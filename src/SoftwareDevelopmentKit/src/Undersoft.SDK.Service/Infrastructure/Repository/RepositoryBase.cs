@@ -12,6 +12,7 @@ using Data.Entity;
 using Invoking;
 using Security.Identity;
 using Undersoft.SDK;
+using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Infrastructure.Store.Remote;
 

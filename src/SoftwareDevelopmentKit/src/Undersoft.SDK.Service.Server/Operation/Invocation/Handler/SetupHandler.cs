@@ -7,21 +7,21 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Server.Operation.Invocation;
 using Undersoft.SDK.Service.Server.Operation.Invocation.Notification;
 
-public class FunctionHandler<TStore, TService, TDto>
-    : IRequestHandler<Function<TStore, TService, TDto>, Invocation<TDto>>
+public class SetupHandler<TStore, TService, TDto>
+    : IRequestHandler<Setup<TStore, TService, TDto>, Invocation<TDto>>
     where TService : class
     where TDto : class, IOrigin
     where TStore : IDataServerStore
 {
     protected readonly IServicer _servicer;
 
-    public FunctionHandler(IServicer servicer)
+    public SetupHandler(IServicer servicer)
     {
         _servicer = servicer;
     }
 
     public async Task<Invocation<TDto>> Handle(
-        Function<TStore, TService, TDto> request,
+        Setup<TStore, TService, TDto> request,
         CancellationToken cancellationToken
     )
     {
@@ -31,7 +31,7 @@ public class FunctionHandler<TStore, TService, TDto>
         {
             request.Response = await _servicer.Run<TService, TDto>(request.Method, request.Arguments);               
 
-            _ = _servicer.Publish(new FunctionInvoked<TStore, TService, TDto>(request)).ConfigureAwait(false);
+            _ = _servicer.Publish(new SetupInvoked<TStore, TService, TDto>(request)).ConfigureAwait(false);
         }
         catch (Exception ex)
         {

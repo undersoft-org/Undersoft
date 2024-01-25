@@ -5,7 +5,7 @@ namespace Undersoft.SDK.Service.Server.Controller.Open;
 using Undersoft.SDK.Service.Data.Object;
 using Uniques;
 
-public interface IOpenDataRemoteController<TKey, TDto, TModel> where TModel : class, IDataObject
+public interface IOpenDataRemoteController<TKey, TDto, TModel> where TModel : class, IOrigin
 {
     Task<IActionResult> Delete([FromODataUri] TKey key);
     IQueryable<TModel> Get();

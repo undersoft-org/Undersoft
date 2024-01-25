@@ -12,17 +12,17 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Infrastructure.Repository;
 using Undersoft.SDK.Service.Server.Operation.Invocation.Notification;
 
-public class FunctionInvokedHandler<TStore, TType, TDto>
-    : INotificationHandler<FunctionInvoked<TStore, TType, TDto>>
+public class SetupInvokedHandler<TStore, TType, TDto>
+    : INotificationHandler<SetupInvoked<TStore, TType, TDto>>
     where TType : class
     where TDto : class, IOrigin
     where TStore : IDataStore
 {
     protected readonly IStoreRepository<Event> _eventStore;
 
-    public FunctionInvokedHandler() { }
+    public SetupInvokedHandler() { }
 
-    public FunctionInvokedHandler(
+    public SetupInvokedHandler(
         IStoreRepository<IEventStore, Event> eventStore
     )
     {
@@ -30,7 +30,7 @@ public class FunctionInvokedHandler<TStore, TType, TDto>
     }
 
     public virtual Task Handle(
-        FunctionInvoked<TStore, TType, TDto> request,
+        SetupInvoked<TStore, TType, TDto> request,
         CancellationToken cancellationToken
     )
     {

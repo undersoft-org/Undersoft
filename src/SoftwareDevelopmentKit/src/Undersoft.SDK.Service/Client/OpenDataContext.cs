@@ -1,5 +1,6 @@
 ﻿using Microsoft.OData.Client;
 using Microsoft.OData.Edm;
+using Undersoft.SDK.Security;
 using Undersoft.SDK.Security.Identity;
 using Undersoft.SDK.Service.Infrastructure.Store.Relation;
 using Undersoft.SDK.Service.Infrastructure.Store.Remote;

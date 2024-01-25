@@ -6,6 +6,7 @@
     public class Arguments : Listing<Argument>
     {
         public Arguments() : base() { }
+        public Arguments(string name, object value) : base(new[] { new Argument(name, value) }) { }
         public Arguments(Argument argument) : base(new[] { argument }) { }
         public Arguments(ParameterInfo[] parameters) : base(parameters.ForEach(p => new Argument(p))) { }
         public Arguments(Dictionary<string, object> dictionary) : base(dictionary.ForEach(p => new Argument(p.Key, p.Value))) { }

@@ -23,10 +23,11 @@ public interface IRemoteRepository<TEntity> : IRepository<TEntity> where TEntity
     void SetSecurityToken(string token);
     object TracePatching(object item, string propertyName = null, Type type = null);
 
-    Task<TEntity> Function(string method, Argument argument);
-    Task<TEntity> Action(string method, Arguments arguments);
+    Task<IEnumerable<TEntity>> Access(string method, Arguments arguments);
+    Task<IEnumerable<TEntity>> Action(string method, Arguments arguments);
+    Task<IEnumerable<TEntity>> Setup(string method, Arguments arguments);
 
-    Task<TEntity> Function<TService>(Expression<Func<TService, Delegate>> method, Argument argument);
-    Task<TEntity> Action<TService>(Expression<Func<TService, Delegate>> method, Argument argument);
-    Task<TEntity> Action<TService>(Expression<Func<TService, Delegate>> method, Arguments arguments);
+    Task<IEnumerable<TEntity>> Access<TService>(Expression<Func<TService, Delegate>> method, Arguments arguments);
+    Task<IEnumerable<TEntity>> Action<TService>(Expression<Func<TService, Delegate>> method, Arguments arguments);
+    Task<IEnumerable<TEntity>> Setup<TService>(Expression<Func<TService, Delegate>> method, Arguments arguments);
 }

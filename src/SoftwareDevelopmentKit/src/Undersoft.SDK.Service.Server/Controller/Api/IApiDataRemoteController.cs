@@ -4,7 +4,7 @@ namespace Undersoft.SDK.Service.Server.Controller.Crud;
 
 
 
-public interface IApiDataRemoteController<TKey, TDto, TModel> where TModel : class, IDataObject
+public interface IApiDataRemoteController<TKey, TDto, TModel> where TModel : class, IOrigin
 {
     Task<IActionResult> Count();
     Task<IActionResult> Delete([FromBody] TModel[] models);

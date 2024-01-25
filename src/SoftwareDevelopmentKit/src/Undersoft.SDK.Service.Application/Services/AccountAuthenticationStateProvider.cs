@@ -3,16 +3,20 @@ using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using System.Text.Json;
 using Undersoft.SDK.Invoking;
+using Undersoft.SDK.Security;
 using Undersoft.SDK.Security.Identity;
 using Undersoft.SDK.Series;
+using Claim = System.Security.Claims.Claim;
 
 namespace Undersoft.SDK.Service.Application.Services;
 
-public class AccountAuthenticationStateProvider : AuthenticationStateProvider, IAuthenticationStateService
+public class AccountAuthenticationStateProvider
+    : AuthenticationStateProvider,
+        IAuthenticationStateService
 {
     private readonly IJSRuntime js;
     private readonly IAuthorization _authorization;
-    private readonly IRemoteRepository<IAccountStore, Authorization> _repository;
+    private readonly IRemoteRepository<IAccountStore, Account> _repository;
     private readonly string TOKENKEY = "TOKENKEY";
     private readonly string EXPIRATIONTOKENKEY = "EXPIRATIONTOKENKEY";
 
@@ -21,7 +25,7 @@ public class AccountAuthenticationStateProvider : AuthenticationStateProvider, I
 
     public AccountAuthenticationStateProvider(
         IJSRuntime js,
-        IRemoteRepository<IAccountStore, Authorization> repository,
+        IRemoteRepository<IAccountStore, Account> repository,
         IAuthorization authorization
     )
     {
@@ -51,7 +55,9 @@ public class AccountAuthenticationStateProvider : AuthenticationStateProvider, I
             }
             if (IsTokenExpired(expirationTime.AddMinutes(-5)))
             {
-                var auth = (await _repository.Function("Renew", new Argument("Authorization", token)));
+                var auth = (
+                    await _repository.Access("Renew", new Arguments("Account", token))
+                ).FirstOrDefault();
                 if (auth != null)
                 {
                     _authorization.Credentials = auth.Credentials;
@@ -111,19 +117,38 @@ public class AccountAuthenticationStateProvider : AuthenticationStateProvider, I
         return expirationTime <= DateTime.UtcNow;
     }
 
-    public async Task SignIn(Authorization authorization)
+    public async Task SignIn(IAuthorization authorization)
     {
-        _authorization.Credentials = authorization.Credentials;
+        var auth = (
+            await _repository.Access<IAccountAccess>(
+                a => a.SignIn,
+                new Arguments("Account", authorization)
+            )
+        ).FirstOrDefault();
+        
+        if (auth == null)
+            return;        
+        
+        _authorization.Credentials = auth.Credentials;
         await js.SetInLocalStorage(TOKENKEY, _authorization.Credentials.SessionToken);
         var authState = BuildAuthenticationState(_authorization.Credentials.SessionToken);
         NotifyAuthenticationStateChanged(Task.FromResult(authState));
     }
 
+    public async Task SignUp(IAuthorization authorization)
+    {
+        await _repository.Access<IAccountAccess>(
+            a => a.SignUp,
+            new Arguments("Account", authorization)
+        );
+    }
+
     public async Task SignOut()
     {
-        var arg = new Arguments();
-        arg.Put(new Argument("Authorization", _authorization));
-        await _repository.Action("SignOut", arg);
+        await _repository.Access<IAccountAccess>(
+            a => a.SignOut,
+            new Arguments("Account", _authorization)
+        );
         await CleanUp();
         NotifyAuthenticationStateChanged(Task.FromResult(Anonymous));
     }

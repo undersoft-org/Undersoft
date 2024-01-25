@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Undersoft.SDK.Security.Identity;
+using Undersoft.SDK.Security;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
 

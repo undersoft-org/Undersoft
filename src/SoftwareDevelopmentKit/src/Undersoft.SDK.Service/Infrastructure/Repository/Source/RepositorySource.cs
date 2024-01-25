@@ -16,6 +16,7 @@ using Undersoft.SDK.Service.Data.Object;
 using Security.Identity;
 using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Infrastructure.Repository;
+using Undersoft.SDK.Security;
 
 public class RepositorySource : Registry<IRepositoryContext>, IRepositorySource
 {

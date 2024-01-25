@@ -94,11 +94,11 @@ public partial class ServerSetup
                     typeof(IRequestHandler<,>).MakeGenericType(
                         new[]
                         {
-                            typeof(RemoteFunction<,,>).MakeGenericType(store, dtoType, _viewmodel),
+                            typeof(RemoteSetup<,,>).MakeGenericType(store, dtoType, _viewmodel),
                             typeof(Invocation<>).MakeGenericType(_viewmodel)
                         }
                     ),
-                    typeof(RemoteFunctionHandler<,,>).MakeGenericType(store, dtoType, _viewmodel)
+                    typeof(RemoteSetupHandler<,,>).MakeGenericType(store, dtoType, _viewmodel)
                 );
                 service.AddTransient(
                     typeof(INotificationHandler<>).MakeGenericType(
@@ -108,9 +108,9 @@ public partial class ServerSetup
                 );
                 service.AddTransient(
                   typeof(INotificationHandler<>).MakeGenericType(
-                      typeof(RemoteFunctionInvoked<,,>).MakeGenericType(store, dtoType, _viewmodel)
+                      typeof(RemoteSetupInvoked<,,>).MakeGenericType(store, dtoType, _viewmodel)
                   ),
-                  typeof(RemoteFunctionInvokedHandler<,,>).MakeGenericType(store, dtoType, _viewmodel)
+                  typeof(RemoteSetupInvokedHandler<,,>).MakeGenericType(store, dtoType, _viewmodel)
               );
             }
         }

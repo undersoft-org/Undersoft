@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Claims;
-using Undersoft.SDK.Security.Identity;
+using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Data.Contract;
 
 namespace Undersoft.SDK.Service.Server.Accounts;

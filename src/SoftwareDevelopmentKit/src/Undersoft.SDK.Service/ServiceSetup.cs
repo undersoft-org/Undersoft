@@ -23,6 +23,7 @@ using Infrastructure.Repository.Client;
 using Infrastructure.Repository.Source;
 using Infrastructure.Store;
 using Security.Identity;
+using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Client;
 
 public partial class ServiceSetup : IServiceSetup
@@ -243,7 +244,7 @@ public partial class ServiceSetup : IServiceSetup
     public IServiceSetup AddImplementations()
     {
         registry.AddScoped<IServicer, Servicer>();
-        registry.AddScoped<IAuthorization, Authorization>();
+        registry.AddScoped<IAuthorization, Account>();
 
         AddDomainImplementations();
 

@@ -28,7 +28,7 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
     protected Func<TKey, Func<TDto, object>> _keysetter = k => e => e.SetId(k);
     protected Func<TKey, Expression<Func<TEntity, bool>>> _keymatcher = k => e => k.Equals(e.Id);
     protected Func<TDto, Expression<Func<TEntity, bool>>> _predicate;
-    protected EventPublishMode _publishMode;
+    protected EventPublishMode _publishMode = EventPublishMode.PropagateCommand;
 
     public OpenDataController() { }
 

@@ -21,6 +21,8 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
 {
     protected OpenCqrsController() { }
 
+    public OpenCqrsController(IServicer servicer) : base(servicer) { }
+
     protected OpenCqrsController(
         IServicer servicer,
         EventPublishMode publishMode = EventPublishMode.PropagateCommand

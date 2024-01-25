@@ -76,11 +76,11 @@ public partial class ServerSetup
                     typeof(IRequestHandler<,>).MakeGenericType(
                         new[]
                         {
-                            typeof(Function<,,>).MakeGenericType(store, actionType, dtoType),
+                            typeof(Setup<,,>).MakeGenericType(store, actionType, dtoType),
                             typeof(Invocation<>).MakeGenericType(dtoType)
                         }
                     ),
-                    typeof(FunctionHandler<,,>).MakeGenericType(store, actionType, dtoType)
+                    typeof(SetupHandler<,,>).MakeGenericType(store, actionType, dtoType)
                 );
                 service.AddTransient(
                     typeof(INotificationHandler<>).MakeGenericType(
@@ -90,9 +90,9 @@ public partial class ServerSetup
                 );
                 service.AddTransient(
                     typeof(INotificationHandler<>).MakeGenericType(
-                        typeof(FunctionInvoked<,,>).MakeGenericType(store, actionType, dtoType)
+                        typeof(SetupInvoked<,,>).MakeGenericType(store, actionType, dtoType)
                     ),
-                    typeof(FunctionInvokedHandler<,,>).MakeGenericType(store, actionType, dtoType)
+                    typeof(SetupInvokedHandler<,,>).MakeGenericType(store, actionType, dtoType)
                 );
             }
         }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Undersoft.SDK;
-using Undersoft.SDK.Security.Identity;
+using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Data.Contract;
 using Undersoft.SDK.Service.Data.Object.Detail;
 

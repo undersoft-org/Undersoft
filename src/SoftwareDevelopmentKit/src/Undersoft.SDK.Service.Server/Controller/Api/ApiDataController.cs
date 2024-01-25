@@ -25,7 +25,6 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
     protected Func<TKey, Func<TDto, object>> _keysetter = k => e => e.SetId(k);
     protected Func<TKey, Expression<Func<TEntity, bool>>> _keymatcher;
     protected Func<TDto, Expression<Func<TEntity, bool>>> _predicate;
-    protected IServicer _servicer;
     protected EventPublishMode _publishMode;
 
     protected ApiDataController() { }
@@ -43,11 +42,10 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
         Func<TKey, Func<TDto, object>> keysetter,
         Func<TKey, Expression<Func<TEntity, bool>>> keymatcher,
         EventPublishMode publishMode = EventPublishMode.PropagateCommand
-    )
+    ) : base(servicer)
     {
         _keymatcher = keymatcher;
         _keysetter = keysetter;
-        _servicer = servicer;
         _publishMode = publishMode;
     }
        
@@ -70,12 +68,10 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
     [HttpGet("{key}")]
     public virtual async Task<IActionResult> Get([FromRoute] TKey key)
     {
-        Task<TDto> query =
-            _keymatcher == null
-                ? _servicer.Report(new Find<TStore, TEntity, TDto>(key) {  Processings = Transformations })
-                : _servicer.Report(new Find<TStore, TEntity, TDto>(_keymatcher(key)));
-
-        return Ok(await query.ConfigureAwait(false));
+        return Ok(
+           _keymatcher == null
+               ? await _servicer.Report(new Find<TStore, TEntity, TDto>(key)).ConfigureAwait(false)
+               : await _servicer.Report(new Find<TStore, TEntity, TDto>(_keymatcher(key))).ConfigureAwait(false));     
     } 
 
     [HttpPost("query")]
@@ -91,7 +87,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
 
         return Ok(
             await _servicer
-                .Entry(
+                .Report(
                     new Filter<TStore, TEntity, TDto>(0, 0,
                         new FilterExpression<TEntity>(query.FilterItems).Create(),
                         new SortExpression<TEntity>(query.SortItems)

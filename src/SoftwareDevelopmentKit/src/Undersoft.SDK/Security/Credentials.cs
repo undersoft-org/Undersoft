@@ -1,4 +1,4 @@
-﻿namespace Undersoft.SDK.Security.Identity
+﻿namespace Undersoft.SDK.Security
 {
     [Serializable]
     public enum ServiceSite

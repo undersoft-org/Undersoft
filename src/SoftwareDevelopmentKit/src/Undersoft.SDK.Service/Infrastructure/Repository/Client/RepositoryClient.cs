@@ -8,6 +8,7 @@ using Microsoft.OData.Edm;
 using Security.Identity;
 using Series;
 using Source;
+using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Client;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Infrastructure.Repository;
