@@ -20,8 +20,11 @@ public class RemoteFindHandler<TStore, TDto, TModel> : IRequestHandler<RemoteFin
         CancellationToken cancellationToken
     )
     {
-        if (request.Keys != null)
-            return _repository.Find<TModel>(request.Keys, request.Expanders);
-        return _repository.Find<TModel>(request.Predicate, false, request.Expanders);
+        return Task.Run(() =>
+        {
+            if (request.Keys != null)
+                return _repository.Find<TModel>(request.Keys, request.Expanders);
+            return _repository.Find<TModel>(request.Predicate, false, request.Expanders);
+        });
     }
 }

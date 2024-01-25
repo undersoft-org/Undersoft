@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
 namespace Undersoft.SDK.Service.Server.Operation.Command.Notification.Handler;
-using Logging;
 
+using Logging;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Infrastructure.Repository;
 using Undersoft.SDK.Service.Infrastructure.Store;
@@ -28,12 +28,12 @@ public class CreatedSetHandler<TStore, TEntity, TDto>
         _eventStore = eventStore;
     }
 
-    public virtual Task Handle(
+    public virtual async Task Handle(
         CreatedSet<TStore, TEntity, TDto> request,
         CancellationToken cancellationToken
     )
     {
-        return Task.Run(
+        await Task.Run(
             () =>
             {
                 try
@@ -46,7 +46,7 @@ public class CreatedSetHandler<TStore, TEntity, TDto>
                         }
                     );
 
-                    _eventStore.AddAsync(request).ConfigureAwait(true);
+                    _eventStore.Add(request);
 
                     if (request.PublishMode == EventPublishMode.PropagateCommand)
                     {

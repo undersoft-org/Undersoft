@@ -16,12 +16,12 @@ public partial class Repository<TEntity>
         return this as IPage<TEntity>;
     }
 
-    public virtual Task<IList<TDto>> Filter<TDto>(IQueryable<TEntity> query)
+    public virtual IList<TDto> Filter<TDto>(IQueryable<TEntity> query)
     {
         return MapTo<TDto>(query);
     }
 
-    public virtual Task<IList<TEntity>> Filter<TDto>(IQueryable<TDto> query)
+    public virtual IList<TEntity> Filter<TDto>(IQueryable<TDto> query)
     {
         return MapFrom<TDto>(query);
     }
@@ -81,12 +81,12 @@ public partial class Repository<TEntity>
         );
     }
 
-    public virtual async Task<IPagedSet<TDto>> PagedFilter<TDto, TResult>(
+    public virtual IPagedSet<TDto> PagedFilter<TDto, TResult>(
         Expression<Func<TEntity, TResult>> selector
     ) where TResult : class
     {
         return new PagedSet<TDto>(
-            await Filter<TDto, TResult>((PageIndex - IndexFrom) * PageSize, PageSize, selector),
+            Filter<TDto, TResult>((PageIndex - IndexFrom) * PageSize, PageSize, selector),
             PageIndex,
             PageSize,
             IndexFrom
@@ -203,7 +203,7 @@ public partial class Repository<TEntity>
     )
     {
         return new PagedSet<TDto>(
-            await Filter<TDto>(
+           await Filter<TDto>(
                 (PageIndex - IndexFrom) * PageSize,
                 PageSize,
                 predicate,
@@ -221,7 +221,7 @@ public partial class Repository<TEntity>
     )
     {
         return new PagedSet<TDto>(
-            await Filter<TDto>(
+           await Filter<TDto>(
                 (PageIndex - IndexFrom) * PageSize,
                 PageSize,
                 sortTerms,
@@ -233,13 +233,13 @@ public partial class Repository<TEntity>
         );
     }
 
-    public virtual async Task<IPagedSet<TDto>> PagedFilter<TDto, TResult>(
+    public virtual IPagedSet<TDto> PagedFilter<TDto, TResult>(
         Expression<Func<TEntity, TResult>> selector,
         Expression<Func<TEntity, bool>> predicate
     ) where TResult : class
     {
         return new PagedSet<TDto>(
-            await Filter<TDto, TResult>(
+            Filter<TDto, TResult>(
                 (PageIndex - IndexFrom) * PageSize,
                 PageSize,
                 selector,
@@ -251,13 +251,13 @@ public partial class Repository<TEntity>
         );
     }
 
-    public virtual async Task<IPagedSet<TDto>> PagedFilter<TDto, TResult>(
+    public virtual IPagedSet<TDto> PagedFilter<TDto, TResult>(
         Expression<Func<TEntity, TResult>> selector,
         params Expression<Func<TEntity, object>>[] expanders
     ) where TResult : class
     {
         return new PagedSet<TDto>(
-            await Filter<TDto, TResult>(
+            Filter<TDto, TResult>(
                 (PageIndex - IndexFrom) * PageSize,
                 PageSize,
                 selector,
@@ -287,7 +287,7 @@ public partial class Repository<TEntity>
         return HashMapTo<TDto>(this[skip, take, predicate]);
     }
 
-    public virtual Task<IList<TDto>> Filter<TDto, TResult>(
+    public virtual IList<TDto> Filter<TDto, TResult>(
         int skip,
         int take,
         Expression<Func<TEntity, TResult>> selector
@@ -376,7 +376,7 @@ public partial class Repository<TEntity>
         return MapToAsync<TDto>(this[skip, take, sortTerms, expanders]);
     }
 
-    public virtual Task<IList<TDto>> Filter<TDto, TResult>(
+    public virtual IList<TDto> Filter<TDto, TResult>(
         int skip,
         int take,
         Expression<Func<TEntity, TResult>> selector,
@@ -386,7 +386,7 @@ public partial class Repository<TEntity>
         return MapTo<TDto>(this[skip, take, this[predicate]].Select(selector));
     }
 
-    public virtual Task<IList<TDto>> Filter<TDto, TResult>(
+    public virtual IList<TDto> Filter<TDto, TResult>(
         int skip,
         int take,
         Expression<Func<TEntity, TResult>> selector,
@@ -420,7 +420,7 @@ public partial class Repository<TEntity>
         );
     }
 
-    public virtual async Task<IPagedSet<TDto>> PagedFilter<TDto, TResult>(
+    public virtual IPagedSet<TDto> PagedFilter<TDto, TResult>(
         Expression<Func<TEntity, TResult>> selector,
         Expression<Func<TEntity, bool>> predicate,
         SortExpression<TEntity> sortTerms,
@@ -428,7 +428,7 @@ public partial class Repository<TEntity>
     ) where TResult : class
     {
         return new PagedSet<TDto>(
-            await Filter<TDto, TResult>(
+            Filter<TDto, TResult>(
                 (PageIndex - IndexFrom) * PageSize,
                 PageSize,
                 selector,
@@ -464,7 +464,7 @@ public partial class Repository<TEntity>
         return MapToAsync<TDto>(this[skip, take, predicate, sortTerms, expanders]);
     }
 
-    public virtual Task<IList<TDto>> Filter<TDto, TResult>(
+    public virtual IList<TDto> Filter<TDto, TResult>(
         int skip,
         int take,
         Expression<Func<TEntity, TResult>> selector,
@@ -475,7 +475,7 @@ public partial class Repository<TEntity>
         return MapTo<TDto>(this[skip, take, this[predicate, sortTerms]].Select(selector));
     }
 
-    public virtual Task<IList<TDto>> Filter<TDto, TResult>(
+    public virtual IList<TDto> Filter<TDto, TResult>(
         int skip,
         int take,
         Expression<Func<TEntity, TResult>> selector,
@@ -489,12 +489,12 @@ public partial class Repository<TEntity>
         );
     }
 
-    public virtual Task<TDto> Find<TDto>(params object[] keys)
+    public virtual TDto Find<TDto>(params object[] keys)
     {
         return MapTo<TDto>(this[keys]);
     }
 
-    public virtual Task<TDto> Find<TDto>(
+    public virtual TDto Find<TDto>(
         object[] keys,
         params Expression<Func<TEntity, object>>[] expanders
     )
@@ -502,7 +502,7 @@ public partial class Repository<TEntity>
         return MapTo<TDto>(this[keys, expanders]);
     }
 
-    public virtual Task<TDto> Find<TDto>(
+    public virtual TDto Find<TDto>(
         Expression<Func<TEntity, bool>> predicate,
         bool reverse
     )
@@ -510,7 +510,7 @@ public partial class Repository<TEntity>
         return MapTo<TDto>(this[reverse, predicate]);
     }
 
-    public virtual Task<TDto> Find<TDto, TResult>(
+    public virtual TDto Find<TDto, TResult>(
         Expression<Func<TEntity, TResult>> selector,
         Expression<Func<TEntity, bool>> predicate
     ) where TResult : class
@@ -518,7 +518,7 @@ public partial class Repository<TEntity>
         return MapTo<TDto>(this.Find(predicate, selector));
     }
 
-    public virtual Task<TDto> Find<TDto, TResult>(
+    public virtual TDto Find<TDto, TResult>(
         Expression<Func<TEntity, TResult>> selector,
         object[] keys,
         params Expression<Func<TEntity, object>>[] expanders
@@ -527,7 +527,7 @@ public partial class Repository<TEntity>
         return MapTo<TDto>(this.Find(keys, selector, expanders));
     }
 
-    public virtual Task<TDto> Find<TDto>(
+    public virtual TDto Find<TDto>(
         Expression<Func<TEntity, bool>> predicate,
         bool reverse,
         params Expression<Func<TEntity, object>>[] expanders
@@ -536,7 +536,7 @@ public partial class Repository<TEntity>
         return MapTo<TDto>(this[reverse, predicate, expanders]);
     }
 
-    public virtual Task<TDto> Find<TDto, TResult>(
+    public virtual TDto Find<TDto, TResult>(
         Expression<Func<TEntity, TResult>> selector,
         Expression<Func<TEntity, bool>> predicate,
         params Expression<Func<TEntity, object>>[] expanders
@@ -561,7 +561,7 @@ public partial class Repository<TEntity>
         return QueryMapTo<TDto>(new[] { this[keys, expanders] }.AsQueryable());
     }
 
-    public virtual Task<IList<TDto>> Get<TDto, TResult>(
+    public virtual IList<TDto> Get<TDto, TResult>(
         Expression<Func<TEntity, TResult>> selector
     ) where TResult : class
     {
@@ -590,7 +590,7 @@ public partial class Repository<TEntity>
         );
     }
 
-    public virtual Task<IList<TDto>> Get<TDto, TResult>(
+    public virtual IList<TDto> Get<TDto, TResult>(
         Expression<Func<TEntity, TResult>> selector,
         Expression<Func<TEntity, object>>[] expanders
     ) where TResult : class

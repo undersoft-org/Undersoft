@@ -16,13 +16,16 @@ public class FindHandler<TStore, TEntity, TDto> : IRequestHandler<Find<TStore, T
         _repository = repository;
     }
 
-    public virtual Task<TDto> Handle(
+    public virtual async Task<TDto> Handle(
         Find<TStore, TEntity, TDto> request,
         CancellationToken cancellationToken
     )
     {
-        if (request.Keys != null)
-            return _repository.Find<TDto>(request.Keys, request.Expanders);
-        return _repository.Find<TDto>(request.Predicate, false, request.Expanders);
+        return await Task.Run(() =>
+        {
+            if (request.Keys != null)
+                return _repository.Find<TDto>(request.Keys, request.Expanders);
+            return _repository.Find<TDto>(request.Predicate, false, request.Expanders);
+        });
     }
 }

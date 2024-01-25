@@ -41,7 +41,7 @@ public class DeleteHandler<TStore, TEntity, TDto>
                     else if (request.Contract == null && request.Predicate != null)
                         request.Entity = await _repository.Delete(request.Predicate);
                     else
-                        request.Entity = await _repository.DeleteBy(
+                        request.Entity = _repository.DeleteBy(
                             request.Contract,
                             request.Predicate
                         );

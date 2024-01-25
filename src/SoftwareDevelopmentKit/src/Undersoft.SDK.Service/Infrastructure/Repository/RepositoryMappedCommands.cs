@@ -11,21 +11,21 @@ using Uniques;
 
 public partial class Repository<TEntity>
 {
-    public virtual async Task<TEntity> AddBy<TDto>(TDto model)
+    public virtual TEntity AddBy<TDto>(TDto model)
     {
-        return await Task.Run(async () => this.Add(await MapFrom(model)));
+        return this.Add(MapFrom(model));
     }
-    public virtual async Task<TEntity> AddBy<TDto>(TDto model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate)
+    public virtual TEntity AddBy<TDto>(TDto model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate)
     {
-        return Add(await MapFrom(model), predicate);
+        return Add(MapFrom(model), predicate);
     }
-    public virtual async Task<IEnumerable<TEntity>> AddBy<TDto>(IEnumerable<TDto> model)
+    public virtual IEnumerable<TEntity> AddBy<TDto>(IEnumerable<TDto> model)
     {
-        return Add(await MapFrom(model));
+        return Add(MapFrom(model));
     }
-    public virtual async Task<IEnumerable<TEntity>> AddBy<TDto>(IEnumerable<TDto> models, Func<TEntity, Expression<Func<TEntity, bool>>> predicate)
+    public virtual IEnumerable<TEntity> AddBy<TDto>(IEnumerable<TDto> models, Func<TEntity, Expression<Func<TEntity, bool>>> predicate)
     {
-        return await Add(await MapFrom(models), predicate).CommitAsync();
+        return Add(MapFrom(models), predicate).Commit();
     }
 
     public virtual IAsyncEnumerable<TEntity> AddByAsync<TDto>(IEnumerable<TDto> model)
@@ -34,43 +34,33 @@ public partial class Repository<TEntity>
     }
     public virtual IAsyncEnumerable<TEntity> AddByAsync<TDto>(IEnumerable<TDto> models, Func<TEntity, Expression<Func<TEntity, bool>>> predicate)
     {
-        var mapTask = MapFrom(models);
-        mapTask.Wait();
-        return AddAsync(mapTask.Result);
+        return AddAsync(MapFrom(models));
     }
 
-    public virtual async Task<TEntity> DeleteBy<TDto>(TDto model)
+    public virtual TEntity DeleteBy<TDto>(TDto model)
     {
-        return this.Delete(await MapFrom(model));
+        return this.Delete(MapFrom(model));
     }
-    public virtual async Task<TEntity> DeleteBy<TDto>(TDto model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate)
+    public virtual TEntity DeleteBy<TDto>(TDto model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate)
     {
-        return Delete(predicate.Invoke(await MapFrom(model)));
+        return Delete(predicate.Invoke(MapFrom(model)));
     }
     public virtual IEnumerable<TEntity> DeleteBy<TDto>(IEnumerable<TDto> model)
     {
-        var map = MapFrom(model);
-        map.Wait();
-        return Delete(map.Result);
+        return Delete(MapFrom(model));
     }
     public virtual IEnumerable<TEntity> DeleteBy<TDto>(IEnumerable<TDto> model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate)
     {
-        var map = MapFrom(model);
-        map.Wait();
-        return Delete(map.Result, predicate);
+        return Delete(MapFrom(model), predicate);
     }
 
     public virtual IAsyncEnumerable<TEntity> DeleteByAsync<TDto>(IEnumerable<TDto> model)
     {
-        var map = MapFrom(model);
-        map.Wait();
-        return DeleteAsync(map.Result);
+        return DeleteAsync(MapFrom(model));
     }
     public virtual IAsyncEnumerable<TEntity> DeleteByAsync<TDto>(IEnumerable<TDto> model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate)
     {
-        var map = MapFrom(model);
-        map.Wait();
-        return DeleteAsync(map.Result, predicate);
+        return DeleteAsync(MapFrom(model), predicate);
     }
 
     public virtual async Task<TEntity> SetBy<TDto>(TDto model) where TDto : class, IOrigin
@@ -105,20 +95,16 @@ public partial class Repository<TEntity>
 
     public virtual async Task<TEntity> PutBy<TDto>(TDto model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate, params Func<TEntity, Expression<Func<TEntity, bool>>>[] conditions)
     {
-        return await Put(await MapFrom(model), predicate, conditions);
+        return await Put(MapFrom(model), predicate, conditions);
     }
     public virtual IEnumerable<TEntity> PutBy<TDto>(IEnumerable<TDto> model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate, params Func<TEntity, Expression<Func<TEntity, bool>>>[] conditions)
     {
-        var map = MapFrom(model);
-        map.Wait();
-        return Put(map.Result, predicate, conditions).Commit();
+        return Put(MapFrom(model), predicate, conditions).Commit();
     }
 
     public virtual IAsyncEnumerable<TEntity> PutByAsync<TDto>(IEnumerable<TDto> model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate, params Func<TEntity, Expression<Func<TEntity, bool>>>[] conditions)
     {
-        var map = MapFrom(model);
-        map.Wait();
-        return PutAsync(map.Result, predicate, conditions);
+        return PutAsync(MapFrom(model), predicate, conditions);
     }
 
     public virtual async Task<TEntity> PatchBy<TDto>(TDto model) where TDto : class, IOrigin

@@ -53,7 +53,7 @@ public class DeletedHandler<TStore, TEntity, TDto>
                         else if (request.EventData == null && request.Predicate != null)
                             result = await _repository.Delete(request.Predicate);
                         else
-                            result = await _repository.DeleteBy(
+                            result = _repository.DeleteBy(
                                 request.EventData,
                                 request.Predicate
                             );

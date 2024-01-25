@@ -31,9 +31,8 @@ public class RemoteCreateHandler<TStore, TDto, TModel>
             return request;
         try
         {
-            request.Contract = await _repository
-                .AddBy(request.Model, request.Predicate)
-                .ConfigureAwait(false);
+            request.Contract = _repository
+                .AddBy(request.Model, request.Predicate);                
 
             if (request.Contract == null)
                 throw new Exception(

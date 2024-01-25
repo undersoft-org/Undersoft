@@ -6,79 +6,76 @@ using Series;
 
 public partial class Repository<TEntity>
 {
-    public virtual Task<TEntity> Map<TDto>(TDto model, TEntity entity)
+    public virtual TEntity Map<TDto>(TDto model, TEntity entity)
     {
-        return Task.Run(() => Mapper.Map(model, entity), Cancellation);
+        return Mapper.Map(model, entity);
     }
 
-    public virtual Task<TDto> Map<TDto>(TEntity entity, TDto model)
+    public virtual TDto Map<TDto>(TEntity entity, TDto model)
     {
-        return Task.Run(() => Mapper.Map(entity, model), Cancellation);
+        return Mapper.Map(entity, model);
     }
 
-    public virtual Task<IList<TEntity>> Map<TDto>(
+    public virtual IList<TEntity> Map<TDto>(
         IEnumerable<TDto> model,
         IEnumerable<TEntity> entity
     )
     {
-        return Task.Run(() => (IList<TEntity>)Mapper.Map(model, entity).ToList(), Cancellation);
+        return (IList<TEntity>)Mapper.Map(model, entity).ToList();
     }
 
-    public virtual Task<IList<TDto>> Map<TDto>(
+    public virtual IList<TDto> Map<TDto>(
         IEnumerable<TEntity> entity,
         IEnumerable<TDto> model
     )
     {
-        return Task.Run(() => (IList<TDto>)(Mapper.Map(entity, model).ToList()), Cancellation);
+        return (IList<TDto>)(Mapper.Map(entity, model).ToList());
     }
 
-    public virtual Task<ISeries<TEntity>> HashMap<TDto>(
+    public virtual ISeries<TEntity> HashMap<TDto>(
         IEnumerable<TDto> model,
         IEnumerable<TEntity> entity
     )
     {
-        return Task.Run(
-            () => (ISeries<TEntity>)Mapper.Map(model, entity).ToCatalog(),
-            Cancellation
-        );
+        return (ISeries<TEntity>)Mapper.Map(model, entity).ToListing();
     }
 
-    public virtual Task<ISeries<TDto>> HashMap<TDto>(
+    public virtual ISeries<TDto> HashMap<TDto>(
         IEnumerable<TEntity> entity,
         IEnumerable<TDto> model
     )
     {
-        return Task.Run(() => (ISeries<TDto>)(Mapper.Map(entity, model).ToCatalog()), Cancellation);
+        return (ISeries<TDto>)(Mapper.Map(entity, model).ToListing());
     }
 
-    public virtual Task<TDto> MapTo<TDto>(TEntity entity)
+    public virtual TDto MapTo<TDto>(TEntity entity)
     {
-        return Task.Run(() => Mapper.Map<TEntity, TDto>(entity), Cancellation);
+        return Mapper.Map<TEntity, TDto>(entity);
     }
 
-    public virtual Task<TDto> MapTo<TDto>(object entity)
+    public virtual TDto MapTo<TDto>(object entity)
     {
-        return Task.Run(() => Mapper.Map<TDto>(entity), Cancellation);
+        return Mapper.Map<TDto>(entity);
     }
 
-    public virtual Task<TEntity> MapFrom<TDto>(TDto model)
+    public virtual TEntity MapFrom<TDto>(TDto model)
     {
-        return Task.Run(() => Mapper.Map<TDto, TEntity>(model), Cancellation);
+        return Mapper.Map<TDto, TEntity>(model);
     }
 
-    public virtual Task<TDto> MapFrom<TDto>(object model)
+    public virtual TDto MapFrom<TDto>(object model)
     {
-        return Task.Run(() => Mapper.Map<TDto>(model), Cancellation);
+        return Mapper.Map<TDto>(model);
     }
 
-    public virtual Task<IList<TDto>> MapTo<TDto>(IEnumerable<object> entity)
+    public virtual IList<TDto> MapTo<TDto>(IEnumerable<object> entity)
     {
-        return Task.Run(() => (Mapper.Map<IList<TDto>>(entity.Commit())), Cancellation);
+        return Mapper.Map<IList<TDto>>(entity.Commit());
     }
 
-    public virtual Task<IList<TDto>> MapTo<TDto>(IEnumerable<TEntity> entity)
+    public virtual IList<TDto> MapTo<TDto>(IEnumerable<TEntity> entity)
     {
-        return Task.Run(() => Mapper.Map<IList<TDto>>(entity.Commit()), Cancellation);
+        return Mapper.Map<IList<TDto>>(entity.Commit());
     }
 
     public virtual async IAsyncEnumerable<TDto> MapToAsync<TDto>(IEnumerable<TEntity> entity)
@@ -87,9 +84,9 @@ public partial class Repository<TEntity>
             yield return await Task.Run(() => Mapper.Map<TDto>(item));
     }
 
-    public virtual Task<IList<TEntity>> MapFrom<TDto>(IEnumerable<TDto> model)
+    public virtual IList<TEntity> MapFrom<TDto>(IEnumerable<TDto> model)
     {
-        return Task.Run(() => Mapper.Map<TDto[], IList<TEntity>>(model.Commit()), Cancellation);
+        return Mapper.Map<TDto[], IList<TEntity>>(model.Commit());
     }
 
     public virtual async IAsyncEnumerable<TEntity> MapFromAsync<TDto>(IEnumerable<TDto> model)
@@ -101,7 +98,7 @@ public partial class Repository<TEntity>
     public virtual Task<ISeries<TDto>> HashMapTo<TDto>(IEnumerable<object> entity)
     {
         return Task.Run(
-            () => (ISeries<TDto>)(Mapper.Map<IEnumerable<TDto>>(entity.ToArray())).ToCatalog(),
+            () => (ISeries<TDto>)(Mapper.Map<IEnumerable<TDto>>(entity.ToArray())).ToListing(),
             Cancellation
         );
     }
@@ -109,7 +106,7 @@ public partial class Repository<TEntity>
     public virtual Task<ISeries<TDto>> HashMapTo<TDto>(IEnumerable<TEntity> entity)
     {
         return Task.Run(
-            () => (ISeries<TDto>)(Mapper.Map<IEnumerable<TDto>>(entity.ToArray())).ToCatalog(),
+            () => (ISeries<TDto>)(Mapper.Map<IEnumerable<TDto>>(entity.ToArray())).ToListing(),
             Cancellation
         );
     }
@@ -121,7 +118,7 @@ public partial class Repository<TEntity>
                 (ISeries<TEntity>)
                     (
                         Mapper.Map<IEnumerable<TDto>, IEnumerable<TEntity>>(model.ToArray())
-                    ).ToRegistry(),
+                    ).ToListing(),
             Cancellation
         );
     }

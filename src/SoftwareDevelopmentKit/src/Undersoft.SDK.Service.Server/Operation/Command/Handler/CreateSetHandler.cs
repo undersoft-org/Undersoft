@@ -31,21 +31,20 @@ public class CreateSetHandler<TStore, TEntity, TDto>
         {
             IEnumerable<TEntity> entities;
             if (request.Predicate == null)
-                entities = await _repository.AddBy(request.ForOnly(d => d.IsValid, d => d.Contract));
+                entities = _repository.AddBy(request.ForOnly(d => d.IsValid, d => d.Contract));
             else
-                entities = await _repository.AddBy(
+                entities = _repository.AddBy(
                     request.ForOnly(d => d.IsValid, d => d.Contract),
                     request.Predicate
                 );
 
-            await entities
-                .ForEachAsync(
+            entities
+                .ForEach(
                     (e, x) =>
                     {
                         request[x].Entity = e;
                     }
-                )
-                .ConfigureAwait(false);
+                );               
 
             _ = _uservice
                 .Publish(new CreatedSet<TStore, TEntity, TDto>(request))

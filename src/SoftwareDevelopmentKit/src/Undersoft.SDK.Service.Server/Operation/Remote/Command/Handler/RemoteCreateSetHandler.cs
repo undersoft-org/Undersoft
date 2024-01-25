@@ -30,15 +30,15 @@ public class RemoteCreateSetHandler<TStore, TDto, TModel>
         {
             IEnumerable<TDto> entities;
             if (request.Predicate == null)
-                entities = await _repository.AddBy(request.ForOnly(d => d.IsValid, d => d.Model));
+                entities = _repository.AddBy(request.ForOnly(d => d.IsValid, d => d.Model));
             else
-                entities = await _repository.AddBy(
+                entities = _repository.AddBy(
                     request.ForOnly(d => d.IsValid, d => d.Model),
                     request.Predicate
                 );
 
-            await entities
-                .ForEachAsync(
+            entities
+                .ForEach(
                     (e, x) =>
                     {
                         request[x].Contract = e;

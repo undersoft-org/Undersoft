@@ -55,7 +55,15 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository
         IList<object> this[int skip, int take, Expression<Func<TEntity, object>> selector, Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] expanders] { get; }
         IList<object> this[int skip, int take, Expression<Func<TEntity, object>> selector, Expression<Func<TEntity, bool>> predicate, SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders] { get; }
 
+        bool HasNextPage { get; set; }
+        bool HasPreviousPage { get; set; }
+        int IndexFrom { get; set; }
+        IList<TEntity> Items { get; set; }
+        int PageIndex { get; set; }
+        int PageSize { get; set; }
         IQueryable<TEntity> Query { get; }
+        int TotalCount { get; set; }
+        int TotalPages { get; set; }
 
         IEnumerable<TEntity> Add(IEnumerable<TEntity> entity);
         IEnumerable<TEntity> Add(IEnumerable<TEntity> entities, Func<TEntity, Expression<Func<TEntity, bool>>> predicate);
@@ -64,13 +72,13 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository
         IAsyncEnumerable<TEntity> AddAsync(IAsyncEnumerable<TEntity> entity);
         IAsyncEnumerable<TEntity> AddAsync(IEnumerable<TEntity> entity);
         IAsyncEnumerable<TEntity> AddAsync(IEnumerable<TEntity> entities, Func<TEntity, Expression<Func<TEntity, bool>>> predicate);
-        Task<IEnumerable<TEntity>> AddBy<TDto>(IEnumerable<TDto> model);
-        Task<IEnumerable<TEntity>> AddBy<TDto>(IEnumerable<TDto> models, Func<TEntity, Expression<Func<TEntity, bool>>> predicate);
-        Task<TEntity> AddBy<TDto>(TDto model);
-        Task<TEntity> AddBy<TDto>(TDto model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate);
+        IEnumerable<TEntity> AddBy<TDto>(IEnumerable<TDto> model);
+        IEnumerable<TEntity> AddBy<TDto>(IEnumerable<TDto> models, Func<TEntity, Expression<Func<TEntity, bool>>> predicate);
+        TEntity AddBy<TDto>(TDto model);
+        TEntity AddBy<TDto>(TDto model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate);
         IAsyncEnumerable<TEntity> AddByAsync<TDto>(IEnumerable<TDto> model);
         IAsyncEnumerable<TEntity> AddByAsync<TDto>(IEnumerable<TDto> models, Func<TEntity, Expression<Func<TEntity, bool>>> predicate);
-
+        IPage<TEntity> AsPage(int pageIndex, int pageSize, int indexFrom = 0);
         IQueryable<TEntity> AsQueryable();
         TEntity Delete(Expression<Func<TEntity, bool>> predicate);
         IEnumerable<TEntity> Delete(IEnumerable<TEntity> entity);
@@ -83,8 +91,8 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository
         IAsyncEnumerable<TEntity> DeleteAsync(IEnumerable<TEntity> entities, Func<TEntity, Expression<Func<TEntity, bool>>> predicate);
         IEnumerable<TEntity> DeleteBy<TDto>(IEnumerable<TDto> model);
         IEnumerable<TEntity> DeleteBy<TDto>(IEnumerable<TDto> model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate);
-        Task<TEntity> DeleteBy<TDto>(TDto model);
-        Task<TEntity> DeleteBy<TDto>(TDto model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate);
+        TEntity DeleteBy<TDto>(TDto model);
+        TEntity DeleteBy<TDto>(TDto model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate);
         IAsyncEnumerable<TEntity> DeleteByAsync<TDto>(IEnumerable<TDto> model);
         IAsyncEnumerable<TEntity> DeleteByAsync<TDto>(IEnumerable<TDto> model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate);
         Task<bool> Exist(Expression<Func<TEntity, bool>> predicate);
@@ -100,19 +108,19 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository
         Task<ISeries<TEntity>> Filter(int skip, int take, SortExpression<TEntity> sortTerms);
         Task<ISeries<TEntity>> Filter(int skip, int take, SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders);
         Task<ISeries<TEntity>> Filter(IQueryable<TEntity> query);
-        Task<IList<TDto>> Filter<TDto, TResult>(int skip, int take, Expression<Func<TEntity, TResult>> selector) where TResult : class;
-        Task<IList<TDto>> Filter<TDto, TResult>(int skip, int take, Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate) where TResult : class;
-        Task<IList<TDto>> Filter<TDto, TResult>(int skip, int take, Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate, SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders) where TResult : class;
-        Task<IList<TDto>> Filter<TDto, TResult>(int skip, int take, Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, object>>[] expanders) where TResult : class;
-        Task<IList<TDto>> Filter<TDto, TResult>(int skip, int take, Expression<Func<TEntity, TResult>> selector, SortExpression<TEntity> sortTerms, Expression<Func<TEntity, bool>> predicate) where TResult : class;
+        IList<TDto> Filter<TDto, TResult>(int skip, int take, Expression<Func<TEntity, TResult>> selector) where TResult : class;
+        IList<TDto> Filter<TDto, TResult>(int skip, int take, Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate) where TResult : class;
+        IList<TDto> Filter<TDto, TResult>(int skip, int take, Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate, SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders) where TResult : class;
+        IList<TDto> Filter<TDto, TResult>(int skip, int take, Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, object>>[] expanders) where TResult : class;
+        IList<TDto> Filter<TDto, TResult>(int skip, int take, Expression<Func<TEntity, TResult>> selector, SortExpression<TEntity> sortTerms, Expression<Func<TEntity, bool>> predicate) where TResult : class;
         Task<ISeries<TDto>> Filter<TDto>(int skip, int take, Expression<Func<TEntity, bool>> predicate);
         Task<ISeries<TDto>> Filter<TDto>(int skip, int take, Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] expanders);
         Task<ISeries<TDto>> Filter<TDto>(int skip, int take, Expression<Func<TEntity, bool>> predicate, SortExpression<TEntity> sortTerms);
         Task<ISeries<TDto>> Filter<TDto>(int skip, int take, Expression<Func<TEntity, bool>> predicate, SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders);
         Task<ISeries<TDto>> Filter<TDto>(int skip, int take, SortExpression<TEntity> sortTerms);
         Task<ISeries<TDto>> Filter<TDto>(int skip, int take, SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders);
-        Task<IList<TEntity>> Filter<TDto>(IQueryable<TDto> query);
-        Task<IList<TDto>> Filter<TDto>(IQueryable<TEntity> query);
+        IList<TEntity> Filter<TDto>(IQueryable<TDto> query);
+        IList<TDto> Filter<TDto>(IQueryable<TEntity> query);
         Task<IList<TResult>> Filter<TResult>(int skip, int take, Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TResult>> selector);
         Task<IList<TResult>> Filter<TResult>(int skip, int take, Expression<Func<TEntity, bool>> predicate, SortExpression<TEntity> sortTerms, Expression<Func<TEntity, TResult>> selector, params Expression<Func<TEntity, object>>[] expanders);
         Task<IList<TResult>> Filter<TResult>(int skip, int take, Expression<Func<TEntity, TResult>> selector);
@@ -123,13 +131,13 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository
         Task<TEntity> Find(Expression<Func<TEntity, bool>> predicate, bool reverse = false, params Expression<Func<TEntity, object>>[] expanders);
         Task<TEntity> Find(object[] keys, params Expression<Func<TEntity, object>>[] expanders);
         Task<TEntity> Find(params object[] keys);
-        Task<TDto> Find<TDto, TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate) where TResult : class;
-        Task<TDto> Find<TDto, TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] expanders) where TResult : class;
-        Task<TDto> Find<TDto, TResult>(Expression<Func<TEntity, TResult>> selector, object[] keys, params Expression<Func<TEntity, object>>[] expanders) where TResult : class;
-        Task<TDto> Find<TDto>(Expression<Func<TEntity, bool>> predicate, bool reverse);
-        Task<TDto> Find<TDto>(Expression<Func<TEntity, bool>> predicate, bool reverse, params Expression<Func<TEntity, object>>[] expanders);
-        Task<TDto> Find<TDto>(object[] keys, params Expression<Func<TEntity, object>>[] expanders);
-        Task<TDto> Find<TDto>(params object[] keys);
+        TDto Find<TDto, TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate) where TResult : class;
+        TDto Find<TDto, TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] expanders) where TResult : class;
+        TDto Find<TDto, TResult>(Expression<Func<TEntity, TResult>> selector, object[] keys, params Expression<Func<TEntity, object>>[] expanders) where TResult : class;
+        TDto Find<TDto>(Expression<Func<TEntity, bool>> predicate, bool reverse);
+        TDto Find<TDto>(Expression<Func<TEntity, bool>> predicate, bool reverse, params Expression<Func<TEntity, object>>[] expanders);
+        TDto Find<TDto>(object[] keys, params Expression<Func<TEntity, object>>[] expanders);
+        TDto Find<TDto>(params object[] keys);
         Task<TResult> Find<TResult>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TResult>> selector);
         Task<TResult> Find<TResult>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TResult>> selector, params Expression<Func<TEntity, object>>[] expanders);
         Task<TResult> Find<TResult>(object[] keys, Expression<Func<TEntity, TResult>> selector, params Expression<Func<TEntity, object>>[] expanders) where TResult : class;
@@ -139,37 +147,38 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository
         Task<ISeries<TEntity>> Get(int skip, int take, SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders);
         Task<ISeries<TEntity>> Get(params Expression<Func<TEntity, object>>[] expanders);
         Task<ISeries<TEntity>> Get(SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders);
-        Task<IList<TDto>> Get<TDto, TResult>(Expression<Func<TEntity, TResult>> selector) where TResult : class;
-        Task<IList<TDto>> Get<TDto, TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, object>>[] expanders) where TResult : class;
+        IList<TDto> Get<TDto, TResult>(Expression<Func<TEntity, TResult>> selector) where TResult : class;
+        IList<TDto> Get<TDto, TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, object>>[] expanders) where TResult : class;
         Task<ISeries<TDto>> Get<TDto>(int skip, int take, params Expression<Func<TEntity, object>>[] expanders);
         Task<ISeries<TDto>> Get<TDto>(int skip, int take, SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders);
         Task<IList<TResult>> Get<TResult>(Expression<Func<TEntity, TResult>> selector);
         Task<IList<TResult>> Get<TResult>(Expression<Func<TEntity, TResult>> selector, params Expression<Func<TEntity, object>>[] expanders);
         IAsyncEnumerable<TDto> GetAsync<TDto>(int skip, int take, params Expression<Func<TEntity, object>>[] expanders) where TDto : class;
         IAsyncEnumerable<TDto> GetAsync<TDto>(int skip, int take, SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders) where TDto : class;
+        IEnumerator<TEntity> GetEnumerator();
         IQueryable<TDto> GetQuery<TDto>(params Expression<Func<TEntity, object>>[] expanders) where TDto : class;
         IQueryable<TDto> GetQuery<TDto>(SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders) where TDto : class;
+        Task<IQueryable<TDto>> GetQueryAsync<TDto>(Expression<Func<TEntity, bool>> predicate, SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders) where TDto : class;
         Task<IQueryable<TDto>> GetQueryAsync<TDto>(params Expression<Func<TEntity, object>>[] expanders) where TDto : class;
         Task<IQueryable<TDto>> GetQueryAsync<TDto>(SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders) where TDto : class;
-        Task<IQueryable<TDto>> GetQueryAsync<TDto>(Expression<Func<TEntity, bool>> predicate, SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders) where TDto : class;
-        Task<ISeries<TEntity>> HashMap<TDto>(IEnumerable<TDto> model, IEnumerable<TEntity> entity);
-        Task<ISeries<TDto>> HashMap<TDto>(IEnumerable<TEntity> entity, IEnumerable<TDto> model);
+        ISeries<TEntity> HashMap<TDto>(IEnumerable<TDto> model, IEnumerable<TEntity> entity);
+        ISeries<TDto> HashMap<TDto>(IEnumerable<TEntity> entity, IEnumerable<TDto> model);
         Task<ISeries<TEntity>> HashMapFrom<TDto>(IEnumerable<TDto> model);
         Task<ISeries<TDto>> HashMapTo<TDto>(IEnumerable<object> entity);
         Task<ISeries<TDto>> HashMapTo<TDto>(IEnumerable<TEntity> entity);
         void LoadRemoteEvent(object sender, EntityEntryEventArgs e);
-        Task<IList<TEntity>> Map<TDto>(IEnumerable<TDto> model, IEnumerable<TEntity> entity);
-        Task<IList<TDto>> Map<TDto>(IEnumerable<TEntity> entity, IEnumerable<TDto> model);
-        Task<TEntity> Map<TDto>(TDto model, TEntity entity);
-        Task<TDto> Map<TDto>(TEntity entity, TDto model);
-        Task<IList<TEntity>> MapFrom<TDto>(IEnumerable<TDto> model);
-        Task<TDto> MapFrom<TDto>(object model);
-        Task<TEntity> MapFrom<TDto>(TDto model);
+        IList<TEntity> Map<TDto>(IEnumerable<TDto> model, IEnumerable<TEntity> entity);
+        IList<TDto> Map<TDto>(IEnumerable<TEntity> entity, IEnumerable<TDto> model);
+        TEntity Map<TDto>(TDto model, TEntity entity);
+        TDto Map<TDto>(TEntity entity, TDto model);
+        IList<TEntity> MapFrom<TDto>(IEnumerable<TDto> model);
+        TDto MapFrom<TDto>(object model);
+        TEntity MapFrom<TDto>(TDto model);
         IAsyncEnumerable<TEntity> MapFromAsync<TDto>(IEnumerable<TDto> model);
-        Task<IList<TDto>> MapTo<TDto>(IEnumerable<object> entity);
-        Task<IList<TDto>> MapTo<TDto>(IEnumerable<TEntity> entity);
-        Task<TDto> MapTo<TDto>(object entity);
-        Task<TDto> MapTo<TDto>(TEntity entity);
+        IList<TDto> MapTo<TDto>(IEnumerable<object> entity);
+        IList<TDto> MapTo<TDto>(IEnumerable<TEntity> entity);
+        TDto MapTo<TDto>(object entity);
+        TDto MapTo<TDto>(TEntity entity);
         IAsyncEnumerable<TDto> MapToAsync<TDto>(IEnumerable<TEntity> entity);
         TEntity NewEntry(params object[] parameters);
         Task<bool> NotExist(Expression<Func<TEntity, bool>> predicate);
@@ -178,17 +187,28 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository
         Task<bool> NotExist(Type exceptionType, object instance, string message);
         Task<bool> NotExist<TException>(Expression<Func<TEntity, bool>> predicate, string message) where TException : Exception;
         Task<bool> NotExist<TException>(object instance, string message) where TException : Exception;
-
-        Task<IPagedSet<TDto>> PagedFilter<TDto, TResult>(Expression<Func<TEntity, TResult>> selector) where TResult : class;
-        Task<IPagedSet<TDto>> PagedFilter<TDto, TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate) where TResult : class;
-        Task<IPagedSet<TDto>> PagedFilter<TDto, TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate, SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders) where TResult : class;
-        Task<IPagedSet<TDto>> PagedFilter<TDto, TResult>(Expression<Func<TEntity, TResult>> selector, params Expression<Func<TEntity, object>>[] expanders) where TResult : class;
-
+        Task<IPagedSet<TEntity>> PagedFilter(Expression<Func<TEntity, bool>> predicate);
+        Task<IPagedSet<TEntity>> PagedFilter(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] expanders);
+        Task<IPagedSet<TEntity>> PagedFilter(Expression<Func<TEntity, bool>> predicate, SortExpression<TEntity> sortTerms);
+        Task<IPagedSet<TEntity>> PagedFilter(Expression<Func<TEntity, bool>> predicate, SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders);
+        Task<IPagedSet<TEntity>> PagedFilter(SortExpression<TEntity> sortTerms);
+        Task<IPagedSet<TEntity>> PagedFilter(SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders);
+        IPagedSet<TDto> PagedFilter<TDto, TResult>(Expression<Func<TEntity, TResult>> selector) where TResult : class;
+        IPagedSet<TDto> PagedFilter<TDto, TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate) where TResult : class;
+        IPagedSet<TDto> PagedFilter<TDto, TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate, SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders) where TResult : class;
+        IPagedSet<TDto> PagedFilter<TDto, TResult>(Expression<Func<TEntity, TResult>> selector, params Expression<Func<TEntity, object>>[] expanders) where TResult : class;
+        Task<IPagedSet<TDto>> PagedFilter<TDto>(Expression<Func<TEntity, bool>> predicate);
+        Task<IPagedSet<TDto>> PagedFilter<TDto>(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] expanders);
+        Task<IPagedSet<TDto>> PagedFilter<TDto>(Expression<Func<TEntity, bool>> predicate, SortExpression<TEntity> sortTerms);
+        Task<IPagedSet<TDto>> PagedFilter<TDto>(Expression<Func<TEntity, bool>> predicate, SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders);
+        Task<IPagedSet<TDto>> PagedFilter<TDto>(SortExpression<TEntity> sortTerms);
+        Task<IPagedSet<TDto>> PagedFilter<TDto>(SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders);
         Task<IPagedSet<TResult>> PagedFilter<TResult>(Expression<Func<TEntity, TResult>> selector) where TResult : class;
         Task<IPagedSet<TResult>> PagedFilter<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate) where TResult : class;
         Task<IPagedSet<TResult>> PagedFilter<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate, SortExpression<TEntity> sortTerms, params Expression<Func<TEntity, object>>[] expanders) where TResult : class;
         Task<IPagedSet<TResult>> PagedFilter<TResult>(Expression<Func<TEntity, TResult>> selector, params Expression<Func<TEntity, object>>[] expanders) where TResult : class;
-
+        Task<IPagedSet<TEntity>> PagedGet(params Expression<Func<TEntity, object>>[] expanders);
+        Task<IPagedSet<TDto>> PagedGet<TDto>(params Expression<Func<TEntity, object>>[] expanders);
         IEnumerable<TEntity> Patch<TModel>(IEnumerable<TModel> entities, Func<TModel, Expression<Func<TEntity, bool>>> predicate, params Expression<Func<TEntity, object>>[] expanders) where TModel : class, IOrigin;
         IEnumerable<TEntity> Patch<TModel>(IEnumerable<TModel> entities, params Expression<Func<TEntity, object>>[] expanders) where TModel : class, IOrigin;
         Task<TEntity> Patch<TModel>(TModel delta) where TModel : class, IOrigin;
@@ -229,8 +249,10 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository
         IAsyncEnumerable<TEntity> SetByAsync<TDto>(IEnumerable<TDto> entity) where TDto : class, IOrigin;
         IAsyncEnumerable<TEntity> SetByAsync<TDto>(IEnumerable<TDto> models, Func<TDto, Expression<Func<TEntity, bool>>> predicate, params Func<TDto, Expression<Func<TEntity, bool>>>[] conditions) where TDto : class, IOrigin;
         TEntity Sign(TEntity entity);
+        T Sign<T>(T entity) where T : IUniqueIdentifiable;
         IQueryable<TEntity> Sort(IQueryable<TEntity> query, SortExpression<TEntity> sortTerms);
         TEntity Stamp(TEntity entity);
+        T Stamp<T>(T entity) where T : IUniqueIdentifiable;
         TEntity Update(TEntity entity);
     }
 }

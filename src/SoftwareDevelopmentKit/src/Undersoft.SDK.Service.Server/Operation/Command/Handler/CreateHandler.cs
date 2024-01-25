@@ -32,9 +32,8 @@ public class CreateHandler<TStore, TEntity, TDto>
             return request;
         try
         {
-            request.Entity = await _repository
-                .AddBy(request.Contract, request.Predicate)
-                .ConfigureAwait(false);
+            request.Entity = _repository
+                .AddBy(request.Contract, request.Predicate);
 
             if (request.Entity == null)
                 throw new Exception(
