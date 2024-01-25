@@ -61,13 +61,13 @@ public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel, TServ
     [EnableQuery]
     public virtual IQueryable<TModel> Get()
     {
-        return _servicer.Send(new RemoteGetQuery<TStore, TDto, TModel>()).Result;
+        return _servicer.Report(new RemoteGetQuery<TStore, TDto, TModel>()).Result;
     }
 
     [EnableQuery]
     public virtual async Task<UniqueOne<TModel>> Get([FromRoute] TKey key)
     {
-        return new UniqueOne<TModel>(await _servicer.Send(new RemoteFindQuery<TStore, TDto, TModel>(_keymatcher(key))));
+        return new UniqueOne<TModel>(await _servicer.Report(new RemoteFindQuery<TStore, TDto, TModel>(_keymatcher(key))));
     }
 
     public virtual async Task<IActionResult> Post([FromBody] TModel dto)
@@ -76,7 +76,7 @@ public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel, TServ
 
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var result = await _servicer.Execute(new RemoteCreateSet<TStore, TDto, TModel>
+        var result = await _servicer.Entry(new RemoteCreateSet<TStore, TDto, TModel>
                                                 (_publishMode, new[] { dto }))
                                                     .ConfigureAwait(false);
 
@@ -96,7 +96,7 @@ public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel, TServ
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Execute(new RemoteChangeSet<TStore, TDto, TModel>
+        var result = await _servicer.Entry(new RemoteChangeSet<TStore, TDto, TModel>
                                               (_publishMode, new[] { dto }, _predicate))
                                                  .ConfigureAwait(false);
 
@@ -117,7 +117,7 @@ public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel, TServ
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Execute(new RemoteUpdateSet<TStore, TDto, TModel>
+        var result = await _servicer.Entry(new RemoteUpdateSet<TStore, TDto, TModel>
                                                     (_publishMode, new[] { dto }, _predicate))
                                                         .ConfigureAwait(false);
 
@@ -136,7 +136,7 @@ public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel, TServ
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Execute(new RemoteDeleteSet<TStore, TDto, TModel>
+        var result = await _servicer.Entry(new RemoteDeleteSet<TStore, TDto, TModel>
                                                              (_publishMode, key))
                                                                     .ConfigureAwait(false);
 

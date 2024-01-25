@@ -23,7 +23,7 @@
         public Argument(string name, string typeName, int position = 0) { Set(name, Assemblies.FindType(typeName)); }
 
         public Argument(ParameterInfo info) { Set(info); }
-
+         
         public string Name { get; set; }
 
         public object Value { get; set; }

@@ -10,7 +10,8 @@ using Undersoft.SDK.Service.Server.Operation.Invocation;
 
 [OpenService]
 public abstract class OpenServiceController<TStore, TService, TModel>
-    : ODataController, IOpenServiceController<TStore, TService, TModel>
+    : ODataController,
+        IOpenServiceController<TStore, TService, TModel>
     where TModel : class, IDataObject, new()
     where TService : class
     where TStore : IDataServerStore
@@ -25,45 +26,48 @@ public abstract class OpenServiceController<TStore, TService, TModel>
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Access([FromBody]
-       ODataActionParameters arguments
-    )
+    public virtual async Task<IActionResult> Access([FromBody] ODataActionParameters arguments)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Execute(
-            new Action<TStore, TService, TModel>(arguments["Name"].ToString(), new Arguments((Dictionary<string, object>)arguments))
+        var result = await _servicer.Perform(
+            new Action<TStore, TService, TModel>(
+                arguments["Name"].ToString(),
+                new Arguments((Dictionary<string, object>)arguments)
+            )
         );
 
         return (!result.IsValid ? BadRequest(result.ErrorMessages) : Ok(result.Response));
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Action([FromBody]
-       ODataActionParameters arguments
- )
+    public virtual async Task<IActionResult> Action([FromBody] ODataActionParameters arguments)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Execute(
-            new Action<TStore, TService, TModel>(arguments["Name"].ToString(), new Arguments((Dictionary<string, object>)arguments))
+        var result = await _servicer.Perform(
+            new Action<TStore, TService, TModel>(
+                arguments["Name"].ToString(),
+                new Arguments((Dictionary<string, object>)arguments)
+            )
         );
 
         return (!result.IsValid ? BadRequest(result.ErrorMessages) : Ok(result.Response));
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Setup([FromBody]
-       ODataActionParameters arguments
-)
+    public virtual async Task<IActionResult> Setup([FromBody] ODataActionParameters arguments)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Send(
-            new Action<TStore, TService, TModel>(arguments["Name"].ToString(), new Arguments((Dictionary<string, object>)arguments))
+        var result = await _servicer.Perform(
+            new Action<TStore, TService, TModel>(
+                arguments["Name"].ToString(),
+                new Arguments((Dictionary<string, object>)arguments)
+            )
         );
 
         return (!result.IsValid ? BadRequest(result.ErrorMessages) : Ok(result.Response));

@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Undersoft.SDK.Service.Server.Controller.Crud;
 using Undersoft.SDK.Service.Server.Controller.Open;
 using Undersoft.SDK.Service.Server.Controller.Stream;
-
 
 namespace Undersoft.SSC.Service.Server.Controllers
 {
@@ -14,20 +12,16 @@ namespace Undersoft.SSC.Service.Server.Controllers
     {
         public ServiceController(IServicer ultimatr) : base(ultimatr) { }
     }
-}
 
-namespace Undersoft.SSC.Service.Server.Controllers
-{
+
     [Route($"{StoreRoutes.ApiDataRoute}/Service")]
     public class ServicesController
         : ApiCqrsController<long, IEntryStore, IReportStore, Domain.Entities.Service, Contracts.Service, ServiceManager>
     {
         public ServicesController(IServicer ultimatr) : base(ultimatr) { }
     }
-}
 
-namespace Undersoft.SSC.Service.Server.Controllers
-{
+
     public class ServiceStreamController
         : StreamDataController<long, IEntryStore, IReportStore, Domain.Entities.Service, Contracts.Service>
     {

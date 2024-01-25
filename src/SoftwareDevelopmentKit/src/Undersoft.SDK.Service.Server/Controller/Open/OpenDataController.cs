@@ -57,13 +57,13 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
     [EnableQuery]
     public virtual async Task<IQueryable<TDto>> Get()
     {
-        return await _servicer.Send(new GetQuery<TStore, TEntity, TDto>(Transformations));
+        return await _servicer.Report(new GetQuery<TStore, TEntity, TDto>(Transformations));
     }
 
     [EnableQuery]
     public virtual async Task<UniqueOne<TDto>> Get([FromRoute] TKey key)
     {
-        return new UniqueOne<TDto>(await _servicer.Send(new FindQuery<TStore, TEntity, TDto>(_keymatcher(key)) { Processings = Transformations }));
+        return new UniqueOne<TDto>(await _servicer.Report(new FindQuery<TStore, TEntity, TDto>(_keymatcher(key)) { Processings = Transformations }));
     }
 
     public virtual async Task<IActionResult> Post(TDto dto)
@@ -72,7 +72,7 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Execute(new Create<TStore, TEntity, TDto>(_publishMode, dto) { Processings = Transformations });
+            .Entry(new Create<TStore, TEntity, TDto>(_publishMode, dto) { Processings = Transformations });
 
         return !result.IsValid ? UnprocessableEntity(result.ErrorMessages.ToArray()) : Created(result.Id as object);
     }
@@ -85,7 +85,7 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
         _keysetter(key).Invoke(dto);
 
         var result = await _servicer
-            .Execute(new Change<TStore, TEntity, TDto>(_publishMode, dto, _predicate) { Processings = Transformations });
+            .Entry(new Change<TStore, TEntity, TDto>(_publishMode, dto, _predicate) { Processings = Transformations });
 
         return !result.IsValid ? UnprocessableEntity(result.ErrorMessages.ToArray()) : Updated(result.Id as object);
     }
@@ -98,7 +98,7 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
         _keysetter(key).Invoke(dto);
 
         var result = await _servicer
-            .Execute(new Update<TStore, TEntity, TDto>(_publishMode, dto, _predicate) { Processings = Transformations });
+            .Entry(new Update<TStore, TEntity, TDto>(_publishMode, dto, _predicate) { Processings = Transformations });
 
         return !result.IsValid ? UnprocessableEntity(result.ErrorMessages.ToArray()) : Updated(result.Id as object);
     }
@@ -109,7 +109,7 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Execute(new Delete<TStore, TEntity, TDto>(_publishMode, key) { Processings = Transformations });
+            .Entry(new Delete<TStore, TEntity, TDto>(_publishMode, key) { Processings = Transformations });
 
         return !result.IsValid ? UnprocessableEntity(result.ErrorMessages.ToArray()) : Ok(result.Id as object);
     }  

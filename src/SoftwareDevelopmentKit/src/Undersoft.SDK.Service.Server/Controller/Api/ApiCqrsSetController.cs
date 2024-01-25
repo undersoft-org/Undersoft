@@ -49,7 +49,7 @@ public class ApiCqrsSetController<TKey, TEntry, TReport, TEntity, TDto, TService
     {
         return Ok(
             await _servicer
-                .Send(new Get<TReport, TEntity, TDto>((page - 1) * limit, limit))
+                .Report(new Get<TReport, TEntity, TDto>((page - 1) * limit, limit))
                 .ConfigureAwait(true)
         );
     }
@@ -73,7 +73,7 @@ public class ApiCqrsSetController<TKey, TEntry, TReport, TEntity, TDto, TService
 
         return Ok(
             await _servicer
-                .Execute(
+                .Entry(
                     new Filter<TReport, TEntity, TDto>(
                         0,
                         0,
@@ -94,7 +94,7 @@ public class ApiCqrsSetController<TKey, TEntry, TReport, TEntity, TDto, TService
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Execute(
+            .Entry(
                 new CreateSet<TEntry, TEntity, TDto>(_publishMode, dtos)
                 {
                     Processings = Transformations
@@ -117,7 +117,7 @@ public class ApiCqrsSetController<TKey, TEntry, TReport, TEntity, TDto, TService
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Execute(
+            .Entry(
                 new ChangeSet<TEntry, TEntity, TDto>(_publishMode, dtos, _predicate)
                 {
                     Processings = Transformations
@@ -139,7 +139,7 @@ public class ApiCqrsSetController<TKey, TEntry, TReport, TEntity, TDto, TService
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Execute(
+            .Entry(
                 new UpdateSet<TEntry, TEntity, TDto>(_publishMode, dtos, _predicate)
                 {
                     Processings = Transformations
@@ -162,7 +162,7 @@ public class ApiCqrsSetController<TKey, TEntry, TReport, TEntity, TDto, TService
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Execute(
+            .Entry(
                 new DeleteSet<TEntry, TEntity, TDto>(_publishMode, dtos)
                 {
                     Processings = Transformations

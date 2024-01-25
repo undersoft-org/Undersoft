@@ -6,7 +6,7 @@ using Undersoft.SDK.Service.Data.Object.Detail;
 
 namespace Undersoft.SSC.Service.Contracts;
 
-public class Account : InnerProxy, IDataObject, IContract
+public class Account : InnerProxy, IDataObject, IContract, IAuthorization
 {
     public AccounUser? User { get; set; }
 

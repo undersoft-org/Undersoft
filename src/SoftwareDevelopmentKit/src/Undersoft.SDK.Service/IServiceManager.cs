@@ -17,7 +17,6 @@ namespace Undersoft.SDK.Service
         IServiceProvider AddPropertyInjection();
         IServiceProvider BuildInternalProvider(bool withPropertyInjection = false);
         IServiceProviderFactory<IServiceCollection> BuildServiceProviderFactory(IServiceRegistry registry);
-        ValueTask DisposeAsyncCore();
         T EnsureGetRootService<T>() where T : class;
         IServiceConfiguration GetConfiguration();
         T GetObject<T>() where T : class;
@@ -42,9 +41,9 @@ namespace Undersoft.SDK.Service
         IServiceManager GetManager();
         object GetSingleton(Type type);
         T GetSingleton<T>() where T : class;
-        ObjectFactory NewFactory(Type instanceType, Type[] constrTypes);
-        ObjectFactory NewFactory<T>(Type[] constrTypes);
+        ObjectFactory CreateFactory(Type instanceType, Type[] constrTypes);
+        ObjectFactory CreateFactory<T>(Type[] constrTypes);
         T NewRootService<T>(params object[] parameters) where T : class;
-        IServiceScope NewSession();
+        IServiceScope CreateSession();
     }
 }

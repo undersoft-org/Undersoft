@@ -42,14 +42,14 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
     [EnableQuery]
     public override async Task<IQueryable<TDto>> Get()
     {
-        return await _servicer.Send(new GetQuery<TReport, TEntity, TDto>());
+        return await _servicer.Report(new GetQuery<TReport, TEntity, TDto>());
     }
 
     [EnableQuery]
     public override async Task<UniqueOne<TDto>> Get([FromRoute] TKey key)
     {
         return new UniqueOne<TDto>(
-            await _servicer.Send(new FindQuery<TReport, TEntity, TDto>(_keymatcher(key)))
+            await _servicer.Report(new FindQuery<TReport, TEntity, TDto>(_keymatcher(key)))
         );
     }
 
@@ -58,7 +58,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Execute(new Create<TEntry, TEntity, TDto>(_publishMode, dto));
+        var result = await _servicer.Entry(new Create<TEntry, TEntity, TDto>(_publishMode, dto));
 
         return !result.IsValid
             ? UnprocessableEntity(result.ErrorMessages.ToArray())
@@ -72,7 +72,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Execute(
+        var result = await _servicer.Entry(
             new Change<TEntry, TEntity, TDto>(_publishMode, dto, _predicate)
         );
 
@@ -88,7 +88,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Execute(
+        var result = await _servicer.Entry(
             new Update<TEntry, TEntity, TDto>(_publishMode, dto, _predicate)
         );
 
@@ -102,7 +102,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Execute(new Delete<TEntry, TEntity, TDto>(_publishMode, key));
+        var result = await _servicer.Entry(new Delete<TEntry, TEntity, TDto>(_publishMode, key));
 
         return !result.IsValid
             ? UnprocessableEntity(result.ErrorMessages.ToArray())

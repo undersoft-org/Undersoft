@@ -11,7 +11,6 @@ using Undersoft.SSC.Service.Contracts.Base;
 namespace Undersoft.SSC.Service.Application.Server.Controllers
 {
     [AllowAnonymous]
-    [ODataRouteComponent(StoreRoutes.OpenDataRoute)]
     public class MemberIdentifierController
         : OpenCqrsController<
             long,
@@ -24,10 +23,8 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
     {
         public MemberIdentifierController(IServicer ultimatr) : base(ultimatr) { }
     }
-}
 
-namespace Undersoft.SSC.Service.Application.Server.Controllers
-{
+
     public class MemberIdentifiersController
         : ApiCqrsController<
             long,

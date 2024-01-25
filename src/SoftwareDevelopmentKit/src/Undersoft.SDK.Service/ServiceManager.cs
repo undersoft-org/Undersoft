@@ -205,9 +205,7 @@ namespace Undersoft.SDK.Service
 
         public IServiceProvider AddPropertyInjection()
         {
-            var _provider = registry.GetProvider();
-            if (_provider == null)
-                _provider = GetRegistry().BuildServiceProviderFromFactory<IServiceCollection>();
+            var _provider = GetProvider() ?? GetRegistry().BuildServiceProviderFromFactory<IServiceCollection>();
 
             SetProvider(_provider.AddPropertyInjection());
 
@@ -216,13 +214,7 @@ namespace Undersoft.SDK.Service
 
         public IServiceProvider GetProvider()
         {
-            if (provider == null)
-            {
-                provider = registry.GetProvider();
-                if (provider == null)
-                    provider = BuildInternalProvider();
-            }
-            return provider;
+            return provider ??= registry.GetProvider() ?? BuildInternalProvider();
         }
 
         public IServiceProviderFactory<IServiceCollection> GetProviderFactory()
@@ -240,12 +232,12 @@ namespace Undersoft.SDK.Service
             return GetRootObject<IServiceProviderFactory<IServiceCollection>>();
         }
 
-        public ObjectFactory NewFactory<T>(Type[] constrTypes)
+        public ObjectFactory CreateFactory<T>(Type[] constrTypes)
         {
             return ActivatorUtilities.CreateFactory(typeof(T), constrTypes);
         }
 
-        public ObjectFactory NewFactory(Type instanceType, Type[] constrTypes)
+        public ObjectFactory CreateFactory(Type instanceType, Type[] constrTypes)
         {
             return ActivatorUtilities.CreateFactory(instanceType, constrTypes);
         }
@@ -280,17 +272,15 @@ namespace Undersoft.SDK.Service
 
         public IServiceScope GetSession()
         {
-            if (session == null)
-                session = GetProvider().CreateScope();
-            return session;
+            return session ??= CreateSession();
         }
 
-        public IServiceScope NewSession()
+        public IServiceScope CreateSession()
         {
-            return GetProvider().CreateScope();
+            return CreateScope();
         }
 
-        public static IServiceScope NewRootSession()
+        public static IServiceScope CreateRootSession()
         {
             return GetRootProvider().CreateScope();
         }
@@ -321,10 +311,8 @@ namespace Undersoft.SDK.Service
         }
 
         public IServiceRegistry GetRegistry(IServiceCollection services)
-        {
-            if (registry == null)
-                return new ServiceManager(services).Registry;
-            return registry;
+        {           
+            return registry ??= new ServiceManager(services).Registry; 
         }
 
         public static IServiceConfiguration GetRootConfiguration()
@@ -357,7 +345,7 @@ namespace Undersoft.SDK.Service
                 if (session != null)
                     session.Dispose();
 
-            })).ConfigureAwait(false);
+            }));
         }
     }
 }

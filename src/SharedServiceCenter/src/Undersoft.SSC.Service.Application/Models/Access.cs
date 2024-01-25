@@ -4,7 +4,7 @@ using Undersoft.SDK.Security.Identity;
 namespace Undersoft.SSC.Service.Application.Models
 {
     [Serializable]
-    public class Account : Origin, IInnerProxy, IAuthorization
+    public class Access : DataObject, IInnerProxy, IAuthorization
     {
         public void Map(object user)
         {

@@ -57,7 +57,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
     public virtual async Task<IActionResult> Get([FromHeader] int page, [FromHeader] int limit)
     {
         return Ok(
-            await _servicer.Send(new Get<TStore, TEntity, TDto>((page - 1) * limit, limit)).ConfigureAwait(true)
+            await _servicer.Report(new Get<TStore, TEntity, TDto>((page - 1) * limit, limit)).ConfigureAwait(true)
         );
     }
 
@@ -72,8 +72,8 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
     {
         Task<TDto> query =
             _keymatcher == null
-                ? _servicer.Send(new Find<TStore, TEntity, TDto>(key) {  Processings = Transformations })
-                : _servicer.Send(new Find<TStore, TEntity, TDto>(_keymatcher(key)));
+                ? _servicer.Report(new Find<TStore, TEntity, TDto>(key) {  Processings = Transformations })
+                : _servicer.Report(new Find<TStore, TEntity, TDto>(_keymatcher(key)));
 
         return Ok(await query.ConfigureAwait(false));
     } 
@@ -91,7 +91,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
 
         return Ok(
             await _servicer
-                .Execute(
+                .Entry(
                     new Filter<TStore, TEntity, TDto>(0, 0,
                         new FilterExpression<TEntity>(query.FilterItems).Create(),
                         new SortExpression<TEntity>(query.SortItems)
@@ -109,7 +109,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Execute(new CreateSet<TStore, TEntity, TDto>
+        var result = await _servicer.Entry(new CreateSet<TStore, TEntity, TDto>
                                                     (_publishMode, dtos)).ConfigureAwait(false);
 
         object[] response = result.ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
@@ -127,7 +127,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Execute(new CreateSet<TStore, TEntity, TDto>
+        var result = await _servicer.Entry(new CreateSet<TStore, TEntity, TDto>
                                                 (_publishMode, new[] { dto }))
                                                     .ConfigureAwait(false);
 
@@ -147,7 +147,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Execute(new ChangeSet<TStore, TEntity, TDto>
+        var result = await _servicer.Entry(new ChangeSet<TStore, TEntity, TDto>
                                                                 (_publishMode, dtos, _predicate))
                                                                     .ConfigureAwait(false);
         var response = result.ForEach(c => (isValid = c.IsValid)
@@ -167,7 +167,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Execute(new ChangeSet<TStore, TEntity, TDto>
+        var result = await _servicer.Entry(new ChangeSet<TStore, TEntity, TDto>
                                               (_publishMode, new[] { dto }, _predicate))
                                                  .ConfigureAwait(false);
 
@@ -187,7 +187,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Execute(new UpdateSet<TStore, TEntity, TDto>
+        var result = await _servicer.Entry(new UpdateSet<TStore, TEntity, TDto>
                                                                     (_publishMode, dtos, _predicate))
                                                                                 .ConfigureAwait(false);
 
@@ -206,7 +206,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Execute(new UpdateSet<TStore, TEntity, TDto>
+        var result = await _servicer.Entry(new UpdateSet<TStore, TEntity, TDto>
                                                     (_publishMode, new[] { dto }, _predicate))
                                                         .ConfigureAwait(false);
 
@@ -226,7 +226,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Execute(new DeleteSet<TStore, TEntity, TDto>
+        var result = await _servicer.Entry(new DeleteSet<TStore, TEntity, TDto>
                                                             (_publishMode, dtos))
                                                              .ConfigureAwait(false);
 
@@ -248,7 +248,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Execute(new DeleteSet<TStore, TEntity, TDto>
+        var result = await _servicer.Entry(new DeleteSet<TStore, TEntity, TDto>
                                                              (_publishMode, new[] { dto }))
                                                                     .ConfigureAwait(false);
 

@@ -34,7 +34,7 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Execute(
+        var result = await _servicer.Entry(
             new RemoteAction<TStore, TService, TDto>(arguments["Name"].ToString(), new Arguments((Dictionary<string, object>)arguments))
         );
 
@@ -49,7 +49,7 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Execute(
+        var result = await _servicer.Entry(
             new RemoteAction<TStore, TService, TDto>(arguments["Name"].ToString(), new Arguments((Dictionary<string, object>)arguments))
         );
 
@@ -64,7 +64,7 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Send(
+        var result = await _servicer.Report(
             new RemoteAction<TStore, TService, TDto>(arguments["Name"].ToString(), new Arguments((Dictionary<string, object>)arguments))
         );
 

@@ -3,7 +3,7 @@ using Undersoft.SDK.Security.Identity;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
 
-public class AccountService : IAccountAction
+public class AccountService : IAccountAccess
 {
     private IServicer _servicer;
     private IAccountManager _manager;

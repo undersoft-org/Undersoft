@@ -20,10 +20,7 @@ namespace Undersoft.SSC.Service.Server.Controllers
     {
         public MemberController(IServicer ultimatr) : base(ultimatr) { }
     }
-}
 
-namespace Undersoft.SSC.Service.Server.Controllers
-{
     [AllowAnonymous]
     [Route($"{StoreRoutes.ApiDataRoute}/Member")]
     public class MembersController
@@ -38,10 +35,7 @@ namespace Undersoft.SSC.Service.Server.Controllers
     {
         public MembersController(IServicer ultimatr) : base(ultimatr) { }
     }
-}
 
-namespace Undersoft.SSC.Service.Server.Controllers
-{
     public class MemberStreamController
         : StreamDataController<
             long,

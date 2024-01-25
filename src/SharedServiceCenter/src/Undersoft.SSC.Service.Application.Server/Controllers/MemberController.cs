@@ -9,7 +9,6 @@ using Undersoft.SDK.Service.Server.Controller.Stream;
 namespace Undersoft.SSC.Service.Application.Server.Controllers
 {
     [AllowAnonymous]
-    [ODataRouteComponent(StoreRoutes.OpenDataRoute)]
     public class MemberController
         : OpenCqrsController<
             long,
@@ -21,10 +20,8 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
     {
         public MemberController(IServicer ultimatr) : base(ultimatr) { }
     }
-}
 
-namespace Undersoft.SSC.Service.Application.Server.Controllers
-{
+
     [AllowAnonymous]
     public class MembersController
         : ApiCqrsController<
@@ -37,10 +34,8 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
     {
         public MembersController(IServicer ultimatr) : base(ultimatr) { }
     }
-}
 
-namespace Undersoft.SSC.Service.Application.Server.Controllers
-{
+
     namespace Undersoft.SSC.Service.Server.Controllers
     {
         public class MemberStreamController

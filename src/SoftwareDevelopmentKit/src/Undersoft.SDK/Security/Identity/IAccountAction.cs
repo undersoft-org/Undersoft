@@ -2,7 +2,7 @@
 
 namespace Undersoft.SDK.Security.Identity
 {
-    public interface IAccountAction
+    public interface IAccountAccess
     {
         Task<IAuthorization> CompleteRegistration(IAuthorization account);
         Task<IAuthorization> ConfirmEmail(IAuthorization account);

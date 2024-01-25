@@ -8,7 +8,6 @@ using Undersoft.SDK.Service.Server.Controller.Open;
 namespace Undersoft.SSC.Service.Application.Server.Controllers
 {
     [AllowAnonymous]
-    [ODataRouteComponent(StoreRoutes.OpenDataRoute)]
     public class ServiceController
         : OpenCqrsController<
             long,
@@ -21,10 +20,8 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
     {
         public ServiceController(IServicer ultimatr) : base(ultimatr) { }
     }
-}
 
-namespace Undersoft.SSC.Service.Application.Server.Controllers
-{
+
     public class ServicesController
         : ApiCqrsController<
             long,

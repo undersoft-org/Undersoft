@@ -36,10 +36,9 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel>
     ) : this(servicer, null, k => e => e.SetId(k), null, publishMode) { }
 
     protected ApiDataRemoteController(
-       IServicer servicer,
-       Func<TModel, Expression<Func<TDto, bool>>> predicate) : this(servicer, predicate, k => e => e.SetId(k), null, EventPublishMode.PropagateCommand)
-    {
-    }
+        IServicer servicer,
+        Func<TModel, Expression<Func<TDto, bool>>> predicate
+    ) : this(servicer, predicate, k => e => e.SetId(k), null, EventPublishMode.PropagateCommand) { }
 
     protected ApiDataRemoteController(
         IServicer servicer,
@@ -56,10 +55,10 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel>
     }
 
     [HttpGet]
-    public virtual async Task<IActionResult> Get()
+    public virtual async Task<IActionResult> Get([FromHeader] int page, [FromHeader] int limit)
     {
         return Ok(
-            await _servicer.Send(new RemoteGet<TStore, TDto, TModel>(0, 0)).ConfigureAwait(true)
+            await _servicer.Report(new RemoteGet<TStore, TDto, TModel>((page - 1) * limit, limit))
         );
     }
 
@@ -74,24 +73,14 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel>
     {
         Task<TModel> query =
             _keymatcher == null
-                ? _servicer.Send(new RemoteFind<TStore, TDto, TModel>(key))
-                : _servicer.Send(new RemoteFind<TStore, TDto, TModel>(_keymatcher(key)));
+                ? _servicer.Report(new RemoteFind<TStore, TDto, TModel>(key))
+                : _servicer.Report(new RemoteFind<TStore, TDto, TModel>(_keymatcher(key)));
 
         return Ok(await query.ConfigureAwait(false));
     }
 
-    [HttpGet("{offset}/{limit}")]
-    public virtual async Task<IActionResult> Get(int offset, int limit)
-    {
-        return Ok(
-            await _servicer
-                .Send(new RemoteGet<TStore, TDto, TModel>(offset, limit))
-                .ConfigureAwait(true)
-        );
-    }
-
-    [HttpPost("query/{offset}/{limit}")]
-    public virtual async Task<IActionResult> Post(int offset, int limit, QuerySet query)
+    [HttpPost("query")]
+    public virtual async Task<IActionResult> Post([FromBody] QuerySet query)
     {
         query.FilterItems.ForEach(
             (fi) =>
@@ -103,10 +92,10 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel>
 
         return Ok(
             await _servicer
-                .Execute(
+                .Entry(
                     new RemoteFilter<TStore, TDto, TModel>(
-                        offset,
-                        limit,
+                        0,
+                        0,
                         new FilterExpression<TDto>(query.FilterItems).Create(),
                         new SortExpression<TDto>(query.SortItems)
                     )
@@ -124,7 +113,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel>
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Execute(new RemoteCreateSet<TStore, TDto, TModel>(_publishMode, dtos))
+            .Entry(new RemoteCreateSet<TStore, TDto, TModel>(_publishMode, dtos))
             .ConfigureAwait(false);
 
         object[] response = result
@@ -144,7 +133,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel>
         _keysetter(key).Invoke(dto);
 
         var result = await _servicer
-            .Execute(new RemoteCreateSet<TStore, TDto, TModel>(_publishMode, new[] { dto }))
+            .Entry(new RemoteCreateSet<TStore, TDto, TModel>(_publishMode, new[] { dto }))
             .ConfigureAwait(false);
 
         var response = result
@@ -162,7 +151,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel>
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Execute(new RemoteChangeSet<TStore, TDto, TModel>(_publishMode, dtos, _predicate))
+            .Entry(new RemoteChangeSet<TStore, TDto, TModel>(_publishMode, dtos, _predicate))
             .ConfigureAwait(false);
         var response = result
             .ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
@@ -181,7 +170,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel>
         _keysetter(key).Invoke(dto);
 
         var result = await _servicer
-            .Execute(
+            .Entry(
                 new RemoteChangeSet<TStore, TDto, TModel>(_publishMode, new[] { dto }, _predicate)
             )
             .ConfigureAwait(false);
@@ -201,7 +190,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel>
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Execute(new RemoteUpdateSet<TStore, TDto, TModel>(_publishMode, dtos, _predicate))
+            .Entry(new RemoteUpdateSet<TStore, TDto, TModel>(_publishMode, dtos, _predicate))
             .ConfigureAwait(false);
 
         var response = result
@@ -221,7 +210,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel>
         _keysetter(key).Invoke(dto);
 
         var result = await _servicer
-            .Execute(
+            .Entry(
                 new RemoteUpdateSet<TStore, TDto, TModel>(_publishMode, new[] { dto }, _predicate)
             )
             .ConfigureAwait(false);
@@ -241,7 +230,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel>
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Execute(new RemoteDeleteSet<TStore, TDto, TModel>(_publishMode, dtos))
+            .Entry(new RemoteDeleteSet<TStore, TDto, TModel>(_publishMode, dtos))
             .ConfigureAwait(false);
 
         var response = result
@@ -261,7 +250,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel>
         _keysetter(key).Invoke(dto);
 
         var result = await _servicer
-            .Execute(new RemoteDeleteSet<TStore, TDto, TModel>(_publishMode, new[] { dto }))
+            .Entry(new RemoteDeleteSet<TStore, TDto, TModel>(_publishMode, new[] { dto }))
             .ConfigureAwait(false);
 
         var response = result

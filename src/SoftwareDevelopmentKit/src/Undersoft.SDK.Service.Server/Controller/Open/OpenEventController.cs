@@ -49,14 +49,14 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto>
     [EnableQuery]
     public virtual IQueryable<TDto> Get()
     {
-        return _servicer.Send(new GetQuery<TStore, TEntity, TDto>()).Result;
+        return _servicer.Report(new GetQuery<TStore, TEntity, TDto>()).Result;
     }
 
     [EnableQuery]
     public virtual async Task<UniqueOne<TDto>> Get([FromRoute] TKey key)
     {
         return new UniqueOne<TDto>(
-            await _servicer.Send(new FindQuery<TStore, TEntity, TDto>(_keymatcher(key)))
+            await _servicer.Report(new FindQuery<TStore, TEntity, TDto>(_keymatcher(key)))
         );
     }
 
@@ -68,7 +68,7 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto>
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Execute(new CreateSet<TStore, TEntity, TDto>(_publishMode, new[] { dto }))
+            .Entry(new CreateSet<TStore, TEntity, TDto>(_publishMode, new[] { dto }))
             .ConfigureAwait(false);
 
         var response = result
@@ -87,7 +87,7 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto>
         _keysetter(key).Invoke(dto);
 
         var result = await _servicer
-            .Execute(new ChangeSet<TStore, TEntity, TDto>(_publishMode, new[] { dto }, _predicate))
+            .Entry(new ChangeSet<TStore, TEntity, TDto>(_publishMode, new[] { dto }, _predicate))
             .ConfigureAwait(false);
 
         var response = result
@@ -106,7 +106,7 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto>
         _keysetter(key).Invoke(dto);
 
         var result = await _servicer
-            .Execute(new UpdateSet<TStore, TEntity, TDto>(_publishMode, new[] { dto }, _predicate))
+            .Entry(new UpdateSet<TStore, TEntity, TDto>(_publishMode, new[] { dto }, _predicate))
             .ConfigureAwait(false);
 
         var response = result
@@ -123,7 +123,7 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto>
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Execute(new DeleteSet<TStore, TEntity, TDto>(_publishMode, key))
+            .Entry(new DeleteSet<TStore, TEntity, TDto>(_publishMode, key))
             .ConfigureAwait(false);
 
         var response = result

@@ -1,7 +1,7 @@
 ﻿@page "/account/signin"
-@inject IRemoteRepository<IDataStore, Authorization> _repository
-@inject IAuthenticationStateService _authService
-@inject NavigationManager navigationManager
+@inject IRemoteRepository<IAccountStore, Account> _repository
+@inject IAuthenticationStateService _service
+@inject NavigationManager _navigation
 
 @using Undersoft.SDK.Invoking;
 @using Undersoft.SDK.Service.Client;
@@ -9,22 +9,22 @@
 
 <h3>Sign in</h3>
 
-<EditForm Model="auth" OnValidSubmit="Authorize">
+<EditForm Model="account" OnValidSubmit="Access">
     <DataAnnotationsValidator />
 
     <div class="form-group">
         <label>Email:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@auth.Credentials.Email" />
-            <ValidationMessage For="@(() => auth.Credentials.Email)" />
+            <InputText class="form-control" @bind-Value="@account.Credentials.Email" />
+            <ValidationMessage For="@(() => account.Credentials.Email)" />
         </div>
     </div>
 
     <div class="form-group">
         <label>Password:</label>
         <div>
-            <InputText type="password" class="form-control" @bind-Value="@auth.Credentials.Password" />
-            <ValidationMessage For="@(() => auth.Credentials.Password)" />
+            <InputText type="password" class="form-control" @bind-Value="@account.Credentials.Password" />
+            <ValidationMessage For="@(() => account.Credentials.Password)" />
         </div>
     </div>
 
@@ -32,15 +32,15 @@
 </EditForm>
 
 @code {
-    private Authorization auth = new Authorization();
+    private Account account = new Account();
 
-    private async Task Authorize()
+    private async Task Access()
     {
-            auth = (await _repository.Action<IAccountAction>(a => a.SignIn, new Argument(nameof(Authorization), auth)));
+        account = (await _repository.Action<IAccountAccess>(a => a.SignIn, new Argument(nameof(Account), account)));
 
-        if (auth != null)
-            await _authService.SignIn(auth);
+        if (account != null)
+            await _service.SignIn(account);
 
-        navigationManager.NavigateTo("");
+        _navigation.NavigateTo("");
     }
 }

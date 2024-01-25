@@ -45,7 +45,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
     public override async Task<IActionResult> Get([FromHeader] int page, [FromHeader] int limit)
     {
         return Ok(
-            await _servicer.Send(new Get<TReport, TEntity, TDto>((page - 1) * limit, limit)).ConfigureAwait(true)
+            await _servicer.Report(new Get<TReport, TEntity, TDto>((page - 1) * limit, limit)).ConfigureAwait(true)
         );
     }
 
@@ -60,8 +60,8 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
     {
         Task<TDto> query =
             _keymatcher == null
-                ? _servicer.Send(new Find<TReport, TEntity, TDto>(key))
-                : _servicer.Send(new Find<TReport, TEntity, TDto>(_keymatcher(key)));
+                ? _servicer.Report(new Find<TReport, TEntity, TDto>(key))
+                : _servicer.Report(new Find<TReport, TEntity, TDto>(_keymatcher(key)));
 
         return Ok(await query.ConfigureAwait(false));
     }
@@ -79,7 +79,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
 
         return Ok(
             await _servicer
-                .Send(
+                .Report(
                     new Filter<TReport, TEntity, TDto>(0, 0,
                         new FilterExpression<TEntity>(query.FilterItems).Create(),
                         new SortExpression<TEntity>(query.SortItems)
@@ -97,7 +97,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Execute(new CreateSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Entry(new CreateSet<TEntry, TEntity, TDto>
                                                     (_publishMode, dtos)).ConfigureAwait(false);
 
         object[] response = result.ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
@@ -115,7 +115,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Execute(new CreateSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Entry(new CreateSet<TEntry, TEntity, TDto>
                                                 (_publishMode, new[] { dto }))
                                                     .ConfigureAwait(false);
 
@@ -135,7 +135,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Execute(new ChangeSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Entry(new ChangeSet<TEntry, TEntity, TDto>
                                                                 (_publishMode, dtos, _predicate))
                                                                     .ConfigureAwait(false);
         var response = result.ForEach(c => (isValid = c.IsValid)
@@ -155,7 +155,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Execute(new ChangeSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Entry(new ChangeSet<TEntry, TEntity, TDto>
                                               (_publishMode, new[] { dto }, _predicate))
                                                  .ConfigureAwait(false);
 
@@ -175,7 +175,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Execute(new UpdateSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Entry(new UpdateSet<TEntry, TEntity, TDto>
                                                                     (_publishMode, dtos, _predicate))
                                                                                 .ConfigureAwait(false);
 
@@ -194,7 +194,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Execute(new UpdateSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Entry(new UpdateSet<TEntry, TEntity, TDto>
                                                     (_publishMode, new[] { dto }, _predicate))
                                                         .ConfigureAwait(false);
 
@@ -214,7 +214,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Execute(new DeleteSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Entry(new DeleteSet<TEntry, TEntity, TDto>
                                                             (_publishMode, dtos))
                                                              .ConfigureAwait(false);
 
@@ -236,7 +236,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Execute(new DeleteSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Entry(new DeleteSet<TEntry, TEntity, TDto>
                                                              (_publishMode, new[] { dto }))
                                                                     .ConfigureAwait(false);
 

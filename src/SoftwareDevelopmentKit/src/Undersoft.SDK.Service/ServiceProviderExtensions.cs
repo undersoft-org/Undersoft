@@ -10,8 +10,10 @@ namespace Undersoft.SDK.Service
     {
         public static IServiceProvider AddPropertyInjection(this IServiceProvider provider)
         {
-            var field = typeof(ServiceProvider).GetField("_createServiceAccessor",
-                            BindingFlags.Instance | BindingFlags.NonPublic);
+            var field = typeof(ServiceProvider).GetField(
+                "_createServiceAccessor",
+                BindingFlags.Instance | BindingFlags.NonPublic
+            );
             var accessor = (Delegate)field.GetValue(provider);
             var newAccessor = (Type type) =>
             {
@@ -30,22 +32,19 @@ namespace Undersoft.SDK.Service
 
         private static void InjectProperties(IServiceProvider provider, Type type, object service)
         {
-            if (service is null) return;
-            var propInfos = service.GetType()
+            if (service is null)
+                return;
+            service
+                .GetType()
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public)
                 .Where(p => p.GetCustomAttribute<InjectAttribute>() != null)
-                .ToList();
-            foreach (var propInfo in propInfos)
-            {
-                var instance = provider.GetService(propInfo.PropertyType);
-                propInfo.SetValue(service, instance);
-            }
+                .ForEach(prop => prop.SetValue(service, provider.GetService(prop.PropertyType)));
         }
 
         public static async Task LoadDataServiceModels(this IServiceProvider provider)
         {
             var sm = provider.GetService<IServiceManager>();
-            foreach(var client in sm.GetClients())
+            foreach (var client in sm.GetClients())
             {
                 var model = await client.BuildMetadata();
             }
@@ -55,7 +54,7 @@ namespace Undersoft.SDK.Service
 
         public static async Task<IServiceProvider> UseDataServices(this IServiceProvider provider)
         {
-            await provider.LoadDataServiceModels();            
+            await provider.LoadDataServiceModels();
             return provider;
         }
     }

@@ -13,18 +13,14 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
     {
         public EventController(IServicer ultimatr) : base(ultimatr) { }
     }
-}
 
-namespace Undersoft.SSC.Service.Server.Controllers
-{
+
     public class EventsController : ApiEventController<long, IEventStore, Event, Event>
     {
         public EventsController(IServicer ultimatr) : base(ultimatr) { }
     }
-}
 
-namespace Undersoft.SSC.Service.Server.Controllers
-{
+
     public class EventStreamController
         : StreamEventController<long, IEventStore, Event, Event>
     {
