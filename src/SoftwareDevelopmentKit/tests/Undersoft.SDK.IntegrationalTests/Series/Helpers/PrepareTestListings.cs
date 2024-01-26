@@ -3,9 +3,25 @@ namespace System.Series.Tests
     using Undersoft.SDK.Uniques;
     using System;
     using System.Collections.Generic;
+    using Undersoft.SDK.IntegrationTests.Instant;
 
     public static class PrepareTestListings
     {
+        public static IList<Agreement> prepareIdentifiableObjectTestCollection()
+        {
+            List<Agreement> list = new List<Agreement>();
+            string now = DateTime.Now.ToString() + "_prepareStringKeyTestCollection";
+            long max = uint.MaxValue + 250000L;
+            for (long i = uint.MaxValue; i < max; i++)
+            {
+                string str = i.ToString() + "_" + now;
+                var obj = new Agreement() { Id = str.UniqueKey(), Label = str };
+                list.Add(obj);
+            }
+            return list;
+        }
+
+
         public static IList<KeyValuePair<object, string>> prepareIdentifierKeyTestCollection()
         {
             List<KeyValuePair<object, string>> list = new List<KeyValuePair<object, string>>();

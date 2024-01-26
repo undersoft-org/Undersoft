@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using Undersoft.SDK.Instant.Attributes;
 using Undersoft.SDK.Instant.Rubrics.Attributes;
+using Undersoft.SDK.Logging;
 using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK
@@ -29,27 +30,27 @@ namespace Undersoft.SDK
         [Column(TypeName = "timestamp", Order = 6)]
         [DataMember(Order = 6)]
         [InstantAs(UnmanagedType.I8, SizeConst = 8)]
-        public virtual DateTime Modified { get; set; } = DateTime.Now;
+        public virtual DateTime Modified { get; set; } = Log.Clock;
 
         [IdentityRubric]
         [StringLength(32)]
         [Column(Order = 7)]
         [DataMember(Order = 7)]
         [InstantAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-        public virtual string Modifier { get; set; }
+        public virtual string Modifier { get; set; } = "None";
 
         [IdentityRubric]
         [Column(TypeName = "timestamp", Order = 8)]
         [DataMember(Order = 8)]
         [InstantAs(UnmanagedType.I8, SizeConst = 8)]
-        public virtual DateTime Created { get; set; }
+        public virtual DateTime Created { get; set; } = Log.Clock;
 
         [IdentityRubric]
         [StringLength(32)]
         [Column(Order = 9)]
         [DataMember(Order = 9)]
         [InstantAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-        public virtual string Creator { get; set; }
+        public virtual string Creator { get; set; } = "None";
 
         [DataMember(Order = 10)]
         [Column(Order = 10)]
@@ -60,7 +61,7 @@ namespace Undersoft.SDK
         [StringLength(32)]
         [DataMember(Order = 11)]
         [InstantAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-        public virtual string Label { get; set; }
+        public virtual string Label { get; set; } = "None";
 
         public virtual TEntity Sign<TEntity>(TEntity entity = null) where TEntity : class, IOrigin
         {

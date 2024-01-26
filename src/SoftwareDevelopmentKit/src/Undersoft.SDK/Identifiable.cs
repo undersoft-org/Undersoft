@@ -57,14 +57,24 @@ namespace Undersoft.SDK
         [Column(Order = 2)]
         public virtual long TypeId
         {
-            get =>
-                code.TypeId == 0
-                    ? code.SetTypeId(GetType().UniqueKey32())
-                    : code.TypeId;
+            get
+            {
+                if (code.TypeId == 0)
+                {
+                    var t = GetType();
+                    TypeName = t.FullName;
+                    code.SetTypeId(TypeName.UniqueKey32());
+                }
+                return code.TypeId;
+            }
             set
             {
                 if (value != 0 && value != code.TypeId)
-                    code.SetTypeId(GetType().UniqueKey32());
+                {
+                    var t = GetType();
+                    TypeName = t.FullName;
+                    code.SetTypeId(TypeName.UniqueKey32());
+                }
             }
         }
 

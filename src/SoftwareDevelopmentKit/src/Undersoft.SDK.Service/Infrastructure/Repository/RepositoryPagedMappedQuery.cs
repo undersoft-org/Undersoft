@@ -617,6 +617,16 @@ public partial class Repository<TEntity>
         return HashMapTo<TDto>(this[skip, take, sortTerms, expanders]);
     }
 
+    public virtual IEnumerable<TDto> GetYield<TDto>(
+    int skip,
+    int take,
+    SortExpression<TEntity> sortTerms,
+    params Expression<Func<TEntity, object>>[] expanders
+)
+    {
+        return YieldMapTo<TDto>(this[skip, take, sortTerms, expanders]);
+    }
+
     public virtual IQueryable<TDto> GetQuery<TDto>(
         params Expression<Func<TEntity, object>>[] expanders
     ) where TDto : class

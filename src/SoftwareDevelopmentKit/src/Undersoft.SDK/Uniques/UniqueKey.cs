@@ -118,7 +118,7 @@ public class UniqueKey32 : UniqueKey
 
     public override Int64 Key(IIdentifiable obj, long seed)
     {
-        return Key(obj.Id.GetBytes(), seed);
+        return obj.Id.UniqueKey32(seed);
     }
 
     public override Int64 Key(Object obj, long seed = 0)
@@ -228,7 +228,9 @@ public class UniqueKey64 : UniqueKey
 
     public override Int64 Key(IIdentifiable obj, long seed)
     {
-        return ComputeKey(obj.Id.GetBytes(), seed);
+        if (obj.TypeId != seed)
+            obj.TypeId = seed;
+        return obj.Id.UniqueKey64(seed);
     }
 
     public override Int64 Key(Object obj, long seed = 0)
@@ -353,7 +355,7 @@ public abstract class UniqueKey : IUniqueKey
     {
         if (obj.TypeId != seed)
             obj.TypeId = seed;
-        return unique.ComputeKey(obj.Id.GetBytes(), seed);
+        return obj.Id.UniqueKey64(seed);
     }
 
     public virtual Int64 Key(Object obj, long seed = 0)

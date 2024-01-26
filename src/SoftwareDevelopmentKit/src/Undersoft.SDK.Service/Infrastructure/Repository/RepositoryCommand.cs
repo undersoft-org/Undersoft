@@ -5,6 +5,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository;
 using Instant.Updating;
 using Series;
 using Undersoft.SDK;
+using Undersoft.SDK.Service.Data.Entity;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 public abstract partial class Repository<TEntity>
@@ -182,8 +183,7 @@ public abstract partial class Repository<TEntity>
         return _entity;
     }
 
-    public virtual async Task<TEntity> Set<TModel>(TModel entity)
-        where TModel : class, IOrigin
+    public virtual async Task<TEntity> Set<TModel>(TModel entity) where TModel : class, IOrigin
     {
         if (entity.Id == 0)
             return null;
@@ -212,9 +212,7 @@ public abstract partial class Repository<TEntity>
         {
             if (deck.TryGet(model.Id, out TEntity entity))
             {
-                yield return InnerSet(
-                    (TEntity)model.PatchTo(entity.Proxy, PatchingEvent).Target
-                );
+                yield return InnerSet((TEntity)model.PatchTo(entity.Proxy, PatchingEvent).Target);
             }
         }
     }
@@ -331,9 +329,7 @@ public abstract partial class Repository<TEntity>
             }
             yield return await Task.Run(
                 () =>
-                    InnerSet(
-                        ((TEntity)entity.PutTo(deck.Get(entity).Proxy, PatchingEvent).Target)
-                    )
+                    InnerSet(((TEntity)entity.PutTo(deck.Get(entity).Proxy, PatchingEvent).Target))
             );
         }
     }
@@ -364,8 +360,7 @@ public abstract partial class Repository<TEntity>
         }
     }
 
-    public virtual async Task<TEntity> Patch<TModel>(TModel delta)
-        where TModel : class, IOrigin
+    public virtual async Task<TEntity> Patch<TModel>(TModel delta) where TModel : class, IOrigin
     {
         if (delta.Id == 0)
             return null;
@@ -382,7 +377,7 @@ public abstract partial class Repository<TEntity>
     {
         var items = entities.ForEach(e => cache.Lookup<TEntity>(e.Id)).Where(e => e != null);
         if (items.Any())
-            ((DataStoreContext)InnerContext).AttachRange(items);
+            ((IDataStoreContext)InnerContext).AttachRange(items);
         return items;
     }
 
@@ -401,14 +396,13 @@ public abstract partial class Repository<TEntity>
     {
         ISeries<TEntity> deck = null;
         if (expanders.Any())
-            deck = this[
-                Query.WhereIn(p => p.Id, entities.Select(e => e.Id)),
-                expanders
-            ].ToCatalog();
+        {
+            deck = this[Query.WhereIn(p => p.Id, entities.Select(e => e.Id)), expanders].ToChain();
+        }
         else
         {
-            var dtos = entities.ToCatalog();
-            deck = lookup<TModel>(entities).ToCatalog();
+            var dtos = entities.ToChain();
+            deck = lookup<TModel>(entities).ToChain();
             if (deck.Count < dtos.Count)
                 deck.Add(
                     this[
@@ -419,16 +413,10 @@ public abstract partial class Repository<TEntity>
                     ]
                 );
         }
-
-        foreach (var entity in entities)
-        {
-            if (deck.TryGet(entity.Id, out TEntity _entity))
-            {
-                yield return InnerSet(
-                    (TEntity)entity.PatchTo(_entity.Proxy, PatchingEvent).Target
-                );
-            }
-        }
+        return entities.ForOnly(
+            entity => deck.ContainsKey(entity.Id),
+            entity => InnerSet((TEntity)entity.PatchTo(deck[entity.Id].Proxy, PatchingEvent).Target)
+        );
     }
 
     public virtual Task<TEntity> Patch<TModel>(TModel delta, params object[] keys)
@@ -566,8 +554,7 @@ public abstract partial class Repository<TEntity>
         {
             if (deck.TryGet(entity.Id, out TEntity _entity))
                 yield return await Task.Run(
-                    () =>
-                        InnerSet(((TEntity)entity.PatchTo(_entity.Proxy, PatchingEvent).Target))
+                    () => InnerSet(((TEntity)entity.PatchTo(_entity.Proxy, PatchingEvent).Target))
                 );
         }
     }
@@ -630,9 +617,7 @@ public abstract partial class Repository<TEntity>
 
             if (deck.TryGet(entity.Id, out TEntity settin))
             {
-                yield return InnerSet(
-                    (TEntity)entity.PutTo(settin.Proxy, PatchingEvent).Target
-                );
+                yield return InnerSet((TEntity)entity.PutTo(settin.Proxy, PatchingEvent).Target);
             }
             else
                 yield return Add(entity);

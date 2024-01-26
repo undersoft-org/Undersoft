@@ -43,10 +43,10 @@ public class ChangeSetHandler<TStore, TEntity, TDto>
                 .ForEachAsync(
                     (e) =>
                     {
-                        request[e.Id].Entity = e;
+                        var item = request.Get(e.Id);
+                        item.Entity = e;
                     }
-                )
-                .ConfigureAwait(false);
+                );
 
             _ = _servicer
                 .Publish(new ChangedSet<TStore, TEntity, TDto>(request))

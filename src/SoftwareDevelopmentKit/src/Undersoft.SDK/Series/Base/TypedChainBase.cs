@@ -158,7 +158,7 @@
 
         protected override bool InnerAdd(V value)
         {
-            long key = unique.Key((long)value.Id, (long)value.TypeId);
+            long key = unique.Key(value, value.TypeId);
 
             ulong pos = getPosition(key);
 
@@ -302,7 +302,7 @@
 
         protected override ISeriesItem<V> InnerPut(V value)
         {
-            long key = unique.Key((long)value.Id, (long)value.TypeId);
+            long key = unique.Key(value, value.TypeId);
 
             ulong pos = getPosition(key);
 

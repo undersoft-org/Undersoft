@@ -9,6 +9,7 @@ using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class GetAsync<TStore, TEntity, TDto> : Get<TStore, TEntity, TDto>, IStreamRequest<TDto>
+    where TDto : class
     where TEntity : class, IDataObject
     where TStore : IDataServerStore
 {

@@ -9,6 +9,7 @@ using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class Get<TStore, TEntity, TDto> : Query<TStore, TEntity, ISeries<TDto>>
+    where TDto : class
     where TEntity : class, IDataObject
     where TStore : IDataServerStore
 {

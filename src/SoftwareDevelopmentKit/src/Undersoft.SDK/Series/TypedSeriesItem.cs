@@ -7,7 +7,7 @@
 
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public class TypedSeriesItem<V> : SeriesItemBase<V>
+    public class TypedSeriesItem<V> : SeriesItemBase<V> where V : IIdentifiable
     {
         private long _key;
 
@@ -34,7 +34,7 @@
 
         public override int CompareTo(object other)
         {
-            return (int)(Id - other.UniqueKey64(TypeId));
+            return (int)(Id - other.UniqueKey64(value.TypeId));
         }
 
         public override int CompareTo(long key)
@@ -79,14 +79,13 @@
         public override void Set(object key, V value)
         {
             this.value = value;
-            _key = key.UniqueKey64(TypeId);
+            _key = key.UniqueKey64();
         }
 
         public override void Set(V value)
         {
             this.value = value;
-            if (this.value is IUnique)
-                _key = ((IUnique<V>)value).Id;
+            _key = value.Id.UniqueKey64(value.TypeId);
         }
     }
 }

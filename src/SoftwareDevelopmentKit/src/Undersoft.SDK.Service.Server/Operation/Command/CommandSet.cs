@@ -8,7 +8,7 @@ using Series;
 using Undersoft.SDK.Service.Data.Event;
 
 public class CommandSet<TDto>
-    : Registry<Command<TDto>>,
+    : Catalog<Command<TDto>>,
         IRequest<CommandSet<TDto>>,
         ICommandSet<TDto> where TDto : class, IDataObject
 {
@@ -16,7 +16,7 @@ public class CommandSet<TDto>
 
     public EventPublishMode PublishMode { get; set; }
 
-    protected CommandSet() : base(true) { }
+    protected CommandSet() : base() { }
 
     protected CommandSet(CommandMode commandMode) : base()
     {

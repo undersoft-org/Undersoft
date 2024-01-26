@@ -93,7 +93,7 @@
             return obj.UniqueBytes32().ToInt32();
         }
 
-        public static Int32 GetHashCode(this IUnique obj)
+        public static Int32 GetHashCode(this IIdentifiable obj)
         {
             return obj.UniqueBytes32().ToInt32();
         }
@@ -561,10 +561,13 @@
 
             var t = obj.GetType();
 
-            if (t.IsAssignableTo(typeof(IOrigin)))
-                return (long)((IOrigin)obj).Id;
+            if (t == typeof(Int64) && seed == 0)
+                return (long)obj;
 
-            if (t.IsAssignableTo(typeof(IUnique)))
+            if (t.IsAssignableTo(typeof(IIdentifiable)) && seed == 0)
+                return (long)((IIdentifiable)obj).Id;
+
+            if (t.IsAssignableTo(typeof(IUnique)) && seed == 0)
                 return ((IUnique)obj).Id;
 
             if (t.IsValueType)

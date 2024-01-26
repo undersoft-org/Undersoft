@@ -7,6 +7,7 @@ namespace System.Series.Tests
     using System.Series;
     using System.Threading;
     using Xunit;
+    using Undersoft.SDK.IntegrationTests.Instant;
 
     public class RegistryTestHelper
     {
@@ -25,6 +26,8 @@ namespace System.Series.Tests
         public IList<KeyValuePair<object, string>> longKeyTestCollection { get; set; }
 
         public ISeries<string> registry { get; set; }
+
+        public ITypedSeries<Agreement> typedRegistry { get; set; }
 
         public IList<KeyValuePair<object, string>> stringKeyTestCollection { get; set; }
 

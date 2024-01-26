@@ -428,4 +428,14 @@ public unsafe struct Usid
     {
         return 0;
     }
+
+    public bool Equals(IIdentifiable other)
+    {
+        throw new NotImplementedException();
+    }
+
+    public int CompareTo(IIdentifiable other)
+    {
+        throw new NotImplementedException();
+    }
 }

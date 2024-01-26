@@ -427,8 +427,8 @@
 
             var t = obj.GetType();
 
-            if (t.IsAssignableTo(typeof(IUnique)))
-                return ((IUnique)obj).UniqueBytes32().ToInt32();
+            if (t.IsAssignableTo(typeof(IIdentifiable)))
+                return ((IIdentifiable)obj).UniqueBytes32().ToInt32();
 
             if (t.IsValueType)
                 return getValueTypeUniqueKey32((ValueType)obj, seed);

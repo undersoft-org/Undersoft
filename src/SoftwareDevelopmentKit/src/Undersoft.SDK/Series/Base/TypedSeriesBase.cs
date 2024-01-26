@@ -263,7 +263,7 @@
             if (key is IUnique)
             {
                 IUnique ukey = (IUnique)key;
-                return InnerGet(unique.Key(ukey, ukey.TypeId));
+                return InnerGet(unique.Key(ukey.Id, ukey.TypeId));
             }
             else
                 throw new NotSupportedException();
@@ -1382,7 +1382,7 @@
         protected virtual int IndexOf(long key, V value)
         {
             var item = GetItem(key);
-            if (ValueEquals(item.Value, value))
+            if (item != null && ValueEquals(item.Value, value))
                 return item.Index;
             return -1;
         }

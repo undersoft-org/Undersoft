@@ -103,9 +103,14 @@ public partial class Repository<TEntity>
         );
     }
 
+    public virtual IEnumerable<TDto> YieldMapTo<TDto>(IEnumerable<TEntity> entities)
+    {
+        return entities.ForEach(e => Mapper.Map<TDto>(e));
+    }
+
     public virtual Task<ISeries<TDto>> HashMapTo<TDto>(IEnumerable<TEntity> entity)
     {
-        return Task.Run(() => (ISeries<TDto>)(Mapper.Map<IEnumerable<TDto>>(entity.ToArray())).ToChain(), Cancellation);
+        return Task.Run(() => (ISeries<TDto>)(Mapper.Map<Listing<TDto>>(entity.ToArray())), Cancellation);
     }
 
     public virtual Task<ISeries<TEntity>> HashMapFrom<TDto>(IEnumerable<TDto> model)

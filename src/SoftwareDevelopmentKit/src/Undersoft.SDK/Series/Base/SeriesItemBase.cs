@@ -62,7 +62,7 @@
 
         public virtual bool IsUnique
         {
-            get => isUnique ??= typeof(V).IsAssignableTo(typeof(IUnique));
+            get => isUnique ??= typeof(V).IsAssignableTo(typeof(IIdentifiable));
             set => isUnique = value;
         }
 
@@ -76,8 +76,8 @@
         {
             get
             {
-                if (IsUnique && (((IUnique)value).TypeId != 0))
-                    return ((IUnique)value).TypeId;
+                if ((((IIdentifiable)value).TypeId != 0))
+                    return ((IIdentifiable)value).TypeId;
 
                 return typeof(V).UniqueKey32();
             }
@@ -85,7 +85,7 @@
             {
                 if (IsUnique)
                 {
-                    ((IUnique)this.value).TypeId = value;
+                    ((IIdentifiable)this.value).TypeId = value;
                 }
             }
         }
@@ -209,6 +209,16 @@
         public virtual IEnumerator<ISeriesItem<V>> GetEnumerator()
         {
             return new SeriesItemSubEnumerator<V>(this);
+        }
+
+        public bool Equals(IIdentifiable other)
+        {
+            return Id == other.Id && TypeId == other.TypeId;
+        }
+
+        public int CompareTo(IIdentifiable other)
+        {
+            return (int)((Id - other.Id) - (TypeId - other.TypeId));
         }
     }
 }
