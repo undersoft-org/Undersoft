@@ -6,6 +6,7 @@ using Undersoft.SDK.Service.Infrastructure.Repository;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class FindHandler<TStore, TEntity, TDto> : IRequestHandler<Find<TStore, TEntity, TDto>, TDto>
+    where TDto : class
     where TEntity : class, IDataObject
     where TStore : IDataServerStore
 {

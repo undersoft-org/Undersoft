@@ -101,9 +101,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Index")
-                        .IsUnique();
-
                     b.ToTable("Events", "domain");
                 });
 #pragma warning restore 612, 618

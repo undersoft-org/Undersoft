@@ -36,6 +36,7 @@ public class Startup
             .AddDataServer<IEntityStore>(
                 DataServerTypes.All,
                 builder => builder.AddInvocations<Contracts.Member>()
+                                  .AddInvocations<Identifier<Contracts.Member>>()
                                   .AddInvocations<Contracts.Service>()
             )
             .AddDataServer<IAccountStore>(

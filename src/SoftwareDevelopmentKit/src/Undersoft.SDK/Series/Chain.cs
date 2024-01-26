@@ -26,7 +26,7 @@ public class Chain<V> : ChainBase<V>
     }
 
     public Chain(IEnumerable<V> collection, int capacity = 9, HashBits bits = HashBits.bit64)
-     : this(capacity > collection.Count() ? capacity : (int)(collection.Count() * 1.5), bits)
+     : this(capacity, bits)
     {
         foreach (var c in collection)
             this.Add(c);

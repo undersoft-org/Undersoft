@@ -13,7 +13,7 @@ using Undersoft.SSC.Service.Infrastructure.Stores;
 namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 {
     [DbContext(typeof(ReportStore))]
-    [Migration("20240121032754_InitialCreate")]
+    [Migration("20240126093608_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -2793,9 +2793,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
                     b.HasIndex("DefaultId");
 
-                    b.HasIndex("Index")
-                        .IsUnique();
-
                     b.ToTable("Activities", "domain");
                 });
 
@@ -2868,9 +2865,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
                     b.HasIndex("DefaultId");
 
-                    b.HasIndex("Index")
-                        .IsUnique();
-
                     b.ToTable("Applications", "domain");
                 });
 
@@ -2931,9 +2925,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnOrder(5);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Index")
-                        .IsUnique();
 
                     b.ToTable("Defaults", "domain");
                 });
@@ -3002,14 +2993,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnOrder(2);
 
                     b.Property<string>("TypeName")
-                        .HasColumnType("text");
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(5);
 
                     b.HasKey("Id");
 
                     b.HasIndex("DefaultId");
-
-                    b.HasIndex("Index")
-                        .IsUnique();
 
                     b.ToTable("Details", "domain");
                 });
@@ -3160,7 +3150,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Property<long?>("LocationId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Action")
+                    b.Property<string>("Method")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Modified")
@@ -3179,7 +3169,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
-                    b.Property<string[]>("Arguments")
+                    b.Property<string[]>("Parameters")
                         .HasColumnType("text[]");
 
                     b.Property<int?>("Port")
@@ -3393,9 +3383,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
                     b.HasIndex("DefaultId");
 
-                    b.HasIndex("Index")
-                        .IsUnique();
-
                     b.ToTable("Members", "domain");
                 });
 
@@ -3467,9 +3454,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasKey("Id");
 
                     b.HasIndex("DefaultId");
-
-                    b.HasIndex("Index")
-                        .IsUnique();
 
                     b.ToTable("Resources", "domain");
                 });
@@ -3543,9 +3527,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
                     b.HasIndex("DefaultId");
 
-                    b.HasIndex("Index")
-                        .IsUnique();
-
                     b.ToTable("Schedules", "domain");
                 });
 
@@ -3617,9 +3598,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasKey("Id");
 
                     b.HasIndex("DefaultId");
-
-                    b.HasIndex("Index")
-                        .IsUnique();
 
                     b.ToTable("Services", "domain");
                 });
@@ -3693,9 +3671,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.HasKey("Id");
 
                     b.HasIndex("DefaultId");
-
-                    b.HasIndex("Index")
-                        .IsUnique();
 
                     b.ToTable("Settings", "domain");
                 });

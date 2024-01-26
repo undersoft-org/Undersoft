@@ -458,7 +458,7 @@ public abstract partial class Repository<TEntity>
             if (predicate != null)
                 entity = this[false, predicate(delta)];
             else
-                entity = this[delta.Id];
+                entity = this[new object[] { delta.Id }];
 
             if (entity != null)
             {

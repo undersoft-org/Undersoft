@@ -17,7 +17,7 @@ public class Servicer : ServiceManager, IServicer, IMediator
 
     public Servicer(IServiceManager serviceManager) : base(serviceManager) { }
    
-    protected IMediator Mediator => mediator ??= GetService<IMediator>();
+    protected IMediator Mediator => mediator ??= Session.ServiceProvider.GetService<IMediator>();
 
     public IAsyncEnumerable<TResponse> CreateStream<TResponse>(
         IStreamRequest<TResponse> request,
@@ -91,17 +91,26 @@ public class Servicer : ServiceManager, IServicer, IMediator
 
     public async Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
     {
-        return await Serve<IMediator, TResponse>((m) => m.Send(request, cancellationToken));
+        using (var servicer = new Servicer(Manager))
+        {
+            return await servicer.Mediator.Send(request, cancellationToken);
+        }
     }
 
     public async Task<object> Send(object request, CancellationToken cancellationToken = default)
     {
-        return await Serve<IMediator, object>((m) => m.Send(request, cancellationToken));
+        using (var servicer = new Servicer(Manager))
+        {
+           return await servicer.Mediator.Send(request, cancellationToken);
+        }
     }
 
     public async Task Publish(object notification, CancellationToken cancellationToken = default)
     {
-        await Serve<IMediator>(async (m) => await m.Publish(notification, cancellationToken));
+        using (var servicer = new Servicer(Manager))
+        {
+            await servicer.Mediator.Publish(notification, cancellationToken);
+        }
     }
 
     public async Task Publish<TNotification>(
@@ -109,57 +118,60 @@ public class Servicer : ServiceManager, IServicer, IMediator
         CancellationToken cancellationToken = default
     ) where TNotification : INotification
     {
-        await Serve<IMediator>(async (m) => await m.Publish(notification, cancellationToken));
+        using (var servicer = new Servicer(Manager))
+        {
+            await servicer.Mediator.Publish(notification, cancellationToken);
+        }
     }
 
     public async Task<TResponse> Report<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
     {
-        return await Mediator.Send(request, cancellationToken);
+        return await GetService<IMediator>().Send(request, cancellationToken);
     }
 
     public async Task<object> Report(object request, CancellationToken cancellationToken = default)
     {
-        return await Mediator.Send(request, cancellationToken);
+        return await GetService<IMediator>().Send(request, cancellationToken);
     }
 
     public async Task<TResponse> Entry<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
     {
-        return await Serve<IMediator, TResponse>((m) => m.Send(request, cancellationToken));
+        return await Mediator.Send(request, cancellationToken);
     }
 
     public async Task<object> Entry(object request, CancellationToken cancellationToken = default)
     {
-        return await Serve<IMediator, object>((m) => m.Send(request, cancellationToken));
+        return await Mediator.Send(request, cancellationToken);
     }
 
     public async Task<TResponse> Perform<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
     {
-        return await Serve<IMediator, TResponse>((m) => m.Send(request, cancellationToken));
+        return await Send(request, cancellationToken);
     }
 
     public async Task<object> Perform(object request, CancellationToken cancellationToken = default)
     {
-        return await Serve<IMediator, object>((m) => m.Send(request, cancellationToken));
+        return await Send(request, cancellationToken);
     }
 
     public async Task<R> Serve<T, R>(Func<T, Task<R>> function) where T : class
     {
-        return await Task.Run(() =>
+        return await Task.Run(async () =>
         {
             using (var session = CreateSession())
             {
-                return function.Invoke(session.ServiceProvider.GetService<T>());
+                return await function.Invoke(session.ServiceProvider.GetService<T>());
             }
         });
     }
 
     public async Task Serve<T>(Func<T, Task> function) where T : class
     {
-        await Task.Run(() =>
+        await Task.Run(async () =>
         {
             using (var session = CreateSession())
             {
-                function.Invoke(session.ServiceProvider.GetService<T>());
+               await function.Invoke(session.ServiceProvider.GetService<T>());
             }
         });
     }

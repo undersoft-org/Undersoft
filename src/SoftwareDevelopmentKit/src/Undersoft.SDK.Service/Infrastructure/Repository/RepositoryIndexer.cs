@@ -88,15 +88,15 @@ public abstract partial class Repository<TEntity>
 
     public virtual ISeries<TEntity> this[int skip, int take, SortExpression<TEntity> sortTerms] =>
         (take > 0)
-            ? this[sortTerms].Skip(skip).Take(take).ToRegistry()
-            : this[sortTerms].ToRegistry();
+            ? this[sortTerms].Skip(skip).Take(take).ToChain()
+            : this[sortTerms].ToChain();
 
     public virtual ISeries<TEntity> this[int skip, int take, Expression<
         Func<TEntity, bool>
     > predicate] =>
         (take > 0)
-            ? this[predicate].Skip(skip).Take(take).ToRegistry()
-            : this[predicate].ToRegistry();
+            ? this[predicate].Skip(skip).Take(take).ToChain()
+            : this[predicate].ToChain();
 
     public virtual IList<object> this[int skip, int take, Expression<
         Func<TEntity, object>
@@ -107,8 +107,8 @@ public abstract partial class Repository<TEntity>
         Func<TEntity, object>
     >[] expanders] =>
         (take > 0)
-            ? this[expanders].Skip(skip).Take(take).ToRegistry()
-            : this[expanders].ToRegistry();
+            ? this[expanders].Skip(skip).Take(take).ToChain()
+            : this[expanders].ToChain();
 
     public virtual IList<object> this[int skip, int take, Expression<
         Func<TEntity, object>
@@ -141,15 +141,15 @@ public abstract partial class Repository<TEntity>
         Func<TEntity, bool>
     > predicate, SortExpression<TEntity> sortTerms] =>
         (take > 0)
-            ? this[predicate, sortTerms].Skip(skip).Take(take).ToRegistry()
-            : this[predicate, sortTerms].ToRegistry();
+            ? this[predicate, sortTerms].Skip(skip).Take(take).ToChain()
+            : this[predicate, sortTerms].ToChain();
 
     public virtual ISeries<TEntity> this[int skip, int take, Expression<
         Func<TEntity, bool>
     > predicate, params Expression<Func<TEntity, object>>[] expanders] =>
         (take > 0)
-            ? this[predicate, expanders].Skip(skip).Take(take).ToRegistry(true)
-            : this[predicate, expanders].ToRegistry();
+            ? this[predicate, expanders].Skip(skip).Take(take).ToChain()
+            : this[predicate, expanders].ToChain();
 
     public virtual ISeries<TEntity> this[int skip, int take, Expression<
         Func<TEntity, bool>
@@ -157,15 +157,15 @@ public abstract partial class Repository<TEntity>
         Func<TEntity, object>
     >[] expanders] =>
         (take > 0)
-            ? this[predicate, sortTerms, expanders].Skip(skip).Take(take).ToRegistry()
-            : this[predicate, sortTerms, expanders].ToRegistry();
+            ? this[predicate, sortTerms, expanders].Skip(skip).Take(take).ToChain()
+            : this[predicate, sortTerms, expanders].ToChain();
 
     public virtual ISeries<TEntity> this[int skip, int take, SortExpression<TEntity> sortTerms, Expression<
         Func<TEntity, object>
     >[] expanders] =>
         (take > 0)
-            ? this[sortTerms, expanders].Skip(skip).Take(take).ToRegistry()
-            : this[sortTerms, expanders].ToRegistry();
+            ? this[sortTerms, expanders].Skip(skip).Take(take).ToChain()
+            : this[sortTerms, expanders].ToChain();
 
     public virtual IQueryable<TEntity> this[IQueryable<TEntity> query, params Expression<
         Func<TEntity, object>

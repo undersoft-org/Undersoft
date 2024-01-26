@@ -467,12 +467,12 @@ public partial class ServerSetup
                                 typeof(UpdatedHandler<,,>).MakeGenericType(store, entityType, dto)
                             );
                         }
-                        mapper.TryCreateMap(entityType, dto);
+                       // mapper.TryCreateMap(entityType, dto);
                     }
                 }
             }
         }
-        mapper.Build();
+        //mapper.Build();
         return this;
     }
 }

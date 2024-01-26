@@ -36,14 +36,14 @@ public class ObjectDetail<TDetail, TKind> : DataObject, ISerializableJsonDocumen
     [DataMember(Order = 12)]
     public virtual JsonDocument Document { get; set; }
 
-    [DataMember(Order = 14)]
+    [DataMember(Order = 13)]
     public virtual string Name { get; set; }
 
-    [DataMember(Order = 15)]
+    [DataMember(Order = 14)]
     public virtual Identifiers<TDetail>? Identifiers { get; set; }
 
     [IdentityRubric]
-    [DataMember(Order = 16)]
+    [DataMember(Order = 15)]
     public TKind Kind { get; set; }
 
     public virtual T GetObject<T>()

@@ -9,6 +9,8 @@ using Undersoft.SDK.Service.Data.Object;
 [DataContract]
 public class Event : DataObject, IEvent, IEntity, IContract
 {
+    public Event() : base() { }
+
     [DataMember(Order = 12)]
     public virtual uint EventVersion { get; set; }
 

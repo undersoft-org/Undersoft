@@ -60,7 +60,7 @@ namespace Undersoft.SDK.Service.Data.Entity
             return Lookup<TEntity>(item);
         }
 
-        public TEntity[] Lookup(object key, params Tuple<string, object>[] valueNamePairs)
+        public TEntity[] Lookup(object[] key, params Tuple<string, object>[] valueNamePairs)
         {
             return Lookup<TEntity>(key, valueNamePairs);
         }

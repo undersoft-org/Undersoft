@@ -14,11 +14,11 @@ public class CreateSetHandler<TStore, TEntity, TDto>
     where TStore : IDataServerStore
 {
     protected readonly IStoreRepository<TEntity> _repository;
-    protected readonly IServicer _uservice;
+    protected readonly IServicer _servicer;
 
     public CreateSetHandler(IServicer uservice, IStoreRepository<TStore, TEntity> repository)
     {
-        _uservice = uservice;
+        _servicer = uservice;
         _repository = repository;
     }
 
@@ -38,15 +38,15 @@ public class CreateSetHandler<TStore, TEntity, TDto>
                     request.Predicate
                 );
 
-            entities
-                .ForEach(
+           await entities
+                .ForEachAsync(
                     (e, x) =>
                     {
                         request[x].Entity = e;
                     }
                 );               
 
-            _ = _uservice
+            _ = _servicer
                 .Publish(new CreatedSet<TStore, TEntity, TDto>(request))
                 .ConfigureAwait(false);
         }

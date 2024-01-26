@@ -9,6 +9,6 @@ namespace Undersoft.SSC.Service.Contracts.Base;
 [DataContract]
 public class ServiceBase : ContractBase<ServiceBase, Detail, Setting, MemberGroup>
 {
-    [DataMember(Order = 23)]
+    [DataMember(Order = 22)]
     public virtual DataObjects<Member>? Members { get; set; }
 }

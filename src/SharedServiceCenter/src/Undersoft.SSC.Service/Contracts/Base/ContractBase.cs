@@ -16,8 +16,8 @@ public class ContractBase<TContract, TDetail, TSetting, TGroup>
     public ContractBase() { }
 
     [DataMember(Order = 16)]
-    public long? DefaultId { get; set; }
+    public virtual long? DefaultId { get; set; }
 
-    [DataMember(Order = 17)]
-    public long? LocationId { get; set; }
+    [DataMember(Order = 18)]
+    public virtual long? LocationId { get; set; }
 }

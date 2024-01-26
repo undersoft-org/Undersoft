@@ -12,7 +12,7 @@ using Undersoft.SSC.Service.Infrastructure.Stores;
 namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
 {
     [DbContext(typeof(EventStore))]
-    [Migration("20240121031830_InitialCreate")]
+    [Migration("20240126093636_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,9 +102,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
                         .HasColumnOrder(5);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Index")
-                        .IsUnique();
 
                     b.ToTable("Events", "domain");
                 });

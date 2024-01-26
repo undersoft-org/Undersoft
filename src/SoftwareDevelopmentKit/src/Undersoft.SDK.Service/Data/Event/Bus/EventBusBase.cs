@@ -25,13 +25,11 @@ namespace Undersoft.SDK.Service.Data.Event.Bus
             EventHandlerInvoker = eventHandlerInvoker;
         }
 
-        /// <inheritdoc/>
         public virtual IDisposable Subscribe<TEvent>(Func<TEvent, Task> action) where TEvent : class
         {
             return Subscribe(typeof(TEvent), new ActionEventHandler<TEvent>(action));
         }
 
-        /// <inheritdoc/>
         public virtual IDisposable Subscribe<TEvent, THandler>()
             where TEvent : class
             where THandler : IEventHandler, new()
@@ -39,13 +37,11 @@ namespace Undersoft.SDK.Service.Data.Event.Bus
             return Subscribe(typeof(TEvent), new EventHandlerTransientFactory<THandler>());
         }
 
-        /// <inheritdoc/>
         public virtual IDisposable Subscribe(Type eventType, IEventHandler handler)
         {
             return Subscribe(eventType, new EventHandlerSingletonFactory(handler));
         }
 
-        /// <inheritdoc/>
         public virtual IDisposable Subscribe<TEvent>(IEventHandlerFactory factory) where TEvent : class
         {
             return Subscribe(typeof(TEvent), factory);
@@ -55,7 +51,6 @@ namespace Undersoft.SDK.Service.Data.Event.Bus
 
         public abstract void Unsubscribe<TEvent>(Func<TEvent, Task> action) where TEvent : class;
 
-        /// <inheritdoc/>
         public virtual void Unsubscribe<TEvent>(IEventHandler<TEvent> handler) where TEvent : class
         {
             Unsubscribe(typeof(TEvent), handler);
@@ -63,7 +58,6 @@ namespace Undersoft.SDK.Service.Data.Event.Bus
 
         public abstract void Unsubscribe(Type eventType, IEventHandler handler);
 
-        /// <inheritdoc/>
         public virtual void Unsubscribe<TEvent>(IEventHandlerFactory factory) where TEvent : class
         {
             Unsubscribe(typeof(TEvent), factory);
@@ -71,23 +65,19 @@ namespace Undersoft.SDK.Service.Data.Event.Bus
 
         public abstract void Unsubscribe(Type eventType, IEventHandlerFactory factory);
 
-        /// <inheritdoc/>
         public virtual void UnsubscribeAll<TEvent>() where TEvent : class
         {
             UnsubscribeAll(typeof(TEvent));
         }
 
-        /// <inheritdoc/>
         public abstract void UnsubscribeAll(Type eventType);
 
-        /// <inheritdoc/>
         public Task PublishAsync<TEvent>(TEvent eventData, bool onUnitOfWorkComplete = true)
             where TEvent : class
         {
             return PublishAsync(typeof(TEvent), eventData, onUnitOfWorkComplete);
         }
 
-        /// <inheritdoc/>
         public virtual async Task PublishAsync(
             Type eventType,
             object eventData,
@@ -123,7 +113,6 @@ namespace Undersoft.SDK.Service.Data.Event.Bus
                 }
             }
 
-            //Implements generic argument inheritance. See IEventDataWithInheritableGenericArgument
             if (eventType.GetTypeInfo().IsGenericType &&
                 eventType.GetGenericArguments().Length == 1 &&
                 typeof(IEventDataWithInheritableGenericArgument).IsAssignableFrom(eventType))
@@ -213,8 +202,6 @@ namespace Undersoft.SDK.Service.Data.Event.Bus
             }
         }
 
-        // Reference from
-        // https://blogs.msdn.microsoft.com/benwilli/2017/02/09/an-alternative-to-configureawaitfalse-everywhere/
         protected struct SynchronizationContextRemover : INotifyCompletion
         {
             public bool IsCompleted

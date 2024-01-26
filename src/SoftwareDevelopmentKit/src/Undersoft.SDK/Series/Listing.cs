@@ -8,6 +8,8 @@ namespace Undersoft.SDK.Series;
 
 public class Listing<V> : ListingBase<V>
 {
+    public Listing() : base() { }
+
     public Listing(IEnumerable<V> collection, int capacity = 17, bool repeatable = false)
         : base(collection, capacity, repeatable) { }
 

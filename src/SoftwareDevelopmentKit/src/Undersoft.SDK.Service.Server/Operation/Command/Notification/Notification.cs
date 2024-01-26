@@ -14,7 +14,9 @@ public abstract class Notification<TCommand> : Event, INotification where TComma
 {
     public TCommand Command { get; }
 
-    protected Notification(TCommand command)
+    public Notification() : base() { }
+
+    protected Notification(TCommand command) : base()
     {
         var aggregateTypeFullName = command.Entity.GetDataFullName();
         var eventTypeFullName = GetType().FullName;
@@ -35,5 +37,26 @@ public abstract class Notification<TCommand> : Event, INotification where TComma
         PublishTime = Log.Clock;
 
         EventData = JsonSerializer.SerializeToUtf8Bytes((CommandBase)command);
+    }
+
+    public Event GetEvent()
+    {
+        return new Event()
+        {
+            Id = this.Id,
+            OriginId = this.OriginId,
+            TypeName = this.TypeName,
+            Modifier = this.Modifier,
+            EventData = this.EventData,
+            EventVersion = this.EventVersion,
+            AggregateId = this.AggregateId,
+            AggregateType = this.AggregateType,
+            EventType = this.EventType,
+            Modified = this.Modified,
+            Creator = this.Creator,
+            Created = this.Created,
+            PublishStatus = this.PublishStatus,
+            PublishTime = this.PublishTime
+        };
     }
 }

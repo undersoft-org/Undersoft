@@ -10,7 +10,7 @@ public interface IDataCache : ITypedSeries<IIdentifiable>
 
     ISeries<IIdentifiable> Lookup<T>(Func<ITypedSeries<IIdentifiable>, ISeries<IIdentifiable>> selector) where T : IIdentifiable;
 
-    T Lookup<T>(object keys) where T : IIdentifiable;
+    T Lookup<T>(params object[] key) where T : IIdentifiable;
 
     ISeries<IIdentifiable> Lookup<T>(Tuple<string, object> valueNamePair) where T : IIdentifiable;
 
@@ -19,7 +19,7 @@ public interface IDataCache : ITypedSeries<IIdentifiable>
     T[] Lookup<T>(Func<ISeries<IIdentifiable>, IIdentifiable> key, params Func<ITypedSeries<IIdentifiable>, ISeries<IIdentifiable>>[] selectors)
         where T : IIdentifiable;
 
-    T[] Lookup<T>(object key, params Tuple<string, object>[] valueNamePairs) where T : IIdentifiable;
+    T[] Lookup<T>(object[] key, params Tuple<string, object>[] valueNamePairs) where T : IIdentifiable;
 
     ISeries<IIdentifiable> Lookup<T>(object key, string propertyNames) where T : IIdentifiable;
 

@@ -15,6 +15,8 @@ public class CreatedSet<TStore, TEntity, TDto> : NotificationSet<Command<TDto>>
     [JsonIgnore]
     public Func<TEntity, Expression<Func<TEntity, bool>>> Predicate { get; }
 
+    public CreatedSet() : base() { }
+
     public CreatedSet(CreateSet<TStore, TEntity, TDto> commands)
         : base(
             commands.PublishMode,

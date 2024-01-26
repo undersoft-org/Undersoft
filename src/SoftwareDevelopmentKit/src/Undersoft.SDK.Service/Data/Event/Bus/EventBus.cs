@@ -14,9 +14,6 @@ namespace Undersoft.SDK.Service.Data.Event.Bus
 {
     public class EventBus : EventBusBase, IEventBus
     {
-        /// <summary>
-        /// Reference to the Logger.
-        /// </summary>
         public ILogger<EventBus> Logger { get; set; }
 
         protected EventBusOptions Options { get; }
@@ -36,13 +33,11 @@ namespace Undersoft.SDK.Service.Data.Event.Bus
             SubscribeHandlers(Options.Handlers);
         }
 
-        /// <inheritdoc/>
         public virtual IDisposable Subscribe<TEvent>(IEventHandler<TEvent> handler) where TEvent : class
         {
             return Subscribe(typeof(TEvent), handler);
         }
 
-        /// <inheritdoc/>
         public override IDisposable Subscribe(Type eventType, IEventHandlerFactory factory)
         {
             var factories = GetOrCreateHandlerFactories(eventType, factory);
@@ -55,7 +50,6 @@ namespace Undersoft.SDK.Service.Data.Event.Bus
             return new EventHandlerFactoryUnregistrar(this, eventType, factory);
         }
 
-        /// <inheritdoc/>
         public override void Unsubscribe<TEvent>(Func<TEvent, Task> action)
         {
             GetOrCreateHandlerFactories(typeof(TEvent)).EventHandlerFactories.RemoveAll(
@@ -77,7 +71,6 @@ namespace Undersoft.SDK.Service.Data.Event.Bus
                         });
         }
 
-        /// <inheritdoc/>
         public override void Unsubscribe(Type eventType, IEventHandler handler)
         {
             GetOrCreateHandlerFactories(eventType).EventHandlerFactories.RemoveAll(
@@ -87,13 +80,11 @@ namespace Undersoft.SDK.Service.Data.Event.Bus
                     );
         }
 
-        /// <inheritdoc/>
         public override void Unsubscribe(Type eventType, IEventHandlerFactory factory)
         {
             GetOrCreateHandlerFactories(eventType).EventHandlerFactories.Remove(factory);
         }
 
-        /// <inheritdoc/>
         public override void UnsubscribeAll(Type eventType)
         {
             GetOrCreateHandlerFactories(eventType).EventHandlerFactories.Clear();
@@ -129,13 +120,11 @@ namespace Undersoft.SDK.Service.Data.Event.Bus
 
         private static bool ShouldTriggerEventForHandler(Type targetEventType, Type handlerEventType)
         {
-            //Should trigger same type
             if (handlerEventType == targetEventType)
             {
                 return true;
             }
 
-            //Should trigger for inherited types
             if (handlerEventType.IsAssignableFrom(targetEventType))
             {
                 return true;

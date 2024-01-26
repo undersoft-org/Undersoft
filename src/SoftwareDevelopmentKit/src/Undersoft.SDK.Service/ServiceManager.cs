@@ -39,12 +39,12 @@ namespace Undersoft.SDK.Service
 
         public ServiceManager() : base()
         {
-            Services = this;
+            Manager = this;
         }
 
         public ServiceManager(IServiceManager serviceManager) : base()
         {
-            Services = serviceManager;
+            Manager = serviceManager;
             registry = serviceManager.Registry;
             provider = serviceManager.Provider;
             configuration = serviceManager.Configuration;

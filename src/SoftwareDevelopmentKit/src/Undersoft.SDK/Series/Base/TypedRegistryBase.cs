@@ -29,7 +29,7 @@
             int capacity = 17,
             bool repeatable = false,
             HashBits bits = HashBits.bit64
-        ) : this((int)(collection.Count() * 1.5), bits)
+        ) : this(capacity, bits)
         {
             if (collection != null)
                 foreach (var c in collection)
@@ -41,7 +41,7 @@
             int capacity = 17,
             bool repeatable = false,
             HashBits bits = HashBits.bit64
-        ) : this((int)(collection.Count() * 1.5), bits)
+        ) : this(capacity, bits)
         {
             if (collection != null)
                 foreach (V c in collection)

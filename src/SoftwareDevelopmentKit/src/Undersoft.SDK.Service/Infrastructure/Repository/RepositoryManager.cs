@@ -15,12 +15,12 @@ public class RepositoryManager : Registry<IDataStoreContext>, IDisposable, IAsyn
     protected IDataMapper mapper;
 
     private IRepositorySources _sources;
-    protected IRepositorySources Sources => _sources ??= Services.Registry.GetObject<IRepositorySources>();
+    protected IRepositorySources Sources => _sources ??= Manager.Registry.GetObject<IRepositorySources>();
 
     private IRepositoryClients _clients;
-    protected IRepositoryClients Clients => _clients ??= Services.Registry.GetObject<IRepositoryClients>();
+    protected IRepositoryClients Clients => _clients ??= Manager.Registry.GetObject<IRepositoryClients>();
 
-    protected IServiceManager Services { get; init; }
+    protected IServiceManager Manager { get; init; }
 
     public IDataMapper Mapper
     {
@@ -53,7 +53,7 @@ public class RepositoryManager : Registry<IDataStoreContext>, IDisposable, IAsyn
     public IStoreRepository<TEntity> Use<TEntity>(Type contextType)
         where TEntity : class, IDataObject
     {
-        return (IStoreRepository<TEntity>)Services.GetService(typeof(IStoreRepository<,>)
+        return (IStoreRepository<TEntity>)Manager.GetService(typeof(IStoreRepository<,>)
                                                  .MakeGenericType(DataStoreRegistry
                                                  .Stores[contextType],
                                                   typeof(TEntity)));
@@ -61,7 +61,7 @@ public class RepositoryManager : Registry<IDataStoreContext>, IDisposable, IAsyn
     public IStoreRepository<TEntity> Use<TStore, TEntity>()
        where TEntity : class, IDataObject where TStore : IDataServerStore
     {
-        return Services.GetService<IStoreRepository<TStore, TEntity>>();
+        return Manager.GetService<IStoreRepository<TStore, TEntity>>();
     }
 
     public IRemoteRepository<TDto> load<TStore, TDto>() where TDto : class, IDataObject where TStore : IDataServiceStore
@@ -80,14 +80,14 @@ public class RepositoryManager : Registry<IDataStoreContext>, IDisposable, IAsyn
     public IRemoteRepository<TDto> Load<TDto>(Type contextType)
        where TDto : class, IDataObject
     {
-        return (IRemoteRepository<TDto>)Services.GetService(typeof(IRemoteRepository<,>)
+        return (IRemoteRepository<TDto>)Manager.GetService(typeof(IRemoteRepository<,>)
                                                  .MakeGenericType(OpenDataRegistry
                                                  .Stores[contextType],
                                                   typeof(TDto)));
     }
     public IRemoteRepository<TDto> Load<TStore, TDto>() where TDto : class, IDataObject where TStore : IDataServiceStore
     {
-        var result = Services.GetService<IRemoteRepository<TStore, TDto>>();
+        var result = Manager.GetService<IRemoteRepository<TStore, TDto>>();
         return result;
     }
 
@@ -227,17 +227,17 @@ public class RepositoryManager : Registry<IDataStoreContext>, IDisposable, IAsyn
     public IDataMapper CreateMapper(params MapperProfile[] profiles)
     {
         DataMapper.AddProfiles(profiles);
-        return Services.Registry.GetObject<IDataMapper>();
+        return Manager.Registry.GetObject<IDataMapper>();
     }
     public IDataMapper CreateMapper<TProfile>() where TProfile : MapperProfile
     {
         DataMapper.AddProfiles(typeof(TProfile).New<TProfile>());
-        return Services.Registry.GetObject<IDataMapper>();
+        return Manager.Registry.GetObject<IDataMapper>();
     }
 
     public IDataMapper GetMapper()
     {
-        return Services.Registry.GetObject<IDataMapper>();
+        return Manager.Registry.GetObject<IDataMapper>();
     }
 
     protected override void Dispose(bool disposing)

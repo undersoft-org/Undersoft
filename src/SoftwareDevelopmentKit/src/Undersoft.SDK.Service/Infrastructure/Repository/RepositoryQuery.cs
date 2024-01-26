@@ -91,7 +91,7 @@ public abstract partial class Repository<TEntity>
         params Expression<Func<TEntity, object>>[] expanders
     )
     {
-        return Task.Run(() => this[skip, take, sortTerms, expanders], Cancellation);
+        return Task.Run(() => (ISeries<TEntity>)this[skip, take, sortTerms, expanders].ToChain(), Cancellation);
     }
 
     public virtual Task<ISeries<TEntity>> Filter(
@@ -178,7 +178,7 @@ public abstract partial class Repository<TEntity>
         params Expression<Func<TEntity, object>>[] expanders
     )
     {
-        return Task.Run(() => this[0, 0, sortTerms, expanders], Cancellation);
+        return Task.Run(() => (ISeries<TEntity>)this[0, 0, sortTerms, expanders].ToChain(), Cancellation);
     }
 
     public virtual Task<ISeries<TEntity>> Get(
@@ -188,7 +188,7 @@ public abstract partial class Repository<TEntity>
         params Expression<Func<TEntity, object>>[] expanders
     )
     {
-        return Task.Run(() => this[skip, take, sortTerms, expanders], Cancellation);
+        return Task.Run(() => (ISeries<TEntity>)this[skip, take, sortTerms, expanders].ToChain(), Cancellation);
     }
 
     public virtual async Task<TEntity> Find(params object[] keys)

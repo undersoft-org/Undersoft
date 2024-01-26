@@ -6,10 +6,12 @@ using Command;
 using Series;
 using Undersoft.SDK.Service.Data.Event;
 
-public abstract class NotificationSet<TCommand> : Catalog<Notification<TCommand>>, INotification
+public abstract class NotificationSet<TCommand> : Listing<Notification<TCommand>>, INotification
     where TCommand : CommandBase
 {
     public EventPublishMode PublishMode { get; set; }
+
+    public NotificationSet() : base() { }
 
     protected NotificationSet(EventPublishMode publishPattern, Notification<TCommand>[] commands)
         : base(commands)

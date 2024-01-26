@@ -42,13 +42,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
                 {
                     table.PrimaryKey("PK_Events", x => x.Id);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Events_Index",
-                schema: "domain",
-                table: "Events",
-                column: "Index",
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

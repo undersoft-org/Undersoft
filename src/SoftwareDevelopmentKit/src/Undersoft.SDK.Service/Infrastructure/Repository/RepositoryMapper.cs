@@ -98,17 +98,14 @@ public partial class Repository<TEntity>
     public virtual Task<ISeries<TDto>> HashMapTo<TDto>(IEnumerable<object> entity)
     {
         return Task.Run(
-            () => (ISeries<TDto>)(Mapper.Map<IEnumerable<TDto>>(entity.ToArray())).ToListing(),
+            () => (ISeries<TDto>)(Mapper.Map<IEnumerable<TDto>>(entity.ToArray())).ToChain(),
             Cancellation
         );
     }
 
     public virtual Task<ISeries<TDto>> HashMapTo<TDto>(IEnumerable<TEntity> entity)
     {
-        return Task.Run(
-            () => (ISeries<TDto>)(Mapper.Map<IEnumerable<TDto>>(entity.ToArray())).ToListing(),
-            Cancellation
-        );
+        return Task.Run(() => (ISeries<TDto>)(Mapper.Map<IEnumerable<TDto>>(entity.ToArray())).ToChain(), Cancellation);
     }
 
     public virtual Task<ISeries<TEntity>> HashMapFrom<TDto>(IEnumerable<TDto> model)

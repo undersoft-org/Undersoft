@@ -342,7 +342,7 @@ namespace Undersoft.SDK.Invoking
                 }
 
                 var obj = Method.DynamicInvoke(target, parameters);
-
+                    
                 return (T)obj;
             }
             catch (Exception e)
@@ -355,7 +355,14 @@ namespace Undersoft.SDK.Invoking
         {
             try
             {
-                return await Task.Run<object>(() => Invoke(parameters));
+                var obj = Invoke(parameters);
+
+                if (obj.GetType().IsAssignableTo(typeof(Task<object>)))
+                {
+                    return await (Task<object>)obj;
+                }
+
+                return await Task.FromResult<object>(obj);
             }
             catch (Exception e)
             {
@@ -376,7 +383,15 @@ namespace Undersoft.SDK.Invoking
                     parameters = new[] { target }.Concat(parameters).ToArray();
                     target = TargetObject;
                 }
-                return await Task.Run<object>(() => Invoke(target, parameters));
+
+                var obj = Invoke(target, parameters);
+
+                if (obj.GetType().IsAssignableTo(typeof(Task<object>)))
+                {
+                    return await (Task<object>)obj;
+                }
+
+                return await Task.FromResult<object>(obj);
             }
             catch (Exception e)
             {
@@ -388,7 +403,14 @@ namespace Undersoft.SDK.Invoking
         {
             try
             {
-                return await Task.Run<T>(() => Invoke<T>(parameters));
+                var obj = Invoke(parameters);
+
+                if (obj.GetType().IsAssignableTo(typeof(Task<T>)))
+                {
+                    return await (Task<T>)obj;
+                }
+
+                return await Task.FromResult<T>((T)obj);
             }
             catch (Exception e)
             {
@@ -409,7 +431,15 @@ namespace Undersoft.SDK.Invoking
                     parameters = new[] { target }.Concat(parameters).ToArray();
                     target = TargetObject;
                 }
-                return await Task.Run<T>(() => Invoke<T>(target, parameters));
+
+                var obj = Invoke(target, parameters);
+
+                if (obj.GetType().IsAssignableTo(typeof(Task<T>)))
+                {
+                    return await (Task<T>)obj;
+                }
+
+                return await Task.FromResult<T>((T)obj);
             }
             catch (Exception e)
             {

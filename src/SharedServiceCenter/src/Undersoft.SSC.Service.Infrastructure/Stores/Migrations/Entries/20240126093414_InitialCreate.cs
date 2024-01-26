@@ -116,6 +116,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
                     Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
@@ -125,7 +126,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
                     DefaultId = table.Column<long>(type: "bigint", nullable: false),
                     Document = table.Column<JsonDocument>(type: "jsonb", nullable: true),
-                    TypeName = table.Column<string>(type: "text", nullable: true),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Kind = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -1878,13 +1878,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 column: "DefaultId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Activities_Index",
-                schema: "domain",
-                table: "Activities",
-                column: "Index",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ActivitiesToDetails_LeftEntityId",
                 schema: "relations",
                 table: "ActivitiesToDetails",
@@ -1963,13 +1956,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 column: "DefaultId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Applications_Index",
-                schema: "domain",
-                table: "Applications",
-                column: "Index",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ApplicationsToDetails_LeftEntityId",
                 schema: "relations",
                 table: "ApplicationsToDetails",
@@ -2018,13 +2004,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 column: "RightEntityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Defaults_Index",
-                schema: "domain",
-                table: "Defaults",
-                column: "Index",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_DetailIdentifiers_Key",
                 schema: "identifiers",
                 table: "DetailIdentifiers",
@@ -2041,13 +2020,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 schema: "domain",
                 table: "Details",
                 column: "DefaultId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Details_Index",
-                schema: "domain",
-                table: "Details",
-                column: "Index",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_DetailToDetail_LeftEntityId",
@@ -2091,13 +2063,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 schema: "domain",
                 table: "Members",
                 column: "DefaultId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Members_Index",
-                schema: "domain",
-                table: "Members",
-                column: "Index",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_MembersToActivities_LeftEntityId",
@@ -2196,13 +2161,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 column: "DefaultId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Resources_Index",
-                schema: "domain",
-                table: "Resources",
-                column: "Index",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ResourcesToDetails_LeftEntityId",
                 schema: "relations",
                 table: "ResourcesToDetails",
@@ -2269,13 +2227,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 column: "DefaultId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Schedules_Index",
-                schema: "domain",
-                table: "Schedules",
-                column: "Index",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SchedulesToActivities_LeftEntityId",
                 schema: "relations",
                 table: "SchedulesToActivities",
@@ -2340,13 +2291,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 schema: "domain",
                 table: "Services",
                 column: "DefaultId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Services_Index",
-                schema: "domain",
-                table: "Services",
-                column: "Index",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ServicesToApplications_LeftEntityId",
@@ -2425,13 +2369,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 schema: "domain",
                 table: "Settings",
                 column: "DefaultId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Settings_Index",
-                schema: "domain",
-                table: "Settings",
-                column: "Index",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_SettingToSetting_LeftEntityId",

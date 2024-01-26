@@ -15,12 +15,8 @@ public class Updater : IUpdater
     protected HashSet<int> trackset;
     protected ProxyCreator creator;
     protected IProxy source;
-    //protected IProxy preset;
     protected Type type => creator.BaseType;
-    protected int patchNotEqualTypesCount = 0;
-    protected int putNotEqualTypesCount = 0;
-    protected int patchEqualTypesCount = 0;
-    protected int putEqualTypesCount = 0;
+    protected int counter = 0;
     protected bool traceable;
 
     public IProxy Source
@@ -29,13 +25,7 @@ public class Updater : IUpdater
         set => source = value;
     }
 
-    //public IProxy Preset
-    //{
-    //    get => ((preset == null) ? preset = creator.Create(source) : preset);
-    //    set => preset = value;
-    //}
-
-    public Action<Updater, object> UpdatingRoutine { get; set; }
+    public Action<Updater, object> UpdateAction { get; set; }
 
     public IInvoker TraceEvent { get; set; }
 
@@ -109,13 +99,13 @@ public class Updater : IUpdater
     {
         UpdaterItem[] changes;
 
-        UpdatingRoutine = (o, t) => o.Patch(t);
+        UpdateAction = (o, t) => o.Patch(t);
 
         IProxy target = item.ToProxy();
         if (item.GetType() != type)
-            setBy(target, changes = PatchNotEqualTypes(target), patchNotEqualTypesCount);
+            setBy(target, changes = PatchNotEqualTypes(target), counter);
         else
-            set(target, changes = PatchEqualTypes(target), patchEqualTypesCount);
+            set(target, changes = PatchEqualTypes(target), counter);
 
         return item;
     }
@@ -124,13 +114,13 @@ public class Updater : IUpdater
     {
         UpdaterItem[] changes;
 
-        UpdatingRoutine = (o, t) => o.Patch(t);
+        UpdateAction = (o, t) => o.Patch(t);
 
         IProxy target = item.ToProxy();
         if (typeof(E) != type)
-            setBy(target, changes = PatchNotEqualTypes(target), patchNotEqualTypesCount);
+            setBy(target, changes = PatchNotEqualTypes(target), counter);
         else
-            set(target, changes = PatchEqualTypes(target), patchEqualTypesCount);
+            set(target, changes = PatchEqualTypes(target), counter);
 
         return item;
     }
@@ -142,9 +132,9 @@ public class Updater : IUpdater
 
     public object PatchSelf()
     {
-        UpdatingRoutine = (o, s) => o.PatchSelf();
+        UpdateAction = (o, s) => o.PatchSelf();
 
-        set(source, PatchEqualTypes(source), patchEqualTypesCount);
+        set(source, PatchEqualTypes(source), counter);
         return Target;
     }
 
@@ -152,15 +142,15 @@ public class Updater : IUpdater
     {
         UpdaterItem[] changes = null;
 
-        UpdatingRoutine = (o, t) => o.Put(t);
+        UpdateAction = (o, t) => o.Put(t);
 
         IProxy target = item.ToProxy();
         if (target != null)
         {
             if (item.GetType() != type)
-                setBy(target, changes = PutEqualTypes(target), putNotEqualTypesCount);
+                setBy(target, changes = PutEqualTypes(target), counter);
             else
-                set(target, changes = PutNotEqualTypes(target), putEqualTypesCount);
+                set(target, changes = PutNotEqualTypes(target), counter);
         }
         return item;
     }
@@ -169,15 +159,15 @@ public class Updater : IUpdater
     {
         UpdaterItem[] changes = null;
 
-        UpdatingRoutine = (o, t) => o.Put(t);
+        UpdateAction = (o, t) => o.Put(t);
 
         IProxy target = item.ToProxy();
         if (target != null)
         {
             if (typeof(E) != type)
-                setBy(target, changes = PutEqualTypes(target), putNotEqualTypesCount);
+                setBy(target, changes = PutEqualTypes(target), counter);
             else
-                set(target, changes = PutNotEqualTypes(target), putEqualTypesCount);
+                set(target, changes = PutNotEqualTypes(target), counter);
         }
         return item;
     }
@@ -189,9 +179,9 @@ public class Updater : IUpdater
 
     public object PutSelf()
     {
-        UpdatingRoutine = (c, h) => c.PutSelf();
+        UpdateAction = (c, h) => c.PutSelf();
 
-        set(source, PutNotEqualTypes(source), putEqualTypesCount);
+        set(source, PutNotEqualTypes(source), counter);
         return Target;
     }
 
@@ -199,7 +189,7 @@ public class Updater : IUpdater
     {
         UpdaterItem[] changes = null;
 
-        UpdatingRoutine = (o, t) => o.Detect(t);
+        UpdateAction = (o, t) => o.Detect(t);
 
         IProxy target = item.ToProxy();
         if (target != null)
@@ -216,7 +206,7 @@ public class Updater : IUpdater
     {
         UpdaterItem[] changes = null;
 
-        UpdatingRoutine = (o, t) => o.Detect(t);
+        UpdateAction = (o, t) => o.Detect(t);
 
         IProxy target = item.ToProxy();
         if (target != null)
@@ -239,10 +229,10 @@ public class Updater : IUpdater
 
     protected UpdaterItem[] PatchEqualTypes(IProxy target)
     {
-        patchEqualTypesCount = 0;
+        counter = 0;
         var _target = target;
         var _sameVariations = new UpdaterItem[Rubrics.Count];
-        UpdaterItem vary = new UpdaterItem();
+        var _item = new UpdaterItem();
 
         Rubrics.ForEach(
             (rubric) =>
@@ -258,10 +248,10 @@ public class Updater : IUpdater
                     )
                     {
                         if (!RecursiveUpdate(originValue, targetValue, target, rubric, rubric))
-                        {                            
-                            vary.TargetIndex = targetndex;
-                            vary.OriginValue = originValue;
-                            _sameVariations[patchEqualTypesCount++] = vary;
+                        {
+                            _item.TargetIndex = targetndex;
+                            _item.OriginValue = originValue;
+                            _sameVariations[counter++] = _item;
                         }
                     }
                 }
@@ -272,10 +262,10 @@ public class Updater : IUpdater
 
     protected UpdaterItem[] PatchNotEqualTypes(IProxy target)
     {
-        patchNotEqualTypesCount = 0;
+        counter = 0;
         var _target = target;
         var _customVariations = new UpdaterItem[Rubrics.Count];
-        UpdaterItem vary = new UpdaterItem();
+        var _item = new UpdaterItem();
 
         Rubrics.ForEach(
             (originRubric) =>
@@ -302,12 +292,12 @@ public class Updater : IUpdater
                                     targetRubric
                                 )
                             )
-                            {                                
-                                vary.TargetIndex = targetIndex;
-                                vary.OriginValue = originValue;
-                                vary.OriginType = originRubric.RubricType;
-                                vary.TargetType = targetRubric.RubricType;
-                                _customVariations[patchNotEqualTypesCount++] = vary;
+                            {
+                                _item.TargetIndex = targetIndex;
+                                _item.OriginValue = originValue;
+                                _item.OriginType = originRubric.RubricType;
+                                _item.TargetType = targetRubric.RubricType;
+                                _customVariations[counter++] = _item;
                             }
                         }
                     }
@@ -319,10 +309,10 @@ public class Updater : IUpdater
 
     protected UpdaterItem[] PutNotEqualTypes(IProxy target)
     {
-        putEqualTypesCount = 0;
+        counter = 0;
         var _target = target;
         var _sameMutations = new UpdaterItem[Rubrics.Count];
-        UpdaterItem vary = new UpdaterItem();
+        var _item = new UpdaterItem();
 
         Rubrics.ForEach(
             (rubric) =>
@@ -337,10 +327,10 @@ public class Updater : IUpdater
                         originValue != null
                         && !RecursiveUpdate(originValue, targetValue, target, rubric, rubric)
                     )
-                    {                        
-                        vary.TargetIndex = index;
-                        vary.OriginValue = originValue;
-                        _sameMutations[putEqualTypesCount++] = vary;
+                    {
+                        _item.TargetIndex = index;
+                        _item.OriginValue = originValue;
+                        _sameMutations[counter++] = _item;
                     }
                 }
             }
@@ -350,10 +340,10 @@ public class Updater : IUpdater
 
     protected UpdaterItem[] PutEqualTypes(IProxy target)
     {
-        putNotEqualTypesCount = 0;
+        counter = 0;
         var _target = target;
         var _customMutations = new UpdaterItem[Rubrics.Count];
-        UpdaterItem vary = new UpdaterItem();
+        var _item = new UpdaterItem();
 
         Rubrics.ForEach(
             (originRubric) =>
@@ -377,12 +367,12 @@ public class Updater : IUpdater
                                 targetRubric
                             )
                         )
-                        {                          
-                            vary.TargetIndex = targetIndex;
-                            vary.OriginValue = originValue;
-                            vary.OriginType = originRubric.RubricType;
-                            vary.TargetType = targetRubric.RubricType;
-                            _customMutations[putNotEqualTypesCount++] = vary;
+                        {
+                            _item.TargetIndex = targetIndex;
+                            _item.OriginValue = originValue;
+                            _item.OriginType = originRubric.RubricType;
+                            _item.TargetType = targetRubric.RubricType;
+                            _customMutations[counter++] = _item;
                         }
                     }
                 }
@@ -428,7 +418,7 @@ public class Updater : IUpdater
                     {
                         if (
                             targetType.IsAssignableTo(typeof(IFindableSeries))
-                            && originItemType.IsAssignableTo(typeof(IUnique))
+                            && originItemType.IsAssignableTo(typeof(IIdentifiable))
                         )
                         {
                             IFindableSeries targetFindable = (IFindableSeries)targetValue;
@@ -441,7 +431,7 @@ public class Updater : IUpdater
                                     if (traceable)
                                         targetItem = TraceEvent.Invoke(targetItem, null, null);
 
-                                    UpdatingRoutine(
+                                    UpdateAction(
                                         new Updater(originItem, TraceEvent),
                                         targetItem
                                     );
@@ -450,7 +440,7 @@ public class Updater : IUpdater
                                 {
                                     targetItem = targetItemType.New();
 
-                                    ((IUnique)targetItem).Id = ((IUnique)originItem).Id;
+                                    ((IIdentifiable)targetItem).Id = ((IIdentifiable)originItem).Id;
 
                                     originItem.PatchTo(targetItem, TraceEvent);
 
@@ -480,7 +470,7 @@ public class Updater : IUpdater
         if (traceable)
             targetValue = TraceEvent.Invoke(targetValue, null, null);
 
-        UpdatingRoutine(new Updater(originValue, TraceEvent), targetValue);
+        UpdateAction(new Updater(originValue, TraceEvent), targetValue);
 
         return false;
     }
@@ -493,8 +483,8 @@ public class Updater : IUpdater
     )
     {
         if (
-            !originItemType.IsAssignableTo(typeof(IUnique))
-            || !targetItemType.IsAssignableTo(typeof(IUnique))
+            !originItemType.IsAssignableTo(typeof(IIdentifiable))
+            || !targetItemType.IsAssignableTo(typeof(IIdentifiable))
         )
             return false;
 
@@ -503,13 +493,13 @@ public class Updater : IUpdater
             bool founded = false;
             foreach (var targetItem in targetItems)
             {
-                if (((IUnique)originItem).Equals((IUnique)targetItem))
+                if (((IIdentifiable)originItem).Id == ((IIdentifiable)targetItem).Id)
                 {
                     var _targetItem = targetItem;
                     if (traceable)
                         _targetItem = TraceEvent.Invoke(_targetItem, null, null);
 
-                    UpdatingRoutine(new Updater(originItem, TraceEvent), _targetItem);
+                    UpdateAction(new Updater(originItem, TraceEvent), _targetItem);
 
                     founded = true;
                     break;
@@ -604,68 +594,4 @@ public class Updater : IUpdater
         get => source.Target;
         set => source.Target = value;
     }
-
-    //public object GetPreset(int fieldId)
-    //{
-    //    if (trackset != null && trackset.Contains(fieldId))
-    //    {
-    //        return preset[fieldId];
-    //    }
-    //    return source[fieldId];
-    //}
-
-    //public object GetPreset(string propertyName)
-    //{
-    //    if (trackset != null)
-    //    {
-    //        int id = 0;
-    //        var rubric = Rubrics[propertyName];
-    //        if (rubric != null && trackset.Contains(id = rubric.RubricId))
-    //        {
-    //            return preset[id];
-    //        }
-    //        else
-    //            return null;
-    //    }
-
-    //    return source[propertyName];
-    //}
-
-    //public int[] GetPresets()
-    //{
-    //    return trackset.ToArray();
-    //}
-
-    //public void SetPreset(int fieldId, object value)
-    //{
-    //    if (GetPreset(fieldId).Equals(value))
-    //        return;
-
-    //    if (trackset == null)
-    //        trackset = new HashSet<int>();
-
-    //    trackset.Add(fieldId);
-    //    preset[fieldId] = value;
-    //}
-
-    //public void SetPreset(string propertyName, object value)
-    //{
-    //    if (GetPreset(propertyName).Equals(value))
-    //        return;
-
-    //    if (trackset == null)
-    //        trackset = new HashSet<int>();
-
-    //    int id = Rubrics[propertyName].RubricId;
-    //    trackset.Add(id);
-    //    preset[id] = value;
-    //}
-
-    //public void WritePresets()
-    //{
-    //    trackset.ForEach((id) => source[id] = preset[id]).Commit();
-    //    trackset.Clear();
-    //}
-
-    //public bool HavePresets => trackset != null;   
 }

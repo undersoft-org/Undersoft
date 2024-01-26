@@ -184,7 +184,7 @@ public class TypedCache<V> : TypedRegistryBase<V> where V : IIdentifiable
         return null;
     }
 
-    public virtual T Lookup<T>(object keys) where T : IIdentifiable
+    public virtual T Lookup<T>(params object[] keys) where T : IIdentifiable
     {
         if (cache.TryGet(keys, GetDataTypeId(typeof(T)), out IIdentifiable output))
             return (T)output;
@@ -221,7 +221,7 @@ public class TypedCache<V> : TypedRegistryBase<V> where V : IIdentifiable
         return result[0];
     }
 
-    public virtual T[] Lookup<T>(object key, params Tuple<string, object>[] valueNamePairs) where T : IIdentifiable
+    public virtual T[] Lookup<T>(object[] key, params Tuple<string, object>[] valueNamePairs) where T : IIdentifiable
     {
         return Lookup<T>(
             (k) => k[key],

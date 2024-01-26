@@ -92,8 +92,31 @@ namespace Undersoft.SDK.Service.Data.Mapper
                 else
                     expression.CreateMap(_pair.SourceType, _pair.DestinationType);
 
-                _pair.SourceType
-                    .GetProperties()
+                var source = _pair.SourceType;
+                var destination = _pair.DestinationType;
+                bool sourceIsEnumerable = false;
+                bool destinationIsEnumerable = false;
+
+                if (source.IsAssignableTo(typeof(IEnumerable)))
+                {
+                    source = source.GetEnumerableElementType();
+                    sourceIsEnumerable = true;
+                }
+
+                if (destination.IsAssignableTo(typeof(IEnumerable)))
+                {
+                    destination = destination.GetEnumerableElementType();
+                    destinationIsEnumerable = true;
+                }
+
+                if (destinationIsEnumerable || sourceIsEnumerable)
+                {
+                    var tp = new TypePair(source, destination);
+                    TryCreateMap(tp);
+                }
+
+                new Type[] { source, destination }.ForEach(t =>                 
+                    t.GetProperties()
                     .Where(
                         p =>
                             (
@@ -122,8 +145,9 @@ namespace Undersoft.SDK.Service.Data.Mapper
                             )
                                 TryCreateMap(tp);
                         }
-                    });
+                    }));
 
+              
                 return true;
             }
 
@@ -166,7 +190,7 @@ namespace Undersoft.SDK.Service.Data.Mapper
         public bool MapExist(TypePair pair)
         {
             if (configuration.FindTypeMapFor(pair) == null)
-                return false;
+                return false;            
             return true;
         }
 
@@ -222,6 +246,8 @@ namespace Undersoft.SDK.Service.Data.Mapper
                 expression.ShouldMapMethod = m => false;
                 expression.ShouldMapProperty = m => true;
                 expression.ShouldMapField = m => false;
+                expression.Advanced.AllowAdditiveTypeMapCreation = true;               
+    
                 configuration = new MapperConfiguration(expression);
                 mapper = configuration.CreateMapper();
             }

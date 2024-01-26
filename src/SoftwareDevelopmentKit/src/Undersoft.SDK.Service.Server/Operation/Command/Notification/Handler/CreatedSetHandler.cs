@@ -46,7 +46,7 @@ public class CreatedSetHandler<TStore, TEntity, TDto>
                         }
                     );
 
-                    _eventStore.Add(request);
+                    _eventStore.Add(request.ForEach(r => r.GetEvent())).Commit();
 
                     if (request.PublishMode == EventPublishMode.PropagateCommand)
                     {
@@ -55,7 +55,7 @@ public class CreatedSetHandler<TStore, TEntity, TDto>
                                 request.Select(d => d.Command.Entity).Cast<TEntity>(),
                                 request.Predicate
                             )
-                            .ToCatalog();
+                            .ToListing();
 
                         request.ForEach(
                             (r) =>
@@ -74,7 +74,7 @@ public class CreatedSetHandler<TStore, TEntity, TDto>
                         request.Select(r => r.Command.ErrorMessages).ToArray(),
                         ex
                     );
-                    request.ForEach((r) => r.PublishStatus = EventPublishStatus.Error);
+                    request.DoEach((r) => r.PublishStatus = EventPublishStatus.Error);
                 }
             },
             cancellationToken
