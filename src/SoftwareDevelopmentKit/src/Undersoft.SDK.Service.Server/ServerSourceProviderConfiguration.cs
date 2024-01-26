@@ -47,7 +47,6 @@ namespace Undersoft.SDK.Service.Server
                         break;
                 }
                 //_registry.AddEntityFrameworkProxies();
-
                 DataStoreRegistry.SourceProviders.Add((int)provider, provider);
             }
             return _registry;
@@ -70,10 +69,12 @@ namespace Undersoft.SDK.Service.Server
                         .UseLazyLoadingProxies();
 
                 case SourceProvider.PostgreSql:
+                    AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+                    AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
                     return builder.UseInternalServiceProvider(
                          _registry.Manager)
                         .UseNpgsql(connectionString);
-                //.UseLazyLoadingProxies();
+                        //.UseLazyLoadingProxies();
 
                 case SourceProvider.SqlLite:
                     return builder
@@ -119,7 +120,7 @@ namespace Undersoft.SDK.Service.Server
                     break;
             }
             builder.ConfigureWarnings(warnings => warnings
-                    .Ignore(CoreEventId.RedundantIndexRemoved));
+                    .Ignore(CoreEventId.RedundantIndexRemoved));            
             return builder;
         }
     }

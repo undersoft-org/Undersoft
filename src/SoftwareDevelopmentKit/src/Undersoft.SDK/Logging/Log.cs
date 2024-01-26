@@ -25,7 +25,7 @@
 
         private static bool threadLive;
 
-        public static DateTime Clock = DateTime.Now;
+        public static DateTime Clock = DateTime.UtcNow;
 
         static Log()
         {
@@ -108,7 +108,7 @@
                         Clock = Clock.AddMilliseconds(1005);                    
                     else
                     {
-                        Clock = DateTime.Now;
+                        Clock = DateTime.UtcNow;
                         syncInterval = SYNC_CLOCK_INTERVAL;
                     }
                     await Task.Delay(1000);

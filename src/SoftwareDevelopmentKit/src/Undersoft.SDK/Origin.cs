@@ -30,27 +30,27 @@ namespace Undersoft.SDK
         [Column(TypeName = "timestamp", Order = 6)]
         [DataMember(Order = 6)]
         [InstantAs(UnmanagedType.I8, SizeConst = 8)]
-        public virtual DateTime Modified { get; set; } = Log.Clock;
+        public virtual DateTime Modified { get; set; }
 
         [IdentityRubric]
         [StringLength(32)]
         [Column(Order = 7)]
         [DataMember(Order = 7)]
         [InstantAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-        public virtual string Modifier { get; set; } = "None";
+        public virtual string Modifier { get; set; }
 
         [IdentityRubric]
         [Column(TypeName = "timestamp", Order = 8)]
         [DataMember(Order = 8)]
         [InstantAs(UnmanagedType.I8, SizeConst = 8)]
-        public virtual DateTime Created { get; set; } = Log.Clock;
+        public virtual DateTime Created { get; set; }
 
         [IdentityRubric]
         [StringLength(32)]
         [Column(Order = 9)]
         [DataMember(Order = 9)]
         [InstantAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-        public virtual string Creator { get; set; } = "None";
+        public virtual string Creator { get; set; }
 
         [DataMember(Order = 10)]
         [Column(Order = 10)]
@@ -61,7 +61,7 @@ namespace Undersoft.SDK
         [StringLength(32)]
         [DataMember(Order = 11)]
         [InstantAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-        public virtual string Label { get; set; } = "None";
+        public virtual string Label { get; set; }
 
         public virtual TEntity Sign<TEntity>(TEntity entity = null) where TEntity : class, IOrigin
         {
@@ -74,7 +74,7 @@ namespace Undersoft.SDK
             }
             entity.AutoId();
             Stamp(entity);
-            entity.Created = entity.Time;
+            entity.Created = entity.Time;            
             return entity;
         }
 
@@ -82,10 +82,11 @@ namespace Undersoft.SDK
         {
             if (entity == null)
             {
-                Time = DateTime.Now;
+                Time = Log.Clock;
                 return default;
-            }
-            entity.Time = DateTime.Now;
+            }            
+            entity.Time = Log.Clock;
+            entity.Modified = entity.Time;
             return entity;
 
         }
