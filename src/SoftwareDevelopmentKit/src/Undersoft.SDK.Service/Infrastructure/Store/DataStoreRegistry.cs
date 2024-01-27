@@ -91,7 +91,7 @@ public static class DataStoreRegistry
             }
             EntityTypes.Put(contextType, dbEntityTypes);
             context.GetIndentityProperties();
-            context.RegisterRemoteMembers();
+            context.GetRemoteMembers();
         }
 
         return dbEntityTypes;
@@ -108,7 +108,7 @@ public static class DataStoreRegistry
         return type;
     }
 
-    public static ISeries<MemberRubric[]> RegisterRemoteMembers(this IDataStoreContext context)
+    public static ISeries<MemberRubric[]> GetRemoteMembers(this IDataStoreContext context)
     {
         var contextType = context.GetType();
 
@@ -221,7 +221,7 @@ public static class DataStoreRegistry
         GetIndentityProperties(entityType)?.TryGet(identityType, out identity);
         return identity;
     }
-    public static PropertyInfo[] GetIdentityProperty(this IUnique entity, DbIdentityType identityType)
+    public static PropertyInfo[] GetIdentityProperty(this IIdentifiable entity, DbIdentityType identityType)
     {
         if (IdentityProperties.TryGet(entity.GetType(), out ISeries<PropertyInfo[]> dbSetKeys))
             if (dbSetKeys.TryGet(identityType, out PropertyInfo[] keyProperties))
@@ -237,7 +237,7 @@ public static class DataStoreRegistry
 
         return null;
     }
-    public static ISeries<PropertyInfo[]> GetIndentityProperties(this IUnique entity)
+    public static ISeries<PropertyInfo[]> GetIndentityProperties(this IIdentifiable entity)
     {
         if (IdentityProperties.TryGet(entity.GetType(), out ISeries<PropertyInfo[]> dbSetKeys))
             return dbSetKeys;
@@ -302,7 +302,7 @@ public static class DataStoreRegistry
                             ? r.RubricType.GetGenericArguments().Any(ga => ga.Equals(targetType))
                             : r.RubricType.Equals(targetType)).FirstOrDefault();
     }
-    public static MemberRubric GetRemoteRubric<TOrigin, TTarget>()
+    public static MemberRubric GetRemoteMember<TOrigin, TTarget>()
     {
         return GetRemoteMember(typeof(TOrigin), typeof(TTarget));
     }

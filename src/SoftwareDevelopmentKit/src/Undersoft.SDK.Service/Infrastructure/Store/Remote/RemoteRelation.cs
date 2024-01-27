@@ -37,7 +37,7 @@ public abstract class RemoteRelation<TOrigin, TTarget> : RemoteRelation, IRemote
 
     public abstract Expression<Func<TTarget, bool>> CreatePredicate(object entity);
 
-    public override MemberRubric RemoteRubric => DataStoreRegistry.GetRemoteRubric<TOrigin, TTarget>();
+    public override MemberRubric RemoteRubric => DataStoreRegistry.GetRemoteMember<TOrigin, TTarget>();
 
 }
 

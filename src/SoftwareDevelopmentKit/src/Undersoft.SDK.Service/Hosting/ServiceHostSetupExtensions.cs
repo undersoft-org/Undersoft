@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
-using Undersoft.SDK.Service.Host;
+using Undersoft.SDK.Service.Hosting;
 using Undersoft.SDK.Service.Infrastructure.Repository;
 
 namespace Undersoft.SDK.Service.Hosting
@@ -32,7 +32,7 @@ namespace Undersoft.SDK.Service.Hosting
                     client.BuildMetadata();
                 });
 
-                app.Manager.Registry.AddOpenDataServiceImplementations();
+                app.Manager.Registry.AddOpenDataRemoteImplementations();
                 app.RebuildProviders();
             });
         }

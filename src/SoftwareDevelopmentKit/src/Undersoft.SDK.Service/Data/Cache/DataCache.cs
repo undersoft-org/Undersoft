@@ -57,9 +57,9 @@ public class DataCache : TypedCache<IIdentifiable>, IDataCache
         return item;
     }
 
-    public static IRubrics AssignKeyRubrics(ProxyCreator sleeve, IOrigin item)
+    public static IRubrics AssignKeyRubrics(ProxyCreator proxy, IOrigin item)
     {
-        if (!sleeve.Rubrics.KeyRubrics.Any())
+        if (!proxy.Rubrics.KeyRubrics.Any())
         {
             IEnumerable<bool[]>[] rk = item.GetIndentityProperties()
                 .AsItems()
@@ -69,17 +69,17 @@ public class DataCache : TypedCache<IIdentifiable>, IDataCache
                             .Select(
                                 e => new[]
                                         {
-                                            sleeve.Rubrics[e.Name].IsKey = true,
-                                            sleeve.Rubrics[e.Name].IsIdentity = true
+                                            proxy.Rubrics[e.Name].IsKey = true,
+                                            proxy.Rubrics[e.Name].IsIdentity = true
                                         })
-                        : p.Value.Select(h => new[] { sleeve.Rubrics[h.Name].IsIdentity = true }))
+                        : p.Value.Select(h => new[] { proxy.Rubrics[h.Name].IsIdentity = true }))
                 .ToArray();
 
-            sleeve.Rubrics.KeyRubrics.Put(sleeve.Rubrics.Where(p => p.IsIdentity == true).ToArray());
-            sleeve.Rubrics.Update();
+            proxy.Rubrics.KeyRubrics.Put(proxy.Rubrics.Where(p => p.IsIdentity == true).ToArray());
+            proxy.Rubrics.Update();
         }
 
-        return sleeve.Rubrics.KeyRubrics;
+        return proxy.Rubrics.KeyRubrics;
     }
 
     public override T Memorize<T>(T item)

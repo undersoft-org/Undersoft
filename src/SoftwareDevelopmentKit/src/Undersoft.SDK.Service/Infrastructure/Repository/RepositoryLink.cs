@@ -33,7 +33,7 @@ public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore,
     public Expression<Func<TTarget, bool>> CreatePredicate(object entity)
     { return relation.CreatePredicate(entity); }
 
-    public void Load(object origin) { Load(origin, dsContext); }
+    public void Load(object origin) { Load(origin, remoteContext); }
 
     public void Load<T>(IEnumerable<T> origins, OpenDataContext context) where T : class
     { origins.ForEach((o) => Load(o, context)); }
@@ -75,7 +75,7 @@ public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore,
         }
     }
 
-    public async Task LoadAsync(object origin) { await Task.Run(() => Load(origin, dsContext), Cancellation); }
+    public async Task LoadAsync(object origin) { await Task.Run(() => Load(origin, remoteContext), Cancellation); }
 
     public async ValueTask LoadAsync(object origin, OpenDataContext context, CancellationToken token)
     { await Task.Run(() => Load(origin, context), token); }
@@ -87,7 +87,7 @@ public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore,
 
     public bool IsLinked { get; set; }
 
-    public override int LinkedCount { get; set; }
+    public override int RemotesCount { get; set; }
 
     public MemberRubric RemoteRubric => relation.RemoteRubric;
 

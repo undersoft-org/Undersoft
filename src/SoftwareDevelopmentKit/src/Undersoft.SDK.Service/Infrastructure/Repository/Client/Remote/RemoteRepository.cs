@@ -46,7 +46,7 @@ public class RemoteRepository<TStore, TEntity>
         IAuthorization authorization
     ) : base(pool.ContextPool)
     {
-        dsContext.SetSecurityString(authorization.Credentials.SessionToken);
+        remoteContext.SetAuthorizationHeader(authorization.Credentials.SessionToken);
         mapper = cache.Mapper;
         this.cache = cache;
     }
@@ -61,23 +61,23 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
     where TEntity : class, IOrigin, IInnerProxy
 {
     ISeries<DataServiceRequest> _batchset;
-    protected DataServiceQuery<TEntity> dsQuery;
-
-    protected RemoteSet<TEntity> dsSet;
+    protected OpenDataContext remoteContext => (OpenDataContext)InnerContext;
+    protected DataServiceQuery<TEntity> remoteQuery;
+    protected RemoteSet<TEntity> remoteSet;
 
     public RemoteRepository() { }
 
     public RemoteRepository(IRepositoryClient repositorySource) : base(repositorySource)
     {
-        if (dsContext != null)
+        if (remoteContext != null)
         {
-            dsSet = new RemoteSet<TEntity>(
-                dsContext,
-                dsContext.GetMappedName(typeof(TEntity)),
+            remoteSet = new RemoteSet<TEntity>(
+                remoteContext,
+                remoteContext.GetMappedName(typeof(TEntity)),
                 null,
                 null
             );
-            dsQuery = dsSet.Query;
+            remoteQuery = remoteSet.Query;
             Expression = Expression.Constant(this);
             Provider = new RemoteRepositoryExpressionProvider<TEntity>(Query);
         }
@@ -85,31 +85,31 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
 
     public RemoteRepository(OpenDataContext context) : base(context)
     {
-        if (dsContext != null)
+        if (remoteContext != null)
         {
-            dsSet = new RemoteSet<TEntity>(
-                dsContext,
-                dsContext.GetMappedName(typeof(TEntity)),
+            remoteSet = new RemoteSet<TEntity>(
+                remoteContext,
+                remoteContext.GetMappedName(typeof(TEntity)),
                 null,
                 null
             );
-            dsQuery = dsSet.Query;
+            remoteQuery = remoteSet.Query;
             Expression = Expression.Constant(this.AsEnumerable());
-            Provider = new RemoteRepositoryExpressionProvider<TEntity>(dsQuery);
+            Provider = new RemoteRepositoryExpressionProvider<TEntity>(remoteQuery);
         }
     }
 
     public RemoteRepository(IRepositoryContextPool context) : base(context)
     {
-        if (dsContext != null)
+        if (remoteContext != null)
         {
-            dsSet = new RemoteSet<TEntity>(
-                dsContext,
-                dsContext.GetMappedName(typeof(TEntity)),
+            remoteSet = new RemoteSet<TEntity>(
+                remoteContext,
+                remoteContext.GetMappedName(typeof(TEntity)),
                 null,
                 null
             );
-            dsQuery = dsSet.Query;
+            remoteQuery = remoteSet.Query;
             Expression = Expression.Constant(this);
             Provider = new RemoteRepositoryExpressionProvider<TEntity>(Query);
         }
@@ -132,13 +132,13 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
             {
                 value.PatchTo(entity, PatchingEvent);
                 //dsContext.UpdateObject(Stamp(entity), keys);
-                if (dsSet.ContainsKey(keys))
-                    dsSet[keys] = Stamp(entity);
+                if (remoteSet.ContainsKey(keys))
+                    remoteSet[keys] = Stamp(entity);
                 else
-                    dsSet.Add(Stamp(entity));
+                    remoteSet.Add(Stamp(entity));
             }
             else
-                dsSet.Add(Sign(entity));
+                remoteSet.Add(Sign(entity));
             //dsContext.AddObject(Name, Sign(value));
         }
     }
@@ -149,22 +149,22 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
     {
         get
         {
-            DataServiceQuery<TEntity> query = dsContext.CreateQuery<TEntity>(KeyString(keys), true);
+            DataServiceQuery<TEntity> query = remoteContext.CreateQuery<TEntity>(KeyString(keys), true);
             if (expanders != null)
                 foreach (Expression<Func<TEntity, object>> expander in expanders)
                     query = query.Expand(expander);
 
             var entity = query.FirstOrDefault();
             if (entity != null)
-                if (dsSet.ContainsKey(keys))
-                    dsSet[keys] = entity;
+                if (remoteSet.ContainsKey(keys))
+                    remoteSet[keys] = entity;
                 else
-                    dsSet.Add(entity);
+                    remoteSet.Add(entity);
             return entity;
         }
         set
         {
-            DataServiceQuery<TEntity> query = dsContext.CreateQuery<TEntity>(KeyString(keys), true);
+            DataServiceQuery<TEntity> query = remoteContext.CreateQuery<TEntity>(KeyString(keys), true);
             if (expanders != null)
                 if (expanders != null)
                     foreach (Expression<Func<TEntity, object>> expander in expanders)
@@ -174,10 +174,10 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
             if (entity != null)
             {
                 value.PatchTo(Stamp(entity), PatchingEvent);
-                if (dsSet.ContainsKey(keys))
-                    dsSet[keys] = Stamp(entity);
+                if (remoteSet.ContainsKey(keys))
+                    remoteSet[keys] = Stamp(entity);
                 else
-                    dsSet.Add(Stamp(entity));
+                    remoteSet.Add(Stamp(entity));
             }
         }
     }
@@ -193,8 +193,8 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
                 foreach (Expression<Func<TEntity, object>> expander in expanders)
                     query = query.Expand(expander);
 
-            dsSet.Load(query);
-            return dsSet[keys].ToQueryable().Select(selector).FirstOrDefault();
+            remoteSet.Load(query);
+            return remoteSet[keys].ToQueryable().Select(selector).FirstOrDefault();
         }
         set
         {
@@ -203,8 +203,8 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
                 foreach (Expression<Func<TEntity, object>> expander in expanders)
                     query = query.Expand(expander);
 
-            dsSet.Load(query);
-            dsSet.AsQueryable().Select(selector).FirstOrDefault().PatchFrom(value);
+            remoteSet.Load(query);
+            remoteSet.AsQueryable().Select(selector).FirstOrDefault().PatchFrom(value);
         }
     }
 
@@ -212,9 +212,9 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
     {
         var item = cache.Lookup<TEntity>(keys);
         if (item != null)
-            dsSet.Load(item);
+            remoteSet.Load(item);
         else
-            item = dsSet[keys];
+            item = remoteSet[keys];
         return item;
     }
 
@@ -246,7 +246,7 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
             if (_batchset == null)
                 _batchset = new Registry<DataServiceRequest>();
 
-            return _batchset.Put(keys, dsContext.CreateQuery<TEntity>(KeyString(keys), true)).Value;
+            return _batchset.Put(keys, remoteContext.CreateQuery<TEntity>(KeyString(keys), true)).Value;
         }
         return null;
     }
@@ -257,7 +257,7 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
         if (entity != null)
         {
             var id = Stamp(entity).Id;
-            var _entity = dsSet[id];
+            var _entity = remoteSet[id];
             if (_entity != null)
                 entity.PatchTo(_entity);
             return _entity;
@@ -270,13 +270,13 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
         try
         {
             return (
-                await dsContext.SaveChangesAsync(SaveChangesOptions.BatchWithSingleChangeset, token)
+                await remoteContext.SaveChangesAsync(SaveChangesOptions.BatchWithSingleChangeset, token)
             ).Count();
         }
         catch (Exception e)
         {
-            dsContext.Failure<Datalog>(
-                $"{$"Fail on update dataservice as singlechangeset, using context:{dsContext.GetType().Name}, "}{$"TimeStamp: {DateTime.Now.ToString()}"}",
+            remoteContext.Failure<Datalog>(
+                $"{$"Fail on update dataservice as singlechangeset, using context:{remoteContext.GetType().Name}, "}{$"TimeStamp: {DateTime.Now.ToString()}"}",
                 ex: e
             );
         }
@@ -289,7 +289,7 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
         try
         {
             return (
-                await dsContext.SaveChangesAsync(
+                await remoteContext.SaveChangesAsync(
                     SaveChangesOptions.BatchWithIndependentOperations
                         | SaveChangesOptions.ContinueOnError,
                     token
@@ -298,27 +298,25 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
         }
         catch (Exception e)
         {
-            dsContext.Failure<Datalog>(
-                $"{$"Fail on update dataservice as independent operations, using context:{dsContext.GetType().Name}, "}{$"TimeStamp: {DateTime.Now.ToString()}"}",
+            remoteContext.Failure<Datalog>(
+                $"{$"Fail on update dataservice as independent operations, using context:{remoteContext.GetType().Name}, "}{$"TimeStamp: {DateTime.Now.ToString()}"}",
                 ex: e
             );
         }
 
         return -1;
-    }
-
-    protected OpenDataContext dsContext => (OpenDataContext)InnerContext;
+    }    
 
     public override object TracePatching(object item, string propertyName = null, Type type = null)
     {
         if (type == null)
         {
-            dsContext.AttachTo(item.GetType().Name, item);
+            remoteContext.AttachTo(item.GetType().Name, item);
             return item;
         }
         else
         {
-            var qor = dsContext.LoadProperty(item, propertyName);
+            var qor = remoteContext.LoadProperty(item, propertyName);
             var source = (IProxy)item;
             var target = source[propertyName];
             if (target == null)
@@ -330,8 +328,7 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
     public override TEntity Add(TEntity entity)
     {
         TEntity _entity = Sign(entity);
-        //dsContext.AddObject(Name, _entity);
-        dsSet.Add(_entity);
+        remoteSet.Add(_entity);
         return entity;
     }
 
@@ -348,10 +345,10 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
 
     public override TEntity Delete(TEntity entity)
     {
-        if (dsSet.ContainsKey(entity.Id))
-            dsSet.Remove(entity);
+        if (remoteSet.ContainsKey(entity.Id))
+            remoteSet.Remove(entity);
         else
-            dsContext.DeleteObject(entity);
+            remoteContext.DeleteObject(entity);
         return entity;
     }
 
@@ -382,21 +379,21 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
     public override TEntity NewEntry(params object[] parameters)
     {
         TEntity entity = Sign(typeof(TEntity).New<TEntity>(parameters));
-        dsContext.AddObject(Name, entity);
+        remoteContext.AddObject(Name, entity);
         return entity;
     }
 
     public DataServiceQuerySingle<TEntity> FindQuerySingle(params object[] keys)
     {
         if (keys != null)
-            return dsQuery.CreateFunctionQuerySingle<TEntity>(KeyString(keys), true);
+            return remoteQuery.CreateFunctionQuerySingle<TEntity>(KeyString(keys), true);
         return null;
     }
 
     public DataServiceQuery<TEntity> FindQuery(params object[] keys)
     {
         if (keys != null)
-            return dsQuery.CreateFunctionQuery<TEntity>(KeyString(keys), true);
+            return remoteQuery.CreateFunctionQuery<TEntity>(KeyString(keys), true);
         return null;
     }
 
@@ -405,16 +402,16 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
         return Query;
     }
 
-    public OpenDataContext Context => dsContext;
+    public OpenDataContext Context => remoteContext;
 
     public override string Name => Context.GetMappedName(ElementType);
 
     public override string FullName => Context.GetMappedFullName(ElementType);
 
-    public override DataServiceQuery<TEntity> Query => dsContext.CreateQuery<TEntity>(Name, true);
+    public override DataServiceQuery<TEntity> Query => remoteContext.CreateQuery<TEntity>(Name, true);
 
-    public void SetSecurityToken(string token)
+    public void SetAuthorizationToken(string token)
     {
-        dsContext.SetSecurityString(token);
+        remoteContext.SetAuthorizationHeader(token);
     }
 }

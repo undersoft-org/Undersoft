@@ -95,7 +95,7 @@ public abstract class Repository : IRepository
 
     public IEnumerable<IRemoteProperty> RemoteProperties { get; set; }
 
-    public virtual int LinkedCount { get; set; }
+    public virtual int RemotesCount { get; set; }
 
     public virtual Towards Towards { get; set; }
 

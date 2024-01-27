@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>Undersoft.SDK.Service</RootNamespace>
     <Company>Undersoft</Company>
     <Authors>Dariusz Hanc</Authors>
@@ -80,11 +80,6 @@
     <Using Include="Undersoft.SDK.Instant.Proxies" />
     <Using Include="Undersoft.SDK.Logging" />
     <Using Include="Undersoft.SDK.Uniques" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Infrastructure\Repository\Base\" />
-    <Folder Include="Infrastructure\Repository\Abstraction\" />
   </ItemGroup>
 
 </Project>

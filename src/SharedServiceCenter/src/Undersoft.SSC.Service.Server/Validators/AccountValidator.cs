@@ -1,57 +1,56 @@
-﻿using Undersoft.SDK.Service.Server.Operation.Command;
+﻿using Undersoft.SDK.Service.Server.Accounts;
+using Undersoft.SDK.Service.Server.Operation.Command;
 using Undersoft.SDK.Service.Server.Operation.Command.Validator;
 using Undersoft.SSC.Domain.Entities;
 
 namespace Undersoft.SSC.Service.Server.Validators;
 
-public class MemberValidator : CommandSetValidator<Member>
+public class AccountValidator : CommandSetValidator<Account>
 {
-    public MemberValidator(IServicer ultimatr) : base(ultimatr)
+    public AccountValidator(IServicer ultimatr) : base(ultimatr)
     {
         ValidationScope(
             CommandMode.Any,
             () =>
             {
-                ValidateEmail(
-                    p => p.Contract.Identifiers != null ? p.Contract.Identifiers[IdKind.Email].Value : null
-                );
-            });
+                ValidateEmail(p => p.Contract.Credentials.Email);
+            }
+        );
 
         ValidationScope(
             CommandMode.Create | CommandMode.Upsert,
             () =>
             {
-                ValidateRequired(p => p.Contract.Identifiers != null ? p.Contract.Identifiers[IdKind.Email].Value : null);
+                ValidateRequired(p => p.Contract.Credentials.UserName);
+                ValidateRequired(p => p.Contract.Credentials.Email);
+                ValidateRequired(p => p.Contract.Credentials.Password);
             }
         );
         ValidationScope(
             CommandMode.Create,
             () =>
             {
-                ValidateNotExist<IEntryStore, Member>(
+                ValidateNotExist<IReportStore, Account>(
                     (cmd) =>
-                        (e) => (e.Label == cmd.Label)
-                            || (e.Identifiers[IdKind.Email].Value == cmd.Identifiers[IdKind.Email].Value
-                            || (e.Identifiers[IdKind.Name].Value == cmd.Identifiers[IdKind.Name].Value)
-                            || (e.Identifiers[IdKind.Phone].Value == cmd.Identifiers[IdKind.Phone].Value)),
-                    "Members already exists"
-                    );
+                        a =>
+                            a.User != null
+                                ? a.User.Email == cmd.Credentials.Email
+                                    || a.User.UserName == cmd.Credentials.UserName
+                                : false,
+                    "Account already exists"
+                );
             }
         );
         ValidationScope(
-            CommandMode.Update | CommandMode.Change,
+            CommandMode.Update | CommandMode.Change | CommandMode.Delete,
             () =>
             {
-                ValidateRequired(p => p.Contract.Identifiers[IdKind.Name].Value);
-                ValidateExist<IEntryStore, Member>((cmd) => (e) => e.Id == cmd.Id);
-            }
-        );
-        ValidationScope(
-            CommandMode.Delete,
-            () =>
-            {
+                ValidateRequired(p => p.Contract.Credentials.SessionToken);
+                ValidateRequired(p => p.Contract.Credentials.Email);
                 ValidateRequired(a => a.Contract.Id);
-                ValidateExist<IEntryStore, Member>((cmd) => (e) => e.Id == cmd.Id);
+                ValidateExist<IReportStore, Account>(
+                    (cmd) => a => a.User != null ? a.User.Email == cmd.Credentials.Email : false
+                );
             }
         );
     }

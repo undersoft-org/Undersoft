@@ -1,12 +1,14 @@
 ﻿@page "/account/signup"
 
-@inject IAuthenticationStateService _service
+@inject IAccessService _service
 @inject NavigationManager _navigation
 
 @using Account = Undersoft.SDK.Security.Identity.Account;
 @using Undersoft.SDK.Invoking;
 @using Undersoft.SDK.Service.Client;
 @using Undersoft.SSC.Service.Application;
+@using Undersoft.SDK.Service.Application;
+@using Undersoft.SDK.Service.Application.Access;
 
 <h3>Sign up</h3>
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Undersoft.SDK.Service.Host;
+using Undersoft.SDK.Service.Hosting;
 using Undersoft.SDK.Service.Infrastructure.Repository;
 
 namespace Undersoft.SDK.Service
@@ -49,10 +49,10 @@ namespace Undersoft.SDK.Service
                 var model = await client.BuildMetadata();
             }
 
-            sm.Registry.AddOpenDataServiceImplementations();
+            sm.Registry.AddOpenDataRemoteImplementations();
         }
 
-        public static async Task<IServiceProvider> UseDataServices(this IServiceProvider provider)
+        public static async Task<IServiceProvider> UseServiceClients(this IServiceProvider provider)
         {
             await provider.LoadDataServiceModels();
             return provider;

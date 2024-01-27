@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Undersoft.SSC.Service.Application.UI\Undersoft.SSC.Service.Application.UI.csproj" />
-    <ProjectReference Include="..\Undersoft.SSC.Service.Application\Undersoft.SSC.Service.Application.csproj" />
   </ItemGroup>
 
 </Project>

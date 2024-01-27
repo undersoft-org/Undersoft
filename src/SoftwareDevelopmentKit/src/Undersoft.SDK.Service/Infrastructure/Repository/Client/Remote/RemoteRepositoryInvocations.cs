@@ -114,8 +114,8 @@ public partial class RemoteRepository<TEntity>
     )
     {
         var action = new DataServiceActionQuerySingle<TEntity>(
-            dsContext,
-            $"{dsContext.BaseUri.OriginalString}/{Name}({key})/{invokeType}",
+            remoteContext,
+            $"{remoteContext.BaseUri.OriginalString}/{Name}({key})/{invokeType}",
             parameters
         );
         var result = await action.GetValueAsync();
@@ -128,8 +128,8 @@ public partial class RemoteRepository<TEntity>
     )
     {
         var action = new DataServiceActionQuery<TEntity>(
-            dsContext,
-            $"{dsContext.BaseUri.OriginalString}/{Name}/{invokeType}",
+            remoteContext,
+            $"{remoteContext.BaseUri.OriginalString}/{Name}/{invokeType}",
             parameters
         );
         var result = await action.ExecuteAsync();

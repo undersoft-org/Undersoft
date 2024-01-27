@@ -3,28 +3,28 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Undersoft.SDK.Service.Hosting;
 
-namespace Undersoft.SDK.Service.Host
+namespace Undersoft.SDK.Service.Hosting
 {
     public partial class ServiceHostSetup : IServiceHostSetup
     {
-        IHostBuilder app;
-        IHostingEnvironment env;
-        IServiceManager sm;
+        IHostBuilder _host;
+        IHostingEnvironment _environment;
+        IServiceManager _manager;
 
-        public ServiceHostSetup(IHostBuilder application, IServiceManager manager) 
+        public ServiceHostSetup(IHostBuilder host, IServiceManager manager) 
         { 
-            app = application; 
-            sm = manager;
+            _host = host; 
+            _manager = manager;
         }
 
-        public ServiceHostSetup(IHostBuilder application, IServiceManager manager, IHostingEnvironment environment, bool useSwagger) : this(application, manager)
+        public ServiceHostSetup(IHostBuilder host, IServiceManager manager, IHostingEnvironment environment, bool useSwagger) : this(host, manager)
         {
-            env = environment; 
+            _environment = environment; 
         }
 
-        public ServiceHostSetup(IHostBuilder application, IServiceManager manager, IHostingEnvironment environment, string[] apiVersions = null) : this(application, manager)
+        public ServiceHostSetup(IHostBuilder host, IServiceManager manager, IHostingEnvironment environment, string[] apiVersions = null) : this(host, manager)
         {
-            env = environment;
+            _environment = environment;
         }
 
         public virtual IServiceHostSetup RebuildProviders()
@@ -41,7 +41,7 @@ namespace Undersoft.SDK.Service.Host
 
         public IServiceHostSetup UseDataMigrations()
         {
-            using (var session = sm.CreateScope())
+            using (var session = _manager.CreateScope())
             {
                 try
                 {
@@ -59,11 +59,11 @@ namespace Undersoft.SDK.Service.Host
 
         public virtual IServiceHostSetup UseInternalProvider()
         {
-            sm.Registry.MergeServices();
-            app.UseServiceProviderFactory(sm.GetProviderFactory());
+            _manager.Registry.MergeServices();
+            _host.UseServiceProviderFactory(_manager.GetProviderFactory());
             return this;
         }
 
-        public virtual IServiceManager Manager => sm;
+        public virtual IServiceManager Manager => _manager;
     }
 }

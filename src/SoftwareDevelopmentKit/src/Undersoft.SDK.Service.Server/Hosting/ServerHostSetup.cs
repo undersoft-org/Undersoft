@@ -16,17 +16,16 @@ using Series;
 
 public class ServerHostSetup : IServerHostSetup
 {
-    public static bool defaultProvider;
+    protected static bool defaultProvider;
 
-    IApplicationBuilder _application;
-    IWebHostEnvironment _environment;
-    IEndpointRouteBuilder _routeBuilder;
-    IServiceManager _serviceManager;
+    private readonly IApplicationBuilder _builder;
+    private readonly IWebHostEnvironment _environment;
+    private readonly IServiceManager _manager;
 
     public ServerHostSetup(IApplicationBuilder application)
     {
-        _application = application;
-        _serviceManager = _application.ApplicationServices.GetService<IServiceManager>();
+        _builder = application;
+        _manager = _builder.ApplicationServices.GetService<IServiceManager>();
     }
 
     public ServerHostSetup(IApplicationBuilder application, IWebHostEnvironment environment)
@@ -51,7 +50,7 @@ public class ServerHostSetup : IServerHostSetup
 
     public IServerHostSetup UseEndpoints(bool useRazorPages = false)
     {
-        _application.UseEndpoints(endpoints =>
+        _builder.UseEndpoints(endpoints =>
         {
             var method = typeof(GrpcEndpointRouteBuilderExtensions)
                 .GetMethods()
@@ -71,7 +70,7 @@ public class ServerHostSetup : IServerHostSetup
                 endpoints.MapCodeFirstGrpcReflectionService();
             }
 
-            _serviceManager.Registry.MergeServices();
+            _manager.Registry.MergeServices();
 
             endpoints.MapControllers();
 
@@ -87,7 +86,7 @@ public class ServerHostSetup : IServerHostSetup
 
     public IServerHostSetup MapFallbackToFile(string filePath)
     {
-        _application.UseEndpoints(endpoints =>
+        _builder.UseEndpoints(endpoints =>
         {
             endpoints.MapFallbackToFile(filePath);
         });
@@ -95,7 +94,7 @@ public class ServerHostSetup : IServerHostSetup
         return this;
     }
 
-    public IServerHostSetup UseDataServices()
+    public IServerHostSetup UseServiceClients()
     {
         this.LoadOpenDataEdms().ConfigureAwait(true);
         return this;
@@ -103,12 +102,14 @@ public class ServerHostSetup : IServerHostSetup
 
     public IServerHostSetup UseDataMigrations()
     {
-        using (IServiceScope scope = _serviceManager.CreateScope())
+        using (IServiceScope scope = _manager.CreateScope())
         {
             try
             {
-                IServicer us = scope.ServiceProvider.GetRequiredService<IServicer>();
-                us.GetSources().ForEach(e => ((DbContext)e.Context).Database.Migrate());
+                scope.ServiceProvider
+                    .GetRequiredService<IServicer>()
+                    .GetSources()
+                    .ForEach(e => ((IDataStoreContext)e.Context).Database.Migrate());
             }
             catch (Exception ex)
             {
@@ -125,28 +126,27 @@ public class ServerHostSetup : IServerHostSetup
 
     public IServerHostSetup UseDefaultProvider()
     {
-        _serviceManager.Registry.MergeServices(false);
-        ServiceManager.SetProvider(_application.ApplicationServices);
+        _manager.Registry.MergeServices(true);
+        ServiceManager.SetProvider(_builder.ApplicationServices);
         defaultProvider = true;
         return this;
     }
 
     public IServerHostSetup UseInternalProvider()
     {
-        _serviceManager.Registry.MergeServices(true);
-        _application.ApplicationServices = _serviceManager.BuildInternalProvider();
+        _manager.Registry.MergeServices(true);
+        _builder.ApplicationServices = _manager.BuildInternalProvider();
         return this;
     }
 
-    public IServerHostSetup UseApiServerSetup(string[] apiVersions = null)
+    public IServerHostSetup UseServiceServer(string[] apiVersions = null)
     {
         UseHeaderForwarding();
 
         if (_environment.IsDevelopment())
-            _application
-                .UseDeveloperExceptionPage();
+            _builder.UseDeveloperExceptionPage();
 
-        _application
+        _builder
             .UseHttpsRedirection()
             .UseODataBatching()
             .UseODataQueryRequest()
@@ -158,9 +158,7 @@ public class ServerHostSetup : IServerHostSetup
         if (apiVersions != null)
             UseSwaggerSetup(apiVersions);
 
-        _application
-            .UseAuthentication()
-            .UseAuthorization();
+        _builder.UseAuthentication().UseAuthorization();
 
         UseJwtMiddleware();
 
@@ -178,14 +176,14 @@ public class ServerHostSetup : IServerHostSetup
 
     public IServerHostSetup UseSwaggerSetup(string[] apiVersions)
     {
-        if (_application == null)
+        if (_builder == null)
         {
-            throw new ArgumentNullException(nameof(_application));
+            throw new ArgumentNullException(nameof(_builder));
         }
 
-        var ao = _serviceManager.GetConfiguration().Identity;
+        var ao = _manager.GetConfiguration().Identity;
 
-        _application
+        _builder
             .UseSwagger()
             .UseSwaggerUI(s =>
             {
@@ -194,7 +192,7 @@ public class ServerHostSetup : IServerHostSetup
                 //s.OAuthAppName(ao.ApiName);
             });
         return this;
-    }
+    } 
 
     public IServerHostSetup UseHeaderForwarding()
     {
@@ -206,19 +204,21 @@ public class ServerHostSetup : IServerHostSetup
         forwardingOptions.KnownNetworks.Clear();
         forwardingOptions.KnownProxies.Clear();
 
-        _application.UseForwardedHeaders(forwardingOptions);
+        _builder.UseForwardedHeaders(forwardingOptions);
 
         return this;
     }
 
     public IServerHostSetup UseJwtMiddleware()
     {
-        _application.UseMiddleware<ServerHostJwtMiddleware>();
+        _builder.UseMiddleware<ServerHostJwtMiddleware>();
 
         return this;
     }
 
-    public IApplicationBuilder Application => _application;
+    public IServiceManager Manager => _manager;
 
-    public IServiceManager Manager => _serviceManager;
+    protected IApplicationBuilder Application => _builder;
+
+    protected IWebHostEnvironment LocalEnvironment => _environment;
 }

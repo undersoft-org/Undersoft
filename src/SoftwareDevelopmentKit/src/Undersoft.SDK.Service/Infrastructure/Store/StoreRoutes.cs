@@ -18,8 +18,8 @@
         public const string ApiServiceRoute = "api/srvc";
         public const string OpenServiceRoute = "open/srvc";
         public const string StreamServiceRoute = "stream/srvc";
-        public const string ApiAppRoute = "api/app";
-        public const string OpenAppRoute = "open/app";
-        public const string StreamAppRoute = "stream/app";
+        public const string ApiAppRoute = "api/_host";
+        public const string OpenAppRoute = "open/_host";
+        public const string StreamAppRoute = "stream/_host";
     }
 }

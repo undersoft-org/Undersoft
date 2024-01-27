@@ -4,14 +4,13 @@ namespace Undersoft.SDK.Service.Server.Hosting
 {
     public interface IServerHostSetup
     {
-
         IServerHostSetup UseHeaderForwarding();
 
-        IServerHostSetup UseApiServerSetup(string[] apiVersions);
+        IServerHostSetup UseServiceServer(string[] apiVersions);
 
         IServerHostSetup UseCustomSetup(Action<IServerHostSetup> action);
 
-        IServerHostSetup UseDataServices();
+        IServerHostSetup UseServiceClients();
 
         IServerHostSetup UseDefaultProvider();
 
@@ -29,6 +28,6 @@ namespace Undersoft.SDK.Service.Server.Hosting
 
         IServerHostSetup MapFallbackToFile(string filePath);
 
-        IApplicationBuilder Application { get; }
+        IServiceManager Manager { get; }
     }
 }

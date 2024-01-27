@@ -1,7 +1,10 @@
-﻿namespace Undersoft.SDK.Service.Application.Components;
+﻿using Microsoft.JSInterop;
+using System.Diagnostics.CodeAnalysis;
+
+namespace Undersoft.SDK.Service.Application.Extensions;
 
 [ExcludeFromCodeCoverage]
-internal static class JSRuntimeExtensions
+public static class JSRuntimeExtensions
 {
     public static async ValueTask InvokeVoidAsync(this IJSRuntime jsRuntime, object? el = null, string? func = null, params object[] args)
     {

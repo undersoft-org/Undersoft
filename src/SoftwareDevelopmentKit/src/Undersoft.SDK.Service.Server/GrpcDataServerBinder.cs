@@ -28,16 +28,13 @@ namespace Undersoft.SDK.Service.Server
 
         protected override string GetDefaultName(Type contractType)
         {
-            var val = base.GetDefaultName(contractType);
-            if (val.EndsWith("`1") && contractType.IsGenericType)
-            {
-                var args = contractType.GetGenericArguments();
-                if (args.Length == 1)
-                {
-                    val = val.Substring(0, val.Length - 2) + args[0].Name;
-                }
-            }
-            return val;
+            var fullname = base.GetDefaultName(contractType);
+
+            var dataName = fullname.Split('_').LastOrDefault();
+
+            var endpointName = StoreRoutes.StreamDataRoute + "/" + dataName + "Stream";
+
+            return endpointName;
         }
     }
 }

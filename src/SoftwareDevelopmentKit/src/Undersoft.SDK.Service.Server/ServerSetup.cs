@@ -236,7 +236,6 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
 
     public IServerSetup ConfigureServer(
         bool includeSwagger = true,
-        Assembly[] assemblies = null,
         Type[] sourceTypes = null,
         Type[] clientTypes = null
     )

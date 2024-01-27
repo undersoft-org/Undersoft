@@ -28,7 +28,7 @@ public class Program
                 .Configure(c.Configuration
                 .GetSection("Kestrel")))
             .UseStaticWebAssets()
-            .UseStartup<Startup>())
+            .UseStartup<Setup>())
             .Build();
 
         return _host;

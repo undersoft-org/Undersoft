@@ -27,7 +27,7 @@ public class Program
             .ConfigureKestrel((c, o) => o
                 .Configure(c.Configuration
                 .GetSection("Kestrel")))            
-            .UseStartup<Startup>())
+            .UseStartup<Setup>())
             .Build();
 
         return _host;

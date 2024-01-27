@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using System.Runtime.Intrinsics.X86;
 using Undersoft.SDK.Service;
-using Undersoft.SDK.Service.Application.Services;
 using Undersoft.SSC.Service.Clients;
-using Undersoft.SSC.Service.Application.UI.Pages;
+using Undersoft.SSC.Service.Application.UI.Shared;
+using Undersoft.SDK.Service.Application.Access;
 
 namespace Undersoft.SSC.Service.Application.Client
 {
@@ -25,7 +25,7 @@ namespace Undersoft.SSC.Service.Application.Client
                     new[] { typeof(ApplicationClient) }
                 ).Manager;
 
-            var _provider = await manager.BuildInternalProvider().UseDataServices();
+            var _provider = await manager.BuildInternalProvider().UseServiceClients();
 
             builder.ConfigureContainer(
                 manager.GetProviderFactory(),
@@ -34,12 +34,12 @@ namespace Undersoft.SSC.Service.Application.Client
                     var reg = manager.GetRegistry();
                     reg.Services = services;
                     reg.AddAuthorizationCore();
-                    reg.AddScoped<AccountAuthenticationStateProvider>();
-                    reg.AddScoped<AuthenticationStateProvider, AccountAuthenticationStateProvider>(
-                        provider => provider.GetRequiredService<AccountAuthenticationStateProvider>()
+                    reg.AddScoped<AccessProvider>();
+                    reg.AddScoped<AuthenticationStateProvider, AccessProvider>(
+                        provider => provider.GetRequiredService<AccessProvider>()
                     );
-                    reg.AddScoped<IAuthenticationStateService, AccountAuthenticationStateProvider>(
-                       provider => provider.GetRequiredService<AccountAuthenticationStateProvider>()
+                    reg.AddScoped<IAccessService, AccessProvider>(
+                       provider => provider.GetRequiredService<AccessProvider>()
                    );
                     reg.MergeServices(true);
                 }

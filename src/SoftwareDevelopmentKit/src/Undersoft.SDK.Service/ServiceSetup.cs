@@ -53,7 +53,7 @@ public partial class ServiceSetup : IServiceSetup
 
     public IServiceSetup AddCaching()
     {
-        registry.AddObject(GlobalCache.Catalog);
+        registry.AddObject(RootCache.Catalog);
 
         Type[] stores = new Type[]
         {

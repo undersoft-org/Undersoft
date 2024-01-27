@@ -8,7 +8,7 @@ public class RepositorySourceOptions
 
     public string ConnectionString { get => dbConnectionStringBuilder.ConnectionString; set => dbConnectionStringBuilder.ConnectionString = value; }
 
-    public string Host { get => (string)dbConnectionStringBuilder["Host"]; set => dbConnectionStringBuilder["Host"] = value; }
+    public string Host { get => (string)dbConnectionStringBuilder["Hosting"]; set => dbConnectionStringBuilder["Hosting"] = value; }
 
     public int Port { get => (int)dbConnectionStringBuilder["Port"]; set => dbConnectionStringBuilder["Port"] = value; }
 

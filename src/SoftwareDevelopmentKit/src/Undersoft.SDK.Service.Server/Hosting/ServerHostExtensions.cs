@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace Undersoft.SDK.Service.Server.Hosting;
 
-using Service.Host;
+using Service.Hosting;
 using Undersoft.SDK.Service.Infrastructure.Repository;
 
 public static class ServerHostExtensions
 {
-    public static IServerHostSetup UseApplicationSetup(this IApplicationBuilder app)
+    public static IServerHostSetup UseServerSetup(this IApplicationBuilder app)
     {
         return new ServerHostSetup(app);
     }
@@ -43,7 +43,7 @@ public static class ServerHostExtensions
                 return client.BuildMetadata();
             }).Commit());
 
-            app.Manager.Registry.AddOpenDataServiceImplementations();
+            app.Manager.Registry.AddOpenDataRemoteImplementations();
             app.RebuildProviders();
         });
     }

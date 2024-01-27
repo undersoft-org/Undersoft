@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Undersoft.SDK.Service.Host;
+using Undersoft.SDK.Service.Hosting;
 using Undersoft.SDK.Service.Infrastructure.Repository;
 
 namespace Undersoft.SDK.Service.Server
@@ -20,7 +20,7 @@ namespace Undersoft.SDK.Service.Server
                     client.BuildMetadata();
                 });
 
-                app.Manager.Registry.AddOpenDataServiceImplementations();
+                app.Manager.Registry.AddOpenDataRemoteImplementations();
             });
         }
     }

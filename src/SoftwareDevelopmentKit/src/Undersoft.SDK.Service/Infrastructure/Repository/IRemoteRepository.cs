@@ -20,7 +20,7 @@ public interface IRemoteRepository<TEntity> : IRepository<TEntity> where TEntity
     DataServiceQuerySingle<TEntity> FindQuerySingle(params object[] keys);
    
     string KeyString(params object[] keys);
-    void SetSecurityToken(string token);
+    void SetAuthorizationToken(string token);
     object TracePatching(object item, string propertyName = null, Type type = null);
 
     Task<IEnumerable<TEntity>> Access(string method, Arguments arguments);

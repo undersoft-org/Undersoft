@@ -154,7 +154,7 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
             )
             {
                 outputFormatter.SupportedMediaTypes.Add(
-                    new MediaTypeHeaderValue("_application/prs.odatatestxx-odata")
+                    new MediaTypeHeaderValue("_builder/prs.odatatestxx-odata")
                 );
             }
 
@@ -165,7 +165,7 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
             )
             {
                 inputFormatter.SupportedMediaTypes.Add(
-                    new MediaTypeHeaderValue("_application/prs.odatatestxx-odata")
+                    new MediaTypeHeaderValue("_builder/prs.odatatestxx-odata")
                 );
             }
         });

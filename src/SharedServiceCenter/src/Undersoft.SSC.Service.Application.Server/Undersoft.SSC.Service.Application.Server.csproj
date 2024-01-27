@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Application.Server\Undersoft.SDK.Service.Application.Server.csproj" />
     <ProjectReference Include="..\Undersoft.SSC.Service.Application.Client\Undersoft.SSC.Service.Application.Client.csproj" />
     <ProjectReference Include="..\Undersoft.SSC.Service.Infrastructure\Undersoft.SSC.Service.Infrastructure.csproj" />
   </ItemGroup>

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>    
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -27,10 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Undersoft.SSC.Service.Application\Undersoft.SSC.Service.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Using Include="Undersoft.SDK.Service.Application.Components" />
     <Using Include="Undersoft.SDK.Service.Infrastructure.Store" />
     <Using Include="Undersoft.SDK.Service.Infrastructure.Repository" />
@@ -44,6 +40,11 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\css\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Application.UI\Undersoft.SDK.Service.Application.UI.csproj" />
+    <ProjectReference Include="..\Undersoft.SSC.Service.Application\Undersoft.SSC.Service.Application.csproj" />
   </ItemGroup>
 
 </Project>

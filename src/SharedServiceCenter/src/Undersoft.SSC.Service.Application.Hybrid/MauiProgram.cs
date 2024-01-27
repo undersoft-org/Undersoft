@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components.WebView.Maui;
 using Microsoft.AspNetCore.Components.Authorization;
 using Undersoft.SDK.Service;
-using Undersoft.SDK.Service.Application.Services;
 using Undersoft.SSC.Service.Clients;
+using Undersoft.SDK.Service.Application.Access;
 
 namespace Undersoft.SSC.Service.Application.Hybrid
 {
@@ -10,7 +10,6 @@ namespace Undersoft.SSC.Service.Application.Hybrid
     {
         public static MauiApp CreateMauiApp()
         {
-
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -24,29 +23,27 @@ namespace Undersoft.SSC.Service.Application.Hybrid
             builder.Services.AddBlazorWebViewDeveloperTools();
 #endif
 
-            builder.Services
+            var setup = builder.Services
                 .AddServiceSetup(builder.Configuration)
-                .ConfigureServices(
-                    AppDomain.CurrentDomain.GetAssemblies(),
-                    null,
-                    new[] { typeof(OpenDataService) }
-                );
+                .ConfigureServices(null, new[] { typeof(ApplicationClient) });
 
-            _ = ServiceManager.BuildInternalProvider().UseDataServices();
+            _ = setup.Manager.BuildInternalProvider().UseServiceClients();
 
             builder.ConfigureContainer(
-                ServiceManager.GetProviderFactory(),
+                setup.Manager.GetProviderFactory(),
                 (services) =>
                 {
-                    var reg = ServiceManager.GetRegistry();
+                    var reg = setup.Services;
                     reg.Services = services;
                     reg.AddAuthorizationCore();
-                    reg.AddScoped<MemberAuthenticationStateProvider>();
-                    reg.AddScoped<AuthenticationStateProvider, MemberAuthenticationStateProvider>(
-                        provider => provider.GetRequiredService<MemberAuthenticationStateProvider>()
+                    reg.AddScoped<AccessProvider>();
+                    reg.AddScoped<AuthenticationStateProvider, AccessProvider>(
+                        provider =>
+                            provider.GetRequiredService<AccessProvider>()
                     );
-                    reg.AddScoped<IAuthenticationStateService, MemberAuthenticationStateProvider>(
-                        provider => provider.GetRequiredService<MemberAuthenticationStateProvider>()
+                    reg.AddScoped<IAccessService, AccessProvider>(
+                        provider =>
+                            provider.GetRequiredService<AccessProvider>()
                     );
                     reg.MergeServices(true);
                 }

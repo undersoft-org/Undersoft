@@ -65,7 +65,7 @@ namespace Undersoft.SDK.Service.Client
             return base.CreateQuery<T>(resourcePath, isComposable);
         }
 
-        public void SetSecurityString(string securityString)
+        public void SetAuthorizationHeader(string securityString)
         {
             _securityString = null;
 
@@ -76,6 +76,5 @@ namespace Undersoft.SDK.Service.Client
                 _securityString = new SecurityString(strings.LastOrDefault(), prefix);
             }
         }
-
     }
 }

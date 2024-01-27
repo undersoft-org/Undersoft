@@ -1,24 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Company>Undersoft</Company>
-    <Authors>Dariusz Hanc</Authors>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/hadarius/RadicalFramework.Presenting</RepositoryUrl>
-    <Version>1.6.1</Version>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <RootNamespace>$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-    <AssemblyVersion>1.6.1.1</AssemblyVersion>
-    <FileVersion>1.6.1.1</FileVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BuildBundlerMinifierPlus2022" Version="5.2.2" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0" />
@@ -27,21 +15,11 @@
     <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0" />
   </ItemGroup>
-
-  <ItemGroup>
+    <ItemGroup>
     <ProjectReference Include="..\Undersoft.SDK.Service\Undersoft.SDK.Service.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Using Include="Undersoft.SDK.Service.Application.Components" />
-    <Using Include="Undersoft.SDK.Service.Infrastructure.Store" />
-    <Using Include="Undersoft.SDK.Service.Infrastructure.Repository" />
-    <Using Include="Undersoft.SDK.Service.Data.Entity" />
-    <Using Include="Microsoft.AspNetCore.Components" />
-    <Using Include="Microsoft.Extensions.Options" />
-    <Using Include="Microsoft.JSInterop" />
-    <Using Include="System.ComponentModel.DataAnnotations" />
-    <Using Include="System.Diagnostics.CodeAnalysis" />
-  </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Services\" />
+    </ItemGroup>
 
 </Project>
