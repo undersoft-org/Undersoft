@@ -29,11 +29,6 @@ public class GrpcDataServerBuilder<TServiceStore>
 
     public void AddControllers()
     {
-        //Type[] storeTypes = DataStoreRegistry.Stores.Where(s => s.IsAssignableTo(StoreType)).ToArray();
-
-        //if (!storeTypes.Any())
-        //    return;
-
         Assembly[] asm = AppDomain.CurrentDomain.GetAssemblies();
         var controllerTypes = asm.SelectMany(
                 a =>
@@ -108,7 +103,7 @@ public class GrpcDataServerBuilder<TServiceStore>
                     .Compression
                     .CompressionLevel
                     .NoCompression;
-            });
+            }).AddJsonTranscoding();
 
             _registry.AddSingleton(
                 BinderConfiguration.Create(binder: new GrpcDataServerBinder(_registry))

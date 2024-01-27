@@ -17,6 +17,8 @@ using Documentation;
 using Infrastructure.Repository.Source;
 using Infrastructure.Store;
 using Undersoft.SDK.Service.Server.Accounts;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 public partial class ServerSetup : ServiceSetup, IServerSetup
 {
@@ -200,13 +202,27 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
     {
         string ver = configuration.Version;
         var ao = configuration.Identity;
+        registry.AddApiVersioning(options =>
+        {
+            options.ReportApiVersions = true;
+        });
+        registry.AddVersionedApiExplorer(
+                options =>
+                {
+                    options.GroupNameFormat = "VVVVV";
+                    options.SubstituteApiVersionInUrl = false;
+                });
+        services.AddTransient<IConfigureOptions<SwaggerGenOptions>, OpenApiOptions>();
+        registry.AddGrpcSwagger();
         registry.AddSwaggerGen(options =>
         {
-            options.SwaggerDoc(
-                ao.ServiceVersion,
-                new OpenApiInfo { Title = ao.ServiceName, Version = ao.ServiceVersion }
-            );
-            options.OperationFilter<SwaggerJsonIgnoreFilter>();
+            //options.SwaggerDoc(
+            //    ao.ServiceVersion,
+            //    new OpenApiInfo { Title = ao.ServiceName, Version = ao.ServiceVersion }
+            //);
+
+            options.OperationFilter<OpenApiDefaultValues>();
+            options.OperationFilter<JsonIgnoreFilter>();
             options.DocumentFilter<IgnoreApiDocument>();
 
             options.AddSecurityDefinition(

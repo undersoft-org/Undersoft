@@ -11,7 +11,9 @@ using Undersoft.SDK.Service.Server;
 namespace Undersoft.SDK.Service.Server.Hosting;
 
 using Logging;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Routing;
+using Quartz.Impl.AdoJobStore.Common;
 using Series;
 
 public class ServerHostSetup : IServerHostSetup
@@ -182,12 +184,17 @@ public class ServerHostSetup : IServerHostSetup
         }
 
         var ao = _manager.GetConfiguration().Identity;
+        var provider = _manager.GetService<IApiVersionDescriptionProvider>();
 
         _builder
             .UseSwagger()
-            .UseSwaggerUI(s =>
+            .UseSwaggerUI(options =>
             {
-                s.SwaggerEndpoint($"{ao.ServiceBaseUrl}/swagger/v1/swagger.json", ao.ServiceName);
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                }
+                //options.SwaggerEndpoint($"{ao.ServiceBaseUrl}/swagger/v1/swagger.json", ao.ServiceName);
                 //s.OAuthClientId(ao.SwaggerClientId);
                 //s.OAuthAppName(ao.ApiName);
             });

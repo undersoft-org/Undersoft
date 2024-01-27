@@ -8,6 +8,7 @@ using Undersoft.SDK.Service.Server.Controller.Stream;
 namespace Undersoft.SSC.Service.Server.Controllers
 {
     [AllowAnonymous]
+    [ApiVersion("OPEN")]
     public class MemberController
         : OpenCqrsController<
             long,
@@ -22,6 +23,7 @@ namespace Undersoft.SSC.Service.Server.Controllers
     }
 
     [AllowAnonymous]
+    [ApiVersion("REST")]
     [Route($"{StoreRoutes.ApiDataRoute}/Member")]
     public class MembersController
         : ApiCqrsController<
@@ -36,6 +38,7 @@ namespace Undersoft.SSC.Service.Server.Controllers
         public MembersController(IServicer ultimatr) : base(ultimatr) { }
     }
 
+    [ApiVersion("GRPC")]
     public class MemberStreamController
         : StreamDataController<
             long,

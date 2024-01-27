@@ -16,7 +16,7 @@ public class ServiceConfiguration : IServiceConfiguration
     public IServiceCollection Services;
 
     private AccountServerOptions _identity;
-    public AccountServerOptions Identity => _identity ??= GetIdentityConfiguration();
+    public AccountServerOptions Identity => _identity ??= GetOpenApiConfiguration();
 
     private RepositoryOptions _repository;
     public RepositoryOptions Repositories => _repository ??= GetRepositoryConfiguration(); 
@@ -215,7 +215,14 @@ public class ServiceConfiguration : IServiceConfiguration
         return AccountServer()?.GetValue<string[]>("Roles");
     }
 
-    public AccountServerOptions GetIdentityConfiguration()
+    public AccountServerOptions GetAccountServerConfiguration()
+    {
+        var identity = new AccountServerOptions();
+        config.Bind("AccountServer", identity);
+        return identity;
+    }
+
+    public AccountServerOptions GetOpenApiConfiguration()
     {
         var identity = new AccountServerOptions();
         config.Bind("AccountServer", identity);

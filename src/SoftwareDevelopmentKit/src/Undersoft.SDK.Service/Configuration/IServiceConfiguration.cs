@@ -33,6 +33,6 @@ public interface IServiceConfiguration : IConfiguration
     string IdentityServiceName();
     string[] IdentityServerScopes();
     string[] IdentityServerRoles();
-    AccountServerOptions GetIdentityConfiguration();
+    AccountServerOptions GetAccountServerConfiguration();
     AccountServerOptions Identity { get; }
 }
