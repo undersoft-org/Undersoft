@@ -29,48 +29,59 @@ namespace Undersoft.SDK.IntegrationTests.Series
         }
 
         [Fact]
-        public async Task Registry__Concurrent_IndentifierKeys_TestAsync()
+        public async Task Typed_Registry_Async_Thread_Safe_Integrated_Test()
         {
-            await Registry_MultiThread_Test(identifiableObjectTestCollection).ConfigureAwait(true);
+            await Typed_Registry_Async_Thread_Safe_Integrated_Test_Startup(identifiableObjectTestCollection).ConfigureAwait(true);
         }
 
         [Fact]
-        public void Registry__IndentifierKeys_Test()
+        public void Typed_Registry_Sync_Integrated_Test()
         {
-            Registry_Sync_Integrated_Test(identifiableObjectTestCollection.Take(100000).ToArray());
+            Typed_Registry_Sync_Integrated_Test_Helper(identifiableObjectTestCollection.Take(100000).ToArray());
         }
 
         [Fact]
-        public void Registry_HashKey_Test()
+        public void Typed_Registry_Seeded_Hash_Keys_Test()
         {
             var uniques = Unique.Bit64;
             var list = identifiableObjectTestCollection.Take(100000).ToArray();
             var key0 = uniques.Key(list[0], list[0].TypeId);
             var key1 = uniques.Key(list[0], list[0].TypeId);
             
-            bool check = key0.Equals(key1);
+            Assert.Equal(key0, key1);
             
             typedRegistry.Add(key0, list[0]);
             
             var item = typedRegistry.Get(key1);
+
+            Assert.NotNull(item);
             
             var key2 = uniques.Key(list[1], list[1].TypeId);
             var key3 = uniques.Key(list[1], list[1].TypeId);
 
+            Assert.Equal(key2, key3);
+
             typedRegistry.Add(list[1]);
 
             item = typedRegistry.Get(key2);
+
+            Assert.NotNull(item);
+
             item = typedRegistry.Get(key3);
 
+            Assert.NotNull(item);
+
             item = typedRegistry.Get(list[1]);
+
+            Assert.NotNull(item);
         }
 
-        private void Registry_MultiThread_TCallback_Test(Task[] t)
+        private void Typed_Registry_Async_Thread_Safe_Integrated_Test_Callback(Task[] t)
         {
             Debug.WriteLine($"Test Finished");
         }
 
-        private Task Registry_MultiThread_Test(IList<Agreement> collection)
+        private Task Typed_Registry_Async_Thread_Safe_Integrated_Test_Startup(IList<Agreement> collection)
         {
             Action publicTest = () =>
             {
@@ -78,7 +89,7 @@ namespace Undersoft.SDK.IntegrationTests.Series
                 lock (holder)
                     c = threadCount++;
 
-                Registry_Async_ThreadIntegrated_Test(collection.Skip(c * 10000).Take(10000).ToArray());
+                Typed_Registry_Async_Thread_Safe_Integrated_Test_Helper(collection.Skip(c * 10000).Take(10000).ToArray());
             };
 
             for (int i = 0; i < 10; i++)
@@ -90,7 +101,7 @@ namespace Undersoft.SDK.IntegrationTests.Series
                 s1,
                 new Action<Task[]>(a =>
                 {
-                    Registry_MultiThread_TCallback_Test(a);
+                    Typed_Registry_Async_Thread_Safe_Integrated_Test_Callback(a);
                 })
             );
         }

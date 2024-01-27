@@ -20,9 +20,9 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository
 
         IEnumerable<IRemoteProperty> RemoteProperties { get; set; }
 
-        void LoadRemote(object entity);
+        void LoadRemotes(object entity);
 
-        Task LoadRemoteAsync(object entity);
+        Task LoadRemotesAsync(object entity);
 
         void LoadRelated(EntityEntry entry, RelatedType relatedType);
 

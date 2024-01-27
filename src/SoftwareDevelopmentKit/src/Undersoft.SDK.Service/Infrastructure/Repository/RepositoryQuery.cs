@@ -11,7 +11,7 @@ using Undersoft.SDK.Service.Data.Query;
 
 namespace Undersoft.SDK.Service.Infrastructure.Repository;
 
-public abstract partial class Repository<TEntity>
+public abstract partial class Repository<TEntity> : IRepositoryQuery<TEntity> where TEntity : class, IOrigin, IInnerProxy
 {
     public virtual Task<IList<TResult>> Filter<TResult>(
         int skip,

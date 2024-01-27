@@ -4,7 +4,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository;
 
 using Series;
 
-public partial class Repository<TEntity>
+public partial class Repository<TEntity> : IRepositoryMapper<TEntity> where TEntity : class, IOrigin, IInnerProxy
 {
     public virtual TEntity Map<TDto>(TDto model, TEntity entity)
     {

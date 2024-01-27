@@ -31,7 +31,7 @@ namespace System.Series.Tests
 
         public IList<KeyValuePair<object, string>> stringKeyTestCollection { get; set; }
 
-        public void Registry_Sync_Integrated_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void Registry_Sync_Integrated_Test_Helper(IList<KeyValuePair<object, string>> testCollection)
         {
             Registry_Sync_Add_Test(testCollection);
             Registry_Sync_Count_Test(100000);
@@ -49,17 +49,17 @@ namespace System.Series.Tests
             Registry_Sync_Put_Test(testCollection);
             Registry_Sync_Count_Test(100000);
             Registry_Sync_Clear_Test();
-            Registry_Sync_Add_V_Test(testCollection);
+            Registry_Sync_Add_Value_Test(testCollection);
             Registry_Sync_Count_Test(100000);
-            Registry_Sync_Remove_V_Test(testCollection);
+            Registry_Sync_Remove_Value_Test(testCollection);
             Registry_Sync_Count_Test(70000);
-            Registry_Sync_Put_V_Test(testCollection);
+            Registry_Sync_Put_Value_Test(testCollection);
             Registry_Sync_IndexOf_Test(testCollection);
             Registry_Sync_GetByIndexer_Test(testCollection);
             Registry_Sync_Count_Test(100000);
         }
 
-        public void Registry_Async_ThreadIntegrated_Test(
+        public void Registry_Async_Thread_Safe_Integrated_Test_Helper(
             IList<KeyValuePair<object, string>> testCollection
         )
         {
@@ -85,7 +85,7 @@ namespace System.Series.Tests
             }
         }
 
-        private void Registry_Sync_Add_V_Test(IList<KeyValuePair<object, string>> testCollection)
+        private void Registry_Sync_Add_Value_Test(IList<KeyValuePair<object, string>> testCollection)
         {
             foreach (var item in testCollection)
             {
@@ -164,8 +164,6 @@ namespace System.Series.Tests
                 string r = registry.Get(item.Key);
                 if (r != null)
                     items.Add(r);
-                else
-                    Thread.Sleep(1000);
             }
             Assert.Equal(100000, items.Count);
         }
@@ -199,7 +197,8 @@ namespace System.Series.Tests
             foreach (var item in testCollection.Skip(5000).Take(100))
             {
                 int r = registry.IndexOf(item.Value);
-                items.Add(r);
+                if (r > -1)
+                    items.Add(r);
             }
         }
 
@@ -216,7 +215,7 @@ namespace System.Series.Tests
             }
         }
 
-        private void Registry_Sync_Put_V_Test(IList<KeyValuePair<object, string>> testCollection)
+        private void Registry_Sync_Put_Value_Test(IList<KeyValuePair<object, string>> testCollection)
         {
             foreach (var item in testCollection)
             {
@@ -236,7 +235,7 @@ namespace System.Series.Tests
             Assert.Equal(30000, items.Count);
         }
 
-        private void Registry_Sync_Remove_V_Test(IList<KeyValuePair<object, string>> testCollection)
+        private void Registry_Sync_Remove_Value_Test(IList<KeyValuePair<object, string>> testCollection)
         {
             List<string> items = new List<string>();
             foreach (var item in testCollection.Skip(70000))

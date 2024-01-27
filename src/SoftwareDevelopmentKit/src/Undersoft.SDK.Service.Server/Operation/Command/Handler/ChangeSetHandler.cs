@@ -43,8 +43,7 @@ public class ChangeSetHandler<TStore, TEntity, TDto>
                 .ForEachAsync(
                     (e) =>
                     {
-                        var item = request.Get(e.Id);
-                        item.Entity = e;
+                        request[e.Id].Entity = e;
                     }
                 );
 

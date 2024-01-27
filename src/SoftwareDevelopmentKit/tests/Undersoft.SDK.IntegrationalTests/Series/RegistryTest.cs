@@ -27,59 +27,59 @@ namespace Undersoft.SDK.IntegrationTests.Series
         }
 
         [Fact]
-        public async Task Registry__Concurrent_IndentifierKeys_TestAsync()
+        public async Task Registry_Identifiable_Async_Thread_Safe_Integrated_Test()
         {
-            await Registry_MultiThread_Test(identifierKeyTestCollection).ConfigureAwait(true);
+            await Registry_Async_Thread_Safe_Integrated_Test_Startup(identifierKeyTestCollection).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task Registry__Concurrent_IntKeys_Test()
+        public async Task Registry_Integer_Keys_Async_Thread_Safe_Integrated_Test()
         {
-            await Registry_MultiThread_Test(intKeyTestCollection).ConfigureAwait(true);
+            await Registry_Async_Thread_Safe_Integrated_Test_Startup(intKeyTestCollection).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task Registry__Concurrent_LongKeys_Test()
+        public async Task Registry_Long_Keys_Async_Thread_Safe_Integrated_Test()
         {
-            await Registry_MultiThread_Test(longKeyTestCollection).ConfigureAwait(true);
+            await Registry_Async_Thread_Safe_Integrated_Test_Startup(longKeyTestCollection).ConfigureAwait(true);
         }
 
         [Fact]
-        public async Task Registry__Concurrent_StringKeys_Test()
+        public async Task Registry_String_Keys_Async_Thread_Safe_Integrated_Test()
         {
-            await Registry_MultiThread_Test(stringKeyTestCollection).ConfigureAwait(true);
+            await Registry_Async_Thread_Safe_Integrated_Test_Startup(stringKeyTestCollection).ConfigureAwait(true);
         }
 
         [Fact]
-        public void Registry__IndentifierKeys_Test()
+        public void Registry_Identifiable_Sync_Integrated_Test()
         {
-            Registry_Sync_Integrated_Test(identifierKeyTestCollection.Take(100000).ToArray());
+            Registry_Sync_Integrated_Test_Helper(identifierKeyTestCollection.Take(100000).ToArray());
         }
 
         [Fact]
-        public void Registry__IntKeys_Test()
+        public void Registry_Integer_Keys_Sync_Integrated_Test()
         {
-            Registry_Sync_Integrated_Test(intKeyTestCollection.Take(100000).ToArray());
+            Registry_Sync_Integrated_Test_Helper(intKeyTestCollection.Take(100000).ToArray());
         }
 
         [Fact]
-        public void Registry__LongKeys_Test()
+        public void Registry_Long_Keys_Sync_Integrated_Test()
         {
-            Registry_Sync_Integrated_Test(longKeyTestCollection.Take(100000).ToArray());
+            Registry_Sync_Integrated_Test_Helper(longKeyTestCollection.Take(100000).ToArray());
         }
 
         [Fact]
-        public void Registry__StringKeys_Test()
+        public void Registry_String_Keys_Sync_Integrated_Test()
         {
-            Registry_Sync_Integrated_Test(stringKeyTestCollection.Take(100000).ToArray());
+            Registry_Sync_Integrated_Test_Helper(stringKeyTestCollection.Take(100000).ToArray());
         }
 
-        private void Registry_MultiThread_TCallback_Test(Task[] t)
+        private void Registry_Async_Thread_Safe_Integrated_Test_Callback(Task[] t)
         {
             Debug.WriteLine($"Test Finished");
         }
 
-        private Task Registry_MultiThread_Test(IList<KeyValuePair<object, string>> collection)
+        private Task Registry_Async_Thread_Safe_Integrated_Test_Startup(IList<KeyValuePair<object, string>> collection)
         {
             Action publicTest = () =>
             {
@@ -87,7 +87,7 @@ namespace Undersoft.SDK.IntegrationTests.Series
                 lock (holder)
                     c = threadCount++;
 
-                Registry_Async_ThreadIntegrated_Test(collection.Skip(c * 10000).Take(10000).ToArray());
+                Registry_Async_Thread_Safe_Integrated_Test_Helper(collection.Skip(c * 10000).Take(10000).ToArray());
             };
 
             for (int i = 0; i < 10; i++)
@@ -99,7 +99,7 @@ namespace Undersoft.SDK.IntegrationTests.Series
                 s1,
                 new Action<Task[]>(a =>
                 {
-                    Registry_MultiThread_TCallback_Test(a);
+                    Registry_Async_Thread_Safe_Integrated_Test_Callback(a);
                 })
             );
         }

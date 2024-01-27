@@ -29,7 +29,7 @@ namespace System.Series.Tests
 
         public IList<KeyValuePair<object, string>> stringKeyTestCollection { get; set; }
 
-        public void Catalog_Sync_Integrated_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void Catalog_Sync_Integrated_Test_Helper(IList<KeyValuePair<object, string>> testCollection)
         {
             Catalog_Sync_Add_Test(testCollection);
             Catalog_Sync_Count_Test(100000);
@@ -47,17 +47,17 @@ namespace System.Series.Tests
             Catalog_Sync_Put_Test(testCollection);
             Catalog_Sync_Count_Test(100000);
             Catalog_Sync_Clear_Test();
-            Catalog_Sync_Add_V_Test(testCollection);
+            Catalog_Sync_Add_Value_Test(testCollection);
             Catalog_Sync_Count_Test(100000);
-            Catalog_Sync_Remove_V_Test(testCollection);
+            Catalog_Sync_Remove_Value_Test(testCollection);
             Catalog_Sync_Count_Test(70000);
-            Catalog_Sync_Put_V_Test(testCollection);
+            Catalog_Sync_Put_Value_Test(testCollection);
             Catalog_Sync_IndexOf_Test(testCollection);
             Catalog_Sync_GetByIndexer_Test(testCollection);
             Catalog_Sync_Count_Test(100000);
         }
 
-        public void Catalog_Async__ThreadIntegrated_Test(
+        public void Catalog_Async_Thread_Safe_Integrated_Test_Helper(
             IList<KeyValuePair<object, string>> testCollection
         )
         {
@@ -83,7 +83,7 @@ namespace System.Series.Tests
             }
         }
 
-        private void Catalog_Sync_Add_V_Test(IList<KeyValuePair<object, string>> testCollection)
+        private void Catalog_Sync_Add_Value_Test(IList<KeyValuePair<object, string>> testCollection)
         {
             foreach (var item in testCollection)
             {
@@ -213,7 +213,7 @@ namespace System.Series.Tests
             }
         }
 
-        private void Catalog_Sync_Put_V_Test(IList<KeyValuePair<object, string>> testCollection)
+        private void Catalog_Sync_Put_Value_Test(IList<KeyValuePair<object, string>> testCollection)
         {
             foreach (var item in testCollection)
             {
@@ -233,7 +233,7 @@ namespace System.Series.Tests
             Assert.Equal(30000, items.Count);
         }
 
-        private void Catalog_Sync_Remove_V_Test(IList<KeyValuePair<object, string>> testCollection)
+        private void Catalog_Sync_Remove_Value_Test(IList<KeyValuePair<object, string>> testCollection)
         {
             List<string> items = new List<string>();
             foreach (var item in testCollection.Skip(70000))

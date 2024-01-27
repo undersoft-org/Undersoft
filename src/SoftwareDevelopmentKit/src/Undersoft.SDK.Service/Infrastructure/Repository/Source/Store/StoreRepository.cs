@@ -230,14 +230,14 @@ public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepos
             if (enable)
             {
                 store.ChangeTracker.StateChanged += AuditStateEvent;
-                store.ChangeTracker.StateChanged += LoadRemoteEvent;
-                store.ChangeTracker.Tracked += LoadRemoteEvent;
+                store.ChangeTracker.StateChanged += LoadRemotesEvent;
+                store.ChangeTracker.Tracked += LoadRemotesEvent;
             }
             else
             {
                 store.ChangeTracker.StateChanged -= AuditStateEvent;
-                store.ChangeTracker.StateChanged -= LoadRemoteEvent;
-                store.ChangeTracker.Tracked -= LoadRemoteEvent;
+                store.ChangeTracker.StateChanged -= LoadRemotesEvent;
+                store.ChangeTracker.Tracked -= LoadRemotesEvent;
             }
         }
     }

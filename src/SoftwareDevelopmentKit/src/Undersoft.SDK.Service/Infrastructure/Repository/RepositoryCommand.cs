@@ -2,13 +2,14 @@
 
 namespace Undersoft.SDK.Service.Infrastructure.Repository;
 
+using IdentityModel;
 using Instant.Updating;
 using Series;
 using Undersoft.SDK;
 using Undersoft.SDK.Service.Data.Entity;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
-public abstract partial class Repository<TEntity>
+public abstract partial class Repository<TEntity> : IRepositoryCommand<TEntity> where TEntity : class, IOrigin, IInnerProxy
 {
     public abstract TEntity NewEntry(params object[] parameters);
 

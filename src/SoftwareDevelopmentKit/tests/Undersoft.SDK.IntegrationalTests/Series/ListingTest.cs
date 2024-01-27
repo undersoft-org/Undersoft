@@ -23,31 +23,31 @@ namespace Undersoft.SDK.IntegrationTests.Series
             DefaultTraceListener Logfile = new DefaultTraceListener();
             Logfile.Name = "Logfile";
             Trace.Listeners.Add(Logfile);
-            Logfile.LogFileName = $"Registry__{DateTime.Now.ToFileTime().ToString()}_Test.log";
+            Logfile.LogFileName = $"Lsting__{DateTime.Now.ToFileTime().ToString()}_Test.log";
         }
 
         [Fact]
-        public void Listing__IndentifierKeys_Test()
+        public void Listing_Identifiable_Sync_Integrated_Test()
         {
-            Registry_Sync_Integrated_Test(identifierKeyTestCollection.Take(100000).ToArray());
+            Registry_Sync_Integrated_Test_Helper(identifierKeyTestCollection.Take(100000).ToArray());
         }
 
         [Fact]
-        public void Listing__IntKeys_Test()
+        public void Listing_Integer_Keys__Sync_Integrated_Test()
         {
-            Registry_Sync_Integrated_Test(intKeyTestCollection.Take(100000).ToArray());
+            Registry_Sync_Integrated_Test_Helper(intKeyTestCollection.Take(100000).ToArray());
         }
 
         [Fact]
-        public void Listing__LongKeys_Test()
+        public void Listing_Long_Keys__Sync_Integrated_Test()
         {
-            Registry_Sync_Integrated_Test(longKeyTestCollection.Take(100000).ToArray());
+            Registry_Sync_Integrated_Test_Helper(longKeyTestCollection.Take(100000).ToArray());
         }
 
         [Fact]
-        public void Listing__StringKeys_Test()
+        public void Listing_String_Keys__Sync_Integrated_Test()
         {
-            Registry_Sync_Integrated_Test(stringKeyTestCollection.Take(100000).ToArray());
+            Registry_Sync_Integrated_Test_Helper(stringKeyTestCollection.Take(100000).ToArray());
         }
     }
 }

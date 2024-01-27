@@ -9,14 +9,17 @@ using Undersoft.SDK.Service.Data.Query;
 
 namespace Undersoft.SDK.Service.Infrastructure.Repository;
 
-public abstract partial class Repository<TEntity>
+public abstract partial class Repository<TEntity> : IRepositoryIndexer<TEntity> where TEntity : class, IOrigin, IInnerProxy
 {
     public abstract TEntity this[params object[] keys] { get; set; }
 
-    public abstract TEntity this[object[] keys, Expression<Func<TEntity, object>>[] expanders] { get; set; }
+    public abstract TEntity this[object[] keys, Expression<
+        Func<TEntity, object>
+    >[] expanders] { get; set; }
 
-    public abstract object this[Expression<Func<TEntity, object>> selector, object[] keys, 
-        params Expression<Func<TEntity, object>>[] expanders] { get; set; }
+    public abstract object this[Expression<
+        Func<TEntity, object>
+    > selector, object[] keys, params Expression<Func<TEntity, object>>[] expanders] { get; set; }
 
     public virtual TEntity this[bool reverse, SortExpression<TEntity> sortTerms] =>
         (reverse) ? this[sortTerms].LastOrDefault() : this[sortTerms].FirstOrDefault();
@@ -87,16 +90,12 @@ public abstract partial class Repository<TEntity>
         (take > 0) ? query.Skip(skip).Take(take) : query;
 
     public virtual ISeries<TEntity> this[int skip, int take, SortExpression<TEntity> sortTerms] =>
-        (take > 0)
-            ? this[sortTerms].Skip(skip).Take(take).ToChain()
-            : this[sortTerms].ToChain();
+        (take > 0) ? this[sortTerms].Skip(skip).Take(take).ToChain() : this[sortTerms].ToChain();
 
     public virtual ISeries<TEntity> this[int skip, int take, Expression<
         Func<TEntity, bool>
     > predicate] =>
-        (take > 0)
-            ? this[predicate].Skip(skip).Take(take).ToChain()
-            : this[predicate].ToChain();
+        (take > 0) ? this[predicate].Skip(skip).Take(take).ToChain() : this[predicate].ToChain();
 
     public virtual IList<object> this[int skip, int take, Expression<
         Func<TEntity, object>
@@ -106,9 +105,7 @@ public abstract partial class Repository<TEntity>
     public virtual ISeries<TEntity> this[int skip, int take, Expression<
         Func<TEntity, object>
     >[] expanders] =>
-        (take > 0)
-            ? this[expanders].Skip(skip).Take(take).ToChain()
-            : this[expanders].ToChain();
+        (take > 0) ? this[expanders].Skip(skip).Take(take).ToChain() : this[expanders].ToChain();
 
     public virtual IList<object> this[int skip, int take, Expression<
         Func<TEntity, object>
@@ -198,8 +195,9 @@ public abstract partial class Repository<TEntity>
         Func<TEntity, int, object>
     > selector] => query.Select(selector).AsQueryable();
 
-    public virtual IQueryable<TEntity> this[IQueryable<TEntity> query, Expression<Func<TEntity, object>> selector, 
-        IEnumerable<object> values] => query.WhereIn(selector, values);
+    public virtual IQueryable<TEntity> this[IQueryable<TEntity> query, Expression<
+        Func<TEntity, object>
+    > selector, IEnumerable<object> values] => query.WhereIn(selector, values);
 
     public virtual IQueryable<TEntity> this[Expression<Func<TEntity, bool>> predicate] =>
         Query.Where(predicate).AsQueryable();
@@ -274,6 +272,9 @@ public abstract partial class Repository<TEntity>
         Func<TEntity, object>
     >[] expanders] => Sort(this[predicate, expanders], sortTerms);
 
-    public virtual IQueryable<IGrouping<dynamic, TEntity>> this[Func<IQueryable<TEntity>, IQueryable<IGrouping<dynamic, TEntity>>> groupByObject, Expression<Func<TEntity, bool>> predicate] =>
+    public virtual IQueryable<IGrouping<dynamic, TEntity>> this[Func<
+        IQueryable<TEntity>,
+        IQueryable<IGrouping<dynamic, TEntity>>
+    > groupByObject, Expression<Func<TEntity, bool>> predicate] =>
         groupByObject(Query.Where(predicate));
 }

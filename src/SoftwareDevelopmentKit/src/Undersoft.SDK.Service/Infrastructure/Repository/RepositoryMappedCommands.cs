@@ -9,7 +9,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Repository;
 using Undersoft.SDK;
 using Uniques;
 
-public partial class Repository<TEntity>
+public partial class Repository<TEntity> : IRepositoryMappedCommand<TEntity> where TEntity : class, IOrigin, IInnerProxy
 {
     public virtual TEntity AddBy<TDto>(TDto model)
     {

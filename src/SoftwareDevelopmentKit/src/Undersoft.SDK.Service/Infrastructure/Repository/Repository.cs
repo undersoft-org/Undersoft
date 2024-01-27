@@ -80,7 +80,7 @@ public abstract partial class Repository<TEntity> : Repository, IPagedSet<TEntit
         return Provider.Execute<IQueryable<TEntity>>(Expression).GetEnumerator();
     }
 
-    public override void LoadRemoteEvent(object sender, EntityEntryEventArgs e)
+    public override void LoadRemotesEvent(object sender, EntityEntryEventArgs e)
     {
         EntityEntry entry = e.Entry;
         object entity = entry.Entity;

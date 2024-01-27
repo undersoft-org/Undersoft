@@ -12,7 +12,7 @@ namespace Undersoft.SDK.IntegrationTests.Series
     using Xunit;
     using Undersoft.SDK.IntegrationTests.Instant;
 
-    public class TypedCatalogTest : TypedRegistryTestHelper
+    public class TypedCatalogTest : TypedCatalogTestHelper
     {
         public static object holder = new object();
         public static int threadCount = 0;
@@ -28,23 +28,23 @@ namespace Undersoft.SDK.IntegrationTests.Series
         }
 
         [Fact]
-        public async Task Registry__Concurrent_IndentifierKeys_TestAsync()
+        public async Task Typed_Catalog_Async_Thread_Safe_Integrated_Test()
         {
-            await Registry_MultiThread_Test(identifiableObjectTestCollection).ConfigureAwait(true);
+            await Typed_Catalog_Async_Thread_Safe_Integrated_Test_Startup(identifiableObjectTestCollection).ConfigureAwait(true);
         }
 
         [Fact]
-        public void Registry__IndentifierKeys_Test()
+        public void Typed_Catalog_Integrational_Test()
         {
-            Registry_Sync_Integrated_Test(identifiableObjectTestCollection.Take(100000).ToArray());
+            Typed_Catalog_Sync_Integrated_Test_Helper(identifiableObjectTestCollection.Take(100000).ToArray());
         }
 
-        private void Registry_MultiThread_TCallback_Test(Task[] t)
+        private void Typed_Catalog_Async_Thread_Safe_Integrated_Test_Callback(Task[] t)
         {
             Debug.WriteLine($"Test Finished");
         }
 
-        private Task Registry_MultiThread_Test(IList<Agreement> collection)
+        private Task Typed_Catalog_Async_Thread_Safe_Integrated_Test_Startup(IList<Agreement> collection)
         {
             Action publicTest = () =>
             {
@@ -52,7 +52,7 @@ namespace Undersoft.SDK.IntegrationTests.Series
                 lock (holder)
                     c = threadCount++;
 
-                Registry_Async_ThreadIntegrated_Test(collection.Skip(c * 10000).Take(10000).ToArray());
+                Typed_Catalog_Async_Thread_Safe_Integrated_Test_Helper(collection.Skip(c * 10000).Take(10000).ToArray());
             };
 
             for (int i = 0; i < 10; i++)
@@ -64,7 +64,7 @@ namespace Undersoft.SDK.IntegrationTests.Series
                 s1,
                 new Action<Task[]>(a =>
                 {
-                    Registry_MultiThread_TCallback_Test(a);
+                    Typed_Catalog_Async_Thread_Safe_Integrated_Test_Callback(a);
                 })
             );
         }

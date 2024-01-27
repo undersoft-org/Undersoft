@@ -82,4 +82,9 @@
     <Using Include="Undersoft.SDK.Uniques" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Infrastructure\Repository\Base\" />
+    <Folder Include="Infrastructure\Repository\Abstraction\" />
+  </ItemGroup>
+
 </Project>

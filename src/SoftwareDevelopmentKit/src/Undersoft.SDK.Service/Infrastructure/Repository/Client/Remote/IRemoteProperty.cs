@@ -28,7 +28,7 @@ public interface IRemoteProperty : IRepository, IRemoteRelation
 
     Task LoadAsync(object origin);
 
-    void LoadRemoteEvent(object sender, EntityEntryEventArgs e);
+    void LoadRemotesEvent(object sender, EntityEntryEventArgs e);
 
     IRemoteSynchronizer Synchronizer { get; }
 }

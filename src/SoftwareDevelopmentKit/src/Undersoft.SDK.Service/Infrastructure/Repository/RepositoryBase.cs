@@ -230,12 +230,12 @@ public abstract class Repository : IRepository
         throw new NotImplementedException();
     }
 
-    public virtual void LoadRemote(object entity)
+    public virtual void LoadRemotes(object entity)
     {
         RemoteProperties.ForEach((o) => o.Load(entity));
     }
 
-    public virtual async Task LoadRemoteAsync(object entity)
+    public virtual async Task LoadRemotesAsync(object entity)
     {
         await Task.WhenAll(RemoteProperties.DoEach((o) => o.LoadAsync(entity)));
     }
@@ -298,7 +298,7 @@ public abstract class Repository : IRepository
                 .Commit();
     }
 
-    public virtual void LoadRemoteEvent(object sender, EntityEntryEventArgs e)
+    public virtual void LoadRemotesEvent(object sender, EntityEntryEventArgs e)
     {
         var entry = e.Entry;
         var entity = entry.Entity;
