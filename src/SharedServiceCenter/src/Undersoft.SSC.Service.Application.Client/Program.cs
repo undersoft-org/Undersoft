@@ -21,10 +21,8 @@ namespace Undersoft.SSC.Service.Application.Client
 
             var manager = builder.Services
                 .AddServiceSetup(builder.Configuration)
-                .ConfigureServices(                   
-                    null,
-                    new[] { typeof(ApplicationClient) }
-                ).Manager;
+                .ConfigureServices(null, new[] { typeof(ApplicationClient), typeof(AccessClient) })
+                .Manager;
 
             var _provider = await manager.BuildInternalProvider().UseServiceClients();
 
@@ -40,8 +38,8 @@ namespace Undersoft.SSC.Service.Application.Client
                         provider => provider.GetRequiredService<AccessProvider<Account>>()
                     );
                     reg.AddScoped<IAccessService, AccessProvider<Account>>(
-                       provider => provider.GetRequiredService<AccessProvider<Account>>()
-                   );
+                        provider => provider.GetRequiredService<AccessProvider<Account>>()
+                    );
                     reg.MergeServices(true);
                 }
             );

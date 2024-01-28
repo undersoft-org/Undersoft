@@ -17,18 +17,12 @@ public class Setup
             .AddApplicationServerSetup()
             .ConfigureApplicationServer(
                 true,
-                new[] 
-                { 
-                    typeof(EventStore), 
-                    typeof(ReportStore), 
-                    typeof(EntryStore) 
-                }
-            ,new[] { typeof(ServiceClient) }
+                new[] { typeof(EventStore), typeof(ReportStore), typeof(EntryStore) },
+                new[] { typeof(ServiceClient), typeof(AccessClient) }
             )
             .AddDataServer<IEntityStore>(
                 DataServerTypes.All,
-                builder => builder.AddInvocations<Member>()
-                                  .AddInvocations<Application>()
+                builder => builder.AddInvocations<Member>().AddInvocations<Application>()
             )
             .AddDataServer<IAccountStore>(
                 DataServerTypes.All,

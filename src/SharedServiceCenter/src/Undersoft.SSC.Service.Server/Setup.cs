@@ -20,8 +20,11 @@ public class Setup
                     typeof(EventStore),
                     typeof(EntryStore),
                     typeof(ReportStore)
+                },
+                new[] 
+                {   typeof(ApplicationClient),                         
+                    typeof(EventClient) 
                 }
-            , new[] { typeof(ApplicationClient) }
             )
             .AddAccountServer<AccountStore>()
             .AddDataServer<IEntityStore>(

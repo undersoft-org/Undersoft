@@ -22,6 +22,7 @@ using Infrastructure.Repository;
 using Infrastructure.Repository.Client;
 using Infrastructure.Repository.Source;
 using Infrastructure.Store;
+using Microsoft.IdentityModel.Tokens;
 using Security.Identity;
 using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Client;
@@ -315,10 +316,7 @@ public partial class ServiceSetup : IServiceSetup
             if (routePrefix.StartsWith('/'))
                 routePrefix = routePrefix.Substring(1);
 
-            routePrefix = provider.ToString().ToLower() + "/" + routePrefix;
-
-            if (routePrefix.EndsWith('/'))
-                routePrefix = routePrefix.Substring(1);
+            routePrefix = provider.ToString().ToLower() + (!routePrefix.IsNullOrEmpty() ? ("/" + routePrefix) : "");
 
             string _connectionString = $"{connectionString}{routePrefix}";
 
@@ -329,7 +327,7 @@ public partial class ServiceSetup : IServiceSetup
                 repoType.New(provider, _connectionString);
 
             Type storeDbType = typeof(OpenDataClient<>).MakeGenericType(
-                OpenDataRegistry.GetLinkedStoreTypes(contextType)
+                OpenDataRegistry.GetLinkedStoreType(contextType)
             );
             Type storeRepoType = typeof(RepositoryClient<>).MakeGenericType(storeDbType);
 
@@ -511,13 +509,13 @@ public partial class ServiceSetup : IServiceSetup
     {
         DbContext _context = context as DbContext;
         _context.ChangeTracker.AutoDetectChangesEnabled = true;
-        _context.ChangeTracker.LazyLoadingEnabled = true;
-        _context.Database.AutoTransactionsEnabled = false;
+        _context.ChangeTracker.LazyLoadingEnabled = false;
+        _context.Database.AutoTransactionBehavior =  AutoTransactionBehavior.Never;
     }
 
     private string AddDataClientPrefix(Type contextType, string routePrefix = null)
     {
-        Type iface = OpenDataRegistry.GetLinkedStoreTypes(contextType);
+        Type iface = OpenDataRegistry.GetLinkedStoreType(contextType);
         return GetStoreRoutes(iface, routePrefix);
     }
 

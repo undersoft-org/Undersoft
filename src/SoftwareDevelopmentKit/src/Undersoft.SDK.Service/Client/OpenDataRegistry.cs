@@ -139,7 +139,7 @@ public static class OpenDataRegistry
                 .Select(p => p.EntityType())
                 .ToArray();
 
-            var iface = GetLinkedStoreTypes(contextType);
+            var iface = GetLinkedStoreType(contextType);
 
             foreach (var entityType in entityTypes)
             {
@@ -163,10 +163,10 @@ public static class OpenDataRegistry
 
     public static Type GetLinkedStoreType(this OpenDataContext context)
     {
-        return GetLinkedStoreTypes(context.GetType());
+        return GetLinkedStoreType(context.GetType());
     }
 
-    public static Type GetLinkedStoreTypes(Type contextType)
+    public static Type GetLinkedStoreType(Type contextType)
     {
         if (!Stores.TryGet(contextType, out Type iface))
         {
@@ -233,6 +233,19 @@ public static class OpenDataRegistry
                 return contextType;
         }
 
+        return null;
+    }
+
+    public static Type[] GetEntityStoreTypes(Type entityType)
+    {
+        var contextTypes = GetContextTypes(entityType);
+        return contextTypes?.ForEach(c => GetLinkedStoreType(c)).ToArray();
+    }
+
+    public static Type[] GetContextTypes(Type entityType)
+    {
+        if (EntityContexts.TryGet(entityType.Name, out ISeries<Type> dbEntityContext))
+            return dbEntityContext.ToArray();
         return null;
     }
 

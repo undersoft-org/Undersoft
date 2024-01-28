@@ -24,19 +24,16 @@ namespace Undersoft.SDK.Service.Hosting
             Type[] stores = new Type[] { typeof(IDataStore) };
 
             /**************************************** DataService Entity Type Routines ***************************************/
-            foreach (
-                ISeries<IEdmEntityType> contextEntityTypes in OpenDataRegistry.ContextEntities
-            )
+           
+            foreach (ISeries<IEdmEntityType> contextEntityTypes in OpenDataRegistry.ContextEntities)
             {
                 foreach (IEdmEntityType _entityType in contextEntityTypes)
                 {
                     Type entityType = OpenDataRegistry.GetMappedType(_entityType.Name);
-
-                    if (duplicateCheck.Add(entityType))
+                    if (entityType != null && duplicateCheck.Add(entityType))
                     {
-                        Type callerType = DataStoreRegistry.GetRemoteType(entityType.Name);                                                                      
-                        
-                        if(callerType != null) 
+                        Type callerType = DataStoreRegistry.GetRemoteType(entityType.Name);
+                        if (callerType != null)
                         {
                             Type relationType = typeof(RemoteRelation<,>).MakeGenericType(callerType, entityType);
 
@@ -44,11 +41,13 @@ namespace Undersoft.SDK.Service.Hosting
                                 service.AddObject(typeof(IRemoteRelation<,>).MakeGenericType(callerType, entityType), relation.Value);
                         }
 
-                        /*****************************************************************************************/
-                        foreach (Type store in stores)
+                        stores = OpenDataRegistry.GetEntityStoreTypes(entityType);
+                        if (stores != null)
                         {
-                            if ((entityType != null))
+                            /*****************************************************************************************/
+                            foreach (Type store in stores)
                             {
+
                                 /*****************************************************************************************/
                                 service.AddScoped(
                                     typeof(IRemoteRepository<,>).MakeGenericType(store, entityType),
@@ -66,7 +65,7 @@ namespace Undersoft.SDK.Service.Hosting
                                 );
                                 /*****************************************************************************************/
                                 if (callerType != null)
-                                {                                   
+                                {
                                     /*********************************************************************************************/
                                     service.AddScoped(
                                         typeof(IRepositoryLink<,,>).MakeGenericType(
@@ -95,7 +94,7 @@ namespace Undersoft.SDK.Service.Hosting
                                     /*********************************************************************************************/
                                 }
                             }
-                        }
+                        }                        
                     }
                 }
             }
