@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 namespace Undersoft.SDK.Service.Server.Operation.Command.Validator;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
-public class CommandValidator<TDto> : CommandValidatorBase<Command<TDto>> where TDto : class, IDataObject
+public class CommandValidator<TDto> : CommandValidatorBase<Command<TDto>> where TDto : class, IOrigin, IInnerProxy
 {
     public CommandValidator(IServicer ultimateService) : base(ultimateService) { }
 
@@ -138,7 +138,7 @@ public class CommandValidator<TDto> : CommandValidatorBase<Command<TDto>> where 
     protected void ValidateExist<TStore, TEntity>(
         Func<TDto, Expression<Func<TEntity, bool>>> command
     )
-        where TEntity : class, IDataObject
+        where TEntity : class, IOrigin, IInnerProxy
         where TStore : IDataServerStore
     {
         var _repository = uservice.Use<TStore, TEntity>();
@@ -156,7 +156,7 @@ public class CommandValidator<TDto> : CommandValidatorBase<Command<TDto>> where 
     protected void ValidateNotExist<TStore, TEntity>(
         Func<TDto, Expression<Func<TEntity, bool>>> command
     )
-        where TEntity : class, IDataObject
+        where TEntity : class, IOrigin, IInnerProxy
         where TStore : IDataServerStore
     {
         var _reposiotry = uservice.Use<TStore, TEntity>();

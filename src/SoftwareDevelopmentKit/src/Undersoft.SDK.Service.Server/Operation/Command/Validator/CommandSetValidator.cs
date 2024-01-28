@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 namespace Undersoft.SDK.Service.Server.Operation.Command.Validator;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
-public class CommandSetValidator<TDto> : CommandSetValidatorBase<CommandSet<TDto>> where TDto : class, IDataObject
+public class CommandSetValidator<TDto> : CommandSetValidatorBase<CommandSet<TDto>> where TDto : class, IOrigin, IInnerProxy
 {
     public CommandSetValidator(IServicer ultimateService) : base(ultimateService) { }
 
@@ -206,7 +206,7 @@ public class CommandSetValidator<TDto> : CommandSetValidatorBase<CommandSet<TDto
         Func<TDto, Expression<Func<TEntity, bool>>> command,
         string message = null
     )
-        where TEntity : class, IDataObject
+        where TEntity : class, IOrigin, IInnerProxy
         where TStore : IDataServerStore
     {
         var _repository = _servicer.Use<TStore, TEntity>();
@@ -223,7 +223,7 @@ public class CommandSetValidator<TDto> : CommandSetValidatorBase<CommandSet<TDto
         Func<TDto, Expression<Func<TEntity, bool>>> command,
         string message = null
     )
-        where TEntity : class, IDataObject
+        where TEntity : class, IOrigin, IInnerProxy
         where TStore : IDataServerStore
     {
         var _repository = _servicer.Use<TStore, TEntity>();

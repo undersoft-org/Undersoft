@@ -8,8 +8,8 @@ using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class UpsertSet<TStore, TEntity, TDto> : CommandSet<TDto>
-    where TDto : class, IDataObject
-    where TEntity : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     [JsonIgnore]

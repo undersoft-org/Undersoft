@@ -143,7 +143,7 @@ public abstract class CommandSetValidatorBase<TCommand> : AbstractValidator<TCom
         LogicOperand operand,
         params string[] propertyNames
     )
-        where TEntity : class, IDataObject
+        where TEntity : class, IOrigin, IInnerProxy
         where TStore : IDataServerStore
     {
         var _repository = _servicer.Use<TStore, TEntity>();
@@ -172,7 +172,7 @@ public abstract class CommandSetValidatorBase<TCommand> : AbstractValidator<TCom
         LogicOperand operand,
         params string[] propertyNames
     )
-        where TEntity : class, IDataObject
+        where TEntity : class, IOrigin, IInnerProxy
         where TStore : IDataServerStore
     {
         var _repository = _servicer.Use<TStore, TEntity>();

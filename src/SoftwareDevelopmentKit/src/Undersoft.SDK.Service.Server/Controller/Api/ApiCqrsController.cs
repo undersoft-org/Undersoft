@@ -14,8 +14,8 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 [ApiData]
 [Route($"{StoreRoutes.ApiDataRoute}/[controller]")]
 public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> : ApiDataController<TKey, TEntry, TEntity, TDto, TService>
-    where TDto : class, IDataObject
-    where TEntity : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TEntity : class, IOrigin, IInnerProxy
     where TEntry : IDataServerStore
     where TReport : IDataServerStore
     where TService : class

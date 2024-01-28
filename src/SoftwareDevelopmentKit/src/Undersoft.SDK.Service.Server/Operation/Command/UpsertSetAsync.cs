@@ -10,8 +10,8 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 public class UpsertSetAsync<TStore, TEntity, TDto>
     : UpsertSet<TStore, TEntity, TDto>,
         IStreamRequest<Command<TDto>>
-    where TDto : class, IDataObject
-    where TEntity : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     public UpsertSetAsync(EventPublishMode publishPattern, TDto input, object key)

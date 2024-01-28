@@ -6,7 +6,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 namespace Undersoft.SDK.Service.Server.Operation.Remote.Query;
 
 public class RemoteFilter<TStore, TDto, TModel> : RemoteQuery<TStore, TDto, ISeries<TModel>>
-    where TDto : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
     public RemoteFilter(int offset, int limit, Expression<Func<TDto, bool>> predicate)

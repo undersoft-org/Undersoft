@@ -7,7 +7,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class GetQueryHandler<TStore, TEntity, TDto>
     : IRequestHandler<GetQuery<TStore, TEntity, TDto>, IQueryable<TDto>>
-    where TEntity : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
     where TDto : class
 {

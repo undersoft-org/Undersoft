@@ -7,7 +7,7 @@ using Undersoft.SDK.Service.Data.Event;
 public class CommandSetStream<TDto>
     : CommandSet<TDto>,
         IStreamRequest<Command<TDto>>,
-        ICommandSet<TDto> where TDto : class, IDataObject
+        ICommandSet<TDto> where TDto : class, IOrigin, IInnerProxy
 {
     protected CommandSetStream() : base() { }
 

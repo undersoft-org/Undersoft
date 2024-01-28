@@ -8,7 +8,7 @@ namespace Undersoft.SDK.Service.Server.Operation.Remote.Command;
 
 public abstract class RemoteCommandBase : IRemoteCommand
 {
-    private IDataObject contract;
+    private IOrigin contract;
 
     public virtual long Id { get; set; }
 
@@ -17,7 +17,7 @@ public abstract class RemoteCommandBase : IRemoteCommand
     public Delegate Processings { get; set; }
 
     [JsonIgnore]
-    public virtual IDataObject Contract
+    public virtual IOrigin Contract
     {
         get => contract;
         set

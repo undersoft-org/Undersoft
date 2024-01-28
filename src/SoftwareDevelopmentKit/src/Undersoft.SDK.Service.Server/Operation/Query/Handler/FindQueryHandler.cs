@@ -9,7 +9,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class FindQueryHandler<TStore, TEntity, TDto>
     : IRequestHandler<FindQuery<TStore, TEntity, TDto>, IQueryable<TDto>>
-    where TEntity : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
     where TDto : class, IOrigin, IInnerProxy
 {

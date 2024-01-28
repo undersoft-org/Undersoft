@@ -7,16 +7,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
 
 namespace Undersoft.SDK.Service.Server;
 
-using Accounts.Email;
 using Accounts;
+using Accounts.Email;
 using Documentation;
 using Infrastructure.Repository.Source;
 using Infrastructure.Store;
-using Undersoft.SDK.Service.Server.Accounts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -201,27 +200,30 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
     public IServerSetup AddSwagger()
     {
         string ver = configuration.Version;
-        var ao = configuration.Identity;
-        registry.AddApiVersioning(options =>
-        {
-            options.ReportApiVersions = true;
-        });
-        registry.AddVersionedApiExplorer(
-                options =>
-                {
-                    options.GroupNameFormat = "VVVVV";
-                    options.SubstituteApiVersionInUrl = false;
-                });
-        services.AddTransient<IConfigureOptions<SwaggerGenOptions>, OpenApiOptions>();
-        registry.AddGrpcSwagger();
+        var ao = configuration.Identity;        
+
+        //registry.AddApiVersioning(options =>
+        //{
+        //    options.AssumeDefaultVersionWhenUnspecified = true;
+        //    options.DefaultApiVersion = new ApiVersion(1, 0);
+        //    options.ReportApiVersions = true;
+        //});
+        //registry.AddVersionedApiExplorer(
+        //        options =>
+        //        {
+        //            options.GroupNameFormat = "'v'VVV";
+        //        });               
+
+        //registry.AddTransient<IConfigureOptions<SwaggerGenOptions>, OpenApiOptions>();
+        
         registry.AddSwaggerGen(options =>
         {
-            //options.SwaggerDoc(
-            //    ao.ServiceVersion,
-            //    new OpenApiInfo { Title = ao.ServiceName, Version = ao.ServiceVersion }
-            //);
+            options.SwaggerDoc(
+                ao.ServiceVersion,
+                new OpenApiInfo { Title = ao.ServiceName, Version = ao.ServiceVersion }
+            );
 
-            options.OperationFilter<OpenApiDefaultValues>();
+            //options.OperationFilter<OpenApiDefaultValues>();
             options.OperationFilter<JsonIgnoreFilter>();
             options.DocumentFilter<IgnoreApiDocument>();
 
@@ -240,7 +242,12 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
                 }
             );
             options.OperationFilter<AuthorizeCheckOperationFilter>();
-        });
+
+            //var filePath = Path.Combine(System.AppContext.BaseDirectory, "Undersoft.SSC.Service.Server.xml");
+            //options.IncludeXmlComments(filePath);
+            //options.IncludeGrpcXmlComments(filePath, includeControllerXmlComments: true);
+        });        
+        
         return this;
     }
 

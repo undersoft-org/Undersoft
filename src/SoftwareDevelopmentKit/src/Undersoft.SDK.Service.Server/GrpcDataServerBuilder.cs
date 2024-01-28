@@ -33,9 +33,7 @@ public class GrpcDataServerBuilder<TServiceStore>
         var controllerTypes = asm.SelectMany(
                 a =>
                     a.GetTypes()
-                        .Where(
-                            type => type.GetCustomAttribute<StreamDataAttribute>() != null
-                        )
+                        .Where(type => type.GetCustomAttribute<StreamDataAttribute>() != null)
                         .ToArray()
             )
             .Where(
@@ -48,7 +46,8 @@ public class GrpcDataServerBuilder<TServiceStore>
 
         foreach (var controllerType in controllerTypes)
         {
-            Type ifaceType = null;
+            Type contractType = null;
+
             var genTypes = controllerType.BaseType.GenericTypeArguments;
 
             if (
@@ -56,21 +55,21 @@ public class GrpcDataServerBuilder<TServiceStore>
                 && genTypes[1].IsAssignableTo(StoreType)
                 && genTypes[2].IsAssignableTo(StoreType)
             )
-                ifaceType = typeof(IStreamDataController<>).MakeGenericType(new[] { genTypes[4] });
+                contractType = typeof(IStreamDataController<>).MakeGenericType(new[] { genTypes[4] });
             else if (genTypes.Length > 3)
                 if (
                     genTypes[3].IsAssignableTo(typeof(IContract))
                     && genTypes[1].IsAssignableTo(StoreType)
                 )
-                    ifaceType = typeof(IStreamDataController<>).MakeGenericType(
+                    contractType = typeof(IStreamDataController<>).MakeGenericType(
                         new[] { genTypes[3] }
                     );
                 else
                     continue;
 
-            GrpcDataServerRegistry.ServiceContracts.Add(ifaceType);
+            GrpcDataServerRegistry.ServiceContracts.Add(contractType);
 
-            _registry.AddObject(ifaceType, controllerType.New());
+            _registry.AddSingleton(contractType, controllerType);
         }
     }
 
@@ -96,21 +95,25 @@ public class GrpcDataServerBuilder<TServiceStore>
     {
         if (!grpcadded)
         {
-            _registry.AddCodeFirstGrpc(config =>
-            {
-                config.ResponseCompressionLevel = System
-                    .IO
-                    .Compression
-                    .CompressionLevel
-                    .NoCompression;
-            }).AddJsonTranscoding();
+            _registry
+                .AddCodeFirstGrpc(config =>
+                {
+                    config.ResponseCompressionLevel = System
+                        .IO
+                        .Compression
+                        .CompressionLevel
+                        .Optimal;
+                });
+                //.AddJsonTranscoding();
 
             _registry.AddSingleton(
                 BinderConfiguration.Create(binder: new GrpcDataServerBinder(_registry))
             );
 
             _registry.AddCodeFirstGrpcReflection();
+
             _registry.MergeServices(true);
+
             grpcadded = true;
         }
     }

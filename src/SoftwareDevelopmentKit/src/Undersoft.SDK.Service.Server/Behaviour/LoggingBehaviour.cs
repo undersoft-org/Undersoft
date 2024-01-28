@@ -25,9 +25,9 @@ public class LoggingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest,
     }
 
     public async Task<TResponse> Handle(
-        TRequest request,
-        CancellationToken cancellationToken,
-        RequestHandlerDelegate<TResponse> next)
+        TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken
+       )
     {
 
         //using var activity = activitySource.StartActivity($"Operation Request: {request.GetType().Name}");

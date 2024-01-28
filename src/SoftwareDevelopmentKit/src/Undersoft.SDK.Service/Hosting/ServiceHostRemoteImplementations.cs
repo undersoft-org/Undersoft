@@ -34,13 +34,16 @@ namespace Undersoft.SDK.Service.Hosting
 
                     if (duplicateCheck.Add(entityType))
                     {
-                        Type callerType = DataStoreRegistry.GetRemoteType(entityType.FullName);
+                        Type callerType = DataStoreRegistry.GetRemoteType(entityType.Name);                                                                      
+                        
+                        if(callerType != null) 
+                        {
+                            Type relationType = typeof(RemoteRelation<,>).MakeGenericType(callerType, entityType);
 
-                        Type relationType = typeof(RemoteRelation<,>).MakeGenericType(callerType, entityType);
-                        
-                        if(OpenDataRegistry.Remotes.TryGet(relationType, out ISeriesItem<RemoteRelation> relation))                        
-                            service.AddObject(typeof(IRemoteRelation<,>).MakeGenericType(callerType, entityType), relation.Value);
-                        
+                            if (OpenDataRegistry.Remotes.TryGet(relationType, out ISeriesItem<RemoteRelation> relation))
+                                service.AddObject(typeof(IRemoteRelation<,>).MakeGenericType(callerType, entityType), relation.Value);
+                        }
+
                         /*****************************************************************************************/
                         foreach (Type store in stores)
                         {
@@ -63,7 +66,7 @@ namespace Undersoft.SDK.Service.Hosting
                                 );
                                 /*****************************************************************************************/
                                 if (callerType != null)
-                                {
+                                {                                   
                                     /*********************************************************************************************/
                                     service.AddScoped(
                                         typeof(IRepositoryLink<,,>).MakeGenericType(

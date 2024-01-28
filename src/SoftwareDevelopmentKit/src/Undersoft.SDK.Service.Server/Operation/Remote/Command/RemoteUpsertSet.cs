@@ -9,8 +9,8 @@ using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class RemoteUpsertSet<TStore, TDto, TModel> : RemoteCommandSet<TModel>
-    where TDto : class, IDataObject
-    where TModel : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TModel : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
     [JsonIgnore]

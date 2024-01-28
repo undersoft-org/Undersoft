@@ -2,7 +2,7 @@
 
 namespace Undersoft.SDK.Service.Server.Controller.Api
 {
-    public interface IApiDataSetController<TKey, TEntity, TDto> where TDto : class, IDataObject
+    public interface IApiDataSetController<TKey, TEntity, TDto> where TDto : class, IOrigin, IInnerProxy
     {
         Task<IActionResult> Count();
         Task<IActionResult> Delete([FromBody] TDto[] dtos);

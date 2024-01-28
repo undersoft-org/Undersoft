@@ -9,7 +9,7 @@ using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class Filter<TStore, TEntity, TDto> : Query<TStore, TEntity, ISeries<TDto>>
-    where TEntity : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     public Filter(int offset, int limit, Expression<Func<TEntity, bool>> predicate)

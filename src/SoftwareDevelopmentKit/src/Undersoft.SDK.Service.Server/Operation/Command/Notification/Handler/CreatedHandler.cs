@@ -11,8 +11,8 @@ using Undersoft.SDK.Service.Server.Operation.Command.Notification;
 
 public class CreatedHandler<TStore, TEntity, TDto>
     : INotificationHandler<Created<TStore, TEntity, TDto>>
-    where TDto : class, IDataObject
-    where TEntity : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     protected readonly IStoreRepository<Event> _eventStore;

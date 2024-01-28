@@ -9,8 +9,8 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class UpdateSetAsyncHandler<TStore, TEntity, TDto>
     : IStreamRequestHandler<UpdateSetAsync<TStore, TEntity, TDto>, Command<TDto>>
-    where TDto : class, IDataObject
-    where TEntity : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     protected readonly IStoreRepository<TEntity> _repository;

@@ -8,7 +8,7 @@ namespace Undersoft.SDK.Service.Server.Operation.Remote.Command;
 public class RemoteCommandSet<TModel>
     : Registry<RemoteCommand<TModel>>,
         IRequest<RemoteCommandSet<TModel>>,
-        IRemoteCommandSet<TModel> where TModel : class, IDataObject
+        IRemoteCommandSet<TModel> where TModel : class, IOrigin, IInnerProxy
 {
     public CommandMode CommandMode { get; set; }
 

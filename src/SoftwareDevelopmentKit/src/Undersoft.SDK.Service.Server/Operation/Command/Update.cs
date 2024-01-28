@@ -7,8 +7,8 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 namespace Undersoft.SDK.Service.Server.Operation.Command;
 
 public class Update<TStore, TEntity, TDto> : Command<TDto>
-    where TEntity : class, IDataObject
-    where TDto : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
+    where TDto : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     [JsonIgnore]

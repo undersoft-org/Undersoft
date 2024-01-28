@@ -21,7 +21,7 @@ namespace Undersoft.SDK.Service.Server
         {
             var resolvedServiceType = serviceType;
             if (serviceType.IsInterface)
-                resolvedServiceType = registry.Get(serviceType)?.ImplementationInstance?.GetType() ?? serviceType;
+                resolvedServiceType = registry.Get(serviceType)?.ImplementationType ?? serviceType;
 
             return base.GetMetadata(method, contractType, resolvedServiceType);
         }
@@ -29,12 +29,8 @@ namespace Undersoft.SDK.Service.Server
         protected override string GetDefaultName(Type contractType)
         {
             var fullname = base.GetDefaultName(contractType);
-
-            var dataName = fullname.Split('_').LastOrDefault();
-
-            var endpointName = StoreRoutes.StreamDataRoute + "/" + dataName + "Stream";
-
-            return endpointName;
+            var chunks = fullname.Split('_');
+            return chunks[0].Replace("StreamDataController", chunks[1]);
         }
     }
 }

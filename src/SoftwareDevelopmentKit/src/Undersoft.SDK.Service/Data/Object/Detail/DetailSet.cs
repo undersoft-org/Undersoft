@@ -1,12 +1,15 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Undersoft.SDK.Service.Data.Object.Detail;
 
-public class Details<TDto> : KeyedCollection<string, TDto> where TDto : class, IDetail
+public class DetailSet<TDto> : KeyedCollection<string, TDto> where TDto : class, IDetail
 {
-    public Details() { }
+    public DetailSet() { }
 
-    public Details(IEnumerable<TDto> list) { list.ForEach(item => base.Add(item)); }
+    public DetailSet(IEnumerable<TDto> list) { list.ForEach(item => base.Add(item)); }
 
     protected override string GetKeyForItem(TDto item)
     {
@@ -14,12 +17,16 @@ public class Details<TDto> : KeyedCollection<string, TDto> where TDto : class, I
             item.AutoId();
         return item.Name;
     }
-
+    [NotMapped]
+    [JsonIgnore]
+    [IgnoreDataMember]
     public TDto Single
     {
         get => this.EnsureOne();
     }
-
+    [NotMapped]
+    [JsonIgnore]
+    [IgnoreDataMember]
     public new TDto this[string key]
     {
         get

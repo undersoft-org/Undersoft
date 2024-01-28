@@ -12,7 +12,7 @@ public interface ICommand : IOperation
 
     object[] Keys { get; set; }
 
-    IDataObject Entity { get; set; }
+    IOrigin Entity { get; set; }
 
     object Contract { get; set; }
 

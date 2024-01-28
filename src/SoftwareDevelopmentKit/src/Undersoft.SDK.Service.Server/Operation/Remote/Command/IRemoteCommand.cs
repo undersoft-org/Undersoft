@@ -11,7 +11,7 @@ public interface IRemoteCommand : IOperation
 
     object[] Keys { get; set; }
 
-    IDataObject Contract { get; set; }
+    IOrigin Contract { get; set; }
 
     object Model { get; set; }
 

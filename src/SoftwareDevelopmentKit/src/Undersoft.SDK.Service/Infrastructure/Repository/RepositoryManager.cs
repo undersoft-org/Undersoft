@@ -36,22 +36,22 @@ public class RepositoryManager : Registry<IDataStoreContext>, IDisposable, IAsyn
     {
     }
 
-    public IStoreRepository<TEntity> use<TStore, TEntity>() where TEntity : class, IDataObject where TStore : IDataServerStore
+    public IStoreRepository<TEntity> use<TStore, TEntity>() where TEntity : class, IOrigin, IInnerProxy where TStore : IDataServerStore
     {
         return Use<TStore, TEntity>();
     }
-    public IStoreRepository<TEntity> use<TEntity>() where TEntity : class, IDataObject
+    public IStoreRepository<TEntity> use<TEntity>() where TEntity : class, IOrigin, IInnerProxy
     {
         return Use<TEntity>();
     }
 
     public IStoreRepository<TEntity> Use<TEntity>()
-    where TEntity : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
     {
         return Use<TEntity>(DataStoreRegistry.GetContexts<TEntity>().FirstOrDefault());
     }
     public IStoreRepository<TEntity> Use<TEntity>(Type contextType)
-        where TEntity : class, IDataObject
+        where TEntity : class, IOrigin, IInnerProxy
     {
         return (IStoreRepository<TEntity>)Manager.GetService(typeof(IStoreRepository<,>)
                                                  .MakeGenericType(DataStoreRegistry
@@ -59,47 +59,47 @@ public class RepositoryManager : Registry<IDataStoreContext>, IDisposable, IAsyn
                                                   typeof(TEntity)));
     }
     public IStoreRepository<TEntity> Use<TStore, TEntity>()
-       where TEntity : class, IDataObject where TStore : IDataServerStore
+       where TEntity : class, IOrigin, IInnerProxy where TStore : IDataServerStore
     {
         return Manager.GetService<IStoreRepository<TStore, TEntity>>();
     }
 
-    public IRemoteRepository<TDto> load<TStore, TDto>() where TDto : class, IDataObject where TStore : IDataServiceStore
+    public IRemoteRepository<TDto> load<TStore, TDto>() where TDto : class, IOrigin, IInnerProxy where TStore : IDataServiceStore
     {
         return Load<TStore, TDto>();
     }
-    public IRemoteRepository<TDto> load<TDto>() where TDto : class, IDataObject
+    public IRemoteRepository<TDto> load<TDto>() where TDto : class, IOrigin, IInnerProxy
     {
         return Load<TDto>();
     }
 
-    public IRemoteRepository<TDto> Load<TDto>() where TDto : class, IDataObject
+    public IRemoteRepository<TDto> Load<TDto>() where TDto : class, IOrigin, IInnerProxy
     {
         return Load<TDto>(OpenDataRegistry.GetContextTypes<TDto>().FirstOrDefault());
     }
     public IRemoteRepository<TDto> Load<TDto>(Type contextType)
-       where TDto : class, IDataObject
+       where TDto : class, IOrigin, IInnerProxy
     {
         return (IRemoteRepository<TDto>)Manager.GetService(typeof(IRemoteRepository<,>)
                                                  .MakeGenericType(OpenDataRegistry
                                                  .Stores[contextType],
                                                   typeof(TDto)));
     }
-    public IRemoteRepository<TDto> Load<TStore, TDto>() where TDto : class, IDataObject where TStore : IDataServiceStore
+    public IRemoteRepository<TDto> Load<TStore, TDto>() where TDto : class, IOrigin, IInnerProxy where TStore : IDataServiceStore
     {
         var result = Manager.GetService<IRemoteRepository<TStore, TDto>>();
         return result;
     }
 
     public IRepositorySource GetSource<TStore, TEntity>()
-    where TEntity : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
     {
         var contextType = DataStoreRegistry.GetContext<TStore, TEntity>();
         return Sources.Get(contextType);
     }
 
     public IRepositoryClient GetClient<TStore, TEntity>()
-    where TEntity : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
     {
         var contextType = OpenDataRegistry.GetContextType<TStore, TEntity>();
 

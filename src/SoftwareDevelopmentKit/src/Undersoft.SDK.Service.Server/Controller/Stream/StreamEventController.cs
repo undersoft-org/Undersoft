@@ -11,11 +11,11 @@ using Undersoft.SDK.Service.Server.Operation.Remote;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Response;
 
-[RemoteResult]
 [StreamData]
-public abstract class StreamEventController<TKey, TStore, TEntity, TDto> : IStreamDataController<TDto> where TDto : class, IDataObject
-    where TEntity : class, IDataObject
+public abstract class StreamEventController<TKey, TStore, TEntity, TDto> : ControllerBase, IStreamDataController<TDto> where TDto : class, IOrigin, IInnerProxy
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     protected Func<TKey, Func<TDto, object>> _keysetter = k => e => e.SetId(k);
@@ -44,9 +44,9 @@ public abstract class StreamEventController<TKey, TStore, TEntity, TDto> : IStre
         return _servicer.CreateStream(new GetAsync<TStore, TEntity, TDto>(0, 0));
     }
 
-    public virtual Task<string> Count()
+    public virtual Task<ResultString> Count()
     {
-        return Task.FromResult(_servicer.use<TStore, TEntity>().Count().ToString());
+        return Task.FromResult(new ResultString(_servicer.use<TStore, TEntity>().Count().ToString()));
     }
 
     public virtual IAsyncEnumerable<TDto> Query(QuerySet query)
@@ -69,47 +69,47 @@ public abstract class StreamEventController<TKey, TStore, TEntity, TDto> : IStre
                 );
     }
 
-    public virtual IAsyncEnumerable<string> Creates([FromBody] TDto[] dtos)
+    public virtual IAsyncEnumerable<ResultString> Creates([FromBody] TDto[] dtos)
     {
         var result = _servicer.CreateStream(new CreateSetAsync<TStore, TEntity, TDto>
                                                     (_publishMode, dtos));
 
-        var response = result.ForEachAsync(c => c.IsValid
-                                               ? c.Id.ToString()
-                                               : c.ErrorMessages);
+        var response = result.ForEachAsync(c => new ResultString(c.IsValid
+                                             ? c.Id.ToString()
+                                             : c.ErrorMessages));
         return response;
     }
 
-    public virtual IAsyncEnumerable<string> Changes([FromBody] TDto[] dtos)
+    public virtual IAsyncEnumerable<ResultString> Changes([FromBody] TDto[] dtos)
     {
         var result = _servicer.CreateStream(new ChangeSetAsync<TStore, TEntity, TDto>
                                                    (_publishMode, dtos));
 
-        var response = result.ForEachAsync(c => c.IsValid
+        var response = result.ForEachAsync(c => new ResultString(c.IsValid
                                               ? c.Id.ToString()
-                                              : c.ErrorMessages);
+                                              : c.ErrorMessages));
         return response;
     }
 
-    public virtual IAsyncEnumerable<string> Updates([FromBody] TDto[] dtos)
+    public virtual IAsyncEnumerable<ResultString> Updates([FromBody] TDto[] dtos)
     {
         var result = _servicer.CreateStream(new UpdateSetAsync<TStore, TEntity, TDto>
                                                  (_publishMode, dtos));
 
-        var response = result.ForEachAsync(c => c.IsValid
-                                             ? c.Id.ToString()
-                                             : c.ErrorMessages);
+        var response = result.ForEachAsync(c => new ResultString(c.IsValid
+                                               ? c.Id.ToString()
+                                               : c.ErrorMessages));
         return response;
     }
 
-    public virtual IAsyncEnumerable<string> Deletes([FromBody] TDto[] dtos)
+    public virtual IAsyncEnumerable<ResultString> Deletes([FromBody] TDto[] dtos)
     {
         var result = _servicer.CreateStream(new DeleteSetAsync<TStore, TEntity, TDto>
                                                   (_publishMode, dtos));
 
-        var response = result.ForEachAsync(c => c.IsValid
-                                             ? c.Id.ToString()
-                                             : c.ErrorMessages);
+        var response = result.ForEachAsync(c => new ResultString(c.IsValid
+                                               ? c.Id.ToString()
+                                               : c.ErrorMessages));
         return response;
     }
 }

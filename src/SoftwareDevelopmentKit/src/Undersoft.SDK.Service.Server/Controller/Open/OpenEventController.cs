@@ -15,8 +15,8 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 public abstract class OpenEventController<TKey, TStore, TEntity, TDto>
     : ODataController,
         IOpenEventController<TKey, TEntity, TDto>
-    where TDto : class, IDataObject, new()
-    where TEntity : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy, new()
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     protected Func<TKey, Func<TDto, object>> _keysetter = k => e => e.SetId(k);

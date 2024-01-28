@@ -18,7 +18,7 @@ public class Program
     {
         var builder = new HostBuilder();
 
-        builder.Info<Runlog>("Starting Shared Service Center Web Server Server ....");
+        builder.Info<Runlog>("Starting Undersoft.SSC.Service.Application.Server ....");
 
         _host = builder.ConfigureWebHost(builder => builder
             .UseContentRoot(Directory.GetCurrentDirectory())
@@ -41,17 +41,17 @@ public class Program
         }
         catch (Exception exception)
         {
-            Log.Error<Runlog>(null, "Shared Service Center Web Server Server terminated unexpectedly ....", exception);
+            Log.Error<Runlog>(null, " Undersoft.SSC.Service.Application.Server terminated unexpectedly ....", exception);
         }
         finally
         {
-            Log.Info<Runlog>(null, "Shared Service Center Web Server Server shutted down ....");
+            Log.Info<Runlog>(null, " Undersoft.SSC.Service.Application.Server shutted down ....");
         }
     }
 
     public static async Task Restart()
     {
-        Log.Info<Runlog>(null, "Restarting Shared Service Center Web Server Server ....");
+        Log.Info<Runlog>(null, "Restarting  Undersoft.SSC.Service.Application.Server ....");
 
         Task.WaitAll(Shutdown());
 
@@ -60,9 +60,7 @@ public class Program
 
     public static async Task Shutdown()
     {
-        Log.Info<Runlog>(null, "Shutting down Shared Service Center Web Server Server ....");
-
-        _host.Info<Runlog>("Stopping Shared Service Center Web Server Server ....");
+        _host.Info<Runlog>("Shutting down  Undersoft.SSC.Service.Application.Server ....");
 
         if (_host != null)
             await _host.StopAsync(TimeSpan.FromSeconds(5));

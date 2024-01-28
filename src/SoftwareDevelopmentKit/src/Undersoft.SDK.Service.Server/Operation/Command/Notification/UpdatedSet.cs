@@ -9,8 +9,8 @@ using Command;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class UpdatedSet<TStore, TEntity, TDto> : NotificationSet<Command<TDto>>
-    where TDto : class, IDataObject
-    where TEntity : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     public UpdatedSet(UpdateSet<TStore, TEntity, TDto> commands)

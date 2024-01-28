@@ -5,7 +5,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Store.Relation;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Relation;
 
-public class RemoteNode<TLeft, TRight> : KeyedCollection<long, IRemoteLink<TLeft, TRight>>, IFindableSeries, IRemoteNodeSet<TLeft, TRight> where TLeft : class, IDataObject where TRight : class, IDataObject
+public class RemoteNode<TLeft, TRight> : KeyedCollection<long, IRemoteLink<TLeft, TRight>>, IFindableSeries, IRemoteNodeSet<TLeft, TRight> where TLeft : class, IOrigin, IInnerProxy where TRight : class, IOrigin, IInnerProxy
 {
     public RemoteNode() : base()
     {

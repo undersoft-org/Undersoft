@@ -9,8 +9,8 @@ using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class ChangeSet<TStore, TEntity, TDto> : CommandSet<TDto>
-    where TEntity : class, IDataObject
-    where TDto : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
+    where TDto : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     [JsonIgnore]

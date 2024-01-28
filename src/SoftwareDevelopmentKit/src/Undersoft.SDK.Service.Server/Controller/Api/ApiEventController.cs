@@ -14,8 +14,8 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 [ApiController]
 [Route($"{StoreRoutes.ApiEventRoute}/[controller]")]
 public abstract class ApiEventController<TKey, TStore, TEntity, TDto> : ControllerBase
-    where TDto : class, IDataObject
-    where TEntity : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     protected Func<TKey, Func<TDto, object>> _keysetter = k => e => e.SetId(k);

@@ -10,7 +10,7 @@ using Undersoft.SDK.Service.Data.Event;
 public class CommandSet<TDto>
     : Catalog<Command<TDto>>,
         IRequest<CommandSet<TDto>>,
-        ICommandSet<TDto> where TDto : class, IDataObject
+        ICommandSet<TDto> where TDto : class, IOrigin, IInnerProxy
 {
     public CommandMode CommandMode { get; set; }
 

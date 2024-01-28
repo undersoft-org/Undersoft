@@ -7,7 +7,7 @@ namespace Undersoft.SDK.Service.Server.Operation.Remote.Query.Handler;
 
 public class RemoteFilterHandler<TStore, TDto, TModel>
     : IRequestHandler<RemoteFilter<TStore, TDto, TModel>, ISeries<TModel>>
-    where TDto : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
     protected readonly IRemoteRepository<TDto> _repository;

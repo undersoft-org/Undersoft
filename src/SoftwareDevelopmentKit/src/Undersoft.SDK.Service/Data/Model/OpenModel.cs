@@ -25,21 +25,21 @@ public class OpenModel<TViewModel, TDetail, TSetting, TGroup> : DataObject, IMod
     }
 
     [DataMember(Order = 12)]
-    public virtual Identifiers<TViewModel> Identifiers { get; set; }
+    public virtual IdentifierSet<TViewModel> Identifiers { get; set; }
 
     [Details]
     [DataMember(Order = 13)]
-    public virtual Details<TDetail> Details
+    public virtual DetailSet<TDetail> Details
     {
-        get => new Details<TDetail>(GetOpenProperties<TDetail>(detailRubrics));
+        get => new DetailSet<TDetail>(GetOpenProperties<TDetail>(detailRubrics));
         set => SetOpenProperties(value);
     }
 
     [Settings]
     [DataMember(Order = 14)]
-    public virtual Settings<TSetting> Settings
+    public virtual SettingSet<TSetting> Settings
     {
-        get => new Settings<TSetting>(GetOpenProperties<TSetting>(settingRubrics));
+        get => new SettingSet<TSetting>(GetOpenProperties<TSetting>(settingRubrics));
         set => SetOpenProperties(value);
     }
 

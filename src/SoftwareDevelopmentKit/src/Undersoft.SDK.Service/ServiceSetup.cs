@@ -315,7 +315,10 @@ public partial class ServiceSetup : IServiceSetup
             if (routePrefix.StartsWith('/'))
                 routePrefix = routePrefix.Substring(1);
 
-            routePrefix = routePrefix + "/" + provider.ToString().ToLower();
+            routePrefix = provider.ToString().ToLower() + "/" + routePrefix;
+
+            if (routePrefix.EndsWith('/'))
+                routePrefix = routePrefix.Substring(1);
 
             string _connectionString = $"{connectionString}{routePrefix}";
 
@@ -544,7 +547,7 @@ public partial class ServiceSetup : IServiceSetup
         }
         else if (iface == typeof(IAccountStore))
         {
-            return StoreRoutes.OpenAuthRoute;
+            return StoreRoutes.AuthStoreRoute;
         }
         else
         {

@@ -40,7 +40,7 @@ public class ObjectDetail<TDetail, TKind> : DataObject, ISerializableJsonDocumen
     public virtual string Name { get; set; }
 
     [DataMember(Order = 14)]
-    public virtual Identifiers<TDetail>? Identifiers { get; set; }
+    public virtual IdentifierSet<TDetail>? Identifiers { get; set; }
 
     [IdentityRubric]
     [DataMember(Order = 15)]

@@ -19,8 +19,8 @@ using Microsoft.Extensions.DependencyInjection;
 public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel, TService>
     : ApiServiceRemoteController<TStore, TService, TModel>,
         IApiDataRemoteController<TKey, TDto, TModel>
-    where TModel : class, IDataObject
-    where TDto : class, IDataObject
+    where TModel : class, IOrigin, IInnerProxy
+    where TDto : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
     where TService : class
 {

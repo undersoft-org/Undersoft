@@ -10,8 +10,8 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class CreateHandler<TStore, TEntity, TDto>
     : IRequestHandler<Create<TStore, TEntity, TDto>, Command<TDto>>
-    where TDto : class, IDataObject
-    where TEntity : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     protected readonly IStoreRepository<TEntity> _repository;

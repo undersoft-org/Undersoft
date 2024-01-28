@@ -2,10 +2,13 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.OData;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProtoBuf.Grpc.Server;
+using Swashbuckle.AspNetCore;
 using Undersoft.SDK.Service.Server;
 
 namespace Undersoft.SDK.Service.Server.Hosting;
@@ -13,6 +16,7 @@ namespace Undersoft.SDK.Service.Server.Hosting;
 using Logging;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Routing;
+using ProtoBuf.Grpc.Reflection;
 using Quartz.Impl.AdoJobStore.Common;
 using Series;
 
@@ -20,9 +24,9 @@ public class ServerHostSetup : IServerHostSetup
 {
     protected static bool defaultProvider;
 
-    private readonly IApplicationBuilder _builder;
-    private readonly IWebHostEnvironment _environment;
-    private readonly IServiceManager _manager;
+    protected readonly IApplicationBuilder _builder;
+    protected readonly IWebHostEnvironment _environment;
+    protected readonly IServiceManager _manager;
 
     public ServerHostSetup(IApplicationBuilder application)
     {
@@ -65,9 +69,12 @@ public class ServerHostSetup : IServerHostSetup
             if (serviceContracts.Any())
             {
                 foreach (var serviceContract in serviceContracts)
+                {
                     method
                         .MakeGenericMethod(serviceContract)
-                        .Invoke(endpoints, new object[] { endpoints });
+                        .Invoke(endpoints, new object[] { endpoints });            
+
+                }
 
                 endpoints.MapCodeFirstGrpcReflectionService();
             }
@@ -183,17 +190,13 @@ public class ServerHostSetup : IServerHostSetup
             throw new ArgumentNullException(nameof(_builder));
         }
 
-        var ao = _manager.GetConfiguration().Identity;
-        var provider = _manager.GetService<IApiVersionDescriptionProvider>();
+        var ao = _manager.Configuration.Identity;
 
         _builder
             .UseSwagger()
             .UseSwaggerUI(options =>
             {
-                foreach (var description in provider.ApiVersionDescriptions)
-                {
-                    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
-                }
+               options.SwaggerEndpoint($"/swagger/v1/swagger.json", ao.ServiceName);
                 //options.SwaggerEndpoint($"{ao.ServiceBaseUrl}/swagger/v1/swagger.json", ao.ServiceName);
                 //s.OAuthClientId(ao.SwaggerClientId);
                 //s.OAuthAppName(ao.ApiName);

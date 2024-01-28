@@ -105,6 +105,14 @@ public class Servicer : ServiceManager, IServicer, IMediator
         }
     }
 
+    public async Task Send<TRequest>(TRequest request, CancellationToken cancellationToken = default) where TRequest : IRequest
+    {
+        using (var servicer = new Servicer(Manager))
+        {
+            await servicer.Mediator.Send(request, cancellationToken);
+        }
+    }
+
     public async Task Publish(object notification, CancellationToken cancellationToken = default)
     {
         using (var servicer = new Servicer(Manager))
@@ -298,4 +306,6 @@ public class Servicer : ServiceManager, IServicer, IMediator
             disposedValue = true;
         }
     }
+
+
 }

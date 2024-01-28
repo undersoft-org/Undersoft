@@ -12,8 +12,8 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 public class DeleteSetAsync<TStore, TEntity, TDto>
     : DeleteSet<TStore, TEntity, TDto>,
         IStreamRequest<Command<TDto>>
-    where TEntity : class, IDataObject
-    where TDto : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
+    where TDto : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     [JsonIgnore]

@@ -9,8 +9,8 @@ namespace Undersoft.SDK.Service.Server.Operation.Remote.Command.Notification.Han
 
 public class RemoteDeletedHandler<TStore, TDto, TModel>
     : INotificationHandler<RemoteDeleted<TStore, TDto, TModel>>
-    where TDto : class, IDataObject
-    where TModel : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TModel : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
     protected readonly IStoreRepository<Event> _eventStore;

@@ -8,8 +8,8 @@ using Undersoft.SDK.Service.Data.Relation;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class RelatedSetToRemoteSet<TLeft, TRight>
-    where TLeft : class, IDataObject
-    where TRight : class, IDataObject
+    where TLeft : class, IOrigin, IInnerProxy
+    where TRight : class, IOrigin, IInnerProxy
 {
     private readonly string RELATION_TABLE_NAME;
     private readonly string LEFT_TABLE_NAME = typeof(TLeft).Name + "s";

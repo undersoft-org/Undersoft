@@ -16,13 +16,12 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Server.Documentation;
 using Undersoft.SDK.Service.Server.Operation.Remote;
 
-[IgnoreApi]
-[RemoteResult]
+
 [OpenDataRemote]
 public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel, TService>
     : OpenServiceRemoteController<TStore, TService, TDto>, IOpenDataRemoteController<TKey, TDto, TModel>
-    where TModel : class, IDataObject
-    where TDto : class, IDataObject
+    where TModel : class, IOrigin, IInnerProxy
+    where TDto : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
     where TService : class
 

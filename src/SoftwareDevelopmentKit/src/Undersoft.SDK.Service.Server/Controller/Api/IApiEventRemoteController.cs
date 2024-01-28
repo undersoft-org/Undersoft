@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Undersoft.SDK.Service.Server.Controller.Crud;
-public interface IApiEventRemoteController<TKey, TDto, TModel> where TModel : class, IDataObject
+public interface IApiEventRemoteController<TKey, TDto, TModel> where TModel : class, IOrigin, IInnerProxy
 {
     Task<IActionResult> Count();
     Task<IActionResult> Delete([FromBody] TModel[] dtos);

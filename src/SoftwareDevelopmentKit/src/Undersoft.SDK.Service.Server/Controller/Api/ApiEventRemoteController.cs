@@ -20,8 +20,8 @@ using Undersoft.SDK.Service.Client.Remote;
 public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
     : ControllerBase,
         IApiEventRemoteController<TKey, TDto, TModel>
-    where TDto : class, IDataObject
-    where TModel : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TModel : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
     protected Func<TKey, Func<TModel, object>> _keysetter = k => e => e.SetId(k);

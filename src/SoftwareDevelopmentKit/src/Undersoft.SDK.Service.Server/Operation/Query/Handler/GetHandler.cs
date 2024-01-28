@@ -9,7 +9,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 public class GetHandler<TStore, TEntity, TDto>
     : IRequestHandler<Get<TStore, TEntity, TDto>, ISeries<TDto>>
     where TDto : class
-    where TEntity : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     protected readonly IStoreRepository<TEntity> _repository;

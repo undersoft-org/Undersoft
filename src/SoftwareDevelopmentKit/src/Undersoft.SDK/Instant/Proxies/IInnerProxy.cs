@@ -7,8 +7,14 @@ using System.Text.Json.Serialization;
 
 public interface IInnerProxy
 {
+    [JsonIgnore]
+    [IgnoreDataMember]
+    [NotMapped]
     object this[string propertyName] { get; set; }
 
+    [JsonIgnore]
+    [IgnoreDataMember]
+    [NotMapped]
     object this[int fieldId] { get; set; }
 
     [JsonIgnore]

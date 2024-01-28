@@ -5,6 +5,7 @@ using Undersoft.SDK.Service.Application.Server.Hosting;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Server;
+using Undersoft.SSC.Service.Clients;
 using Undersoft.SSC.Service.Contracts;
 using Undersoft.SSC.Service.Infrastructure.Stores;
 
@@ -22,7 +23,7 @@ public class Setup
                     typeof(ReportStore), 
                     typeof(EntryStore) 
                 }
-            //,new[] { typeof(ServiceClient) }
+            ,new[] { typeof(ServiceClient) }
             )
             .AddDataServer<IEntityStore>(
                 DataServerTypes.All,

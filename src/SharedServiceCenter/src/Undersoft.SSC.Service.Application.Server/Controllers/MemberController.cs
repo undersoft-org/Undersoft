@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Infrastructure.Store;
@@ -21,8 +22,9 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
         public MemberController(IServicer ultimatr) : base(ultimatr) { }
     }
 
-
+    
     [AllowAnonymous]
+    [Route($"{StoreRoutes.ApiDataRoute}/Member")]
     public class MembersController
         : ApiCqrsController<
             long,
@@ -35,19 +37,4 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
         public MembersController(IServicer ultimatr) : base(ultimatr) { }
     }
 
-
-    namespace Undersoft.SSC.Service.Server.Controllers
-    {
-        public class MemberStreamController
-            : StreamDataController<
-                long,
-                IEntryStore,
-                IReportStore,
-                Domain.Entities.Member,
-                Contracts.Member
-            >
-        {
-            public MemberStreamController() : base() { }
-        }
-    }
 }

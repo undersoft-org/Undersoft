@@ -19,15 +19,15 @@ public class OpenContract<TContract, TDetail, TSetting, TGroup> : DataObject, IC
     public OpenContract() : base() { }
 
     [DataMember(Order = 12)]
-    public virtual Identifiers<TContract> Identifiers { get; set; }
+    public virtual IdentifierSet<TContract> Identifiers { get; set; }
 
     [Details]
     [DataMember(Order = 13)]
-    public virtual Details<TDetail> Details { get; set; }
+    public virtual DetailSet<TDetail> Details { get; set; }
 
     [Settings]
     [DataMember(Order = 14)]
-    public virtual Settings<TSetting> Settings { get; set; }
+    public virtual SettingSet<TSetting> Settings { get; set; }
 
     [DataMember(Order = 15)]
     public virtual TGroup Group { get; set; }

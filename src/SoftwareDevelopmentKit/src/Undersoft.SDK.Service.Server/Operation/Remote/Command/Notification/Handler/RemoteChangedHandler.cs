@@ -9,8 +9,8 @@ namespace Undersoft.SDK.Service.Server.Operation.Remote.Command.Notification.Han
 
 public class RemoteChangedHandler<TStore, TDto, TCommand>
     : INotificationHandler<RemoteChanged<TStore, TDto, TCommand>>
-    where TDto : class, IDataObject
-    where TCommand : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TCommand : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
     protected readonly IStoreRepository<Event> _eventStore;

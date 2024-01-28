@@ -22,7 +22,7 @@ public abstract class RemoteRelation<TOrigin, TTarget> : RemoteRelation, IRemote
         Id = Name.UniqueKey();
 
         OpenDataRegistry.Remotes.Add(TypeId, this);
-        OpenDataRegistry.Remotes.Add(typeof(TOrigin).FullName.UniqueKey32(), this);
+        OpenDataRegistry.Remotes.Add(typeof(TOrigin), this);
     }
 
     public virtual string Name { get; set; }

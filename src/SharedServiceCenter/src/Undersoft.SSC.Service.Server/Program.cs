@@ -60,9 +60,7 @@ public class Program
 
     public static async Task Shutdown()
     {
-        Log.Info<Runlog>(null, "Shutting down Undersoft.SSC.Service.Server ....");
-
-        _host.Info<Runlog>("Stopping Undersoft.SSC.Service.Server ....");
+        _host.Info<Runlog>("Shutting down Undersoft.SSC.Service.Server ....");
 
         if(_host != null)
             await _host.StopAsync(TimeSpan.FromSeconds(5));

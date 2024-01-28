@@ -6,7 +6,7 @@ namespace Undersoft.SDK.Service.Server.Controller.Open;
 
 using Uniques;
 
-public interface IOpenEventController<TKey, TEntity, TDto> where TDto : class, IDataObject
+public interface IOpenEventController<TKey, TEntity, TDto> where TDto : class, IOrigin, IInnerProxy
 {
     Task<IActionResult> Delete([FromODataUri] TKey key);
     IQueryable<TDto> Get();

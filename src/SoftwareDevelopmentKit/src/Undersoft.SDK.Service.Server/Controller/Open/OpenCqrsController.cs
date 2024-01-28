@@ -13,8 +13,8 @@ using Undersoft.SDK.Uniques;
 [OpenData]
 public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService>
     : OpenDataController<TKey, TEntry, TEntity, TDto, TService>
-    where TDto : class, IDataObject, new()
-    where TEntity : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy, new()
+    where TEntity : class, IOrigin, IInnerProxy
     where TEntry : IDataServerStore
     where TReport : IDataServerStore
     where TService : class

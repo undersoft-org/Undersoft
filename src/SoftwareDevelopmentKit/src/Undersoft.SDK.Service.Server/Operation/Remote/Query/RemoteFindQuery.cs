@@ -6,7 +6,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 namespace Undersoft.SDK.Service.Server.Operation.Remote.Query;
 
 public class RemoteFindQuery<TStore, TDto, TModel> : RemoteQuery<TStore, TDto, IQueryable<TModel>>
-    where TDto : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
     where TModel : class, IIdentifiable
 {

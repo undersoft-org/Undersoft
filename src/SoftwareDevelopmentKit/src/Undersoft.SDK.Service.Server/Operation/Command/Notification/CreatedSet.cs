@@ -8,8 +8,8 @@ using Command;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class CreatedSet<TStore, TEntity, TDto> : NotificationSet<Command<TDto>>
-    where TDto : class, IDataObject
-    where TEntity : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     [JsonIgnore]

@@ -11,8 +11,8 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 public class UpdateSetAsync<TStore, TEntity, TDto>
     : UpdateSet<TStore, TEntity, TDto>,
         IStreamRequest<Command<TDto>>
-    where TEntity : class, IDataObject
-    where TDto : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
+    where TDto : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     public UpdateSetAsync(EventPublishMode publishPattern, TDto input, object key)

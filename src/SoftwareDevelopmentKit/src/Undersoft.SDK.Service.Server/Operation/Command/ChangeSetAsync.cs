@@ -10,8 +10,8 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 public class ChangeSetAsync<TStore, TEntity, TDto>
     : ChangeSet<TStore, TEntity, TDto>,
         IStreamRequest<Command<TDto>>
-    where TEntity : class, IDataObject
-    where TDto : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
+    where TDto : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     public ChangeSetAsync(EventPublishMode publishPattern, TDto input, object key)

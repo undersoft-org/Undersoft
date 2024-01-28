@@ -8,6 +8,6 @@ namespace Undersoft.SSC.Service.Contracts
     public class Default : DataObject, IContract
     {
         [DataMember(Order = 12)]
-        public virtual Settings<Setting>? Settings { get; set; }
+        public virtual SettingSet<Setting>? Settings { get; set; }
     }
 }

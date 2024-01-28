@@ -133,7 +133,7 @@ public static class DataStoreRegistry
                             remoteType = remoteType.BaseType;
                         remoteType = remoteType.GetGenericArguments().LastOrDefault();
                     }
-                    RemoteTypes.Put(remoteType.FullName, entity.ClrType);
+                    RemoteTypes.Put(remoteType.Name, entity.ClrType);
                 });
             }
         }
@@ -333,7 +333,7 @@ public static class DataStoreRegistry
         return context.GetEntitySet(entityType.Name);
     }
 
-    public static DbSet<TEntity> GetEntitySet<TEntity>(this IDataStoreContext context) where TEntity : class, IDataObject
+    public static DbSet<TEntity> GetEntitySet<TEntity>(this IDataStoreContext context) where TEntity : class, IOrigin, IInnerProxy
     {
         var entityType = context.GetEntityType<TEntity>();
         if (entityType != null)
@@ -359,7 +359,7 @@ public static class DataStoreRegistry
 
         return null;
     }
-    public static Type GetContext<TStore, TEntity>() where TEntity : class, IDataObject
+    public static Type GetContext<TStore, TEntity>() where TEntity : class, IOrigin, IInnerProxy
     {
         if (Contexts.TryGet(typeof(TEntity), out ISeries<Type> dbEntityContext))
         {
@@ -377,7 +377,7 @@ public static class DataStoreRegistry
 
         return null;
     }
-    public static Type[] GetContexts<TEntity>() where TEntity : class, IDataObject
+    public static Type[] GetContexts<TEntity>() where TEntity : class, IOrigin, IInnerProxy
     {
         if (Contexts.TryGet(typeof(TEntity), out ISeries<Type> dbEntityContext))
             return dbEntityContext.ToArray();

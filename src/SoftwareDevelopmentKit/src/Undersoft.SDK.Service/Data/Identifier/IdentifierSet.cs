@@ -1,26 +1,37 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Undersoft.SDK.Service.Data.Object;
 
 namespace Undersoft.SDK.Service.Data.Identifier;
 
-public class Identifiers<TObject> : KeyedCollection<long, Identifier<TObject>>, IFindableSeries<Identifier<TObject>>, IIdentifiers, IIdentifiers<TObject> where TObject : IDataObject
+public class IdentifierSet<TObject> : KeyedCollection<long, Identifier<TObject>>, IFindableSeries<Identifier<TObject>>, IIdentifiers, IIdentifiers<TObject> where TObject : IDataObject
 {
-    [JsonIgnore] private static ISeries<Identifier<TObject>> _identifiers = new Registry<Identifier<TObject>>(true);
+    [NotMapped]
+    [JsonIgnore]
+    [IgnoreDataMember]
+    private static ISeries<Identifier<TObject>> _identifiers = new Registry<Identifier<TObject>>(true);
 
+    [NotMapped]
+    [JsonIgnore]
+    [IgnoreDataMember]
     public Identifier<TObject> this[IdKind kind]
     {
         get => this.FirstOrDefault(o => o.Kind == kind);
         set => ((IIdentifier<TObject>)value).PutTo(this.FirstOrDefault(o => o.Kind == kind));
     }
 
+    [NotMapped]
+    [JsonIgnore]
+    [IgnoreDataMember]
     object IFindableSeries.this[object key]
     {
         get => _identifiers[key];
         set => ((IFindableSeries)_identifiers)[key] = value;
     }
 
-    public Identifiers() : base()
+    public IdentifierSet() : base()
     {
     }
 
@@ -29,12 +40,18 @@ public class Identifiers<TObject> : KeyedCollection<long, Identifier<TObject>>, 
         return _identifiers[id];
     }
 
+    [NotMapped]
+    [JsonIgnore]
+    [IgnoreDataMember]
     public Identifier<TObject> this[object id]
     {
         get => _identifiers[id];
         set => _identifiers[id] = value;
     }
 
+    [NotMapped]
+    [JsonIgnore]
+    [IgnoreDataMember]
     public new Identifier<TObject> this[int id]
     {
         get => _identifiers[id];
@@ -49,6 +66,9 @@ public class Identifiers<TObject> : KeyedCollection<long, Identifier<TObject>>, 
         return item.Id;
     }
 
+    [NotMapped]
+    [JsonIgnore]
+    [IgnoreDataMember]
     protected new KeyedCollection<long, Identifier<TObject>> Dictionary { get => this; }
 
     protected override void ClearItems()

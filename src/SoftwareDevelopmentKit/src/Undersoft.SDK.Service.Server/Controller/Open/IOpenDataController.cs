@@ -9,8 +9,8 @@ using Undersoft.SDK.Service.Data.Object;
 using Uniques;
 
 public interface IOpenDataController<TKey, TEntity, TDto>
-    where TDto : class, IDataObject
-    where TEntity : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TEntity : class, IOrigin, IInnerProxy
 {
     Task<IActionResult> Delete([FromODataUri] TKey key);
 

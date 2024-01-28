@@ -4,19 +4,27 @@ using Undersoft.SSC.Service.Contracts.Base;
 
 namespace Undersoft.SSC.Service.Contracts;
 
+[DataContract]
 public class Resource : ResourceBase
 {
-    public virtual DataObjects<ResourceBase>? RelatedFrom { get; set; }
+    [DataMember(Order = 21)]
+    public virtual ObjectSet<ResourceBase>? RelatedFrom { get; set; }
 
-    public virtual DataObjects<ResourceBase>? RelatedTo { get; set; }
+    [DataMember(Order = 22)]
+    public virtual ObjectSet<ResourceBase>? RelatedTo { get; set; }
 
-    public virtual DataObjects<MemberBase>? Members { get; set; }
+    [DataMember(Order = 23)]
+    public virtual ObjectSet<MemberBase>? Members { get; set; }
 
-    public virtual DataObjects<ActivityBase>? Activities { get; set; }
+    [DataMember(Order = 24)]
+    public virtual ObjectSet<ActivityBase>? Activities { get; set; }
 
-    public virtual DataObjects<ScheduleBase>? Schedules { get; set; }
-
+    [DataMember(Order = 25)]
+    public virtual ObjectSet<ScheduleBase>? Schedules { get; set; }
+  
+    [DataMember(Order = 17)]
     public virtual Default? Default { get; set; }
 
+    [DataMember(Order = 19)]
     public virtual Location? Location { get; set; }
 }

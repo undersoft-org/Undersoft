@@ -5,7 +5,7 @@ namespace Undersoft.SDK.Service.Server.Controller.Crud;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Query;
 
-public interface IApiDataController<TKey, TEntity, TDto> where TDto : class, IDataObject
+public interface IApiDataController<TKey, TEntity, TDto> where TDto : class, IOrigin, IInnerProxy
 {
     [HttpGet]
     Task<IActionResult> Count();

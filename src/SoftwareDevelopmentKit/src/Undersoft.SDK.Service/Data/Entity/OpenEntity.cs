@@ -20,7 +20,7 @@ public class OpenEntity<TEntity, TDetail, TSetting, TGroup> : Entity
     public OpenEntity() : base() { }
 
     [DataMember(Order = 12)]
-    public virtual Identifiers<TEntity> Identifiers { get; set; }
+    public virtual IdentifierSet<TEntity> Identifiers { get; set; }
 
     [Details]
     [DataMember(Order = 13)]

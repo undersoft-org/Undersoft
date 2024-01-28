@@ -7,7 +7,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class FilterAsyncHandler<TStore, TEntity, TDto>
     : IStreamRequestHandler<FilterAsync<TStore, TEntity, TDto>, TDto>
-    where TEntity : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     protected readonly IStoreRepository<TEntity> _repository;

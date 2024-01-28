@@ -5,7 +5,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 namespace Undersoft.SDK.Service.Server.Operation.Remote.Query.Handler;
 
 public class RemoteFindHandler<TStore, TDto, TModel> : IRequestHandler<RemoteFind<TStore, TDto, TModel>, TModel>
-    where TDto : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
     protected readonly IRemoteRepository<TDto> _repository;

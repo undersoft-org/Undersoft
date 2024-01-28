@@ -7,7 +7,7 @@ using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Object;
 using Uniques;
 
-public class Command<TDto> : CommandBase, IRequest<Command<TDto>>, IIdentifiable where TDto : class, IDataObject
+public class Command<TDto> : CommandBase, IRequest<Command<TDto>>, IIdentifiable where TDto : class, IOrigin, IInnerProxy
 {
     [JsonIgnore]
     public override TDto Contract => base.Contract as TDto;

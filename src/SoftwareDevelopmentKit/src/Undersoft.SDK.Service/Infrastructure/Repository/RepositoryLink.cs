@@ -14,8 +14,8 @@ using Undersoft.SDK.Service.Infrastructure.Store.Relation;
 using Undersoft.SDK.Service.Infrastructure.Store.Remote;
 
 public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore, TTarget>, IRepositoryLink<TStore, TOrigin, TTarget>
-    where TOrigin : class, IDataObject
-    where TTarget : class, IDataObject
+    where TOrigin : class, IOrigin, IInnerProxy
+    where TTarget : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
     IRemoteRelation<TOrigin, TTarget> relation;

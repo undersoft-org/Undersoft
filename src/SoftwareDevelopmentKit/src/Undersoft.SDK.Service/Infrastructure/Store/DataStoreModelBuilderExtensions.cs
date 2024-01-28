@@ -56,7 +56,7 @@ public static class DataStoreModelBuilderExtensions
     }
 
     public static ModelBuilder ApplyIdentifiers<TEntity>(this ModelBuilder builder)
-        where TEntity : class, IDataObject
+        where TEntity : class, IOrigin, IInnerProxy
     {
         return new IdentifiersMapping<TEntity>(builder).Configure();
     }
@@ -67,8 +67,8 @@ public static class DataStoreModelBuilderExtensions
         bool autoinclude = false,
         string dbSchema = null
     )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
+        where TLeft : class, IOrigin, IInnerProxy
+        where TRight : class, IOrigin, IInnerProxy
     {
         return new RelatedSetToSet<TLeft, TRight>(builder, expandSite, dbSchema).Configure(
             autoinclude
@@ -84,8 +84,8 @@ public static class DataStoreModelBuilderExtensions
         string parentSchema = null,
         string childSchema = null
     )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
+        where TLeft : class, IOrigin, IInnerProxy
+        where TRight : class, IOrigin, IInnerProxy
     {
         return new RelatedSetToSet<TLeft, TRight>(
             builder,
@@ -106,8 +106,8 @@ public static class DataStoreModelBuilderExtensions
         string parentSchema = null,
         string childSchema = null
     )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
+        where TLeft : class, IOrigin, IInnerProxy
+        where TRight : class, IOrigin, IInnerProxy
     {
         return new RelatedSetToSet<TLeft, TRight>(
             builder,
@@ -129,8 +129,8 @@ public static class DataStoreModelBuilderExtensions
         bool autoinclude = false,
         string dbSchema = null
     )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
+        where TLeft : class, IOrigin, IInnerProxy
+        where TRight : class, IOrigin, IInnerProxy
     {
         return new RelatedSetToSet<TLeft, TRight>(
             builder,
@@ -152,8 +152,8 @@ public static class DataStoreModelBuilderExtensions
         string parentSchema = null,
         string childSchema = null
     )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
+        where TLeft : class, IOrigin, IInnerProxy
+        where TRight : class, IOrigin, IInnerProxy
     {
         return new RelatedSetToSet<TLeft, TRight>(
             builder,
@@ -174,8 +174,8 @@ public static class DataStoreModelBuilderExtensions
         ExpandSite expandSite = ExpandSite.None,
         string dbSchema = null
     )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
+        where TLeft : class, IOrigin, IInnerProxy
+        where TRight : class, IOrigin, IInnerProxy
     {
         return new RelatedSetToSetExplicitly<TLeft, TRight>(
             builder,
@@ -193,8 +193,8 @@ public static class DataStoreModelBuilderExtensions
         ExpandSite expandSite = ExpandSite.None,
         string dbSchema = null
     )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
+        where TLeft : class, IOrigin, IInnerProxy
+        where TRight : class, IOrigin, IInnerProxy
     {
         return new RelatedSetToSetExplicitly<TLeft, TRight>(
             builder,
@@ -215,8 +215,8 @@ public static class DataStoreModelBuilderExtensions
         string parentSchema = null,
         string childSchema = null
     )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
+        where TLeft : class, IOrigin, IInnerProxy
+        where TRight : class, IOrigin, IInnerProxy
     {
         return new RelatedSetToSetExplicitly<TLeft, TRight>(
             builder,
@@ -236,8 +236,8 @@ public static class DataStoreModelBuilderExtensions
         bool autoinclude = false,
         string dbSchema = null
     )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
+        where TLeft : class, IOrigin, IInnerProxy
+        where TRight : class, IOrigin, IInnerProxy
     {
         return new RelatedOneToSet<TLeft, TRight>(builder, expandSite).Configure(autoinclude);
     }
@@ -250,8 +250,8 @@ public static class DataStoreModelBuilderExtensions
         bool autoinclude = false,
         string dbSchema = null
     )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
+        where TLeft : class, IOrigin, IInnerProxy
+        where TRight : class, IOrigin, IInnerProxy
     {
         return new RelatedOneToSet<TLeft, TRight>(
             builder,
@@ -270,8 +270,8 @@ public static class DataStoreModelBuilderExtensions
         bool autoinclude = false,
         string dbSchema = null
     )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
+        where TLeft : class, IOrigin, IInnerProxy
+        where TRight : class, IOrigin, IInnerProxy
     {
         return new RelatedOneToSet<TLeft, TRight>(
             builder,
@@ -293,8 +293,8 @@ public static class DataStoreModelBuilderExtensions
         string parentSchema = null,
         string childSchema = null
     )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
+        where TLeft : class, IOrigin, IInnerProxy
+        where TRight : class, IOrigin, IInnerProxy
     {
         return new RelatedOneToSet<TLeft, TRight>(
             builder,
@@ -312,8 +312,8 @@ public static class DataStoreModelBuilderExtensions
         bool autoinclude = false,
         string dbSchema = null
     )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
+        where TLeft : class, IOrigin, IInnerProxy
+        where TRight : class, IOrigin, IInnerProxy
     {
         return new RelatedOneToOne<TLeft, TRight>(builder, expandSite, dbSchema).Configure(
             autoinclude
@@ -328,8 +328,8 @@ public static class DataStoreModelBuilderExtensions
         bool autoinclude = false,
         string dbSchema = null
     )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
+        where TLeft : class, IOrigin, IInnerProxy
+        where TRight : class, IOrigin, IInnerProxy
     {
         return new RelatedOneToOne<TLeft, TRight>(
             builder,
@@ -348,8 +348,8 @@ public static class DataStoreModelBuilderExtensions
         bool autoinclude = false,
         string dbSchema = null
     )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
+        where TLeft : class, IOrigin, IInnerProxy
+        where TRight : class, IOrigin, IInnerProxy
     {
         return new RelatedOneToOne<TLeft, TRight>(
             builder,
@@ -371,8 +371,8 @@ public static class DataStoreModelBuilderExtensions
         string parentSchema = null,
         string childSchema = null
     )
-        where TLeft : class, IDataObject
-        where TRight : class, IDataObject
+        where TLeft : class, IOrigin, IInnerProxy
+        where TRight : class, IOrigin, IInnerProxy
     {
         return new RelatedOneToOne<TLeft, TRight>(
             builder,

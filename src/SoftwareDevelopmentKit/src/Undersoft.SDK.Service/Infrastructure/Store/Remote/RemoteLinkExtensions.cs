@@ -15,8 +15,8 @@ public static class RemoteLinkExtensions
     public static OpenDataContext RemoteSetToSet<TOrigin, TTarget>(this OpenDataContext context,
                                                              Expression<Func<IRelatedLink<TOrigin, TTarget>, object>> middlekey,
                                                              Expression<Func<TTarget, object>> targetkey)
-                                                          where TOrigin : class, IDataObject
-                                                          where TTarget : class, IDataObject
+                                                          where TOrigin : class, IOrigin, IInnerProxy
+                                                          where TTarget : class, IOrigin, IInnerProxy
     {
         var remote = new RemoteSetToSet<TOrigin, TTarget>(middlekey, targetkey);
         context.Remotes.Put(remote.TypeId, remote);

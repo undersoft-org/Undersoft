@@ -15,7 +15,7 @@ using Undersoft.SDK.Service.Infrastructure.Repository.Source;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepository<TEntity>
-    where TEntity : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
 {
     IQueryable<TEntity> _query;
 
@@ -323,7 +323,7 @@ public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepos
 public class StoreRepository<TStore, TEntity>
     : StoreRepository<TEntity>,
         IStoreRepository<TStore, TEntity>
-    where TEntity : class, IDataObject, IInnerProxy
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataStore
 {
     public StoreRepository(

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Infrastructure.Store;
@@ -14,16 +15,10 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
         public EventController(IServicer ultimatr) : base(ultimatr) { }
     }
 
-
+    [AllowAnonymous]
+    [Route($"{StoreRoutes.ApiEventRoute}/Event")]
     public class EventsController : ApiEventController<long, IEventStore, Event, Event>
     {
         public EventsController(IServicer ultimatr) : base(ultimatr) { }
-    }
-
-
-    public class EventStreamController
-        : StreamEventController<long, IEventStore, Event, Event>
-    {
-        public EventStreamController() : base() { }
     }
 }

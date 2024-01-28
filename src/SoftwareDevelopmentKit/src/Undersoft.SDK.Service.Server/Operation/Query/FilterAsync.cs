@@ -12,7 +12,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 public class FilterAsync<TStore, TEntity, TDto>
     : Filter<TStore, TEntity, ISeries<TDto>>,
         IStreamRequest<TDto>
-    where TEntity : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     public FilterAsync(int offset, int limit, Expression<Func<TEntity, bool>> predicate)

@@ -12,7 +12,7 @@ using Undersoft.SDK.Service.Server.Operation.Invocation;
 public abstract class OpenServiceController<TStore, TService, TModel>
     : ODataController,
         IOpenServiceController<TStore, TService, TModel>
-    where TModel : class, IDataObject, new()
+    where TModel : class, IOrigin, IInnerProxy, new()
     where TService : class
     where TStore : IDataServerStore
 {

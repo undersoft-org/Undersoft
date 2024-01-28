@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.OData.Formatter;
 
 namespace Undersoft.SDK.Service.Server.Controller.Open
 {
-    public interface IOpenEventRemoteController<TKey, TModel> where TModel : class, IDataObject
+    public interface IOpenEventRemoteController<TKey, TModel> where TModel : class, IOrigin, IInnerProxy
     {
         Task<IActionResult> Delete([FromODataUri] TKey key);
         IQueryable<TModel> Get();

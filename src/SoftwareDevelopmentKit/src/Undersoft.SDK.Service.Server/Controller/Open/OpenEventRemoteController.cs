@@ -17,8 +17,8 @@ using Undersoft.SDK.Service.Client.Remote;
 [IgnoreApi]
 [OpenDataRemote]
 [ODataRouteComponent(StoreRoutes.OpenEventRoute)]
-public abstract class OpenEventRemoteController<TKey, TStore, TDto, TModel> : ODataController, IOpenEventRemoteController<TKey, TModel> where TModel : class, IDataObject
-    where TDto : class, IDataObject
+public abstract class OpenEventRemoteController<TKey, TStore, TDto, TModel> : ODataController, IOpenEventRemoteController<TKey, TModel> where TModel : class, IOrigin, IInnerProxy
+    where TDto : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
     protected Func<TKey, Func<TModel, object>> _keysetter = k => e => e.SetId(k);

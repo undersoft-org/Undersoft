@@ -6,6 +6,7 @@ using Undersoft.SDK.Service;
 using Undersoft.SSC.Service.Clients;
 using Undersoft.SSC.Service.Application.UI.Shared;
 using Undersoft.SDK.Service.Application.Access;
+using Undersoft.SSC.Service.Contracts;
 
 namespace Undersoft.SSC.Service.Application.Client
 {
@@ -34,12 +35,12 @@ namespace Undersoft.SSC.Service.Application.Client
                     var reg = manager.GetRegistry();
                     reg.Services = services;
                     reg.AddAuthorizationCore();
-                    reg.AddScoped<AccessProvider>();
-                    reg.AddScoped<AuthenticationStateProvider, AccessProvider>(
-                        provider => provider.GetRequiredService<AccessProvider>()
+                    reg.AddScoped<AccessProvider<Account>>();
+                    reg.AddScoped<AuthenticationStateProvider, AccessProvider<Account>>(
+                        provider => provider.GetRequiredService<AccessProvider<Account>>()
                     );
-                    reg.AddScoped<IAccessService, AccessProvider>(
-                       provider => provider.GetRequiredService<AccessProvider>()
+                    reg.AddScoped<IAccessService, AccessProvider<Account>>(
+                       provider => provider.GetRequiredService<AccessProvider<Account>>()
                    );
                     reg.MergeServices(true);
                 }

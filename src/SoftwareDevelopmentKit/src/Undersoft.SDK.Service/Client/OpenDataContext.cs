@@ -27,7 +27,7 @@ namespace Undersoft.SDK.Service.Client
             Format.LoadServiceModel = GetServiceModel;
         }
 
-        public Registry<ISeries<RemoteRelation>> Remotes { get; set; } = new Registry<ISeries<RemoteRelation>>(true);
+        public Registry<RemoteRelation> Remotes { get; set; } = new Registry<RemoteRelation>(true);
 
         private void RequestAuthorization(object sender, SendingRequest2EventArgs e)
         {

@@ -8,8 +8,8 @@ using Command;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class RemoteUpdated<TStore, TDto, TModel> : RemoteNotification<RemoteCommand<TModel>>
-    where TDto : class, IDataObject
-    where TModel : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TModel : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
     public RemoteUpdated(RemoteUpdate<TStore, TDto, TModel> command) : base(command)

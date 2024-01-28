@@ -3,18 +3,20 @@ using System.Text.Json;
 
 namespace Undersoft.SDK.Service.Server.Controller.Stream;
 
+using Microsoft.AspNetCore.Mvc;
 using Operation.Command;
 using Operation.Query;
 using Undersoft.SDK.Service.Client;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Query;
+using Undersoft.SDK.Service.Data.Response;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 [StreamData]
-public abstract class StreamDataController<TKey, TEntry, TReport, TEntity, TDto> : IStreamDataController<TDto>
-    where TDto : class, IDataObject
-    where TEntity : class, IDataObject
+public abstract class StreamDataController<TKey, TEntry, TReport, TEntity, TDto> : ControllerBase, IStreamDataController<TDto>
+    where TDto : class, IOrigin, IInnerProxy
+    where TEntity : class, IOrigin, IInnerProxy
     where TEntry : IDataServerStore
     where TReport : IDataServerStore
 {
@@ -25,6 +27,8 @@ public abstract class StreamDataController<TKey, TEntry, TReport, TEntity, TDto>
     protected readonly EventPublishMode _publishMode;
 
     public StreamDataController() : this(new Servicer(), null, k => e => e.SetId(k), null, EventPublishMode.PropagateCommand) { }
+
+    public StreamDataController(IServicer servicer) : this(servicer, null, k => e => e.SetId(k), null, EventPublishMode.PropagateCommand) { }
 
     public StreamDataController(IServicer servicer,
         Func<TDto, Expression<Func<TEntity, bool>>> predicate,
@@ -44,9 +48,9 @@ public abstract class StreamDataController<TKey, TEntry, TReport, TEntity, TDto>
         return _servicer.CreateStream(new GetAsync<TReport, TEntity, TDto>(0, 0));
     }
 
-    public virtual Task<string> Count()
+    async Task<ResultString> IStreamDataController<TDto>.Count()
     {
-        return Task.FromResult(_servicer.use<TReport, TEntity>().Count().ToString());
+        return await Task.FromResult(new ResultString(_servicer.Use<TReport, TEntity>().Count().ToString()));
     }
 
     public virtual IAsyncEnumerable<TDto> Query(QuerySet query)
@@ -69,47 +73,47 @@ public abstract class StreamDataController<TKey, TEntry, TReport, TEntity, TDto>
                 );
     }
 
-    public virtual IAsyncEnumerable<string> Creates(TDto[] dtos)
+    public virtual IAsyncEnumerable<ResultString> Creates(TDto[] dtos)
     {
         var result = _servicer.CreateStream(new CreateSetAsync<TEntry, TEntity, TDto>
                                                     (_publishMode, dtos));
 
-        var response = result.ForEachAsync(c => c.IsValid
-                                               ? c.Id.ToString()
-                                               : c.ErrorMessages);
+        var response = result.ForEachAsync(c => new ResultString(c.IsValid
+                                             ? c.Id.ToString()
+                                             : c.ErrorMessages));
         return response;
     }
 
-    public virtual IAsyncEnumerable<string> Changes(TDto[] dtos)
+    public virtual IAsyncEnumerable<ResultString> Changes(TDto[] dtos)
     {
         var result = _servicer.CreateStream(new ChangeSetAsync<TEntry, TEntity, TDto>
                                                    (_publishMode, dtos));
 
-        var response = result.ForEachAsync(c => c.IsValid
+        var response = result.ForEachAsync(c => new ResultString(c.IsValid
                                               ? c.Id.ToString()
-                                              : c.ErrorMessages);
+                                              : c.ErrorMessages));
         return response;
     }
 
-    public virtual IAsyncEnumerable<string> Updates(TDto[] dtos)
+    public virtual IAsyncEnumerable<ResultString> Updates(TDto[] dtos)
     {
         var result = _servicer.CreateStream(new UpdateSetAsync<TEntry, TEntity, TDto>
                                                  (_publishMode, dtos));
 
-        var response = result.ForEachAsync(c => c.IsValid
-                                             ? c.Id.ToString()
-                                             : c.ErrorMessages);
+        var response = result.ForEachAsync(c => new ResultString(c.IsValid
+                                              ? c.Id.ToString()
+                                              : c.ErrorMessages));
         return response;
     }
 
-    public virtual IAsyncEnumerable<string> Deletes(TDto[] dtos)
+    public virtual IAsyncEnumerable<ResultString> Deletes(TDto[] dtos)
     {
         var result = _servicer.CreateStream(new DeleteSetAsync<TEntry, TEntity, TDto>
                                                   (_publishMode, dtos));
 
-        var response = result.ForEachAsync(c => c.IsValid
+        var response = result.ForEachAsync(c => new ResultString( c.IsValid
                                              ? c.Id.ToString()
-                                             : c.ErrorMessages);
+                                             : c.ErrorMessages));
         return response;
     }
 }

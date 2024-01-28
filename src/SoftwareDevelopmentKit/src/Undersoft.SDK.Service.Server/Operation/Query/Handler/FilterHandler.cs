@@ -8,7 +8,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class FilterHandler<TStore, TEntity, TDto>
     : IRequestHandler<Filter<TStore, TEntity, TDto>, ISeries<TDto>>
-    where TEntity : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     protected readonly IStoreRepository<TEntity> _repository;

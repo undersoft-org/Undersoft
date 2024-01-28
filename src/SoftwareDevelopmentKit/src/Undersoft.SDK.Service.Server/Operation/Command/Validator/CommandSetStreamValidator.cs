@@ -2,7 +2,7 @@
 
 
 
-public class CommandSetStreamValidator<TDto> : CommandSetValidator<TDto> where TDto : class, IDataObject
+public class CommandSetStreamValidator<TDto> : CommandSetValidator<TDto> where TDto : class, IOrigin, IInnerProxy
 {
     public CommandSetStreamValidator(IServicer servicer) : base(servicer) { }
 }

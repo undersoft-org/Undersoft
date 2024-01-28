@@ -3001,7 +3001,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
                     b.HasIndex("DefaultId");
 
-                    b.ToTable("Details", "domain");
+                    b.ToTable("DetailSet", "domain");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Location", b =>
@@ -3672,13 +3672,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
                     b.HasIndex("DefaultId");
 
-                    b.ToTable("Settings", "domain");
+                    b.ToTable("SettingSet", "domain");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Activity>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "Object")
-                        .WithMany("Identifiers")
+                        .WithMany("IdentifierSet")
                         .HasForeignKey("ObjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -3689,7 +3689,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Builder>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Builder", "Object")
-                        .WithMany("Identifiers")
+                        .WithMany("IdentifierSet")
                         .HasForeignKey("ObjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -3700,7 +3700,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "Object")
-                        .WithMany("Identifiers")
+                        .WithMany("IdentifierSet")
                         .HasForeignKey("ObjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -3711,7 +3711,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "Object")
-                        .WithMany("Identifiers")
+                        .WithMany("IdentifierSet")
                         .HasForeignKey("ObjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -3722,7 +3722,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Resource>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "Object")
-                        .WithMany("Identifiers")
+                        .WithMany("IdentifierSet")
                         .HasForeignKey("ObjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -3733,7 +3733,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Schedule>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "Object")
-                        .WithMany("Identifiers")
+                        .WithMany("IdentifierSet")
                         .HasForeignKey("ObjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -3744,7 +3744,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Service>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "Object")
-                        .WithMany("Identifiers")
+                        .WithMany("IdentifierSet")
                         .HasForeignKey("ObjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -3755,7 +3755,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
             modelBuilder.Entity("Undersoft.SDK.Service.Data.Identifier.Identifier<Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "Object")
-                        .WithMany("Identifiers")
+                        .WithMany("IdentifierSet")
                         .HasForeignKey("ObjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -4277,7 +4277,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Detail", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Default", "Default")
-                        .WithMany("Details")
+                        .WithMany("DetailSet")
                         .HasForeignKey("DefaultId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -4381,7 +4381,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Setting", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Default", "Default")
-                        .WithMany("Settings")
+                        .WithMany("SettingSet")
                         .HasForeignKey("DefaultId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -4391,14 +4391,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Activity", b =>
                 {
-                    b.Navigation("Identifiers");
+                    b.Navigation("IdentifierSet");
 
                     b.Navigation("Location");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Builder", b =>
                 {
-                    b.Navigation("Identifiers");
+                    b.Navigation("IdentifierSet");
 
                     b.Navigation("Location");
 
@@ -4411,7 +4411,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
                     b.Navigation("Applications");
 
-                    b.Navigation("Details");
+                    b.Navigation("DetailSet");
 
                     b.Navigation("Members");
 
@@ -4421,12 +4421,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
                     b.Navigation("Services");
 
-                    b.Navigation("Settings");
+                    b.Navigation("SettingSet");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Detail", b =>
                 {
-                    b.Navigation("Identifiers");
+                    b.Navigation("IdentifierSet");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Location", b =>
@@ -4438,28 +4438,28 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Member", b =>
                 {
-                    b.Navigation("Identifiers");
+                    b.Navigation("IdentifierSet");
 
                     b.Navigation("Location");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Resource", b =>
                 {
-                    b.Navigation("Identifiers");
+                    b.Navigation("IdentifierSet");
 
                     b.Navigation("Location");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Schedule", b =>
                 {
-                    b.Navigation("Identifiers");
+                    b.Navigation("IdentifierSet");
 
                     b.Navigation("Location");
                 });
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Service", b =>
                 {
-                    b.Navigation("Identifiers");
+                    b.Navigation("IdentifierSet");
 
                     b.Navigation("Location");
 
@@ -4468,7 +4468,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 
             modelBuilder.Entity("Undersoft.SSC.Domain.Entities.Setting", b =>
                 {
-                    b.Navigation("Identifiers");
+                    b.Navigation("IdentifierSet");
                 });
 #pragma warning restore 612, 618
         }

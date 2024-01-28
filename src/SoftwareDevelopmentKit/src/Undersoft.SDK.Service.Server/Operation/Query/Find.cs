@@ -7,7 +7,7 @@ using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class Find<TStore, TEntity, TDto> : Query<TStore, TEntity, TDto>
-    where TEntity : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     public Find(params object[] keys) : base(keys) { }

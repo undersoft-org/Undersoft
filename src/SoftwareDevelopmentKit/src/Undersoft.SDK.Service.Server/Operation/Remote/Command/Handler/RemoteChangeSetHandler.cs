@@ -8,8 +8,8 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class RemoteChangeSetHandler<TStore, TDto, TModel>
     : IRequestHandler<RemoteChangeSet<TStore, TDto, TModel>, RemoteCommandSet<TModel>>
-    where TDto : class, IDataObject
-    where TModel : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TModel : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
     protected readonly IRemoteRepository<TDto> _repository;

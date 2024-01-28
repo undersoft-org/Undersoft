@@ -25,11 +25,18 @@ public class InnerProxy : Origin, IInnerProxy
     [IgnoreDataMember]
     public IProxy Proxy => proxy ??= CreateProxy();
 
+    [NotMapped]
+    [JsonIgnore]
+    [IgnoreDataMember]
     object IInnerProxy.this[string propertyName]
     {
         get => Proxy[propertyName];
         set => Proxy[propertyName] = value;
     }
+
+    [NotMapped]
+    [JsonIgnore]
+    [IgnoreDataMember]
     object IInnerProxy.this[int id]
     {
         get => Proxy[id];

@@ -6,7 +6,7 @@ namespace Undersoft.SDK.Service.Server.Operation.Remote.Query.Handler;
 
 public class RemoteFindQueryHandler<TStore, TDto, TModel>
     : IRequestHandler<RemoteFindQuery<TStore, TDto, TModel>, IQueryable<TModel>>
-    where TDto : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
     where TModel : class, IOrigin
 {

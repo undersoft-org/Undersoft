@@ -11,8 +11,8 @@ using Undersoft.SDK.Service.Server.Operation.Remote.Command.Notification;
 
 public class RemoteUpsertedHandler<TStore, TDto, TModel>
     : INotificationHandler<RemoteUpserted<TStore, TDto, TModel>>
-    where TDto : class, IDataObject
-    where TModel : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TModel : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
     protected readonly IStoreRepository<TDto> _repository;

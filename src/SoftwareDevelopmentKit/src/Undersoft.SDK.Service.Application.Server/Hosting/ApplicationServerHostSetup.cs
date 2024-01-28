@@ -17,42 +17,34 @@ public class ApplicationServerHostSetup : ServerHostSetup, IApplicationServerHos
 
     public IApplicationServerHostSetup UseServiceApplication()
     {
-        UseCustomSetup(setup =>
+        UseHeaderForwarding();
+
+        if (LocalEnvironment.IsDevelopment())
         {
-            setup.UseHeaderForwarding();
+            _builder.UseDeveloperExceptionPage()
+                .UseWebAssemblyDebugging();
+        }
+        else
+        {
+            _builder.UseExceptionHandler("/Error")
+                .UseHsts();
+        }
 
-            if (LocalEnvironment.IsDevelopment())
-            {
-                Application
-                    .UseDeveloperExceptionPage()
-                    .UseWebAssemblyDebugging();
-            }
-            else
-            {
-                Application
-                    .UseExceptionHandler("/Error")
-                    .UseHsts();
-            }
+        _builder
+            .UseHttpsRedirection()
+            .UseODataBatching()
+            .UseODataQueryRequest()
+            .UseBlazorFrameworkFiles()
+            .UseStaticFiles()
+            .UseRouting()
+            .UseCors();
 
-            Application
-                .UseHttpsRedirection()
-                .UseODataBatching()
-                .UseODataQueryRequest()
-                .UseBlazorFrameworkFiles()
-                .UseStaticFiles()
-                .UseRouting()
-                .UseCors();
+        UseSwaggerSetup(new[] { "v1.0" });
 
-            setup.UseSwaggerSetup(new[] { "v1.0" });
+        _builder.UseAuthentication().UseAuthorization();
 
-            Application
-                .UseAuthentication()
-                .UseAuthorization();
-
-            setup
-                .UseJwtMiddleware()
-                .UseEndpoints(true);
-        });
+        UseJwtMiddleware();
+        UseEndpoints(true);
 
         return this;
     }

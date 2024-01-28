@@ -108,7 +108,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                 });
 
             migrationBuilder.CreateTable(
-                name: "Details",
+                name: "DetailSet",
                 schema: "domain",
                 columns: table => new
                 {
@@ -270,7 +270,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                 });
 
             migrationBuilder.CreateTable(
-                name: "Settings",
+                name: "SettingSet",
                 schema: "domain",
                 columns: table => new
                 {
@@ -485,7 +485,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         name: "FK_ActivitiesToDetails_Details_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
-                        principalTable: "Details",
+                        principalTable: "DetailSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -524,7 +524,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         name: "FK_ApplicationsToDetails_Details_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
-                        principalTable: "Details",
+                        principalTable: "DetailSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -559,7 +559,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         name: "FK_DetailIdentifiers_Details_ObjectId",
                         column: x => x.ObjectId,
                         principalSchema: "domain",
-                        principalTable: "Details",
+                        principalTable: "DetailSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -591,14 +591,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         name: "FK_DetailToDetail_Details_LeftEntityId",
                         column: x => x.LeftEntityId,
                         principalSchema: "domain",
-                        principalTable: "Details",
+                        principalTable: "DetailSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_DetailToDetail_Details_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
-                        principalTable: "Details",
+                        principalTable: "DetailSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -743,7 +743,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         name: "FK_MembersToDetails_Details_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
-                        principalTable: "Details",
+                        principalTable: "DetailSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -934,7 +934,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         name: "FK_ResourcesToDetails_Details_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
-                        principalTable: "Details",
+                        principalTable: "DetailSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -1164,7 +1164,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         name: "FK_SchedulesToDetails_Details_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
-                        principalTable: "Details",
+                        principalTable: "DetailSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -1388,7 +1388,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         name: "FK_ServicesToDetails_Details_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
-                        principalTable: "Details",
+                        principalTable: "DetailSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -1512,7 +1512,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         name: "FK_ActivitiesToSettings_Settings_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
-                        principalTable: "Settings",
+                        principalTable: "SettingSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1551,7 +1551,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         name: "FK_ApplicationsToSettings_Settings_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
-                        principalTable: "Settings",
+                        principalTable: "SettingSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1590,7 +1590,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         name: "FK_MembersToSettings_Settings_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
-                        principalTable: "Settings",
+                        principalTable: "SettingSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1629,7 +1629,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         name: "FK_ResourcesToSettings_Settings_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
-                        principalTable: "Settings",
+                        principalTable: "SettingSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1668,7 +1668,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         name: "FK_SchedulesToSettings_Settings_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
-                        principalTable: "Settings",
+                        principalTable: "SettingSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1707,7 +1707,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         name: "FK_ServicesToSettings_Settings_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
-                        principalTable: "Settings",
+                        principalTable: "SettingSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1742,7 +1742,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         name: "FK_SettingIdentifiers_Settings_ObjectId",
                         column: x => x.ObjectId,
                         principalSchema: "domain",
-                        principalTable: "Settings",
+                        principalTable: "SettingSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -1774,14 +1774,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                         name: "FK_SettingToSetting_Settings_LeftEntityId",
                         column: x => x.LeftEntityId,
                         principalSchema: "domain",
-                        principalTable: "Settings",
+                        principalTable: "SettingSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SettingToSetting_Settings_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
-                        principalTable: "Settings",
+                        principalTable: "SettingSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -2018,7 +2018,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
             migrationBuilder.CreateIndex(
                 name: "IX_Details_DefaultId",
                 schema: "domain",
-                table: "Details",
+                table: "DetailSet",
                 column: "DefaultId");
 
             migrationBuilder.CreateIndex(
@@ -2367,7 +2367,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
             migrationBuilder.CreateIndex(
                 name: "IX_Settings_DefaultId",
                 schema: "domain",
-                table: "Settings",
+                table: "SettingSet",
                 column: "DefaultId");
 
             migrationBuilder.CreateIndex(
@@ -2546,11 +2546,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                 schema: "domain");
 
             migrationBuilder.DropTable(
-                name: "Details",
+                name: "DetailSet",
                 schema: "domain");
 
             migrationBuilder.DropTable(
-                name: "Settings",
+                name: "SettingSet",
                 schema: "domain");
 
             migrationBuilder.DropTable(

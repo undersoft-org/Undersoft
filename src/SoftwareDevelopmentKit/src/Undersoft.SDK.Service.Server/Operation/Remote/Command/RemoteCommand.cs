@@ -6,7 +6,7 @@ using Undersoft.SDK.Service.Data.Event;
 
 namespace Undersoft.SDK.Service.Server.Operation.Remote.Command;
 
-public class RemoteCommand<TModel> : RemoteCommandBase, IRequest<RemoteCommand<TModel>>, IIdentifiable where TModel : class, IDataObject
+public class RemoteCommand<TModel> : RemoteCommandBase, IRequest<RemoteCommand<TModel>>, IIdentifiable where TModel : class, IOrigin, IInnerProxy
 {
     [JsonIgnore]
     public override TModel Model => base.Model as TModel;

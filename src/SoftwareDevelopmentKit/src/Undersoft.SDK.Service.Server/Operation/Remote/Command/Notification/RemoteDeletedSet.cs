@@ -8,8 +8,8 @@ using Command;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class RemoteDeletedSet<TStore, TDto, TModel> : RemoteNotificationSet<RemoteCommand<TModel>>
-    where TDto : class, IDataObject
-    where TModel : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TModel : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
     [JsonIgnore]

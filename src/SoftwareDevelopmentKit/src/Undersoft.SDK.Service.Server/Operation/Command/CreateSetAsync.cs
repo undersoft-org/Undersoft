@@ -9,8 +9,8 @@ namespace Undersoft.SDK.Service.Server.Operation.Command;
 public class CreateSetAsync<TStore, TEntity, TDto>
     : CreateSet<TStore, TEntity, TDto>,
         IStreamRequest<Command<TDto>>
-    where TEntity : class, IDataObject
-    where TDto : class, IDataObject
+    where TEntity : class, IOrigin, IInnerProxy
+    where TDto : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     public CreateSetAsync(EventPublishMode publishPattern, TDto input, object key)

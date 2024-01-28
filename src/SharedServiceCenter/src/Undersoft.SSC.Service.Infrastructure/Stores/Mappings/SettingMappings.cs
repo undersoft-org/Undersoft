@@ -10,7 +10,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 
     public class SettingMappings : EntityTypeMapping<Setting>
     {
-        const string TABLE_NAME = "Settings";
+        const string TABLE_NAME = "SettingSet";
 
         public override void Configure(EntityTypeBuilder<Setting> builder)
         {

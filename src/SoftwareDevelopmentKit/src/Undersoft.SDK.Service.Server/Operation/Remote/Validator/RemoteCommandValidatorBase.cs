@@ -110,7 +110,7 @@ public abstract class RemoteCommandValidatorBase<TCommand> : AbstractValidator<T
         LogicOperand operand,
         params string[] propertyNames
     )
-        where TEntity : class, IDataObject
+        where TEntity : class, IOrigin, IInnerProxy
         where TStore : IDataServerStore
     {
         RuleFor(e => e)
@@ -131,7 +131,7 @@ public abstract class RemoteCommandValidatorBase<TCommand> : AbstractValidator<T
         LogicOperand operand,
         params string[] propertyNames
     )
-        where TEntity : class, IDataObject
+        where TEntity : class, IOrigin, IInnerProxy
         where TStore : IDataServerStore
     {
         RuleFor(e => e)

@@ -10,7 +10,7 @@ using Undersoft.SDK.Service.Data.Object;
 
 public abstract class CommandBase : ICommand
 {
-    private IDataObject entity;
+    private IOrigin entity;
 
     public virtual long Id { get; set; }
 
@@ -19,7 +19,7 @@ public abstract class CommandBase : ICommand
     public Delegate Processings {  get; set; }
 
     [JsonIgnore]
-    public virtual IDataObject Entity
+    public virtual IOrigin Entity
     {
         get => entity;
         set

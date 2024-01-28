@@ -10,8 +10,8 @@ using Undersoft.SDK.Service.Server.Operation.Remote.Command.Notification;
 
 public class RemoteUpsertSetHandler<TStore, TDto, TModel>
     : IRequestHandler<RemoteUpsertSet<TStore, TDto, TModel>, RemoteCommandSet<TModel>>
-    where TDto : class, IDataObject
-    where TModel : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TModel : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
     protected readonly IRemoteRepository<TDto> _repository;

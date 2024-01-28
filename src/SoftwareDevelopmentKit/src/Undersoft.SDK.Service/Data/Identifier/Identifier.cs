@@ -6,7 +6,7 @@ namespace Undersoft.SDK.Service.Data.Identifier;
 using Undersoft.SDK.Service.Data.Object;
 
 [DataContract]
-public class Identifier<TObject> : Identifier, IIdentifier<TObject> where TObject : IDataObject
+public class Identifier<TObject> : Identifier, IIdentifier<TObject> where TObject : IOrigin, IInnerProxy
 {
     [JsonIgnore]
     [IgnoreDataMember]

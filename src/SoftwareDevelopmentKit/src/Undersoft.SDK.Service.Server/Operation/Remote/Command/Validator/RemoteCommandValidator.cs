@@ -10,7 +10,7 @@ using Undersoft.SDK.Service.Server.Operation.Command;
 using Undersoft.SDK.Service.Server.Operation.Remote.Validator;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
-public class RemoteCommandValidator<TModel> : RemoteCommandValidatorBase<RemoteCommand<TModel>> where TModel : class, IDataObject
+public class RemoteCommandValidator<TModel> : RemoteCommandValidatorBase<RemoteCommand<TModel>> where TModel : class, IOrigin, IInnerProxy
 {
     public RemoteCommandValidator(IServicer ultimateService) : base(ultimateService) { }
 
@@ -143,7 +143,7 @@ public class RemoteCommandValidator<TModel> : RemoteCommandValidatorBase<RemoteC
     protected void ValidateExist<TStore, TEntity>(
         Func<TModel, Expression<Func<TEntity, bool>>> command
     )
-        where TEntity : class, IDataObject
+        where TEntity : class, IOrigin, IInnerProxy
         where TStore : IDataServerStore
     {
         var _repository = uservice.Use<TStore, TEntity>();
@@ -161,7 +161,7 @@ public class RemoteCommandValidator<TModel> : RemoteCommandValidatorBase<RemoteC
     protected void ValidateNotExist<TStore, TEntity>(
         Func<TModel, Expression<Func<TEntity, bool>>> command
     )
-        where TEntity : class, IDataObject
+        where TEntity : class, IOrigin, IInnerProxy
         where TStore : IDataServerStore
     {
         var _reposiotry = uservice.Use<TStore, TEntity>();

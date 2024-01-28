@@ -19,8 +19,8 @@ public class Contract : Member, IModel
     public Expression? Company { get; set; }
 
     [Detail]
-    public DataObjects<Contracts.Details.Request>? Employees { get; set; }
+    public ObjectSet<Contracts.Details.Request>? Employees { get; set; }
 
     [Detail]
-    public DataObjects<Contracts.Details.Response>? Licences { get; set; }
+    public ObjectSet<Contracts.Details.Response>? Licences { get; set; }
 }

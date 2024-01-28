@@ -9,7 +9,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 
     public class DetailMappings : EntityTypeMapping<Detail>
     {
-        const string TABLE_NAME = "Details";
+        const string TABLE_NAME = "DetailSet";
 
         public override void Configure(EntityTypeBuilder<Detail> builder)
         {

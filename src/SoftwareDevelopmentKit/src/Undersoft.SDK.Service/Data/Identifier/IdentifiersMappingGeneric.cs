@@ -5,7 +5,7 @@ namespace Undersoft.SDK.Service.Data.Identifier;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
-public class IdentifiersMapping<TObject> : IIdentifiersMapping where TObject : class, IDataObject
+public class IdentifiersMapping<TObject> : IIdentifiersMapping where TObject : class, IOrigin, IInnerProxy
 {
     private string TABLE_NAME = typeof(TObject).Name + "Identifiers";
     private readonly ModelBuilder _modelBuilder;

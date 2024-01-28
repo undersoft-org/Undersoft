@@ -4,7 +4,7 @@ namespace Undersoft.SDK.Service.Server.Controller.Crud;
 
 using Undersoft.SDK.Service.Data.Query;
 
-public interface IApiEventController<TKey, TEntity, TDto> where TDto : class, IDataObject
+public interface IApiEventController<TKey, TEntity, TDto> where TDto : class, IOrigin, IInnerProxy
 {
     Task<IActionResult> Count();
     Task<IActionResult> Delete([FromBody] TDto[] dtos);

@@ -9,8 +9,8 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class RemoteCreateHandler<TStore, TDto, TModel>
     : IRequestHandler<RemoteCreate<TStore, TDto, TModel>, RemoteCommand<TModel>>
-    where TDto : class, IDataObject
-    where TModel : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TModel : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
     protected readonly IRemoteRepository<TDto> _repository;

@@ -6,7 +6,7 @@ using Undersoft.SDK.Service.Infrastructure.Store;
 namespace Undersoft.SDK.Service.Server.Operation.Remote.Query;
 
 public class RemoteGet<TStore, TDto, TModel> : RemoteQuery<TStore, TDto, ISeries<TModel>>
-    where TDto : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
 {
     public RemoteGet(int offset, int limit, params Expression<Func<TDto, object>>[] expanders)

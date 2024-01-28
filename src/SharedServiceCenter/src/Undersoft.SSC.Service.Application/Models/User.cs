@@ -21,5 +21,5 @@ public class User : ModelBase<User, Detail, Setting, MemberGroup>, IModel
     public ProfileSetting? Profile { get; set; }
 
     [Detail]
-    public DataObjects<Contracts.Details.Response>? Licences { get; set; }
+    public ObjectSet<Contracts.Details.Response>? Licences { get; set; }
 }

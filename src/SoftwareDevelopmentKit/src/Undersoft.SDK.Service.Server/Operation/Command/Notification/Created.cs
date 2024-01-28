@@ -9,8 +9,8 @@ using Command;
 using Undersoft.SDK.Service.Infrastructure.Store;
 
 public class Created<TStore, TEntity, TDto> : Notification<Command<TDto>>
-    where TDto : class, IDataObject
-    where TEntity : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
     public Created(Create<TStore, TEntity, TDto> command) : base(command)

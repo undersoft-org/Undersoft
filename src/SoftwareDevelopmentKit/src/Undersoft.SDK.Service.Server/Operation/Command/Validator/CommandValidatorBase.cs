@@ -108,7 +108,7 @@ public abstract class CommandValidatorBase<TCommand> : AbstractValidator<TComman
         LogicOperand operand,
         params string[] propertyNames
     )
-        where TEntity : class, IDataObject
+        where TEntity : class, IOrigin, IInnerProxy
         where TStore : IDataServerStore
     {
         RuleFor(e => e)
@@ -129,7 +129,7 @@ public abstract class CommandValidatorBase<TCommand> : AbstractValidator<TComman
         LogicOperand operand,
         params string[] propertyNames
     )
-        where TEntity : class, IDataObject
+        where TEntity : class, IOrigin, IInnerProxy
         where TStore : IDataServerStore
     {
         RuleFor(e => e)

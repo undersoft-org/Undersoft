@@ -13,7 +13,7 @@ using Undersoft.SDK.Service.Data.Entity;
 
 using Undersoft.SDK.Service.Infrastructure.Store;
 
-public class RemoteCommandSetValidator<TModel> : RemoteCommandSetValidatorBase<RemoteCommandSet<TModel>> where TModel : class, IDataObject
+public class RemoteCommandSetValidator<TModel> : RemoteCommandSetValidatorBase<RemoteCommandSet<TModel>> where TModel : class, IOrigin, IInnerProxy
 {
     public RemoteCommandSetValidator(IServicer ultimateService) : base(ultimateService) { }
 
@@ -214,7 +214,7 @@ public class RemoteCommandSetValidator<TModel> : RemoteCommandSetValidatorBase<R
         Func<TModel, Expression<Func<TDto, bool>>> command,
         string message = null
     )
-        where TDto : class, IDataObject
+        where TDto : class, IOrigin, IInnerProxy
         where TStore : IDataServiceStore
     {
         var _repository = _servicer.Load<TStore, TDto>();
@@ -231,7 +231,7 @@ public class RemoteCommandSetValidator<TModel> : RemoteCommandSetValidatorBase<R
         Func<TModel, Expression<Func<TDto, bool>>> command,
         string message = null
     )
-        where TDto : class, IDataObject
+        where TDto : class, IOrigin, IInnerProxy
         where TStore : IDataServiceStore
     {
         var _repository = _servicer.Load<TStore, TDto>();

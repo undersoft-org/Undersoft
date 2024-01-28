@@ -18,8 +18,8 @@ using Undersoft.SDK.Service.Server.Controller.Crud;
 [Route($"{StoreRoutes.ApiDataRoute}/[controller]")]
 public class ApiDataSetController<TKey, TStore, TEntity, TDto, TService>
     : ApiServiceController<TStore, TService, TDto>, IApiDataSetController<TKey, TEntity, TDto> 
-    where TDto : class, IDataObject
-    where TEntity : class, IDataObject
+    where TDto : class, IOrigin, IInnerProxy
+    where TEntity : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
     where TService : class
 {
