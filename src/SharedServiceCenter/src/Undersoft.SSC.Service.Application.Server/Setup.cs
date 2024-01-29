@@ -11,36 +11,46 @@ using Undersoft.SSC.Service.Infrastructure.Stores;
 
 public class Setup
 {
-    public void ConfigureServices(IServiceCollection services)
+    public void ConfigureServices(IServiceCollection srvc)
     {
-        services
-            .AddApplicationServerSetup()
+        srvc.AddApplicationServerSetup()
             .ConfigureApplicationServer(
                 true,
-                new[] { typeof(EventStore), typeof(ReportStore), typeof(EntryStore) }
-                //new[] { typeof(ServiceClient), typeof(AccessClient) }
+                new[] 
+                { 
+                    typeof(EventStore), 
+                    typeof(ReportStore), 
+                    typeof(EntryStore) 
+                },
+                new[] 
+                { 
+                    typeof(ServiceClient), 
+                    typeof(AccessClient) 
+                }
             )
-            //.AddDataServer<IAccountStore>(
-            //    DataServerTypes.All,
-            //    builder => builder.AddInvocations<Account>()
-            //)
-                        .AddDataServer<IEntityStore>(
+            .AddDataServer<IEntityStore>(
                 DataServerTypes.All,
-                builder => builder.AddInvocations<Member>().AddInvocations<Application>()
+                builder =>
+                    builder
+                        .AddInvocations<Member>()
+                        .AddInvocations<Application>()
+                        .AddInvocations<Account>()
+                        .AddInvocations<Service>()
             )
             .AddDataServer<IEventStore>(
                 DataServerTypes.All,
-                builder => builder.AddInvocations<Event>()
+                builder => 
+                    builder
+                        .AddInvocations<Event>()
             );
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        app
-            .UseApplicationServerSetup(env)
+        app.UseApplicationServerSetup(env)
             .UseServiceApplication()
             .UseInternalProvider()
-            .UseDataMigrations();
-            //.UseServiceClients();
+            .UseDataMigrations()
+            .UseServiceClients();
     }
 }

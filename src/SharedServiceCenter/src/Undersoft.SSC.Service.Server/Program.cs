@@ -6,38 +6,24 @@ namespace Undersoft.SSC.Service.Server;
 public class Program
 {
     static string[] _args = new string[0];
-    static IHost? _host;
+
+    static IServerHost? server;
 
     public static void Main(string[] args)
     {
         _args = args;
+
         Launch();
     }
 
-    static IHost Build()
-    {
-        var builder = new HostBuilder();
-
-        builder.Info<Runlog>("Starting Undersoft.SSC.Service.Server ....");
-
-        _host = builder.ConfigureWebHost((wh) => wh
-            .UseContentRoot(Directory.GetCurrentDirectory())
-            .UseConfiguration(ServiceConfigurationHelper.BuildConfiguration())
-            .UseKestrel()
-            .ConfigureKestrel((c, o) => o
-                .Configure(c.Configuration
-                .GetSection("Kestrel")))            
-            .UseStartup<Setup>())
-            .Build();
-
-        return _host;
-    }
-
     public static void Launch()
-    {
+    {        
         try
         {
-            Build().Run();
+            Log.Info<Runlog>(null, "Starting Undersoft.SSC.Service.Server ....");
+
+            server = new ServerHost(builder => builder.UseStartup<Setup>());
+            server.Run();
         }
         catch (Exception exception)
         {
@@ -49,20 +35,18 @@ public class Program
         }
     }
 
-    public static async Task Restart()
+    public static void Restart()
     {
         Log.Info<Runlog>(null, "Restarting Undersoft.SSC.Service.Server ....");
 
-        Task.WaitAll(Shutdown());
-
-        await Task.Run(() => Launch());
+        Shutdown();
+        Launch();
     }
 
-    public static async Task Shutdown()
+    public static void Shutdown()
     {
-        _host.Info<Runlog>("Shutting down Undersoft.SSC.Service.Server ....");
+        Log.Info<Runlog>(null, "Shutting down Undersoft.SSC.Service.Server ....");
 
-        if(_host != null)
-            await _host.StopAsync(TimeSpan.FromSeconds(5));
+        server?.Host.StopAsync(TimeSpan.FromSeconds(5)).Wait();
     }
 }

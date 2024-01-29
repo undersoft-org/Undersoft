@@ -9,10 +9,9 @@ namespace Undersoft.SSC.Service.Server;
 
 public class Setup
 {
-    public void ConfigureServices(IServiceCollection services)
+    public void ConfigureServices(IServiceCollection srvc)
     {
-        services
-            .AddServerSetup(services.AddControllers())
+        srvc.AddServerSetup(srvc.AddControllers())
             .ConfigureServer(
                 true,
                 new[]
@@ -22,18 +21,16 @@ public class Setup
                     typeof(EntryStore),
                     typeof(ReportStore)
                 },
-                new[] 
-                {   typeof(ApplicationClient),                         
-                    typeof(EventClient) 
-                }
+                new[] { typeof(ApplicationClient), typeof(EventClient) }
             )
-            .AddAccountServer<AccountStore>()
+            .AddAccessServer<AccountStore>()
             .AddDataServer<IEntityStore>(
                 DataServerTypes.All,
                 builder =>
                     builder
                         .AddInvocations<Member>()
                         .AddInvocations<Identifier<Member>>()
+                        .AddInvocations<Application>()
                         .AddInvocations<Contracts.Service>()
             )
             .AddDataServer<IAccountStore>(

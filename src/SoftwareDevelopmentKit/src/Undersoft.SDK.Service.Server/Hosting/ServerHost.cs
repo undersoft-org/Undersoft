@@ -1,44 +1,59 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Undersoft.SDK.Service.Hosting;
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
+using Undersoft.SDK.Service.Configuration;
+using Microsoft.AspNetCore.Hosting;
+using Undersoft.SDK.Service.Server.Operation.Invocation;
 
 namespace Undersoft.SDK.Service.Server.Hosting;
 
-public class ServerHost : Identifiable, IHost
+public class ServerHost : ServiceHost, IHost, IServerHost
 {
-    public string ServerName { get; set; }
+    private readonly HostBuilder _hostBuilder;
 
-    public IHost Host { get; set; }
+    public ServerHost(Action<IWebHostBuilder> builder) : this()
+    {
+        Configure(builder);
+    }
 
-    public string HostName { get; set; }
+    public ServerHost(string[] args = null) : this(ServiceConfigurationHelper.BuildConfiguration(args))
+    {       
+    }
 
-    public int Port { get; set; }
+    public ServerHost(IConfiguration configuration)
+    {
+        _hostBuilder = new HostBuilder();
+        ServiceHosts = new Registry<ServiceHost>();
+        configuration.Bind("General", this);
+        _hostBuilder.ConfigureWebHost(
+            builder =>
+                builder
+                    .UseContentRoot(Directory.GetCurrentDirectory())
+                    .UseConfiguration(configuration)
+                    .UseKestrel((c, o) => o.Configure(c.Configuration.GetSection("Kestrel")))
+        );
+    }
 
-    public string Route { get; set; }
+    public ServerHost Configure(Action<IWebHostBuilder> builder)
+    {
+        _hostBuilder.ConfigureWebHost(builder);
+        return this;
+    }
 
-    public long TenantId { get; set; }
+    public void Run()
+    {
+        Host = _hostBuilder.Build();
 
-    public string TenantName { get; set; }
-
-    public IServiceProvider? Services => Host?.Services;
+        using (Host)
+        {
+            Host.Run();
+        }
+    }
 
     public Registry<ServiceHost> ServiceHosts { get; set; }
 
     private Registry<IServiceProvider> hostedServices;
     public Registry<IServiceProvider> HostedServices =>
         hostedServices ??= ServiceHosts.Select(s => s.Services).ToRegistry();
-
-    public Task StartAsync(CancellationToken cancellationToken = default)
-    {
-        return Host.StartAsync(cancellationToken);
-    }
-
-    public Task StopAsync(CancellationToken cancellationToken = default)
-    {
-        return Host.StopAsync(cancellationToken);
-    }
-
-    public void Dispose()
-    {
-        Host.Dispose();
-    }
 }

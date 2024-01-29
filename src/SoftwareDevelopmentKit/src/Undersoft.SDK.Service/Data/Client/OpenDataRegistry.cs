@@ -258,6 +258,7 @@ public static class OpenDataRegistry
 
     private static Type EdmAssemblyResolve(IEdmEntityType entityType)
     {
+        var remoteNamespace = entityType.Namespace;
         var remoteName = entityType.Name;
         var remoteFullName = entityType.FullTypeName();
         Type localEntityType = null;
@@ -272,7 +273,9 @@ public static class OpenDataRegistry
         }
         else
         {
-            localEntityType = Assemblies.FindType(remoteName);
+            localEntityType = Assemblies.FindType(remoteName, entityType.Namespace);
+            if(localEntityType == null)
+                localEntityType = Assemblies.FindType(remoteName);
         }
 
         if (localEntityType == null)

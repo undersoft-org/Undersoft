@@ -10,7 +10,7 @@ using Undersoft.SDK.Service.Configuration.Options;
 
 public static class ServiceConfigurationHelper
 {
-    public static IConfigurationRoot BuildConfiguration(
+    public static IConfigurationRoot BuildConfiguration(string[] args = null,
         ConfigurationOptions options = null,
         Action<IConfigurationBuilder> builderAction = null
     )
@@ -32,6 +32,9 @@ public static class ServiceConfigurationHelper
             options.OptionalFileNames.ForEach(
                optionalName => builder.AddJsonFile($"{optionalName}{suffix}", optional: true, reloadOnChange: true)
             );
+
+        if(args != null)
+            builder.AddCommandLine(args);
 
         //if (options.EnvironmentName == "Development")
         //{

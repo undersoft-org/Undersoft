@@ -216,7 +216,7 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
         return this;
     }
 
-    public IServerSetup AddAccountServer<TContext>() where TContext : DbContext
+    public IServerSetup AddAccessServer<TContext>() where TContext : DbContext
     {
         registry.Services
             .AddIdentity<AccountUser, Role>(options =>

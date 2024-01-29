@@ -153,12 +153,12 @@
 
         public static IQueryable<TResult> ForEach<TItem, TResult>(this IQueryable<TItem> items, Func<TItem, TResult> action)
         {
-            return items.Select(i => action(i));
+            return items.AsEnumerable().ForEach(i => action(i)).AsQueryable();
         }
 
         public static Task<IQueryable<TResult>> ForEachAsync<TItem, TResult>(this IQueryable<TItem> items, Func<TItem, TResult> action)
         {
-            return Task.Run(() => items.Select(i => action(i)));
+            return Task.Run(() => items.ForEach(i => action(i)));
         }
 
         public static Task ForEachAsync<TItem>(this IEnumerable<TItem> items, Action<TItem> action)
