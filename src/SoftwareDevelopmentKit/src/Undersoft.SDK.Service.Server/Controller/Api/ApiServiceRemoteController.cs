@@ -1,15 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Undersoft.SDK.Service.Server.Controller.Crud;
-using Operation.Remote.Command;
 using Undersoft.SDK;
 using Undersoft.SDK.Service;
-using Undersoft.SDK.Service.Server.Operation.Command;
-using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SDK.Service.Client.Remote;
-using Undersoft.SDK.Service.Server.Operation.Invocation;
-using System.Text.Json;
+using Undersoft.SDK.Service.Data.Client.Attributes;
+using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Server.Operation.Remote.Invocation;
+
 
 [ApiController]
 [ApiServiceRemote]

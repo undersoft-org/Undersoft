@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using Undersoft.SDK.Service.Server.Operation.Command;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 
 namespace Undersoft.SDK.Service.Server.Operation.Remote.Command;
 

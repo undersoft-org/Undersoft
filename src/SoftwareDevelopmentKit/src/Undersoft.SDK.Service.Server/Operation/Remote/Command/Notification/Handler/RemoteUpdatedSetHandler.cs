@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Infrastructure.Repository;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Data.Store.Repository;
 using Undersoft.SDK.Service.Server.Operation.Remote.Command.Notification;
 
 namespace Undersoft.SDK.Service.Server.Operation.Remote.Command.Notification.Handler;

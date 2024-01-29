@@ -28,8 +28,9 @@
 
   <ItemGroup>
     <Using Include="Undersoft.SDK.Service.Application.Components" />
-    <Using Include="Undersoft.SDK.Service.Infrastructure.Store" />
-    <Using Include="Undersoft.SDK.Service.Infrastructure.Repository" />
+    <Using Include="Undersoft.SDK.Service.Data.Store" />
+    <Using Include="Undersoft.SDK.Service.Data.Repository" />
+    <Using Include="Undersoft.SDK.Service.Data.Remote.Repository" />
     <Using Include="Undersoft.SDK.Service.Data.Entity" />
     <Using Include="Microsoft.AspNetCore.Components" />
     <Using Include="Microsoft.Extensions.Options" />

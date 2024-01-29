@@ -7,8 +7,10 @@ using Operation.Command;
 using Operation.Query;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Uniques;
+using Undersoft.SDK.Service.Data.Client.Attributes;
+
 
 [OpenData]
 public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService>

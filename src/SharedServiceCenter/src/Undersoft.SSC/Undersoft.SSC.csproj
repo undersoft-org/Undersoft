@@ -21,10 +21,9 @@
     <Using Include="Undersoft.SDK.Service.Data.Object" />
     <Using Include="Undersoft.SDK.Service.Data.Event" />
     <Using Include="Undersoft.SDK.Service.Data.Mapper" />
-    <Using Include="Undersoft.SDK.Service.Infrastructure.Store" />
-    <Using Include="Undersoft.SDK.Service.Data.Relation" />
-    <Using Include="Undersoft.SDK.Service.Client" />
-    <Using Include="Undersoft.SDK.Service.Data.File" />
+    <Using Include="Undersoft.SDK.Service.Data.Store" />
+    <Using Include="Undersoft.SDK.Service.Data.Client" />
+    <Using Include="Undersoft.SDK.Service.Data.Blob" />
     <Using Include="Undersoft.SDK.Extracting" />
     <Using Include="Undersoft.SDK.Invoking" />
     <Using Include="Undersoft.SDK.Series" />

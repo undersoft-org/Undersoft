@@ -3,14 +3,12 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using System.Security.Claims;
 using System.Text.Json;
-using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Invoking;
 using Undersoft.SDK.Security;
-using Undersoft.SDK.Security.Identity;
 using Undersoft.SDK.Series;
 using Undersoft.SDK.Service.Application.Extensions;
-using Undersoft.SDK.Service.Infrastructure.Repository;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Remote.Repository;
+using Undersoft.SDK.Service.Data.Store;
 using Claim = System.Security.Claims.Claim;
 
 namespace Undersoft.SDK.Service.Application.Access;
@@ -19,7 +17,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccessServ
 {
     private readonly IJSRuntime js;
     private readonly IAuthorization _authorization;
-    private readonly IRemoteRepository<IAccountStore, TAccount> _repository;
+    private readonly IRemoteRepository<IDataStore, TAccount> _repository;
     private readonly string TOKENKEY = "TOKENKEY";
     private readonly string EXPIRATIONTOKENKEY = "EXPIRATIONTOKENKEY";
 
@@ -28,7 +26,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccessServ
 
     public AccessProvider(
         IJSRuntime js,
-        IRemoteRepository<IAccountStore, TAccount> repository,
+        IRemoteRepository<IDataStore, TAccount> repository,
         IAuthorization authorization
     )
     {

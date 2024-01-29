@@ -1,7 +1,7 @@
 ﻿namespace Undersoft.SDK.Service.Application.Components;
 
-using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SDK.Service.Infrastructure.Store.Remote;
+using Undersoft.SDK.Service.Data.Remote;
+using Undersoft.SDK.Service.Data.Store;
 using Uniques;
 
 public class OpenDataService<TModel> : DataServiceBase<TModel> where TModel : class, IUniqueIdentifiable, new()

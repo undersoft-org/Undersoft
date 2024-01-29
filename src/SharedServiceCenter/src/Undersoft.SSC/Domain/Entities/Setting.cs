@@ -1,28 +1,27 @@
 using Undersoft.SDK.Serialization;
 using Undersoft.SDK.Service.Data.Object.Setting;
-using Undersoft.SDK.Service.Infrastructure.Store.Relation;
 using Undersoft.SSC.Domain.Entities.Enums;
 
 namespace Undersoft.SSC.Domain.Entities
 {
     public class Setting : ObjectSetting<Setting, SettingKind>, IEntity, ISerializableJsonDocument, ISetting
     {
-        public virtual RelatedSet<Setting>? RelatedFrom { get; set; }
+        public virtual EntitySet<Setting>? RelatedFrom { get; set; }
 
-        public virtual RelatedSet<Setting>? RelatedTo { get; set; }
+        public virtual EntitySet<Setting>? RelatedTo { get; set; }
 
-        public virtual RelatedSet<Activity>? Activities { get; set; }
+        public virtual EntitySet<Activity>? Activities { get; set; }
 
-        public virtual RelatedSet<Member>? Members { get; set; }
+        public virtual EntitySet<Member>? Members { get; set; }
 
-        public virtual RelatedSet<Resource>? Resources { get; set; }
+        public virtual EntitySet<Resource>? Resources { get; set; }
 
-        public virtual RelatedSet<Schedule>? Schedules { get; set; }
+        public virtual EntitySet<Schedule>? Schedules { get; set; }
 
-        public virtual RelatedSet<Application>? Applications { get; set; }
+        public virtual EntitySet<Application>? Applications { get; set; }
 
 
-        public virtual RelatedSet<Service>? Services { get; set; }
+        public virtual EntitySet<Service>? Services { get; set; }
 
         public virtual long DefaultId { get; set; }
         public virtual Default? Default { get; set; }

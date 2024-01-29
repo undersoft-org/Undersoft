@@ -2,13 +2,14 @@
 
 namespace Undersoft.SSC.Service.Infrastructure.Stores;
 
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Infrastructure.Database;
 using Undersoft.SSC.Domain.Entities;
 using Undersoft.SSC.Domain.Entities.Locations;
 using Undersoft.SSC.Service.Infrastructure.Stores.Mappings;
 using Undersoft.SSC.Service.Infrastructure.Stores.Mappings.Locations;
 
-public class StoreBase<TStore, TContext> : Store<TStore, TContext>
+public class StoreBase<TStore, TContext> : DbStore<TStore, TContext>
     where TStore : IDataServerStore
     where TContext : DbContext
 {

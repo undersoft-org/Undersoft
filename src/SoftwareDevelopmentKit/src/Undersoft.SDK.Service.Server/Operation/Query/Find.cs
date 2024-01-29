@@ -2,9 +2,8 @@
 
 namespace Undersoft.SDK.Service.Server.Operation.Query;
 
-
 using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 
 public class Find<TStore, TEntity, TDto> : Query<TStore, TEntity, TDto>
     where TEntity : class, IOrigin, IInnerProxy

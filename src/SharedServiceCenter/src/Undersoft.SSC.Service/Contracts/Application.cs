@@ -7,13 +7,13 @@ namespace Undersoft.SSC.Service.Contracts;
 public class Application : ApplicationBase
 {
     [DataMember(Order = 20)]
-    public virtual Listing<ApplicationBase>? RelatedFrom { get; set; }
+    public virtual ObjectSet<ApplicationBase>? RelatedFrom { get; set; }
 
     [DataMember(Order = 21)]
-    public virtual Listing<ApplicationBase>? RelatedTo { get; set; }
+    public virtual ObjectSet<ApplicationBase>? RelatedTo { get; set; }
 
     [DataMember(Order = 23)]
-    public virtual Listing<ServiceBase>? Services { get; set; }
+    public virtual ObjectSet<ServiceBase>? Services { get; set; }
 
     [DataMember(Order = 17)]
     public virtual Default? Default { get; set; }

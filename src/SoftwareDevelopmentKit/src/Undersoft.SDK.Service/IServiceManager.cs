@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Undersoft.SDK.Service.Configuration;
-using Undersoft.SDK.Service.Infrastructure.Repository;
+using Undersoft.SDK.Service.Data.Repository;
 
 namespace Undersoft.SDK.Service
 {

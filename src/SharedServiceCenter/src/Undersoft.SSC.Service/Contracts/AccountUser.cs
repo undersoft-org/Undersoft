@@ -1,13 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Serialization;
-using Undersoft.SDK;
-using Undersoft.SDK.Security.Identity;
-using Undersoft.SDK.Service.Data.Object.Detail;
+﻿using System.Runtime.Serialization;
 
 namespace Undersoft.SSC.Service.Contracts;
 
 [DataContract]
-public class AccounUser : Identifiable
+public class AccounUser : InnerProxy
 {
     [DataMember(Order = 6)]
     public virtual string? UserName { get; set; }

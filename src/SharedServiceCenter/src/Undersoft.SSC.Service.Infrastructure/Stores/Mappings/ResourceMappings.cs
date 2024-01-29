@@ -3,10 +3,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings;
 
-using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SDK.Service.Infrastructure.Store.Relation;
 using Undersoft.SSC.Domain.Entities.Locations;
 using Undersoft.SSC.Domain.Entities;
+using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Infrastructure.Database;
+using Undersoft.SDK.Service.Infrastructure.Database.Relation;
 
 public class ResourceMappings : EntityTypeMapping<Resource>
 {

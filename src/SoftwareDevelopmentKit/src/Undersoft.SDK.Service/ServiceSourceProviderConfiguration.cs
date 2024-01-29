@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
-using Undersoft.SDK.Service.Infrastructure.Repository.Source;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Repository.Source;
+using Undersoft.SDK.Service.Data.Store;
 
 namespace Undersoft.SDK.Service
 {
@@ -14,22 +14,19 @@ namespace Undersoft.SDK.Service
 
         IServiceRegistry _registry { get; set; }
         
-        public virtual IServiceRegistry AddSourceProvider(SourceProvider provider)
+        public virtual IServiceRegistry AddSourceProvider(StoreProvider provider)
         {            
             if (!DataStoreRegistry.SourceProviders.ContainsKey((int)provider))
             {
                 switch (provider)
                 {
-                    case SourceProvider.MemoryDb:
+                    case StoreProvider.MemoryDb:
                         _registry.AddEntityFrameworkInMemoryDatabase();
-                        break;
-                    case SourceProvider.SqlLite:
-                        _registry.AddEntityFrameworkSqlite();
                         break;
                     default:
                         break;
                 }
-                _registry.AddEntityFrameworkProxies();
+                //_registry.AddEntityFrameworkProxies();
                 DataStoreRegistry.SourceProviders.Add((int)provider, provider);
             }
             return _registry;
@@ -37,15 +34,15 @@ namespace Undersoft.SDK.Service
 
         public virtual DbContextOptionsBuilder BuildOptions(
          DbContextOptionsBuilder builder,
-         SourceProvider provider,
+         StoreProvider provider,
          string connectionString)
         {
             switch (provider)
             {
-                case SourceProvider.MemoryDb:
+                case StoreProvider.MemoryDb:
                     return builder.UseInternalServiceProvider(new ServiceManager())
                         .UseInMemoryDatabase(connectionString)
-                        .UseLazyLoadingProxies()
+                        //.UseLazyLoadingProxies()
                         .ConfigureWarnings(
                             w => w.Ignore(
                                 InMemoryEventId

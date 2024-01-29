@@ -5,9 +5,9 @@ namespace Undersoft.SDK.Service.Server.Controller.Open;
 
 using Microsoft.AspNetCore.OData.Formatter;
 using Undersoft.SDK.Service;
-using Undersoft.SDK.Service.Client.Remote;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Server.Operation.Remote.Invocation;
+using Undersoft.SDK.Service.Data.Client.Attributes;
 
 [OpenServiceRemote]
 public abstract class OpenServiceRemoteController<TStore, TService, TDto>

@@ -4,10 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Undersoft.SDK.Service;
 
 using Undersoft.SDK.Service.Data.Entity;
-using Undersoft.SDK.Service.Infrastructure.Repository;
-using Undersoft.SDK.Service.Infrastructure.Repository.Client.Remote;
-using Undersoft.SDK.Service.Infrastructure.Repository.Source.Store;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Remote.Repository;
+using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Data.Store.Repository;
 
 public partial class ServiceSetup
 {

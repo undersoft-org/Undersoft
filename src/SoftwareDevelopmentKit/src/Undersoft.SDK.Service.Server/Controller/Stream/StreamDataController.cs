@@ -6,12 +6,14 @@ namespace Undersoft.SDK.Service.Server.Controller.Stream;
 using Microsoft.AspNetCore.Mvc;
 using Operation.Command;
 using Operation.Query;
-using Undersoft.SDK.Service.Client;
+using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Data.Response;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Data.Client.Attributes;
+
 
 [StreamData]
 public abstract class StreamDataController<TKey, TEntry, TReport, TEntity, TDto> : ControllerBase, IStreamDataController<TDto>

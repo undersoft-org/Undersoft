@@ -4,10 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace Undersoft.SDK.Service.Server.Operation.Query;
 
-
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Query;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Repository;
+using Undersoft.SDK.Service.Data.Store;
 
 public abstract class Query<TStore, TEntity, TResult> : IRequest<TResult>, IQuery<TEntity>
     where TEntity : class, IOrigin, IInnerProxy

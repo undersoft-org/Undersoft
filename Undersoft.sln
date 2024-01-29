@@ -45,6 +45,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Integrational
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service.Application", "src\SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Application\Undersoft.SDK.Service.Application.csproj", "{F8C902E9-0296-4A70-AC2E-36C817756DE3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Undersoft.SDK.Service.Infrastructure", "src\SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Infrastructure\Undersoft.SDK.Service.Infrastructure.csproj", "{BBDF6723-2035-46C2-8FF3-CFDFCD4DF8F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +123,10 @@ Global
 		{F8C902E9-0296-4A70-AC2E-36C817756DE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8C902E9-0296-4A70-AC2E-36C817756DE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8C902E9-0296-4A70-AC2E-36C817756DE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBDF6723-2035-46C2-8FF3-CFDFCD4DF8F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBDF6723-2035-46C2-8FF3-CFDFCD4DF8F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBDF6723-2035-46C2-8FF3-CFDFCD4DF8F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBDF6723-2035-46C2-8FF3-CFDFCD4DF8F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -145,6 +151,7 @@ Global
 		{0277C6AA-0776-4A54-8C44-D74ABC026D20} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
 		{384220B9-CD6A-45E7-9C01-90DEF2A790BD} = {F9FE065B-486D-4802-A960-68421E802341}
 		{F8C902E9-0296-4A70-AC2E-36C817756DE3} = {A0E1E503-BBF6-42A5-88ED-85191AB41A06}
+		{BBDF6723-2035-46C2-8FF3-CFDFCD4DF8F7} = {A0E1E503-BBF6-42A5-88ED-85191AB41A06}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F31728AB-97C6-4E0D-B412-898579AA77AD}

@@ -8,7 +8,7 @@ namespace Undersoft.SDK.Service.Server;
 using Data.Model;
 using Series;
 using System.Collections.Generic;
-using Undersoft.SDK.Service.Client;
+using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Server.Operation.Invocation;
 using Undersoft.SDK.Service.Server.Operation.Invocation.Handler;
 using Undersoft.SDK.Service.Server.Operation.Invocation.Notification;

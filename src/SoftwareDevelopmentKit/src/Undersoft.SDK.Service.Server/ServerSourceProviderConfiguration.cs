@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using Undersoft.SDK.Service.Data.Repository.Source;
+using Undersoft.SDK.Service.Data.Store;
 
 namespace Undersoft.SDK.Service.Server
 {
@@ -10,37 +12,37 @@ namespace Undersoft.SDK.Service.Server
 
         IServiceRegistry _registry { get; set; }
 
-        public virtual IServiceRegistry AddSourceProvider(SourceProvider provider)
+        public virtual IServiceRegistry AddSourceProvider(StoreProvider provider)
         {
             if (!DataStoreRegistry.SourceProviders.ContainsKey((int)provider))
             {
                 switch (provider)
                 {
-                    case SourceProvider.SqlServer:
+                    case StoreProvider.SqlServer:
                         _registry.AddEntityFrameworkSqlServer();
                         break;
-                    case SourceProvider.AzureSql:
+                    case StoreProvider.AzureSql:
                         _registry.AddEntityFrameworkSqlServer();
                         break;
-                    case SourceProvider.PostgreSql:
+                    case StoreProvider.PostgreSql:
                         _registry.AddEntityFrameworkNpgsql();
                         break;
-                    case SourceProvider.SqlLite:
+                    case StoreProvider.SqlLite:
                         _registry.AddEntityFrameworkSqlite();
                         break;
-                    case SourceProvider.MariaDb:
+                    case StoreProvider.MariaDb:
                         _registry.AddEntityFrameworkMySql();
                         break;
-                    case SourceProvider.MySql:
+                    case StoreProvider.MySql:
                         _registry.AddEntityFrameworkMySql();
                         break;
-                    case SourceProvider.Oracle:
+                    case StoreProvider.Oracle:
                         _registry.AddEntityFrameworkOracle();
                         break;
-                    case SourceProvider.CosmosDb:
+                    case StoreProvider.CosmosDb:
                         _registry.AddEntityFrameworkCosmos();
                         break;
-                    case SourceProvider.MemoryDb:
+                    case StoreProvider.MemoryDb:
                         _registry.AddEntityFrameworkInMemoryDatabase();
                         break;
                     default:
@@ -54,21 +56,21 @@ namespace Undersoft.SDK.Service.Server
 
         public virtual DbContextOptionsBuilder BuildOptions(
          DbContextOptionsBuilder builder,
-         SourceProvider provider,
+         StoreProvider provider,
          string connectionString)
         {
             switch (provider)
             {
-                case SourceProvider.SqlServer:
+                case StoreProvider.SqlServer:
                     return builder
                         .UseSqlServer(connectionString)
                         .UseLazyLoadingProxies();
-                case SourceProvider.AzureSql:
+                case StoreProvider.AzureSql:
                     return builder
                         .UseSqlServer(connectionString)
                         .UseLazyLoadingProxies();
 
-                case SourceProvider.PostgreSql:
+                case StoreProvider.PostgreSql:
                     AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
                     AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
                     return builder.UseInternalServiceProvider(
@@ -76,31 +78,31 @@ namespace Undersoft.SDK.Service.Server
                         .UseNpgsql(connectionString);
                         //.UseLazyLoadingProxies();
 
-                case SourceProvider.SqlLite:
+                case StoreProvider.SqlLite:
                     return builder
                         .UseSqlite(connectionString)
                         .UseLazyLoadingProxies();
 
-                case SourceProvider.MariaDb:
+                case StoreProvider.MariaDb:
                     return builder
                         .UseMySql(
                             ServerVersion
                             .AutoDetect(connectionString))
                         .UseLazyLoadingProxies();
 
-                case SourceProvider.MySql:
+                case StoreProvider.MySql:
                     return builder
                         .UseMySql(
                             ServerVersion
                             .AutoDetect(connectionString))
                         .UseLazyLoadingProxies();
 
-                case SourceProvider.Oracle:
+                case StoreProvider.Oracle:
                     return builder
                         .UseOracle(connectionString)
                         .UseLazyLoadingProxies();
 
-                case SourceProvider.CosmosDb:
+                case StoreProvider.CosmosDb:
                     return builder
                         .UseCosmos(
                             connectionString.Split('#')[0],
@@ -108,7 +110,7 @@ namespace Undersoft.SDK.Service.Server
                             connectionString.Split('#')[2])
                         .UseLazyLoadingProxies();
 
-                case SourceProvider.MemoryDb:
+                case StoreProvider.MemoryDb:
                     return builder.UseInternalServiceProvider(new ServiceManager())
                         .UseInMemoryDatabase(connectionString)
                         .UseLazyLoadingProxies()

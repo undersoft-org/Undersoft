@@ -1,23 +1,21 @@
-using Undersoft.SDK.Service.Infrastructure.Store.Relation;
-
 namespace Undersoft.SSC.Domain.Entities
 {
     public class Default : DataObject, IEntity
     {
-        public virtual RelatedSet<Activity>? Activities { get; set; }
+        public virtual EntitySet<Activity>? Activities { get; set; }
 
-        public virtual RelatedSet<Member>? Members { get; set; }
+        public virtual EntitySet<Member>? Members { get; set; }
 
-        public virtual RelatedSet<Resource>? Resources { get; set; }
+        public virtual EntitySet<Resource>? Resources { get; set; }
 
-        public virtual RelatedSet<Schedule>? Schedules { get; set; }
+        public virtual EntitySet<Schedule>? Schedules { get; set; }
 
-        public virtual RelatedSet<Application>? Applications { get; set; }
+        public virtual EntitySet<Application>? Applications { get; set; }
 
-        public virtual RelatedSet<Service>? Services { get; set; }
+        public virtual EntitySet<Service>? Services { get; set; }
 
-        public virtual RelatedSet<Detail>? Details { get; set; }
+        public virtual EntitySet<Detail>? Details { get; set; }
 
-        public virtual RelatedSet<Setting>? Settings { get; set; }
+        public virtual EntitySet<Setting>? Settings { get; set; }
     }
 }

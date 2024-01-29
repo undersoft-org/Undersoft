@@ -1,7 +1,7 @@
 using Undersoft.SDK.Series;
 using System;
 using Microsoft.EntityFrameworkCore;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 
 namespace Undersoft.SDK.Service.Server
 {

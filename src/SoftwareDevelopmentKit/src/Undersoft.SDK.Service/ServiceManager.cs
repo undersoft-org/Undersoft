@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace Undersoft.SDK.Service
 {
     using Configuration;
-    using Undersoft.SDK.Service.Infrastructure.Repository;
+    using Undersoft.SDK.Service.Data.Repository;
 
     public class ServiceManager : RepositoryManager, IServiceManager, IAsyncDisposable
     {

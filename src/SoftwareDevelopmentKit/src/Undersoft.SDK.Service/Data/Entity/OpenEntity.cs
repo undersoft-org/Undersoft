@@ -7,7 +7,6 @@ using Identifier;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Object.Detail;
 using Undersoft.SDK.Service.Data.Object.Setting;
-using Undersoft.SDK.Service.Infrastructure.Store.Relation;
 
 [DataContract]
 [StructLayout(LayoutKind.Sequential)]
@@ -24,11 +23,11 @@ public class OpenEntity<TEntity, TDetail, TSetting, TGroup> : Entity
 
     [Details]
     [DataMember(Order = 13)]
-    public virtual RelatedSet<TDetail> Details { get; set; }
+    public virtual EntitySet<TDetail> Details { get; set; }
 
     [Settings]
     [DataMember(Order = 14)]
-    public virtual RelatedSet<TSetting> Settings { get; set; }
+    public virtual EntitySet<TSetting> Settings { get; set; }
 
     [DataMember(Order = 15)]
     public virtual TGroup Group { get; set; }

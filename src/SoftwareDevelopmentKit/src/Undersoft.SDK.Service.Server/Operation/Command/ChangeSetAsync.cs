@@ -5,7 +5,7 @@ namespace Undersoft.SDK.Service.Server.Operation.Command;
 
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 
 public class ChangeSetAsync<TStore, TEntity, TDto>
     : ChangeSet<TStore, TEntity, TDto>,

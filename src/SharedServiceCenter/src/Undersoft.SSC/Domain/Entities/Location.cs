@@ -1,4 +1,3 @@
-using Undersoft.SDK.Service.Infrastructure.Store.Relation;
 using Undersoft.SSC.Domain.Entities.Enums;
 using Undersoft.SSC.Domain.Entities.Locations;
 
@@ -18,9 +17,9 @@ namespace Undersoft.SSC.Domain.Entities
 
         public virtual string? Notices { get; set; }
 
-        public virtual RelatedSet<Endpoint>? Endpoints { get; set; }
+        public virtual EntitySet<Endpoint>? Endpoints { get; set; }
 
-        public virtual RelatedSet<Position>? Positions { get; set; }
+        public virtual EntitySet<Position>? Positions { get; set; }
 
         public virtual long? MemberId { get; set; }
         public virtual Member? Member { get; set; }

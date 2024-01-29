@@ -6,7 +6,7 @@ namespace Undersoft.SDK.Service.Server.Operation.Command;
 using Undersoft.SDK.Service.Data.Object;
 
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 
 public class Change<TStore, TEntity, TDto> : Command<TDto>
     where TEntity : class, IOrigin, IInnerProxy

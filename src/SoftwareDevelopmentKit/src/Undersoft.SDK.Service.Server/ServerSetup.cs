@@ -7,17 +7,24 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Exporter;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 namespace Undersoft.SDK.Service.Server;
 
 using Accounts;
 using Accounts.Email;
 using Documentation;
-using Infrastructure.Repository.Source;
-using Infrastructure.Store;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Swashbuckle.AspNetCore.SwaggerGen;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using System.Diagnostics.Metrics;
+using Undersoft.SDK.Service.Configuration;
+using Undersoft.SDK.Service.Data.Repository.Source;
+using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Infrastructure.Database;
 
 public partial class ServerSetup : ServiceSetup, IServerSetup
 {
@@ -87,6 +94,125 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
     public IServiceSetup AddHealthChecks()
     {
         services.AddHealthChecks();
+        return this;
+    }
+
+    public IServiceSetup AddOpenTelemetry()
+    {
+        var config = configuration;
+
+        Action<ResourceBuilder> configureResource = r =>
+            r.AddService(
+                serviceName: config.GetValue<string>("ServiceName"),
+                serviceVersion: Environment.Version.ToString(),
+                serviceInstanceId: Environment.MachineName
+            );
+
+        var tracingExporter = config.GetValue<string>("UseTracingExporter").ToLowerInvariant();
+        var histogramAggregation = config
+            .GetValue<string>("HistogramAggregation")
+            .ToLowerInvariant();
+        var metricsExporter = config.GetValue<string>("UseMetricsExporter").ToLowerInvariant();
+
+        registry.AddSingleton<Instrumentation>();
+
+        services
+            .AddOpenTelemetry()
+            .ConfigureResource(configureResource)
+            .WithTracing(builder =>
+            {
+                switch (tracingExporter)
+                {
+                    case "jaeger":
+                        builder.AddJaegerExporter();
+
+                        builder.ConfigureServices(services =>
+                        {
+                            // Use IConfiguration binding for Jaeger exporter options.
+                            services.Configure<JaegerExporterOptions>(config.GetSection("Jaeger"));
+
+                            // Customize the HttpClient that will be used when JaegerExporter is configured for HTTP transport.
+                            services.AddHttpClient(
+                                "JaegerExporter",
+                                configureClient: (client) =>
+                                    client.DefaultRequestHeaders.Add(
+                                        "X-Title",
+                                        config.Title
+                                            + " ,OS="
+                                            + Environment.OSVersion
+                                            + ",ServiceName="
+                                            + Environment.MachineName
+                                            + ",Domain="
+                                            + Environment.UserDomainName
+                                    )
+                            );
+                        });
+                        break;
+
+                    case "zipkin":
+                        builder.AddZipkinExporter();
+
+                        builder.ConfigureServices(services =>
+                        {
+                            // Use IConfiguration binding for Zipkin exporter options.
+                            services.Configure<ZipkinExporterOptions>(config.GetSection("Zipkin"));
+                        });
+                        break;
+
+                    case "otlp":
+                        builder.AddOtlpExporter(otlpOptions =>
+                        {
+                            // Use IConfiguration directly for Otlp exporter source option.
+                            otlpOptions.Endpoint = new Uri(config.GetValue<string>("Otlp:Source"));
+                        });
+                        break;
+
+                    default:
+                        builder.AddConsoleExporter();
+                        break;
+                }
+            })
+            .WithMetrics(builder =>
+            {
+                // Metrics
+
+                // Ensure the MeterProvider subscribes to any custom Meters.
+                builder.AddRuntimeInstrumentation().AddHttpClientInstrumentation();
+                //.AddAspNetCoreInstrumentation();
+
+                switch (histogramAggregation)
+                {
+                    case "exponential":
+                        builder.AddView(instrument =>
+                        {
+                            return
+                                instrument.GetType().GetGenericTypeDefinition()
+                                == typeof(Histogram<>)
+                                ? new ExplicitBucketHistogramConfiguration()
+                                : null;
+                        });
+                        break;
+                    default:
+                        // Explicit bounds histogram is the default.
+                        // No additional configuration necessary.
+                        break;
+                }
+
+                switch (metricsExporter)
+                {
+                    case "otlp":
+                        builder.AddOtlpExporter(otlpOptions =>
+                        {
+                            // Use IConfiguration directly for Otlp exporter source option.
+                            otlpOptions.Endpoint = new Uri(config.GetValue<string>("Otlp:Source"));
+                        });
+                        break;
+                    default:
+                        builder.AddConsoleExporter();
+                        break;
+                }
+            });
+
         return this;
     }
 
@@ -251,6 +377,113 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
         return this;
     }
 
+    public IServiceSetup AddRepositorySources()
+    {
+        var assemblies = Assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        Type[] storeTypes = assemblies.SelectMany(a => a.DefinedTypes).Select(t => t.UnderlyingSystemType).ToArray();
+        return AddRepositorySources(storeTypes);
+    }
+
+    public IServiceSetup AddRepositorySources(Type[] storeTypes)
+    {
+        IServiceConfiguration config = configuration;
+        IEnumerable<IConfigurationSection> sources = config.Sources();
+
+        RepositorySources repoSources = new RepositorySources();
+        registry.AddSingleton(registry.AddObject<IRepositorySources>(repoSources).Value);
+
+        var providerNotExists = new HashSet<string>();
+
+        foreach (IConfigurationSection source in sources)
+        {
+            string connectionString = config.SourceConnectionString(source);
+            StoreProvider provider = config.SourceProvider(source);
+            int poolsize = config.SourcePoolSize(source);
+            Type contextType = storeTypes
+                .Where(t => t.FullName == source.Key)
+                .FirstOrDefault();
+
+            if (
+                (provider == StoreProvider.None)
+                || (connectionString == null)
+                || (contextType == null)
+            )
+            {
+                continue;
+            }
+
+            if (providerNotExists.Add(provider.ToString()))
+            {
+                registry.AddEntityFrameworkSourceProvider(provider);
+                registry.MergeServices(true);
+            }
+
+            Type iRepoType = typeof(IRepositorySource<>).MakeGenericType(contextType);
+            Type repoType = typeof(RepositorySource<>).MakeGenericType(contextType);
+            Type repoOptionsType = typeof(DbContextOptions<>).MakeGenericType(contextType);
+            Type repoOptionsBuilderType = typeof(DbContextOptionsBuilder<>).MakeGenericType(contextType);
+
+            var builder = registry.GetObject<ISourceProviderConfiguration>();
+            var options = builder.BuildOptions(repoOptionsBuilderType.New<DbContextOptionsBuilder>(), provider, connectionString).Options;
+
+            IRepositorySource repoSource = (IRepositorySource)
+                repoType.New(options);
+
+            Type storeDbType = typeof(DataStoreContext<>).MakeGenericType(
+                DataStoreRegistry.GetStoreType(contextType)
+            );
+
+            Type storeOptionsType = typeof(DbContextOptions<>).MakeGenericType(storeDbType);
+            Type storeRepoType = typeof(RepositorySource<>).MakeGenericType(storeDbType);
+
+            IRepositorySource storeSource = (IRepositorySource)storeRepoType.New(repoSource);
+
+            Type istoreRepoType = typeof(IRepositorySource<>).MakeGenericType(storeDbType);
+            Type ipoolRepoType = typeof(IRepositoryContextPool<>).MakeGenericType(storeDbType);
+            Type ifactoryRepoType = typeof(IRepositoryContextFactory<>).MakeGenericType(
+                storeDbType
+            );
+            Type idataRepoType = typeof(IRepositoryContext<>).MakeGenericType(storeDbType);
+
+            repoSource.PoolSize = poolsize;
+
+            IRepositorySource globalSource = manager.AddSource(repoSource);
+
+            AddDatabaseConfiguration(globalSource.Context);
+
+            registry.AddObject(contextType, globalSource.Context);
+
+            registry.AddObject(iRepoType, globalSource);
+            registry.AddObject(repoType, globalSource);
+            registry.AddObject(repoOptionsType, globalSource.Options);
+
+            registry.AddObject(istoreRepoType, storeSource);
+            registry.AddObject(ipoolRepoType, storeSource);
+            registry.AddObject(ifactoryRepoType, storeSource);
+            registry.AddObject(idataRepoType, storeSource);
+            registry.AddObject(storeRepoType, storeSource);
+            registry.AddObject(storeOptionsType, storeSource.Options);
+
+            manager.AddSourcePool(globalSource.ContextType, poolsize);
+        }
+
+        return this;
+    }
+
+    private void AddDatabaseConfiguration(IDataStoreContext context)
+    {
+        DbContext _context = context as DbContext;
+        _context.ChangeTracker.AutoDetectChangesEnabled = true;
+        _context.ChangeTracker.LazyLoadingEnabled = false;
+        _context.Database.AutoTransactionBehavior = AutoTransactionBehavior.Never;
+    }
+
+    private string AddDataServiceStorePrefix(Type contextType, string routePrefix = null)
+    {
+        Type iface = DataStoreRegistry.GetStoreType(contextType);
+        return GetStoreRoutes(iface, routePrefix);
+    }
+
     public IServerSetup AddApiVersions(string[] apiVersions)
     {
         this.apiVersions = apiVersions;
@@ -263,8 +496,18 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
         Type[] clientTypes = null
     )
     {
-        base.ConfigureServices(sourceTypes, clientTypes)
-            .Services.AddHttpContextAccessor();
+        Assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+        AddSourceProviderConfiguration();
+
+        if (sourceTypes != null)
+            AddRepositorySources(sourceTypes);
+        else
+            AddRepositorySources();
+
+        base.ConfigureServices(clientTypes);
+
+        Services.AddHttpContextAccessor();
 
         AddServerSetupCqrsImplementations();
         AddServerSetupInvocationImplementations();
@@ -274,12 +517,12 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
         if (includeSwagger)
             AddSwagger();
 
-        Services.MergeServices();
+        Services.MergeServices(true);
 
         return this;
     }
 
-    public IServerSetup UseDataServices()
+    public IServerSetup UseServiceClients()
     {
         this.LoadOpenDataEdms().ConfigureAwait(true);
         return this;

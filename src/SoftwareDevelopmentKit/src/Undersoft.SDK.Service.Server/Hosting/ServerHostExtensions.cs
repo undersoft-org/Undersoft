@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 namespace Undersoft.SDK.Service.Server.Hosting;
 
 using Service.Hosting;
-using Undersoft.SDK.Service.Infrastructure.Repository;
+using Undersoft.SDK.Service.Data.Repository;
 
 public static class ServerHostExtensions
 {

@@ -2,24 +2,23 @@ namespace Undersoft.SSC.Domain.Entities;
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Undersoft.SDK.Service.Data.Entity;
-using Undersoft.SDK.Service.Infrastructure.Store.Relation;
 using Undersoft.SSC.Domain.Entities.Enums;
 
 public class Member : OpenEntity<Member, Detail, Setting, MemberGroup>
 {
-    public virtual RelatedSet<Member>? RelatedFrom { get; set; }
+    public virtual EntitySet<Member>? RelatedFrom { get; set; }
 
-    public virtual RelatedSet<Member>? RelatedTo { get; set; }
+    public virtual EntitySet<Member>? RelatedTo { get; set; }
 
-    public virtual RelatedSet<Application>? Applications { get; set; }
+    public virtual EntitySet<Application>? Applications { get; set; }
 
-    public virtual RelatedSet<Service>? Services { get; set; }
+    public virtual EntitySet<Service>? Services { get; set; }
 
-    public virtual RelatedSet<Activity>? Activities { get; set; }
+    public virtual EntitySet<Activity>? Activities { get; set; }
 
-    public virtual RelatedSet<Resource>? Resources { get; set; }
+    public virtual EntitySet<Resource>? Resources { get; set; }
 
-    public virtual RelatedSet<Schedule>? Schedules { get; set; }
+    public virtual EntitySet<Schedule>? Schedules { get; set; }
 
     public long? DefaultId { get; set; }
     public virtual Default? Default { get; set; }

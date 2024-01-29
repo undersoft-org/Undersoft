@@ -3,9 +3,8 @@
 namespace Undersoft.SDK.Service.Server.Operation.Command.Handler;
 using Logging;
 using Notification;
-
-using Undersoft.SDK.Service.Infrastructure.Repository;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Data.Store.Repository;
 
 public class CreateSetAsyncHandler<TStore, TEntity, TDto>
     : IStreamRequestHandler<CreateSetAsync<TStore, TEntity, TDto>, Command<TDto>>

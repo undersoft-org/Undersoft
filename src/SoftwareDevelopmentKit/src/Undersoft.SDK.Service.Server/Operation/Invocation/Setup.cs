@@ -2,8 +2,7 @@
 
 namespace Undersoft.SDK.Service.Server.Operation.Invocation;
 
-using Undersoft.SDK.Service.Data;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 
 public class Setup<TStore, TService, TDto> : Invocation<TDto>
     where TDto : class

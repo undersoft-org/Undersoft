@@ -2,8 +2,8 @@
 
 namespace Undersoft.SDK.Service.Server.Operation.Query.Handler;
 
-using Undersoft.SDK.Service.Infrastructure.Repository;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Data.Store.Repository;
 
 public class FindHandler<TStore, TEntity, TDto> : IRequestHandler<Find<TStore, TEntity, TDto>, TDto>
     where TDto : class

@@ -12,7 +12,7 @@ using Operation.Remote.Query;
 using Operation.Remote.Query.Handler;
 using Operation.Remote.Validator;
 using Undersoft.SDK.Series;
-using Undersoft.SDK.Service.Client.Remote;
+using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Server.Operation.Remote.Command.Notification;
 using Undersoft.SDK.Service.Server.Operation.Remote.Command.Notification.Handler;
 

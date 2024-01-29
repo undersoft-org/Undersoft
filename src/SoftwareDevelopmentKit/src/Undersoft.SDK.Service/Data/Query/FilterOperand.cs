@@ -3,7 +3,6 @@ using Undersoft.SDK.Instant;
 using Undersoft.SDK.Uniques;
 using FluentValidation.Results;
 using MediatR;
-using Newtonsoft.Json;
 
 namespace Undersoft.SDK.Service.Data.Query
 {

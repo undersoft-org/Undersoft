@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using Undersoft.SDK.Instant.Proxies;
 
 namespace Undersoft.SDK.Security
 {
@@ -25,7 +26,7 @@ namespace Undersoft.SDK.Security
 
     [Serializable]
     [DataContract]
-    public class Credentials : ICredentials
+    public class Credentials : InnerProxy, ICredentials
     {
         [DataMember(Order = 0)]
         public ServiceSite? Site { get; set; }

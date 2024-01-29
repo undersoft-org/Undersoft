@@ -3,10 +3,9 @@ using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Server.Operation.Query;
 
-
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Query;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 
 public class GetAsync<TStore, TEntity, TDto> : Get<TStore, TEntity, TDto>, IStreamRequest<TDto>
     where TDto : class

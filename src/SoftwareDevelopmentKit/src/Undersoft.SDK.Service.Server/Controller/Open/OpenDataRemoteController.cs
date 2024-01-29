@@ -1,20 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Server.Controller.Open;
 
-using Microsoft.Extensions.DependencyInjection;
 using Operation.Remote.Command;
 using Operation.Remote.Query;
-using Undersoft.SDK.Service.Client.Remote;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SDK.Service.Server.Documentation;
-using Undersoft.SDK.Service.Server.Operation.Remote;
+using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Data.Client.Attributes;
 
 
 [OpenDataRemote]

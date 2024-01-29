@@ -3,7 +3,7 @@
 using Undersoft.SDK.Service.Application.Server;
 using Undersoft.SDK.Service.Application.Server.Hosting;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Server;
 using Undersoft.SSC.Service.Clients;
 using Undersoft.SSC.Service.Contracts;
@@ -17,16 +17,16 @@ public class Setup
             .AddApplicationServerSetup()
             .ConfigureApplicationServer(
                 true,
-                new[] { typeof(EventStore), typeof(ReportStore), typeof(EntryStore) },
-                new[] { typeof(ServiceClient), typeof(AccessClient) }
+                new[] { typeof(EventStore), typeof(ReportStore), typeof(EntryStore) }
+                //new[] { typeof(ServiceClient), typeof(AccessClient) }
             )
-            .AddDataServer<IEntityStore>(
+            //.AddDataServer<IAccountStore>(
+            //    DataServerTypes.All,
+            //    builder => builder.AddInvocations<Account>()
+            //)
+                        .AddDataServer<IEntityStore>(
                 DataServerTypes.All,
                 builder => builder.AddInvocations<Member>().AddInvocations<Application>()
-            )
-            .AddDataServer<IAccountStore>(
-                DataServerTypes.All,
-                builder => builder.AddInvocations<Account>()
             )
             .AddDataServer<IEventStore>(
                 DataServerTypes.All,
@@ -36,11 +36,11 @@ public class Setup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        app.UseApplicationTracking()
+        app
             .UseApplicationServerSetup(env)
             .UseServiceApplication()
             .UseInternalProvider()
-            .UseDataMigrations()
-            .UseServiceClients();
+            .UseDataMigrations();
+            //.UseServiceClients();
     }
 }

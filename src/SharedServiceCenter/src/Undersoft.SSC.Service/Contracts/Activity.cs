@@ -7,19 +7,19 @@ namespace Undersoft.SSC.Service.Contracts;
 public class Activity : ActivityBase
 {
     [DataMember(Order = 18)]
-    public virtual Listing<ActivityBase>? RelatedFrom { get; set; }
+    public virtual ObjectSet<ActivityBase>? RelatedFrom { get; set; }
 
     [DataMember(Order = 19)]
-    public virtual Listing<ActivityBase>? RelatedTo { get; set; }
+    public virtual ObjectSet<ActivityBase>? RelatedTo { get; set; }
 
     [DataMember(Order = 20)]
-    public virtual Listing<MemberBase>? Members { get; set; }
+    public virtual ObjectSet<MemberBase>? Members { get; set; }
 
     [DataMember(Order = 21)]
-    public virtual Listing<ResourceBase>? Resources { get; set; }
+    public virtual ObjectSet<ResourceBase>? Resources { get; set; }
 
     [DataMember(Order = 22)]
-    public virtual Listing<ScheduleBase>? Schedules { get; set; }
+    public virtual ObjectSet<ScheduleBase>? Schedules { get; set; }
 
     [DataMember(Order = 23)]
     public virtual Default? Default { get; set; }

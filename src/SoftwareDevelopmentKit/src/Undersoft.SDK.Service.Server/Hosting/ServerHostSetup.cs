@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Routing;
 using ProtoBuf.Grpc.Reflection;
 using Quartz.Impl.AdoJobStore.Common;
 using Series;
+using Undersoft.SDK.Service.Data.Store;
 
 public class ServerHostSetup : IServerHostSetup
 {

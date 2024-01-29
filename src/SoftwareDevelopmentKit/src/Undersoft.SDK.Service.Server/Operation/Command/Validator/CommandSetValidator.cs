@@ -3,7 +3,8 @@ using System.Collections;
 using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Server.Operation.Command.Validator;
-using Undersoft.SDK.Service.Infrastructure.Store;
+
+using Undersoft.SDK.Service.Data.Store;
 
 public class CommandSetValidator<TDto> : CommandSetValidatorBase<CommandSet<TDto>> where TDto : class, IOrigin, IInnerProxy
 {

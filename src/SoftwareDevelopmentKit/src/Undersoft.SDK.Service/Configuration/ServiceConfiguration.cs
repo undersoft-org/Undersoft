@@ -6,9 +6,10 @@ using System.Collections.Generic;
 
 namespace Undersoft.SDK.Service.Configuration;
 
-using Undersoft.SDK.Security.Identity;
-using Undersoft.SDK.Service.Infrastructure.Repository;
-using Undersoft.SDK.Service.Infrastructure.Repository.Source;
+using Undersoft.SDK.Security;
+using Undersoft.SDK.Service.Data.Client;
+using Undersoft.SDK.Service.Data.Repository;
+using Undersoft.SDK.Service.Data.Store;
 
 public class ServiceConfiguration : IServiceConfiguration
 {
@@ -136,9 +137,9 @@ public class ServiceConfiguration : IServiceConfiguration
         return Repository()?.GetSection("Clients")?.GetSection(name);
     }
 
-    public SourceProvider SourceProvider(string name)
+    public StoreProvider SourceProvider(string name)
     {
-        Enum.TryParse(Source(name)["SourceProvider"], out SourceProvider result);
+        Enum.TryParse(Source(name)["StoreProvider"], out StoreProvider result);
         return result;
     }
 
@@ -148,9 +149,9 @@ public class ServiceConfiguration : IServiceConfiguration
         return result;
     }
 
-    public SourceProvider SourceProvider(IConfigurationSection source)
+    public StoreProvider SourceProvider(IConfigurationSection source)
     {
-        Enum.TryParse(source["SourceProvider"], out SourceProvider result);
+        Enum.TryParse(source["StoreProvider"], out StoreProvider result);
         return result;
     }
 

@@ -9,9 +9,7 @@ using Undersoft.SDK.Service.Server.Operation.Remote.Command;
 using Undersoft.SDK.Service.Server.Operation.Remote.Validator;
 
 using Undersoft.SDK.Service.Data.Entity;
-
-
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 
 public class RemoteCommandSetValidator<TModel> : RemoteCommandSetValidatorBase<RemoteCommandSet<TModel>> where TModel : class, IOrigin, IInnerProxy
 {

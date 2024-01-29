@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using Undersoft.SDK.Service.Infrastructure.Repository;
-using Undersoft.SDK.Service.Infrastructure.Repository.Client;
-using Undersoft.SDK.Service.Infrastructure.Repository.Source;
+using Undersoft.SDK.Service.Data.Repository;
+using Undersoft.SDK.Service.Data.Repository.Client;
+using Undersoft.SDK.Service.Data.Repository.Source;
 
 namespace Undersoft.SDK.Service
 {

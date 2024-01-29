@@ -3,8 +3,8 @@
 namespace Undersoft.SDK.Service.Server.Operation.Command.Handler;
 
 using Logging;
-using Undersoft.SDK.Service.Infrastructure.Repository;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Remote.Repository;
+using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Server.Operation.Remote.Command;
 using Undersoft.SDK.Service.Server.Operation.Remote.Command.Notification;
 

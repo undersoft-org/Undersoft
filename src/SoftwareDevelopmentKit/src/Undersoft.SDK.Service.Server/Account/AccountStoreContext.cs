@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using System.Collections;
 using Undersoft.SDK.Logging;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Infrastructure.Database;
 using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Service.Server.Accounts;

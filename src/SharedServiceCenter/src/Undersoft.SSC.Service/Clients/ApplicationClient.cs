@@ -1,6 +1,7 @@
 ﻿using Microsoft.OData.Edm;
-using Undersoft.SDK.Service.Client;
-using Undersoft.SDK.Service.Infrastructure.Store.Remote;
+using Undersoft.SDK.Service.Data.Client;
+using Undersoft.SDK.Service.Data.Remote;
+using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SSC.Domain.Entities;
 
 namespace Undersoft.SSC.Service.Clients;

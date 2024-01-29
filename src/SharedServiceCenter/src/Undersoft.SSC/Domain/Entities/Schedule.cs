@@ -2,22 +2,19 @@ namespace Undersoft.SSC.Domain.Entities;
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Undersoft.SDK.Service.Data.Entity;
-using Undersoft.SDK.Service.Infrastructure.Repository.Client.Remote;
-using Undersoft.SDK.Service.Infrastructure.Store.Relation;
-using Undersoft.SDK.Service.Infrastructure.Store.Remote;
 using Undersoft.SSC.Domain.Entities.Enums;
 
 public class Schedule : OpenEntity<Schedule, Detail, Setting, ScheduleGroup>
 {
-    public virtual RelatedSet<Schedule>? RelatedFrom { get; set; }
+    public virtual EntitySet<Schedule>? RelatedFrom { get; set; }
 
-    public virtual RelatedSet<Schedule>? RelatedTo { get; set; }
+    public virtual EntitySet<Schedule>? RelatedTo { get; set; }
 
-    public virtual RelatedSet<Activity>? Activities { get; set; }
+    public virtual EntitySet<Activity>? Activities { get; set; }
 
-    public virtual RelatedSet<Member>? Members { get; set; }
+    public virtual EntitySet<Member>? Members { get; set; }
 
-    public virtual RelatedSet<Resource>? Resources { get; set; }
+    public virtual EntitySet<Resource>? Resources { get; set; }
 
     public long? DefaultId { get; set; }
     public virtual Default? Default { get; set; }

@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Undersoft.SDK.Service.Server
 {
-    using Undersoft.SDK.Service.Infrastructure.Store;
+    using Undersoft.SDK.Service.Data.Store;
 
     public partial interface IServerSetup : IServiceSetup
     {
@@ -12,9 +12,10 @@ namespace Undersoft.SDK.Service.Server
             Action<DataServerBuilder> builder = null
         ) where TServiceStore : IDataStore;
         IServerSetup AddAccountServer<TContext>() where TContext : DbContext;
+        IServiceSetup AddRepositorySources();
         IServerSetup AddAuthentication();
         IServerSetup AddAuthorization();
-        IServerSetup UseDataServices();
+        IServerSetup UseServiceClients();
         IServerSetup AddApiVersions(string[] apiVersions);
         IServerSetup ConfigureServer(bool includeSwagger, Type[] sourceTypes = null, Type[] clientTypes = null);
     }

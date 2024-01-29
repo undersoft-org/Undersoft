@@ -2,23 +2,22 @@ namespace Undersoft.SSC.Domain.Entities;
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Undersoft.SDK.Service.Data.Entity;
-using Undersoft.SDK.Service.Infrastructure.Repository.Client.Remote;
-using Undersoft.SDK.Service.Infrastructure.Store.Relation;
-using Undersoft.SDK.Service.Infrastructure.Store.Remote;
+using Undersoft.SDK.Service.Data.Remote.Repository;
+using Undersoft.SDK.Service.Data.Remote;
 using Undersoft.SSC.Domain.Entities.Enums;
 
 public class Service : OpenEntity<Service, Detail, Setting, ServiceGroup>
 {
-    public virtual RelatedSet<Service>? RelatedFrom { get; set; }
+    public virtual EntitySet<Service>? RelatedFrom { get; set; }
 
-    public virtual RelatedSet<Service>? RelatedTo { get; set; }
+    public virtual EntitySet<Service>? RelatedTo { get; set; }
 
-    public virtual RelatedSet<Member>? Members { get; set; }
+    public virtual EntitySet<Member>? Members { get; set; }
 
     [Remote]
     public virtual RemoteSet<Application>? Applications { get; set; }
     public virtual RemoteSet<
-        RelatedLink<Service, Application>
+        RemoteLink<Service, Application>
     >? ServicesToApplications { get; set; }
 
     public virtual long? DefaultId { get; set; }

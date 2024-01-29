@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Http;
 using Notification;
 using Undersoft.SDK;
 using Undersoft.SDK.Service.Server.Operation.Command;
-using Undersoft.SDK.Service.Infrastructure.Repository;
-using Undersoft.SDK.Service.Infrastructure.Store;
 using Undersoft.SDK.Service.Server.Operation.Invocation;
 using Undersoft.SDK.Service.Server.Operation.Remote.Invocation;
+using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Data.Remote.Repository;
 
 public class RemoteActionHandler<TStore, TService, TModel>
     : IRequestHandler<RemoteAction<TStore, TService, TModel>, Invocation<TModel>>

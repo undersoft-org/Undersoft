@@ -5,13 +5,7 @@ using Microsoft.Net.Http.Headers;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 using System.Reflection;
-using Undersoft.SDK.Service.Server.Controller;
-using Microsoft.AspNetCore.OData.Formatter;
-using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SDK.Security.Identity;
-using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SDK.Service.Client;
-using Undersoft.SDK.Service.Client.Remote;
+using Undersoft.SDK.Service.Data.Client.Attributes;
 
 namespace Undersoft.SDK.Service.Server;
 

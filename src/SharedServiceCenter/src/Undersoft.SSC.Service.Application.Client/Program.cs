@@ -21,7 +21,7 @@ namespace Undersoft.SSC.Service.Application.Client
 
             var manager = builder.Services
                 .AddServiceSetup(builder.Configuration)
-                .ConfigureServices(null, new[] { typeof(ApplicationClient), typeof(AccessClient) })
+                .ConfigureServices(new[] { typeof(ApplicationClient)/*, typeof(AccessClient) */})
                 .Manager;
 
             var _provider = await manager.BuildInternalProvider().UseServiceClients();

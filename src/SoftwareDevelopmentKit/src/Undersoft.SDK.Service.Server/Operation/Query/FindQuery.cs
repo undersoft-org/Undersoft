@@ -4,9 +4,8 @@ using System.Linq.Expressions;
 namespace Undersoft.SDK.Service.Server.Operation.Query;
 
 using Undersoft.SDK;
-
 using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 
 public class FindQuery<TStore, TEntity, TDto> : Query<TStore, TEntity, IQueryable<TDto>>
     where TEntity : class, IOrigin, IInnerProxy

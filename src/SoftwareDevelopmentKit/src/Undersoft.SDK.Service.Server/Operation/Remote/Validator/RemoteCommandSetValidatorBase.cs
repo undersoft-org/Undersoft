@@ -9,7 +9,7 @@ using Instant.Proxies;
 using Undersoft.SDK.Service.Server.Operation.Remote.Command;
 
 using Undersoft.SDK.Service.Data.Query;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 
 public abstract class RemoteCommandSetValidatorBase<TCommand> : AbstractValidator<TCommand>
     where TCommand : IRemoteCommandSet

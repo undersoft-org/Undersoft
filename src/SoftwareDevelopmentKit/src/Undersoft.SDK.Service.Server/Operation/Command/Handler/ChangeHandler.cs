@@ -4,8 +4,8 @@ using MediatR;
 namespace Undersoft.SDK.Service.Server.Operation.Command.Handler;
 
 using Notification;
-using Undersoft.SDK.Service.Infrastructure.Repository;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Data.Store.Repository;
 
 public class ChangeHandler<TStore, TEntity, TDto>
     : IRequestHandler<Change<TStore, TEntity, TDto>, Command<TDto>>

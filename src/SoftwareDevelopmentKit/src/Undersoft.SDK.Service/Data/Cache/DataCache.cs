@@ -5,7 +5,7 @@ using Instant.Rubrics;
 using Invoking;
 using Undersoft.SDK;
 using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 
 public class DataCache : TypedCache<IIdentifiable>, IDataCache
 {

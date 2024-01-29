@@ -4,9 +4,7 @@ using System.Text.Json.Serialization;
 namespace Undersoft.SDK.Service.Server.Operation.Command.Notification;
 
 using Command;
-
-
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 
 public class UpsertedSet<TStore, TEntity, TDto> : NotificationSet<Command<TDto>>
     where TDto : class, IOrigin, IInnerProxy

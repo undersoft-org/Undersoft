@@ -7,7 +7,7 @@ using Undersoft.SDK.Service.Server.Operation.Remote.Command;
 
 
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 
 public class RemoteUpsert<TStore, TDto, TModel> : RemoteCommand<TModel>
     where TDto : class, IOrigin, IInnerProxy

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Undersoft.SDK.Series;
-using Undersoft.SDK.Service.Infrastructure.Repository;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Remote.Repository;
+using Undersoft.SDK.Service.Data.Store;
 
 namespace Undersoft.SDK.Service.Server.Operation.Remote.Query.Handler;
 

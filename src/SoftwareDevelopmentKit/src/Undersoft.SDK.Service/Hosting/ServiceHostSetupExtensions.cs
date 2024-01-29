@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Undersoft.SDK.Service.Hosting;
-using Undersoft.SDK.Service.Infrastructure.Repository;
+using Undersoft.SDK.Service.Data.Repository;
 
 namespace Undersoft.SDK.Service.Hosting
 {

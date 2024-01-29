@@ -6,9 +6,9 @@ namespace Undersoft.SDK.Service.Server.Controller.Crud;
 using Operation.Command;
 using Operation.Query;
 using Undersoft.SDK.Service.Data.Query;
-
+using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 
 [ApiData]
 [ApiController]

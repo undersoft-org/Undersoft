@@ -9,10 +9,11 @@ namespace Undersoft.SDK.Service.Server.Controller.Open;
 
 using Data.Event;
 using Documentation;
-using Infrastructure.Store;
 using Operation.Remote.Command;
 using Operation.Remote.Query;
-using Undersoft.SDK.Service.Client.Remote;
+using Undersoft.SDK.Service.Data.Client.Attributes;
+using Undersoft.SDK.Service.Data.Store;
+
 
 [IgnoreApi]
 [OpenDataRemote]

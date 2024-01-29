@@ -1,10 +1,9 @@
 ﻿using System.Linq.Expressions;
 using System.Text.Json.Serialization;
 using Undersoft.SDK.Service.Server.Operation.Command;
-using Undersoft.SDK.Service.Data;
-using Undersoft.SDK.Service.Infrastructure.Store;
 using Microsoft.AspNetCore.OData.Formatter;
 using Undersoft.SDK.Service.Server.Operation.Invocation;
+using Undersoft.SDK.Service.Data.Store;
 
 namespace Undersoft.SDK.Service.Server.Operation.Remote.Invocation;
 

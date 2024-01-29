@@ -663,7 +663,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("SettingIdentifiers", "identifiers");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Activity>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Activity>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -734,7 +734,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ActivityToActivity", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Detail>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -805,7 +805,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ActivitiesToDetails", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Resource>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Resource>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -876,7 +876,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ActivitiesToResources", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Setting>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -947,7 +947,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ActivitiesToSettings", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Builder, Undersoft.SSC.Domain.Entities.Builder>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Builder, Undersoft.SSC.Domain.Entities.Builder>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -1018,7 +1018,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ApplicationToApplication", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Builder, Undersoft.SSC.Domain.Entities.Detail>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Builder, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -1089,7 +1089,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ApplicationsToDetails", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Builder, Undersoft.SSC.Domain.Entities.Member>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Builder, Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -1160,7 +1160,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ApplicationsToMembers", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Builder, Undersoft.SSC.Domain.Entities.Setting>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Builder, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -1231,7 +1231,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ApplicationsToSettings", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Detail, Undersoft.SSC.Domain.Entities.Detail>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Detail, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -1302,7 +1302,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("DetailToDetail", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Activity>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Activity>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -1373,7 +1373,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("MembersToActivities", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Detail>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -1444,7 +1444,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("MembersToDetails", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Member>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -1515,7 +1515,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("MemberToMember", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Resource>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Resource>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -1586,7 +1586,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("MembersToResources", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Schedule>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Schedule>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -1657,7 +1657,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("MembersToSchedules", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Setting>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -1728,7 +1728,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("MembersToSettings", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Detail>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -1799,7 +1799,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ResourcesToDetails", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Resource>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Resource>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -1870,7 +1870,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ResourceToResource", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Schedule>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Schedule>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -1941,7 +1941,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ResourcesToSchedules", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Setting>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -2012,7 +2012,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ResourcesToSettings", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Activity>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Activity>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -2083,7 +2083,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("SchedulesToActivities", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Detail>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -2154,7 +2154,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("SchedulesToDetails", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Schedule>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Schedule>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -2225,7 +2225,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ScheduleToSchedule", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Setting>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -2296,7 +2296,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("SchedulesToSettings", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Builder>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Builder>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -2367,7 +2367,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ServicesToApplications", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Detail>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -2438,7 +2438,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ServicesToDetails", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Member>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -2509,7 +2509,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ServicesToMembers", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Service>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Service>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -2580,7 +2580,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ServiceToService", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Setting>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -2651,7 +2651,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.ToTable("ServicesToSettings", "relations");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Setting, Undersoft.SSC.Domain.Entities.Setting>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Setting, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -3761,7 +3761,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("Object");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Activity>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Activity>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "LeftEntity")
                         .WithMany()
@@ -3778,7 +3778,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Detail>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "LeftEntity")
                         .WithMany()
@@ -3795,7 +3795,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Resource>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Resource>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "LeftEntity")
                         .WithMany()
@@ -3812,7 +3812,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Setting>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Activity, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Activity", "LeftEntity")
                         .WithMany()
@@ -3829,7 +3829,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Builder, Undersoft.SSC.Domain.Entities.Builder>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Builder, Undersoft.SSC.Domain.Entities.Builder>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Builder", "LeftEntity")
                         .WithMany()
@@ -3846,7 +3846,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Builder, Undersoft.SSC.Domain.Entities.Detail>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Builder, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Builder", "LeftEntity")
                         .WithMany()
@@ -3863,7 +3863,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Builder, Undersoft.SSC.Domain.Entities.Member>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Builder, Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Builder", "LeftEntity")
                         .WithMany()
@@ -3880,7 +3880,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Builder, Undersoft.SSC.Domain.Entities.Setting>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Builder, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Builder", "LeftEntity")
                         .WithMany()
@@ -3897,7 +3897,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Detail, Undersoft.SSC.Domain.Entities.Detail>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Detail, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Detail", "LeftEntity")
                         .WithMany()
@@ -3914,7 +3914,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Activity>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Activity>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
@@ -3931,7 +3931,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Detail>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
@@ -3948,7 +3948,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Member>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
@@ -3965,7 +3965,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Resource>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Resource>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
@@ -3982,7 +3982,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Schedule>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Schedule>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
@@ -3999,7 +3999,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Setting>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Member, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Member", "LeftEntity")
                         .WithMany()
@@ -4016,7 +4016,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Detail>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "LeftEntity")
                         .WithMany()
@@ -4033,7 +4033,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Resource>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Resource>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "LeftEntity")
                         .WithMany()
@@ -4050,7 +4050,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Schedule>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Schedule>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "LeftEntity")
                         .WithMany()
@@ -4067,7 +4067,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Setting>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Resource, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Resource", "LeftEntity")
                         .WithMany()
@@ -4084,7 +4084,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Activity>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Activity>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "LeftEntity")
                         .WithMany()
@@ -4101,7 +4101,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Detail>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "LeftEntity")
                         .WithMany()
@@ -4118,7 +4118,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Schedule>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Schedule>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "LeftEntity")
                         .WithMany()
@@ -4135,7 +4135,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Setting>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Schedule, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Schedule", "LeftEntity")
                         .WithMany()
@@ -4152,7 +4152,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Builder>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Builder>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
                         .WithMany("ServicesToApplications")
@@ -4169,7 +4169,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Detail>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Detail>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
                         .WithMany()
@@ -4186,7 +4186,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Member>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Member>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
                         .WithMany()
@@ -4203,7 +4203,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Service>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Service>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
                         .WithMany()
@@ -4220,7 +4220,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Setting>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
                         .WithMany()
@@ -4237,7 +4237,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
                     b.Navigation("RightEntity");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.Store.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Setting, Undersoft.SSC.Domain.Entities.Setting>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Infrastructure.DbStore.Relation.RelatedLink<Undersoft.SSC.Domain.Entities.Setting, Undersoft.SSC.Domain.Entities.Setting>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Setting", "LeftEntity")
                         .WithMany()

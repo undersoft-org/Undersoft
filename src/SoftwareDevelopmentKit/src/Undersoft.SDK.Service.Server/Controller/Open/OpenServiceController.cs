@@ -5,8 +5,9 @@ namespace Undersoft.SDK.Service.Server.Controller.Open;
 
 using Microsoft.AspNetCore.OData.Formatter;
 using Undersoft.SDK.Service;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Server.Operation.Invocation;
+using Undersoft.SDK.Service.Data.Client.Attributes;
 
 [OpenService]
 public abstract class OpenServiceController<TStore, TService, TModel>

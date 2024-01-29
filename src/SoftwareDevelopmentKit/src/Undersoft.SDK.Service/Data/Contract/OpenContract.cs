@@ -23,11 +23,11 @@ public class OpenContract<TContract, TDetail, TSetting, TGroup> : DataObject, IC
 
     [Details]
     [DataMember(Order = 13)]
-    public virtual DetailSet<TDetail> Details { get; set; }
+    public virtual ObjectSet<TDetail> Details { get; set; }
 
     [Settings]
     [DataMember(Order = 14)]
-    public virtual SettingSet<TSetting> Settings { get; set; }
+    public virtual ObjectSet<TSetting> Settings { get; set; }
 
     [DataMember(Order = 15)]
     public virtual TGroup Group { get; set; }

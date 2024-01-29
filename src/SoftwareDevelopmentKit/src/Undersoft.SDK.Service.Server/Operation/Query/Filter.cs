@@ -3,10 +3,9 @@ using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Server.Operation.Query;
 
-
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Query;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 
 public class Filter<TStore, TEntity, TDto> : Query<TStore, TEntity, ISeries<TDto>>
     where TEntity : class, IOrigin, IInnerProxy

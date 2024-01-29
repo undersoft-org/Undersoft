@@ -17,10 +17,6 @@ namespace Undersoft.SDK.Service.Server.Accounts
 
         IEnumerable<Claim> GetClaims();
 
-        Credentials Credentials { get; set; }
-
-        AuthorizationNotes Notes { get; set; }
-
         bool Authorized { get; set; }
 
         bool Authenticated { get; set; }

@@ -2,8 +2,9 @@
 
 namespace Undersoft.SDK.Service.Configuration;
 using Microsoft.Extensions.Configuration;
-using Undersoft.SDK.Security.Identity;
-using Undersoft.SDK.Service.Infrastructure.Repository.Source;
+using Undersoft.SDK.Security;
+using Undersoft.SDK.Service.Data.Client;
+using Undersoft.SDK.Service.Data.Store;
 
 public interface IServiceConfiguration : IConfiguration
 {
@@ -23,8 +24,8 @@ public interface IServiceConfiguration : IConfiguration
     int SourcePoolSize(IConfigurationSection endpoint);
     string SourceConnectionString(IConfigurationSection endpoint);
     string SourceConnectionString(string name);
-    SourceProvider SourceProvider(IConfigurationSection endpoint);
-    SourceProvider SourceProvider(string name);
+    StoreProvider SourceProvider(IConfigurationSection endpoint);
+    StoreProvider SourceProvider(string name);
     IEnumerable<IConfigurationSection> Sources();
     string Title { get; }
     IConfigurationSection Repository();

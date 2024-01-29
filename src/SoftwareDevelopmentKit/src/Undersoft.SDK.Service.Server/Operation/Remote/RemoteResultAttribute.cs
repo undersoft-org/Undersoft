@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Undersoft.SDK.Service.Infrastructure.Repository.Client.Remote;
+using Undersoft.SDK.Service.Data.Remote.Repository;
 
 namespace Undersoft.SDK.Service.Server.Operation.Remote;
 

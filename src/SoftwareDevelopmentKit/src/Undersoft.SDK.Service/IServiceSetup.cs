@@ -11,8 +11,7 @@ public partial interface IServiceSetup
     IServiceSetup AddMapper(params MapperProfile[] profiles);
     IServiceSetup AddMapper<TProfile>() where TProfile : MapperProfile;
     IServiceSetup AddCaching();
-    IServiceSetup ConfigureServices(Type[] sourceTypes = null, Type[] clientTypes = null);
-    IServiceSetup AddRepositorySources();
+    IServiceSetup ConfigureServices(Type[] clientTypes = null);
     IServiceSetup AddRepositoryClients();
     IServiceSetup AddImplementations();
     IServiceSetup AddPropertyInjection();

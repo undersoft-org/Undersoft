@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Server.Controller.Crud;
 using Undersoft.SDK.Service.Server.Controller.Open;
 using Undersoft.SDK.Service.Server.Controller.Stream;

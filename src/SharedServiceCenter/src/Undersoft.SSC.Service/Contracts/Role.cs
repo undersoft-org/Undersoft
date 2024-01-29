@@ -1,13 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Serialization;
-using Undersoft.SDK;
-using Undersoft.SDK.Security.Identity;
-using Undersoft.SDK.Service.Data.Object.Detail;
+﻿using System.Runtime.Serialization;
 
 namespace Undersoft.SSC.Service.Contracts;
 
 [DataContract]
-public class Role : Identifiable 
+public class Role : InnerProxy
 {
     [DataMember(Order = 6)]
     public virtual string? Name { get; set; }
@@ -16,5 +12,5 @@ public class Role : Identifiable
     public virtual string? NormalizedName { get; set; }
 
     [DataMember(Order = 8)]
-    public Listing<Claim>? Claims { get; set; }
+    public ObjectSet<Claim>? Claims { get; set; }
 }

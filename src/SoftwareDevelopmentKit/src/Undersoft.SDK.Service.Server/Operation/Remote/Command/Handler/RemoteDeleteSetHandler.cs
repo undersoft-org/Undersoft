@@ -3,8 +3,8 @@
 namespace Undersoft.SDK.Service.Server.Operation.Remote.Command.Handler;
 
 using Notification;
-using Undersoft.SDK.Service.Infrastructure.Repository;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Remote.Repository;
+using Undersoft.SDK.Service.Data.Store;
 
 public class RemoteDeleteSetHandler<TStore, TDto, TModel>
     : IRequestHandler<RemoteDeleteSet<TStore, TDto, TModel>, RemoteCommandSet<TModel>>

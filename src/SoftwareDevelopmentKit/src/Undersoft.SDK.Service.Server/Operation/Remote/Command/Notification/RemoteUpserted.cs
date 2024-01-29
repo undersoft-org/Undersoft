@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace Undersoft.SDK.Service.Server.Operation.Remote.Command.Notification;
 
 using Command;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Server.Operation.Command;
 
 public class RemoteUpserted<TStore, TDto, TModel> : RemoteNotification<RemoteCommand<TModel>>

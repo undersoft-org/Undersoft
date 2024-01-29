@@ -6,8 +6,8 @@ namespace Undersoft.SDK.Service.Server;
 using Controller;
 using Undersoft.SDK.Service.Server.Controller.Crud;
 using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SDK.Service.Infrastructure.Store;
-using Undersoft.SDK.Service.Client;
+using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Data.Client.Attributes;
 
 public class RestDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuilder<TStore>  where TStore :  IDataStore
 {

@@ -10,7 +10,7 @@ using System.Linq;
 namespace Undersoft.SDK.Service.Data.Object;
 
 using Event;
-using Undersoft.SDK.Service.Client;
+using Undersoft.SDK.Service.Data.Client;
 
 public static class DataObjectExtensions
 {

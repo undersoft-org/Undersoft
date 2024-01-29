@@ -3,9 +3,8 @@ using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Server.Operation.Command;
 
-
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Store;
 
 public class UpsertSetAsync<TStore, TEntity, TDto>
     : UpsertSet<TStore, TEntity, TDto>,

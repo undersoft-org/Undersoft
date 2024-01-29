@@ -5,8 +5,8 @@ namespace Undersoft.SDK.Service.Server.Operation.Remote.Invocation.Handler;
 
 using Notification;
 using Undersoft.SDK;
-using Undersoft.SDK.Service.Infrastructure.Repository;
-using Undersoft.SDK.Service.Infrastructure.Store;
+using Undersoft.SDK.Service.Data.Remote.Repository;
+using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Server.Operation.Invocation;
 using Undersoft.SDK.Service.Server.Operation.Remote.Invocation;
 
