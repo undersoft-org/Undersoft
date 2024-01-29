@@ -1,53 +1,61 @@
 ﻿using Microsoft.Extensions.Hosting;
+using Undersoft.SDK.Service.Hosting;
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
+using Undersoft.SDK.Service.Configuration;
+using Microsoft.AspNetCore.Hosting;
+using Undersoft.SDK.Service.Server.Operation.Invocation;
 using Undersoft.SDK.Series;
 using Undersoft.SDK.Service.Application.Hosting;
-using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SDK.Service.Hosting;
-using Undersoft.SDK.Service.Server.Hosting;
 
 namespace Undersoft.SDK.Service.Application.Server.Hosting;
 
-public class ApplicationServerHost : Identifiable, IHost
+public class ApplicationServerHost : ServiceHost, IHost, IApplicationServerHost
 {
-    private IHost _host { get; set; }
+    private readonly HostBuilder _hostBuilder;
 
-    public ApplicationServerHost(IHostBuilder builder)
+    public ApplicationServerHost(Action<IWebHostBuilder> builder) : this()
     {
-        _host = builder.Build();
+        Configure(builder);
     }
-    
-    public string? ServerName { get; set; }
 
-    public string? HostName { get; set; }
+    public ApplicationServerHost(string[] args = null)
+        : this(ServiceConfigurationHelper.BuildConfiguration(args)) { }
 
-    public int Port { get; set; }
+    public ApplicationServerHost(IConfiguration configuration)
+    {
+        _hostBuilder = new HostBuilder();
+        ApplicationHosts = new Registry<ApplicationHost>();
+        configuration.Bind("General", this);
+        _hostBuilder.ConfigureWebHost(
+            builder =>
+                builder
+                    .UseContentRoot(Directory.GetCurrentDirectory())
+                    .UseConfiguration(configuration)
+                    .UseKestrel((c, o) => o.Configure(c.Configuration.GetSection("Kestrel")))
+                    .UseStaticWebAssets()
+        );
+    }
 
-    public string? Route { get; set; }
+    public ApplicationServerHost Configure(Action<IWebHostBuilder> builder)
+    {
+        _hostBuilder.ConfigureWebHost(builder);
+        return this;
+    }
 
-    public long TenantId { get; set; }
+    public void Run()
+    {
+        Host = _hostBuilder.Build();
 
-    public string? TenantName { get; set; }
-
-    public IServiceProvider Services => _host.Services;
+        using (Host)
+        {
+            Host.Run();
+        }
+    }
 
     public Registry<ApplicationHost>? ApplicationHosts { get; set; }
 
     private Registry<IServiceProvider?>? hostedApplications;
     public Registry<IServiceProvider?>? HostedApplications =>
         hostedApplications ??= ApplicationHosts?.Select(s => s.Services)?.ToRegistry();
-
-    public Task StartAsync(CancellationToken cancellationToken = default)
-    {
-        return _host.StartAsync(cancellationToken);
-    }
-
-    public Task StopAsync(CancellationToken cancellationToken = default)
-    {
-        return _host.StopAsync(cancellationToken);
-    }
-
-    public void Dispose()
-    {
-        _host?.Dispose();
-    }
 }

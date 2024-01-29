@@ -1,4 +1,6 @@
+using Grpc.Core;
 using Undersoft.SDK.Logging;
+using Undersoft.SDK.Service.Application.Server.Hosting;
 using Undersoft.SDK.Service.Configuration;
 
 namespace Undersoft.SSC.Service.Application.Server;
@@ -6,38 +8,23 @@ namespace Undersoft.SSC.Service.Application.Server;
 public class Program
 {
     static string[] _args = new string[0];
-    static IHost? _host;
+    static IApplicationServerHost? server;
 
     public static void Main(string[] args)
     {
-        _args = args ?? new string[0];
+        _args = args;
+
         Launch();
     }
 
-    static IHost Build()
-    {
-        var builder = new HostBuilder();
-
-        builder.Info<Runlog>("Starting Undersoft.SSC.Service.Application.Server ....");
-
-        _host = builder.ConfigureWebHost(builder => builder
-            .UseContentRoot(Directory.GetCurrentDirectory())
-            .UseConfiguration(ServiceConfigurationHelper.BuildConfiguration())
-            .UseKestrel()
-            .ConfigureKestrel((c, o) => o
-                .Configure(c.Configuration
-                .GetSection("Kestrel")))
-            .UseStaticWebAssets()
-            .UseStartup<Setup>())
-            .Build();
-
-        return _host;
-    }
     public static void Launch()
     {
         try
         {
-            Build().Run();
+            Log.Info<Runlog>(null, "Starting Undersoft.SSC.Service.Application.Server ....");
+
+            server = new ApplicationServerHost(builder => builder.UseStartup<Setup>());
+            server.Run();
         }
         catch (Exception exception)
         {
@@ -49,20 +36,18 @@ public class Program
         }
     }
 
-    public static async Task Restart()
+    public static void Restart()
     {
         Log.Info<Runlog>(null, "Restarting  Undersoft.SSC.Service.Application.Server ....");
-
-        Task.WaitAll(Shutdown());
-
-        await Task.Run(() => Launch());
+        
+        Shutdown();
+        Launch();
     }
 
-    public static async Task Shutdown()
+    public static void Shutdown()
     {
-        _host.Info<Runlog>("Shutting down  Undersoft.SSC.Service.Application.Server ....");
+        Log.Info<Runlog>(null, "Shutting down  Undersoft.SSC.Service.Application.Server ....");
 
-        if (_host != null)
-            await _host.StopAsync(TimeSpan.FromSeconds(5));
+        server?.Host.StopAsync(TimeSpan.FromSeconds(5)).Wait();
     }
 }
