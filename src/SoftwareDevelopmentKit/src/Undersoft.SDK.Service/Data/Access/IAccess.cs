@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Security
 {
-    public interface IAccountAccess
+    public interface IAccess
     {
         Task<IAuthorization> SignIn(IAuthorization account);
         Task<IAuthorization> SignOut(IAuthorization account);

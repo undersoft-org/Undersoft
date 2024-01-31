@@ -6,7 +6,6 @@ using Undersoft.SDK.Service.Data.Remote;
 using Undersoft.SDK.Service.Data.Remote.Repository;
 using Undersoft.SDK.Service.Data.Repository;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Data.Remote.Repository;
 
 namespace Undersoft.SDK.Service.Hosting
 {
@@ -17,7 +16,7 @@ namespace Undersoft.SDK.Service.Hosting
             IServiceRegistry service = reg;
             HashSet<Type> duplicateCheck = new HashSet<Type>();
 
-            /**************************************** DataService Entity Type Routines ***************************************/
+            /**************************************** Data Service Remotes *********************************************/
 
             foreach (ISeries<IEdmEntityType> contextEntityTypes in OpenDataRegistry.ContextEntities)
             {
@@ -29,17 +28,19 @@ namespace Undersoft.SDK.Service.Hosting
                         Type callerType = DataStoreRegistry.GetRemoteType(entityType.Name);
                         if (callerType != null)
                         {
-                            Type relationType = typeof(RemoteRelation<,>).MakeGenericType(
-                                callerType,
-                                entityType
-                            );
+                            var relationName = callerType.FullName + "__&__" + entityType.FullName;
+                            var reversedName = entityType.FullName + "__&__" + callerType.FullName;
 
                             if (
                                 OpenDataRegistry.Remotes.TryGet(
-                                    relationType,
+                                    relationName,
                                     out ISeriesItem<RemoteRelation> relation
+                                ) || OpenDataRegistry.Remotes.TryGet(
+                                    reversedName,
+                                    out relation
                                 )
                             )
+                            {
                                 service.AddObject(
                                     typeof(IRemoteRelation<,>).MakeGenericType(
                                         callerType,
@@ -47,57 +48,66 @@ namespace Undersoft.SDK.Service.Hosting
                                     ),
                                     relation.Value
                                 );
+                                //if(relation.Value.Towards == Towards.SetToSet)
+                                //{
+                                //    service.AddObject(
+                                //    typeof(IRemoteRelation<,>).MakeGenericType(
+                                //        entityType,
+                                //        callerType
+                                //    ),
+                                //    relation.Value);
+                                //}
+                            }
+                            /*****************************************************************************************/                           
                         }
 
-                        var stores = OpenDataRegistry.GetEntityStoreTypes(entityType);
-                        if (stores != null)
+                        var remoteStores = OpenDataRegistry.GetEntityStoreTypes(entityType);
+                        if (remoteStores != null)
                         {
                             /*****************************************************************************************/
-                            foreach (Type store in stores)
+                            foreach (Type remoteStore in remoteStores)
                             {
                                 /*****************************************************************************************/
                                 service.AddScoped(
-                                    typeof(IRemoteRepository<,>).MakeGenericType(store, entityType),
-                                    typeof(RemoteRepository<,>).MakeGenericType(store, entityType)
+                                    typeof(IRemoteRepository<,>).MakeGenericType(remoteStore, entityType),
+                                    typeof(RemoteRepository<,>).MakeGenericType(remoteStore, entityType)
                                 );
 
                                 service.AddScoped(
-                                    typeof(IEntityCache<,>).MakeGenericType(store, entityType),
-                                    typeof(EntityCache<,>).MakeGenericType(store, entityType)
+                                    typeof(IEntityCache<,>).MakeGenericType(remoteStore, entityType),
+                                    typeof(EntityCache<,>).MakeGenericType(remoteStore, entityType)
                                 );
                                 /*****************************************************************************************/
                                 service.AddScoped(
-                                    typeof(IRemoteSet<,>).MakeGenericType(store, entityType),
-                                    typeof(RemoteSet<,>).MakeGenericType(store, entityType)
+                                    typeof(IRemoteSet<,>).MakeGenericType(remoteStore, entityType),
+                                    typeof(RemoteSet<,>).MakeGenericType(remoteStore, entityType)
                                 );
-                                /*****************************************************************************************/
+
                                 if (callerType != null)
                                 {
-                                    /*********************************************************************************************/
                                     service.AddScoped(
                                         typeof(IRepositoryLink<,,>).MakeGenericType(
-                                            store,
+                                            remoteStore,
                                             callerType,
                                             entityType
                                         ),
                                         typeof(RepositoryLink<,,>).MakeGenericType(
-                                            store,
+                                            remoteStore,
                                             callerType,
                                             entityType
                                         )
                                     );
-
                                     service.AddScoped(
-                                        typeof(IRemoteProperty<,>).MakeGenericType(store, callerType),
+                                        typeof(IRemoteProperty<,>).MakeGenericType(remoteStore, callerType),
                                         typeof(RepositoryLink<,,>).MakeGenericType(
-                                            store,
+                                            remoteStore,
                                             callerType,
                                             entityType
                                         )
                                     );
-                                    /*********************************************************************************************/
                                 }
                             }
+                            /*********************************************************************************************/
                         }
                     }
                 }

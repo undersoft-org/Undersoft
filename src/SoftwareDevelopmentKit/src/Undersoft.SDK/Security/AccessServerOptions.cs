@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Security
 {
-    public class AccountServerOptions
+    public class AccessServerOptions
     {
         public string ServiceName { get; set; }
 

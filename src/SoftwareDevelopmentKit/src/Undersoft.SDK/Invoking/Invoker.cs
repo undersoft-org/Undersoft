@@ -12,6 +12,9 @@ namespace Undersoft.SDK.Invoking
 
         public Invoker() { }
 
+        public Invoker(Arguments args) : this(args.TargetName, args.MethodName, args.TypeArray)
+        { }
+
         public Invoker(object targetObject, MethodInfo methodInvokeInfo)
         {
             TargetObject = targetObject;
@@ -22,7 +25,7 @@ namespace Undersoft.SDK.Invoking
                 NumberOfArguments = m.GetParameters().Length;
                 Info = m;
                 Parameters = m.GetParameters();
-                Arguments = new Arguments(Parameters);
+                Arguments = new Arguments(m.Name, Parameters);
             }
             createUniqueKey();
         }
@@ -38,7 +41,7 @@ namespace Undersoft.SDK.Invoking
                 NumberOfArguments = m.GetParameters().Length;
                 Info = m;
                 Parameters = m.GetParameters();
-                Arguments = new Arguments(Parameters);
+                Arguments = new Arguments(m.Name, Parameters);
             }
             createUniqueKey();
         }
@@ -59,7 +62,7 @@ namespace Undersoft.SDK.Invoking
                 {
                     Parameters = m.GetParameters();
                     NumberOfArguments = Parameters.Length;
-                    Arguments = new Arguments(Parameters);
+                    Arguments = new Arguments(methodName, Parameters, t.FullName);
                 }
                 Info = m;
             }

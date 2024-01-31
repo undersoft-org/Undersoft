@@ -1,12 +1,9 @@
-﻿using IdentityModel;
-using Microsoft.Extensions.Hosting;
-using System.Net.Security;
-using Undersoft.SDK.Service.Data.Repository;
+﻿using Microsoft.Extensions.Hosting;
 
 namespace Undersoft.SDK.Service.Hosting
 {
 
-    public class ServiceHost : IHost, IServiceHost
+    public class ServiceHost : Identifiable, IHost, IServiceHost
     {
         public string Name { get; set; }
 
@@ -25,8 +22,6 @@ namespace Undersoft.SDK.Service.Hosting
         public long TenantId { get; set; }
 
         public string TenantName { get; set; }
-
-        public string TypeName { get; set; }
 
         public IServiceProvider Services => Host.Services;
 

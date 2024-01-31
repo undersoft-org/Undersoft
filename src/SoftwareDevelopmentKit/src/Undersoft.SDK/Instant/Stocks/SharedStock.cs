@@ -2,6 +2,7 @@
 using System.Threading;
 using Undersoft.SDK.Uniques;
 using Undersoft.SDK.Instant.Proxies;
+using System;
 
 namespace Undersoft.SDK.Instant.Stocks
 {

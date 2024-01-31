@@ -18,7 +18,7 @@ public interface IServiceConfiguration : IConfiguration
     ClientProvider ClientProvider(IConfigurationSection client);
     ClientProvider ClientProvider(string name);
     IEnumerable<IConfigurationSection> Clients();
-    string Description { get; }
+    string TypeName { get; }
     string DataServiceRoutes(string name);
     IConfigurationSection Source(string name);
     int SourcePoolSize(IConfigurationSection endpoint);
@@ -27,13 +27,13 @@ public interface IServiceConfiguration : IConfiguration
     StoreProvider SourceProvider(IConfigurationSection endpoint);
     StoreProvider SourceProvider(string name);
     IEnumerable<IConfigurationSection> Sources();
-    string Title { get; }
+    string Name { get; }
     IConfigurationSection Repository();
-    IConfigurationSection AccountServer();
+    IConfigurationSection AccessServer();
     string IdentityServerBaseUrl();
     string IdentityServiceName();
     string[] IdentityServerScopes();
     string[] IdentityServerRoles();
-    AccountServerOptions GetAccountServerConfiguration();
-    AccountServerOptions Identity { get; }
+    AccessServerOptions GetAccessServerConfiguration();
+    AccessServerOptions AccessOptions { get; }
 }

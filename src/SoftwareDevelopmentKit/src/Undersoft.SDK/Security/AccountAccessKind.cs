@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Undersoft.SDK.Security
 {
-    public enum AccountAction
+    public enum AccountAccessKind
     {
         None,
         SignIn,

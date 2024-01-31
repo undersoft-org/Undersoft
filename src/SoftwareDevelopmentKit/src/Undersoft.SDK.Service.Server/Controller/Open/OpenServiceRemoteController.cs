@@ -8,6 +8,8 @@ using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Server.Operation.Remote.Invocation;
 using Undersoft.SDK.Service.Data.Client.Attributes;
+using Microsoft.AspNetCore.OData.Routing.Attributes;
+using System.Text.Json;
 
 [OpenServiceRemote]
 public abstract class OpenServiceRemoteController<TStore, TService, TDto>
@@ -27,47 +29,74 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Access([FromBody]
-       ODataActionParameters arguments
-    )
+    public virtual async Task<IActionResult> Access([FromBody] IDictionary<string, byte[]> args)
     {
+        var isValid = false;
+
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Entry(
-            new RemoteAction<TStore, TService, TDto>(arguments["Name"].ToString(), new Arguments((Dictionary<string, object>)arguments))
-        );
+        var result = args.ForEach(
+                async a =>
+                    await _servicer.Perform(
+                        new RemoteAction<TStore, TService, TDto>(a.Key, a.Value)
+                    )
+            )
+            .Commit();
 
-        return (!result.IsValid ? BadRequest(result.ErrorMessages) : Ok(result.Response));
+        object[] response = await result
+            .ForEach(
+                async c => (isValid = (await c).IsValid) ? c.Id as object : (await c).ErrorMessages
+            )
+            .ToArrayAsync();
+        return !isValid ? UnprocessableEntity(response) : Ok(response);
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Action([FromBody]
-       ODataActionParameters arguments
- )
+    public virtual async Task<IActionResult> Action([FromBody] IDictionary<string, byte[]> args)
     {
+        var isValid = false;
+
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Entry(
-            new RemoteAction<TStore, TService, TDto>(arguments["Name"].ToString(), new Arguments((Dictionary<string, object>)arguments))
-        );
+        var result = args.ForEach(
+                async a =>
+                    await _servicer.Perform(
+                        new RemoteAction<TStore, TService, TDto>(a.Key, a.Value)
+                    )
+            )
+            .Commit();
 
-        return (!result.IsValid ? BadRequest(result.ErrorMessages) : Ok(result.Response));
+        object[] response = await result
+            .ForEach(
+                async c => (isValid = (await c).IsValid) ? c.Id as object : (await c).ErrorMessages
+            )
+            .ToArrayAsync();
+        return !isValid ? UnprocessableEntity(response) : Ok(response);
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Setup([FromBody]
-       ODataActionParameters arguments
-)
+    public virtual async Task<IActionResult> Setup([FromBody] IDictionary<string, byte[]> args)
     {
+        var isValid = false;
+
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Report(
-            new RemoteAction<TStore, TService, TDto>(arguments["Name"].ToString(), new Arguments((Dictionary<string, object>)arguments))
-        );
+        var result = args.ForEach(
+                async a =>
+                    await _servicer.Perform(
+                        new RemoteAction<TStore, TService, TDto>(a.Key, a.Value)
+                    )
+            )
+            .Commit();
 
-        return (!result.IsValid ? BadRequest(result.ErrorMessages) : Ok(result.Response));
+        object[] response = await result
+            .ForEach(
+                async c => (isValid = (await c).IsValid) ? c.Id as object : (await c).ErrorMessages
+            )
+            .ToArrayAsync();
+        return !isValid ? UnprocessableEntity(response) : Ok(response);
     }
 }

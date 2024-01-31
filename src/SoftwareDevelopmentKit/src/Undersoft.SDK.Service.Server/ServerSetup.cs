@@ -137,7 +137,7 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
                                 configureClient: (client) =>
                                     client.DefaultRequestHeaders.Add(
                                         "X-Title",
-                                        config.Title
+                                        config.Name
                                             + " ,OS="
                                             + Environment.OSVersion
                                             + ",ServiceName="
@@ -305,7 +305,7 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
 
     public IServerSetup AddAuthorization()
     {
-        var ic = configuration.Identity;
+        var ic = configuration.AccessOptions;
 
         registry.Services.AddAuthorization(options =>
         {
@@ -326,7 +326,7 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
     public IServerSetup AddSwagger()
     {
         string ver = configuration.Version;
-        var ao = configuration.Identity;        
+        var ao = configuration.AccessOptions;        
 
         //registry.AddApiVersioning(options =>
         //{

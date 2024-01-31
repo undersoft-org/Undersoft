@@ -13,8 +13,11 @@ public static class RemoteLinkExtensions
                                                           where TTarget : class, IOrigin, IInnerProxy
     {
         var remote = new RemoteSetToSet<TOrigin, TTarget>(middlekey, targetkey);
-        context.Remotes.Put(remote.TypeId, remote);
+        var reversed = new RemoteSetToSet<TTarget, TOrigin>();
+        context.Remotes.Put(remote.Name, remote);
+        context.Remotes.Put(reversed.Name, remote);
         context.Remotes.Put(typeof(TOrigin), remote);
+        context.Remotes.Put(typeof(TTarget), remote);
         return context;
     }
 
@@ -26,7 +29,7 @@ public static class RemoteLinkExtensions
     {
 
         var remote = new RemoteOneToSet<TOrigin, TTarget>(originkey, targetkey);
-        context.Remotes.Put(remote.TypeId, remote);
+        context.Remotes.Put(remote.Name, remote);
         context.Remotes.Put(typeof(TOrigin), remote);
         return context;
     }
@@ -38,7 +41,7 @@ public static class RemoteLinkExtensions
                                                         where TTarget : class, IUniqueIdentifiable
     {
         var remote = new RemoteOneToOne<TOrigin, TTarget>(originkey, targetkey);
-        context.Remotes.Put(remote.TypeId, remote);
+        context.Remotes.Put(remote.Name, remote);
         context.Remotes.Put(typeof(TOrigin), remote);
         return context;
     }

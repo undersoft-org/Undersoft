@@ -49,28 +49,28 @@ public class Servicer : ServiceManager, IServicer, IMediator
         where T : class
         where R : class
     {
-        return new Lazy<R>(function.Invoke(GetService<T>()));
+        return new Lazy<R>(function.Invoke(base.GetService<T>()));
     }
    
     public Task<R> Run<T, R>(Func<T, Task<R>> function) where T : class
     {
-        return Task.Run(async () => await function.Invoke(GetService<T>()));
+        return Task.Run(async () => await function.Invoke(base.GetService<T>()));
     }
 
     public Task Run<T>(Func<T, Task> function) where T : class
     {
-        return Task.Run(async () => await function.Invoke(GetService<T>()));
+        return Task.Run(async () => await function.Invoke(base.GetService<T>()));
     }
 
     public Task Run<T>(string methodname, params object[] parameters) where T : class
     {        
-        return new Invoker(GetService<T>(), methodname).InvokeAsync(parameters);
+        return new Invoker(base.GetService<T>(), methodname).InvokeAsync(parameters);
     }
 
     public Task<R> Run<T, R>(string methodname, params object[] parameters) where T : class
     {
         Invoker deputy = new Invoker(
-            GetService<T>(),
+            base.GetService<T>(),
             methodname,
             parameters.ForEach(p => p.GetType()).Commit()
         );
@@ -79,13 +79,13 @@ public class Servicer : ServiceManager, IServicer, IMediator
 
     public Task Run<T>(string methodname, Arguments arguments) where T : class
     {
-        Invoker deputy = new Invoker(GetService<T>(), methodname, arguments.TypeArray);
+        Invoker deputy = new Invoker(base.GetService<T>(), methodname, arguments.TypeArray);
         return deputy.InvokeAsync(arguments);
     }
 
     public Task<R> Run<T, R>(string methodname, Arguments arguments) where T : class
     {
-        Invoker deputy = new Invoker(GetService<T>(), methodname, arguments.TypeArray);
+        Invoker deputy = new Invoker(base.GetService<T>(), methodname, arguments.TypeArray);
         return deputy.InvokeAsync<R>(arguments);
     }
 
@@ -134,12 +134,12 @@ public class Servicer : ServiceManager, IServicer, IMediator
 
     public async Task<TResponse> Report<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
     {
-        return await GetService<IMediator>().Send(request, cancellationToken);
+        return await base.GetService<IMediator>().Send(request, cancellationToken);
     }
 
     public async Task<object> Report(object request, CancellationToken cancellationToken = default)
     {
-        return await GetService<IMediator>().Send(request, cancellationToken);
+        return await base.GetService<IMediator>().Send(request, cancellationToken);
     }
 
     public async Task<TResponse> Entry<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
@@ -242,19 +242,19 @@ public class Servicer : ServiceManager, IServicer, IMediator
         });
     }
 
-    public T CallService<T>() where T : class
-    {
-        return GetManager().GetService<T>();
+    public T GetManaged<T>() where T : class
+    { 
+        return GetManager().GetService<T>(); 
     }
 
-    public T CallObject<T>() where T : class
-    {
+    public T GetRegistered<T>() where T : class
+    { 
         return GetRegistry().GetObject<T>();
     }
 
     public async Task Save(bool asTransaction = false)
     {
-        await SaveEndpoints(true);
+        await SaveStores(true);
         await SaveClients(true);
     }
 
@@ -274,17 +274,17 @@ public class Servicer : ServiceManager, IServicer, IMediator
         return changes;
     }
 
-    public async Task<int> SaveEndpoint(IRepositorySource source, bool asTransaction = false)
+    public async Task<int> SaveStore(IRepositorySource source, bool asTransaction = false)
     {
         return await source.Save(asTransaction);
     }
 
-    public async Task<int> SaveEndpoints(bool asTransaction = false)
+    public async Task<int> SaveStores(bool asTransaction = false)
     {
         int changes = 0;
         for (int i = 0; i < Sources.Count; i++)
         {
-            changes += await SaveEndpoint(Sources[i], asTransaction);
+            changes += await SaveStore(Sources[i], asTransaction);
         }
 
         return changes;

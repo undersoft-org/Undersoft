@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using System.Runtime.Intrinsics.X86;
+using Undersoft.SDK.Security;
 using Undersoft.SDK.Service;
-using Undersoft.SSC.Service.Clients;
-using Undersoft.SSC.Service.Application.UI.Shared;
 using Undersoft.SDK.Service.Application.Access;
+using Undersoft.SSC.Service.Clients;
 using Undersoft.SSC.Service.Contracts;
 
 namespace Undersoft.SSC.Service.Application.Client
@@ -37,7 +36,7 @@ namespace Undersoft.SSC.Service.Application.Client
                     reg.AddScoped<AuthenticationStateProvider, AccessProvider<Account>>(
                         provider => provider.GetRequiredService<AccessProvider<Account>>()
                     );
-                    reg.AddScoped<IAccessService, AccessProvider<Account>>(
+                    reg.AddScoped<IAccountAccess, AccessProvider<Account>>(
                         provider => provider.GetRequiredService<AccessProvider<Account>>()
                     );
                     reg.MergeServices(true);

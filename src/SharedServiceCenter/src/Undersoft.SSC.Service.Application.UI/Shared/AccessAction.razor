@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Undersoft.SDK.Security;
 
-@inject IAccessService AuthStateService
 @inject NavigationManager Navigation
 
 <AuthorizeView>
@@ -14,9 +14,8 @@
 </AuthorizeView>
 
 @code{
-    private async Task BeginSignOut(MouseEventArgs args)
+    private void BeginSignOut(MouseEventArgs args)
     {
-        await AuthStateService.SignOut();
         Navigation.NavigateTo("account/signout");
     }
 }

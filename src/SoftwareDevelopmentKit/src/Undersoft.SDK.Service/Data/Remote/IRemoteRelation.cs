@@ -21,6 +21,8 @@ public interface IRemoteRelation<TOrigin, TTarget> : IRemoteRelation where TOrig
 
 public interface IRemoteRelation : IIdentifiable
 {
+    string Name { get; }
+
     Towards Towards { get; set; }
 
     MemberRubric RemoteRubric { get; }

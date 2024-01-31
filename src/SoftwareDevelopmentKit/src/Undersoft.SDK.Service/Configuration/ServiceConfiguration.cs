@@ -16,8 +16,8 @@ public class ServiceConfiguration : IServiceConfiguration
     private IConfiguration config;
     public IServiceCollection Services;
 
-    private AccountServerOptions _identity;
-    public AccountServerOptions Identity => _identity ??= GetOpenApiConfiguration();
+    private AccessServerOptions _accessoptions;
+    public AccessServerOptions AccessOptions => _accessoptions ??= GetAccessServerConfiguration();
 
     private RepositoryOptions _repository;
     public RepositoryOptions Repositories => _repository ??= GetRepositoryConfiguration(); 
@@ -72,9 +72,9 @@ public class ServiceConfiguration : IServiceConfiguration
         return this;
     }
 
-    public string Version => config["ServiceVersion"];
-    public string Title => config["Title"];
-    public string Description => config["Description"];
+    public string Version => config.GetSection("General")["Version"];
+    public string Name => config.GetSection("General")["Name"];
+    public string TypeName => config.GetSection("General")["TypeName"];
 
     public string DataServiceRoutes(string name)
     {
@@ -186,47 +186,47 @@ public class ServiceConfiguration : IServiceConfiguration
         return config.GetSection(key);
     }
 
-    public IConfigurationSection AccountServer()
+    public IConfigurationSection AccessServer()
     {
-        return config.GetSection("AccountServer");
+        return config.GetSection("AccessServer");
     }
 
     public string IdentityServerBaseUrl()
     {
-        return AccountServer().GetValue<string>("ServerBaseUrl");
+        return AccessServer().GetValue<string>("ServerBaseUrl");
     }
 
     public string IdentityServiceName()
     {
-        return AccountServer().GetValue<string>("ServiceName");
+        return AccessServer().GetValue<string>("ServiceName");
     }
 
     public string[] IdentityServerScopes()
     {
-        return AccountServer()?.GetValue<string[]>("Scopes");
+        return AccessServer()?.GetValue<string[]>("Scopes");
     }
 
     public string[] IdentityServerClaims()
     {
-        return AccountServer()?.GetValue<string[]>("Claims");
+        return AccessServer()?.GetValue<string[]>("Claims");
     }
 
     public string[] IdentityServerRoles()
     {
-        return AccountServer()?.GetValue<string[]>("Roles");
+        return AccessServer()?.GetValue<string[]>("Roles");
     }
 
-    public AccountServerOptions GetAccountServerConfiguration()
+    public AccessServerOptions GetAccessServerConfiguration()
     {
-        var identity = new AccountServerOptions();
-        config.Bind("AccountServer", identity);
+        var identity = new AccessServerOptions();
+        config.Bind("AccessServer", identity);
         return identity;
     }
 
-    public AccountServerOptions GetOpenApiConfiguration()
+    public AccessServerOptions GetOpenApiConfiguration()
     {
-        var identity = new AccountServerOptions();
-        config.Bind("AccountServer", identity);
+        var identity = new AccessServerOptions();
+        config.Bind("AccessServer", identity);
         return identity;
     }
 

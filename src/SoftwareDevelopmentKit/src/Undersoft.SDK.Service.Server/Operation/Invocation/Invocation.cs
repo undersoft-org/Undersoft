@@ -10,24 +10,23 @@ using Uniques;
 
 public class Invocation<TDto> : InvocationBase, IRequest<Invocation<TDto>> where TDto : class
 {
-    private long id;
-    private string method;
-
-    private Type serviceType;
-
     private Uscn code = new Uscn(Unique.NewId);
 
     public new TDto Return {  get; set; }
 
     protected Invocation() { }
 
-    protected Invocation(CommandMode commandMode, Type serviceType, string method) : base(commandMode, serviceType, method) { }
+    protected Invocation(CommandMode commandMode, Type serviceType, string method, object argument) 
+        : base(commandMode, serviceType, method, argument) { }
 
     protected Invocation(CommandMode commandMode, Type serviceType, string method, Arguments arguemnts)
         : base(commandMode, serviceType, method, arguemnts) { }
 
-    protected Invocation(CommandMode commandMode, Type serviceType, string method, params object[] arguments)
+    protected Invocation(CommandMode commandMode, Type serviceType, string method, object[] arguments)
        : base(commandMode, serviceType, method, arguments) { }
+
+    protected Invocation(CommandMode commandMode, Type serviceType, string method, byte[] binaries)
+      : base(commandMode, serviceType, method, binaries) { }
 
     public int CompareTo(IUnique other)
     {

@@ -69,8 +69,9 @@
             ulong offset
         )
         {
-            _extract.BytesToValueStructure(ptr, ref structure, offset);
-            return structure;
+            var _structure = structure;
+            _extract.BytesToValueStructure(ptr, ref _structure, offset);
+            return _structure;
         }
 
         public static unsafe void CopyBlock(

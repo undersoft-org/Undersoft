@@ -37,7 +37,7 @@ public class RemoteActionHandler<TStore, TService, TModel>
         try
         {
             request.Response = 
-                     await _repository.Action(request.Method, request.Arguments)
+                     await _repository.Action(request.Arguments.MethodName, request.Arguments)
                     
             ;
 

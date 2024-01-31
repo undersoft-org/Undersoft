@@ -13,7 +13,8 @@ using Claim = System.Security.Claims.Claim;
 
 namespace Undersoft.SDK.Service.Application.Access;
 
-public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccessService where TAccount : class, IAuthorization
+public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAccess
+    where TAccount : class, IAuthorization
 {
     private readonly IJSRuntime js;
     private readonly IAuthorization _authorization;
@@ -56,9 +57,10 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccessServ
             }
             if (IsTokenExpired(expirationTime.AddMinutes(-5)))
             {
-                var auth = (
-                    await _repository.Access("Renew", new Arguments("Account", token))
-                ).FirstOrDefault();
+                var auth = await Renew(
+                    new Authorization() { Credentials = new Credentials() { SessionToken = token } }
+                );
+
                 if (auth != null)
                 {
                     _authorization.Credentials = auth.Credentials;
@@ -75,8 +77,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccessServ
     public AccessState GetAccessState(string token)
     {
         _authorization.Credentials.SessionToken = token;
-        return new AccessState(new ClaimsPrincipal(new ClaimsIdentity(GetTokenClaims(token), "jwt"))
-        );
+        return new AccessState(new ClaimsPrincipal(new ClaimsIdentity(GetTokenClaims(token), "jwt")));
     }
 
     private ISeries<Claim> GetTokenClaims(string jwt)
@@ -117,40 +118,50 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccessServ
         return expirationTime <= DateTime.UtcNow;
     }
 
-    public async Task SignIn(IAuthorization authorization)
+    public async Task<IAuthorization?> SignIn(IAuthorization auth)
     {
-        var auth = (
-            await _repository.Access<IAccountAccess>(
-                a => a.SignIn,
-                new Arguments("Account", authorization)
-            )
-        ).FirstOrDefault();
+        var _auth = (
+            await _repository.Access<IAuthorization>(nameof(SignIn), auth)
+        );
 
-        if (auth == null)
-            return;
+        if (_auth == null)
+            return null;
 
-        _authorization.Credentials = auth.Credentials;
+        _authorization.Credentials = _auth.Credentials;
         await js.SetInLocalStorage(TOKENKEY, _authorization.Credentials.SessionToken);
         var authState = GetAccessState(_authorization.Credentials.SessionToken);
         NotifyAuthenticationStateChanged(Task.FromResult((AuthenticationState)authState));
+
+        return _auth;
     }
 
-    public async Task SignUp(IAuthorization authorization)
+    public async Task<IAuthorization> SignUp(IAuthorization auth)
     {
-        await _repository.Access<IAccountAccess>(
-            a => a.SignUp,
-            new Arguments("Account", authorization)
-        );
+        return await _repository.Access<IAuthorization>(nameof(SignUp), auth);
     }
 
-    public async Task SignOut()
+    public async Task<IAuthorization> SignOut(IAuthorization auth)
     {
-        await _repository.Access<IAccountAccess>(
-            a => a.SignOut,
-            new Arguments("Account", _authorization)
-        );
+        var _auth = await _repository.Access<IAuthorization>(nameof(SignOut), auth);
+      
         await CleanUp();
         NotifyAuthenticationStateChanged(Task.FromResult(Anonymous));
+        return _auth;
+    }
+
+    public async Task<IAuthorization?> Renew(IAuthorization auth)
+    {
+        var _auth = await _repository.Access<IAuthorization>(nameof(Renew), auth);
+
+        if (_auth == null)
+            return null;
+
+        _authorization.Credentials = _auth.Credentials;
+        await js.SetInLocalStorage(TOKENKEY, _authorization.Credentials.SessionToken);
+        var authState = GetAccessState(_authorization.Credentials.SessionToken);
+        NotifyAuthenticationStateChanged(Task.FromResult((AuthenticationState)authState));
+
+        return _auth;
     }
 
     private async Task CleanUp()

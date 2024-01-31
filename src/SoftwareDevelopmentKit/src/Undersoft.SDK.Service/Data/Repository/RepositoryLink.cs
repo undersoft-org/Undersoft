@@ -11,7 +11,9 @@ using Undersoft.SDK.Service.Data.Remote.Repository;
 using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Data.Remote.Repository;
 
-public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore, TTarget>, IRepositoryLink<TStore, TOrigin, TTarget>
+public class RepositoryLink<TStore, TOrigin, TTarget>
+    : RemoteRepository<TStore, TTarget>,
+        IRepositoryLink<TStore, TOrigin, TTarget>
     where TOrigin : class, IOrigin, IInnerProxy
     where TTarget : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
@@ -22,19 +24,27 @@ public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore,
         IRepositoryContextPool<OpenDataClient<TStore>> pool,
         IEntityCache<TStore, TTarget> cache,
         IRemoteRelation<TOrigin, TTarget> relation,
-        IRemoteSynchronizer synchronizer) : base(pool, cache)
+        IRemoteSynchronizer synchronizer
+    ) : base(pool, cache)
     {
         this.relation = relation;
         Synchronizer = synchronizer;
     }
 
     public Expression<Func<TTarget, bool>> CreatePredicate(object entity)
-    { return relation.CreatePredicate(entity); }
+    {
+        return relation.CreatePredicate(entity);
+    }
 
-    public void Load(object origin) { Load(origin, remoteContext); }
+    public void Load(object origin)
+    {
+        Load(origin, remoteContext);
+    }
 
     public void Load<T>(IEnumerable<T> origins, OpenDataContext context) where T : class
-    { origins.ForEach((o) => Load(o, context)); }
+    {
+        origins.ForEach((o) => Load(o, context));
+    }
 
     public void Load(object origin, OpenDataContext context)
     {
@@ -48,7 +58,9 @@ public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore,
             switch (Towards)
             {
                 case Towards.ToSingle:
-                    DataServiceQuery<TTarget> query = context.CreateQuery<TTarget>(typeof(TTarget).Name);
+                    DataServiceQuery<TTarget> query = context.CreateQuery<TTarget>(
+                        typeof(TTarget).Name
+                    );
                     Synchronizer.AcquireLinker();
                     _entity[rubricId] = query.FirstOrDefault(predicate);
                     Synchronizer.ReleaseLinker();
@@ -73,13 +85,24 @@ public class RepositoryLink<TStore, TOrigin, TTarget> : RemoteRepository<TStore,
         }
     }
 
-    public async Task LoadAsync(object origin) { await Task.Run(() => Load(origin, remoteContext), Cancellation); }
+    public async Task LoadAsync(object origin)
+    {
+        await Task.Run(() => Load(origin, remoteContext), Cancellation);
+    }
 
-    public async ValueTask LoadAsync(object origin, OpenDataContext context, CancellationToken token)
-    { await Task.Run(() => Load(origin, context), token); }
+    public async ValueTask LoadAsync(
+        object origin,
+        OpenDataContext context,
+        CancellationToken token
+    )
+    {
+        await Task.Run(() => Load(origin, context), token);
+    }
 
     public override Task<int> Save(bool asTransaction, CancellationToken token = default)
-    { return ContextLease.Save(asTransaction, token); }
+    {
+        return ContextLease.Save(asTransaction, token);
+    }
 
     public IRepository Host { get; set; }
 

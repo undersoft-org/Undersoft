@@ -12,14 +12,13 @@ public abstract class RemoteRelation<TOrigin, TTarget> : RemoteRelation, IRemote
 {
     public RemoteRelation()
     {
-        Name = typeof(TOrigin).Name + '_' + typeof(TTarget).Name;
+        Name = typeof(TOrigin).FullName + "__&__" + typeof(TTarget).FullName;
         Id = Name.UniqueKey();
 
-        OpenDataRegistry.Remotes.Add(TypeId, this);
+        OpenDataRegistry.Remotes.Add(Name, this);
         OpenDataRegistry.Remotes.Add(typeof(TOrigin), this);
-    }
 
-    public virtual string Name { get; set; }
+    }
 
     public virtual Expression<Func<TOrigin, object>> SourceKey { get; set; }
     public virtual Expression<Func<IRemoteLink<TOrigin, TTarget>, object>> JoinKey { get; set; }
@@ -38,6 +37,8 @@ public abstract class RemoteRelation<TOrigin, TTarget> : RemoteRelation, IRemote
 public abstract class RemoteRelation : Origin, IRemoteRelation
 {
     protected RemoteRelation() { }
+
+    public virtual string Name { get; set; }
 
     public virtual Towards Towards { get; set; }
 

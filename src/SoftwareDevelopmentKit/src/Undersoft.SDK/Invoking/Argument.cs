@@ -10,11 +10,15 @@
     [StructLayout(LayoutKind.Sequential)]
     public class Argument : Identifiable, IArgument
     {
+        [JsonIgnore]
+        [IgnoreDataMember]
         private Type _type;
 
         public Argument() { }
 
         public Argument(IArgument value) { Set(value); }
+
+        public Argument(object value, int position = 0) { Set(value.GetType().Name, value); }
 
         public Argument(string name, object value, int position = 0) { Set(name, value); }
 
@@ -23,12 +27,12 @@
         public Argument(string name, string typeName, int position = 0) { Set(name, Assemblies.FindType(typeName)); }
 
         public Argument(ParameterInfo info) { Set(info); }
-         
+
         public string Name { get; set; }
 
         public object Value { get; set; }
 
-        public int Position { get; set; }
+        public int Position { get; set; } = -1;
 
         [JsonIgnore]
         [IgnoreDataMember]

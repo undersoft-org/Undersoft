@@ -29,7 +29,7 @@ public class SetupHandler<TStore, TService, TDto>
             return request;
         try
         {
-            request.Response = await _servicer.Run<TService, TDto>(request.Method, request.Arguments);               
+            request.Response = await _servicer.Run<TService, TDto>(request.Arguments.MethodName, request.Arguments);               
 
             _ = _servicer.Publish(new SetupInvoked<TStore, TService, TDto>(request)).ConfigureAwait(false);
         }

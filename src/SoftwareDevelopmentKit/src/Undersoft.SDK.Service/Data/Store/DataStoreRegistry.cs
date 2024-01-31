@@ -7,6 +7,8 @@ namespace Undersoft.SDK.Service.Data.Store;
 
 using Instant.Proxies;
 using Instant.Rubrics;
+using System.Collections;
+using System.Collections.Generic;
 using Undersoft.SDK;
 using Undersoft.SDK.Service.Data.Entity;
 using Undersoft.SDK.Service.Data.Identifier;
@@ -16,10 +18,14 @@ using Uniques;
 
 public static class DataStoreRegistry
 {
-    public static ISeries<ISeries<PropertyInfo>> EntityProperties = new Registry<ISeries<PropertyInfo>>();
-    public static ISeries<MemberRubric[]> RemoteMembers = new Registry<MemberRubric[]>();
+    public static ISeries<ISeries<PropertyInfo>> EntityProperties =
+        new Registry<ISeries<PropertyInfo>>();
+    public static ISeries<ISeries<MemberRubric>> RemoteMembers = new Registry<
+        ISeries<MemberRubric>
+    >(true);
     public static ISeries<Type> RemoteTypes = new Registry<Type>(true);
-    public static ITypedSeries<ISeries<PropertyInfo[]>> IdentityProperties = new TypedRegistry<ISeries<PropertyInfo[]>>();
+    public static ITypedSeries<ISeries<PropertyInfo[]>> IdentityProperties =
+        new TypedRegistry<ISeries<PropertyInfo[]>>();
     public static ISeries<ISeries<IEntityType>> EntityTypes = new Registry<ISeries<IEntityType>>();
     public static ISeries<ISeries<Type>> Contexts = new Registry<ISeries<Type>>();
     public static ISeries<Type> Stores = new Registry<Type>();
@@ -39,15 +45,15 @@ public static class DataStoreRegistry
             {
                 var setType = property.PropertyType;
 
-                var isDbSet = setType.IsGenericType && typeof(IQueryable<>)
-                    .IsAssignableFrom(setType.GetGenericTypeDefinition());
+                var isDbSet =
+                    setType.IsGenericType
+                    && typeof(IQueryable<>).IsAssignableFrom(setType.GetGenericTypeDefinition());
 
                 if (isDbSet)
                 {
                     var obj = property.GetValue(context, null);
                     var genType = obj.GetType().GenericTypeArguments.FirstOrDefault();
                     dbSetProperties.Put(genType, property);
-
                 }
             }
 
@@ -55,6 +61,7 @@ public static class DataStoreRegistry
         }
         return dbSetProperties;
     }
+
     public static ISeries<PropertyInfo> GetEntityProperties(Type contextType)
     {
         EntityProperties.TryGet(contextType, out ISeries<PropertyInfo> dbSetProperties);
@@ -77,7 +84,13 @@ public static class DataStoreRegistry
             {
                 var clrType = entityType.ClrType;
 
-                if (clrType != null && (clrType.IsAssignableTo(typeof(IEntity)) || clrType.IsAssignableTo(typeof(Identifier))))
+                if (
+                    clrType != null
+                    && (
+                        clrType.IsAssignableTo(typeof(IEntity))
+                        || clrType.IsAssignableTo(typeof(Identifier))
+                    )
+                )
                 {
                     dbEntityTypes.Put(clrType.FullName, entityType);
 
@@ -95,6 +108,7 @@ public static class DataStoreRegistry
 
         return dbEntityTypes;
     }
+
     public static ISeries<IEntityType> GetEntityTypes(Type contextType)
     {
         EntityTypes.TryGet(contextType, out ISeries<IEntityType> dbEntityTypes);
@@ -107,7 +121,7 @@ public static class DataStoreRegistry
         return type;
     }
 
-    public static ISeries<MemberRubric[]> GetRemoteMembers(this IDataStoreContext context)
+    public static ISeries<ISeries<MemberRubric>> GetRemoteMembers(this IDataStoreContext context)
     {
         var contextType = context.GetType();
 
@@ -115,25 +129,31 @@ public static class DataStoreRegistry
 
         foreach (var entity in entities)
         {
-            var remoteProperties = entity.ClrType.GetProperties()
-                                        .Where(p => p.CustomAttributes
-                                        .Any(a => a.AttributeType == typeof(RemoteAttribute))).ToArray();
+            var remoteProperties = entity.ClrType
+                .GetProperties()
+                .Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(RemoteAttribute)))
+                .ToArray();
             if (remoteProperties.Any())
             {
                 var rubrics = entity.ClrType.ToProxy().Rubrics;
-                var remoteRubrics = rubrics.ContainsIn(n => n.Name, remoteProperties.Collect(p => p.Name)).ToArray();
-                RemoteMembers.Put(entity.ClrType.FullName, remoteRubrics);
-                remoteRubrics.ForEach((r) =>
-                {
-                    Type remoteType = r.RubricType;
-                    if (remoteType.IsGenericType)
+                var remoteRubrics = rubrics
+                    .ContainsIn(n => n.Name, remoteProperties.Collect(p => p.Name))
+                    .ToListing();
+                RemoteMembers.Put(entity.ClrType, remoteRubrics);
+                RemoteMembers.Put(entity.ClrType.Name, remoteRubrics);
+                remoteRubrics.ForEach(
+                    (r) =>
                     {
-                        if (remoteType.IsAssignableTo(typeof(IIdentifiers)))
-                            remoteType = remoteType.BaseType;
-                        remoteType = remoteType.GetGenericArguments().LastOrDefault();
+                        Type remoteType = r.RubricType;
+                        if (remoteType.IsGenericType)
+                        {
+                            if (remoteType.IsAssignableTo(typeof(IIdentifiers)))
+                                remoteType = remoteType.BaseType;
+                            remoteType = remoteType.GetGenericArguments().LastOrDefault();
+                        }
+                        RemoteTypes.Put(remoteType.Name, entity.ClrType);
                     }
-                    RemoteTypes.Put(remoteType.Name, entity.ClrType);
-                });
+                );
             }
         }
 
@@ -149,14 +169,11 @@ public static class DataStoreRegistry
     {
         if (!Stores.TryGet(contextType, out Type iface))
         {
-            var type = contextType.IsGenericType
-                ? contextType
-                : contextType.BaseType;
+            var type = contextType.IsGenericType ? contextType : contextType.BaseType;
 
             iface = type.GenericTypeArguments
-                    .Where(i => i
-                    .IsAssignableTo(typeof(IDataServerStore)))
-                    .FirstOrDefault();
+                .Where(i => i.IsAssignableTo(typeof(IDataServerStore)))
+                .FirstOrDefault();
 
             if (iface == null)
                 iface = typeof(IDataServerStore);
@@ -167,7 +184,9 @@ public static class DataStoreRegistry
         return iface;
     }
 
-    public static ISeries<ISeries<PropertyInfo[]>> GetIndentityProperties(this IDataStoreContext context)
+    public static ISeries<ISeries<PropertyInfo[]>> GetIndentityProperties(
+        this IDataStoreContext context
+    )
     {
         if (!EntityProperties.ContainsKey(context.GetType()))
         {
@@ -189,16 +208,21 @@ public static class DataStoreRegistry
                     switch (idType)
                     {
                         case DbIdentityType.PrimaryKey:
-                            ids = entityType.GetKeys().Where(k => k.IsPrimaryKey())
-                                .SelectMany(k => k.Properties.Select(p => p.PropertyInfo)).ToArray();
+                            ids = entityType
+                                .GetKeys()
+                                .Where(k => k.IsPrimaryKey())
+                                .SelectMany(k => k.Properties.Select(p => p.PropertyInfo))
+                                .ToArray();
                             break;
                         case DbIdentityType.Index:
-                            ids = entityType.GetIndexes()
+                            ids = entityType
+                                .GetIndexes()
                                 .SelectMany(k => k.Properties.Select(p => p.PropertyInfo))
                                 .ToArray();
                             break;
                         case DbIdentityType.ForeignKey:
-                            ids = entityType.GetForeignKeys()
+                            ids = entityType
+                                .GetForeignKeys()
                                 .SelectMany(k => k.Properties.Select(p => p.PropertyInfo))
                                 .ToArray();
                             break;
@@ -220,7 +244,11 @@ public static class DataStoreRegistry
         GetIndentityProperties(entityType)?.TryGet(identityType, out identity);
         return identity;
     }
-    public static PropertyInfo[] GetIdentityProperty(this IIdentifiable entity, DbIdentityType identityType)
+
+    public static PropertyInfo[] GetIdentityProperty(
+        this IIdentifiable entity,
+        DbIdentityType identityType
+    )
     {
         if (IdentityProperties.TryGet(entity.GetType(), out ISeries<PropertyInfo[]> dbSetKeys))
             if (dbSetKeys.TryGet(identityType, out PropertyInfo[] keyProperties))
@@ -236,6 +264,7 @@ public static class DataStoreRegistry
 
         return null;
     }
+
     public static ISeries<PropertyInfo[]> GetIndentityProperties(this IIdentifiable entity)
     {
         if (IdentityProperties.TryGet(entity.GetType(), out ISeries<PropertyInfo[]> dbSetKeys))
@@ -243,6 +272,7 @@ public static class DataStoreRegistry
 
         return null;
     }
+
     public static ISeries<PropertyInfo[]> GetIndentityProperties(Type entityType)
     {
         IdentityProperties.TryGet(entityType, out ISeries<PropertyInfo[]> dbIdentities);
@@ -253,12 +283,14 @@ public static class DataStoreRegistry
     {
         return context.GetProperty(Type.GetType(entityTypeName));
     }
+
     public static PropertyInfo GetProperty(this IDataStoreContext context, Type entityType)
     {
         if (context.GetEntityProperties().TryGet(entityType, out PropertyInfo dbSetProperty))
             return dbSetProperty;
         return null;
     }
+
     public static PropertyInfo GetProperty<TEntity>(this IDataStoreContext context)
     {
         return context.GetProperty(typeof(TEntity));
@@ -270,24 +302,27 @@ public static class DataStoreRegistry
             return dbEntityType;
         return null;
     }
+
     public static IEntityType GetEntityType(this IDataStoreContext context, Type entityType)
     {
         if (context.GetEntityTypes().TryGet(entityType.Name, out IEntityType dbEntityType))
             return dbEntityType;
         return null;
     }
+
     public static IEntityType GetEntityType<TEntity>(this IDataStoreContext context)
     {
         return context.GetEntityType(typeof(TEntity).Name);
     }
 
-    public static MemberRubric[] GetRemoteMembers(Type entityType)
+    public static ISeries<MemberRubric> GetRemoteMembers(Type entityType)
     {
-        if (RemoteMembers.TryGet(entityType.FullName, out MemberRubric[] dbRemote))
-            return dbRemote;
+        if (RemoteMembers.TryGet(entityType, out ISeries<MemberRubric> remoteRubrics))
+            return remoteRubrics;
         return null;
     }
-    public static MemberRubric[] GetRemoteMembers<TOrigin>()
+
+    public static ISeries<MemberRubric> GetRemoteMembers<TOrigin>()
     {
         return GetRemoteMembers(typeof(TOrigin));
     }
@@ -297,10 +332,23 @@ public static class DataStoreRegistry
         var remotes = GetRemoteMembers(entityType);
         if (remotes == null)
             return null;
-        return remotes.Where(r => r.RubricType.IsGenericType
-                            ? r.RubricType.GetGenericArguments().Any(ga => ga.Equals(targetType))
-                            : r.RubricType.Equals(targetType)).FirstOrDefault();
+
+        return remotes
+            .Where(r =>
+            {
+                if (r.RubricType.IsAssignableTo(typeof(IEnumerable)))                
+                    return r.RubricType.GetEnumerableElementType().Name.Equals(targetType.Name);
+               
+                if (r.RubricType.IsGenericType)                
+                    return r.RubricType
+                        .GetGenericArguments()
+                        .Any(ga => ga.Name.Equals(targetType.Name));
+                
+                return r.RubricType.Name.Equals(targetType.Name);
+            })
+            .FirstOrDefault();
     }
+
     public static MemberRubric GetRemoteMember<TOrigin, TTarget>()
     {
         return GetRemoteMember(typeof(TOrigin), typeof(TTarget));
@@ -317,8 +365,15 @@ public static class DataStoreRegistry
 
             if (clrType != null && clrType.GetInterfaces().Contains(typeof(IEntity)))
             {
-                ContextSetEntityMethod ??= context.GetType().GetMethods().Where(m => m.IsGenericMethod &&
-                        m.Name == "EntitySet" && !m.GetParameters().Any()).ToArray().FirstOrDefault().MakeGenericMethod(clrType);
+                ContextSetEntityMethod ??= context
+                    .GetType()
+                    .GetMethods()
+                    .Where(
+                        m => m.IsGenericMethod && m.Name == "EntitySet" && !m.GetParameters().Any()
+                    )
+                    .ToArray()
+                    .FirstOrDefault()
+                    .MakeGenericMethod(clrType);
 
                 object dbset = ContextSetEntityMethod.Invoke(context, (object[])null);
 
@@ -327,12 +382,14 @@ public static class DataStoreRegistry
         }
         return null;
     }
+
     public static object GetEntitySet(this IDataStoreContext context, Type entityType)
     {
         return context.GetEntitySet(entityType.Name);
     }
 
-    public static DbSet<TEntity> GetEntitySet<TEntity>(this IDataStoreContext context) where TEntity : class, IOrigin, IInnerProxy
+    public static DbSet<TEntity> GetEntitySet<TEntity>(this IDataStoreContext context)
+        where TEntity : class, IOrigin, IInnerProxy
     {
         var entityType = context.GetEntityType<TEntity>();
         if (entityType != null)
@@ -346,8 +403,8 @@ public static class DataStoreRegistry
         {
             var iface = storeType
                 .GetInterfaces()
-                .Where(i => i.GetInterfaces()
-                    .Contains(typeof(IDataServerStore))).FirstOrDefault();
+                .Where(i => i.GetInterfaces().Contains(typeof(IDataServerStore)))
+                .FirstOrDefault();
 
             if (iface == null && storeType == typeof(IDataServerStore))
                 iface = typeof(IDataServerStore);
@@ -358,14 +415,15 @@ public static class DataStoreRegistry
 
         return null;
     }
+
     public static Type GetContext<TStore, TEntity>() where TEntity : class, IOrigin, IInnerProxy
     {
         if (Contexts.TryGet(typeof(TEntity), out ISeries<Type> dbEntityContext))
         {
             var iface = typeof(TStore)
-                        .GetInterfaces()
-                        .Where(i => i.GetInterfaces()
-                            .Contains(typeof(IDataServerStore))).FirstOrDefault();
+                .GetInterfaces()
+                .Where(i => i.GetInterfaces().Contains(typeof(IDataServerStore)))
+                .FirstOrDefault();
 
             if (iface == null && typeof(TStore) == typeof(IDataServerStore))
                 iface = typeof(IDataServerStore);
@@ -376,6 +434,7 @@ public static class DataStoreRegistry
 
         return null;
     }
+
     public static Type[] GetContexts<TEntity>() where TEntity : class, IOrigin, IInnerProxy
     {
         if (Contexts.TryGet(typeof(TEntity), out ISeries<Type> dbEntityContext))

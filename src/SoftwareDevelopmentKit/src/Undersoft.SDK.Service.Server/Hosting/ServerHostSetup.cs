@@ -2,22 +2,14 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.OData;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProtoBuf.Grpc.Server;
-using Swashbuckle.AspNetCore;
-using Undersoft.SDK.Service.Server;
 
 namespace Undersoft.SDK.Service.Server.Hosting;
 
 using Logging;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Routing;
-using ProtoBuf.Grpc.Reflection;
-using Quartz.Impl.AdoJobStore.Common;
 using Series;
 using Undersoft.SDK.Service.Data.Store;
 
@@ -191,14 +183,13 @@ public class ServerHostSetup : IServerHostSetup
             throw new ArgumentNullException(nameof(_builder));
         }
 
-        var ao = _manager.Configuration.Identity;
+        var ao = _manager.Configuration.AccessOptions;
 
         _builder
             .UseSwagger()
             .UseSwaggerUI(options =>
             {
-               options.SwaggerEndpoint($"/swagger/v1/swagger.json", ao.ServiceName);
-                //options.SwaggerEndpoint($"{ao.ServiceBaseUrl}/swagger/v1/swagger.json", ao.ServiceName);
+               options.SwaggerEndpoint($"/swagger/v1/swagger.json", ao.ServiceName);                
                 //s.OAuthClientId(ao.SwaggerClientId);
                 //s.OAuthAppName(ao.ApiName);
             });

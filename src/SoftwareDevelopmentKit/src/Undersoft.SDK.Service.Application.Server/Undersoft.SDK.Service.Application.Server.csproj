@@ -9,9 +9,8 @@
     <Company>Undersoft</Company>
     <Authors>Dariusz Hanc</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <Version>1.6.1</Version>
-    <RepositoryUrl>https://github.com/undersoft-org/Undersoft.SoftwareDevelopmentKit</RepositoryUrl>
+    <RepositoryUrl>https://github.com/undersoft-org/SoftwareDevelopmentKit</RepositoryUrl>
     <NeutralLanguage>en-US</NeutralLanguage>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <RootNamespace>$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>

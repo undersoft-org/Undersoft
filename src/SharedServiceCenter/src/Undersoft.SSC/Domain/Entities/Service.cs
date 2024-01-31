@@ -16,9 +16,7 @@ public class Service : OpenEntity<Service, Detail, Setting, ServiceGroup>
 
     [Remote]
     public virtual RemoteSet<Application>? Applications { get; set; }
-    public virtual RemoteSet<
-        RemoteLink<Service, Application>
-    >? ServicesToApplications { get; set; }
+    public virtual RemoteSet<RemoteLink<Service, Application>>? ServicesToApplications { get; set; }
 
     public virtual long? DefaultId { get; set; }
     public virtual Default? Default { get; set; }

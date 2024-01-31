@@ -24,11 +24,7 @@ public interface IRemoteRepository<TEntity> : IRepository<TEntity> where TEntity
     void SetAuthorizationToken(string token);
     object TracePatching(object item, string propertyName = null, Type type = null);
 
-    Task<IEnumerable<TEntity>> Access(string method, Arguments arguments);
-    Task<IEnumerable<TEntity>> Action(string method, Arguments arguments);
-    Task<IEnumerable<TEntity>> Setup(string method, Arguments arguments);
-
-    Task<IEnumerable<TEntity>> Access<TService>(Expression<Func<TService, Delegate>> method, Arguments arguments);
-    Task<IEnumerable<TEntity>> Action<TService>(Expression<Func<TService, Delegate>> method, Arguments arguments);
-    Task<IEnumerable<TEntity>> Setup<TService>(Expression<Func<TService, Delegate>> method, Arguments arguments);
+    Task<TEntity> Access<TModel>(string method, TModel args);
+    Task<TEntity> Action<TModel>(string method, TModel args);
+    Task<TEntity> Setup<TModel>(string method, TModel args);
 }

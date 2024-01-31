@@ -7,8 +7,8 @@ namespace Undersoft.SDK.Service
 {
     public interface IServicer : IServiceManager, IRepositoryManager, IDisposable
     {
-        T CallObject<T>() where T : class;
-        T CallService<T>() where T : class;
+        T GetObject<T>() where T : class;
+        T GetService<T>() where T : class;
         IAsyncEnumerable<object> CreateStream(object request, CancellationToken cancellationToken = default);
         IAsyncEnumerable<TResponse> CreateStream<TResponse>(IStreamRequest<TResponse> request, CancellationToken cancellationToken = default);
         Lazy<R> LazyServe<T, R>(Func<T, R> function)
@@ -23,8 +23,8 @@ namespace Undersoft.SDK.Service
         Task Save(bool asTransaction = false);
         Task<int> SaveClient(IRepositoryClient client, bool asTransaction = false);
         Task<int> SaveClients(bool asTransaction = false);
-        Task<int> SaveEndpoint(IRepositorySource endpoint, bool asTransaction = false);
-        Task<int> SaveEndpoints(bool asTransaction = false);
+        Task<int> SaveStore(IRepositorySource endpoint, bool asTransaction = false);
+        Task<int> SaveStores(bool asTransaction = false);
         Task<object> Report(object request, CancellationToken cancellationToken = default);
         Task<TResponse> Report<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default);
         Task<object> Entry(object request, CancellationToken cancellationToken = default);

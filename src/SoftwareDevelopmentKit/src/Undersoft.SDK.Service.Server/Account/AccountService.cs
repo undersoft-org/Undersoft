@@ -2,7 +2,7 @@
 
 namespace Undersoft.SDK.Service.Server.Accounts;
 
-public class AccountService : IAccountAccess
+public class AccountService : IAccountAction, IAccountAccess
 {
     private IServicer _servicer;
     private IAccountManager _manager;

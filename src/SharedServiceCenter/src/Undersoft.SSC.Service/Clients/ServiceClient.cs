@@ -12,7 +12,7 @@ public class ServiceClient : OpenDataClient<IDataStore>
 
     protected override IEdmModel OnModelCreating(IEdmModel builder)
     {
-        this.RemoteSetToSet<Domain.Entities.Service, Application>(r => r.LeftEntity, r => r.Id);
+        this.RemoteSetToSet<Contracts.Service, Application>(r => r.LeftEntity, r => r.Id);
 
         return base.OnModelCreating(builder);
     }

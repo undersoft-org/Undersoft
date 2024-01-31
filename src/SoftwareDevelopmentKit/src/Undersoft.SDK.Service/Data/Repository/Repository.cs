@@ -89,7 +89,7 @@ public abstract partial class Repository<TEntity> : Repository, IPagedSet<TEntit
 
         if (type == ElementType)
         {
-            RemoteProperties.ForEach(async (o) => await o.LoadAsync(entity));
+            RemoteProperties.DoEach(async (o) => await o.LoadAsync(entity));
         }
     }
 

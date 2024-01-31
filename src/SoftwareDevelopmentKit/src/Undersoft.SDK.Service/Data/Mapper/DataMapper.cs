@@ -82,14 +82,15 @@ namespace Undersoft.SDK.Service.Data.Mapper
         public bool TryCreateMap(TypePair pair, bool reverse = true)
         {
             var _pair = GetValidTypePair(pair);
+
             if (MapNotExist(_pair))
             {
                 if (expression.Mappers.Any(m => m.IsMatch(_pair)))
                     return true;
 
-                if (reverse)
-                    expression.CreateMap(_pair.SourceType, _pair.DestinationType).ReverseMap();
-                else
+                //if (reverse)
+                //    expression.CreateMap(_pair.SourceType, _pair.DestinationType).ReverseMap();
+                //else
                     expression.CreateMap(_pair.SourceType, _pair.DestinationType);
 
                 var source = _pair.SourceType;

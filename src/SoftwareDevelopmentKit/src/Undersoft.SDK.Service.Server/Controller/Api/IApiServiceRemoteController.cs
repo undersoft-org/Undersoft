@@ -8,9 +8,9 @@ using Undersoft.SDK;
 
 public interface IApiServiceRemoteController<TStore, TService, TModel> where TModel : class, IOrigin where TService : class
 {
-    Task<IActionResult> Action([FromBody] Arguments arguments);
+    Task<IActionResult> Action(string method, [FromBody] Arguments arguments);
 
-    Task<IActionResult> Access([FromBody] Arguments arguments);
+    Task<IActionResult> Access(string method, [FromBody] Arguments arguments);
 
-    Task<IActionResult> Setup([FromBody] Arguments arguments);
+    Task<IActionResult> Setup(string method, [FromBody] Arguments arguments);
 }

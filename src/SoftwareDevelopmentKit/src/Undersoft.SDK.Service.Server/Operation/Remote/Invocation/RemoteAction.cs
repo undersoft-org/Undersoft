@@ -14,11 +14,15 @@ public class RemoteAction<TStore, TService, TModel> : Invocation<TModel>
 {
     public RemoteAction() : base() { }
 
-    public RemoteAction(string method) : base(CommandMode.Invoke, typeof(TService), method) { }
+    public RemoteAction(string method, object argument)
+        : base(CommandMode.Invoke, typeof(TService), method, argument) { }
 
     public RemoteAction(string method, Arguments arguments)
-     : base(CommandMode.Invoke, typeof(TService), method, arguments) { }
+        : base(CommandMode.Invoke, typeof(TService), method, arguments) { }
 
-    public RemoteAction(string method, params object[] arguments)
-    : base(CommandMode.Invoke, typeof(TService), method, arguments) { }
+    public RemoteAction(string method, object[] arguments)
+        : base(CommandMode.Invoke, typeof(TService), method, arguments) { }
+
+    public RemoteAction(string method, byte[] arguments)
+        : base(CommandMode.Invoke, typeof(TService), method, arguments) { }
 }

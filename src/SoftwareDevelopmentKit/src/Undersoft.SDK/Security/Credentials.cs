@@ -26,7 +26,7 @@ namespace Undersoft.SDK.Security
 
     [Serializable]
     [DataContract]
-    public class Credentials : InnerProxy, ICredentials
+    public class Credentials : Identifiable, ICredentials
     {
         [DataMember(Order = 0)]
         public ServiceSite? Site { get; set; }

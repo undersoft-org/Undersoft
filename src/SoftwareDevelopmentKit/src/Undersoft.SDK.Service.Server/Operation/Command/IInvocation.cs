@@ -10,9 +10,9 @@ public interface IInvocation : IOperation
 
     Arguments Arguments { get; set; }
 
-    string Method { get; set; }
+    string Method => Arguments.MethodName;
 
-    public Type ServiceType { get; set; }
+    public Type ServiceType => Arguments.TargetType;
 
     object Response { get; set; }
 

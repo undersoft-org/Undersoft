@@ -28,8 +28,8 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
         _servicer = servicer;            
     }
 
-    [HttpPost("Action")]
-    public virtual async Task<IActionResult> Action([FromBody] Arguments arguments)
+    [HttpPost("Action/{method}")]
+    public virtual async Task<IActionResult> Action([FromRoute] string method, [FromBody] Arguments arguments)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -43,8 +43,8 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
             : Ok(result.Response);
     }
 
-    [HttpPost("Access")]
-    public virtual async Task<IActionResult> Access([FromBody] Arguments arguments)
+    [HttpPost("Access/{method}")]
+    public virtual async Task<IActionResult> Access([FromRoute] string method, [FromBody] Arguments arguments)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -58,8 +58,8 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
             : Ok(result.Response);
     }
 
-    [HttpPost("Setup")]
-    public virtual async Task<IActionResult> Setup([FromBody] Arguments arguments)
+    [HttpPost("Setup/{method}")]
+    public virtual async Task<IActionResult> Setup([FromRoute] string method, [FromBody] Arguments arguments)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);

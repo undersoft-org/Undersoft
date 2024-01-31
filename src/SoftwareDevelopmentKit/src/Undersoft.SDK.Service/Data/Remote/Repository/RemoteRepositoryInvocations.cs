@@ -1,138 +1,48 @@
-﻿using Microsoft.OData.Client;
+﻿using IdentityModel.Client;
+using Microsoft.OData;
+using Microsoft.OData.Client;
+using ProtoBuf.Meta;
 using System.Linq.Expressions;
+using System.Text.Json;
 
 namespace Undersoft.SDK.Service.Data.Remote.Repository;
 
 public partial class RemoteRepository<TEntity>
 {
-    public async Task<TEntity> Access<TService>(
-       Expression<Func<TService, Delegate>> method, string key,
-       Arguments arguments
-   )
+    public async Task<TEntity> Setup<TModel>(string method, TModel arguments)
     {
-        return await Access(LinqExtension.GetMemberName(method), key, arguments);
+        return await InvokeAsync("Setup", method, arguments);
     }
 
-    public async Task<TEntity> Action<TService>(
-        Expression<Func<TService, Delegate>> method, string key,
-        Arguments arguments
-    )
+    public async Task<TEntity> Access<TModel>(string method, TModel arguments)
     {
-        return await Action(LinqExtension.GetMemberName(method), key, arguments);
+        return await InvokeAsync("Access", method, arguments);
     }
 
-    public async Task<TEntity> Setup<TService>(
-        Expression<Func<TService, Delegate>> method, string key,
-        Arguments arguments
-    )
+    public async Task<TEntity> Action<TModel>(string method, TModel arguments)
     {
-        return await Setup(LinqExtension.GetMemberName(method), key, arguments);
+        return await InvokeAsync("Action", method, arguments);
     }
 
-    public async Task<IEnumerable<TEntity>> Access<TService>(
-        Expression<Func<TService, Delegate>> method,
-        Arguments arguments
-    )
-    {
-        return await Access(LinqExtension.GetMemberName(method), arguments);
-    }
-
-    public async Task<IEnumerable<TEntity>> Action<TService>(
-        Expression<Func<TService, Delegate>> method,
-        Arguments arguments
-    )
-    {
-        return await Action(LinqExtension.GetMemberName(method), arguments);
-    }
-
-    public async Task<IEnumerable<TEntity>> Setup<TService>(
-        Expression<Func<TService, Delegate>> method,
-        Arguments arguments
-    )
-    {
-        return await Setup(LinqExtension.GetMemberName(method), arguments);
-    }
-
-    public async Task<TEntity> Setup(string name, string key, Arguments arguments)
-    {
-        arguments.New("Name", name);
-        return await InvokeAsync(
-            "Setup", key,
-            arguments.ForEach(p => new BodyOperationParameter(p.Name, p.Value)).Commit()
-        );
-    }
-
-    public async Task<TEntity> Access(string name, string key, Arguments arguments)
-    {
-        arguments.New("Name", name);
-        return await InvokeAsync(
-            "Access", key,
-            arguments.ForEach(p => new BodyOperationParameter(p.Name, p.Value)).Commit()
-        );
-    }
-
-    public async Task<TEntity> Action(string name, string key, Arguments arguments)
-    {
-        arguments.New("Name", name);
-        return await InvokeAsync(
-            "Action", key,
-            arguments.ForEach(p => new BodyOperationParameter(p.Name, p.Value)).Commit()
-        );
-    }
-
-    public async Task<IEnumerable<TEntity>> Setup(string name, Arguments arguments)
-    {
-        arguments.New("Name", name);
-        return await InvokeAsync(
-            "Setup",
-            arguments.ForEach(p => new BodyOperationParameter(p.Name, p.Value)).Commit()
-        );
-    }
-
-    public async Task<IEnumerable<TEntity>> Access(string name, Arguments arguments)
-    {
-        arguments.New("Name", name);
-        return await InvokeAsync(
-            "Access",
-            arguments.ForEach(p => new BodyOperationParameter(p.Name, p.Value)).Commit()
-        );
-    }
-
-    public async Task<IEnumerable<TEntity>> Action(string name, Arguments arguments)
-    {
-        arguments.New("Name", name);
-        return await InvokeAsync(
-            "Action",
-            arguments.ForEach(p => new BodyOperationParameter(p.Name, p.Value)).Commit()
-        );
-    }
-
-    private async Task<TEntity> InvokeAsync(
-        string invokeType,
-        string key,
-        BodyOperationParameter[] parameters
-    )
-    {
-        var action = new DataServiceActionQuerySingle<TEntity>(
+    private async Task<TEntity> InvokeAsync<TModel>(string action, string method, TModel args)
+    {       
+        var service = new DataServiceActionQuerySingle<TEntity>(
             remoteContext,
-            $"{remoteContext.BaseUri.OriginalString}/{Name}({key})/{invokeType}",
-            parameters
+            $"{remoteContext.BaseUri.OriginalString}/{Name}/{action}",
+            new BodyOperationParameter(method, args.ToJsonBytes<TModel>())
         );
-        var result = await action.GetValueAsync();
+        var result = await service.GetValueAsync();
         return result;
     }
 
-    private async Task<IEnumerable<TEntity>> InvokeAsync(
-        string invokeType,
-        BodyOperationParameter[] parameters
-    )
+    private async Task<IEnumerable<TEntity>> InvokeAsync(string action, string method, TEntity[] args)
     {
-        var action = new DataServiceActionQuery<TEntity>(
+        var service = new DataServiceActionQuery<TEntity>(
             remoteContext,
-            $"{remoteContext.BaseUri.OriginalString}/{Name}/{invokeType}",
-            parameters
+            $"{remoteContext.BaseUri.OriginalString}/{Name}/{action}",
+            new BodyOperationParameter(method, args)
         );
-        var result = await action.ExecuteAsync();
+        var result = await service.ExecuteAsync();
         return result;
     }
 }

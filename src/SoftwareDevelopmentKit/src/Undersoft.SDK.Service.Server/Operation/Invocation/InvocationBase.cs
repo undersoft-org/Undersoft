@@ -9,8 +9,6 @@ namespace Undersoft.SDK.Service.Server.Operation.Invocation;
 public abstract class InvocationBase : IInvocation
 {
     public virtual long Id { get; set; }
-
-    public virtual string Method { get; set; }
      
     public Arguments Arguments { get; set; }
 
@@ -28,8 +26,6 @@ public abstract class InvocationBase : IInvocation
 
     public CommandMode CommandMode { get; set; }
 
-    public Type ServiceType { get; set; }
-
     public virtual object Input => Arguments;
     
     public virtual object Output => IsValid ? Response : ErrorMessages;
@@ -41,31 +37,29 @@ public abstract class InvocationBase : IInvocation
         Result = new ValidationResult();
     }
 
-    protected InvocationBase(CommandMode commandMode, Type serviceType, string method) : this()
+    protected InvocationBase(CommandMode commandMode) : this()
     {
         CommandMode = commandMode;
-        Method = method;
-        ServiceType = serviceType;
     }
 
-    protected InvocationBase(object argument, CommandMode commandMode, Type serviceType, string method)
-        : this(commandMode, serviceType, method)
+    protected InvocationBase(CommandMode commandMode, Type serviceType, string method, object argument)
+        : this(commandMode)
     {
-        var methodInfo = ServiceType.GetMethod(method, new Type[] { argument.GetType() });
+        var methodInfo = serviceType.GetMethod(method, new Type[] { argument.GetType() });
         if (methodInfo != null)
         {
-            Arguments = new Arguments(methodInfo.GetParameters());
+            Arguments = new Arguments(methodInfo.Name, methodInfo.GetParameters(), serviceType.FullName, serviceType);
             Arguments[0].Value = argument;
         }
     }
 
-    protected InvocationBase(CommandMode commandMode, Type serviceType, string method, Arguments arguments)
-        : this(commandMode, serviceType, method)
+    protected InvocationBase(CommandMode commandMode, Type serviceType, Arguments arguments)
+        : this(commandMode)
     {
-        var methodInfo = ServiceType.GetMethod(method, arguments.Select(a => a.GetType()).ToArray());
+        var methodInfo = serviceType.GetMethod(arguments.MethodName, arguments.TypeArray);
         if (methodInfo != null)
         {
-            Arguments = new Arguments(methodInfo.GetParameters());
+            Arguments = new Arguments(methodInfo.Name, methodInfo.GetParameters(), serviceType.FullName, serviceType);
             Arguments.ForEach(a => 
             { 
                 if (arguments.ContainsKey(a.Name))
@@ -76,26 +70,21 @@ public abstract class InvocationBase : IInvocation
         }
     }
 
-    protected InvocationBase(CommandMode commandMode, Type serviceType, string method, params object[] arguments)
-       : this(commandMode, serviceType, method)
+    protected InvocationBase(CommandMode commandMode, Type serviceType, string method, object[] arguments)
+       : this(commandMode)
     {
-        var methodInfo = ServiceType.GetMethod(method, arguments.Select(a => a.GetType()).ToArray());
+        var methodInfo = serviceType.GetMethod(method, arguments.Select(a => a.GetType()).ToArray());
         if (methodInfo != null)
         {
-            Arguments = new Arguments(methodInfo.GetParameters());
+            Arguments = new Arguments(methodInfo.Name, methodInfo.GetParameters(), serviceType.FullName, serviceType);
             Arguments.ForEach((a, x) =>{ if(a.Type == arguments[x].GetType()) a.Value = arguments[x]; } );
         }
     }
 
-    protected InvocationBase(CommandMode commandMode, Type serviceType, string method, Dictionary<string, object> arguments)
-       : this(commandMode, serviceType, method)
+    protected InvocationBase(CommandMode commandMode, Type serviceType, string method, byte[] binaries)
+       : this(commandMode)
     {
-        var methodInfo = ServiceType.GetMethod(method, arguments.Select(a => a.GetType()).ToArray());
-        if (methodInfo != null)
-        {
-            Arguments = new Arguments(methodInfo.GetParameters());
-            Arguments.ForEach(a => { if (arguments.ContainsKey(a.Name)) a.Value = ((JsonElement)arguments[a.Name]).Deserialize(a.Type); });
-        }
+            Arguments = new Arguments(method, binaries);                   
     }
 
     public void SetArguments(Arguments arguments) => Arguments = arguments;

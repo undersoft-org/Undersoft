@@ -5,7 +5,8 @@ namespace Undersoft.SDK.Service.Data.Repository;
 using Series;
 using Undersoft.SDK.Service.Data.Repository;
 
-public partial class Repository<TEntity> : IRepositoryMapper<TEntity> where TEntity : class, IOrigin, IInnerProxy
+public partial class Repository<TEntity> : IRepositoryMapper<TEntity>
+    where TEntity : class, IOrigin, IInnerProxy
 {
     public virtual TEntity Map<TDto>(TDto model, TEntity entity)
     {
@@ -17,18 +18,12 @@ public partial class Repository<TEntity> : IRepositoryMapper<TEntity> where TEnt
         return Mapper.Map(entity, model);
     }
 
-    public virtual IList<TEntity> Map<TDto>(
-        IEnumerable<TDto> model,
-        IEnumerable<TEntity> entity
-    )
+    public virtual IList<TEntity> Map<TDto>(IEnumerable<TDto> model, IEnumerable<TEntity> entity)
     {
         return (IList<TEntity>)Mapper.Map(model, entity).ToList();
     }
 
-    public virtual IList<TDto> Map<TDto>(
-        IEnumerable<TEntity> entity,
-        IEnumerable<TDto> model
-    )
+    public virtual IList<TDto> Map<TDto>(IEnumerable<TEntity> entity, IEnumerable<TDto> model)
     {
         return (IList<TDto>)(Mapper.Map(entity, model).ToList());
     }
@@ -41,10 +36,7 @@ public partial class Repository<TEntity> : IRepositoryMapper<TEntity> where TEnt
         return (ISeries<TEntity>)Mapper.Map(model, entity).ToListing();
     }
 
-    public virtual ISeries<TDto> HashMap<TDto>(
-        IEnumerable<TEntity> entity,
-        IEnumerable<TDto> model
-    )
+    public virtual ISeries<TDto> HashMap<TDto>(IEnumerable<TEntity> entity, IEnumerable<TDto> model)
     {
         return (ISeries<TDto>)(Mapper.Map(entity, model).ToListing());
     }
@@ -96,9 +88,9 @@ public partial class Repository<TEntity> : IRepositoryMapper<TEntity> where TEnt
             yield return await Task.Run(() => Mapper.Map<TDto, TEntity>(item));
     }
 
-    public virtual Task<ISeries<TDto>> HashMapTo<TDto>(IEnumerable<object> entity)
+    public virtual async Task<ISeries<TDto>> HashMapTo<TDto>(IEnumerable<object> entity)
     {
-        return Task.Run(
+        return await Task.Run(
             () => (ISeries<TDto>)(Mapper.Map<IEnumerable<TDto>>(entity.ToArray())).ToChain(),
             Cancellation
         );
@@ -109,26 +101,30 @@ public partial class Repository<TEntity> : IRepositoryMapper<TEntity> where TEnt
         return entities.ForEach(e => Mapper.Map<TDto>(e));
     }
 
-    public virtual Task<ISeries<TDto>> HashMapTo<TDto>(IEnumerable<TEntity> entity)
+    public virtual async Task<ISeries<TDto>> HashMapTo<TDto>(IEnumerable<TEntity> entity)
     {
-        return Task.Run(() => (ISeries<TDto>)(Mapper.Map<Listing<TDto>>(entity.ToArray())), Cancellation);
-    }
-
-    public virtual Task<ISeries<TEntity>> HashMapFrom<TDto>(IEnumerable<TDto> model)
-    {
-        return Task.Run(
-            () =>
-                (ISeries<TEntity>)
-                    (
-                        Mapper.Map<IEnumerable<TDto>, IEnumerable<TEntity>>(model.ToArray())
-                    ).ToListing(),
+        return await Task.Run(
+            () => (ISeries<TDto>)(Mapper.Map<IEnumerable<TDto>>(entity.ToArray())).ToChain(),
             Cancellation
         );
     }
 
-    public virtual Task<IQueryable<TDto>> QueryMapAsyncTo<TDto>(IQueryable<TEntity> entity) where TDto : class
+    public virtual async Task<ISeries<TEntity>> HashMapFrom<TDto>(IEnumerable<TDto> model)
     {
-        return entity.ForEachAsync(e => Mapper.Map<TDto>(e));
+        return await Task.Run(
+            () =>
+                (ISeries<TEntity>)
+                    (
+                        Mapper.Map<IEnumerable<TDto>, IEnumerable<TEntity>>(model.ToArray())
+                    ).ToChain(),
+            Cancellation
+        );
+    }
+
+    public virtual async Task<IQueryable<TDto>> QueryMapAsyncTo<TDto>(IQueryable<TEntity> entity)
+        where TDto : class
+    {
+        return await entity.ForEachAsync(e => Mapper.Map<TDto>(e));
     }
 
     public virtual IQueryable<TDto> QueryMapTo<TDto>(IQueryable<TEntity> entity) where TDto : class
@@ -145,5 +141,4 @@ public partial class Repository<TEntity> : IRepositoryMapper<TEntity> where TEnt
     {
         return model.ForEachAsync(m => Mapper.Map<TDto, TEntity>(m));
     }
-
 }

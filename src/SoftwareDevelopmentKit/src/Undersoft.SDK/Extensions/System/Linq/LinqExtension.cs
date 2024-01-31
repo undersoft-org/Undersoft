@@ -34,7 +34,6 @@ namespace System.Linq
             return ((entity == null) ? new T[0] : new T[1] { entity }).AsQueryable();
         }
 
-
         public static IEnumerable<T> Concentrate<T>(params IEnumerable<T>[] List)
         {
             foreach (IEnumerable<T> item in List)
@@ -221,10 +220,10 @@ namespace System.Linq
         }
 
         public static IQueryable<TItem> ExceptIn<TItem, TValue>(
-         this IQueryable<TItem> source,
-         Expression<Func<TItem, TValue>> propertySelector,
-         IEnumerable<TValue> values
-     )
+            this IQueryable<TItem> source,
+            Expression<Func<TItem, TValue>> propertySelector,
+            IEnumerable<TValue> values
+        )
         {
             return source.Where(GetWhereInExpression(propertySelector, values));
         }
@@ -251,9 +250,10 @@ namespace System.Linq
             IEnumerable<TValue> values
         )
         {
-            ParameterExpression p = propertySelector.Parameters.Single();
-            if (!values.Any())
+            if (propertySelector == null || values == null || !values.Any())
                 return null;
+
+            ParameterExpression p = propertySelector.Parameters.Single();
 
             var equals = values.Select(
                 value =>
@@ -271,13 +271,14 @@ namespace System.Linq
         }
 
         public static Expression<Func<TItem, bool>> GetExceptInExpression<TItem, TValue>(
-          Expression<Func<TItem, TValue>> propertySelector,
-          IEnumerable<TValue> values
-      )
+            Expression<Func<TItem, TValue>> propertySelector,
+            IEnumerable<TValue> values
+        )
         {
-            ParameterExpression p = propertySelector.Parameters.Single();
-            if (!values.Any())
+            if (propertySelector == null || values == null || !values.Any())
                 return null;
+
+            ParameterExpression p = propertySelector.Parameters.Single();            
 
             var equals = values.Select(
                 value =>
@@ -294,11 +295,7 @@ namespace System.Linq
             return Expression.Lambda<Func<TItem, bool>>(body, p);
         }
 
-        public static Expression<Func<TItem1, bool>> GetEqualityExpression<
-            TItem0,
-            TItem1,
-            TValue
-        >(
+        public static Expression<Func<TItem1, bool>> GetEqualityExpression<TItem0, TItem1, TValue>(
             Expression<Func<TItem1, TValue>> propertySelector,
             Func<TItem0, TValue> valueSelector,
             TItem0 origin

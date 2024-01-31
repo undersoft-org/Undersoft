@@ -12,18 +12,16 @@ public class Application : OpenEntity<Application, Detail, Setting, ApplicationG
 
     public virtual EntitySet<Application>? RelatedTo { get; set; }
 
-    [Remote]
-    public virtual RemoteSet<Service>? Services { get; set; }
-    public virtual RemoteSet<
-        RemoteLink<Service, Application>
-    >? ServicesToApplications { get; set; }
-
     public virtual EntitySet<Member>? Members { get; set; }
 
-    public long? DefaultId { get; set; }
+    [Remote]
+    public virtual RemoteSet<Service>? Services { get; set; }
+    public virtual RemoteSet<RemoteLink<Service, Application>>? ServicesToApplications { get; set; }
+
+    public virtual long? DefaultId { get; set; }
     public virtual Default? Default { get; set; }
 
     [ForeignKey(nameof(Location))]
-    public long? LocationId { get; set; }
+    public virtual long? LocationId { get; set; }
     public virtual Location? Location { get; set; }
 }

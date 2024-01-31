@@ -10,11 +10,10 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
 {
     [AllowAnonymous]
     public class ServiceController
-        : OpenCqrsController<
+        : OpenDataRemoteController<
             long,
-            IEntryStore,
-            IReportStore,
-            Domain.Entities.Service,
+            IDataStore,
+            Contracts.Service,
             Contracts.Service,
             ServiceManager
         >
@@ -25,11 +24,10 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
     [AllowAnonymous]
     [Route($"{StoreRoutes.ApiDataRoute}/Service")]
     public class ServicesController
-        : ApiCqrsController<
+        : ApiDataRemoteController<
             long,
-            IEntryStore,
-            IReportStore,
-            Domain.Entities.Service,
+            IDataStore,
+            Contracts.Service,
             Contracts.Service,
             ServiceManager
         >
