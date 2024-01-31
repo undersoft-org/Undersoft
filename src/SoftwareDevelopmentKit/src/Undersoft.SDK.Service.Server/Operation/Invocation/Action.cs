@@ -11,13 +11,16 @@ public class Action<TStore, TService, TDto> : Invocation<TDto>
 {
     public Action() : base() { }
 
-    public Action(string method) : base(CommandMode.Invoke, typeof(TService), method) { }
+    public Action(string method, object argument) : base(CommandMode.Invoke, typeof(TService), method, argument) { }
 
     public Action(string method, Arguments arguments)
      : base(CommandMode.Invoke, typeof(TService), method, arguments) { }
 
     public Action(string method, params object[] arguments)
     : base(CommandMode.Invoke, typeof(TService), method, arguments) { }
+
+    public Action(string method, params byte[] arguments)
+   : base(CommandMode.Invoke, typeof(TService), method, arguments) { }
 
 }
  

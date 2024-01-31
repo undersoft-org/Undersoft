@@ -10,14 +10,14 @@ namespace Undersoft.SSC.Service.Server.Controllers
 {
     [AllowAnonymous]
     public class AccountController
-        : OpenDataController<long, IAccountStore, Account, Contracts.Account, AccountService>
+        : OpenDataController<long, IDataStore, Account, Contracts.Account, AccountService>
     {
         public AccountController(IServicer ultimatr) : base(ultimatr) { }
     }
 
-    [Route($"{StoreRoutes.ApiAuthRoute}/Account")]
+    [Route($"{StoreRoutes.ApiDataRoute}/Account")]
     public class AccountsController
-        : ApiDataController<long, IAccountStore, Account, Contracts.Account, AccountService>
+        : ApiDataController<long, IDataStore, Account, Contracts.Account, AccountService>
     {
         public AccountsController(IServicer ultimatr) : base(ultimatr) { }
     }

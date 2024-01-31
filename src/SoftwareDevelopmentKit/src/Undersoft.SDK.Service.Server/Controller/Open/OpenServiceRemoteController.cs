@@ -29,7 +29,7 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Access([FromBody] IDictionary<string, byte[]> args)
+    public virtual async Task<IActionResult> Access([FromBody] IDictionary<string, Arguments> args)
     {
         var isValid = false;
 
@@ -53,7 +53,7 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Action([FromBody] IDictionary<string, byte[]> args)
+    public virtual async Task<IActionResult> Action([FromBody] IDictionary<string, Arguments> args)
     {
         var isValid = false;
 
@@ -77,7 +77,7 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Setup([FromBody] IDictionary<string, byte[]> args)
+    public virtual async Task<IActionResult> Setup([FromBody] IDictionary<string, Arguments> args)
     {
         var isValid = false;
 

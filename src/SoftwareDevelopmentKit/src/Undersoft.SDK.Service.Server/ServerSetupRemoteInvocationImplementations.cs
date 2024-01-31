@@ -32,9 +32,7 @@ public partial class ServerSetup
                                     .Any(
                                         a =>
                                             a.GetType()
-                                                .IsAssignableTo(
-                                                    typeof(ServiceRemoteAttribute)
-                                                )
+                                                .IsAssignableTo(typeof(ServiceRemoteAttribute))
                                     )
                         )
                         .ToArray()
@@ -51,68 +49,95 @@ public partial class ServerSetup
 
         foreach (var controllerType in controllerTypes)
         {
-            Type store = null, _viewmodel = null, dtoType = null;
+            Type storeType = null,
+                modelType = null,
+                serviceType = null;
+
             var genericTypes = controllerType.BaseType.GenericTypeArguments;
-            if (genericTypes.Length > 3)
-            {
-                if (genericTypes.Length > 5)
-                {
-                    store = genericTypes[1];
-                    _viewmodel = genericTypes[3];
-                    dtoType = genericTypes[4];
-                }
-                else
-                {
-                    store = genericTypes[1];
-                    _viewmodel = genericTypes[2];
-                    dtoType = genericTypes[3];
-                }
-            }
-            else
+            
+            if (genericTypes.Length < 3)
                 continue;
             
-            var concatNames = store.FullName + _viewmodel.FullName + dtoType.FullName;
+            Type[] list = GetStoreModelServiceTypes(genericTypes);
+
+            storeType = list[0];
+            serviceType = list[2];
+            modelType = list[1];
+
+            var concatNames = storeType.FullName + modelType.FullName + serviceType.FullName;
             if (!concatNames.IsNullOrEmpty() && duplicateCheck.Add(concatNames))
             {
                 service.AddTransient(
                     typeof(IRequest<>).MakeGenericType(
-                        typeof(Invocation<>).MakeGenericType(_viewmodel)
+                        typeof(Invocation<>).MakeGenericType(modelType)
                     ),
-                    typeof(Invocation<>).MakeGenericType(_viewmodel)
+                    typeof(Invocation<>).MakeGenericType(modelType)
                 );
 
                 service.AddTransient(
                     typeof(IRequestHandler<,>).MakeGenericType(
                         new[]
                         {
-                            typeof(RemoteAction<,,>).MakeGenericType(store, dtoType, _viewmodel),
-                            typeof(Invocation<>).MakeGenericType(_viewmodel)
+                            typeof(RemoteAction<,,>).MakeGenericType(
+                                storeType,
+                                serviceType,
+                                modelType
+                            ),
+                            typeof(Invocation<>).MakeGenericType(modelType)
                         }
                     ),
-                    typeof(RemoteActionHandler<,,>).MakeGenericType(store, dtoType, _viewmodel)
+                    typeof(RemoteActionHandler<,,>).MakeGenericType(
+                        storeType,
+                        serviceType,
+                        modelType
+                    )
                 );
                 service.AddTransient(
                     typeof(IRequestHandler<,>).MakeGenericType(
                         new[]
                         {
-                            typeof(RemoteSetup<,,>).MakeGenericType(store, dtoType, _viewmodel),
-                            typeof(Invocation<>).MakeGenericType(_viewmodel)
+                            typeof(RemoteSetup<,,>).MakeGenericType(
+                                storeType,
+                                serviceType,
+                                modelType
+                            ),
+                            typeof(Invocation<>).MakeGenericType(modelType)
                         }
                     ),
-                    typeof(RemoteSetupHandler<,,>).MakeGenericType(store, dtoType, _viewmodel)
+                    typeof(RemoteSetupHandler<,,>).MakeGenericType(
+                        storeType,
+                        serviceType,
+                        modelType
+                    )
                 );
                 service.AddTransient(
                     typeof(INotificationHandler<>).MakeGenericType(
-                        typeof(RemoteActionInvoked<,,>).MakeGenericType(store, dtoType, _viewmodel)
+                        typeof(RemoteActionInvoked<,,>).MakeGenericType(
+                            storeType,
+                            serviceType,
+                            modelType
+                        )
                     ),
-                    typeof(RemoteActionInvokedHandler<,,>).MakeGenericType(store, dtoType, _viewmodel)
+                    typeof(RemoteActionInvokedHandler<,,>).MakeGenericType(
+                        storeType,
+                        serviceType,
+                        modelType
+                    )
                 );
                 service.AddTransient(
-                  typeof(INotificationHandler<>).MakeGenericType(
-                      typeof(RemoteSetupInvoked<,,>).MakeGenericType(store, dtoType, _viewmodel)
-                  ),
-                  typeof(RemoteSetupInvokedHandler<,,>).MakeGenericType(store, dtoType, _viewmodel)
-              );
+                    typeof(INotificationHandler<>).MakeGenericType(
+                        typeof(RemoteSetupInvoked<,,>).MakeGenericType(
+                            storeType,
+                            serviceType,
+                            modelType
+                        )
+                    ),
+                    typeof(RemoteSetupInvokedHandler<,,>).MakeGenericType(
+                        storeType,
+                        serviceType,
+                        modelType
+                    )
+                );
             }
         }
         return this;

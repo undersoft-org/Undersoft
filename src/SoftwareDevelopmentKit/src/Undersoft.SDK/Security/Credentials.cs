@@ -23,8 +23,7 @@ namespace Undersoft.SDK.Security
         Server,
         Service
     }
-
-    [Serializable]
+    
     [DataContract]
     public class Credentials : Identifiable, ICredentials
     {

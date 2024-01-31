@@ -12,8 +12,32 @@ namespace Undersoft.SDK.Invoking
 
         public Invoker() { }
 
-        public Invoker(Arguments args) : this(args.TargetName, args.MethodName, args.TypeArray)
-        { }
+        public Invoker(Arguments args)
+        {
+            Type t = args.TargetType;
+            TargetObject = t.New();
+            var argumentTypes = args.Select(t => Type.GetType(t.ArgumentTypeName)).ToArray();
+            var methodName = args.MethodName;
+
+            MethodInfo m =
+                argumentTypes != null
+                    ? t.GetMethod(methodName, argumentTypes)
+                    : t.GetMethod(methodName);
+            if (m != null)
+            {
+                Info = m;
+                if (
+                    m.GetParameters().Any()
+                    && m.GetParameters().All(p => args.ContainsKey(p.ParameterType.Name))
+                )
+                {
+                    Arguments = args;
+                    Parameters = m.GetParameters();
+                    NumberOfArguments = Parameters.Length;
+                }
+            }
+            createUniqueKey();
+        }
 
         public Invoker(object targetObject, MethodInfo methodInvokeInfo)
         {
@@ -158,17 +182,20 @@ namespace Undersoft.SDK.Invoking
 
         public string MethodName => Info.Name;
 
-        public override string TypeName { get => Type.FullName; }
+        public override string TypeName
+        {
+            get => Type.FullName;
+        }
 
         public string QualifiedName { get; set; }
 
         public object this[int fieldId]
         {
-            get => (fieldId < NumberOfArguments) ? Arguments[fieldId].Value : null;
+            get => (fieldId < NumberOfArguments) ? Arguments[fieldId].Deserialize() : null;
             set
             {
                 if (fieldId < NumberOfArguments)
-                    Arguments[fieldId].Value = value;
+                    Arguments[fieldId].Serialize(value);
             }
         }
         public object this[string argumentName]
@@ -176,13 +203,13 @@ namespace Undersoft.SDK.Invoking
             get
             {
                 if (Arguments.TryGet(argumentName.UniqueKey(), out Argument arg))
-                    return arg.Value;
+                    return arg.Deserialize();
                 return null;
             }
             set
             {
                 if (Arguments.TryGet(argumentName.UniqueKey(), out Argument arg))
-                    arg.Value = value;
+                    arg.Serialize(value);
             }
         }
 
@@ -216,13 +243,13 @@ namespace Undersoft.SDK.Invoking
 
         public object[] ValueArray
         {
-            get => Arguments.Select(a => a.Value).ToArray();
+            get => Arguments.Select(a => a.Deserialize()).ToArray();
             set =>
                 Arguments.ForEach(
                     (a, x) =>
                     {
-                        if (a.Type == value[x].GetType())
-                            a.Value = value[x];
+                        if (a.TypeName == value[x].GetType().FullName)
+                            a.Serialize(value[x]);
                     }
                 );
         }
@@ -236,7 +263,8 @@ namespace Undersoft.SDK.Invoking
             try
             {
                 return Task.Run(
-                    () => (Method ?? InvokingIL.Create(Info)).DynamicInvoke(TargetObject, parameters)
+                    () =>
+                        (Method ?? InvokingIL.Create(Info)).DynamicInvoke(TargetObject, parameters)
                 );
             }
             catch (Exception e)
@@ -345,7 +373,7 @@ namespace Undersoft.SDK.Invoking
                 }
 
                 var obj = Method.DynamicInvoke(target, parameters);
-                    
+
                 return (T)obj;
             }
             catch (Exception e)
@@ -453,9 +481,18 @@ namespace Undersoft.SDK.Invoking
         public virtual async Task<object> InvokeAsync(Arguments arguments)
         {
             Arguments
-                .ForEach(
-                    arg => arguments.ContainsKey(arg.Id) ? arg.Value = arguments[arg.Id] : arg.Value
-                )
+                .ForEach(arg =>
+                {
+                    if (arguments.ContainsKey(arg.Id))
+                    {
+                        arg.Serialize(arguments[arg.Id]);
+                        return arguments[arg.Id];
+                    }
+                    else
+                    {
+                        return arg.Deserialize();
+                    }
+                })
                 .Commit();
             return await InvokeAsync(Arguments.ValueArray);
         }
@@ -467,9 +504,18 @@ namespace Undersoft.SDK.Invoking
         )
         {
             Arguments
-                .ForEach(
-                    arg => arguments.ContainsKey(arg.Id) ? arg.Value = arguments[arg.Id] : arg.Value
-                )
+                .ForEach(arg =>
+                {
+                    if (arguments.ContainsKey(arg.Id))
+                    {
+                        arg.Serialize(arguments[arg.Id]);
+                        return arguments[arg.Id];
+                    }
+                    else
+                    {
+                        return arg.Deserialize();
+                    }
+                })
                 .Commit();
             return await InvokeAsync(withTarget, target, Arguments.ValueArray);
         }
@@ -477,9 +523,18 @@ namespace Undersoft.SDK.Invoking
         public virtual async Task<T> InvokeAsync<T>(Arguments arguments)
         {
             Arguments
-                .ForEach(
-                    arg => arguments.ContainsKey(arg.Id) ? arg.Value = arguments[arg.Id] : arg.Value
-                )
+                .ForEach(arg =>
+                {
+                    if (arguments.ContainsKey(arg.Id))
+                    {
+                        arg.Serialize(arguments[arg.Id]);
+                        return arguments[arg.Id];
+                    }
+                    else
+                    {
+                        return arg.Deserialize();
+                    }
+                })
                 .Commit();
             return await InvokeAsync<T>(Arguments.ValueArray);
         }
@@ -491,9 +546,18 @@ namespace Undersoft.SDK.Invoking
         )
         {
             Arguments
-                .ForEach(
-                    arg => arguments.ContainsKey(arg.Id) ? arg.Value = arguments[arg.Id] : arg.Value
-                )
+                .ForEach(arg =>
+                {
+                    if (arguments.ContainsKey(arg.Id))
+                    {
+                        arg.Serialize(arguments[arg.Id]);
+                        return arguments[arg.Id];
+                    }
+                    else
+                    {
+                        return arg.Deserialize();
+                    }
+                })
                 .Commit();
             return await InvokeAsync<T>(withTarget, target, Arguments.ValueArray);
         }
@@ -624,7 +688,7 @@ namespace Undersoft.SDK.Invoking
         public static string GetQualifiedName<T>(string methodName, params Type[] parameterTypes)
         {
             return GetQualifiedName(typeof(T), methodName, parameterTypes);
-        }        
+        }
     }
 
     public enum ChangeState

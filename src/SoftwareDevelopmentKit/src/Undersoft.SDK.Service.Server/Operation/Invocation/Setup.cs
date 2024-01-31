@@ -11,13 +11,16 @@ public class Setup<TStore, TService, TDto> : Invocation<TDto>
 {
     public Setup() : base() { }
 
-    public Setup(string method) : base(CommandMode.Invoke, typeof(TService), method) { }
+    public Setup(string method, object argument) : base(CommandMode.Invoke, typeof(TService), method, argument) { }
 
     public Setup(string method, Arguments arguments)
      : base(CommandMode.Invoke, typeof(TService), method, arguments) { }
 
     public Setup(string method, params object[] arguments)
     : base(CommandMode.Invoke, typeof(TService), method, arguments) { }
+
+    public Setup(string method, params byte[] arguments)
+   : base(CommandMode.Invoke, typeof(TService), method, arguments) { }
 
 }
  

@@ -9,16 +9,16 @@ using Undersoft.SDK.Service.Server.Controller.Open;
 namespace Undersoft.SSC.Service.Application.Server.Controllers
 {
     [AllowAnonymous]
-    [Route($"{StoreRoutes.ApiAuthRoute}/Account")]
+    [Route($"{StoreRoutes.ApiDataRoute}/Account")]
     public class AccountsController
-        : ApiDataRemoteController<long, IAccountStore, Contracts.Account, Contracts.Account, AccountService>
+        : ApiDataRemoteController<long, IDataStore, Contracts.Account, Contracts.Account, AccountService>
     {
         public AccountsController(IServicer servicer) : base(servicer) { }
     }
 
     [AllowAnonymous]
     public class AccountController
-        : OpenDataRemoteController<long, IAccountStore, Contracts.Account, Contracts.Account, AccountService>
+        : OpenDataRemoteController<long, IDataStore, Contracts.Account, Contracts.Account, AccountService>
     {
         public AccountController(IServicer servicer) : base(servicer) { }
     }

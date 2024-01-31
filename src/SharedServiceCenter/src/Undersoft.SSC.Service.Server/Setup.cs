@@ -31,11 +31,8 @@ public class Setup
                         .AddInvocations<Member>()
                         .AddInvocations<Identifier<Member>>()
                         .AddInvocations<Application>()
+                        .AddInvocations<Account>()
                         .AddInvocations<Contracts.Service>()
-            )
-            .AddDataServer<IAccountStore>(
-                DataServerTypes.All,
-                builder => builder.AddInvocations<Account>()
             )
             .AddDataServer<IEventStore>(
                 DataServerTypes.All,

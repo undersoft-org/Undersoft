@@ -3,9 +3,11 @@
     using System.Reflection;
     using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
+    using System.Text.Json;
     using System.Text.Json.Serialization;
     using Undersoft.SDK.Uniques;
 
+    [DataContract]
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public class Argument : Identifiable, IArgument
@@ -16,74 +18,136 @@
 
         public Argument() { }
 
-        public Argument(IArgument value) { Set(value); }
+        public Argument(IArgument value, string method, string target = null)
+        {
+            Set(value, method, target);
+        }
 
-        public Argument(object value, int position = 0) { Set(value.GetType().Name, value); }
+        public Argument(object value, string method, string target = null)
+        {
+            Set(value.GetType().Name, value, method, target);
+        }
 
-        public Argument(string name, object value, int position = 0) { Set(name, value); }
+        public Argument(string name, object value, string method, string target = null)
+        {
+            Set(name, value, method, target);
+        }
 
-        public Argument(string name, Type type, int position = 0) { Set(name, type.Default()); }
+        public Argument(string name, Type type, string method, string target = null)
+        {
+            Set(name, type.Default(), method, target);
+        }
 
-        public Argument(string name, string typeName, int position = 0) { Set(name, Assemblies.FindType(typeName)); }
+        public Argument(string name, string typeName, string method, string target = null)
+        {
+            Set(name, Assemblies.FindType(typeName), method, target);
+        }
 
-        public Argument(ParameterInfo info) { Set(info); }
+        public Argument(ParameterInfo info, string method, string target = null)
+        {
+            Set(info, method, target);
+        }
+
+        public string TargetName { get; set; }
+
+        public string MethodName { get; set; }
 
         public string Name { get; set; }
 
-        public object Value { get; set; }
+        public byte[] Binaries { get; set; }
 
         public int Position { get; set; } = -1;
 
-        [JsonIgnore]
-        [IgnoreDataMember]
-        public Type Type => _type ??= Value.GetType();
+        public string ArgumentTypeName { get; set; } 
 
-        public void Set(ParameterInfo item)
+        public void Serialize(object value)
+        {
+            if (value != null)
+            {
+                Binaries = value.ToJsonBytes();
+                ArgumentTypeName = value.GetType().FullName;
+            }
+        }
+
+        public object Deserialize()
+        {
+            if (Binaries != null && TypeName != null)
+            {
+                var t = Assemblies.FindType(ArgumentTypeName);
+                if (t != null)
+                    return Binaries.FromJson(t);
+            }
+            return null;
+        }
+
+        public T Deserialize<T>() where T : class
+        {
+            if (Binaries != null)
+            {
+                return Binaries.FromJson<T>();
+            }
+            return null;
+        }
+
+        public void Set(ParameterInfo item, string method, string target = null)
         {
             Name = item.Name;
-            Value = item.ParameterType.Default();
             _type = item.ParameterType;
             Position = item.Position;
-            TypeName = _type.FullName;
-
+            ArgumentTypeName = _type.FullName;
+            MethodName = method;
+            TargetName = target;
             Id = Name.UniqueKey();
-            TypeId = TypeName.UniqueKey();
+            TypeId = ArgumentTypeName.UniqueKey();
         }
 
-        public void Set(IArgument item)
+        public void Set(IArgument item, string method, string target = null)
         {
             Name = item.Name;
-            Value = item.Value;
-            _type = item.Type;
+            Binaries = item.Binaries;
             Position = item.Position;
-            TypeName = item.TypeName;
-
+            ArgumentTypeName = item.ArgumentTypeName;
+            MethodName = method;
+            TargetName = target;
             Id = Name.UniqueKey();
-            TypeId = TypeName.UniqueKey();
+            TypeId = ArgumentTypeName.UniqueKey();
         }
 
-        public void Set(string name, object value, int position = 0)
-        {
-            Name = name; 
-            Value = value;
-            _type = value.GetType();
-            TypeName = _type.FullName;
-            Position = position;
-
-            Id = Name.UniqueKey();
-            TypeId = TypeName.UniqueKey();
-        }
-
-        public void Set(string name, Type type, int position = 0)
+        public void Set(
+            string name,
+            object value,
+            string method,
+            string target = null,
+            int position = 0
+        )
         {
             Name = name;
-            Value = type.Default();
-            _type = type;
-            TypeName = _type.FullName;
+            _type = value.GetType();
+            ArgumentTypeName = _type.FullName;
+            Serialize(value);
             Position = position;
-
+            MethodName = method;
+            TargetName = target;
             Id = Name.UniqueKey();
-            TypeId = TypeName.UniqueKey();
+            TypeId = ArgumentTypeName.UniqueKey();
+        }
+
+        public void Set(
+            string name,
+            Type type,
+            string method,
+            string target = null,
+            int position = 0
+        )
+        {
+            Name = name;
+            _type = type;
+            ArgumentTypeName = _type.FullName;
+            Position = position;
+            MethodName = method;
+            TargetName = target;
+            Id = Name.UniqueKey();
+            TypeId = ArgumentTypeName.UniqueKey();
         }
     }
 }

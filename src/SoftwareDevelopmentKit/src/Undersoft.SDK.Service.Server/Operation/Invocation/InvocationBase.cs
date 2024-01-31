@@ -2,6 +2,7 @@
 using ServiceStack;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Undersoft.SDK.Invoking;
 using Undersoft.SDK.Service.Server.Operation.Command;
 
 namespace Undersoft.SDK.Service.Server.Operation.Invocation;
@@ -45,46 +46,32 @@ public abstract class InvocationBase : IInvocation
     protected InvocationBase(CommandMode commandMode, Type serviceType, string method, object argument)
         : this(commandMode)
     {
-        var methodInfo = serviceType.GetMethod(method, new Type[] { argument.GetType() });
-        if (methodInfo != null)
-        {
-            Arguments = new Arguments(methodInfo.Name, methodInfo.GetParameters(), serviceType.FullName, serviceType);
-            Arguments[0].Value = argument;
-        }
+        Arguments = new Arguments(method, argument, serviceType.FullName);
+        Arguments.TargetType = serviceType;     
     }
 
-    protected InvocationBase(CommandMode commandMode, Type serviceType, Arguments arguments)
+    protected InvocationBase(CommandMode commandMode, Type serviceType, string method, Arguments arguments)
         : this(commandMode)
     {
-        var methodInfo = serviceType.GetMethod(arguments.MethodName, arguments.TypeArray);
-        if (methodInfo != null)
-        {
-            Arguments = new Arguments(methodInfo.Name, methodInfo.GetParameters(), serviceType.FullName, serviceType);
-            Arguments.ForEach(a => 
-            { 
-                if (arguments.ContainsKey(a.Name))
-                    a.Value = a.Value.GetType().IsAssignableTo(typeof(JsonElement)) 
-                    ? ((JsonElement)arguments[a.Name].Value).Deserialize(a.Type) 
-                    : arguments[a.Name].Value; 
-            });
-        }
+        Arguments = arguments;
+        Arguments.ForEach(a => a.TargetName = serviceType.FullName);
+        Arguments.TargetType = serviceType;
     }
 
     protected InvocationBase(CommandMode commandMode, Type serviceType, string method, object[] arguments)
        : this(commandMode)
     {
-        var methodInfo = serviceType.GetMethod(method, arguments.Select(a => a.GetType()).ToArray());
-        if (methodInfo != null)
-        {
-            Arguments = new Arguments(methodInfo.Name, methodInfo.GetParameters(), serviceType.FullName, serviceType);
-            Arguments.ForEach((a, x) =>{ if(a.Type == arguments[x].GetType()) a.Value = arguments[x]; } );
-        }
+        var args = new Arguments(method, serviceType.FullName);
+        arguments.ForEach(a => args.New(a.GetType().Name, a, method, serviceType.FullName));
+        args.TargetType = serviceType;
+        Arguments = args;
     }
 
     protected InvocationBase(CommandMode commandMode, Type serviceType, string method, byte[] binaries)
        : this(commandMode)
     {
-            Arguments = new Arguments(method, binaries);                   
+        Arguments = new Arguments(method, binaries);
+        Arguments.TargetType = serviceType;                 
     }
 
     public void SetArguments(Arguments arguments) => Arguments = arguments;

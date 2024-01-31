@@ -14,11 +14,14 @@ public class RemoteSetup<TStore, TService, TModel> : Invocation<TModel>
 {
     public RemoteSetup() : base() { }
 
-    public RemoteSetup(string method) : base(CommandMode.Invoke, typeof(TService), method) { }
+    public RemoteSetup(string method, object argument) : base(CommandMode.Invoke, typeof(TService), method, argument) { }
 
     public RemoteSetup(string method, Arguments arguments)
      : base(CommandMode.Invoke, typeof(TService), method, arguments) { }
 
     public RemoteSetup(string method, params object[] arguments)
+    : base(CommandMode.Invoke, typeof(TService), method, arguments) { }
+
+    public RemoteSetup(string method, params byte[] arguments)
     : base(CommandMode.Invoke, typeof(TService), method, arguments) { }
 }

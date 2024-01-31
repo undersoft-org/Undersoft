@@ -13,7 +13,7 @@ public class Setup
 {
     public void ConfigureServices(IServiceCollection srvc)
     {
-        srvc.AddApplicationServerSetup()
+        srvc.AddApplicationServerSetup(srvc.AddControllers())
             .ConfigureApplicationServer(
                 true,
                 new[] 
@@ -24,8 +24,7 @@ public class Setup
                 },
                 new[] 
                 { 
-                    typeof(ServiceClient), 
-                    typeof(AccessClient) 
+                    typeof(ServiceClient)
                 }
             )
             .AddDataServer<IEntityStore>(
@@ -33,8 +32,8 @@ public class Setup
                 builder =>
                     builder
                         .AddInvocations<Member>()
-                        .AddInvocations<Application>()
                         .AddInvocations<Account>()
+                        .AddInvocations<Application>()                    
                         .AddInvocations<Service>()
             )
             .AddDataServer<IEventStore>(
