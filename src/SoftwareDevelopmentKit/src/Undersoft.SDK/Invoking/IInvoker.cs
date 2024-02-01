@@ -25,7 +25,11 @@ namespace Undersoft.SDK.Invoking
         Task<object> InvokeAsync(params object[] parameters);
         Task<object> InvokeAsync(bool firstAsTarget, object target, params object[] parameters);
 
-        Task<T> InvokeAsync<T>(params object[] parameters);
-        Task<T> InvokeAsync<T>(bool firstAsTarget, object target, params object[] parameters);
+        Task<T> InvokeAsync<T>(params object[] parameters) where T : class;
+        Task<T> InvokeAsync<T>(bool firstAsTarget, object target, params object[] parameters) where T : class;
+
+        Task<object> InvokeAsync(Arguments arguments);
+
+        Task<object> InvokeAsync(bool withTarget, object target, Arguments arguments);
     }
 }

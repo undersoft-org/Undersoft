@@ -22,7 +22,7 @@ namespace Microsoft.Win32.SafeHandles
 
         internal void InitialSetHandle(IntPtr h)
         {
-            Debug.Assert(base.IsInvalid, "Safe handle should only be set once");
+            Debug.Assert(base.IsInvalid, "Safe handle should only be Set once");
             base.handle = h;
         }
 

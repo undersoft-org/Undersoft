@@ -12,14 +12,15 @@ using Undersoft.SSC.Service.Infrastructure.Stores;
 namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
 {
     [DbContext(typeof(EventStore))]
-    [Migration("20240126093636_InitialCreate")]
+    [Migration("20240201142659_InitialCreate")]
     partial class InitialCreate
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.23")
+                .HasAnnotation("ProductVersion", "7.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -29,12 +30,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
-
-                    b.Property<long>("AggregateId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("AggregateType")
-                        .HasColumnType("text");
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -48,18 +43,21 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
                         .HasColumnOrder(8);
 
                     b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
                         .HasColumnOrder(9);
 
-                    b.Property<byte[]>("EventData")
+                    b.Property<byte[]>("Data")
                         .HasColumnType("bytea");
+
+                    b.Property<long>("EntityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("EntityTypeName")
+                        .HasColumnType("text");
 
                     b.Property<string>("EventType")
                         .HasColumnType("text");
-
-                    b.Property<long>("EventVersion")
-                        .HasColumnType("bigint");
 
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
@@ -69,8 +67,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
 
                     b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)")
                         .HasColumnOrder(11);
 
                     b.Property<DateTime>("Modified")
@@ -78,8 +76,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
                         .HasColumnOrder(6);
 
                     b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
                         .HasColumnOrder(7);
 
                     b.Property<int>("OriginId")
@@ -97,9 +95,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
                         .HasColumnOrder(2);
 
                     b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)")
                         .HasColumnOrder(5);
+
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 

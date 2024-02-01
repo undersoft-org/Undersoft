@@ -36,9 +36,10 @@
             return new Updater<T>(item, traceChanges).Patch<E>();
         }
 
-        public static object PatchSelf(this object item, IInvoker traceChanges = null)
+        public static E PatchTo<E>(this object item, IInvoker traceChanges = null)
+          where E : class
         {
-            return new Updater(item, traceChanges).PatchSelf();
+            return new Updater(item, traceChanges).Patch<E>();
         }
 
         public static E PutTo<T, E>(this T item, E target, IInvoker traceChanges = null)
@@ -58,6 +59,12 @@
             where E : class
         {
             return new Updater<T>(item, traceChanges).Put<E>();
+        }
+
+        public static E PutTo<E>(this object item, IInvoker traceChanges = null)           
+           where E : class
+        {
+            return new Updater(item, traceChanges).Put<E>();
         }
 
         public static T PutFrom<T, E>(this T item, E source, IInvoker traceChanges = null)

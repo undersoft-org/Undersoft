@@ -312,7 +312,7 @@
 
         public virtual bool TryGet(object key, out ISeriesItem<V> output)
         {
-            if (key is IUnique)
+            if (key is IIdentifiable)
             {
                 IUnique ukey = (IUnique)key;
                 return InnerTryGet(unique.Key(ukey, ukey.TypeId), out output);
@@ -323,7 +323,7 @@
 
         public virtual bool TryGet(object key, out V output)
         {
-            if (key is IUnique)
+            if (key is IIdentifiable)
             {
                 output = default(V);
                 ISeriesItem<V> item = null;

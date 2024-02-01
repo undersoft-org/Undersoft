@@ -11,7 +11,7 @@ namespace Undersoft.SSC.Service.Contracts;
 public class Account : Authorization, IContract, IAuthorization
 {
     [DataMember(Order = 12)]
-    public AccounUser? User { get; set; }
+    public AccountUser? User { get; set; }
 
     [DataMember(Order = 13)]
     public ObjectSet<Role>? Roles { get; set; }

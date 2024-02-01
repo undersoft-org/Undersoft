@@ -8,7 +8,7 @@ namespace Undersoft.SDK.Service.Hosting
     public partial class ServiceHostSetup : IServiceHostSetup
     {
         IHostBuilder _host;
-        IHostingEnvironment _environment;
+        IHostEnvironment _environment;
         IServiceManager _manager;
 
         public ServiceHostSetup(IHostBuilder host, IServiceManager manager) 
@@ -17,12 +17,12 @@ namespace Undersoft.SDK.Service.Hosting
             _manager = manager;
         }
 
-        public ServiceHostSetup(IHostBuilder host, IServiceManager manager, IHostingEnvironment environment, bool useSwagger) : this(host, manager)
+        public ServiceHostSetup(IHostBuilder host, IServiceManager manager, IHostEnvironment environment, bool useSwagger) : this(host, manager)
         {
             _environment = environment; 
         }
 
-        public ServiceHostSetup(IHostBuilder host, IServiceManager manager, IHostingEnvironment environment, string[] apiVersions = null) : this(host, manager)
+        public ServiceHostSetup(IHostBuilder host, IServiceManager manager, IHostEnvironment environment, string[] apiVersions = null) : this(host, manager)
         {
             _environment = environment;
         }

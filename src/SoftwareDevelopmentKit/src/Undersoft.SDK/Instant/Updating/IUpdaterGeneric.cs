@@ -2,16 +2,13 @@
 {
     public interface IUpdater<T> : IUpdater
     {
-        T Devisor { get; }
+        T Devisor { get; set; }
 
         new T Clone();
-
-        new T PatchSelf();
+        UpdatedItem[] Detect(T item);
         T Patch(T item);
-
-        new T PutSelf();
+        T PatchFrom(T source);
         T Put(T item);
-
-        UpdaterItem[] Detect(T item);
+        T PutFrom(T source);
     }
 }

@@ -158,7 +158,7 @@ internal static class ComponentProperties
             catch (Exception ex)
             {
                 throw new InvalidOperationException(
-                    $"Unable to set property '{parameterName}' on object of " +
+                    $"Unable to Set property '{parameterName}' on object of " +
                     $"type '{target.GetType().FullName}'. The error was: {ex.Message}", ex);
             }
         }
@@ -209,7 +209,7 @@ internal static class ComponentProperties
     private static void ThrowForSettingParameterWithCascadingValue(Type targetType, string parameterName)
     {
         throw new InvalidOperationException(
-            $"The property '{parameterName}' on component type '{targetType.FullName}' cannot be set " +
+            $"The property '{parameterName}' on component type '{targetType.FullName}' cannot be Set " +
             $"using a cascading value.");
     }
 
@@ -217,7 +217,7 @@ internal static class ComponentProperties
     private static void ThrowForCaptureUnmatchedValuesConflict(Type targetType, string parameterName, Dictionary<string, object> unmatched)
     {
         throw new InvalidOperationException(
-            $"The property '{parameterName}' on component type '{targetType.FullName}' cannot be set explicitly " +
+            $"The property '{parameterName}' on component type '{targetType.FullName}' cannot be Set explicitly " +
             $"when also used to capture unmatched values. Unmatched values:" + Environment.NewLine +
             string.Join(Environment.NewLine, unmatched.Keys));
     }

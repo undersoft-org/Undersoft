@@ -5,9 +5,21 @@ using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Invoking
 {
-    public class Invoker<T> : Invoker
+    public interface IInvoker<T> : IInvoker { }
+
+    public class Invoker<T> : Invoker, IInvoker<T>
     {
         public Invoker() : base(typeof(T)) { }
+
+        public Invoker(T targetObject)
+            : base(
+                targetObject,
+                targetObject.GetType().GetMethods().FirstOrDefault(m => m.IsPublic)
+            ) { }
+
+        public Invoker(Arguments arguemnts) : base(typeof(T).New(), arguemnts) { }
+
+        public Invoker(T targetObject, Arguments arguemnts) : base(targetObject, arguemnts) { }
 
         public Invoker(params object[] constructorParams) : base(typeof(T), constructorParams) { }
 

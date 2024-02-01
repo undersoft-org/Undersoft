@@ -35,7 +35,7 @@ public class Download : ComponentModule
     {
         if (string.IsNullOrEmpty(option.Url))
         {
-            throw new InvalidOperationException($"{nameof(option.Url)} not set");
+            throw new InvalidOperationException($"{nameof(option.Url)} not Set");
         }
 
         await InvokeVoidAsync("downloadFileFromUrl", option.FileName, option.Url);

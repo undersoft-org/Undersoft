@@ -6,7 +6,7 @@ using Claim = System.Security.Claims.Claim;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
 
-public class AccountManager : TypedRegistry<IAccount>, IAccountManager
+public class AccountManager : Registry<IAccount>, IAccountManager
 {
     public AccountManager() { }
 
@@ -181,8 +181,10 @@ public class AccountManager : TypedRegistry<IAccount>, IAccountManager
 
     public bool TryGetByEmail(string email, out IAccount account)
     {
-        account = GetByEmail(email).GetAwaiter().GetResult();
-        if (account != null)
+        var _account = GetByEmail(email);
+         _account.Wait();
+        account = _account.Result;
+        if (account.User != null)
             return true;
         return false;
     }
@@ -192,12 +194,12 @@ public class AccountManager : TypedRegistry<IAccount>, IAccountManager
         if (TryGet(id, out account))
             return true;
 
-        account = GetById(id).GetAwaiter().GetResult();
-
-        if (account == null)
-            return false;
-
-        return true;
+        var _account = GetById(id);
+        _account.Wait();
+        account = _account.Result;
+        if (account.User != null)
+            return true;
+        return false;
     }
 
     public async Task<Account> GetByName(string name)

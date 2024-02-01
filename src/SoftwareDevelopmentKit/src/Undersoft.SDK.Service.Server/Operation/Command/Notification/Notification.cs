@@ -23,12 +23,11 @@ public abstract class Notification<TCommand> : Event, INotification where TComma
 
         Command = command;
         Id = Unique.NewId;
-        AggregateId = command.Id;
-        AggregateType = aggregateTypeFullName;
-        EventType = eventTypeFullName;
+        EntityId = command.Id;
+        EntityTypeName = aggregateTypeFullName;
+        TypeName = eventTypeFullName;
         var entity = (Entity)command.Entity;
         OriginId = entity.OriginId;
-        TypeName = entity.TypeName;
         Modifier = entity.Modifier;
         Modified = entity.Modified;
         Creator = entity.Creator;
@@ -36,7 +35,7 @@ public abstract class Notification<TCommand> : Event, INotification where TComma
         PublishStatus = EventPublishStatus.Ready;
         PublishTime = Log.Clock;
 
-        EventData = JsonSerializer.SerializeToUtf8Bytes((CommandBase)command);
+        Data = JsonSerializer.SerializeToUtf8Bytes((CommandBase)command);
     }
 
     public Event GetEvent()
@@ -44,14 +43,14 @@ public abstract class Notification<TCommand> : Event, INotification where TComma
         return new Event()
         {
             Id = this.Id,
+            TypeId = this.TypeId,
             OriginId = this.OriginId,
             TypeName = this.TypeName,
             Modifier = this.Modifier,
-            EventData = this.EventData,
-            EventVersion = this.EventVersion,
-            AggregateId = this.AggregateId,
-            AggregateType = this.AggregateType,
-            EventType = this.EventType,
+            Data = this.Data,
+            Version = this.Version,
+            EntityId = this.EntityId,
+            EntityTypeName = this.EntityTypeName,
             Modified = this.Modified,
             Creator = this.Creator,
             Created = this.Created,

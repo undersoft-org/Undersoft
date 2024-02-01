@@ -6,8 +6,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 {
+    /// <inheritdoc />
     public partial class InitialCreate : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
@@ -137,14 +139,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     Authorized = table.Column<bool>(type: "boolean", nullable: false),
                     Authenticated = table.Column<bool>(type: "boolean", nullable: false)
@@ -206,17 +208,17 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 {
                     table.PrimaryKey("PK_AccountTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_AccountTokens_Accounts_AccountId",
-                        column: x => x.AccountId,
-                        principalSchema: "Accounts",
-                        principalTable: "Accounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_AccountTokens_AccountUsers_UserId",
                         column: x => x.UserId,
                         principalSchema: "Accounts",
                         principalTable: "AccountUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AccountTokens_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalSchema: "Accounts",
+                        principalTable: "Accounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -309,16 +311,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_AccountClaims_Accounts_AccountId",
-                schema: "Accounts",
-                table: "AccountClaims",
-                column: "AccountId",
-                principalSchema: "Accounts",
-                principalTable: "Accounts",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_AccountClaims_AccountUsers_UserId",
                 schema: "Accounts",
                 table: "AccountClaims",
@@ -329,9 +321,29 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_AccountClaims_Accounts_AccountId",
+                schema: "Accounts",
+                table: "AccountClaims",
+                column: "AccountId",
+                principalSchema: "Accounts",
+                principalTable: "Accounts",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_AccountLogins_AccountUsers_UserId",
                 schema: "Accounts",
                 table: "AccountLogins",
+                column: "UserId",
+                principalSchema: "Accounts",
+                principalTable: "AccountUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AccountRoles_AccountUsers_UserId",
+                schema: "Accounts",
+                table: "AccountRoles",
                 column: "UserId",
                 principalSchema: "Accounts",
                 principalTable: "AccountUsers",
@@ -349,16 +361,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_AccountRoles_AccountUsers_UserId",
-                schema: "Accounts",
-                table: "AccountRoles",
-                column: "UserId",
-                principalSchema: "Accounts",
-                principalTable: "AccountUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_Accounts_AccountUsers_UserId",
                 schema: "Accounts",
                 table: "Accounts",
@@ -369,12 +371,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 onDelete: ReferentialAction.Cascade);
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_AccountUsers_Accounts_AccountId",
+                name: "FK_Accounts_AccountUsers_UserId",
                 schema: "Accounts",
-                table: "AccountUsers");
+                table: "Accounts");
 
             migrationBuilder.DropTable(
                 name: "AccountClaims",
@@ -401,11 +404,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 schema: "Accounts");
 
             migrationBuilder.DropTable(
-                name: "Accounts",
+                name: "AccountUsers",
                 schema: "Accounts");
 
             migrationBuilder.DropTable(
-                name: "AccountUsers",
+                name: "Accounts",
                 schema: "Accounts");
         }
     }

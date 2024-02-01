@@ -60,7 +60,7 @@ public class CreatedSetHandler<TStore, TEntity, TDto>
                         request.ForEach(
                             (r) =>
                             {
-                                _ = entities.ContainsKey(r.AggregateId)
+                                _ = entities.ContainsKey(r.EntityId)
                                     ? r.PublishStatus = EventPublishStatus.Complete
                                     : r.PublishStatus = EventPublishStatus.Uncomplete;
                             }

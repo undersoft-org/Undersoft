@@ -6,7 +6,7 @@ namespace Undersoft.SDK.Service.Hosting
 {
     public static class ServiceHostSetupExtensions
     {
-        public static IServiceHostSetup UseAppSetup(this IHostBuilder app, IServiceManager sm, IHostingEnvironment env)
+        public static IServiceHostSetup UseAppSetup(this IHostBuilder app, IServiceManager sm, IHostEnvironment env)
         {
             return new ServiceHostSetup(app, sm, env);
         }

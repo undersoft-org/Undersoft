@@ -21,7 +21,8 @@ public class Setup
                     typeof(EntryStore),
                     typeof(ReportStore)
                 },
-                new[] { typeof(ApplicationClient), typeof(EventClient) }
+                new[] { typeof(ApplicationClient), 
+                        typeof(EventClient) }
             )
             .AddAccessServer<AccountStore>()
             .AddDataServer<IEntityStore>(
@@ -31,12 +32,15 @@ public class Setup
                         .AddInvocations<Member>()
                         .AddInvocations<Identifier<Member>>()
                         .AddInvocations<Application>()
-                        .AddInvocations<Account>()
                         .AddInvocations<Contracts.Service>()
             )
             .AddDataServer<IEventStore>(
                 DataServerTypes.All,
                 builder => builder.AddInvocations<Event>()
+            )
+            .AddDataServer<IAccountStore>(
+                DataServerTypes.All,
+                builder => builder.AddInvocations<Account>()
             );
     }
 

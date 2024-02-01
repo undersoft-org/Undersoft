@@ -6,11 +6,11 @@ using Undersoft.SDK.Service.Data.Model;
 
 public interface IEvent
 {
-    uint EventVersion { get; set; }
+    uint Version { get; set; }
     string EventType { get; set; }
-    byte[] EventData { get; set; }
-    long AggregateId { get; set; }
-    string AggregateType { get; set; }
+    byte[] Data { get; set; }
+    long EntityId { get; set; }
+    string EntityTypeName { get; set; }
     DateTime PublishTime { get; set; }
     EventPublishStatus PublishStatus { get; set; }
 }

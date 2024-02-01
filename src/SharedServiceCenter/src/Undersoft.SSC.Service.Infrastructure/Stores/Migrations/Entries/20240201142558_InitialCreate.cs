@@ -7,8 +7,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
 {
+    /// <inheritdoc />
     public partial class InitialCreate : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
@@ -29,14 +31,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -52,14 +54,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     DefaultId = table.Column<long>(type: "bigint", nullable: true),
                     LocationId = table.Column<long>(type: "bigint", nullable: true),
                     Group = table.Column<int>(type: "integer", nullable: false)
@@ -84,14 +86,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     DefaultId = table.Column<long>(type: "bigint", nullable: true),
                     LocationId = table.Column<long>(type: "bigint", nullable: true),
                     Group = table.Column<int>(type: "integer", nullable: false)
@@ -116,24 +118,25 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     DefaultId = table.Column<long>(type: "bigint", nullable: false),
+                    Data = table.Column<byte[]>(type: "bytea", nullable: true),
                     Document = table.Column<JsonDocument>(type: "jsonb", nullable: true),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Kind = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Details", x => x.Id);
+                    table.PrimaryKey("PK_DetailSet", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Details_Defaults_DefaultId",
+                        name: "FK_DetailSet_Defaults_DefaultId",
                         column: x => x.DefaultId,
                         principalSchema: "domain",
                         principalTable: "Defaults",
@@ -150,14 +153,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     DefaultId = table.Column<long>(type: "bigint", nullable: true),
                     LocationId = table.Column<long>(type: "bigint", nullable: true),
                     Group = table.Column<int>(type: "integer", nullable: false)
@@ -182,14 +185,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     DefaultId = table.Column<long>(type: "bigint", nullable: true),
                     LocationId = table.Column<long>(type: "bigint", nullable: true),
                     Group = table.Column<int>(type: "integer", nullable: false)
@@ -214,14 +217,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     DefaultId = table.Column<long>(type: "bigint", nullable: true),
                     LocationId = table.Column<long>(type: "bigint", nullable: true),
                     Group = table.Column<int>(type: "integer", nullable: false)
@@ -246,14 +249,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     DefaultId = table.Column<long>(type: "bigint", nullable: true),
                     LocationId = table.Column<long>(type: "bigint", nullable: true),
                     Group = table.Column<int>(type: "integer", nullable: false)
@@ -278,24 +281,25 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     DefaultId = table.Column<long>(type: "bigint", nullable: false),
+                    Data = table.Column<byte[]>(type: "bytea", nullable: true),
                     Document = table.Column<JsonDocument>(type: "jsonb", nullable: true),
-                    TypeName = table.Column<string>(type: "text", nullable: true),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Kind = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Settings", x => x.Id);
+                    table.PrimaryKey("PK_SettingSet", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Settings_Defaults_DefaultId",
+                        name: "FK_SettingSet_Defaults_DefaultId",
                         column: x => x.DefaultId,
                         principalSchema: "domain",
                         principalTable: "Defaults",
@@ -312,14 +316,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     ObjectId = table.Column<long>(type: "bigint", nullable: false),
                     Kind = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
@@ -347,16 +351,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -386,14 +390,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     ObjectId = table.Column<long>(type: "bigint", nullable: false),
                     Kind = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
@@ -421,16 +425,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -460,16 +464,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -482,7 +486,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ActivitiesToDetails_Details_RightEntityId",
+                        name: "FK_ActivitiesToDetails_DetailSet_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
                         principalTable: "DetailSet",
@@ -499,16 +503,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -521,7 +525,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ApplicationsToDetails_Details_RightEntityId",
+                        name: "FK_ApplicationsToDetails_DetailSet_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
                         principalTable: "DetailSet",
@@ -538,14 +542,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     ObjectId = table.Column<long>(type: "bigint", nullable: false),
                     Kind = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
@@ -556,7 +560,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 {
                     table.PrimaryKey("PK_DetailIdentifiers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DetailIdentifiers_Details_ObjectId",
+                        name: "FK_DetailIdentifiers_DetailSet_ObjectId",
                         column: x => x.ObjectId,
                         principalSchema: "domain",
                         principalTable: "DetailSet",
@@ -573,29 +577,29 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DetailToDetail", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DetailToDetail_Details_LeftEntityId",
+                        name: "FK_DetailToDetail_DetailSet_LeftEntityId",
                         column: x => x.LeftEntityId,
                         principalSchema: "domain",
                         principalTable: "DetailSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DetailToDetail_Details_RightEntityId",
+                        name: "FK_DetailToDetail_DetailSet_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
                         principalTable: "DetailSet",
@@ -612,16 +616,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -651,14 +655,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     ObjectId = table.Column<long>(type: "bigint", nullable: false),
                     Kind = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
@@ -686,16 +690,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -725,22 +729,22 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MembersToDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MembersToDetails_Details_RightEntityId",
+                        name: "FK_MembersToDetails_DetailSet_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
                         principalTable: "DetailSet",
@@ -764,16 +768,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -803,16 +807,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -842,16 +846,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -881,14 +885,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     ObjectId = table.Column<long>(type: "bigint", nullable: false),
                     Kind = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
@@ -916,22 +920,22 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ResourcesToDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ResourcesToDetails_Details_RightEntityId",
+                        name: "FK_ResourcesToDetails_DetailSet_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
                         principalTable: "DetailSet",
@@ -955,16 +959,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -994,16 +998,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1033,16 +1037,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1072,14 +1076,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     ObjectId = table.Column<long>(type: "bigint", nullable: false),
                     Kind = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
@@ -1107,16 +1111,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1146,22 +1150,22 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SchedulesToDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SchedulesToDetails_Details_RightEntityId",
+                        name: "FK_SchedulesToDetails_DetailSet_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
                         principalTable: "DetailSet",
@@ -1185,16 +1189,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1224,14 +1228,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Name = table.Column<string>(type: "text", nullable: true),
                     LocaleType = table.Column<int>(type: "integer", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: true),
@@ -1296,14 +1300,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     ObjectId = table.Column<long>(type: "bigint", nullable: false),
                     Kind = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
@@ -1331,16 +1335,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1370,22 +1374,22 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ServicesToDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ServicesToDetails_Details_RightEntityId",
+                        name: "FK_ServicesToDetails_DetailSet_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
                         principalTable: "DetailSet",
@@ -1409,16 +1413,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1448,16 +1452,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1487,16 +1491,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1509,7 +1513,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ActivitiesToSettings_Settings_RightEntityId",
+                        name: "FK_ActivitiesToSettings_SettingSet_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
                         principalTable: "SettingSet",
@@ -1526,16 +1530,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1548,7 +1552,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ApplicationsToSettings_Settings_RightEntityId",
+                        name: "FK_ApplicationsToSettings_SettingSet_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
                         principalTable: "SettingSet",
@@ -1565,16 +1569,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1587,7 +1591,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MembersToSettings_Settings_RightEntityId",
+                        name: "FK_MembersToSettings_SettingSet_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
                         principalTable: "SettingSet",
@@ -1604,16 +1608,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1626,7 +1630,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ResourcesToSettings_Settings_RightEntityId",
+                        name: "FK_ResourcesToSettings_SettingSet_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
                         principalTable: "SettingSet",
@@ -1643,16 +1647,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1665,7 +1669,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SchedulesToSettings_Settings_RightEntityId",
+                        name: "FK_SchedulesToSettings_SettingSet_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
                         principalTable: "SettingSet",
@@ -1682,16 +1686,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1704,7 +1708,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ServicesToSettings_Settings_RightEntityId",
+                        name: "FK_ServicesToSettings_SettingSet_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
                         principalTable: "SettingSet",
@@ -1721,14 +1725,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     ObjectId = table.Column<long>(type: "bigint", nullable: false),
                     Kind = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
@@ -1739,7 +1743,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 {
                     table.PrimaryKey("PK_SettingIdentifiers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SettingIdentifiers_Settings_ObjectId",
+                        name: "FK_SettingIdentifiers_SettingSet_ObjectId",
                         column: x => x.ObjectId,
                         principalSchema: "domain",
                         principalTable: "SettingSet",
@@ -1756,29 +1760,29 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    RightEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LeftEntityId = table.Column<long>(type: "bigint", nullable: true)
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RightEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    LeftEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SettingToSetting", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SettingToSetting_Settings_LeftEntityId",
+                        name: "FK_SettingToSetting_SettingSet_LeftEntityId",
                         column: x => x.LeftEntityId,
                         principalSchema: "domain",
                         principalTable: "SettingSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SettingToSetting_Settings_RightEntityId",
+                        name: "FK_SettingToSetting_SettingSet_RightEntityId",
                         column: x => x.RightEntityId,
                         principalSchema: "domain",
                         principalTable: "SettingSet",
@@ -1795,14 +1799,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Host = table.Column<string>(type: "text", nullable: true),
                     IP = table.Column<string>(type: "text", nullable: true),
                     Port = table.Column<int>(type: "integer", nullable: true),
@@ -1834,14 +1838,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Place = table.Column<string>(type: "text", nullable: true),
                     Height = table.Column<int>(type: "integer", nullable: true),
                     Width = table.Column<int>(type: "integer", nullable: true),
@@ -2016,7 +2020,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 column: "ObjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Details_DefaultId",
+                name: "IX_DetailSet_DefaultId",
                 schema: "domain",
                 table: "DetailSet",
                 column: "DefaultId");
@@ -2365,7 +2369,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 column: "ObjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Settings_DefaultId",
+                name: "IX_SettingSet_DefaultId",
                 schema: "domain",
                 table: "SettingSet",
                 column: "DefaultId");
@@ -2383,6 +2387,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                 column: "RightEntityId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

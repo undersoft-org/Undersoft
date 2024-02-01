@@ -440,6 +440,7 @@
                         {
                             if (_item.Next != null)
                                 _item = swapRepeated(_item);
+
                             _item.Removed = true;
                             removedIncrement();
                             return _item.Value;
@@ -460,15 +461,14 @@
             int _newsize = newsize;
             uint newMaxId = (uint)(_newsize - 1);
             ISeriesItem<V>[] newItemTable = EmptyTable(_newsize);
+            ISeriesItem<V>[] newBaseDeck = EmptyVector(_newsize);
             if (removed != 0)
-            {
-                ISeriesItem<V>[] newBaseDeck = EmptyVector(_newsize);
+            {                
                 rehashAndReindex(newItemTable, newBaseDeck, newMaxId);
                 vector = newBaseDeck;
             }
             else
             {
-                ISeriesItem<V>[] newBaseDeck = EmptyVector(_newsize);
                 rehash(newItemTable, newMaxId);
                 Array.Copy(vector, 0, newBaseDeck, 0, finish);
                 vector = newBaseDeck;

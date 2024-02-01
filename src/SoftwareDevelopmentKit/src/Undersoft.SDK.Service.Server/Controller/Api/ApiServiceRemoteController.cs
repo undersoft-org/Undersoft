@@ -35,7 +35,7 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
             return BadRequest(ModelState);
 
         var result = await _servicer.Entry(
-            new RemoteAction<TStore, TService, TModel>(arguments["Name"].ToString(), arguments)
+            new RemoteAction<TStore, TService, TModel>(method, arguments)
         );
 
         return !result.IsValid
@@ -50,7 +50,7 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
             return BadRequest(ModelState);
 
         var result = await _servicer.Entry(
-            new RemoteAction<TStore, TService, TModel>(arguments["Name"].ToString(), arguments)
+            new RemoteAction<TStore, TService, TModel>(method, arguments)
         );
 
         return !result.IsValid
@@ -65,7 +65,7 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
             return BadRequest(ModelState);
 
         var result = await _servicer.Entry(
-            new RemoteAction<TStore, TService, TModel>(arguments["Name"].ToString(), arguments)
+            new RemoteAction<TStore, TService, TModel>(method, arguments)
         );
 
         return !result.IsValid

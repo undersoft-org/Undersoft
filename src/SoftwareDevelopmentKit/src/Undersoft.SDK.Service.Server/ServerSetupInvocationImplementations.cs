@@ -67,6 +67,9 @@ public partial class ServerSetup
 
             if (duplicateCheck.Add(storeType.Name + serviceType.Name + modelType.Name))
             {
+                service.AddScoped(typeof(IInvoker<>).MakeGenericType(serviceType),
+                                  typeof(Invoker<>).MakeGenericType(serviceType));
+
                 service.AddTransient(
                     typeof(IRequest<>).MakeGenericType(
                         typeof(Invocation<>).MakeGenericType(modelType)

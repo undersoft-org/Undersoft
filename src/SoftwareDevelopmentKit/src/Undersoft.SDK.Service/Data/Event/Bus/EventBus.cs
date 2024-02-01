@@ -97,7 +97,7 @@ namespace Undersoft.SDK.Service.Data.Event.Bus
 
         public virtual async Task PublishAsync(EventMessage localEventMessage)
         {
-            await TriggerHandlersAsync(Type.GetType(localEventMessage.EventType), localEventMessage.EventData);
+            await TriggerHandlersAsync(Type.GetType(localEventMessage.EventType), localEventMessage.Data);
         }
 
         protected override IEnumerable<EventWithHandlerFactories> GetHandlerFactories(Type eventType)

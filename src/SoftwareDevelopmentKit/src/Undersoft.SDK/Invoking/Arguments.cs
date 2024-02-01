@@ -47,12 +47,18 @@
 
         [JsonIgnore]
         [IgnoreDataMember]
-        public object[] ValueArray =>
-            this.AsValues().ForEach(i => i.Deserialize()).ToArray();                
+        public object[] ValueArray => this.ForEach(i => i.Deserialize()).ToArray();
 
+        private Type[] _typeArray;
         [JsonIgnore]
         [IgnoreDataMember]
-        public Type[] TypeArray => this.OrderBy(a => a.Position).Select(a => Type.GetType(a.ArgumentTypeName)).ToArray();
+        public Type[] TypeArray => _typeArray ??= this.ForEach(a => a.ResolveType()).ToArray();
+
+        public Type[] UpdateArgumentTypes()
+        {
+            _typeArray = null;
+            return TypeArray;
+        }
 
         [JsonIgnore]
         [IgnoreDataMember]
@@ -65,11 +71,6 @@
         public Argument New(string name, object value, string method, string target)
         {
             return this.Put(new Argument(name, value, method, target)).Value;
-        }
-
-        public ISeries<object> Deserialize()
-        {
-            return this.ForEach(i => i.Deserialize()).ToListing();
         }
 
         public ISeriesItem<Argument> New(object value, string method, string target = null)

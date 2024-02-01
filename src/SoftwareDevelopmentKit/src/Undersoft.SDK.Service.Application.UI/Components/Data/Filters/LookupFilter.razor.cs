@@ -35,12 +35,12 @@ public partial class LookupFilter
 
         if (Lookup == null)
         {
-            throw new InvalidOperationException("the Argument Lookup must be set.");
+            throw new InvalidOperationException("the Argument Lookup must be Set.");
         }
 
         if (Type == null)
         {
-            throw new InvalidOperationException("the Argument TypeName must be set.");
+            throw new InvalidOperationException("the Argument TypeName must be Set.");
         }
 
         if (TableFilter != null)

@@ -18,7 +18,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
 {
     private readonly IJSRuntime js;
     private readonly IAuthorization _authorization;
-    private readonly IRemoteRepository<IDataStore, TAccount> _repository;
+    private readonly IRemoteRepository<IAccountStore, TAccount> _repository;
     private readonly string TOKENKEY = "TOKENKEY";
     private readonly string EXPIRATIONTOKENKEY = "EXPIRATIONTOKENKEY";
 
@@ -27,7 +27,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
 
     public AccessProvider(
         IJSRuntime js,
-        IRemoteRepository<IDataStore, TAccount> repository,
+        IRemoteRepository<IAccountStore, TAccount> repository,
         IAuthorization authorization
     )
     {

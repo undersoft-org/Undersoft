@@ -45,7 +45,7 @@ namespace Undersoft.SDK.Service.Data.Blob
             }
 
             throw new Exception(
-                $"Could not find the BLOB Storage provider with the type ({configuration.ProviderType.AssemblyQualifiedName}) configured for the container {containerName} and no default provider was set."
+                $"Could not find the BLOB Storage provider with the type ({configuration.ProviderType.AssemblyQualifiedName}) configured for the container {containerName} and no default provider was Set."
             );
         }
     }

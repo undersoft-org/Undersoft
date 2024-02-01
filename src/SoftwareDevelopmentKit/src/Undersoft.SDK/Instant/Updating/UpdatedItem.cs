@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Instant.Updating
 {
-    public struct UpdaterItem
+    public struct UpdatedItem
     {
         public int TargetIndex;
         public object OriginValue;

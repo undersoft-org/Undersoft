@@ -23,12 +23,6 @@
             return (T)(base.source.Target);
         }
 
-        public new T PatchSelf()
-        {
-            base.PatchSelf();
-            return (T)(source.Target);
-        }
-
         public T Put(T item)
         {
             base.Put<T>(item);
@@ -41,13 +35,7 @@
             return (T)(base.source.Target);
         }
 
-        public new T PutSelf()
-        {
-            base.PutSelf();
-            return (T)(source.Target);
-        }
-
-        public UpdaterItem[] Detect(T item)
+        public UpdatedItem[] Detect(T item)
         {
             return base.Detect<T>(item);
         }
@@ -59,12 +47,6 @@
             _clone.PutFrom(Devisor);
             return clone;
         }
-
-        //public IProxy EntryProxy => source;
-        //public IProxy PresetProxy => (IProxy)Preset;
-
-        //public T Entry => (T)((preset == null) ? preset = creator.Create(Target) : preset);
-        //public new T Preset => (T)((preset == null) ? preset = creator.Create(source) : preset);
 
         public T Devisor
         {

@@ -49,11 +49,11 @@ public class DeletedHandler<TStore, TEntity, TDto>
                         TEntity result = null;
                         if (request.Command.Keys != null)
                             result = await _repository.Delete(request.Command.Keys);
-                        else if (request.EventData == null && request.Predicate != null)
+                        else if (request.Data == null && request.Predicate != null)
                             result = await _repository.Delete(request.Predicate);
                         else
                             result = _repository.DeleteBy(
-                                request.EventData,
+                                request.Data,
                                 request.Predicate
                             );
 

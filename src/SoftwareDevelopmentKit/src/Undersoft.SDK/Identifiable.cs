@@ -78,10 +78,10 @@ namespace Undersoft.SDK
             }
         }
 
-        [StringLength(128)]
+        [StringLength(512)]
         [DataMember(Order = 5)]
         [Column(Order = 5)]
-        [InstantAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+        [InstantAs(UnmanagedType.ByValTStr, SizeConst = 512)]
         public virtual string TypeName { get; set; }
 
         [Required]

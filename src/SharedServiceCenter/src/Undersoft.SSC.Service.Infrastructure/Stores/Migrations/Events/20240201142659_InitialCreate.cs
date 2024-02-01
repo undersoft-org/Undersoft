@@ -6,8 +6,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
 {
+    /// <inheritdoc />
     public partial class InitialCreate : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
@@ -22,19 +24,19 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Modifier = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    Creator = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Label = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    EventVersion = table.Column<long>(type: "bigint", nullable: false),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
                     EventType = table.Column<string>(type: "text", nullable: true),
-                    AggregateId = table.Column<long>(type: "bigint", nullable: false),
-                    AggregateType = table.Column<string>(type: "text", nullable: true),
-                    EventData = table.Column<byte[]>(type: "bytea", nullable: true),
+                    EntityId = table.Column<long>(type: "bigint", nullable: false),
+                    EntityTypeName = table.Column<string>(type: "text", nullable: true),
+                    Data = table.Column<byte[]>(type: "bytea", nullable: true),
                     PublishTime = table.Column<DateTime>(type: "timestamp", nullable: false),
                     PublishStatus = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -44,6 +46,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
                 });
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

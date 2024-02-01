@@ -33,10 +33,10 @@ namespace Undersoft.SDK
         public virtual DateTime Modified { get; set; }
 
         [IdentityRubric]
-        [StringLength(32)]
+        [StringLength(128)]
         [Column(Order = 7)]
         [DataMember(Order = 7)]
-        [InstantAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        [InstantAs(UnmanagedType.ByValTStr, SizeConst = 128)]
         public virtual string Modifier { get; set; }
 
         [IdentityRubric]
@@ -46,10 +46,10 @@ namespace Undersoft.SDK
         public virtual DateTime Created { get; set; }
 
         [IdentityRubric]
-        [StringLength(32)]
+        [StringLength(128)]
         [Column(Order = 9)]
         [DataMember(Order = 9)]
-        [InstantAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        [InstantAs(UnmanagedType.ByValTStr, SizeConst = 128)]
         public virtual string Creator { get; set; }
 
         [DataMember(Order = 10)]
@@ -58,9 +58,9 @@ namespace Undersoft.SDK
         public virtual int Index { get; set; }
 
         [Column(Order = 11)]
-        [StringLength(32)]
+        [StringLength(256)]
         [DataMember(Order = 11)]
-        [InstantAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        [InstantAs(UnmanagedType.ByValTStr, SizeConst = 256)]
         public virtual string Label { get; set; }
 
         public virtual TEntity Sign<TEntity>(TEntity entity = null) where TEntity : class, IOrigin

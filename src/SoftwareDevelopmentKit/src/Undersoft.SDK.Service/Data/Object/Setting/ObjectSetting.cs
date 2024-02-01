@@ -34,10 +34,10 @@ public class ObjectSetting<TSetting, TKind> : DataObject, ISerializableJsonDocum
     }
 
     [DataMember(Order = 12)]
-    public virtual JsonDocument Document { get; set; }
+    public virtual byte[] Data { get; set; }
 
     [DataMember(Order = 13)]
-    public virtual string TypeName { get; set; }
+    public virtual JsonDocument Document { get; set; }
 
     [DataMember(Order = 14)]
     public virtual string Name { get; set; }

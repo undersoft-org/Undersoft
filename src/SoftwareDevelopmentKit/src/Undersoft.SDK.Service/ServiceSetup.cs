@@ -119,6 +119,7 @@ public partial class ServiceSetup : IServiceSetup
     public IServiceSetup AddImplementations()
     {
         registry.AddScoped<IServicer, Servicer>();
+        registry.AddScoped<IInvoker, Invoker>();
         registry.AddScoped<IAuthorization, Authorization>();
 
         AddDomainImplementations();

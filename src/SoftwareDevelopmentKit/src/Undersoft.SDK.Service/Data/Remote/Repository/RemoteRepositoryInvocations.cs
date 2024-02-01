@@ -36,16 +36,18 @@ public partial class RemoteRepository<TEntity>
 
         var service = new DataServiceActionQuerySingle<TEntity>(
             remoteContext,
-            $"{remoteContext.BaseUri.OriginalString}/{Name}/{action}", new BodyOperationParameter(method, _args));
+            $"{remoteContext.BaseUri.OriginalString}/{Name}/{action}",
+            new BodyOperationParameter(method, _args)
+        );
 
         var result = await service.GetValueAsync();
         return result;
     }
 
-    private async Task<IEnumerable<TEntity>> InvokeAsync(
+    private async Task<IEnumerable<TEntity>> InvokeAsync<TModel>(
         string action,
         string method,
-        TEntity[] args
+        TModel[] args
     )
     {
         var service = new DataServiceActionQuery<TEntity>(

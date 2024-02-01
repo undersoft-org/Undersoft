@@ -26,7 +26,7 @@ public abstract class OpenServiceController<TStore, TService, TModel>
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Access([FromBody] IDictionary<string, Arguments> args)
+    public virtual IActionResult Access([FromBody] IDictionary<string, Arguments> args)
     {
         var isValid = false;
 
@@ -34,48 +34,22 @@ public abstract class OpenServiceController<TStore, TService, TModel>
             return BadRequest(ModelState);
 
         var result = args.ForEach(
-              async a =>
-                  await _servicer.Perform(
-                      new Action<TStore, TService, TModel>(a.Key, a.Value)
-                  )
-          )
-          .Commit();
+                async a =>
+                    await _servicer.Perform(new Action<TStore, TService, TModel>(a.Key, a.Value))
+            )
+            .Commit();
 
-        object[] response = await result
-        .ForEach(
-                async c => (isValid = (await c).IsValid) ? c.Id as object : (await c).ErrorMessages
-        )
-            .ToArrayAsync();
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
-    }
+        Task.WaitAll(result);
 
+        var response = result
+            .ForEach(c => (isValid = c.Result.IsValid) ? c.Result.Output : c.Result.ErrorMessages)
+            .Commit();
 
-    [HttpPost]
-    public virtual async Task<IActionResult> Action([FromBody] IDictionary<string, Arguments> args)
-    {
-        var isValid = false;
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var result = args.ForEach(
-              async a =>
-                  await _servicer.Perform(
-                      new Action<TStore, TService, TModel>(a.Key, a.Value)
-                  )
-          )
-          .Commit();
-
-        object[] response = await result
-        .ForEach(
-                async c => (isValid = (await c).IsValid) ? c.Id as object : (await c).ErrorMessages
-        )
-            .ToArrayAsync();
         return !isValid ? UnprocessableEntity(response) : Ok(response);
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Setup([FromBody] IDictionary<string, Arguments> args)
+    public virtual IActionResult Action([FromBody] IDictionary<string, Arguments> args)
     {
         var isValid = false;
 
@@ -83,18 +57,40 @@ public abstract class OpenServiceController<TStore, TService, TModel>
             return BadRequest(ModelState);
 
         var result = args.ForEach(
-              async a =>
-                  await _servicer.Perform(
-                      new Setup<TStore, TService, TModel>(a.Key, a.Value)
-                  )
-          )
-          .Commit();
+                async a =>
+                    await _servicer.Perform(new Action<TStore, TService, TModel>(a.Key, a.Value))
+            )
+            .Commit();
 
-        object[] response = await result
-        .ForEach(
-                async c => (isValid = (await c).IsValid) ? c.Id as object : (await c).ErrorMessages
-        )
-            .ToArrayAsync();
+        Task.WaitAll(result);
+
+        var response = result
+            .ForEach(c => (isValid = c.Result.IsValid) ? c.Result.Output : c.Result.ErrorMessages)
+            .Commit();
+
+        return !isValid ? UnprocessableEntity(response) : Ok(response);
+    }
+
+    [HttpPost]
+    public virtual IActionResult Setup([FromBody] IDictionary<string, Arguments> args)
+    {
+        var isValid = false;
+
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var result = args.ForEach(
+                async a =>
+                    await _servicer.Perform(new Setup<TStore, TService, TModel>(a.Key, a.Value))
+            )
+            .Commit();
+
+        Task.WaitAll(result);
+
+        var response = result
+              .ForEach(c => (isValid = c.Result.IsValid) ? c.Result.Output : c.Result.ErrorMessages)
+              .Commit();
+
         return !isValid ? UnprocessableEntity(response) : Ok(response);
     }
 }

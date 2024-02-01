@@ -1,15 +1,18 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Instant.Updating;
 
 namespace Undersoft.SDK.Security
 {
     [DataContract]
-    public class Authorization : Origin, IInnerProxy, IAuthorization
+    public class Authorization : InnerProxy, IAuthorization
     {
+        [NotMapped]
         [DataMember(Order = 16)]
         public Credentials Credentials { get; set; } = new Credentials();
 
+        [NotMapped]
         [DataMember(Order = 17)]
         public AuthorizationNotes Notes { get; set; } = new AuthorizationNotes();
 
@@ -23,10 +26,5 @@ namespace Undersoft.SDK.Security
         {
             this.PatchFrom(user);
         }
-
-        IProxy IInnerProxy.Proxy => throw new NotImplementedException();
-
-        object IInnerProxy.this[int fieldId] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        object IInnerProxy.this[string propertyName] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

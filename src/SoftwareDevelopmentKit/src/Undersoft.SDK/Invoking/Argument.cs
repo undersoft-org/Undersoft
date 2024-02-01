@@ -59,6 +59,11 @@
         public int Position { get; set; } = -1;
 
         public string ArgumentTypeName { get; set; } 
+        
+        public Type ResolveType()
+        {
+            return _type ??= Assemblies.FindTypeByFullName(ArgumentTypeName);
+        }
 
         public void Serialize(object value)
         {
@@ -71,9 +76,9 @@
 
         public object Deserialize()
         {
-            if (Binaries != null && TypeName != null)
+            if (Binaries != null && ArgumentTypeName != null)
             {
-                var t = Assemblies.FindType(ArgumentTypeName);
+                var t = ResolveType();
                 if (t != null)
                     return Binaries.FromJson(t);
             }
@@ -97,7 +102,7 @@
             ArgumentTypeName = _type.FullName;
             MethodName = method;
             TargetName = target;
-            Id = Name.UniqueKey();
+            Id = $"{ArgumentTypeName}_{Name}".UniqueKey();
             TypeId = ArgumentTypeName.UniqueKey();
         }
 
@@ -109,7 +114,7 @@
             ArgumentTypeName = item.ArgumentTypeName;
             MethodName = method;
             TargetName = target;
-            Id = Name.UniqueKey();
+            Id = $"{ArgumentTypeName}_{Name}".UniqueKey();
             TypeId = ArgumentTypeName.UniqueKey();
         }
 
@@ -128,7 +133,7 @@
             Position = position;
             MethodName = method;
             TargetName = target;
-            Id = Name.UniqueKey();
+            Id = $"{ArgumentTypeName}_{Name}".UniqueKey();
             TypeId = ArgumentTypeName.UniqueKey();
         }
 
@@ -146,7 +151,7 @@
             Position = position;
             MethodName = method;
             TargetName = target;
-            Id = Name.UniqueKey();
+            Id = $"{ArgumentTypeName}_{Name}".UniqueKey();
             TypeId = ArgumentTypeName.UniqueKey();
         }
     }

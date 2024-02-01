@@ -93,7 +93,7 @@ public partial class Chart : Component, IAsyncDisposable
         {
             if (OnInitAsync == null)
             {
-                throw new InvalidOperationException("OnInit parameter must be set");
+                throw new InvalidOperationException("OnInit parameter must be Set");
             }
 
             var ds = await OnInitAsync.Invoke();

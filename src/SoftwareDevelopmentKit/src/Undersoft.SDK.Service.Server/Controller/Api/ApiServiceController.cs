@@ -33,7 +33,7 @@ public abstract class ApiServiceController<TStore, TService, TModel>
             return BadRequest(ModelState);
                                    
             var result = await _servicer.Perform(
-                new Action<TStore, TService, TModel>(arguments["Name"].ToString(), arguments)
+                new Action<TStore, TService, TModel>(method, arguments)
             );
 
             return !result.IsValid
@@ -48,7 +48,7 @@ public abstract class ApiServiceController<TStore, TService, TModel>
             return BadRequest(ModelState);
 
         var result = await _servicer.Perform(
-            new Action<TStore, TService, TModel>(arguments["Name"].ToString(), arguments)
+            new Action<TStore, TService, TModel>(method, arguments)
         );
 
         return !result.IsValid
@@ -63,7 +63,7 @@ public abstract class ApiServiceController<TStore, TService, TModel>
             return BadRequest(ModelState);
 
         var result = await _servicer.Perform(
-            new Action<TStore, TService, TModel>(arguments["Name"].ToString(), arguments)
+            new Action<TStore, TService, TModel>(method, arguments)
         );
 
         return !result.IsValid

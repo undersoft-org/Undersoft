@@ -48,46 +48,46 @@ public class Updater : IUpdater
     {
     }
 
-    public Updater(IProxy sleeve) : this(sleeve.Target.GetType())
+    public Updater(IProxy proxy) : this(proxy.Target.GetType())
     {
-        Combine(sleeve);
+        Combine(proxy);
     }
 
-    public Updater(Type type)
+    internal Updater(Type type)
     {
         creator = ProxyFactory.GetCreator(type);
     }
 
-    public void Combine(IProxy sleeve)
+    protected virtual void Combine(IProxy proxy)
     {
-        source = sleeve;
+        source = proxy;
     }
 
-    public void Combine(object item)
+    protected virtual void Combine(object item)
     {
         source = creator.Create(item);
     }
 
-    protected void setBy(IProxy target, UpdaterItem[] changes, int count)
+    protected virtual void SetBy(IProxy target, UpdatedItem[] updates, int count)
     {
         var _target = target;
-        var _changes = changes;
-        UpdaterItem vary;
+        var _updates = updates;
+        UpdatedItem item;
         for (int i = 0; i < count; i++)
         {
-            vary = _changes[i];
-            if (vary.TargetType.IsAssignableTo(vary.OriginType))
+            item = _updates[i];
+            if (item.TargetType.IsAssignableTo(item.OriginType))
             {
-                _target[vary.TargetIndex] = vary.OriginValue;
+                _target[item.TargetIndex] = item.OriginValue;
             }
         }
     }
 
-    protected void set(IProxy target, UpdaterItem[] changes, int count)
+    protected virtual void Set(IProxy target, UpdatedItem[] updates, int count)
     {
         var _target = target;
-        var _changes = changes;
-        UpdaterItem vary;
+        var _changes = updates;
+        UpdatedItem vary;
         for (int i = 0; i < count; i++)
         {
             vary = _changes[i];
@@ -97,30 +97,30 @@ public class Updater : IUpdater
 
     public object Patch(object item)
     {
-        UpdaterItem[] changes;
+        UpdatedItem[] changes;
 
         UpdateAction = (o, t) => o.Patch(t);
 
         IProxy target = item.ToProxy();
         if (item.GetType() != type)
-            setBy(target, changes = PatchNotEqualTypes(target), counter);
+            SetBy(target, changes = PatchNotEqualTypes(target), counter);
         else
-            set(target, changes = PatchEqualTypes(target), counter);
+            Set(target, changes = PatchEqualTypes(target), counter);
 
         return item;
     }
 
     public E Patch<E>(E item) where E : class
     {
-        UpdaterItem[] changes;
+        UpdatedItem[] changes;
 
         UpdateAction = (o, t) => o.Patch(t);
 
         IProxy target = item.ToProxy();
         if (typeof(E) != type)
-            setBy(target, changes = PatchNotEqualTypes(target), counter);
+            SetBy(target, changes = PatchNotEqualTypes(target), counter);
         else
-            set(target, changes = PatchEqualTypes(target), counter);
+            Set(target, changes = PatchEqualTypes(target), counter);
 
         return item;
     }
@@ -130,17 +130,9 @@ public class Updater : IUpdater
         return Patch(typeof(E).New<E>());
     }
 
-    public object PatchSelf()
-    {
-        UpdateAction = (o, s) => o.PatchSelf();
-
-        set(source, PatchEqualTypes(source), counter);
-        return Target;
-    }
-
     public object Put(object item)
     {
-        UpdaterItem[] changes = null;
+        UpdatedItem[] updates = null;
 
         UpdateAction = (o, t) => o.Put(t);
 
@@ -148,16 +140,16 @@ public class Updater : IUpdater
         if (target != null)
         {
             if (item.GetType() != type)
-                setBy(target, changes = PutEqualTypes(target), counter);
+                SetBy(target, updates = PutNotEqualTypes(target), counter);
             else
-                set(target, changes = PutNotEqualTypes(target), counter);
+                Set(target, updates = PutEqualTypes(target), counter);
         }
         return item;
     }
 
     public E Put<E>(E item) where E : class
     {
-        UpdaterItem[] changes = null;
+        UpdatedItem[] updates = null;
 
         UpdateAction = (o, t) => o.Put(t);
 
@@ -165,9 +157,9 @@ public class Updater : IUpdater
         if (target != null)
         {
             if (typeof(E) != type)
-                setBy(target, changes = PutEqualTypes(target), counter);
+                SetBy(target, updates = PutNotEqualTypes(target), counter);
             else
-                set(target, changes = PutNotEqualTypes(target), counter);
+                Set(target, updates = PutEqualTypes(target), counter);
         }
         return item;
     }
@@ -177,17 +169,9 @@ public class Updater : IUpdater
         return Put(typeof(E).New<E>());
     }
 
-    public object PutSelf()
+    public UpdatedItem[] Detect(object item)
     {
-        UpdateAction = (c, h) => c.PutSelf();
-
-        set(source, PutNotEqualTypes(source), counter);
-        return Target;
-    }
-
-    public UpdaterItem[] Detect(object item)
-    {
-        UpdaterItem[] changes = null;
+        UpdatedItem[] changes = null;
 
         UpdateAction = (o, t) => o.Detect(t);
 
@@ -202,9 +186,9 @@ public class Updater : IUpdater
         return changes;
     }
 
-    public UpdaterItem[] Detect<E>(E item) where E : class
+    public UpdatedItem[] Detect<E>(E item) where E : class
     {
-        UpdaterItem[] changes = null;
+        UpdatedItem[] changes = null;
 
         UpdateAction = (o, t) => o.Detect(t);
 
@@ -227,12 +211,12 @@ public class Updater : IUpdater
         return clone;
     }
 
-    protected UpdaterItem[] PatchEqualTypes(IProxy target)
+    protected UpdatedItem[] PatchEqualTypes(IProxy target)
     {
         counter = 0;
         var _target = target;
-        var _sameVariations = new UpdaterItem[Rubrics.Count];
-        var _item = new UpdaterItem();
+        var _updates = new UpdatedItem[Rubrics.Count];
+        var _item = new UpdatedItem();
 
         Rubrics.ForEach(
             (rubric) =>
@@ -251,21 +235,21 @@ public class Updater : IUpdater
                         {
                             _item.TargetIndex = targetndex;
                             _item.OriginValue = originValue;
-                            _sameVariations[counter++] = _item;
+                            _updates[counter++] = _item;
                         }
                     }
                 }
             }
         );
-        return _sameVariations;
+        return _updates;
     }
 
-    protected UpdaterItem[] PatchNotEqualTypes(IProxy target)
+    protected UpdatedItem[] PatchNotEqualTypes(IProxy target)
     {
         counter = 0;
         var _target = target;
-        var _customVariations = new UpdaterItem[Rubrics.Count];
-        var _item = new UpdaterItem();
+        var _updates = new UpdatedItem[Rubrics.Count];
+        var _item = new UpdatedItem();
 
         Rubrics.ForEach(
             (originRubric) =>
@@ -297,22 +281,22 @@ public class Updater : IUpdater
                                 _item.OriginValue = originValue;
                                 _item.OriginType = originRubric.RubricType;
                                 _item.TargetType = targetRubric.RubricType;
-                                _customVariations[counter++] = _item;
+                                _updates[counter++] = _item;
                             }
                         }
                     }
                 }
             }
         );
-        return _customVariations;
+        return _updates;
     }
 
-    protected UpdaterItem[] PutNotEqualTypes(IProxy target)
+    protected UpdatedItem[] PutEqualTypes(IProxy target)
     {
         counter = 0;
         var _target = target;
-        var _sameMutations = new UpdaterItem[Rubrics.Count];
-        var _item = new UpdaterItem();
+        var _updates = new UpdatedItem[Rubrics.Count];
+        var _item = new UpdatedItem();
 
         Rubrics.ForEach(
             (rubric) =>
@@ -330,20 +314,20 @@ public class Updater : IUpdater
                     {
                         _item.TargetIndex = index;
                         _item.OriginValue = originValue;
-                        _sameMutations[counter++] = _item;
+                        _updates[counter++] = _item;
                     }
                 }
             }
         );
-        return _sameMutations;
+        return _updates;
     }
-
-    protected UpdaterItem[] PutEqualTypes(IProxy target)
+    
+    protected UpdatedItem[] PutNotEqualTypes(IProxy target)
     {
         counter = 0;
         var _target = target;
-        var _customMutations = new UpdaterItem[Rubrics.Count];
-        var _item = new UpdaterItem();
+        var _updates = new UpdatedItem[Rubrics.Count];
+        var _item = new UpdatedItem();
 
         Rubrics.ForEach(
             (originRubric) =>
@@ -372,13 +356,13 @@ public class Updater : IUpdater
                             _item.OriginValue = originValue;
                             _item.OriginType = originRubric.RubricType;
                             _item.TargetType = targetRubric.RubricType;
-                            _customMutations[counter++] = _item;
+                            _updates[counter++] = _item;
                         }
                     }
                 }
             }
         );
-        return _customMutations;
+        return _updates;
     }
 
     private bool RecursiveUpdate(

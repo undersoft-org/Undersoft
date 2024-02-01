@@ -24,15 +24,15 @@ public class Setup
                 },
                 new[] 
                 { 
-                    typeof(ServiceClient)
+                    typeof(ServiceClient),
+                    typeof(AccessClient)
                 }
             )
             .AddDataServer<IEntityStore>(
                 DataServerTypes.All,
                 builder =>
                     builder
-                        .AddInvocations<Member>()
-                        .AddInvocations<Account>()
+                        .AddInvocations<Member>()                     
                         .AddInvocations<Application>()                    
                         .AddInvocations<Service>()
             )
@@ -41,6 +41,11 @@ public class Setup
                 builder => 
                     builder
                         .AddInvocations<Event>()
+            ).AddDataServer<IAccountStore>(
+                DataServerTypes.All,
+                builder =>
+                    builder
+                        .AddInvocations<Account>()
             );
     }
 

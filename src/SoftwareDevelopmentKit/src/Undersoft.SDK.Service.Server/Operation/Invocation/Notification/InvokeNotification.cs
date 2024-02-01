@@ -21,13 +21,13 @@ public abstract class InvokeNotification<TCommand> : Event, INotification where 
 
         Command = command;
         Id = Unique.NewId;
-        AggregateId = command.Id;
-        AggregateType = aggregateTypeFullName;
+        EntityId = command.Id;
+        EntityTypeName = aggregateTypeFullName;
         EventType = eventTypeFullName;
         var response = command.Response;
         PublishStatus = EventPublishStatus.Ready;
         PublishTime = Log.Clock;
 
-        EventData = JsonSerializer.SerializeToUtf8Bytes((InvocationBase)command);
+        Data = JsonSerializer.SerializeToUtf8Bytes((InvocationBase)command);
     }
 }

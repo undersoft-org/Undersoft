@@ -18,7 +18,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("Accounts")
-                .HasAnnotation("ProductVersion", "6.0.23")
+                .HasAnnotation("ProductVersion", "7.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -47,8 +47,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnOrder(8);
 
                     b.Property<string>("Creator")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
                         .HasColumnOrder(9);
 
                     b.Property<int>("Index")
@@ -59,8 +59,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
 
                     b.Property<string>("Label")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)")
                         .HasColumnOrder(11);
 
                     b.Property<DateTime>("Modified")
@@ -68,8 +68,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnOrder(6);
 
                     b.Property<string>("Modifier")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
                         .HasColumnOrder(7);
 
                     b.Property<int>("OriginId")
@@ -81,8 +81,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnOrder(2);
 
                     b.Property<string>("TypeName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)")
                         .HasColumnOrder(5);
 
                     b.Property<long>("UserId")

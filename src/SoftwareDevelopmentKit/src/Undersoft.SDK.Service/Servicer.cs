@@ -62,12 +62,12 @@ public class Servicer : ServiceManager, IServicer, IMediator
         return Task.Run(async () => await function.Invoke(base.GetService<T>()));
     }
 
-    public Task Run<T>(string methodname, params object[] parameters) where T : class
+    public Task<object> Run<T>(string methodname, params object[] parameters) where T : class
     {        
         return new Invoker(base.GetService<T>(), methodname).InvokeAsync(parameters);
     }
 
-    public Task<R> Run<T, R>(string methodname, params object[] parameters) where T : class
+    public Task<R> Run<T, R>(string methodname, params object[] parameters) where T : class where R : class
     {
         Invoker deputy = new Invoker(
             base.GetService<T>(),
@@ -77,15 +77,15 @@ public class Servicer : ServiceManager, IServicer, IMediator
         return deputy.InvokeAsync<R>(parameters);
     }
 
-    public Task Run<T>(string methodname, Arguments arguments) where T : class
+    public Task<object> Run<T>(Arguments arguments) where T : class
     {
-        Invoker deputy = new Invoker(base.GetService<T>(), methodname, arguments.TypeArray);
+        Invoker deputy = new Invoker<T>(base.GetService<T>(), arguments);
         return deputy.InvokeAsync(arguments);
     }
 
-    public Task<R> Run<T, R>(string methodname, Arguments arguments) where T : class
+    public Task<R> Run<T, R>(Arguments arguments) where T : class where R : class
     {
-        Invoker deputy = new Invoker(base.GetService<T>(), methodname, arguments.TypeArray);
+        Invoker deputy = new Invoker<T>(base.GetService<T>(), arguments);
         return deputy.InvokeAsync<R>(arguments);
     }
 
@@ -198,7 +198,7 @@ public class Servicer : ServiceManager, IServicer, IMediator
         });
     }
 
-    public async Task<R> Serve<T, R>(string methodname, params object[] parameters) where T : class
+    public async Task<R> Serve<T, R>(string methodname, params object[] parameters) where T : class where R : class
     {
         return await Task.Run(async () =>
         {
@@ -227,7 +227,7 @@ public class Servicer : ServiceManager, IServicer, IMediator
         });
     }
 
-    public async Task<R> Serve<T, R>(string methodname, Arguments arguments) where T : class
+    public async Task<R> Serve<T, R>(string methodname, Arguments arguments) where T : class where R : class
     {
         return await Task.Run(async () =>
         {
@@ -240,16 +240,6 @@ public class Servicer : ServiceManager, IServicer, IMediator
                 ).InvokeAsync<R>(arguments);
             }
         });
-    }
-
-    public T GetManaged<T>() where T : class
-    { 
-        return GetManager().GetService<T>(); 
-    }
-
-    public T GetRegistered<T>() where T : class
-    { 
-        return GetRegistry().GetObject<T>();
     }
 
     public async Task Save(bool asTransaction = false)

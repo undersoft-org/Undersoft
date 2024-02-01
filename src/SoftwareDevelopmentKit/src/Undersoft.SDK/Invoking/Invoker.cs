@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Reflection.Emit;
+using Undersoft.SDK.Instant.Updating;
 using Undersoft.SDK.Series;
 using Undersoft.SDK.Uniques;
 
@@ -12,24 +13,26 @@ namespace Undersoft.SDK.Invoking
 
         public Invoker() { }
 
-        public Invoker(Arguments args)
+        public Invoker(Arguments args) : this(args.TargetType.New(), args) { }
+
+        public Invoker(object targetObject, Arguments args)
         {
             Type t = args.TargetType;
-            TargetObject = t.New();
-            var argumentTypes = args.Select(t => Type.GetType(t.ArgumentTypeName)).ToArray();
+            TargetObject = targetObject;
+
             var methodName = args.MethodName;
 
-            MethodInfo m =
-                argumentTypes != null
-                    ? t.GetMethod(methodName, argumentTypes)
-                    : t.GetMethod(methodName);
+            MethodInfo m = t.GetMethods()
+                .Where(
+                    a =>
+                        a.Name == methodName && a.GetParameters().Length <= args.Count && a.IsPublic
+                )
+                .FirstOrDefault();
             if (m != null)
             {
                 Info = m;
-                if (
-                    m.GetParameters().Any()
-                    && m.GetParameters().All(p => args.ContainsKey(p.ParameterType.Name))
-                )
+                var parameters = m.GetParameters();
+                if (parameters.Length > 0)
                 {
                     Arguments = args;
                     Parameters = m.GetParameters();
@@ -388,12 +391,11 @@ namespace Undersoft.SDK.Invoking
             {
                 var obj = Invoke(parameters);
 
-                if (obj.GetType().IsAssignableTo(typeof(Task<object>)))
-                {
-                    return await (Task<object>)obj;
-                }
-
-                return await Task.FromResult<object>(obj);
+                var resultProperty = obj.GetType().GetRuntimeProperty("Result");
+                if (resultProperty != null)
+                    return (await Task.FromResult(resultProperty.GetValue(obj)));
+                else
+                    return (await Task.FromResult(obj));
             }
             catch (Exception e)
             {
@@ -417,12 +419,11 @@ namespace Undersoft.SDK.Invoking
 
                 var obj = Invoke(target, parameters);
 
-                if (obj.GetType().IsAssignableTo(typeof(Task<object>)))
-                {
-                    return await (Task<object>)obj;
-                }
-
-                return await Task.FromResult<object>(obj);
+                var resultProperty = obj.GetType().GetRuntimeProperty("Result");
+                if (resultProperty != null)
+                    return (await Task.FromResult(resultProperty.GetValue(obj)));
+                else
+                    return (await Task.FromResult(obj));
             }
             catch (Exception e)
             {
@@ -430,18 +431,13 @@ namespace Undersoft.SDK.Invoking
             }
         }
 
-        public virtual async Task<T> InvokeAsync<T>(params object[] parameters)
+        public virtual async Task<T> InvokeAsync<T>(params object[] parameters) where T : class
         {
             try
             {
                 var obj = Invoke(parameters);
 
-                if (obj.GetType().IsAssignableTo(typeof(Task<T>)))
-                {
-                    return await (Task<T>)obj;
-                }
-
-                return await Task.FromResult<T>((T)obj);
+                return await GetObjectTaskResult<T>(obj);
             }
             catch (Exception e)
             {
@@ -453,7 +449,7 @@ namespace Undersoft.SDK.Invoking
             bool withTarget,
             object target,
             params object[] parameters
-        )
+        ) where T : class
         {
             try
             {
@@ -465,12 +461,7 @@ namespace Undersoft.SDK.Invoking
 
                 var obj = Invoke(target, parameters);
 
-                if (obj.GetType().IsAssignableTo(typeof(Task<T>)))
-                {
-                    return await (Task<T>)obj;
-                }
-
-                return await Task.FromResult<T>((T)obj);
+                return await GetObjectTaskResult<T>(obj);            
             }
             catch (Exception e)
             {
@@ -478,23 +469,28 @@ namespace Undersoft.SDK.Invoking
             }
         }
 
+        private async Task<T> GetObjectTaskResult<T>(object obj) where T : class
+        {
+            var resultProperty = obj.GetType().GetRuntimeProperty("Result");
+            object result = null;
+            if (resultProperty != null)
+                result = (await Task.FromResult(resultProperty.GetValue(obj)));
+            else
+                result = (await Task.FromResult(obj));
+
+            if (result.GetType() == typeof(T))
+                return (T)result;
+
+            return result.PutTo<T>();
+        }
+
         public virtual async Task<object> InvokeAsync(Arguments arguments)
         {
-            Arguments
-                .ForEach(arg =>
-                {
-                    if (arguments.ContainsKey(arg.Id))
-                    {
-                        arg.Serialize(arguments[arg.Id]);
-                        return arguments[arg.Id];
-                    }
-                    else
-                    {
-                        return arg.Deserialize();
-                    }
-                })
-                .Commit();
-            return await InvokeAsync(Arguments.ValueArray);
+            return await InvokeAsync(
+                arguments
+                    .ForOnly(arg => Arguments.ContainsKey(arg.Id), a => a.Deserialize())
+                    .Commit()
+            );
         }
 
         public virtual async Task<object> InvokeAsync(
@@ -503,63 +499,38 @@ namespace Undersoft.SDK.Invoking
             Arguments arguments
         )
         {
-            Arguments
-                .ForEach(arg =>
-                {
-                    if (arguments.ContainsKey(arg.Id))
-                    {
-                        arg.Serialize(arguments[arg.Id]);
-                        return arguments[arg.Id];
-                    }
-                    else
-                    {
-                        return arg.Deserialize();
-                    }
-                })
-                .Commit();
-            return await InvokeAsync(withTarget, target, Arguments.ValueArray);
+            return await InvokeAsync(
+                withTarget,
+                target,
+                arguments
+                    .ForOnly(arg => Arguments.ContainsKey(arg.Id), a => a.Deserialize())
+                    .Commit()
+            );
         }
 
-        public virtual async Task<T> InvokeAsync<T>(Arguments arguments)
+        public virtual async Task<T> InvokeAsync<T>(Arguments arguments) where T : class
         {
-            Arguments
-                .ForEach(arg =>
-                {
-                    if (arguments.ContainsKey(arg.Id))
-                    {
-                        arg.Serialize(arguments[arg.Id]);
-                        return arguments[arg.Id];
-                    }
-                    else
-                    {
-                        return arg.Deserialize();
-                    }
-                })
-                .Commit();
-            return await InvokeAsync<T>(Arguments.ValueArray);
+            return await InvokeAsync<T>(
+                arguments
+                    .ForOnly(arg => Arguments.ContainsKey(arg.Id), a => a.Deserialize())
+                    .Commit()
+            );
         }
 
         public virtual async Task<T> InvokeAsync<T>(
             bool withTarget,
             object target,
             Arguments arguments
-        )
+        ) where T : class
         {
-            Arguments
-                .ForEach(arg =>
-                {
-                    if (arguments.ContainsKey(arg.Id))
-                    {
-                        arg.Serialize(arguments[arg.Id]);
-                        return arguments[arg.Id];
-                    }
-                    else
-                    {
-                        return arg.Deserialize();
-                    }
-                })
-                .Commit();
-            return await InvokeAsync<T>(withTarget, target, Arguments.ValueArray);
+            return await InvokeAsync<T>(
+                withTarget,
+                target,
+                arguments
+                    .Where(arg => Arguments.ContainsKey(arg.Id))
+                    .Select(a => a.Deserialize())
+                    .ToArray()
+            );
         }
 
         public object ConvertType(object source, Type destination)

@@ -29,7 +29,8 @@ public class ActionHandler<TStore, TService, TDto>
             return request;
         try
         {
-            request.Response = await _servicer.Run<TService, TDto>(request.Arguments.MethodName, request.Arguments);               
+            request.Arguments.UpdateArgumentTypes();
+            request.Response = await _servicer.Run<TService, TDto>(request.Arguments);                      
 
             _ = _servicer.Publish(new ActionInvoked<TStore, TService, TDto>(request)).ConfigureAwait(false);
         }

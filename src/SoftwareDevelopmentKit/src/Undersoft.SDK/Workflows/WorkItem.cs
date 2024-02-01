@@ -42,7 +42,10 @@
 
         public string MethodName => Info.Name;
 
-        public override string TypeName { get => Type.FullName; }
+        public override string TypeName
+        {
+            get => Type.FullName;
+        }
 
         public Uscn Code
         {
@@ -122,7 +125,7 @@
             });
         }
 
-        public Task<T> InvokeAsync<T>(params object[] parameters)
+        public Task<T> InvokeAsync<T>(params object[] parameters) where T : class
         {
             return Task.Run(() =>
             {
@@ -148,7 +151,7 @@
             get => Worker.Process;
             set => Worker.Process = value;
         }
-     
+
         public object TargetObject
         {
             get => Process.TargetObject;
@@ -209,8 +212,7 @@
 
         public WorkAspect FlowTo(string RecipientName, string methodName)
         {
-            var recipient = Case
-                .Where(m => m.ContainsKey(RecipientName + "." + methodName))
+            var recipient = Case.Where(m => m.ContainsKey(RecipientName + "." + methodName))
                 .SelectMany(os => os.AsValues())
                 .FirstOrDefault();
 
@@ -276,8 +278,7 @@
 
         public WorkAspect FlowFrom(string SenderName, string methodName)
         {
-            var sender = Case
-                .Where(m => m.ContainsKey(SenderName + "." + methodName))
+            var sender = Case.Where(m => m.ContainsKey(SenderName + "." + methodName))
                 .SelectMany(os => os)
                 .FirstOrDefault();
 
@@ -328,8 +329,10 @@
             return Aspect.AddWork<T>(method, arguments);
         }
 
-        public virtual WorkAspect AddWork<T>(Func<T, string> method, params object[] constructorParams)
-            where T : class
+        public virtual WorkAspect AddWork<T>(
+            Func<T, string> method,
+            params object[] constructorParams
+        ) where T : class
         {
             return Aspect.AddWork<T>(method, constructorParams);
         }
@@ -412,7 +415,7 @@
             return Process.InvokeAsync(target, parameters);
         }
 
-        public Task<T> ExecuteAsync<T>(object target, params object[] parameters)
+        public Task<T> ExecuteAsync<T>(object target, params object[] parameters) where T : class
         {
             return Process.InvokeAsync<T>(target, parameters);
         }
@@ -436,13 +439,23 @@
             return Process.InvokeAsync(firstAsTarget, target, parameters);
         }
 
-        public Task<T> InvokeAsync<T>(
-            bool firstAsTarget,
-            object target,
-            params object[] parameters
-        )
+        public Task<T> InvokeAsync<T>(bool firstAsTarget, object target, params object[] parameters) where T : class
         {
             return Process.InvokeAsync<T>(firstAsTarget, target, parameters);
+        }
+
+        public virtual async Task<object> InvokeAsync(Arguments arguments)
+        {
+           return await Process.InvokeAsync(arguments);
+        }
+
+        public virtual async Task<object> InvokeAsync(
+            bool withTarget,
+            object target,
+            Arguments arguments
+        )
+        {
+            return await Process.InvokeAsync(withTarget, target, arguments);
         }
     }
 }

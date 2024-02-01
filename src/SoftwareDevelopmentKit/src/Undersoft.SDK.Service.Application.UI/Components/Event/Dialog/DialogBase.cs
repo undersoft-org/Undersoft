@@ -33,7 +33,7 @@ public abstract class DialogBase<TModel> : ComponentModule
 
         if (Model == null)
         {
-            throw new InvalidOperationException("Model value not set to null");
+            throw new InvalidOperationException("Model value not Set to null");
         }
     }
 }

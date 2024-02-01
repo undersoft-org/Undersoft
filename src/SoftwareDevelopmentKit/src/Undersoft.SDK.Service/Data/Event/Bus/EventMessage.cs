@@ -7,8 +7,8 @@ namespace Undersoft.SDK.Service.Data.Event.Bus
     {
         public EventMessage(object eventData, Type eventType)
         {
-            EventData = JsonSerializer.SerializeToUtf8Bytes(eventData);
-            EventType = eventType.FullName;
+            Data = JsonSerializer.SerializeToUtf8Bytes(eventData);
+            TypeName = eventType.FullName;
         }
     }
 }

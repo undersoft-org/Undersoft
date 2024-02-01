@@ -70,7 +70,7 @@
         {
             if (!IVSet)
             {
-                throw new Exception("IV not set.");
+                throw new Exception("IV not Set.");
             }
             byte[] input = new byte[8];
             byte[] counter = new byte[8];
@@ -205,7 +205,7 @@
         {
             if (!IVSet)
             {
-                throw new Exception("IV not set.");
+                throw new Exception("IV not Set.");
             }
             int paddedLen = (
                 text.Length % 8 == 0 ? text.Length : text.Length + 8 - (text.Length % 8)

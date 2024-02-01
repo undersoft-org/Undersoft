@@ -29,7 +29,7 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Access([FromBody] IDictionary<string, Arguments> args)
+    public virtual IActionResult Access([FromBody] IDictionary<string, Arguments> args)
     {
         var isValid = false;
 
@@ -44,16 +44,17 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
             )
             .Commit();
 
-        object[] response = await result
-            .ForEach(
-                async c => (isValid = (await c).IsValid) ? c.Id as object : (await c).ErrorMessages
-            )
-            .ToArrayAsync();
+        Task.WaitAll(result);
+
+        var response = result
+            .ForEach(c => (isValid = c.Result.IsValid) ? c.Result.Response : c.Result.ErrorMessages)
+            .Commit();
+
         return !isValid ? UnprocessableEntity(response) : Ok(response);
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Action([FromBody] IDictionary<string, Arguments> args)
+    public virtual IActionResult Action([FromBody] IDictionary<string, Arguments> args)
     {
         var isValid = false;
 
@@ -68,16 +69,17 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
             )
             .Commit();
 
-        object[] response = await result
-            .ForEach(
-                async c => (isValid = (await c).IsValid) ? c.Id as object : (await c).ErrorMessages
-            )
-            .ToArrayAsync();
+        Task.WaitAll(result);
+
+        var response = result
+            .ForEach(c => (isValid = c.Result.IsValid) ? c.Result.Response : c.Result.ErrorMessages)
+            .Commit();
+
         return !isValid ? UnprocessableEntity(response) : Ok(response);
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Setup([FromBody] IDictionary<string, Arguments> args)
+    public virtual IActionResult Setup([FromBody] IDictionary<string, Arguments> args)
     {
         var isValid = false;
 
@@ -92,11 +94,12 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
             )
             .Commit();
 
-        object[] response = await result
-            .ForEach(
-                async c => (isValid = (await c).IsValid) ? c.Id as object : (await c).ErrorMessages
-            )
-            .ToArrayAsync();
+        Task.WaitAll(result);
+
+        var response = result
+            .ForEach(c => (isValid = c.Result.IsValid) ? c.Result.Response : c.Result.ErrorMessages)
+            .Commit();
+
         return !isValid ? UnprocessableEntity(response) : Ok(response);
     }
 }

@@ -18,8 +18,8 @@ public abstract class RemoteNotification<TCommand> : Event, INotification where 
 
         Command = command;
         Id = Unique.NewId;
-        AggregateId = command.Id;
-        AggregateType = aggregateTypeFullName;
+        EntityId = command.Id;
+        EntityTypeName = aggregateTypeFullName;
         EventType = eventTypeFullName;
         var dto = command.Contract;
         OriginId = dto.OriginId;
@@ -31,6 +31,6 @@ public abstract class RemoteNotification<TCommand> : Event, INotification where 
         PublishStatus = EventPublishStatus.Ready;
         PublishTime = Log.Clock;
 
-        EventData = JsonSerializer.SerializeToUtf8Bytes((RemoteCommandBase)command);
+        Data = JsonSerializer.SerializeToUtf8Bytes((RemoteCommandBase)command);
     }
 }

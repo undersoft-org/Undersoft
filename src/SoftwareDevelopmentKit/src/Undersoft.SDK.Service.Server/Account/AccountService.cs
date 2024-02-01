@@ -1,4 +1,5 @@
-﻿using Undersoft.SDK.Security;
+﻿using System.Threading.Tasks.Sources;
+using Undersoft.SDK.Security;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
 
@@ -6,6 +7,9 @@ public class AccountService : IAccountAction, IAccountAccess
 {
     private IServicer _servicer;
     private IAccountManager _manager;
+    private Task<Account> _accountTask;
+
+    public AccountService() { }
 
     public AccountService(IServicer servicer, IAccountManager accountManager)
     {
@@ -108,7 +112,8 @@ public class AccountService : IAccountAction, IAccountAccess
         if (!_manager.TryGetByEmail(_creds.Email, out var account))
         {
             _creds.Password = null;
-            return new Authorization() { Credentials = _creds };
+            account = new Account() { Credentials = _creds };
+            return account;
         }
         var creds = account.Credentials;
         creds.PatchFrom(_creds);
@@ -125,15 +130,12 @@ public class AccountService : IAccountAction, IAccountAccess
             if (await _manager.CheckPassword(_creds.Email, _creds.Password) == null)
             {
                 _creds.Password = null;
-                return new Authorization()
+                account.Notes = new AuthorizationNotes()
                 {
-                    Notes = new AuthorizationNotes()
-                    {
-                        Errors = "Invalid password",
-                        Status = SigningStatus.InvalidPassword
-                    },
-                    Credentials = _creds
+                    Errors = "Invalid password",
+                    Status = SigningStatus.InvalidPassword
                 };
+                return account;
             }
             else
             {

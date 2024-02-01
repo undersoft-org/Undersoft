@@ -1,9 +1,10 @@
 ﻿using System.Runtime.Serialization;
+using Undersoft.SDK.Security;
 
 namespace Undersoft.SSC.Service.Contracts;
 
 [DataContract]
-public class Claim : InnerProxy
+public class Claim : InnerProxy, IClaim
 {
     [DataMember(Order = 6)]
     public virtual string? ClaimType { get; set; }

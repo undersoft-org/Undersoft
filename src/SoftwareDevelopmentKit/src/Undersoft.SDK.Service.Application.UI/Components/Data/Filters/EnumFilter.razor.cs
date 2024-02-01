@@ -26,7 +26,7 @@ public partial class EnumFilter
     {
         base.OnInitialized();
 
-        if (Type == null) throw new InvalidOperationException("the Argument TypeName must be set.");
+        if (Type == null) throw new InvalidOperationException("the Argument TypeName must be Set.");
 
         if (TableFilter != null)
         {
