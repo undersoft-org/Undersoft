@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Undersoft.SDK.Service.Server.Controller.Open;
 
+using System.Text.Json;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Data.Store;
@@ -28,8 +29,6 @@ public abstract class OpenServiceController<TStore, TService, TModel>
     [HttpPost]
     public virtual IActionResult Access([FromBody] IDictionary<string, Arguments> args)
     {
-        var isValid = false;
-
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
@@ -41,18 +40,15 @@ public abstract class OpenServiceController<TStore, TService, TModel>
 
         Task.WaitAll(result);
 
-        var response = result
-            .ForEach(c => (isValid = c.Result.IsValid) ? c.Result.Output : c.Result.ErrorMessages)
-            .Commit();
+        if (result.Length < 2)
+            return Ok(result.FirstOrDefault()?.Result.Output.ToJsonBytes());
 
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
+        return Ok(result.Select(r => r.Result.Output).Commit());
     }
 
     [HttpPost]
     public virtual IActionResult Action([FromBody] IDictionary<string, Arguments> args)
     {
-        var isValid = false;
-
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
@@ -64,18 +60,15 @@ public abstract class OpenServiceController<TStore, TService, TModel>
 
         Task.WaitAll(result);
 
-        var response = result
-            .ForEach(c => (isValid = c.Result.IsValid) ? c.Result.Output : c.Result.ErrorMessages)
-            .Commit();
+        if (result.Length < 2)
+            return Ok(result.FirstOrDefault()?.Result.Output.ToJsonBytes());
 
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
+        return Ok(result.Select(r => r.Result.Output).Commit());
     }
 
     [HttpPost]
     public virtual IActionResult Setup([FromBody] IDictionary<string, Arguments> args)
     {
-        var isValid = false;
-
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
@@ -87,10 +80,9 @@ public abstract class OpenServiceController<TStore, TService, TModel>
 
         Task.WaitAll(result);
 
-        var response = result
-              .ForEach(c => (isValid = c.Result.IsValid) ? c.Result.Output : c.Result.ErrorMessages)
-              .Commit();
+        if (result.Length < 2)
+            return Ok(result.FirstOrDefault()?.Result.Output.ToJsonBytes());
 
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
+        return Ok(result.Select(r => r.Result.Output).Commit());
     }
 }

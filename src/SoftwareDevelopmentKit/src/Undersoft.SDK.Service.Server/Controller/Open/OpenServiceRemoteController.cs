@@ -31,8 +31,6 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
     [HttpPost]
     public virtual IActionResult Access([FromBody] IDictionary<string, Arguments> args)
     {
-        var isValid = false;
-
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
@@ -46,18 +44,15 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
 
         Task.WaitAll(result);
 
-        var response = result
-            .ForEach(c => (isValid = c.Result.IsValid) ? c.Result.Response : c.Result.ErrorMessages)
-            .Commit();
+        if (result.Length < 2)
+            return Ok(result.FirstOrDefault()?.Result.Output.ToJsonBytes());
 
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
+        return Ok(result.Select(r => r.Result.Output).Commit());
     }
 
     [HttpPost]
     public virtual IActionResult Action([FromBody] IDictionary<string, Arguments> args)
     {
-        var isValid = false;
-
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
@@ -71,18 +66,15 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
 
         Task.WaitAll(result);
 
-        var response = result
-            .ForEach(c => (isValid = c.Result.IsValid) ? c.Result.Response : c.Result.ErrorMessages)
-            .Commit();
+        if (result.Length < 2)
+            return Ok(result.FirstOrDefault()?.Result.Output.ToJsonBytes());
 
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
+        return Ok(result.Select(r => r.Result.Output).Commit());
     }
 
     [HttpPost]
     public virtual IActionResult Setup([FromBody] IDictionary<string, Arguments> args)
     {
-        var isValid = false;
-
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
@@ -96,10 +88,9 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
 
         Task.WaitAll(result);
 
-        var response = result
-            .ForEach(c => (isValid = c.Result.IsValid) ? c.Result.Response : c.Result.ErrorMessages)
-            .Commit();
+        if (result.Length < 2)
+            return Ok(result.FirstOrDefault()?.Result.Output.ToJsonBytes());
 
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
+        return Ok(result.Select(r => r.Result.Output).Commit());
     }
 }

@@ -33,7 +33,7 @@
 </EditForm>
 
 @code {
-    private Account account = new Account();
+    private Account account = new Account() { Credentials = new Credentials() };
 
     private async Task Access()
     {

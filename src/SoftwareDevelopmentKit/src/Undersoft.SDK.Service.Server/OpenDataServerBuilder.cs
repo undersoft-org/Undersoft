@@ -193,28 +193,9 @@ public class OpenDataServerBuilder<TStore> : DataServerBuilder, IDataServerBuild
         var name = typeof(TAuth).Name;
 
         var action = odataBuilder.EntitySet<TAuth>(name).EntityType.Collection.Action("Action");
-        //action.Parameter<Arguments>(name);
-        //action.EntityParameter<TAuth>(name);
-        //action.ReturnsFromEntitySet<TAuth>(name);
-        //action.Parameter<string>("TargetName");
-        //action.Parameter<string>("MethodName"); 
-        //action.EntityParameter<TAuth>(name);
 
         var access = odataBuilder.EntitySet<TAuth>(name).EntityType.Collection.Action("Access");
-        //action.EntityParameter<TAuth>(name);
-        //action.ReturnsFromEntitySet<TAuth>(name);
-        //action.Parameter<Arguments>(name);
-        //action.ReturnsFromEntitySet<TAuth>(name);
-        //action.Parameter<string>("method");
-        //access.ReturnsFromEntitySet<TAuth>(name);
 
         var setup = odataBuilder.EntitySet<TAuth>(name).EntityType.Collection.Action("Setup");
-        //action.EntityParameter<TAuth>(name);
-        //action.ReturnsFromEntitySet<TAuth>(name);
-        //action.Parameter<Arguments>(name);
-        //action.ReturnsFromEntitySet<TAuth>(name);
-        //setup.Parameter<string>("TargetName");
-        //setup.Parameter<string>("MethodName");
-        //setup.EntityParameter<TAuth>(name);
     }
 }

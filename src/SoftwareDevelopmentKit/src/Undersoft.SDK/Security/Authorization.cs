@@ -8,11 +8,9 @@ namespace Undersoft.SDK.Security
     [DataContract]
     public class Authorization : InnerProxy, IAuthorization
     {
-        [NotMapped]
         [DataMember(Order = 16)]
         public Credentials Credentials { get; set; } = new Credentials();
 
-        [NotMapped]
         [DataMember(Order = 17)]
         public AuthorizationNotes Notes { get; set; } = new AuthorizationNotes();
 

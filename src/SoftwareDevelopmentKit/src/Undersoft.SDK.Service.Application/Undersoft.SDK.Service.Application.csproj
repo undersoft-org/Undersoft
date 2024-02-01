@@ -28,6 +28,7 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0" />
   </ItemGroup>
     <ItemGroup>
+    <ProjectReference Include="..\..\..\SharedServiceCenter\src\Undersoft.SSC.Service\Undersoft.SSC.Service.csproj" />
     <ProjectReference Include="..\Undersoft.SDK.Service\Undersoft.SDK.Service.csproj" />
   </ItemGroup>
 

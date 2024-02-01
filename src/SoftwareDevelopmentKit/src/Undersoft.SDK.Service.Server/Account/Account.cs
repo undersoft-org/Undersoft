@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.OData.ModelBuilder;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 using System.Security.Claims;
 using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Data.Contract;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
 
-public class Account : Authorization, IEntity, IAccount, IAuthorization
+public class Account : InnerProxy, IEntity, IAccount, IAuthorization
 {
     public Account() { }
 
@@ -45,4 +47,13 @@ public class Account : Authorization, IEntity, IAccount, IAuthorization
         return Claims.Select(c => c.Claim);
     }
 
+    [NotMapped]
+    public Credentials Credentials { get; set; } = new Credentials();
+
+    [NotMapped]
+    public AuthorizationNotes Notes { get; set; } = new AuthorizationNotes();
+
+    public bool Authorized { get; set; }
+
+    public bool Authenticated { get; set; }
 }
