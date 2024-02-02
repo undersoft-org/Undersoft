@@ -10,6 +10,7 @@ using Undersoft.SDK.Service.Server.Operation.Remote.Invocation;
 using Undersoft.SDK.Service.Data.Client.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using System.Text.Json;
+using Undersoft.SDK.Service.Server.Operation.Invocation;
 
 [OpenServiceRemote]
 public abstract class OpenServiceRemoteController<TStore, TService, TDto>
@@ -34,20 +35,16 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = args.ForEach(
-                async a =>
-                    await _servicer.Perform(
-                        new RemoteAction<TStore, TService, TDto>(a.Key, a.Value)
-                    )
-            )
-            .Commit();
+        var result = Invocation(
+            args,
+            (arg) => new RemoteAction<TStore, TService, TDto>(arg.Key, arg.Value)
+        );
 
         Task.WaitAll(result);
 
-        if (result.Length < 2)
-            return Ok(result.FirstOrDefault()?.Result.Output.ToJsonBytes());
-
-        return Ok(result.Select(r => r.Result.Output).Commit());
+        var response = result.Select(r => r.Result).FirstOrDefault();
+        var payload = response.ToJsonBytes();
+        return !response.IsValid ? UnprocessableEntity(payload) : Ok(payload);
     }
 
     [HttpPost]
@@ -56,20 +53,16 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = args.ForEach(
-                async a =>
-                    await _servicer.Perform(
-                        new RemoteAction<TStore, TService, TDto>(a.Key, a.Value)
-                    )
-            )
-            .Commit();
+        var result = Invocation(
+            args,
+            (arg) => new RemoteAction<TStore, TService, TDto>(arg.Key, arg.Value)
+        );
 
         Task.WaitAll(result);
 
-        if (result.Length < 2)
-            return Ok(result.FirstOrDefault()?.Result.Output.ToJsonBytes());
-
-        return Ok(result.Select(r => r.Result.Output).Commit());
+        var response = result.Select(r => r.Result).FirstOrDefault();
+        var payload = response.ToJsonBytes();
+        return !response.IsValid ? UnprocessableEntity(payload) : Ok(payload);
     }
 
     [HttpPost]
@@ -78,19 +71,28 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = args.ForEach(
-                async a =>
-                    await _servicer.Perform(
-                        new RemoteAction<TStore, TService, TDto>(a.Key, a.Value)
-                    )
-            )
-            .Commit();
+        var result = Invocation(
+            args,
+            (arg) => new RemoteSetup<TStore, TService, TDto>(arg.Key, arg.Value)
+        );
 
         Task.WaitAll(result);
 
-        if (result.Length < 2)
-            return Ok(result.FirstOrDefault()?.Result.Output.ToJsonBytes());
+        var response = result.Select(r => r.Result).FirstOrDefault();
+        var payload = response.ToJsonBytes();
+        return !response.IsValid ? UnprocessableEntity(payload) : Ok(payload);
+    }
 
-        return Ok(result.Select(r => r.Result.Output).Commit());
+     public virtual Task<Arguments>[] Invocation(
+        IDictionary<string, Arguments> args,
+        Func<KeyValuePair<string, Arguments>, Invocation<TDto>> invocation
+    )
+    {
+        return args.ForEach(async a =>
+            {
+                var preresult = await _servicer.Perform(invocation(a));
+                return (Arguments)preresult.Output;
+            })
+            .Commit();
     }
 }

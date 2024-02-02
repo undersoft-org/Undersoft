@@ -11,9 +11,14 @@
     {
         public Arguments() : base() { }
 
-        public Arguments(string methodName, string targetName = null, Type targetType = null) : base()
+        public Arguments(Type targetType) : base()
         {
-            TargetType = targetType;            
+            TargetType = targetType;
+        }
+
+        public Arguments(string targetName) : base()
+        {
+            TargetType = Assemblies.FindTypeByFullName(targetName);
         }
 
         public Arguments(string methodName, object argValue, string targetName = null, Type targetType = null)
@@ -22,16 +27,30 @@
         public Arguments(string methodName, string argName, object argValue, string targetName = null, Type targetType = null)
             : this(methodName, new Argument(argName, argValue, methodName, targetName), targetName, targetType) { }
         
-        public Arguments(string methodName, Argument argument, string targetName, Type targetType)
-            : this(methodName, targetName, targetType)
+        public Arguments(string methodName, Argument argument, string targetName = null, Type targetType = null)
+            : this(targetType)
         {
             argument.MethodName = methodName;
             argument.TargetName = targetName;   
             this.Add(argument);
         }
-        
+
+        public Arguments(string methodName, IEnumerable<object> values, string targetName = null, Type targetType = null)
+           : this(targetType)
+        {
+            values.ForEach(v => this.Add(new Argument(v, methodName, targetName)));
+        }
+
+        public Arguments(string methodName, IEnumerable<Argument> arguments, string targetName = null, Type targetType = null)
+            : this(targetType)
+        {
+            arguments.ForEach(a => a.MethodName = methodName).Commit();
+            arguments.ForEach(a => a.TargetName = targetName).Commit();
+            this.Add(arguments);
+        }
+
         public Arguments(string methodName, ParameterInfo[] parameters, string targetName = null, Type targetType = null)
-            : this(methodName, targetName, targetType)
+            : this(targetType)
         {
             this.Add(parameters.DoEach(p => new Argument(p, methodName, targetName)));
         }
@@ -54,7 +73,7 @@
         [IgnoreDataMember]
         public Type[] TypeArray => _typeArray ??= this.ForEach(a => a.ResolveType()).ToArray();
 
-        public Type[] UpdateArgumentTypes()
+        public Type[] ResolveArgumentTypes()
         {
             _typeArray = null;
             return TypeArray;
@@ -67,6 +86,8 @@
         public string TargetName => this.FirstOrDefault()?.TargetName;
 
         public string MethodName => this.FirstOrDefault()?.MethodName;
+
+        public bool IsValid => !this.Any(p => !p.IsValid);
 
         public Argument New(string name, object value, string method, string target)
         {

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Undersoft.SDK.Service.Server.Controller.Open;
 
+using System.Collections;
+using System.Linq;
 using System.Text.Json;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Data.Client.Attributes;
@@ -32,18 +34,16 @@ public abstract class OpenServiceController<TStore, TService, TModel>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = args.ForEach(
-                async a =>
-                    await _servicer.Perform(new Action<TStore, TService, TModel>(a.Key, a.Value))
-            )
-            .Commit();
+        var result = Invocation(
+            args,
+            (arg) => new Action<TStore, TService, TModel>(arg.Key, arg.Value)
+        );
 
         Task.WaitAll(result);
 
-        if (result.Length < 2)
-            return Ok(result.FirstOrDefault()?.Result.Output.ToJsonBytes());
-
-        return Ok(result.Select(r => r.Result.Output).Commit());
+        var response = result.Select(r => r.Result).FirstOrDefault();
+        var payload = response.ToJsonBytes();
+        return !response.IsValid ? UnprocessableEntity(payload) : Ok(payload);
     }
 
     [HttpPost]
@@ -52,18 +52,16 @@ public abstract class OpenServiceController<TStore, TService, TModel>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = args.ForEach(
-                async a =>
-                    await _servicer.Perform(new Action<TStore, TService, TModel>(a.Key, a.Value))
-            )
-            .Commit();
+        var result = Invocation(
+            args,
+            (arg) => new Action<TStore, TService, TModel>(arg.Key, arg.Value)
+        );
 
         Task.WaitAll(result);
 
-        if (result.Length < 2)
-            return Ok(result.FirstOrDefault()?.Result.Output.ToJsonBytes());
-
-        return Ok(result.Select(r => r.Result.Output).Commit());
+        var response = result.Select(r => r.Result).FirstOrDefault();
+        var payload = response.ToJsonBytes();
+        return !response.IsValid ? UnprocessableEntity(payload) : Ok(payload);
     }
 
     [HttpPost]
@@ -72,17 +70,39 @@ public abstract class OpenServiceController<TStore, TService, TModel>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = args.ForEach(
-                async a =>
-                    await _servicer.Perform(new Setup<TStore, TService, TModel>(a.Key, a.Value))
-            )
-            .Commit();
+        var result = Invocation(
+            args,
+            (arg) => new Setup<TStore, TService, TModel>(arg.Key, arg.Value)
+        );
 
         Task.WaitAll(result);
 
-        if (result.Length < 2)
-            return Ok(result.FirstOrDefault()?.Result.Output.ToJsonBytes());
+        var response = result.Select(r => r.Result).FirstOrDefault();
+        var payload = response.ToJsonBytes();
+        return !response.IsValid ? UnprocessableEntity(payload) : Ok(payload);
+    }
 
-        return Ok(result.Select(r => r.Result.Output).Commit());
+    public virtual Task<Arguments>[] Invocation(
+        IDictionary<string, Arguments> args,
+        Func<KeyValuePair<string, Arguments>, Invocation<TModel>> invocation
+    )
+    {
+        return args.ForEach(async a =>
+            {
+                var preresult = await _servicer.Perform(invocation(a));
+
+                if (preresult.GetType().IsArray)
+                    return new Arguments(
+                        a.Key,
+                        ((object[])preresult.Output).ForEach(
+                            o => new Argument(o, a.Key) { IsValid = preresult.IsValid }
+                        )
+                    );
+                return new Arguments(
+                    a.Key,
+                    new Argument(preresult.Output, a.Key) { IsValid = preresult.IsValid }
+                );
+            })
+            .Commit();
     }
 }

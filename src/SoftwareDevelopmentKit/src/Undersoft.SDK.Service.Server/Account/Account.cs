@@ -5,10 +5,11 @@ using System.Runtime.Serialization;
 using System.Security.Claims;
 using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Data.Contract;
+using Microsoft.EntityFrameworkCore;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
 
-public class Account : InnerProxy, IEntity, IAccount, IAuthorization
+public class Account : Authorization, IEntity, IAccount
 {
     public Account() { }
 
@@ -47,13 +48,4 @@ public class Account : InnerProxy, IEntity, IAccount, IAuthorization
         return Claims.Select(c => c.Claim);
     }
 
-    [NotMapped]
-    public Credentials Credentials { get; set; } = new Credentials();
-
-    [NotMapped]
-    public AuthorizationNotes Notes { get; set; } = new AuthorizationNotes();
-
-    public bool Authorized { get; set; }
-
-    public bool Authenticated { get; set; }
 }

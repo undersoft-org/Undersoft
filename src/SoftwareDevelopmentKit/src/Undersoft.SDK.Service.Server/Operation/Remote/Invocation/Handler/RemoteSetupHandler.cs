@@ -44,7 +44,7 @@ public class RemoteSetupHandler<TStore, TService, TModel>
                         + $"unable create source"
                 );
 
-            await _servicer
+            _ = _servicer
                 .Publish(new RemoteSetupInvoked<TStore, TService, TModel>(request))
                 .ConfigureAwait(false);
         }

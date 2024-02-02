@@ -121,28 +121,30 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
     public async Task<IAuthorization?> SignIn(IAuthorization auth)
     {
         var _auth = (
-            await _repository.Access<IAuthorization>(nameof(SignIn), auth)
+            await _repository.Access(nameof(SignIn), auth)
         );
 
         if (_auth == null)
             return null;
 
         _authorization.Credentials = _auth.Credentials;
-        await js.SetInLocalStorage(TOKENKEY, _authorization.Credentials.SessionToken);
-        var authState = GetAccessState(_authorization.Credentials.SessionToken);
-        NotifyAuthenticationStateChanged(Task.FromResult((AuthenticationState)authState));
-
+        if (_auth.Credentials.SessionToken != null)
+        {
+            await js.SetInLocalStorage(TOKENKEY, _authorization.Credentials.SessionToken);
+            var authState = GetAccessState(_authorization.Credentials.SessionToken);
+            NotifyAuthenticationStateChanged(Task.FromResult((AuthenticationState)authState));
+        }
         return _auth;
     }
 
     public async Task<IAuthorization> SignUp(IAuthorization auth)
     {
-        return await _repository.Access<IAuthorization>(nameof(SignUp), auth);
+        return await _repository.Access(nameof(SignUp), auth);
     }
 
     public async Task<IAuthorization> SignOut(IAuthorization auth)
     {
-        var _auth = await _repository.Access<IAuthorization>(nameof(SignOut), auth);
+        var _auth = await _repository.Access(nameof(SignOut), auth);
       
         await CleanUp();
         NotifyAuthenticationStateChanged(Task.FromResult(Anonymous));
@@ -151,16 +153,18 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
 
     public async Task<IAuthorization?> Renew(IAuthorization auth)
     {
-        var _auth = await _repository.Access<IAuthorization>(nameof(Renew), auth);
+        var _auth = await _repository.Access(nameof(Renew), auth);
 
         if (_auth == null)
             return null;
 
         _authorization.Credentials = _auth.Credentials;
-        await js.SetInLocalStorage(TOKENKEY, _authorization.Credentials.SessionToken);
-        var authState = GetAccessState(_authorization.Credentials.SessionToken);
-        NotifyAuthenticationStateChanged(Task.FromResult((AuthenticationState)authState));
-
+        if (_auth.Credentials.SessionToken != null)
+        {
+            await js.SetInLocalStorage(TOKENKEY, _authorization.Credentials.SessionToken);
+            var authState = GetAccessState(_authorization.Credentials.SessionToken);
+            NotifyAuthenticationStateChanged(Task.FromResult((AuthenticationState)authState));
+        }
         return _auth;
     }
 

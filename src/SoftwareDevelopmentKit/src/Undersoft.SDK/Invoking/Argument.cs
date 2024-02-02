@@ -38,9 +38,9 @@
             Set(name, type.Default(), method, target);
         }
 
-        public Argument(string name, string typeName, string method, string target = null)
+        public Argument(string name, string argTypeName, string method, string target = null)
         {
-            Set(name, Assemblies.FindType(typeName), method, target);
+            Set(name, Assemblies.FindTypeByFullName(argTypeName), method, target);
         }
 
         public Argument(ParameterInfo info, string method, string target = null)
@@ -54,7 +54,9 @@
 
         public string Name { get; set; }
 
-        public byte[] Binaries { get; set; }
+        public byte[] Data { get; set; }
+
+        public bool IsValid { get; set; } = true;
 
         public int Position { get; set; } = -1;
 
@@ -62,36 +64,36 @@
         
         public Type ResolveType()
         {
-            return _type ??= Assemblies.FindTypeByFullName(ArgumentTypeName);
+            return _type ??= Assemblies.FindTypeByFullName(ArgumentTypeName);            
         }
 
         public void Serialize(object value)
         {
             if (value != null)
             {
-                Binaries = value.ToJsonBytes();
+                Data = value.ToJsonBytes();
                 ArgumentTypeName = value.GetType().FullName;
             }
         }
 
         public object Deserialize()
         {
-            if (Binaries != null && ArgumentTypeName != null)
+            if (Data != null && ArgumentTypeName != null)
             {
                 var t = ResolveType();
                 if (t != null)
-                    return Binaries.FromJson(t);
+                    return Data.FromJson(t);
             }
             return null;
         }
 
-        public T Deserialize<T>() where T : class
+        public T Deserialize<T>()
         {
-            if (Binaries != null)
+            if (Data != null)
             {
-                return Binaries.FromJson<T>();
+                return Data.FromJson<T>();
             }
-            return null;
+            return default(T);
         }
 
         public void Set(ParameterInfo item, string method, string target = null)
@@ -109,7 +111,7 @@
         public void Set(IArgument item, string method, string target = null)
         {
             Name = item.Name;
-            Binaries = item.Binaries;
+            Data = item.Data;
             Position = item.Position;
             ArgumentTypeName = item.ArgumentTypeName;
             MethodName = method;

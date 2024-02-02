@@ -29,8 +29,16 @@ public class ActionHandler<TStore, TService, TDto>
             return request;
         try
         {
-            request.Arguments.UpdateArgumentTypes();
-            request.Response = await _servicer.Run<TService, TDto>(request.Arguments);                      
+            request.Arguments.ResolveArgumentTypes();
+
+            request.Response = await _servicer.Run<TService, TDto>(request.Arguments);
+
+            if (request.Response == null)
+                throw new Exception(
+                    $"{GetType().Name} "
+                        + $"for entity {typeof(TDto).Name} "
+                        + $"unable create source"
+                );
 
             _ = _servicer.Publish(new ActionInvoked<TStore, TService, TDto>(request)).ConfigureAwait(false);
         }

@@ -8,19 +8,21 @@ namespace Undersoft.SDK.Security
     [DataContract]
     public class Authorization : InnerProxy, IAuthorization
     {
+        [NotMapped]
         [DataMember(Order = 16)]
-        public Credentials Credentials { get; set; } = new Credentials();
+        public virtual Credentials Credentials { get; set; } = new Credentials();
 
+        [NotMapped]
         [DataMember(Order = 17)]
-        public AuthorizationNotes Notes { get; set; } = new AuthorizationNotes();
+        public virtual AuthorizationNotes Notes { get; set; } = new AuthorizationNotes();
 
         [DataMember(Order = 18)]
-        public bool Authorized { get; set; }
+        public virtual bool Authorized { get; set; }
 
         [DataMember(Order = 19)]
-        public bool Authenticated { get; set; }
+        public virtual bool Authenticated { get; set; }
 
-        public void Map(object user)
+        public virtual void Map(object user)
         {
             this.PatchFrom(user);
         }

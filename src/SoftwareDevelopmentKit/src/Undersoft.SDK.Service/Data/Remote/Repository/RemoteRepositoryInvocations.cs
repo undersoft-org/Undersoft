@@ -26,38 +26,52 @@ public partial class RemoteRepository<TEntity>
 
     private async Task<TModel> InvokeAsync<TModel>(string action, string method, TModel args)
     {
-        var edge = false; 
-        Arguments _args = null;
-        if (typeof(TModel) != typeof(Arguments))
-        {
+        object _args = args;
+        var _isRelay = typeof(TModel) == typeof(Arguments);
+
+        if (!_isRelay)
             _args = new Arguments(method, args);
-            edge = true;
-        }
-        else
-            _args = ((Arguments)((object)args));
 
-        var service =
-            remoteContext.ExecuteAsync<byte[]>(new Uri(
-            $"{remoteContext.BaseUri.OriginalString}/{Name}/{action}"), "POST",
-            new BodyOperationParameter(method, _args)
-        );
+        var response = (
+            await remoteContext.ExecuteAsync<byte[]>(
+                new Uri($"{remoteContext.BaseUri.OriginalString}/{Name}/{action}"),
+                "POST", true,
+                new BodyOperationParameter(method, _args)
+            )
+        ).FirstOrDefault().FromJson<Arguments>();
 
-        var result = await service;
-        return result.FirstOrDefault().FromJson<TModel>();
+        var result = _isRelay
+            ? response
+            : response.FirstOrDefault()?.Deserialize();
+
+        return (TModel)result;
     }
 
-    private async Task<IEnumerable<TEntity>> InvokeAsync<TModel>(
+    private async Task<TModel> InvokeBatchAsync<TModel>(
         string action,
-        string method,
-        TModel[] args
-    )
+        IDictionary<string, TModel> batch
+    ) where TModel : class
     {
-        var service = new DataServiceActionQuery<TEntity>(
-            remoteContext,
-            $"{remoteContext.BaseUri.OriginalString}/{Name}/{action}",
-            new BodyOperationParameter(method, args)
-        );
-        var result = await service.ExecuteAsync();
-        return result;
+        var _isRelay = batch.Any(d => d.Value.GetType() == typeof(Arguments));
+        BodyOperationParameter[] _params = null;
+
+        if (!_isRelay)
+            _params = batch
+                .ForEach(a => new BodyOperationParameter(a.Key, new Arguments(a.Key, a.Value)))
+                .Commit();
+        else
+            _params = batch.ForEach(a => new BodyOperationParameter(a.Key, a.Value)).Commit();
+
+        var response = (
+            await remoteContext.ExecuteAsync<Arguments>(
+                new Uri($"{remoteContext.BaseUri.OriginalString}/{Name}/{action}"),
+                "POST", 
+                _params
+            )
+        ).FirstOrDefault();
+
+        return _isRelay
+           ? (TModel)(object)response
+           : response.FirstOrDefault()?.Deserialize<TModel>();
     }
 }
