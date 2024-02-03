@@ -1,6 +1,6 @@
 {
-  "name": "Undersoft.SharedServiceCenter.Web.Application",
-  "short_name": "Undersoft.SharedServiceCenter.Web.Application",
+  "name": "Undersoft.SSC.Service.Application.CLient",
+  "short_name": "Undersoft.SSC.App.Client",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",

@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Components.WebView.Maui;
-using Microsoft.AspNetCore.Components.Authorization;
+﻿using Microsoft.AspNetCore.Components.Authorization;
+using Undersoft.SDK.Security;
 using Undersoft.SDK.Service;
-using Undersoft.SSC.Service.Clients;
 using Undersoft.SDK.Service.Application.Access;
+using Undersoft.SSC.Service.Clients;
 using Undersoft.SSC.Service.Contracts;
 
 namespace Undersoft.SSC.Service.Application.Hybrid
@@ -30,23 +30,23 @@ namespace Undersoft.SSC.Service.Application.Hybrid
 
             _ = setup.Manager.BuildInternalProvider().UseServiceClients();
 
-           builder.ConfigureContainer(
-                setup.Manager.GetProviderFactory(),
-                (services) =>
-                {
-                    var reg = setup.Manager.GetRegistry();
-                    reg.Services = services;
-                    reg.AddAuthorizationCore();
-                    reg.AddScoped<AccessProvider<Account>>();
-                    reg.AddScoped<AuthenticationStateProvider, AccessProvider<Account>>(
-                        provider => provider.GetRequiredService<AccessProvider<Account>>()
-                    );
-                    reg.AddScoped<IAccessService, AccessProvider<Account>>(
-                        provider => provider.GetRequiredService<AccessProvider<Account>>()
-                    );
-                    reg.MergeServices(true);
-                }
-            );
+            builder.ConfigureContainer(
+                 setup.Manager.GetProviderFactory(),
+                 (services) =>
+                 {
+                     var reg = setup.Manager.GetRegistry();
+                     reg.Services = services;
+                     reg.AddAuthorizationCore();
+                     reg.AddScoped<AccessProvider<Account>>();
+                     reg.AddScoped<AuthenticationStateProvider, AccessProvider<Account>>(
+                         provider => provider.GetRequiredService<AccessProvider<Account>>()
+                     );
+                     reg.AddScoped<IAccountAccess, AccessProvider<Account>>(
+                         provider => provider.GetRequiredService<AccessProvider<Account>>()
+                     );
+                     reg.MergeServices(true);
+                 }
+             );
 
             var host = builder.Build();
 

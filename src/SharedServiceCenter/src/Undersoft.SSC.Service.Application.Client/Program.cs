@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Security;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Application.Access;
@@ -17,14 +18,15 @@ namespace Undersoft.SSC.Service.Application.Client
 
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
+            builder.Services.AddFluentUIComponents();
 
             var manager = builder.Services
                 .AddServiceSetup(builder.Configuration)
                 .ConfigureServices(
-                new[] 
-                { 
-                    typeof(ApplicationClient), 
-                    typeof(AccessClient) 
+                new[]
+                {
+                    typeof(ApplicationClient),
+                    typeof(AccessClient)
                 })
                 .Manager;
 

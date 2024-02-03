@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "Undersoft.SSC.Web.Application.Client": {
+    "Undersoft.SSC.Service.Application.Client": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

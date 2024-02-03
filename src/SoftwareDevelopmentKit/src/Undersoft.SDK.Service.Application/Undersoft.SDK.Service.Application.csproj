@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Company>Undersoft</Company>
     <Authors>Dariusz Hanc</Authors>
@@ -19,13 +19,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.15" />
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.15" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.15" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.15" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.*-*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="8.*-*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.*-*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.*-*" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.*-*" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="8.*-*" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.*-*" />
   </ItemGroup>
     <ItemGroup>
     <ProjectReference Include="..\..\..\SharedServiceCenter\src\Undersoft.SSC.Service\Undersoft.SSC.Service.csproj" />

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Company>Undersoft</Company>
@@ -20,8 +20,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Undersoft.SDK.Service\Undersoft.SDK.Service.csproj" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.15" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="7.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.*-*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="8.*-*" />
     <PackageReference Include="Quartz" Version="3.7.0" />
     <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.7.0" />
     <PackageReference Include="Quartz.OpenTelemetry.Instrumentation" Version="3.7.0" />
