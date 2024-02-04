@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Undersoft.SDK.Instant.Rubrics
 {
@@ -14,6 +13,8 @@ namespace Undersoft.SDK.Instant.Rubrics
         int RubricId { get; set; }
 
         string RubricName { get; set; }
+
+        string DisplayName { get; set; }
 
         int RubricOffset { get; set; }
 

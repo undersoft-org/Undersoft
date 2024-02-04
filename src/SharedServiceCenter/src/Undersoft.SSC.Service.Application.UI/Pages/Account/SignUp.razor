@@ -1,0 +1,65 @@
+﻿@page "/account/signup"
+
+@inject IAccountAccess _service
+@inject NavigationManager _navigation
+
+@using Undersoft.SDK.Invoking;
+@using Undersoft.SDK.Service.Data.Client;
+@using Undersoft.SSC.Service.Application;
+@using Undersoft.SDK.Service.Application;
+@using Undersoft.SDK.Service.Application.Access;
+@using Undersoft.SSC.Service.Application.UI.Compound.Layout;
+
+<h3>Sign up</h3>
+
+<EditForm Model="@account" OnValidSubmit="@OnSubmit" FormName="Sign up">
+    <DataAnnotationsValidator />
+    <FluentValidationSummary />
+    <FluentStack Orientation="Orientation.Vertical">
+        <div>
+            <FluentTextField Name="email" InputMode="InputMode.Text" @bind-Value="@firstName" Label="First name" Required />
+             <FluentValidationMessage For="@(() => firstName)" />
+         </div>
+         <div>
+             <FluentTextField Name="email" InputMode="InputMode.Text" @bind-Value="@lastName" Label="Last name" Required />
+             <FluentValidationMessage For="@(() => lastName)" />
+         </div>
+        <div>
+            <FluentTextField Name="email" InputMode="InputMode.Email" @bind-Value="@account.Credentials.Email" Label="Email" Required />
+             <FluentValidationMessage For="@(() => account.Credentials.Email)" />
+         </div>
+         <div>
+             <FluentTextField Name="password" TextFieldType="TextFieldType.Password" @bind-Value="@password" Label="Password" Required />
+             <FluentValidationMessage For="@(() => password)" />
+         </div>
+         <div>
+             <FluentTextField Name="password" TextFieldType="TextFieldType.Password" @bind-Value="@retypedPassword" Label="Retype password" Required />
+             <FluentValidationMessage For="@(() => retypedPassword)" />
+         </div>
+         <FluentStack Orientation="Orientation.Horizontal">
+             <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent">Sign up</FluentButton>
+             <FluentButton Type="ButtonType.Button" Appearance="Appearance.Accent" OnClick="OnSignIn">Sign in</FluentButton>
+         </FluentStack>
+     </FluentStack>
+ </EditForm>
+
+
+ @code 
+ {
+    private Account account = new Account();
+    private string firstName = "";
+    private string lastName = "";
+    private string password = "";
+    private string retypedPassword = "";
+
+    private async Task OnSubmit()
+    {
+        await _service.SignUp(account);
+        _navigation.NavigateTo("");
+    }
+
+    private void OnSignIn()
+    {
+        _navigation.NavigateTo("/account/signin");
+    }
+ }

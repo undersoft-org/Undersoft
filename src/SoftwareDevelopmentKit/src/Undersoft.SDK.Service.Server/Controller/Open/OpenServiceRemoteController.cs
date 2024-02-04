@@ -3,14 +3,11 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Undersoft.SDK.Service.Server.Controller.Open;
 
-using Microsoft.AspNetCore.OData.Formatter;
-using Undersoft.SDK.Service;
-using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Server.Operation.Remote.Invocation;
-using Undersoft.SDK.Service.Data.Client.Attributes;
-using Microsoft.AspNetCore.OData.Routing.Attributes;
 using System.Text.Json;
-using Undersoft.SDK.Service.Server.Operation.Invocation;
+using Undersoft.SDK.Service;
+using Undersoft.SDK.Service.Data.Client.Attributes;
+using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Operation.Invocation;
 
 [OpenServiceRemote]
 public abstract class OpenServiceRemoteController<TStore, TService, TDto>
@@ -83,10 +80,10 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
         return !response.IsValid ? UnprocessableEntity(payload) : Ok(payload);
     }
 
-     public virtual Task<Arguments>[] Invocation(
-        IDictionary<string, Arguments> args,
-        Func<KeyValuePair<string, Arguments>, Invocation<TDto>> invocation
-    )
+    public virtual Task<Arguments>[] Invocation(
+       IDictionary<string, Arguments> args,
+       Func<KeyValuePair<string, Arguments>, Invocation<TDto>> invocation
+   )
     {
         return args.ForEach(async a =>
             {

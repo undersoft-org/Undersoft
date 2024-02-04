@@ -1,10 +1,10 @@
 ﻿namespace Undersoft.SDK.Instant
 {
+    using Rubrics.Attributes;
     using System.ComponentModel.DataAnnotations;
     using System.Reflection;
     using System.Runtime.InteropServices;
-    using System.Runtime.Serialization;    
-    using Rubrics.Attributes;
+    using System.Runtime.Serialization;
 
     public class InstantCompilerConstructors
     {
@@ -26,6 +26,8 @@
         );
         protected readonly ConstructorInfo figureRequiredCtor =
             typeof(RequiredRubricAttribute).GetConstructor(Type.EmptyTypes);
+        protected readonly ConstructorInfo figureVisibleCtor =
+      typeof(VisibleRubricAttribute).GetConstructor(Type.EmptyTypes);
         protected readonly ConstructorInfo figureLinkCtor =
             typeof(LinkRubricAttribute).GetConstructor(Type.EmptyTypes);
         protected readonly ConstructorInfo requiredCtor = typeof(RequiredAttribute).GetConstructor(

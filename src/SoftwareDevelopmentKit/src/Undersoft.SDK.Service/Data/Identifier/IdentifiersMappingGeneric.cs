@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Undersoft.SDK.Service.Data.Identifier;
 
-using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Store;
 
 public class IdentifiersMapping<TObject> : IIdentifiersMapping where TObject : class, IOrigin, IInnerProxy
@@ -39,7 +38,7 @@ public class IdentifiersMapping<TObject> : IIdentifiersMapping where TObject : c
                       .IsRequired()
                       .OnDelete(DeleteBehavior.Restrict);
 
-        _entityBuilder.Navigation("Identifiers");
+        _entityBuilder.Navigation("Identifiers").AutoInclude();
 
         return _modelBuilder;
     }

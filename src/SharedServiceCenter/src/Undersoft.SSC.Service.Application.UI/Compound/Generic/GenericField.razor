@@ -1,0 +1,69 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using Undersoft.SDK.Instant.Proxies
+@using Undersoft.SDK.Instant.Rubrics
+@using Undersoft.SDK
+
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+
+@if (_type.IsPrimitive)
+{
+    if (_type.IsAssignableTo(typeof(decimal)))
+    {
+        <FluentNumberField Name="@Name" @bind-Value="@Data" Label="@DisplayName" Required="@Required" />
+    }
+    else if (_type.IsAssignableTo(typeof(DateTime)))
+    {
+        <FluentDatePicker Name="@Name" @bind-Value="@TimeValue" Label="@DisplayName" Required="@Required" />
+    }
+    else if (_type.IsAssignableTo(typeof(Enum)))
+    {
+        <FluentCombobox Name="Name" @bind-Value="@this.EnumName" Items="@EnumNames" Label="DisplayName" Required="@Required" />
+    }
+    else if (_type.IsAssignableTo(typeof(bool)))
+    {
+        <FluentCheckbox Name="Name" @bind-Value="@this.BoolValue" Label="DisplayName" Required="@Required" />
+    }
+    else
+    {
+        <FluentTextField Name="Name" @bind-Value="@this.TextValue" Label="DisplayName" Required="@Required" />
+    }
+    <FluentValidationMessage For="@(() => Data)" />
+}
+else if(_type.IsAssignableTo(typeof(IFormattable)))
+{
+    <FluentTextField Name="Name" @bind-Value="@this.TextValue" Label="DisplayName" Required="@Required" />
+    <FluentValidationMessage For="@(() => Data)" />
+}
+
+@code
+{
+    private Type _type => Rubric.RubricType;
+
+    private IProxy _proxy => Content.Proxy;
+
+    private int _id => Rubric.RubricId;
+
+    [CascadingParameter]
+    public TModel Content { get; set; } = default!;
+
+    [Parameter]
+    public IRubric Rubric { get; set; } = default!;
+
+    protected string Name => Rubric.RubricName;
+
+    protected string DisplayName => Rubric.DisplayName;
+
+    protected bool Required => Rubric.Required;
+
+    protected object? Data { get => _proxy[_id]; set => _proxy[_id] = value; }
+
+    protected string? TextValue { get => Data?.ToString(); set => Data = value; }
+
+    protected DateTime? TimeValue { get => (DateTime?)Data; set => Data = value; }
+
+    protected bool BoolValue { get => (Data != null) ? (bool)Data : false; set => Data = value; }
+
+    protected string? EnumName { get => Data != null ? ((Enum)Data).ToString() : null; set => Data = value != null ? Enum.Parse(_type, value) : null; }
+
+    protected IEnumerable<string?> EnumNames => Enum.GetNames(_type);
+}

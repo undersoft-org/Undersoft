@@ -40,7 +40,7 @@
   </ItemGroup>
   
  <ItemGroup>
-    <Using Include="Undersoft.SDK.Service.Application.Components" />
+    <Using Include="Undersoft.SDK.Service.Application" />
     <Using Include="Microsoft.AspNetCore.Components" />
     <Using Include="Microsoft.Extensions.Options" />
     <Using Include="Microsoft.JSInterop" />

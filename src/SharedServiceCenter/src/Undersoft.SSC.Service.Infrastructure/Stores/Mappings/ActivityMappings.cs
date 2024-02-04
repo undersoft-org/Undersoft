@@ -7,7 +7,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
     using Undersoft.SDK.Service.Infrastructure.Database;
     using Undersoft.SDK.Service.Infrastructure.Database.Relation;
     using Undersoft.SSC.Domain.Entities;
-    using Undersoft.SSC.Domain.Entities.Locations;
 
     public class ActivityMappings : EntityTypeMapping<Activity>
     {
@@ -42,8 +41,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
                 .RelateSetToSet<Activity, Detail>(
                     l => l.Activities,
                     r => r.Details,
-                    ExpandSite.OnRight,
-                    true
+                    ExpandSite.OnRight, true
                 )
                 .RelateSetToSet<Activity, Activity>(
                     rm => rm.RelatedFrom,

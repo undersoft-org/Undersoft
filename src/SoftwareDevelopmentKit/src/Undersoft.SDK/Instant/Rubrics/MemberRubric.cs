@@ -1,11 +1,11 @@
 ﻿namespace Undersoft.SDK.Instant.Rubrics
 {
-    
+
     using System.ComponentModel;
     using System.Linq;
     using System.Reflection;
-    using Uniques;
     using Undersoft.SDK;
+    using Uniques;
 
     public class MemberRubric : MemberInfo, IRubric
     {
@@ -251,15 +251,26 @@
         public IMemberRubric VirtualInfo => (IMemberRubric)RubricInfo;
 
         public bool Visible { get; set; }
+
         public string CodeNo { get => code.ToString(); set => code.FromTetrahex(value.ToCharArray()); }
+
         public DateTime Created { get; set; }
+
         public string Creator { get; set; }
+
         public long Id { get => (long)code.Id; set => code.Id = (long)value; }
+
         public long TypeId { get => (long)code.TypeId; set => code.TypeId = (long)value; }
+
         public DateTime Modified { get; set; }
+
         public string Modifier { get; set; }
+
         public int OriginId { get => (int)code.OriginId; set => code.OriginId = (uint)value; }
+
         public string TypeName { get; set; }
+
         public DateTime Time { get => DateTime.FromBinary(code.Time); set => code.Time = value.ToBinary(); }
+        public string Label { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

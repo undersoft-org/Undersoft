@@ -1,0 +1,31 @@
+﻿@page "/account/signin"
+@inject IAccountAccess _service
+@inject NavigationManager _navigation
+
+@using Account = Undersoft.SSC.Service.Contracts.Account;
+@using Undersoft.SDK.Invoking;
+@using Undersoft.SDK.Service.Data.Client;
+@using Undersoft.SSC.Service.Application;
+@using Undersoft.SDK.Service.Application.Access;
+@using Undersoft.SSC.Service.Application.UI.Compound.Layout;
+
+ @code 
+ {
+    private Account account = new Account();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    private async Task OnSubmit()
+    {
+        await _service.SignIn(account);
+        _navigation.NavigateTo("");
+    }
+
+    private void OnSignUp()
+    {
+        _navigation.NavigateTo("/account/signup");
+    }
+}

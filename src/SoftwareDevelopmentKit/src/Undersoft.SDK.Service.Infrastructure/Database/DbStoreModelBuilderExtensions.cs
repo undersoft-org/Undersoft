@@ -65,7 +65,7 @@ public static class DbStoreModelBuilderExtensions
         this ModelBuilder builder,
         ExpandSite expandSite = ExpandSite.None,
         bool autoinclude = false,
-        string dbSchema = null
+        string? dbSchema = null
     )
         where TLeft : class, IOrigin, IInnerProxy
         where TRight : class, IOrigin, IInnerProxy
@@ -77,12 +77,12 @@ public static class DbStoreModelBuilderExtensions
 
     public static ModelBuilder RelateSetToSet<TLeft, TRight>(
         this ModelBuilder builder,
-        Expression<Func<TRight, object>> leftMember,
-        Expression<Func<TLeft, object>> rightMember,
+        Expression<Func<TRight, object?>>? leftMember,
+        Expression<Func<TLeft, object?>>? rightMember,
         ExpandSite expandSite = ExpandSite.None,
         bool autoinclude = false,
-        string parentSchema = null,
-        string childSchema = null
+        string? parentSchema = null,
+        string? childSchema = null
     )
         where TLeft : class, IOrigin, IInnerProxy
         where TRight : class, IOrigin, IInnerProxy
@@ -97,14 +97,14 @@ public static class DbStoreModelBuilderExtensions
 
     public static ModelBuilder RelateSetToSet<TLeft, TRight>(
         this ModelBuilder builder,
-        Expression<Func<TRight, object>> leftMember,
-        string LeftTableName,
-        Expression<Func<TLeft, object>> rightMember,
-        string rightTableName,
+        Expression<Func<TRight, object?>>? leftMember,
+        string? LeftTableName,
+        Expression<Func<TLeft, object?>>? rightMember,
+        string? rightTableName,
         ExpandSite expandSite = ExpandSite.None,
         bool autoinclude = false,
-        string parentSchema = null,
-        string childSchema = null
+        string? parentSchema = null,
+        string? childSchema = null
     )
         where TLeft : class, IOrigin, IInnerProxy
         where TRight : class, IOrigin, IInnerProxy
@@ -123,11 +123,11 @@ public static class DbStoreModelBuilderExtensions
 
     public static ModelBuilder RelateSetToSet<TLeft, TRight>(
         this ModelBuilder builder,
-        string leftName,
-        string rightName,
+        string? leftName,
+        string? rightName,
         ExpandSite expandSite = ExpandSite.None,
         bool autoinclude = false,
-        string dbSchema = null
+        string? dbSchema = null
     )
         where TLeft : class, IOrigin, IInnerProxy
         where TRight : class, IOrigin, IInnerProxy
@@ -143,14 +143,14 @@ public static class DbStoreModelBuilderExtensions
 
     public static ModelBuilder RelateSetToSet<TLeft, TRight>(
         this ModelBuilder builder,
-        string leftName,
-        string leftTableName,
-        string rightName,
-        string rightTableName,
+        string? leftName,
+        string? leftTableName,
+        string? rightName,
+        string? rightTableName,
         ExpandSite expandSite = ExpandSite.None,
         bool autoinclude = false,
-        string parentSchema = null,
-        string childSchema = null
+        string? parentSchema = null,
+        string? childSchema = null
     )
         where TLeft : class, IOrigin, IInnerProxy
         where TRight : class, IOrigin, IInnerProxy
@@ -172,7 +172,7 @@ public static class DbStoreModelBuilderExtensions
         string leftName,
         string rightName,
         ExpandSite expandSite = ExpandSite.None,
-        string dbSchema = null
+        string? dbSchema = null
     )
         where TLeft : class, IOrigin, IInnerProxy
         where TRight : class, IOrigin, IInnerProxy
@@ -188,10 +188,10 @@ public static class DbStoreModelBuilderExtensions
 
     public static ModelBuilder RalateSetToSetExplicitly<TLeft, TRight>(
         this ModelBuilder builder,
-        Expression<Func<TRight, object>> leftMember,
-         Expression<Func<TLeft, object>> righMember,
+        Expression<Func<TRight, object?>>? leftMember,
+         Expression<Func<TLeft, object?>>? righMember,
         ExpandSite expandSite = ExpandSite.None,
-        string dbSchema = null
+        string? dbSchema = null
     )
         where TLeft : class, IOrigin, IInnerProxy
         where TRight : class, IOrigin, IInnerProxy
@@ -207,13 +207,13 @@ public static class DbStoreModelBuilderExtensions
 
     public static ModelBuilder RalateSetToSetExplicitly<TLeft, TRight>(
         this ModelBuilder builder,
-        string leftName,
-        string leftTableName,
-        string rightName,
-        string rightTableName,
+        string? leftName,
+        string? leftTableName,
+        string? rightName,
+        string? rightTableName,
         ExpandSite expandSite = ExpandSite.None,
-        string parentSchema = null,
-        string childSchema = null
+        string? parentSchema = null,
+        string? childSchema = null
     )
         where TLeft : class, IOrigin, IInnerProxy
         where TRight : class, IOrigin, IInnerProxy
@@ -234,7 +234,7 @@ public static class DbStoreModelBuilderExtensions
         this ModelBuilder builder,
         ExpandSite expandSite = ExpandSite.None,
         bool autoinclude = false,
-        string dbSchema = null
+        string? dbSchema = null
     )
         where TLeft : class, IOrigin, IInnerProxy
         where TRight : class, IOrigin, IInnerProxy
@@ -244,11 +244,11 @@ public static class DbStoreModelBuilderExtensions
 
     public static ModelBuilder RelateOneToSet<TLeft, TRight>(
         this ModelBuilder builder,
-        string leftName,
-        string rightName,
+        string? leftName,
+        string? rightName,
         ExpandSite expandSite = ExpandSite.None,
         bool autoinclude = false,
-        string dbSchema = null
+        string? dbSchema = null
     )
         where TLeft : class, IOrigin, IInnerProxy
         where TRight : class, IOrigin, IInnerProxy
@@ -264,11 +264,11 @@ public static class DbStoreModelBuilderExtensions
 
     public static ModelBuilder RelateOneToSet<TLeft, TRight>(
         this ModelBuilder builder,
-        Expression<Func<TRight, object>> leftMember,
-        Expression<Func<TLeft, object>> rightMember,
+        Expression<Func<TRight, object?>>? leftMember,
+        Expression<Func<TLeft, object?>>? rightMember,
         ExpandSite expandSite = ExpandSite.None,
         bool autoinclude = false,
-        string dbSchema = null
+        string? dbSchema = null
     )
         where TLeft : class, IOrigin, IInnerProxy
         where TRight : class, IOrigin, IInnerProxy
@@ -290,8 +290,8 @@ public static class DbStoreModelBuilderExtensions
         string rightTableName,
         ExpandSite expandSite = ExpandSite.None,
         bool autoinclude = false,
-        string parentSchema = null,
-        string childSchema = null
+        string? parentSchema = null,
+        string? childSchema = null
     )
         where TLeft : class, IOrigin, IInnerProxy
         where TRight : class, IOrigin, IInnerProxy
@@ -322,11 +322,11 @@ public static class DbStoreModelBuilderExtensions
 
     public static ModelBuilder RelateOneToOne<TLeft, TRight>(
         this ModelBuilder builder,
-        string leftName,
-        string rightName,
+        string? leftName,
+        string? rightName,
         ExpandSite expandSite = ExpandSite.None,
         bool autoinclude = false,
-        string dbSchema = null
+        string? dbSchema = null
     )
         where TLeft : class, IOrigin, IInnerProxy
         where TRight : class, IOrigin, IInnerProxy
@@ -342,11 +342,11 @@ public static class DbStoreModelBuilderExtensions
 
     public static ModelBuilder RelateOneToOne<TLeft, TRight>(
         this ModelBuilder builder,
-        Expression<Func<TRight, object>> leftMember,
-        Expression<Func<TLeft, object>> rightMember,
+        Expression<Func<TRight, object?>>? leftMember,
+        Expression<Func<TLeft, object?>>? rightMember,
         ExpandSite expandSite = ExpandSite.None,
         bool autoinclude = false,
-        string dbSchema = null
+        string? dbSchema = null
     )
         where TLeft : class, IOrigin, IInnerProxy
         where TRight : class, IOrigin, IInnerProxy
@@ -362,14 +362,14 @@ public static class DbStoreModelBuilderExtensions
 
     public static ModelBuilder RelateOneToOne<TLeft, TRight>(
         this ModelBuilder builder,
-        string leftName,
-        string leftTableName,
-        string rightName,
-        string rightTableName,
+        string? leftName,
+        string? leftTableName,
+        string? rightName,
+        string? rightTableName,
         ExpandSite expandSite = ExpandSite.None,
         bool autoinclude = false,
-        string parentSchema = null,
-        string childSchema = null
+        string? parentSchema = null,
+        string? childSchema = null
     )
         where TLeft : class, IOrigin, IInnerProxy
         where TRight : class, IOrigin, IInnerProxy

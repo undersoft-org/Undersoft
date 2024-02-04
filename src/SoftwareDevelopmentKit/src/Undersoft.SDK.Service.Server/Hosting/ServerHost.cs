@@ -1,10 +1,8 @@
-﻿using Microsoft.Extensions.Hosting;
-using Undersoft.SDK.Service.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using System.Configuration;
+using Microsoft.Extensions.Hosting;
 using Undersoft.SDK.Service.Configuration;
-using Microsoft.AspNetCore.Hosting;
-using Undersoft.SDK.Service.Server.Operation.Invocation;
+using Undersoft.SDK.Service.Hosting;
 
 namespace Undersoft.SDK.Service.Server.Hosting;
 
@@ -18,7 +16,7 @@ public class ServerHost : ServiceHost, IHost, IServerHost
     }
 
     public ServerHost(string[] args = null) : this(ServiceConfigurationHelper.BuildConfiguration(args))
-    {       
+    {
     }
 
     public ServerHost(IConfiguration configuration)

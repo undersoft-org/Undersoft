@@ -47,7 +47,7 @@
 
         public override Type DeclaringType => RubricInfo != null ? RubricInfo.DeclaringType : null;
 
-        public bool Editable { get; set; } = true;
+        public bool Editable { get; set; }
 
         public override RuntimeMethodHandle MethodHandle => RubricInfo.MethodHandle;
 
@@ -80,7 +80,9 @@
 
         public Type RubricType { get; set; }
 
-        public bool Visible { get; set; } = true;
+        public bool Visible { get; set; }
+
+        public string DisplayName { get; set; }
 
         public override MethodInfo GetBaseDefinition()
         {

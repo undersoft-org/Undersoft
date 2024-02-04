@@ -15,8 +15,13 @@ using Operation.Query;
 using Operation.Query.Handler;
 using Undersoft.SDK.Service.Data.Contract;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Server.Operation.Command.Notification;
-using Undersoft.SDK.Service.Server.Operation.Command.Notification.Handler;
+using Undersoft.SDK.Service.Operation.Command;
+using Undersoft.SDK.Service.Operation.Command.Handler;
+using Undersoft.SDK.Service.Operation.Command.Notification;
+using Undersoft.SDK.Service.Operation.Command.Notification.Handler;
+using Undersoft.SDK.Service.Operation.Command.Validator;
+using Undersoft.SDK.Service.Operation.Query;
+using Undersoft.SDK.Service.Operation.Query.Handler;
 
 public partial class ServerSetup
 {

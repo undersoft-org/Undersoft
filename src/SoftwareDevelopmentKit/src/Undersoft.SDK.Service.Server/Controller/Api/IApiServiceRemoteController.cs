@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Undersoft.SDK.Service.Server.Controller.Crud;
+namespace Undersoft.SDK.Service.Server.Controller.Api;
 
-using System.Text.Json;
 using Undersoft.SDK;
 
 

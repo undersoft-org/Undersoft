@@ -18,6 +18,7 @@ namespace Undersoft.SSC.Service.Application.Client
 
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
+
             builder.Services.AddFluentUIComponents();
 
             var manager = builder.Services

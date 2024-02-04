@@ -8,7 +8,7 @@ namespace Undersoft.SDK.Service.Application.Server.Hosting
     public interface IApplicationServerHost : IServiceHost
     {
         Registry<ApplicationHost>? ApplicationHosts { get; set; }
-        Registry<IServiceProvider?>? HostedApplications { get; }
+        Registry<IServiceProvider> HostedApplications { get; }
 
         ApplicationServerHost Configure(Action<IWebHostBuilder> builder);
 

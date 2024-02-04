@@ -13,8 +13,14 @@ using Operation.Remote.Query.Handler;
 using Operation.Remote.Validator;
 using Undersoft.SDK.Series;
 using Undersoft.SDK.Service.Data.Client.Attributes;
-using Undersoft.SDK.Service.Server.Operation.Remote.Command.Notification;
-using Undersoft.SDK.Service.Server.Operation.Remote.Command.Notification.Handler;
+using Undersoft.SDK.Service.Operation.Remote.Command;
+using Undersoft.SDK.Service.Operation.Remote.Command.Handler;
+using Undersoft.SDK.Service.Operation.Remote.Command.Notification;
+using Undersoft.SDK.Service.Operation.Remote.Command.Notification.Handler;
+using Undersoft.SDK.Service.Operation.Remote.Command.Validator;
+using Undersoft.SDK.Service.Operation.Remote.Query;
+using Undersoft.SDK.Service.Operation.Remote.Query.Handler;
+using Undersoft.SDK.Service.Operation.Remote.Validator;
 
 public partial class ServerSetup
 {

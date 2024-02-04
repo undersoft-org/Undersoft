@@ -2,9 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Undersoft.SDK.Service.Infrastructure.Database.Relation;
-
-using Undersoft.SDK.Service.Data.Object;
-
 public class RelatedOneToOne<TParent, TChild>
     where TParent : class, IOrigin, IInnerProxy
     where TChild : class, IOrigin, IInnerProxy
@@ -24,15 +21,15 @@ public class RelatedOneToOne<TParent, TChild>
     public RelatedOneToOne(
         ModelBuilder modelBuilder,
         ExpandSite expandSite = ExpandSite.None,
-        string parentSchema = null
+        string? parentSchema = null
     ) : this(modelBuilder, null, null, null, null, expandSite, parentSchema, parentSchema) { }
 
     public RelatedOneToOne(
         ModelBuilder modelBuilder,
-        string parentName,
-        string childName,
+        string? parentName,
+        string? childName,
         ExpandSite expandSite = ExpandSite.None,
-        string parentSchema = null
+        string? parentSchema = null
     )
         : this(
             modelBuilder,
@@ -48,13 +45,13 @@ public class RelatedOneToOne<TParent, TChild>
 
     public RelatedOneToOne(
         ModelBuilder modelBuilder,
-        string parentName,
-        string parentTableName,
-        string childName,
-        string childTableName,
+        string? parentName,
+        string? parentTableName,
+        string? childName,
+        string? childTableName,
         ExpandSite expandSite = ExpandSite.None,
-        string parentSchema = null,
-        string childSchema = null
+        string? parentSchema = null,
+        string? childSchema = null
     )
     {
         _modelBuilder = modelBuilder;

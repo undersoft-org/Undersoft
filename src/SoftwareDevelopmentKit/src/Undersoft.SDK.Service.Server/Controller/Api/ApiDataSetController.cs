@@ -11,7 +11,7 @@ using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Data.Repository;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Server.Controller.Crud;
+using Undersoft.SDK.Service.Server.Controller.Api;
 
 [ApiController]
 [ApiData]

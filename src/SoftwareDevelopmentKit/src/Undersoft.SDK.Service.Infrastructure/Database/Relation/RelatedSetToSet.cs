@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Undersoft.SDK.Service.Infrastructure.Database.Relation;
 
 using Undersoft.SDK.Instant.Proxies;
-using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Store;
 
 public class RelatedSetToSet<TLeft, TRight>
@@ -31,26 +30,26 @@ public class RelatedSetToSet<TLeft, TRight>
     public RelatedSetToSet(
         ModelBuilder modelBuilder,
         ExpandSite expandSite = ExpandSite.None,
-        string dbSchema = null
+        string? dbSchema = null
     ) : this(modelBuilder, null, null, null, null, expandSite, dbSchema, dbSchema) { }
 
     public RelatedSetToSet(
         ModelBuilder modelBuilder,
-        string leftName,
-        string rightName,
+        string? leftName,
+        string? rightName,
         ExpandSite expandSite = ExpandSite.None,
-        string dbSchema = null
+        string? dbSchema = null
     ) : this(modelBuilder, leftName, null, rightName, null, expandSite, dbSchema, dbSchema) { }
 
     public RelatedSetToSet(
         ModelBuilder modelBuilder,
-        string leftName,
-        string leftTableName,
-        string rightName,
-        string rightTableName,
+        string? leftName,
+        string? leftTableName,
+        string? rightName,
+        string? rightTableName,
         ExpandSite expandSite = ExpandSite.None,
-        string parentSchema = null,
-        string childSchema = null
+        string? parentSchema = null,
+        string? childSchema = null
     )
     {
         _modelBuilder = modelBuilder;
@@ -64,7 +63,7 @@ public class RelatedSetToSet<TLeft, TRight>
         else if (leftName != null)
             LEFT_TABLE_NAME = leftName;
         if (rightTableName != null)
-            RIGHT_TABLE_NAME = leftTableName;
+            RIGHT_TABLE_NAME = rightTableName;
         else if (rightName != null)
             RIGHT_TABLE_NAME = rightName;
         if (leftName != null)

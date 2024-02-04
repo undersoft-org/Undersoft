@@ -5,4 +5,10 @@
     {
         public RequiredRubricAttribute() { }
     }
+
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+    public sealed class VisibleRubricAttribute : RubricAttribute
+    {
+        public VisibleRubricAttribute() { }
+    }
 }

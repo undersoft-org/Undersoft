@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Undersoft.SDK.Service.Server.Controller.Crud;
+namespace Undersoft.SDK.Service.Server.Controller.Api;
+
 using Undersoft.SDK;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Server.Operation.Invocation;
+using Undersoft.SDK.Service.Operation.Invocation;
 
 [ApiServiceRemote]
 public abstract class ApiServiceController<TStore, TService, TModel>
@@ -14,8 +15,8 @@ public abstract class ApiServiceController<TStore, TService, TModel>
     where TModel : class, IOrigin
     where TService : class
     where TStore : IDataServerStore
-{    
-    protected readonly IServicer _servicer;    
+{
+    protected readonly IServicer _servicer;
 
     protected ApiServiceController() { }
 
@@ -23,7 +24,7 @@ public abstract class ApiServiceController<TStore, TService, TModel>
         IServicer servicer
     )
     {
-        _servicer = servicer;            
+        _servicer = servicer;
     }
 
     [HttpPost("Action/{method}")]
@@ -31,14 +32,14 @@ public abstract class ApiServiceController<TStore, TService, TModel>
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-                                   
-            var result = await _servicer.Perform(
-                new Action<TStore, TService, TModel>(method, arguments)
-            );
 
-            return !result.IsValid
-                ? BadRequest(result.ErrorMessages)
-                : Ok(result.Response);
+        var result = await _servicer.Perform(
+            new Action<TStore, TService, TModel>(method, arguments)
+        );
+
+        return !result.IsValid
+            ? BadRequest(result.ErrorMessages)
+            : Ok(result.Response);
     }
 
     [HttpPost("Access/{method}")]

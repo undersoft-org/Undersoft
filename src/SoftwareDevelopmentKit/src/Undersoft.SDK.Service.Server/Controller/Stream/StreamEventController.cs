@@ -6,13 +6,11 @@ namespace Undersoft.SDK.Service.Server.Controller.Stream;
 
 using Operation.Command;
 using Operation.Query;
-
-using Undersoft.SDK.Service.Server.Operation.Remote;
+using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Data.Response;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Data.Client.Attributes;
 
 [StreamData]
 public abstract class StreamEventController<TKey, TStore, TEntity, TDto> : ControllerBase, IStreamDataController<TDto> where TDto : class, IOrigin, IInnerProxy

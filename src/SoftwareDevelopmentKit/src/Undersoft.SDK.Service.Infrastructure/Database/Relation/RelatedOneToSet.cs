@@ -5,8 +5,6 @@ namespace Undersoft.SDK.Service.Infrastructure.Database.Relation;
 
 using Undersoft.SDK;
 
-using Undersoft.SDK.Service.Data.Object;
-
 public class RelatedOneToSet<TParent, TChild> where TParent : class, IOrigin, IInnerProxy where TChild : class, IOrigin, IInnerProxy
 {
     readonly ExpandSite _expandSite;
@@ -23,7 +21,7 @@ public class RelatedOneToSet<TParent, TChild> where TParent : class, IOrigin, II
     public RelatedOneToSet(
         ModelBuilder modelBuilder,
         ExpandSite expandSite = ExpandSite.None,
-        string parentSchema = null) : this(
+        string? parentSchema = null) : this(
         modelBuilder,
         null,
         null,
@@ -37,10 +35,10 @@ public class RelatedOneToSet<TParent, TChild> where TParent : class, IOrigin, II
 
     public RelatedOneToSet(
         ModelBuilder modelBuilder,
-        string parentName,
-        string childName,
+        string? parentName,
+        string? childName,
         ExpandSite expandSite = ExpandSite.None,
-        string parentSchema = null) : this(
+        string? parentSchema = null) : this(
         modelBuilder,
         parentName,
         null,
@@ -54,13 +52,13 @@ public class RelatedOneToSet<TParent, TChild> where TParent : class, IOrigin, II
 
     public RelatedOneToSet(
         ModelBuilder modelBuilder,
-        string parentName,
-        string parentTableName,
-        string childName,
-        string childTableName,
+        string? parentName,
+        string? parentTableName,
+        string? childName,
+        string? childTableName,
         ExpandSite expandSite = ExpandSite.None,
-        string parentSchema = null,
-        string childSchema = null)
+        string? parentSchema = null,
+        string? childSchema = null)
     {
         _modelBuilder = modelBuilder;
         _firstBuilder = modelBuilder.Entity<TParent>();

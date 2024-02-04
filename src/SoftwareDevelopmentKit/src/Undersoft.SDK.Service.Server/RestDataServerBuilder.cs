@@ -4,7 +4,7 @@ using System.Reflection;
 namespace Undersoft.SDK.Service.Server;
 
 using Controller;
-using Undersoft.SDK.Service.Server.Controller.Crud;
+using Undersoft.SDK.Service.Server.Controller.Api;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Data.Client.Attributes;

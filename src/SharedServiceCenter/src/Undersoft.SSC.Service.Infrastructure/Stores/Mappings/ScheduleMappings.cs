@@ -7,7 +7,6 @@ using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Infrastructure.Database;
 using Undersoft.SDK.Service.Infrastructure.Database.Relation;
 using Undersoft.SSC.Domain.Entities;
-using Undersoft.SSC.Domain.Entities.Locations;
 
 public class ScheduleMappings : EntityTypeMapping<Schedule>
 {

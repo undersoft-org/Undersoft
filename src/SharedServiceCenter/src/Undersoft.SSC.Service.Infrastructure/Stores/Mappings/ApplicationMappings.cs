@@ -33,7 +33,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
                 .RelateSetToSet<Application, Detail>(
                     r => r.Applications,
                     r => r.Details,
-                    ExpandSite.OnRight
+                    ExpandSite.OnRight, true
                 )
                 .RelateOneToSet<Default, Application>(
                     r => r.Default,

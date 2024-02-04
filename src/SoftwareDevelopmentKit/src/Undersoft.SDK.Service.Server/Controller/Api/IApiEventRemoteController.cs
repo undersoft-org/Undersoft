@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Undersoft.SDK.Service.Server.Controller.Crud;
+namespace Undersoft.SDK.Service.Server.Controller.Api;
 public interface IApiEventRemoteController<TKey, TDto, TModel> where TModel : class, IOrigin, IInnerProxy
 {
     Task<IActionResult> Count();

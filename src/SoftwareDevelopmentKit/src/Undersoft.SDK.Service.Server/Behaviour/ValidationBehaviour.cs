@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 using MediatR;
-using Undersoft.SDK.Service.Server.Operation.Command;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Undersoft.SDK.Service.Operation.Command;
 
 namespace Undersoft.SDK.Service.Server.Behaviour
 {

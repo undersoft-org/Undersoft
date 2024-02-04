@@ -1,7 +1,5 @@
-﻿using Undersoft.SDK.Uniques;
-using System.ComponentModel;
-using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+﻿using System.ComponentModel;
+using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK
 {
@@ -17,6 +15,7 @@ namespace Undersoft.SDK
         DateTime Modified { get; set; }
         string Modifier { get; set; }
         int OriginId { get; set; }
+        string Label { get; set; }
         string TypeName { get; set; }
         DateTime Time { get; set; }
         long AutoId();

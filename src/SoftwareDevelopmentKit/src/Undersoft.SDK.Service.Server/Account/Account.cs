@@ -1,11 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.OData.ModelBuilder;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Serialization;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Undersoft.SDK.Security;
-using Undersoft.SDK.Service.Data.Contract;
-using Microsoft.EntityFrameworkCore;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
 
@@ -33,7 +27,7 @@ public class Account : Authorization, IEntity, IAccount
         roles.ForEach(r => Roles.Add(new Role(r)));
         UserId = User.Id;
     }
-    
+
     public long UserId { get; set; }
     public virtual AccountUser User { get; set; }
 

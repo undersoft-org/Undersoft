@@ -2,6 +2,9 @@
 
 namespace Undersoft.SDK.Instant.Proxies;
 
+using Attributes;
+using Rubrics;
+using Rubrics.Attributes;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,9 +12,6 @@ using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using Undersoft.SDK.Series;
 using Uniques;
-using Rubrics;
-using Rubrics.Attributes;
-using Attributes;
 
 public abstract class ProxyCompilerBase : InstantCompilerConstructors
 {
@@ -151,6 +151,23 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         }
     }
 
+    void resolveInstantCreatorVisibleAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+    {
+        object[] o = mi.GetCustomAttributes(typeof(VisibleRubricAttribute), false);
+        if ((o != null) && o.Any())
+        {
+            mr.Visible = true;
+
+            if (fb != null)
+                CreateInstantCreatorVisibleAttribute(fb);
+        }
+        else if (mr.Visible)
+        {
+            if (fb != null)
+                CreateInstantCreatorVisibleAttribute(fb);
+        }
+    }
+
     void resolveInstantCreatorTreatmentAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
     {
         object[] o = mi.GetCustomAttributes(typeof(RubricAggregateAttribute), false);
@@ -239,6 +256,13 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
     {
         field.SetCustomAttribute(
             new CustomAttributeBuilder(figureRequiredCtor, Type.EmptyTypes)
+        );
+    }
+
+    public void CreateInstantCreatorVisibleAttribute(FieldBuilder field)
+    {
+        field.SetCustomAttribute(
+            new CustomAttributeBuilder(figureVisibleCtor, Type.EmptyTypes)
         );
     }
 

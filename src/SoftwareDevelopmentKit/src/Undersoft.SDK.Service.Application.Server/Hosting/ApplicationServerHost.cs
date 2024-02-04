@@ -1,12 +1,10 @@
-﻿using Microsoft.Extensions.Hosting;
-using Undersoft.SDK.Service.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using System.Configuration;
-using Undersoft.SDK.Service.Configuration;
-using Microsoft.AspNetCore.Hosting;
-using Undersoft.SDK.Service.Server.Operation.Invocation;
+using Microsoft.Extensions.Hosting;
 using Undersoft.SDK.Series;
 using Undersoft.SDK.Service.Application.Hosting;
+using Undersoft.SDK.Service.Configuration;
+using Undersoft.SDK.Service.Hosting;
 
 namespace Undersoft.SDK.Service.Application.Server.Hosting;
 
@@ -53,9 +51,9 @@ public class ApplicationServerHost : ServiceHost, IHost, IApplicationServerHost
         }
     }
 
-    public Registry<ApplicationHost>? ApplicationHosts { get; set; }
+    public Registry<ApplicationHost> ApplicationHosts { get; set; } = default!;
 
-    private Registry<IServiceProvider?>? hostedApplications;
-    public Registry<IServiceProvider?>? HostedApplications =>
-        hostedApplications ??= ApplicationHosts?.Select(s => s.Services)?.ToRegistry();
+    private Registry<IServiceProvider> hostedApplications;
+    public Registry<IServiceProvider> HostedApplications =>
+        hostedApplications ??= ApplicationHosts.Select(s => s.Services).ToRegistry();
 }

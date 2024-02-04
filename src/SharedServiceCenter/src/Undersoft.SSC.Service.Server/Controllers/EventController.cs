@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Server.Controller.Crud;
+using Undersoft.SDK.Service.Server.Controller.Api;
 using Undersoft.SDK.Service.Server.Controller.Open;
 using Undersoft.SDK.Service.Server.Controller.Stream;
 

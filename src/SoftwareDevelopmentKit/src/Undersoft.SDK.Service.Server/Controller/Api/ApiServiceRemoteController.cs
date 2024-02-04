@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Undersoft.SDK.Service.Server.Controller.Crud;
+namespace Undersoft.SDK.Service.Server.Controller.Api;
 using Undersoft.SDK;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Server.Operation.Remote.Invocation;
 
 
 [ApiController]
@@ -16,8 +15,8 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
     where TModel : class, IOrigin
     where TService : class
     where TStore : IDataServiceStore
-{    
-    protected readonly IServicer _servicer;    
+{
+    protected readonly IServicer _servicer;
 
     protected ApiServiceRemoteController() { }
 
@@ -25,7 +24,7 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
         IServicer servicer
     )
     {
-        _servicer = servicer;            
+        _servicer = servicer;
     }
 
     [HttpPost("Action/{method}")]

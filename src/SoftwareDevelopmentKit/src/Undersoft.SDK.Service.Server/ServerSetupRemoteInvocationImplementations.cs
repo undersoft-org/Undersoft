@@ -8,11 +8,11 @@ namespace Undersoft.SDK.Service.Server;
 using Castle.Core.Internal;
 using Microsoft.IdentityModel.Tokens;
 using Undersoft.SDK.Service.Data.Client.Attributes;
-using Undersoft.SDK.Service.Server.Operation.Invocation;
-using Undersoft.SDK.Service.Server.Operation.Remote.Invocation;
-using Undersoft.SDK.Service.Server.Operation.Remote.Invocation.Handler;
-using Undersoft.SDK.Service.Server.Operation.Remote.Invocation.Notification;
-using Undersoft.SDK.Service.Server.Operation.Remote.Invocation.Notification.Handler;
+using Undersoft.SDK.Service.Operation.Invocation;
+using Undersoft.SDK.Service.Operation.Remote.Invocation;
+using Undersoft.SDK.Service.Operation.Remote.Invocation.Handler;
+using Undersoft.SDK.Service.Operation.Remote.Invocation.Notification;
+using Undersoft.SDK.Service.Operation.Remote.Invocation.Notification.Handler;
 
 public partial class ServerSetup
 {

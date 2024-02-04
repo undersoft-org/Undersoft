@@ -9,10 +9,10 @@ using Data.Model;
 using Series;
 using System.Collections.Generic;
 using Undersoft.SDK.Service.Data.Client.Attributes;
-using Undersoft.SDK.Service.Server.Operation.Invocation;
-using Undersoft.SDK.Service.Server.Operation.Invocation.Handler;
-using Undersoft.SDK.Service.Server.Operation.Invocation.Notification;
-using Undersoft.SDK.Service.Server.Operation.Invocation.Notification.Handler;
+using Undersoft.SDK.Service.Operation.Invocation;
+using Undersoft.SDK.Service.Operation.Invocation.Handler;
+using Undersoft.SDK.Service.Operation.Invocation.Notification;
+using Undersoft.SDK.Service.Operation.Invocation.Notification.Handler;
 using static Grpc.Core.ChannelOption;
 
 public partial class ServerSetup

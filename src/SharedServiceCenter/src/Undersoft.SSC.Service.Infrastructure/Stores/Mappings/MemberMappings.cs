@@ -20,7 +20,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
                 .ApplyIdentifiers<Member>()
                 .RelateSetToSet<Member, Activity>(
                     r => r.Members,
-                    r => r.Activities ,ExpandSite.OnRight
+                    r => r.Activities, ExpandSite.OnRight
                 )
                 .RelateSetToSet<Member, Resource>(
                     r => r.Members,
@@ -43,7 +43,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
                 .RelateSetToSet<Member, Detail>(
                     r => r.Members,
                     r => r.Details,
-                    ExpandSite.OnRight
+                    ExpandSite.OnRight, true
                 )
                 .RelateOneToSet<Default, Member>(
                     r => r.Default,

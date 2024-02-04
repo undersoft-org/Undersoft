@@ -1,11 +1,11 @@
 ﻿namespace Undersoft.SDK.Instant.Rubrics
 {
+    using Instant.Attributes;
     using System;
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.InteropServices;
-    using Instant.Attributes;
 
     public class PropertyRubric : PropertyInfo, IMemberRubric
     {
@@ -53,7 +53,7 @@
 
         public override Type DeclaringType => RubricInfo != null ? RubricInfo.DeclaringType : null;
 
-        public bool Editable { get; set; } = true;
+        public bool Editable { get; set; }
 
         public override string Name => RubricName;
 
@@ -95,7 +95,9 @@
 
         public Type RubricType { get; set; }
 
-        public bool Visible { get; set; } = true;
+        public bool Visible { get; set; }
+
+        public string DisplayName { get; set; }
 
         public override MethodInfo[] GetAccessors(bool nonPublic)
         {
