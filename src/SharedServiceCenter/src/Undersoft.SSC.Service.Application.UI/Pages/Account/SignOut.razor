@@ -1,7 +1,7 @@
 ﻿@page "/account/signout"
 
 @inject IAuthorization _auth
-@inject IAccountAccess _service
+@inject IAccountAccess _access
 @inject NavigationManager _navigation
 
 @using Undersoft.SDK.Service.Application.Access;
@@ -15,7 +15,7 @@
 {
     protected async override Task OnInitializedAsync()
     {
-        await _service.SignOut(_auth);
+        await _access.SignOut(_auth);
 
         _navigation.NavigateTo("");
     }

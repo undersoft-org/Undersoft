@@ -13,17 +13,17 @@ public class Setup
 {
     public void ConfigureServices(IServiceCollection srvc)
     {
-        srvc.AddApplicationServerSetup(srvc.AddControllers())
+        srvc.AddApplicationServerSetup()
             .ConfigureApplicationServer(
                 true,
-                new[] 
-                { 
-                    typeof(EventStore), 
-                    typeof(ReportStore), 
-                    typeof(EntryStore) 
+                new[]
+                {
+                    typeof(EventStore),
+                    typeof(ReportStore),
+                    typeof(EntryStore)
                 },
-                new[] 
-                { 
+                new[]
+                {
                     typeof(ServiceClient),
                     typeof(AccessClient)
                 }
@@ -32,13 +32,13 @@ public class Setup
                 DataServerTypes.All,
                 builder =>
                     builder
-                        .AddInvocations<Member>()                     
-                        .AddInvocations<Application>()                    
+                        .AddInvocations<Member>()
+                        .AddInvocations<Application>()
                         .AddInvocations<Service>()
             )
             .AddDataServer<IEventStore>(
                 DataServerTypes.All,
-                builder => 
+                builder =>
                     builder
                         .AddInvocations<Event>()
             ).AddDataServer<IAccountStore>(

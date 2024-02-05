@@ -1,68 +1,80 @@
-﻿@page "/account/signup"
-
-@inject IAccountAccess _service
-@inject NavigationManager _navigation
-
-@using Undersoft.SDK.Invoking;
-@using Undersoft.SDK.Service.Data.Client;
-@using Undersoft.SSC.Service.Application;
-@using Undersoft.SDK.Service.Application;
+﻿@using Undersoft.SDK.Instant.Proxies
+@using Undersoft.SDK.Instant.Updating
+@using Undersoft.SDK.Instant.Rubrics.Attributes
+@using Undersoft.SDK.Service;
 @using Undersoft.SDK.Service.Application.Access;
 
+@page "/account/signup"
+@inject IAccountAccess _access
+@inject NavigationManager _navigation
+@inject IServicer _servicer
 
-<FluentGrid Justify="JustifyContent.SpaceAround">
-    <FluentGridItem Style="place-content:center; align-content: center min-width: 300px">
-        <h3>Sign up</h3>
-        <EditForm Model="@account" OnValidSubmit="@OnSubmit" FormName="SignUp" novalidate>
-            <DataAnnotationsValidator />
-            <FluentValidationSummary />
-            <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="10">
-                <div>
-                    <FluentTextField Name="email" InputMode="InputMode.Text" @bind-Value="@firstName" Label="First name" Required Size="32" />
-                     <FluentValidationMessage For="@(() => firstName)" />
-                 </div>
-                 <div>
-                     <FluentTextField Name="email" InputMode="InputMode.Text" @bind-Value="@lastName" Label="Last name" Required Size="32" />
-                     <FluentValidationMessage For="@(() => lastName)" />
-                 </div>
-                 <div>
-                     <FluentTextField Name="email" InputMode="InputMode.Email" @bind-Value="@account.Credentials.Email" Label="Email" Required Size="32" />
-                     <FluentValidationMessage For="@(() => account.Credentials.Email)" />
-                 </div>
-                 <div>
-                     <FluentTextField Name="password" TextFieldType="TextFieldType.Password" @bind-Value="@password" Label="Password" Required Size="32" />
-                     <FluentValidationMessage For="@(() => password)" />
-                 </div>
-                 <div>
-                     <FluentTextField Name="password" TextFieldType="TextFieldType.Password" @bind-Value="@retypedPassword" Label="Retype password" Required Size="32" />
-                     <FluentValidationMessage For="@(() => retypedPassword)" />
-                 </div>
-                 <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
-                     <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent">Sign up</FluentButton>
-                     <FluentSpacer />
-                     <FluentButton Type="ButtonType.Button" Appearance="Appearance.Accent" OnClick="OnSignIn">Sign in</FluentButton>
-                 </FluentStack>
-             </FluentStack>
-         </EditForm>
-     </FluentGridItem>
- </FluentGrid>
 
- @code
- {
-    private Account account = new Account();
-    private string firstName = "";
-    private string lastName = "";
-    private string password = "";
-    private string retypedPassword = "";
+@code
+{
+    private AccessDialog<SignUpDialog<SignUpModel>, SignUpModel> _dialog = default!;
 
-    private async Task OnSubmit()
+    protected override void OnInitialized()
     {
-        await _service.SignUp(account);
+        _dialog = _servicer.Initialize<AccessDialog<SignUpDialog<SignUpModel>, SignUpModel>>();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await SigningUp("Sign up");
+        }
+    }
+
+    private async Task SigningUp(string title)
+    {
+        while (true)
+        {
+            var model = new SignUpModel();
+            var account = new Account();
+
+            await _dialog.Show(model, title);
+            model.PatchTo(account.Credentials);
+            
+            account.Credentials.UserName = 
+                $"{model.FirstName} {model.LastName}";
+            
+            var result = await _access.SignUp(account);
+
+            if (result.Credentials.Authorized)
+            {
+                if (result.Credentials.EmailConfirmed)
+                {
+                    if (result.Credentials.RegistrationCompleted)
+                        break;
+                    _navigation.NavigateTo("/account/registration");
+                }
+                else
+                    _navigation.NavigateTo("/account/confirmation");
+            }
+        }
         _navigation.NavigateTo("");
     }
 
-    private void OnSignIn()
+    public class SignUpModel : InnerProxy
     {
-        _navigation.NavigateTo("/account/signin");
+        [VisibleRubric]
+        [DisplayRubric("First name")]
+        public string FirstName { get; set; } = default!;
+
+        [VisibleRubric]
+        [DisplayRubric("Last name")]
+        public string LastName { get; set; } = default!;
+
+        [VisibleRubric]
+        public string Email { get; set; } = default!;
+
+        [VisibleRubric]
+        public string Password { get; set; } = default!;
+
+        [VisibleRubric]
+        [DisplayRubric("Retype password")]
+        public string RetypePassword { get; set; } = default!;
     }
  }

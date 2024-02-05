@@ -1,21 +1,24 @@
 using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK;
 using Undersoft.SDK.Instant.Proxies;
-using Undersoft.SDK.Security;
 
 namespace Undersoft.SSC.Service.Application.UI.Compound;
 
 public class AccessDialog<TDialog, TModel> where TDialog : IDialogContentComponent<TModel> where TModel : class, IOrigin, IInnerProxy
 {
-    [Inject]
-    public IDialogService? DialogService { get; private set; }
+    public AccessDialog(IDialogService dialogService, IJSRuntime jS)
+    {
+        DialogService = dialogService;
+        JS = jS;
+    }
 
-    [Inject]
-    public IJSRuntime? JS { get; private set; }
+    public IDialogService DialogService { get; private set; }
+
+    public IJSRuntime JS { get; private set; }
 
     public TModel? Data { get; private set; }
 
-    public async Task Show(TModel data, AccessKind command, params string[] allowedList)
+    public async Task Show(TModel data, string title, params string[] allowedList)
     {
         if (allowedList != null && allowedList.Any())
             data.Proxy.Rubrics.ForOnly(r => allowedList.Contains(r.RubricName), r => r.Visible = true).Commit();
@@ -24,8 +27,9 @@ public class AccessDialog<TDialog, TModel> where TDialog : IDialogContentCompone
         {
             var dialog = await DialogService.ShowDialogAsync<TDialog>(data, new DialogParameters()
             {
-                Height = "500px",
-                Title = $"{command.ToString()} the {data.Label.ToLower()}",
+                Height = "400px",
+                Width = "400px",
+                Title = title,
                 PreventDismissOnOverlayClick = true,
                 ShowDismiss = false,
                 PreventScroll = true,

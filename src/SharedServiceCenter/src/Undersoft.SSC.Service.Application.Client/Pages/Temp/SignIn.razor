@@ -1,0 +1,55 @@
+﻿@page "/account/signin"
+@inject IAccountAccess _service
+@inject NavigationManager _navigation
+
+@using Account = Undersoft.SSC.Service.Contracts.Account;
+@using Undersoft.SDK.Invoking;
+@using Undersoft.SDK.Service.Data.Client;
+@using Undersoft.SSC.Service.Application;
+@using Undersoft.SDK.Service.Application.Access;
+
+<FluentGrid Justify="JustifyContent.SpaceAround">
+    <FluentGridItem Style="place-content:center; align-content: center; min-width: 300px">
+        <h3>Sign in</h3>
+<EditForm Model="@account" OnValidSubmit="@OnSubmit" FormName="SignIn" style="width: 100%"  novalidate>
+    <DataAnnotationsValidator />
+    <FluentValidationSummary />
+    <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="10">      
+        <div>
+            <FluentTextField Name="email" InputMode="InputMode.Email" @bind-Value="@account.Credentials.Email" Label="Email" Required Size="32" />
+             <FluentValidationMessage For="@(() => account.Credentials.Email)" />
+         </div>
+         <div>
+                     <FluentTextField Name="password" TextFieldType="TextFieldType.Password" @bind-Value="@account.Credentials.Password" Label="Password" Required Size="32" />
+             <FluentValidationMessage For="@(() => account.Credentials.Password)" />
+         </div>
+         <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+             <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent">Sign in</FluentButton>
+                     <FluentSpacer />
+             <FluentButton Type="ButtonType.Button" Appearance="Appearance.Accent" OnClick="OnSignUp">Sign up</FluentButton>
+         </FluentStack>
+     </FluentStack>
+ </EditForm>
+     </FluentGridItem>
+ </FluentGrid>
+
+ @code 
+ {
+    private Account account = new Account();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    private async Task OnSubmit()
+    {
+        await _service.SignIn(account);
+        _navigation.NavigateTo("");
+    }
+
+    private void OnSignUp()
+    {
+        _navigation.NavigateTo("/account/signup");
+    }
+}

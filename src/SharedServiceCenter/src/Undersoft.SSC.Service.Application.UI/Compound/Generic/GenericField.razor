@@ -5,65 +5,126 @@
 
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 
-@if (_type.IsPrimitive)
-{
-    if (_type.IsAssignableTo(typeof(decimal)))
+<div>
+    @if (_type.IsPrimitive)
     {
-        <FluentNumberField Name="@Name" @bind-Value="@Data" Label="@DisplayName" Required="@Required" />
+        @if (_type.IsAssignableTo(typeof(decimal)))
+        {
+            <div>
+                <FluentNumberField Name="@Name" @bind-Value="@Data" Label="@DisplayName" Required="@Required" />
+            </div>
+        }
+        else if (_type.IsAssignableTo(typeof(DateTime)))
+        {
+            <div>
+                <FluentDatePicker Name="@Name" @bind-Value="@TimeValue" Label="@DisplayName" Required="@Required" />
+            </div>
+        }
+        else if (_type.IsAssignableTo(typeof(bool)))
+        {
+            <div>
+                <FluentCheckbox Name="@Name" @bind-Value="@BoolValue" Label="@DisplayName" Required="@Required" />
+            </div>
+        }
+        else
+        {
+            <div>
+                <FluentTextField Name="@Name" @bind-Value="@TextValue" Label="@DisplayName" Required="@Required" />
+            </div>
+        }
+        <div>
+            <FluentValidationMessage For="@(() => Data)" />
+        </div>
     }
-    else if (_type.IsAssignableTo(typeof(DateTime)))
+    else if (_type == typeof(string) || _type.IsAssignableTo(typeof(IFormattable)))
     {
-        <FluentDatePicker Name="@Name" @bind-Value="@TimeValue" Label="@DisplayName" Required="@Required" />
+        <div>
+            <FluentTextField Name="@Name" @bind-Value="@TextValue" Label="@DisplayName" TextFieldType="@textFieldType" InputMode="@inputMode" Required="@Required" />
+            <FluentValidationMessage For="@(() => Data)" />
+        </div>
     }
-    else if (_type.IsAssignableTo(typeof(Enum)))
-    {
-        <FluentCombobox Name="Name" @bind-Value="@this.EnumName" Items="@EnumNames" Label="DisplayName" Required="@Required" />
-    }
-    else if (_type.IsAssignableTo(typeof(bool)))
-    {
-        <FluentCheckbox Name="Name" @bind-Value="@this.BoolValue" Label="DisplayName" Required="@Required" />
-    }
-    else
-    {
-        <FluentTextField Name="Name" @bind-Value="@this.TextValue" Label="DisplayName" Required="@Required" />
-    }
-    <FluentValidationMessage For="@(() => Data)" />
-}
-else if(_type.IsAssignableTo(typeof(IFormattable)))
-{
-    <FluentTextField Name="Name" @bind-Value="@this.TextValue" Label="DisplayName" Required="@Required" />
-    <FluentValidationMessage For="@(() => Data)" />
-}
+</div>
 
 @code
 {
-    private Type _type => Rubric.RubricType;
+    private Type _type = default!;
 
-    private IProxy _proxy => Content.Proxy;
+    private IProxy _proxy = default!;
 
-    private int _id => Rubric.RubricId;
+    private int _id;
+
+    protected override void OnInitialized()
+    {
+        _type = Rubric.RubricType;
+        _proxy = Model.Proxy;
+        _id = Rubric.RubricId;
+        
+        Name = Rubric.RubricName;
+        if (Rubric.DisplayName != null)
+            DisplayName = Rubric.DisplayName;
+        else
+            DisplayName = Rubric.RubricName;
+        Required = Rubric.Required;
+    }
 
     [CascadingParameter]
-    public TModel Content { get; set; } = default!;
+    public TModel Model { get; set; } = default!;
 
     [Parameter]
     public IRubric Rubric { get; set; } = default!;
 
-    protected string Name => Rubric.RubricName;
+    protected string Name { get; set; } = "";
 
-    protected string DisplayName => Rubric.DisplayName;
+    protected string? DisplayName { get; set; }
 
-    protected bool Required => Rubric.Required;
+    protected bool Required { get; set; }
 
-    protected object? Data { get => _proxy[_id]; set => _proxy[_id] = value; }
+    protected InputMode inputMode { get; set; } = InputMode.None;
 
-    protected string? TextValue { get => Data?.ToString(); set => Data = value; }
+    protected TextFieldType textFieldType { get; set; } = TextFieldType.Text;
 
-    protected DateTime? TimeValue { get => (DateTime?)Data; set => Data = value; }
+    protected object? Data
+    {
+        get
+        {
+            return _proxy[_id];
+        }
+        set
+        {
+            _proxy[_id] = value;
+        }
+    }
 
-    protected bool BoolValue { get => (Data != null) ? (bool)Data : false; set => Data = value; }
+    protected string? TextValue
+    {
+        get { return Data?.ToString(); }
+        set { Data = value; }
+    }
 
-    protected string? EnumName { get => Data != null ? ((Enum)Data).ToString() : null; set => Data = value != null ? Enum.Parse(_type, value) : null; }
+    protected DateTime? TimeValue
+    {
+        get
+        {
+            return (DateTime?)Data;
+        }
+        set
+        {
+            Data = value;
+        }
+    }
 
-    protected IEnumerable<string?> EnumNames => Enum.GetNames(_type);
+    protected bool BoolValue
+    {
+        get
+        {
+            if (Data != null)
+                return (bool)Data;
+            return false;
+        }
+        set
+        {
+            Data = value;
+        }
+    }
+
 }

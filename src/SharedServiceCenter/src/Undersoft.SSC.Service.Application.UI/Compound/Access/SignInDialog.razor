@@ -3,6 +3,8 @@
 @using Undersoft.SDK.Instant.Rubrics
 @using Undersoft.SDK
 
+@inject NavigationManager _navigation
+
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 
 @implements IDialogContentComponent<TModel>
@@ -23,16 +25,17 @@
     <FluentDialogBody>
 
         <!-- Auto Form -->
-        <GenericForm TModel="@TModel"/>
+        
+            <GenericForm TModel="@TModel" Model="@Content" Context="@FormContext" />
 
     </FluentDialogBody>
 }
 <!-- Footer -->
 <FluentDialogFooter>
     Don't have an account?
-    <FluentNavLink Href="/account/signup" Appearance="Appearance.Neutral">
+    <FluentButton OnClick="@OnSignUp" Appearance="Appearance.Hypertext">
         Sign up
-    </FluentNavLink>
+    </FluentButton>
     <FluentSpacer />
     <FluentButton Appearance="Appearance.Accent"
                   Disabled="@(!FormContext.Validate())"
@@ -42,7 +45,7 @@
 </FluentDialogFooter>
 
 @code
- {    
+{
     public EditContext FormContext { get; set; } = default!;
 
     [Parameter]
@@ -54,6 +57,13 @@
     protected override void OnInitialized()
     {
         FormContext = new EditContext(Content);
+    }
+
+    private async Task OnSignUp()
+    {
+        await Dialog.CancelAsync();
+
+        _navigation.NavigateTo("account/signup");
     }
 
     private async Task SaveAsync()

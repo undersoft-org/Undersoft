@@ -5,29 +5,38 @@
 
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 
-<EditForm EditContext="@FormContext" FormName="generic_form">
-    <DataAnnotationsValidator />
-    @foreach (var _rubric in _rubrics.Where(r => r.Visible))
-    {
-        <!-- Auto Field -->
-        <GenericField TModel="TModel" Rubric="@_rubric" />
-    }
-    <div style="color: var(--error);">
-        <FluentValidationSummary />
-    </div>
-</EditForm>
+<div class="generics generic-form forms">
+    <EditForm EditContext="@Context" FormName="generic_form">
+        <DataAnnotationsValidator />
+        @foreach (var _rubric in _rubrics.Where(r => r.Visible))
+        {
+            <!-- Auto Field -->
+            <CascadingValue Value="@Model">
+                <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="20">
+                    <GenericField TModel="TModel" Rubric="@_rubric" />
+                </FluentStack>
+            </CascadingValue>
+        }
+        <div style="color: var(--error);">
+            <FluentValidationSummary />
+        </div>
+    </EditForm>
+</div>
 
-@code
-{        
+@code {
     private IRubrics _rubrics => _proxy.Rubrics;
-    private IProxy _proxy => Content.Proxy;
+    private IProxy _proxy => Model.Proxy;
 
-    [CascadingParameter]
-    public EditContext FormContext { get; set; } = default!;
+    protected override void OnInitialized()
+    {
+        if (Context == null)
+            Context = new EditContext(Model);
+    }
 
-    [CascadingParameter]
-    public TModel Content { get; set; } = default!;
+    [Parameter]
+    public EditContext Context { get; set; } = default!;
 
-    [CascadingParameter]
-    public FluentDialog Dialog { get; set; } = default!;
+    [Parameter]
+    public TModel Model { get; set; } = default!;
 }
+

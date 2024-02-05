@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using Undersoft.SDK.Instant.Proxies;
+using Undersoft.SDK.Instant.Rubrics.Attributes;
 
 namespace Undersoft.SDK.Security
 {
@@ -23,9 +24,9 @@ namespace Undersoft.SDK.Security
         Server,
         Service
     }
-    
+
     [DataContract]
-    public class Credentials : Identifiable, ICredentials
+    public class Credentials : InnerProxy, ICredentials
     {
         [DataMember(Order = 0)]
         public ServiceSite? Site { get; set; }
@@ -33,22 +34,30 @@ namespace Undersoft.SDK.Security
         [DataMember(Order = 1)]
         public IdentityType? Type { get; set; }
 
+        [VisibleRubric]
         [DataMember(Order = 2)]
+        [DisplayRubric("Name")]
         public string UserName { get; set; }
 
         [DataMember(Order = 3)]
         public string NormalizedUserName { get; set; }
 
+        [VisibleRubric]
         [DataMember(Order = 4)]
+        [DisplayRubric("Email")]
         public string Email { get; set; }
 
         [DataMember(Order = 5)]
         public string OldPassword { get; set; }
 
+        [VisibleRubric]
         [DataMember(Order = 6)]
+        [DisplayRubric("Password")]
         public string Password { get; set; }
 
+        [VisibleRubric]
         [DataMember(Order = 7)]
+        [DisplayRubric("Phone number")]
         public string PhoneNumber { get; set; }
 
         [DataMember(Order = 8)]

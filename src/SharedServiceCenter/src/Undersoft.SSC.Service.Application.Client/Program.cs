@@ -19,8 +19,6 @@ namespace Undersoft.SSC.Service.Application.Client
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
-            builder.Services.AddFluentUIComponents();
-
             var manager = builder.Services
                 .AddServiceSetup(builder.Configuration)
                 .ConfigureServices(
@@ -31,30 +29,24 @@ namespace Undersoft.SSC.Service.Application.Client
                 })
                 .Manager;
 
-            var _provider = await manager.BuildInternalProvider().UseServiceClients();
+            await manager.BuildInternalProvider().UseServiceClients();
 
             builder.ConfigureContainer(
                 manager.GetProviderFactory(),
                 (services) =>
                 {
                     var reg = manager.GetRegistry();
-                    reg.Services = services;
-                    reg.AddAuthorizationCore();
-                    reg.AddScoped<AccessProvider<Account>>();
-                    reg.AddScoped<AuthenticationStateProvider, AccessProvider<Account>>(
-                        provider => provider.GetRequiredService<AccessProvider<Account>>()
-                    );
-                    reg.AddScoped<IAccountAccess, AccessProvider<Account>>(
-                        provider => provider.GetRequiredService<AccessProvider<Account>>()
-                    );
-                    reg.MergeServices(true);
+                    reg.AddAuthorizationCore()
+                        .AddFluentUIComponents((o) => { o.UseTooltipServiceProvider = true; })
+                        .AddScoped<AccessProvider<Account>>()
+                        .AddScoped<AuthenticationStateProvider, AccessProvider<Account>>()
+                        .AddScoped<IAccountAccess, AccessProvider<Account>>();
+                    reg.MergeServices(services, true);
                 }
             );
 
             var host = builder.Build();
-
-            ServiceManager.SetProvider(host.Services);
-
+            manager.ReplaceProvider(host.Services);
             await host.RunAsync();
         }
     }

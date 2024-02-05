@@ -20,6 +20,7 @@ namespace Undersoft.SDK.Service
         T EnsureGetRootService<T>() where T : class;
         IServiceConfiguration GetConfiguration();
         T GetObject<T>() where T : class;
+        IServiceManager ReplaceProvider(IServiceProvider serviceProvider);
         IServiceProvider GetProvider();
         IServiceProviderFactory<IServiceCollection> GetProviderFactory();
         IServiceRegistry GetRegistry();
@@ -43,7 +44,12 @@ namespace Undersoft.SDK.Service
         T GetSingleton<T>() where T : class;
         ObjectFactory CreateFactory(Type instanceType, Type[] constrTypes);
         ObjectFactory CreateFactory<T>(Type[] constrTypes);
-        T NewRootService<T>(params object[] parameters) where T : class;
+        T InitializeRootService<T>(params object[] parameters) where T : class;
         IServiceScope CreateSession();
+        T Initialize<T>(params object[] besidesInjectedArguments);
+        object Initialize(Type type, params object[] besidesInjectedArguments);
+        T EnsureGetService<T>();
+        object EnsureGetService<T>(Type type);
+
     }
 }

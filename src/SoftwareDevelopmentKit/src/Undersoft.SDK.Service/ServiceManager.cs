@@ -164,7 +164,7 @@ namespace Undersoft.SDK.Service
             return Provider.GetRequiredService(type);
         }
 
-        public virtual T NewRootService<T>(params object[] parameters) where T : class
+        public virtual T InitializeRootService<T>(params object[] parameters) where T : class
         {
             return ActivatorUtilities.CreateInstance<T>(RootProvider, parameters);
         }
@@ -180,19 +180,23 @@ namespace Undersoft.SDK.Service
             _provider.GetRequiredService<ServiceObject<IServiceProvider>>().Value = _provider;
         }
 
+        public IServiceManager ReplaceProvider(IServiceProvider serviceProvider)
+        {
+            Provider.GetRequiredService<ServiceObject<IServiceProvider>>().Value = serviceProvider;
+            provider = registry.GetProvider();
+            return this;
+        }
+
         public IServiceProvider BuildInternalProvider(bool withPropertyInjection = false)
         {
-            var provider = GetRegistry().BuildServiceProviderFromFactory<IServiceCollection>();
-            SetProvider(provider);
-            this.provider = provider;
-            return provider;
+            SetProvider(GetRegistry().BuildServiceProviderFromFactory<IServiceCollection>());
+            return provider = registry.GetProvider();
         }
 
         public static IServiceProvider BuildInternalRootProvider(bool withPropertyInjection = false)
         {
-            var provider = GetRootRegistry().BuildServiceProviderFromFactory<IServiceCollection>();
-            SetProvider(provider);
-            return provider;
+            SetProvider(GetRootRegistry().BuildServiceProviderFromFactory<IServiceCollection>());
+            return GetRootProvider();
         }
 
         public static IServiceProvider GetRootProvider()
@@ -240,6 +244,26 @@ namespace Undersoft.SDK.Service
         public ObjectFactory CreateFactory(Type instanceType, Type[] constrTypes)
         {
             return ActivatorUtilities.CreateFactory(instanceType, constrTypes);
+        }
+
+        public T Initialize<T>(params object[] besidesInjectedArguments)
+        {
+            return ActivatorUtilities.CreateInstance<T>(Provider, besidesInjectedArguments);
+        }
+
+        public object Initialize(Type type, params object[] besidesInjectedArguments)
+        {
+            return ActivatorUtilities.CreateInstance(Provider, type, besidesInjectedArguments);
+        }
+
+        public T EnsureGetService<T>()
+        {
+            return ActivatorUtilities.GetServiceOrCreateInstance<T>(Provider);
+        }
+
+        public object EnsureGetService<T>(Type type)
+        {
+            return ActivatorUtilities.GetServiceOrCreateInstance(Provider, type);
         }
 
         public T GetObject<T>() where T : class
@@ -311,8 +335,8 @@ namespace Undersoft.SDK.Service
         }
 
         public IServiceRegistry GetRegistry(IServiceCollection services)
-        {           
-            return registry ??= new ServiceManager(services).Registry; 
+        {
+            return registry ??= new ServiceManager(services).Registry;
         }
 
         public static IServiceConfiguration GetRootConfiguration()

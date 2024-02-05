@@ -65,7 +65,7 @@ public class ServerHostSetup : IServerHostSetup
                 {
                     method
                         .MakeGenericMethod(serviceContract)
-                        .Invoke(endpoints, new object[] { endpoints });            
+                        .Invoke(endpoints, new object[] { endpoints });
 
                 }
 
@@ -129,7 +129,7 @@ public class ServerHostSetup : IServerHostSetup
     public IServerHostSetup UseDefaultProvider()
     {
         _manager.Registry.MergeServices(true);
-        ServiceManager.SetProvider(_builder.ApplicationServices);
+        _manager.ReplaceProvider(_builder.ApplicationServices);
         defaultProvider = true;
         return this;
     }
@@ -189,12 +189,12 @@ public class ServerHostSetup : IServerHostSetup
             .UseSwagger()
             .UseSwaggerUI(options =>
             {
-               options.SwaggerEndpoint($"/swagger/v1/swagger.json", ao.ServiceName);                
+                options.SwaggerEndpoint($"/swagger/v1/swagger.json", ao.ServiceName);
                 //s.OAuthClientId(ao.SwaggerClientId);
                 //s.OAuthAppName(ao.ApiName);
             });
         return this;
-    } 
+    }
 
     public IServerHostSetup UseHeaderForwarding()
     {

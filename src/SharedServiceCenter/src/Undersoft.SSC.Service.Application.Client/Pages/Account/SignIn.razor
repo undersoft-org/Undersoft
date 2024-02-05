@@ -1,55 +1,52 @@
-﻿@page "/account/signin"
-@inject IAccountAccess _service
-@inject NavigationManager _navigation
-
-@using Account = Undersoft.SSC.Service.Contracts.Account;
-@using Undersoft.SDK.Invoking;
-@using Undersoft.SDK.Service.Data.Client;
-@using Undersoft.SSC.Service.Application;
+﻿@using Undersoft.SDK.Service;
 @using Undersoft.SDK.Service.Application.Access;
 
-<FluentGrid Justify="JustifyContent.SpaceAround">
-    <FluentGridItem Style="place-content:center; align-content: center; min-width: 300px">
-        <h3>Sign in</h3>
-<EditForm Model="@account" OnValidSubmit="@OnSubmit" FormName="SignIn" style="width: 100%"  novalidate>
-    <DataAnnotationsValidator />
-    <FluentValidationSummary />
-    <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="10">      
-        <div>
-            <FluentTextField Name="email" InputMode="InputMode.Email" @bind-Value="@account.Credentials.Email" Label="Email" Required Size="32" />
-             <FluentValidationMessage For="@(() => account.Credentials.Email)" />
-         </div>
-         <div>
-                     <FluentTextField Name="password" TextFieldType="TextFieldType.Password" @bind-Value="@account.Credentials.Password" Label="Password" Required Size="32" />
-             <FluentValidationMessage For="@(() => account.Credentials.Password)" />
-         </div>
-         <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
-             <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent">Sign in</FluentButton>
-                     <FluentSpacer />
-             <FluentButton Type="ButtonType.Button" Appearance="Appearance.Accent" OnClick="OnSignUp">Sign up</FluentButton>
-         </FluentStack>
-     </FluentStack>
- </EditForm>
-     </FluentGridItem>
- </FluentGrid>
+@page "/account/signin"
+@inject IAccountAccess _access
+@inject NavigationManager _navigation
+@inject IServicer _servicer
 
- @code 
- {
-    private Account account = new Account();
+
+@code
+{
+    private AccessDialog<SignInDialog<Credentials>, Credentials> _dialog = default!;
 
     protected override void OnInitialized()
     {
-        base.OnInitialized();
+        _dialog = _servicer.Initialize<AccessDialog<SignInDialog<Credentials>, Credentials>>();
     }
 
-    private async Task OnSubmit()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await _service.SignIn(account);
+        if (firstRender)
+        {
+            await SigningIn("Sign in");
+        }
+    }
+
+    private async Task SigningIn(string title)
+    {
+        while(true)
+        {
+            Account account = new Account();
+
+            await _dialog.Show(account.Credentials, title, "Email", "Password");
+
+            var result = await _access.SignIn(account);
+
+            if(result.Credentials.Authorized)
+            {
+                if(result.Credentials.EmailConfirmed)
+                {
+                    if (result.Credentials.RegistrationCompleted)
+                        break;
+                    _navigation.NavigateTo("/account/registration");
+                }
+                else
+                    _navigation.NavigateTo("/account/confirmation");
+            }
+            title = "Sign in - " + result.Notes.Info;
+        }
         _navigation.NavigateTo("");
-    }
-
-    private void OnSignUp()
-    {
-        _navigation.NavigateTo("/account/signup");
     }
 }

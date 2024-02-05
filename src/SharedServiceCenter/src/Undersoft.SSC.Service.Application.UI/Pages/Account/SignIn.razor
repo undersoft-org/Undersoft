@@ -1,31 +1,51 @@
-﻿@page "/account/signin"
-@inject IAccountAccess _service
-@inject NavigationManager _navigation
-
-@using Account = Undersoft.SSC.Service.Contracts.Account;
-@using Undersoft.SDK.Invoking;
-@using Undersoft.SDK.Service.Data.Client;
-@using Undersoft.SSC.Service.Application;
+﻿@using Undersoft.SDK.Service;
 @using Undersoft.SDK.Service.Application.Access;
-@using Undersoft.SSC.Service.Application.UI.Compound.Layout;
+
+@page "/account/signin"
+@inject IAccountAccess _access
+@inject NavigationManager _navigation
+@inject IServicer _servicer
 
  @code 
- {
-    private Account account = new Account();
+{
+    private AccessDialog<SignInDialog<Credentials>, Credentials> _dialog = default!;
 
     protected override void OnInitialized()
     {
-        base.OnInitialized();
+        _dialog = _servicer.Initialize<AccessDialog<SignInDialog<Credentials>, Credentials>>();
     }
 
-    private async Task OnSubmit()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await _service.SignIn(account);
+        if (firstRender)
+        {
+            await SigningIn("Sign in");
+        }
+    }
+
+    private async Task SigningIn(string title)
+    {
+        while(true)
+        {
+            Account account = new Account();
+
+            await _dialog.Show(account.Credentials, title, "Email", "Password");
+
+            var result = await _access.SignIn(account);
+
+            if(result.Credentials.Authorized)
+            {
+                if(result.Credentials.EmailConfirmed)
+                {
+                    if (result.Credentials.RegistrationCompleted)
+                        break;
+                    _navigation.NavigateTo("/account/registration");
+                }
+                else
+                    _navigation.NavigateTo("/account/confirmation");
+            }
+            title = "Sign in - " + result.Notes.Info;
+        }
         _navigation.NavigateTo("");
-    }
-
-    private void OnSignUp()
-    {
-        _navigation.NavigateTo("/account/signup");
     }
 }
