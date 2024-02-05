@@ -29,8 +29,8 @@
 }
 <!-- Footer -->
 <FluentDialogFooter>      
-    Some problems with code?
-    <FluentNavLink Href="/account/signin" Appearance="Appearance.Neutral" >                
+    Some problems with code on e-mail?
+    <FluentNavLink Href="" OnClick="@OnSendNew" >
         Send new
     </FluentNavLink>
     <FluentSpacer />
@@ -62,5 +62,11 @@
         {
             await Dialog.CloseAsync(Content);
         }
+    }
+
+    private async Task OnSendNew(MouseEventArgs e)
+    {
+        await Dialog.CancelAsync();
+       
     }
 }

@@ -8,7 +8,7 @@
 <div>
     @if (_type.IsPrimitive)
     {
-        @if (_type.IsAssignableTo(typeof(decimal)))
+        @if (_type.IsAssignableTo(typeof(long)))
         {
             <div>
                 <FluentNumberField Name="@Name" @bind-Value="@Data" Label="@DisplayName" Required="@Required" />
@@ -58,13 +58,16 @@
         _type = Rubric.RubricType;
         _proxy = Model.Proxy;
         _id = Rubric.RubricId;
-        
+
         Name = Rubric.RubricName;
         if (Rubric.DisplayName != null)
             DisplayName = Rubric.DisplayName;
         else
             DisplayName = Rubric.RubricName;
         Required = Rubric.Required;
+
+        inputMode = GetInputMode();
+        textFieldType = GetTexType();
     }
 
     [CascadingParameter]
@@ -85,14 +88,8 @@
 
     protected object? Data
     {
-        get
-        {
-            return _proxy[_id];
-        }
-        set
-        {
-            _proxy[_id] = value;
-        }
+        get { return _proxy[_id]; }
+        set { _proxy[_id] = value; }
     }
 
     protected string? TextValue
@@ -103,14 +100,8 @@
 
     protected DateTime? TimeValue
     {
-        get
-        {
-            return (DateTime?)Data;
-        }
-        set
-        {
-            Data = value;
-        }
+        get { return (DateTime?)Data; }
+        set { Data = value; }
     }
 
     protected bool BoolValue
@@ -125,6 +116,32 @@
         {
             Data = value;
         }
+    }
+
+    private InputMode GetInputMode()
+    {
+        if (Name.ToLower().Contains("phone"))
+            return InputMode.Telephone;
+        if (Name.ToLower().Contains("search"))
+            return InputMode.Search;
+        if (Name.ToLower().Contains("url"))
+            return InputMode.Url;
+        if(_type.IsAssignableTo(typeof(decimal)))
+            return InputMode.Decimal;
+        return InputMode.Text;
+    }
+
+    private TextFieldType GetTexType()
+    {
+        if (Name.ToLower().Contains("passw"))
+            return TextFieldType.Password;
+        if (Name.ToLower().Contains("email"))
+            return TextFieldType.Email;
+        if (Name.ToLower().Contains("phone"))
+            return TextFieldType.Tel;
+        if (Name.ToLower().Contains("url"))
+            return TextFieldType.Url;
+        return TextFieldType.Text;        
     }
 
 }

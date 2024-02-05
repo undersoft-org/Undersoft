@@ -35,6 +35,11 @@
             var account = new Account();
 
             await _dialog.Show(model, title);
+
+            if (_dialog.Data == null)
+                break;
+
+            model = _dialog.Data;
             model.PatchTo(account.Credentials);
             
             account.Credentials.UserName = 
@@ -47,14 +52,14 @@
                 if (result.Credentials.EmailConfirmed)
                 {
                     if (result.Credentials.RegistrationCompleted)
-                        break;
+                        _navigation.NavigateTo("");
+
                     _navigation.NavigateTo("/account/registration");
                 }
                 else
                     _navigation.NavigateTo("/account/confirmation");
             }
         }
-        _navigation.NavigateTo("");
     }
 
     public class SignUpModel : InnerProxy

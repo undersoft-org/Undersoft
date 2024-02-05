@@ -27,8 +27,7 @@ public class AccessDialog<TDialog, TModel> where TDialog : IDialogContentCompone
         {
             var dialog = await DialogService.ShowDialogAsync<TDialog>(data, new DialogParameters()
             {
-                Height = "400px",
-                Width = "400px",
+                Width = "25%",
                 Title = title,
                 PreventDismissOnOverlayClick = true,
                 ShowDismiss = false,
@@ -46,7 +45,7 @@ public class AccessDialog<TDialog, TModel> where TDialog : IDialogContentCompone
                                 {{ opacity: '1', transform: '' }},
                                 {{ opacity: '0', transform: 'translateX(-100%)' }}
                             ], {{
-                                duration: 2000,
+                                duration: 1000,
                             }});
                             return animation.finished; // promise that resolves when the animation is complete or interrupted
                         }};
@@ -66,15 +65,14 @@ public class AccessDialog<TDialog, TModel> where TDialog : IDialogContentCompone
                                 {{ opacity: '0', transform: 'translateX(-100%)' }},
                                 {{ opacity: '1', transform: '' }},
                             ], {{
-                                duration: 2000,
+                                duration: 1000,
                             }});
                             return animation.finished; // promise that resolves when the animation is complete or interrupted
                         }};
                         func();
                     ");
                     }
-                }),
-
+                })
             });
 
             var result = await dialog.Result;

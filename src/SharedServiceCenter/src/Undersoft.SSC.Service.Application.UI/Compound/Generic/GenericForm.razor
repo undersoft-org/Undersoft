@@ -8,15 +8,15 @@
 <div class="generics generic-form forms">
     <EditForm EditContext="@Context" FormName="generic_form">
         <DataAnnotationsValidator />
-        @foreach (var _rubric in _rubrics.Where(r => r.Visible))
-        {
-            <!-- Auto Field -->
-            <CascadingValue Value="@Model">
-                <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="20">
+        <CascadingValue Value="@Model">
+            <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="20">
+                @foreach (var _rubric in _rubrics.Where(r => r.Visible))
+                {
+                    <!-- Auto Field -->
                     <GenericField TModel="TModel" Rubric="@_rubric" />
-                </FluentStack>
-            </CascadingValue>
-        }
+                }
+            </FluentStack>
+        </CascadingValue>
         <div style="color: var(--error);">
             <FluentValidationSummary />
         </div>

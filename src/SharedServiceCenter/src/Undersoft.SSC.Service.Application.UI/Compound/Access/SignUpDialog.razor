@@ -31,10 +31,12 @@
 }
 <!-- Footer -->
 <FluentDialogFooter>      
-    Already have an account?
-    <FluentButton OnClick="@OnSignIn" Appearance="Appearance.Hypertext">
-        Sign in
-    </FluentButton>
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+        <a>Already have an account?</a>
+        <FluentButton OnClick="@OnSignIn" Appearance="Appearance.Lightweight">
+            Sign in
+        </FluentButton>
+    </FluentStack>
     <FluentSpacer />
     <FluentButton Appearance="Appearance.Accent"
                   Disabled="@(!FormContext.Validate())"
@@ -58,7 +60,7 @@
         FormContext = new EditContext(Content);
     }
 
-    private async Task OnSignIn()
+    private async Task OnSignIn(MouseEventArgs e)
     {
         await Dialog.CancelAsync();
 

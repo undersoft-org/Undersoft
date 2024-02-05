@@ -25,23 +25,24 @@
     <FluentDialogBody>
 
         <!-- Auto Form -->
-        
-            <GenericForm TModel="@TModel" Model="@Content" Context="@FormContext" />
+        <GenericForm TModel="@TModel" Model="@Content" Context="@FormContext" />
 
     </FluentDialogBody>
 }
 <!-- Footer -->
 <FluentDialogFooter>
-    Don't have an account?
-    <FluentButton OnClick="@OnSignUp" Appearance="Appearance.Hypertext">
-        Sign up
-    </FluentButton>
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+        <a>Don't have an account?</a>
+        <FluentButton OnClick="@OnSignUp" Appearance="Appearance.Lightweight">
+            Sign up
+        </FluentButton>
+    </FluentStack>
     <FluentSpacer />
     <FluentButton Appearance="Appearance.Accent"
                   Disabled="@(!FormContext.Validate())"
                   OnClick="@SaveAsync">
         Sign in
-    </FluentButton>      
+    </FluentButton>
 </FluentDialogFooter>
 
 @code
@@ -59,9 +60,9 @@
         FormContext = new EditContext(Content);
     }
 
-    private async Task OnSignUp()
+    private async Task OnSignUp(MouseEventArgs e)
     {
-        await Dialog.CancelAsync();
+        await Dialog.CancelAsync();        
 
         _navigation.NavigateTo("account/signup");
     }
