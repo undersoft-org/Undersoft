@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Undersoft.SDK.Service.Application.UI\Undersoft.SDK.Service.Application.UI.csproj" />
     <ProjectReference Include="..\Undersoft.SDK.Service.Server\Undersoft.SDK.Service.Server.csproj" />
   </ItemGroup>
 

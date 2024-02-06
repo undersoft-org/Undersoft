@@ -35,6 +35,7 @@ namespace Undersoft.SDK.Security
         public IdentityType? Type { get; set; }
 
         [VisibleRubric]
+        [RequiredRubric]
         [DataMember(Order = 2)]
         [DisplayRubric("Name")]
         public string UserName { get; set; }
@@ -43,6 +44,7 @@ namespace Undersoft.SDK.Security
         public string NormalizedUserName { get; set; }
 
         [VisibleRubric]
+        [RequiredRubric]
         [DataMember(Order = 4)]
         [DisplayRubric("Email")]
         public string Email { get; set; }
@@ -51,11 +53,13 @@ namespace Undersoft.SDK.Security
         public string OldPassword { get; set; }
 
         [VisibleRubric]
+        [RequiredRubric]
         [DataMember(Order = 6)]
         [DisplayRubric("Password")]
         public string Password { get; set; }
 
         [VisibleRubric]
+        [RequiredRubric]
         [DataMember(Order = 7)]
         [DisplayRubric("Phone number")]
         public string PhoneNumber { get; set; }
@@ -72,13 +76,22 @@ namespace Undersoft.SDK.Security
         [DataMember(Order = 11)]
         public string SessionToken { get; set; }
 
+        [VisibleRubric]
+        [RequiredRubric]
         [DataMember(Order = 12)]
+        [DisplayRubric("Reseting password verification code")]
         public string PasswordResetToken { get; set; }
 
+        [VisibleRubric]
+        [RequiredRubric]
         [DataMember(Order = 13)]
+        [DisplayRubric("Email verification code")]
         public string EmailConfirmationToken { get; set; }
 
+        [VisibleRubric]
+        [RequiredRubric]
         [DataMember(Order = 14)]
+        [DisplayRubric("Phone verification code")]
         public string PhoneNumberConfirmationToken { get; set; }
 
         [DataMember(Order = 15)]
@@ -88,6 +101,7 @@ namespace Undersoft.SDK.Security
         public int AccessFailedCount { get; set; }
 
         [DataMember(Order = 17)]
+        [DisplayRubric("Remember me")]
         public bool SaveAccountInCookies { get; set; }
 
         [DataMember(Order = 18)]
@@ -95,5 +109,8 @@ namespace Undersoft.SDK.Security
 
         [DataMember(Order = 19)]
         public bool Authenticated { get; set; }
+
+        [DataMember(Order = 20)]
+        public string ReturnPath { get; set; }
     }
 }

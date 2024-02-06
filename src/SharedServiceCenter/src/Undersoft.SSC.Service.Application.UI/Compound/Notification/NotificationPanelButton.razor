@@ -1,0 +1,77 @@
+﻿@using Undersoft.SDK.Service
+
+@implements IDisposable
+@inject IServicer _servicer
+
+<FluentButton Appearance="Appearance.Accent" OnClick="OpenNotificationCenterAsync" Title="Notification center">
+@if (MessageService.Count(Constant.MESSAGES_NOTIFICATION_CENTER) > 0)
+{
+        <FluentCounterBadge Count="@MessageService.Count(Constant.MESSAGES_NOTIFICATION_CENTER)"
+                        Max="9"
+                        ShowOverflow="true"
+                        BackgroundColor="@Color.Error"
+                        Color="Color.Fill"
+                        Appearance="Appearance.Accent"
+                        ShowZero=true>
+        <ChildContent>
+            @NotificationIcon()
+        </ChildContent>
+    </FluentCounterBadge>
+}
+else
+{
+    @NotificationIcon() 
+}
+</FluentButton>
+
+@code {
+    private IDialogReference? _dialog;
+   
+    protected override void OnInitialized()
+    {
+        MessageService.OnMessageItemsUpdated += UpdateCount;    
+    }
+
+    private void UpdateCount()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    private RenderFragment NotificationIcon() =>
+        @<FluentIcon Value="@(new Icons.Regular.Size20.Alert())" Color="Color.Neutral"  Title="Notification center" />;
+
+    private async Task OpenNotificationCenterAsync()
+    {  
+       var  dialog = _servicer.Initialize<EventPanel
+
+        _dialog = await DialogService.ShowPanelAsync<NotificationCenterPanel>(new DialogParameters<GlobalState>()
+            {
+                Alignment = HorizontalAlignment.Right,
+                Title = $"Notifications",
+                PrimaryAction = null,
+                SecondaryAction = null,
+                ShowDismiss = true
+            });
+        DialogResult result = await _dialog.Result;
+        HandlePanel(result);
+    }
+
+    private static void HandlePanel(DialogResult result)
+    {
+        if (result.Cancelled)
+        {
+            return;
+        }
+
+        if (result.Data is not null)
+        {
+            return;
+        }
+    }
+
+    public void Dispose()
+    {
+        MessageService.OnMessageItemsUpdated -= UpdateCount;
+    }
+
+}

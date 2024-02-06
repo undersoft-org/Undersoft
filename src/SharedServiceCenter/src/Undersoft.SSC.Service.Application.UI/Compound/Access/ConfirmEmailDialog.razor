@@ -5,7 +5,7 @@
 
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 
-@implements IDialogContentComponent<TModel>
+@implements IDialogContentComponent<IGenericData<TModel>>
 
 <!-- Header -->
 <FluentDialogHeader>
@@ -29,10 +29,12 @@
 }
 <!-- Footer -->
 <FluentDialogFooter>      
-    Some problems with code on e-mail?
-    <FluentNavLink Href="" OnClick="@OnSendNew" >
-        Send new
-    </FluentNavLink>
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+        <a>Some problems with verification e-mail?</a>
+        <FluentButton OnClick="@OnSendAgain" Appearance="Appearance.Lightweight">
+            Send again
+        </FluentButton>
+    </FluentStack>
     <FluentSpacer />
     <FluentButton Appearance="Appearance.Accent"
                   Disabled="@(!FormContext.Validate())"
@@ -46,7 +48,7 @@
     public EditContext FormContext { get; set; } = default!;
 
     [Parameter]
-    public TModel Content { get; set; } = default!;
+    public IGenericData<TModel> Content { get; set; } = default!;
 
     [CascadingParameter]
     public FluentDialog Dialog { get; set; } = default!;
@@ -64,7 +66,7 @@
         }
     }
 
-    private async Task OnSendNew(MouseEventArgs e)
+    private async Task OnSendAgain(MouseEventArgs e)
     {
         await Dialog.CancelAsync();
        

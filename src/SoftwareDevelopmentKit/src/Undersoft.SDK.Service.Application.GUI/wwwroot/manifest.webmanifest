@@ -1,6 +1,7 @@
 {
-  "name": "Undersoft.SSC.Service.Application.CLient",
-  "short_name": "Undersoft.SSC.Client",
+  "name": "Undersoft.SDK.Service.Application.GUI",
+  "short_name": "Undersoft.SDK.Service.Application.GUI",
+  "id": "./",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",

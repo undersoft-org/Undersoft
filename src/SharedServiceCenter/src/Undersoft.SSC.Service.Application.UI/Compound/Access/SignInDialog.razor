@@ -7,14 +7,22 @@
 
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 
-@implements IDialogContentComponent<TModel>
+@implements IDialogContentComponent<IGenericData<TModel>>
 
 <!-- Header -->
 <FluentDialogHeader>
-    <FluentStack VerticalAlignment="VerticalAlignment.Center">
-        <FluentIcon Value="@(new Icons.Regular.Size24.AppGeneric())" />
-        <FluentLabel Typo="Typography.PaneHeader">
-            @Dialog.Instance.Parameters.Title
+    <FluentStack Orientation="Orientation.Vertical">
+        <a>
+            <img src=@Content.Logo />
+        </a>
+        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+            <FluentIcon Value="@Content.Icon" />
+            <FluentLabel Typo="Typography.PaneHeader">
+                @Content.Title
+            </FluentLabel>
+        </FluentStack>
+        <FluentLabel Typo="Typography.Body">
+            @Content.Description
         </FluentLabel>
     </FluentStack>
 </FluentDialogHeader>
@@ -50,7 +58,7 @@
     public EditContext FormContext { get; set; } = default!;
 
     [Parameter]
-    public TModel Content { get; set; } = default!;
+    public IGenericData<TModel> Content { get; set; } = default!;
 
     [CascadingParameter]
     public FluentDialog Dialog { get; set; } = default!;
@@ -62,9 +70,9 @@
 
     private async Task OnSignUp(MouseEventArgs e)
     {
-        await Dialog.CancelAsync();        
+        Content.NextPath = "account/sign_up";
 
-        _navigation.NavigateTo("account/signup");
+        await Dialog.CloseAsync(Content);
     }
 
     private async Task SaveAsync()

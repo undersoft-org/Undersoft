@@ -29,8 +29,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Infra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service.Server", "src\SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Server\Undersoft.SDK.Service.Server.csproj", "{D50B3498-936C-4598-95F4-9E9F8F3909C9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service.Application.UI", "src\SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Application.UI\Undersoft.SDK.Service.Application.UI.csproj", "{B324CFE9-FA60-451C-AEC4-8405FD73A11A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service.Application.Server", "src\SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Application.Server\Undersoft.SDK.Service.Application.Server.csproj", "{4346A26D-0DF3-4E1B-BEC2-1C9AE93FAEA7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Application.Client", "src\SharedServiceCenter\src\Undersoft.SSC.Service.Application.Client\Undersoft.SSC.Service.Application.Client.csproj", "{700D6437-0DA5-45B6-8842-DDFDC0758B0A}"
@@ -45,7 +43,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Integrational
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service.Application", "src\SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Application\Undersoft.SDK.Service.Application.csproj", "{F8C902E9-0296-4A70-AC2E-36C817756DE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Undersoft.SDK.Service.Infrastructure", "src\SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Infrastructure\Undersoft.SDK.Service.Infrastructure.csproj", "{BBDF6723-2035-46C2-8FF3-CFDFCD4DF8F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service.Infrastructure", "src\SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Infrastructure\Undersoft.SDK.Service.Infrastructure.csproj", "{BBDF6723-2035-46C2-8FF3-CFDFCD4DF8F7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service.Application.UI", "src\SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Application.GUI\Undersoft.SDK.Service.Application.UI.csproj", "{EFC02E35-FAD2-4443-926E-538C250005E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,10 +89,6 @@ Global
 		{D50B3498-936C-4598-95F4-9E9F8F3909C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D50B3498-936C-4598-95F4-9E9F8F3909C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D50B3498-936C-4598-95F4-9E9F8F3909C9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B324CFE9-FA60-451C-AEC4-8405FD73A11A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B324CFE9-FA60-451C-AEC4-8405FD73A11A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B324CFE9-FA60-451C-AEC4-8405FD73A11A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B324CFE9-FA60-451C-AEC4-8405FD73A11A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4346A26D-0DF3-4E1B-BEC2-1C9AE93FAEA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4346A26D-0DF3-4E1B-BEC2-1C9AE93FAEA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4346A26D-0DF3-4E1B-BEC2-1C9AE93FAEA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -127,6 +123,10 @@ Global
 		{BBDF6723-2035-46C2-8FF3-CFDFCD4DF8F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBDF6723-2035-46C2-8FF3-CFDFCD4DF8F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBDF6723-2035-46C2-8FF3-CFDFCD4DF8F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFC02E35-FAD2-4443-926E-538C250005E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFC02E35-FAD2-4443-926E-538C250005E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFC02E35-FAD2-4443-926E-538C250005E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFC02E35-FAD2-4443-926E-538C250005E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -143,7 +143,6 @@ Global
 		{86B32451-CBE0-4490-8F5D-E1295A53C6FA} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
 		{BDAD7B12-E674-43B4-90EA-B9A68DC3B03F} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
 		{D50B3498-936C-4598-95F4-9E9F8F3909C9} = {A0E1E503-BBF6-42A5-88ED-85191AB41A06}
-		{B324CFE9-FA60-451C-AEC4-8405FD73A11A} = {A0E1E503-BBF6-42A5-88ED-85191AB41A06}
 		{4346A26D-0DF3-4E1B-BEC2-1C9AE93FAEA7} = {A0E1E503-BBF6-42A5-88ED-85191AB41A06}
 		{700D6437-0DA5-45B6-8842-DDFDC0758B0A} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
 		{3A61F41A-A32A-4CD7-B3F4-84C17A0A2F3A} = {6DFC5E9B-5BEE-4C4A-BE7B-4AB4CCD81F20}
@@ -152,6 +151,7 @@ Global
 		{384220B9-CD6A-45E7-9C01-90DEF2A790BD} = {F9FE065B-486D-4802-A960-68421E802341}
 		{F8C902E9-0296-4A70-AC2E-36C817756DE3} = {A0E1E503-BBF6-42A5-88ED-85191AB41A06}
 		{BBDF6723-2035-46C2-8FF3-CFDFCD4DF8F7} = {A0E1E503-BBF6-42A5-88ED-85191AB41A06}
+		{EFC02E35-FAD2-4443-926E-538C250005E5} = {A0E1E503-BBF6-42A5-88ED-85191AB41A06}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F31728AB-97C6-4E0D-B412-898579AA77AD}

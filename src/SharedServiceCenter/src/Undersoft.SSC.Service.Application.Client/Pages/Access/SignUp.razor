@@ -1,0 +1,78 @@
+﻿@using Undersoft.SDK.Instant.Proxies
+@using Undersoft.SDK.Instant.Updating
+@using Undersoft.SDK.Instant.Rubrics.Attributes
+@using Undersoft.SDK.Service;
+
+@page "/access/sign_up"
+@inject IAccountAccess _access
+@inject NavigationManager _navigation
+@inject IServicer _servicer
+
+@code
+{
+    private AccessDialog<SignUpDialog<SignUpModel>, SignUpModel> _dialog = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _dialog = _servicer.Initialize<AccessDialog<SignUpDialog<SignUpModel>, SignUpModel>>();
+        await SigningUp("Sign up");
+    }
+
+    private async Task SigningUp(string title, string description = "")
+    {
+        var data = new GenericData<SignUpModel>(new SignUpModel(), title);
+        data.SetRequired("FirstName", "LastName", "Email", "Password", "RetypePassword");
+        data.Description = description;
+
+        await _dialog.Show(data);
+
+        var content = _dialog.Content;
+
+        if (content != null)
+        {
+            if (content.HaveNext && content.NextPath != null)
+                _navigation.NavigateTo(content.NextPath);
+
+            var account = new Account();
+            content.Data.PatchTo(account.Credentials);
+            account.Credentials.UserName = $"{content.Data.FirstName} {content.Data.LastName}";
+
+            var result = await _access.SignUp(account);
+
+            if (result.Credentials.Authorized)
+            {
+                if (result.Credentials.EmailConfirmed)
+                {
+                    if (result.Credentials.RegistrationCompleted)
+                        _navigation.NavigateTo("");
+
+                    _navigation.NavigateTo("/account/register_account");
+                }
+                else
+                    _navigation.NavigateTo("/account/confirm_email");
+            }
+        }
+        _navigation.NavigateTo("");
+    }
+
+    public class SignUpModel : InnerProxy
+    {
+        [RequiredRubric]
+        [DisplayRubric("First name")]
+        public string FirstName { get; set; } = default!;
+
+        [RequiredRubric]
+        [DisplayRubric("Last name")]
+        public string LastName { get; set; } = default!;
+
+        [RequiredRubric]
+        public string Email { get; set; } = default!;
+
+        [RequiredRubric]
+        public string Password { get; set; } = default!;
+
+        [RequiredRubric]
+        [DisplayRubric("Retype password")]
+        public string RetypePassword { get; set; } = default!;
+    }
+ }

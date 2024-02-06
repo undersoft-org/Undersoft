@@ -7,12 +7,12 @@
 
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 
-@implements IDialogContentComponent<TModel>
+@implements IDialogContentComponent<IGenericData<TModel>>
 
 <!-- Header -->
 <FluentDialogHeader>
     <FluentStack VerticalAlignment="VerticalAlignment.Center">
-        <FluentIcon Value="@(new Icons.Regular.Size24.AppGeneric())" />
+        <FluentIcon Value="@Content.Icon" />
         <FluentLabel Typo="Typography.PaneHeader">
             @Dialog.Instance.Parameters.Title
         </FluentLabel>
@@ -50,7 +50,7 @@
     public EditContext FormContext { get; set; } = default!;
 
     [Parameter]
-    public TModel Content { get; set; } = default!;
+    public IGenericData<TModel> Content { get; set; } = default!;
 
     [CascadingParameter]
     public FluentDialog Dialog { get; set; } = default!;
@@ -64,7 +64,7 @@
     {
         await Dialog.CancelAsync();
 
-        _navigation.NavigateTo("account/signin");
+        _navigation.NavigateTo("account/sign_in");
     }
 
     private async Task SaveAsync()

@@ -1,0 +1,17 @@
+﻿@page "/access/sign_out"
+
+@inject IAuthorization _auth
+@inject IAccountAccess _access
+@inject NavigationManager _navigation
+
+<text>Sign out...</text>
+
+@code
+{
+    protected async override Task OnInitializedAsync()
+    {
+        await _access.SignOut(_auth);
+
+        _navigation.NavigateTo("");
+    }
+}
