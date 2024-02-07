@@ -1,8 +1,8 @@
 ﻿namespace Undersoft.SDK.Logging
 {
+    using Serilog.Events;
     using System.Threading.Tasks;
     using Undersoft.SDK.Uniques;
-    using Serilog.Events;
 
     public static partial class Log
     {
@@ -19,13 +19,14 @@
                 var _log = new Starlog()
                 {
                     Level = LogEventLevel.Error,
-                    Group = typeof(T).Name.ToUpper().Replace("LOG", ""),                    
+                    Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
                     Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
                     State = t,
                     Message = message
                 };
 
-                logQueue.Enqueue(_log); });
+                logQueue.Enqueue(_log);
+            });
         }
         public static void Critical<T>(this object sender, string message, object data = null, Exception ex = null) where T : ILogSate
         {
@@ -87,216 +88,247 @@
                 logQueue.Enqueue(_log);
             });
         }
-        public static void Success<T>(this object sender,  string message, object data = null,Exception ex = null) where T : ILogSate
+        public static void Success<T>(this object sender, string message, object data = null, Exception ex = null) where T : ILogSate
         {
-           Task.Run(() => { var t = typeof(T).New<T>();
-            t.Exception = ex;
-            t.DataObject = data;
-
-            var _log = new Starlog()
+            Task.Run(() =>
             {
-                Level = LogEventLevel.Information,
-                Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
-                
-                Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
-                State = t,
-                Message = message
-            };
+                var t = typeof(T).New<T>();
+                t.Exception = ex;
+                t.DataObject = data;
 
-            logQueue.Enqueue(_log); });
+                var _log = new Starlog()
+                {
+                    Level = LogEventLevel.Information,
+                    Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
+
+                    Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
+                    State = t,
+                    Message = message
+                };
+
+                logQueue.Enqueue(_log);
+            });
         }
-        public static void Warning<T>(this object sender,  string message, object data = null, Exception ex = null) where T : ILogSate
+        public static void Warning<T>(this object sender, string message, object data = null, Exception ex = null) where T : ILogSate
         {
-           Task.Run(() => { var t = typeof(T).New<T>();
-            t.Exception = ex;
-            t.DataObject = data;
-
-            var _log = new Starlog()
+            Task.Run(() =>
             {
-                Level = LogEventLevel.Warning,
-                Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
-                
-                Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
-                State = t,
-                Message = message
-            };
+                var t = typeof(T).New<T>();
+                t.Exception = ex;
+                t.DataObject = data;
 
-            logQueue.Enqueue(_log); });
+                var _log = new Starlog()
+                {
+                    Level = LogEventLevel.Warning,
+                    Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
+
+                    Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
+                    State = t,
+                    Message = message
+                };
+
+                logQueue.Enqueue(_log);
+            });
         }
-        public static void Security<T>(this object sender,  string message, object data = null,Exception ex = null) where T : ILogSate
+        public static void Security<T>(this object sender, string message, object data = null, Exception ex = null) where T : ILogSate
         {
-           Task.Run(() => { var t = typeof(T).New<T>();
-            t.Exception = ex;
-            t.DataObject = data;
-
-            var _log = new Starlog()
+            Task.Run(() =>
             {
-                Level = LogEventLevel.Information,
-                Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
-                
-                Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
-                State = t,
-                Message = message
-            };
+                var t = typeof(T).New<T>();
+                t.Exception = ex;
+                t.DataObject = data;
 
-            logQueue.Enqueue(_log); });
+                var _log = new Starlog()
+                {
+                    Level = LogEventLevel.Information,
+                    Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
+
+                    Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
+                    State = t,
+                    Message = message
+                };
+
+                logQueue.Enqueue(_log);
+            });
         }
         public static void Alert<T>(this object sender, string message, object data = null, Exception ex = null) where T : ILogSate
         {
-            Task.Run(() => { var t = typeof(T).New<T>(); 
-            t.Exception = ex;
-            t.DataObject = data;
+            Task.Run(() =>
+            {
+                var t = typeof(T).New<T>();
+                t.Exception = ex;
+                t.DataObject = data;
 
-            var _log = new Starlog() { 
-                Level = LogEventLevel.Fatal, 
-                Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
-                
-                Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
-                State = t, Message = message };
+                var _log = new Starlog()
+                {
+                    Level = LogEventLevel.Fatal,
+                    Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
 
-            logQueue.Enqueue(_log); });
+                    Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
+                    State = t,
+                    Message = message
+                };
+
+                logQueue.Enqueue(_log);
+            });
         }
 
-        public static void Error<T, TEx>(this object sender, string message,object data = null, Exception ex = null) where T : ILogSate where TEx : Exception
+        public static void Error<T, TEx>(this object sender, string message, object data = null, Exception ex = null) where T : ILogSate where TEx : Exception
         {
-           Task.Run(() =>
-           {
-               var t = typeof(T).New<T>();
-               t.Exception = typeof(TEx).New<TEx>(message, ex);
-               t.DataObject = data;
+            Task.Run(() =>
+            {
+                var t = typeof(T).New<T>();
+                t.Exception = typeof(TEx).New<TEx>(message, ex);
+                t.DataObject = data;
 
-               var _log = new Starlog()
-               {
-                   Level = LogEventLevel.Error,
-                   Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
+                var _log = new Starlog()
+                {
+                    Level = LogEventLevel.Error,
+                    Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
 
-                   Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
-                   State = t,
-                   Message = message
-               };
+                    Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
+                    State = t,
+                    Message = message
+                };
 
-               logQueue.Enqueue(_log);
+                logQueue.Enqueue(_log);
 
-               throw t.Exception;
+                throw t.Exception;
 
-           });
+            });
         }
         public static void Critical<T, TEx>(this object sender, string message, object data = null, Exception ex = null)
             where T : ILogSate where TEx : Exception
         {
-           Task.Run(() => { var t = typeof(T).New<T>();
-            t.Exception = typeof(TEx).New<TEx>(message, ex);
-            t.DataObject = data;
-
-            var _log = new Starlog()
+            Task.Run(() =>
             {
-                Level = LogEventLevel.Fatal,
-                Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
-                
-                Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
-                State = t,
-                Message = message
-            };
+                var t = typeof(T).New<T>();
+                t.Exception = typeof(TEx).New<TEx>(message, ex);
+                t.DataObject = data;
 
-            logQueue.Enqueue(_log); 
+                var _log = new Starlog()
+                {
+                    Level = LogEventLevel.Fatal,
+                    Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
 
-            throw t.Exception;
+                    Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
+                    State = t,
+                    Message = message
+                };
 
-        });
+                logQueue.Enqueue(_log);
+
+                throw t.Exception;
+
+            });
         }
         public static void Info<T, TEx>(this object sender, string message, object data = null, Exception ex = null) where T : ILogSate where TEx : Exception
         {
-           Task.Run(() => { var t = typeof(T).New<T>();
-            t.Exception = typeof(TEx).New<TEx>(message, ex);
-            t.DataObject = data;
-
-            var _log = new Starlog()
+            Task.Run(() =>
             {
-                Level = LogEventLevel.Information,
-                Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
-                
-                Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
-                State = t,
-                Message = message
-            };
+                var t = typeof(T).New<T>();
+                t.Exception = typeof(TEx).New<TEx>(message, ex);
+                t.DataObject = data;
 
-            logQueue.Enqueue(_log); });
+                var _log = new Starlog()
+                {
+                    Level = LogEventLevel.Information,
+                    Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
+
+                    Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
+                    State = t,
+                    Message = message
+                };
+
+                logQueue.Enqueue(_log);
+            });
         }
-        public static void Failure<T, TEx>(this object sender,  string message, object data = null, Exception ex = null, bool withThrow = true) where T : ILogSate where TEx : Exception
+        public static void Failure<T, TEx>(this object sender, string message, object data = null, Exception ex = null, bool withThrow = true) where T : ILogSate where TEx : Exception
         {
-           Task.Run(() => { var t = typeof(T).New<T>();
-            t.Exception = typeof(TEx).New<TEx>(message, ex);
-            t.DataObject = data;
-
-            var _log = new Starlog()
+            Task.Run(() =>
             {
-                Level = LogEventLevel.Error,
-                Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
-                
-                Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
-                State = t,
-                Message = message
-            };
+                var t = typeof(T).New<T>();
+                t.Exception = typeof(TEx).New<TEx>(message, ex);
+                t.DataObject = data;
 
-            logQueue.Enqueue(_log); 
-            
-            if(withThrow)
-                throw t.Exception;
-           });
+                var _log = new Starlog()
+                {
+                    Level = LogEventLevel.Debug,
+                    Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
+
+                    Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
+                    State = t,
+                    Message = message
+                };
+
+                logQueue.Enqueue(_log);
+
+                if (withThrow)
+                    throw t.Exception;
+            });
         }
-        public static void Success<T, TEx>(this object sender,  string message, object data = null, Exception ex = null) where T : ILogSate where TEx : Exception
+        public static void Success<T, TEx>(this object sender, string message, object data = null, Exception ex = null) where T : ILogSate where TEx : Exception
         {
-           Task.Run(() => { var t = typeof(T).New<T>();
-            t.Exception = typeof(TEx).New<TEx>(message, ex);
-            t.DataObject = data;
-
-            var _log = new Starlog()
+            Task.Run(() =>
             {
-                Level = LogEventLevel.Information,
-                Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
-                
-                Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
-                State = t,
-                Message = message
-            };
+                var t = typeof(T).New<T>();
+                t.Exception = typeof(TEx).New<TEx>(message, ex);
+                t.DataObject = data;
 
-            logQueue.Enqueue(_log); });
+                var _log = new Starlog()
+                {
+                    Level = LogEventLevel.Debug,
+                    Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
+
+                    Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
+                    State = t,
+                    Message = message
+                };
+
+                logQueue.Enqueue(_log);
+            });
         }
-        public static void Warning<T, TEx>(this object sender,  string message, object data = null, Exception ex = null) where T : ILogSate where TEx : Exception
+        public static void Warning<T, TEx>(this object sender, string message, object data = null, Exception ex = null) where T : ILogSate where TEx : Exception
         {
-           Task.Run(() => { var t = typeof(T).New<T>();
-            t.Exception = typeof(TEx).New<TEx>(message, ex);
-            t.DataObject = data;
-
-            var _log = new Starlog()
+            Task.Run(() =>
             {
-                Level = LogEventLevel.Warning,
-                Group    = typeof(T).Name.ToUpper().Replace("LOG", ""),
-                
-                Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
-                State = t,
-                Message = message
-            };
+                var t = typeof(T).New<T>();
+                t.Exception = typeof(TEx).New<TEx>(message, ex);
+                t.DataObject = data;
 
-            logQueue.Enqueue(_log); });
+                var _log = new Starlog()
+                {
+                    Level = LogEventLevel.Warning,
+                    Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
+
+                    Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
+                    State = t,
+                    Message = message
+                };
+
+                logQueue.Enqueue(_log);
+            });
         }
-        public static void Security<T, TEx>(this object sender,  string message, object data = null,Exception ex = null) where T : ILogSate where TEx : Exception
+        public static void Security<T, TEx>(this object sender, string message, object data = null, Exception ex = null) where T : ILogSate where TEx : Exception
         {
-           Task.Run(() => { var t = typeof(T).New<T>();
-            t.Exception = typeof(TEx).New<TEx>(message, ex);
-            t.DataObject = data;
-
-            var _log = new Starlog()
+            Task.Run(() =>
             {
-                Level = LogEventLevel.Information,
-                Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
-                
-                Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
-                State = t,
-                Message = message
-            };
+                var t = typeof(T).New<T>();
+                t.Exception = typeof(TEx).New<TEx>(message, ex);
+                t.DataObject = data;
 
-            logQueue.Enqueue(_log); });
+                var _log = new Starlog()
+                {
+                    Level = LogEventLevel.Debug,
+                    Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
+
+                    Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
+                    State = t,
+                    Message = message
+                };
+
+                logQueue.Enqueue(_log);
+            });
         }
         public static void Alert<T, TEx>(this object sender, string message, object data = null, Exception ex = null) where T : ILogSate where TEx : Exception
         {
@@ -310,7 +342,7 @@
                 {
                     Level = LogEventLevel.Fatal,
                     Group = typeof(T).Name.ToUpper().Replace("LOG", ""),
-                    Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",                    
+                    Sender = sender?.GetType().FullName ?? "Undersoft.SDK.Logging",
                     State = t,
                     Message = message
                 };
@@ -320,7 +352,7 @@
                 throw t.Exception;
             });
         }
-        
+
         #endregion
     }
 
@@ -353,7 +385,7 @@
                     State.Exception = null;
                     State = null;
                 }
-                disposedValue=true;
+                disposedValue = true;
             }
         }
 
@@ -389,6 +421,10 @@
     public class Servicelog : Baselog, ILogSate { }
 
     public class Agentlog : Baselog, ILogSate { }
+
+    public class Accesslog : Baselog, ILogSate { }
+
+    public class Emaillog : Baselog, ILogSate { }
 
     public class Baselog : ILogSate
     {

@@ -1,8 +1,8 @@
 using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Instant.Proxies;
-using Undersoft.SDK.Service.Application.UI.Generic;
+using Undersoft.SDK.Service.Application.GUI.Generic;
 
-namespace Undersoft.SDK.Service.Application.UI.Dialogs;
+namespace Undersoft.SDK.Service.Application.GUI.Dialogs;
 
 public class AccessDialog<TDialog, TModel> : GenericDialog<TDialog, TModel> where TDialog : IDialogContentComponent<IGenericData<TModel>> where TModel : class, IOrigin, IInnerProxy
 {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -8,13 +7,9 @@ namespace Undersoft.SDK.Service.Server.Accounts.Email;
 
 public class AccountEmailSender : IEmailSender
 {
-    private readonly ILogger _logger;
-
-    public AccountEmailSender(IOptions<AccountEmailSenderOptions> optionsAccessor,
-                       ILogger<AccountEmailSender> logger)
+    public AccountEmailSender(IOptions<AccountEmailSenderOptions> optionsAccessor)
     {
         Options = optionsAccessor.Value;
-        _logger = logger;
     }
 
     public AccountEmailSenderOptions Options { get; } //Set with Secret Manager.
@@ -33,7 +28,7 @@ public class AccountEmailSender : IEmailSender
         var client = new SendGridClient(apiKey);
         var msg = new SendGridMessage()
         {
-            From = new EmailAddress("dariusz@undersoft.com", "Password Recovery"),
+            From = new EmailAddress("undersoft@undersoft.org"),
             Subject = subject,
             PlainTextContent = message,
             HtmlContent = message
@@ -44,8 +39,9 @@ public class AccountEmailSender : IEmailSender
         // See https://sendgrid.com/docs/User_Guide/Settings/tracking.html
         msg.SetClickTracking(false, false);
         var response = await client.SendEmailAsync(msg);
-        _logger.LogInformation(response.IsSuccessStatusCode
-                               ? $"Email to {toEmail} queued successfully!"
-                               : $"Failure Email to {toEmail}");
+        if (response.IsSuccessStatusCode)
+            this.Success<Emaillog>($"Email to {toEmail} queued successfully!");
+        else
+            this.Failure<Emaillog>($"Failure Email to {toEmail}");
     }
 }

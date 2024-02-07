@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using System.Security.Claims;
 using System.Text.Json;
-using Undersoft.SDK.Invoking;
 using Undersoft.SDK.Security;
 using Undersoft.SDK.Series;
 using Undersoft.SDK.Service.Application.Extensions;
@@ -17,7 +16,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
     where TAccount : class, IAuthorization
 {
     private readonly IJSRuntime js;
-    private readonly IAuthorization _authorization;
+    private IAuthorization _authorization;
     private readonly IRemoteRepository<IAccountStore, TAccount> _repository;
     private readonly string TOKENKEY = "TOKENKEY";
     private readonly string EXPIRATIONTOKENKEY = "EXPIRATIONTOKENKEY";
@@ -84,9 +83,9 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
     {
         var claims = new Registry<Claim>();
         var payload = jwt.Split('.')[1];
-        var jsonBytes = GetJsonToken(payload);
+        var token = GetJsonToken(payload);
 
-        var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
+        var keyValuePairs = token.FromJson<Dictionary<string, object>>();
         if (keyValuePairs != null)
             keyValuePairs.ForEach(kvp =>
             {
@@ -120,21 +119,19 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
 
     public async Task<IAuthorization?> SignIn(IAuthorization auth)
     {
-        var _auth = (
-            await _repository.Access(nameof(SignIn), auth)
-        );
+        var result = await _repository.Access(nameof(SignIn), auth);
 
-        if (_auth == null)
+        if (result == null)
             return null;
 
-        _authorization.Credentials = _auth.Credentials;
-        if (_auth.Credentials.SessionToken != null)
+        _authorization = result;
+        if (result.Credentials.SessionToken != null)
         {
-            await js.SetInLocalStorage(TOKENKEY, _authorization.Credentials.SessionToken);
-            var authState = GetAccessState(_authorization.Credentials.SessionToken);
+            await js.SetInLocalStorage(TOKENKEY, result.Credentials.SessionToken);
+            var authState = GetAccessState(result.Credentials.SessionToken);
             NotifyAuthenticationStateChanged(Task.FromResult((AuthenticationState)authState));
         }
-        return _auth;
+        return _authorization;
     }
 
     public async Task<IAuthorization> SignUp(IAuthorization auth)
@@ -144,36 +141,90 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
 
     public async Task<IAuthorization> SignOut(IAuthorization auth)
     {
-        var _auth = await _repository.Access(nameof(SignOut), auth);
-      
+        var result = await _repository.Access(nameof(SignOut), auth);
+
         await CleanUp();
         NotifyAuthenticationStateChanged(Task.FromResult(Anonymous));
-        return _auth;
+        return result;
     }
 
     public async Task<IAuthorization?> Renew(IAuthorization auth)
     {
-        var _auth = await _repository.Access(nameof(Renew), auth);
+        var result = await _repository.Access(nameof(Renew), auth);
 
-        if (_auth == null)
+        if (result == null)
             return null;
 
-        _authorization.Credentials = _auth.Credentials;
-        if (_auth.Credentials.SessionToken != null)
+        _authorization = result;
+        if (result.Credentials.SessionToken != null)
         {
-            await js.SetInLocalStorage(TOKENKEY, _authorization.Credentials.SessionToken);
-            var authState = GetAccessState(_authorization.Credentials.SessionToken);
+            await js.SetInLocalStorage(TOKENKEY, result.Credentials.SessionToken);
+            var authState = GetAccessState(result.Credentials.SessionToken);
             NotifyAuthenticationStateChanged(Task.FromResult((AuthenticationState)authState));
         }
-        return _auth;
+        return _authorization;
+    }
+
+    public async Task<IAuthorization?> ResetPassword(IAuthorization auth)
+    {
+        var result = await _repository.Action(nameof(ResetPassword), auth);
+
+        if (result == null)
+            return null;
+
+        return _authorization = result;
+    }
+
+    public async Task<IAuthorization?> ChangePassword(IAuthorization auth)
+    {
+        var result = await _repository.Setup(nameof(ChangePassword), auth);
+
+        if (result == null)
+            return null;
+
+        return _authorization = result;
+    }
+
+    public IAuthorization? AccountInfo(IAuthorization auth)
+    {
+        var result = _repository.Access(nameof(AccountInfo), auth);
+
+        if (result == null)
+            return null;
+
+        Task.WaitAll(result);
+
+        return _authorization = result.Result;
+    }
+
+    public async Task<IAuthorization?> ConfirmEmail(IAuthorization auth)
+    {
+        var result = await _repository.Action(nameof(ConfirmEmail), auth);
+
+        if (result == null)
+            return null;
+
+        return _authorization = result;
+    }
+
+    public async Task<IAuthorization?> CompleteRegistration(IAuthorization auth)
+    {
+        var result = await _repository.Action(nameof(CompleteRegistration), auth);
+
+        if (result == null)
+            return null;
+
+        return _authorization = result;
     }
 
     private async Task CleanUp()
     {
+        var auth = _authorization;
         await js.RemoveItem(TOKENKEY);
         await js.RemoveItem(EXPIRATIONTOKENKEY);
-        _authorization.Credentials.SessionToken = null;
-        _authorization.Credentials = null;
+        auth.Notes = null;
+        auth.Credentials.SessionToken = null;
+        auth.Credentials = null;
         _repository.Context.SetAuthorizationHeader(null);
     }
 }

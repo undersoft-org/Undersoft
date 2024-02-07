@@ -14,14 +14,14 @@ public class AccountManager : Registry<IAccount>, IAccountManager
         UserManager<AccountUser> user,
         RoleManager<Role> role,
         SignInManager<AccountUser> signIn,
-        AccountTokenGenerator token, 
+        AccountTokenGenerator token,
         IStoreRepository<IAccountStore, Account> accounts
     )
     {
         User = user;
         Role = role;
         SignIn = signIn;
-        Token = token;        
+        Token = token;
     }
 
     public IStoreRepository<IAccountStore, Account> Accounts { get; set; }
@@ -126,7 +126,7 @@ public class AccountManager : Registry<IAccount>, IAccountManager
 
         var currentRoleId = (email + current).UniqueKey64();
         var role = new Role() { Id = currentRoleId, Name = current };
-       
+
         if (role != null)
         {
             account.Roles.Add(role);
@@ -147,8 +147,8 @@ public class AccountManager : Registry<IAccount>, IAccountManager
         var id = (email + claim.Type).UniqueKey64();
 
         if (claim != null)
-        { 
-            var _claim = new AccountClaim() { ClaimType = claim.Type, ClaimValue = claim.Value, Id = id, UserId = account.UserId }; 
+        {
+            var _claim = new AccountClaim() { ClaimType = claim.Type, ClaimValue = claim.Value, Id = id, UserId = account.UserId };
             account.Claims.Add(_claim);
             await User.RemoveClaimAsync(account.User, claim);
             var result = await User.AddClaimAsync(account.User, claim);
@@ -182,7 +182,7 @@ public class AccountManager : Registry<IAccount>, IAccountManager
     public bool TryGetByEmail(string email, out IAccount account)
     {
         var _account = GetByEmail(email);
-         _account.Wait();
+        _account.Wait();
         account = _account.Result;
         if (account.User != null)
             return true;
@@ -191,10 +191,17 @@ public class AccountManager : Registry<IAccount>, IAccountManager
 
     public bool TryGetById(long id, out IAccount account)
     {
-        if (TryGet(id, out account))
-            return true;
-
         var _account = GetById(id);
+        _account.Wait();
+        account = _account.Result;
+        if (account.User != null)
+            return true;
+        return false;
+    }
+
+    public bool TryGetByName(string name, out IAccount account)
+    {
+        var _account = GetByName(name);
         _account.Wait();
         account = _account.Result;
         if (account.User != null)
@@ -214,8 +221,9 @@ public class AccountManager : Registry<IAccount>, IAccountManager
     {
         if (TryGet(email, out IAccount account))
             return (Account)account;
-        var _account = new Account();        
-        _account.User = await User.FindByEmailAsync(email);        
+        var _account = new Account();
+        _account.User = await User.FindByEmailAsync(email);
+        _account.User.IsLockedOut = await User.IsLockedOutAsync(_account.User);
         if ((await MapAccount(_account)).User != null)
         {
             Put(_account?.User?.Email, _account);
@@ -231,12 +239,13 @@ public class AccountManager : Registry<IAccount>, IAccountManager
             return (Account)account;
         var _account = new Account();
         _account.User = await User.FindByIdAsync(_account.Id.ToString());
+        _account.User.IsLockedOut = await User.IsLockedOutAsync(_account.User);
         if ((await MapAccount(_account)).User != null)
         {
             Put(_account?.User?.Email, _account);
             account.UserId = _account.User.Id;
         }
-        Put(_account);        
+        Put(_account);
         return _account;
     }
 
@@ -264,7 +273,7 @@ public class AccountManager : Registry<IAccount>, IAccountManager
                                         }
                                 )
                                 .ToListing()
-                    }              
+                    }
                 )
                 .Select(r => r.Result)
                 .ToListing();
@@ -274,9 +283,9 @@ public class AccountManager : Registry<IAccount>, IAccountManager
                     c =>
                         new AccountClaim()
                         {
-                                ClaimType = c.Type,
-                                ClaimValue = c.Value,
-                                UserId = account.Id                            
+                            ClaimType = c.Type,
+                            ClaimValue = c.Value,
+                            UserId = account.Id
                         }
                 )
                 .ToListing();

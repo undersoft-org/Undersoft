@@ -1,4 +1,4 @@
-namespace Undersoft.SDK.Service.Application.UI;
+namespace Undersoft.SDK.Service.Application.GUI;
 
 public class Constant
 {

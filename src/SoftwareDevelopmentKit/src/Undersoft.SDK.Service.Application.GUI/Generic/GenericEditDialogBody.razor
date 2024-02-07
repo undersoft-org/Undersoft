@@ -1,0 +1,28 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using Undersoft.SDK.Instant.Proxies
+@using Undersoft.SDK.Instant.Rubrics
+@using Undersoft.SDK
+
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+
+<div>
+    <!-- Body -->
+    <FluentDialogBody>
+
+        <!-- Auto Form -->
+        <GenericForm TModel="@TModel" Model="@Content" Context="@FormContext" />
+
+    </FluentDialogBody>
+</div>
+
+@code
+{
+    [CascadingParameter]
+    public EditContext FormContext { get; set; } = default!;
+
+    [CascadingParameter]
+    public IGenericData<TModel> Content { get; set; } = default!;
+
+    [CascadingParameter]
+    public FluentDialog Dialog { get; set; } = default!;
+}

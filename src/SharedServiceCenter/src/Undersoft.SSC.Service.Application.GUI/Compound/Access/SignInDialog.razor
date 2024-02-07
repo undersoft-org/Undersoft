@@ -9,34 +9,28 @@
 
 @implements IDialogContentComponent<IGenericData<TModel>>
 
-<!-- Header -->
-<FluentDialogHeader>
-    <FluentStack Orientation="Orientation.Vertical">
-        <a>
-            <img src=@Content.Logo />
-        </a>
-        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
-            <FluentIcon Value="@Content.Icon" />
-            <FluentLabel Typo="Typography.PaneHeader">
-                @Content.Title
-            </FluentLabel>
-        </FluentStack>
-        <FluentLabel Typo="Typography.Body">
-            @Content.Description
-        </FluentLabel>
+<CascadingValue Value="@Content">
+    
+    <!-- Header -->
+    <GenericEditDialogHeader TModel="TModel" />
+
+</CascadingValue>
+
+<!-- Body -->
+<FluentDialogBody>
+
+    <!-- Form -->
+    <GenericForm TModel="@TModel" Model="@Content" Context="@FormContext" />
+
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+        <a>Some problem with credentials?</a>
+        <FluentButton OnClick="@OnResetPassword" Appearance="Appearance.Lightweight">
+            Reset password 
+        </FluentButton>
     </FluentStack>
-</FluentDialogHeader>
 
-@if (Content != null)
-{
-    <!-- Body -->
-    <FluentDialogBody>
+</FluentDialogBody>
 
-        <!-- Auto Form -->
-        <GenericForm TModel="@TModel" Model="@Content" Context="@FormContext" />
-
-    </FluentDialogBody>
-}
 <!-- Footer -->
 <FluentDialogFooter>
     <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
@@ -70,7 +64,14 @@
 
     private async Task OnSignUp(MouseEventArgs e)
     {
-        Content.NextPath = "account/sign_up";
+        Content.NextPath = "access/sign_up";
+
+        await Dialog.CloseAsync(Content);
+    }
+
+    private async Task OnResetPassword(MouseEventArgs e)
+    {
+        Content.NextPath = "access/reset_password";
 
         await Dialog.CloseAsync(Content);
     }

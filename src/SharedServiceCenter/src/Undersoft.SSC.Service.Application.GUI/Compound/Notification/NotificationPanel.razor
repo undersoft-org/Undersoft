@@ -1,4 +1,6 @@
-﻿@implements IDialogContentComponent<GlobalState>
+﻿@typeparam TModel
+
+@implements IDialogContentComponent<IGenericData<Event>>
 @inject IMessageService MessageService
 
 <div>
@@ -18,5 +20,5 @@
 
 @code {
     [Parameter]
-    public GlobalState Content { get; set; } = default!;
+    public IGenericData<Event> Content { get; set; } = default!;
 }

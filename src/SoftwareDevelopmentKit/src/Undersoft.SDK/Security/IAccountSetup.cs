@@ -2,6 +2,6 @@
 {
     public interface IAccountSetup
     {
-
+        Task<IAuthorization> ChangePassword(IAuthorization account);
     }
 }

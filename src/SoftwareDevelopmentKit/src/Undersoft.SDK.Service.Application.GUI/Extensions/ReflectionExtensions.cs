@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-namespace Undersoft.SDK.Service.Application.UI.Extensions;
+namespace Undersoft.SDK.Service.Application.GUI.Extensions;
 
 public static class ReflectionExtensions
 {

@@ -17,7 +17,7 @@ namespace Undersoft.SDK.Security
         public virtual AuthorizationNotes Notes { get; set; } = new AuthorizationNotes();
 
         [DataMember(Order = 18)]
-        public virtual bool Authorized { get; set; }
+        public virtual bool IsAvailable { get; set; }
 
         [DataMember(Order = 19)]
         public virtual bool Authenticated { get; set; }

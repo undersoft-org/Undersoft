@@ -29,10 +29,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
-                    b.Property<bool>("Authenticated")
+                    b.Property<bool>("IsAvailable")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("Authorized")
+                    b.Property<bool>("Authenticated")
                         .HasColumnType("boolean");
 
                     b.Property<string>("CodeNo")

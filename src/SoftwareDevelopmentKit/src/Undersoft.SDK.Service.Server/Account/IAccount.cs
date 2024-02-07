@@ -17,7 +17,7 @@ namespace Undersoft.SDK.Service.Server.Accounts
 
         IEnumerable<Claim> GetClaims();
 
-        bool Authorized { get; set; }
+        bool IsAvailable { get; set; }
 
         bool Authenticated { get; set; }
     }

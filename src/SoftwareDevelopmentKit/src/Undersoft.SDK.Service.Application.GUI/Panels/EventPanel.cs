@@ -1,17 +1,14 @@
 using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Instant.Proxies;
-using Undersoft.SDK.Service.Application.UI.Generic;
+using Undersoft.SDK.Service.Application.GUI.Generic;
 
-namespace Undersoft.SDK.Service.Application.UI.Panels;
+namespace Undersoft.SDK.Service.Application.GUI.Panels;
 
 public class EventPanel<TPanel, TModel> : GenericPanel<TPanel, TModel> where TPanel : IDialogContentComponent<IGenericData<TModel>> where TModel : class, IOrigin, IInnerProxy
 {
-    public EventPanel(IDialogService dialogService, IMessageService messageService) : base(dialogService)
+    public EventPanel(IDialogService dialogService) : base(dialogService)
     {
-        MessageService = messageService;
     }
-
-    public IMessageService MessageService { get; private set; }
 
     public async Task Show()
     {
@@ -25,6 +22,19 @@ public class EventPanel<TPanel, TModel> : GenericPanel<TPanel, TModel> where TPa
                 p.SecondaryAction = null;
                 p.ShowDismiss = true;
             });
+        }
+    }
+
+    private static void HandlePanel(DialogResult result)
+    {
+        if (result.Cancelled)
+        {
+            return;
+        }
+
+        if (result.Data is not null)
+        {
+            return;
         }
     }
 }

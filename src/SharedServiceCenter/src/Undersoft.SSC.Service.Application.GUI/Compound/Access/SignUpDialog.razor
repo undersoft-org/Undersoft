@@ -9,28 +9,20 @@
 
 @implements IDialogContentComponent<IGenericData<TModel>>
 
-<!-- Header -->
-<FluentDialogHeader>
-    <FluentStack VerticalAlignment="VerticalAlignment.Center">
-        <FluentIcon Value="@Content.Icon" />
-        <FluentLabel Typo="Typography.PaneHeader">
-            @Dialog.Instance.Parameters.Title
-        </FluentLabel>
-    </FluentStack>
-</FluentDialogHeader>
+<CascadingValue Value="@Content">
+    <CascadingValue Value="@FormContext">
 
-@if (Content != null)
-{
+    <!-- Header -->
+    <GenericEditDialogHeader TModel="TModel" />
+
     <!-- Body -->
-    <FluentDialogBody>
+    <GenericEditDialogBody TModel="TModel" />
 
-        <!-- Auto Form -->
-        <GenericForm TModel="@TModel" Model="@Content" Context="@FormContext" />
+    </CascadingValue>
+</CascadingValue>
 
-    </FluentDialogBody>
-}
 <!-- Footer -->
-<FluentDialogFooter>      
+<FluentDialogFooter>
     <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
         <a>Already have an account?</a>
         <FluentButton OnClick="@OnSignIn" Appearance="Appearance.Lightweight">
@@ -46,7 +38,7 @@
 </FluentDialogFooter>
 
 @code
- {    
+{
     public EditContext FormContext { get; set; } = default!;
 
     [Parameter]
@@ -62,9 +54,9 @@
 
     private async Task OnSignIn(MouseEventArgs e)
     {
-        await Dialog.CancelAsync();
+        Content.NextPath = "access/sign_in";
 
-        _navigation.NavigateTo("account/sign_in");
+        await Dialog.CancelAsync();
     }
 
     private async Task SaveAsync()

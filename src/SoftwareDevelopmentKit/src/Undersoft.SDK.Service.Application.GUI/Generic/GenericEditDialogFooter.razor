@@ -1,0 +1,49 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using Undersoft.SDK.Instant.Proxies
+@using Undersoft.SDK.Instant.Rubrics
+@using Undersoft.SDK
+
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+
+<div>
+    <!-- Footer -->
+    <FluentDialogFooter>
+        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+            <FluentButton Appearance="Appearance.Accent"
+                          Disabled="@(!FormContext.Validate())"
+                          OnClick="@SaveAsync">
+                Save
+            </FluentButton>
+
+            <FluentButton OnClick="@CancelAsync" Appearance="Appearance.Neutral">
+                Cancel
+            </FluentButton>
+        </FluentStack>
+    </FluentDialogFooter>
+</div>
+
+@code
+{
+    [CascadingParameter]
+    public EditContext FormContext { get; set; } = default!;
+
+    [CascadingParameter]
+    public IGenericData<TModel> Content { get; set; } = default!;
+
+    [CascadingParameter]
+    public FluentDialog Dialog { get; set; } = default!;
+
+    private async Task SaveAsync()
+    {
+        if (FormContext.Validate())
+        {
+            await Dialog.CloseAsync(Content);
+        }
+    }
+
+    private async Task CancelAsync(MouseEventArgs e)
+    {
+        await Dialog.CancelAsync();
+
+    }
+}

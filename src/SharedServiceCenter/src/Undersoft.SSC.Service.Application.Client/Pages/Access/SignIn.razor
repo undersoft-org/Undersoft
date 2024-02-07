@@ -1,4 +1,5 @@
-﻿@using Undersoft.SDK.Service
+﻿@using Undersoft.SDK.Instant.Updating
+@using Undersoft.SDK.Service
 
 @page "/access/sign_in"
 @inject IAccountAccess _access
@@ -17,39 +18,45 @@
 
     private async Task SigningIn(string title, string description = "")
     {
-        string status = "";
+        var data = new GenericData<Credentials>(new Credentials(), title);
+        data.SetRequired(nameof(Credentials.Email), nameof(Credentials.Password));
+        data.SetVisible(nameof(Credentials.SaveAccountInCookies));
+        data.Description = description;
 
         while (true)
         {
-            var data = new GenericData<Credentials>(new Credentials(), title);
-            data.SetRequired("Email", "Password");
-            data.Description = description;
-            data.Status = status;
-
             await _dialog.Show(data);
 
             var content = _dialog.Content;
 
             if (content != null)
             {
-                if(content.HaveNext && content.NextPath != null)                
-                    _navigation.NavigateTo(content.NextPath);               
+                if (content.HaveNext && content.NextPath != null)
+                {
+                    _navigation.NavigateTo(content.NextPath);
+                    return;
+                }
 
                 var result = await _access.SignIn(new Account() { Credentials = content.Data });
 
-                if (result.Credentials.Authorized)
+                if (result.Credentials.Authenticated)
                 {
                     if (result.Credentials.EmailConfirmed)
-                    {
                         if (result.Credentials.RegistrationCompleted)
                             _navigation.NavigateTo("");
-
-                        _navigation.NavigateTo("/account/register_account");
-                    }
+                        else
+                            _navigation.NavigateTo("/account/register_account");
                     else
                         _navigation.NavigateTo("/account/confirm_email");
+                    return;
                 }
-                status = result.Notes.Info;
+                data.ClearData();
+                data.PatchFrom(result.Notes);
+            }
+            else
+            {
+                _navigation.NavigateTo("");
+                return;
             }
         }
     }

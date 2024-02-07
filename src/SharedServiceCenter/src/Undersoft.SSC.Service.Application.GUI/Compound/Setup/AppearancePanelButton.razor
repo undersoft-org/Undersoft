@@ -1,5 +1,5 @@
-﻿@    using Undersoft.SDK.Service;
-    using Undersoft.SDK.Service.Application.UI.Panels;
+﻿@using Undersoft.SDK.Service;
+@using Undersoft.SDK.Service.Application.GUI.Panels;
 
 @inject NavigationManager _navigation
 @inject IServicer _servicer
@@ -21,10 +21,7 @@
 
     private async Task OpenAppearancePanel()
     {
-        string status = "";
-
         var data = new GenericData<Credentials>(new Credentials());
-        data.Status = status;
 
         await _dialog.Show(data);
     }

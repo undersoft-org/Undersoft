@@ -1,9 +1,9 @@
 ﻿namespace Undersoft.SDK.Security
 {
-    public interface IAccountAction : IAccountAccess
+    public interface IAccountAction
     {
-        Task<IAuthorization> CompleteRegistration(IAuthorization account);
         Task<IAuthorization> ConfirmEmail(IAuthorization account);
         Task<IAuthorization> ResetPassword(IAuthorization account);
+        Task<IAuthorization> CompleteRegistration(IAuthorization account);
     }
 }

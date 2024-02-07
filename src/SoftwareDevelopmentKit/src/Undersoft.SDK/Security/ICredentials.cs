@@ -18,7 +18,7 @@
         bool SaveAccountInCookies { get; set; }
         string SessionToken { get; set; }
         string UserName { get; set; }
-        bool Authorized { get; set; }
         bool Authenticated { get; set; }
+        bool IsAvailable { get; set; }
     }
 }

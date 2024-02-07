@@ -47,4 +47,10 @@ public class AccountUser : InnerProxy, IAccountUser
 
     [DataMember(Order = 19)]
     public virtual int AccessFailedCount { get; set; }
+
+    [DataMember(Order = 19)]
+    public bool RegistrationCompleted { get; set; }
+
+    [DataMember(Order = 19)]
+    public bool IsLockedOut { get; set; }
 }

@@ -2,14 +2,16 @@
 using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Instant.Rubrics;
 
-namespace Undersoft.SDK.Service.Application.UI.Generic
+namespace Undersoft.SDK.Service.Application.GUI.Generic
 {
     public interface IGenericData<TModel> where TModel : class, IOrigin, IInnerProxy
     {
         TModel Data { get; set; }
         string? Description { get; set; }
         string? Note { get; set; }
-        string? Status { get; set; }
+        string? Info { get; set; }
+        string? Errors { get; set; }
+        string? Success { get; set; }
         bool HaveNext { get; set; }
         string Height { get; set; }
         Icon? Icon { get; set; }

@@ -3,7 +3,7 @@ using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Instant.Rubrics;
 using Undersoft.SDK.Uniques;
 
-namespace Undersoft.SDK.Service.Application.UI.Generic;
+namespace Undersoft.SDK.Service.Application.GUI.Generic;
 
 public class GenericData<TModel> : Origin, IGenericData<TModel> where TModel : class, IOrigin, IInnerProxy
 {
@@ -31,6 +31,8 @@ public class GenericData<TModel> : Origin, IGenericData<TModel> where TModel : c
         }
     }
 
+    public void ClearData() => Data = typeof(TModel).New<TModel>();
+
     public TModel Data { get; set; } = default!;
 
     public string? Title { get; set; } = null;
@@ -39,7 +41,11 @@ public class GenericData<TModel> : Origin, IGenericData<TModel> where TModel : c
 
     public string? Note { get; set; } = null;
 
-    public string? Status { get; set; }
+    public string? Info { get; set; }
+
+    public string? Errors { get; set; }
+
+    public string? Success { get; set; }
 
     public Icon Icon { get; set; } = new Icons.Regular.Size24.AppGeneric();
 
@@ -83,7 +89,7 @@ public class GenericData<TModel> : Origin, IGenericData<TModel> where TModel : c
         DisplayRubrics.Put(rubrics);
     }
 
-    public void SetDisplayName(params DisplayPair[] displayPairList)
+    public void SetDisplayNames(params DisplayPair[] displayPairList)
     {
         var rubrics = displayPairList.ForEach(d => { var rubric = Data.Proxy.Rubrics[d.RubricName]; rubric.DisplayName = d.DisplayName; rubric.Visible = true; return rubric; });
         DisplayRubrics.Put(rubrics);

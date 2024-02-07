@@ -7,31 +7,23 @@
 
 @implements IDialogContentComponent<IGenericData<TModel>>
 
-<!-- Header -->
-<FluentDialogHeader>
-    <FluentStack VerticalAlignment="VerticalAlignment.Center">
-        <FluentIcon Value="@(new Icons.Regular.Size24.AppGeneric())" />
-        <FluentLabel Typo="Typography.PaneHeader">
-            @Dialog.Instance.Parameters.Title
-        </FluentLabel>
-    </FluentStack>
-</FluentDialogHeader>
+<CascadingValue Value="@Content">
+    <CascadingValue Value="@FormContext">
 
-@if (Content != null)
-{
-    <!-- Body -->
-    <FluentDialogBody>
+        <!-- Header -->
+        <GenericEditDialogHeader TModel="TModel" />
 
-        <!-- Auto Form -->
-        <GenericForm TModel="@TModel" Model="@Content" Context="@FormContext" />
+        <!-- Body -->
+        <GenericEditDialogBody TModel="TModel" />
 
-    </FluentDialogBody>
-}
+    </CascadingValue>
+</CascadingValue>
+
 <!-- Footer -->
-<FluentDialogFooter>      
+<FluentDialogFooter>
     <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
         <a>Some problems with verification e-mail?</a>
-        <FluentButton OnClick="@OnSendAgain" Appearance="Appearance.Lightweight">
+        <FluentButton OnClick="@SendAgain" Appearance="Appearance.Lightweight">
             Send again
         </FluentButton>
     </FluentStack>
@@ -44,7 +36,7 @@
 </FluentDialogFooter>
 
 @code
- {    
+{
     public EditContext FormContext { get; set; } = default!;
 
     [Parameter]
@@ -66,9 +58,8 @@
         }
     }
 
-    private async Task OnSendAgain(MouseEventArgs e)
+    private async Task SendAgain(MouseEventArgs e)
     {
         await Dialog.CancelAsync();
-       
     }
 }

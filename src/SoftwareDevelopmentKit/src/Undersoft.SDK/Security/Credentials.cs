@@ -34,7 +34,6 @@ namespace Undersoft.SDK.Security
         [DataMember(Order = 1)]
         public IdentityType? Type { get; set; }
 
-        [VisibleRubric]
         [RequiredRubric]
         [DataMember(Order = 2)]
         [DisplayRubric("Name")]
@@ -43,22 +42,20 @@ namespace Undersoft.SDK.Security
         [DataMember(Order = 3)]
         public string NormalizedUserName { get; set; }
 
-        [VisibleRubric]
         [RequiredRubric]
         [DataMember(Order = 4)]
         [DisplayRubric("Email")]
         public string Email { get; set; }
 
         [DataMember(Order = 5)]
+        [DisplayRubric("Old Password")]
         public string OldPassword { get; set; }
 
-        [VisibleRubric]
         [RequiredRubric]
         [DataMember(Order = 6)]
         [DisplayRubric("Password")]
         public string Password { get; set; }
 
-        [VisibleRubric]
         [RequiredRubric]
         [DataMember(Order = 7)]
         [DisplayRubric("Phone number")]
@@ -76,19 +73,16 @@ namespace Undersoft.SDK.Security
         [DataMember(Order = 11)]
         public string SessionToken { get; set; }
 
-        [VisibleRubric]
         [RequiredRubric]
         [DataMember(Order = 12)]
-        [DisplayRubric("Reseting password verification code")]
+        [DisplayRubric("Password reset verification code")]
         public string PasswordResetToken { get; set; }
 
-        [VisibleRubric]
         [RequiredRubric]
         [DataMember(Order = 13)]
         [DisplayRubric("Email verification code")]
         public string EmailConfirmationToken { get; set; }
 
-        [VisibleRubric]
         [RequiredRubric]
         [DataMember(Order = 14)]
         [DisplayRubric("Phone verification code")]
@@ -105,12 +99,32 @@ namespace Undersoft.SDK.Security
         public bool SaveAccountInCookies { get; set; }
 
         [DataMember(Order = 18)]
-        public bool Authorized { get; set; }
+        public bool Authenticated { get; set; }
 
         [DataMember(Order = 19)]
-        public bool Authenticated { get; set; }
+        public bool IsAvailable { get; set; }
 
         [DataMember(Order = 20)]
         public string ReturnPath { get; set; }
+
+        [RequiredRubric]
+        [DataMember(Order = 21)]
+        [DisplayRubric("Retype password")]
+        public string RetypePassword { get; set; }
+
+        [RequiredRubric]
+        [DataMember(Order = 22)]
+        [DisplayRubric("First name")]
+        public string FirstName { get; set; }
+
+        [RequiredRubric]
+        [DataMember(Order = 23)]
+        [DisplayRubric("Last name")]
+        public string LastName { get; set; }
+
+        [RequiredRubric]
+        [DataMember(Order = 6)]
+        [DisplayRubric("New Password")]
+        public string NewPassword { get; set; }
     }
 }

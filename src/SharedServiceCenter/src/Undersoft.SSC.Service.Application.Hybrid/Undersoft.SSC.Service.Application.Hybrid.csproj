@@ -54,7 +54,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Undersoft.SSC.Service.Application.UI\Undersoft.SSC.Service.Application.UI.csproj" />
+    <ProjectReference Include="..\Undersoft.SSC.Service.Application.UI\Undersoft.SSC.Service.Application.GUI.csproj" />
   </ItemGroup>
 
 </Project>

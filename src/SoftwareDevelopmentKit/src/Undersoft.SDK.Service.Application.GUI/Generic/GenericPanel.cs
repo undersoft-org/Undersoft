@@ -1,7 +1,7 @@
 using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Instant.Proxies;
 
-namespace Undersoft.SDK.Service.Application.UI.Generic;
+namespace Undersoft.SDK.Service.Application.GUI.Generic;
 
 public class GenericPanel<TPanel, TModel> : IGenericDialog<TModel> where TPanel : IDialogContentComponent<IGenericData<TModel>> where TModel : class, IOrigin, IInnerProxy
 {
