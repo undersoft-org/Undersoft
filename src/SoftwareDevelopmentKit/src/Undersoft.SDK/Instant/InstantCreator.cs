@@ -1,13 +1,13 @@
 ﻿namespace Undersoft.SDK.Instant
 {
-    using Undersoft.SDK.Series;
-    using Undersoft.SDK.Uniques;
     using Rubrics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.InteropServices;
+    using Undersoft.SDK.Series;
+    using Undersoft.SDK.Uniques;
 
     public class InstantCreator<T> : InstantCreator
     {
@@ -36,6 +36,8 @@
             InstantType modeType = InstantType.Reference
         )
         {
+
+
             Name =
                 (createdTypeName != null && createdTypeName != "")
                     ? createdTypeName
@@ -126,7 +128,7 @@
                             break;
                     }
 
-                    Rubrics.Update();
+                    // Rubrics.Update();
                 }
                 catch (Exception ex)
                 {
@@ -163,7 +165,6 @@
             compiledType = fcdt.CompileInstantType(Name);
             Rubrics.KeyRubrics.Add(fcdt.Identities.Values);
             Type = compiledType.New().GetType();
-
             if (!(Rubrics.AsValues().Any(m => m.Name == "code")))
             {
                 var f = this.Type.GetField("code", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -176,7 +177,15 @@
                 }
                 mr.RubricName = "code";
             }
-            Size = Rubrics.BinarySize;
+            Rubrics.Update();
+            try
+            {
+                Size = Marshal.SizeOf(Type);
+            }
+            catch (Exception ex)
+            {
+                Size = Rubrics.BinarySize;
+            }
         }
 
         private void compileInstantType(InstantCompiler compiler)
@@ -185,19 +194,15 @@
             compiledType = fcvt.CompileInstantType(Name);
             Rubrics.KeyRubrics.Add(fcvt.Identities.Values);
             Type = compiledType.New().GetType();
-            if (mode == InstantType.ValueType)
+            Rubrics.Update();
+            try
             {
-                try
-                {
-                    Size = Marshal.SizeOf(Type);
-                }
-                catch(Exception ex) 
-                {
-                    Size = Rubrics.BinarySize;
-                }
+                Size = Marshal.SizeOf(Type);
             }
-            else
+            catch (Exception ex)
+            {
                 Size = Rubrics.BinarySize;
+            }
         }
 
         private MemberRubric[] createMemberRurics(IList<MemberInfo> membersInfo)

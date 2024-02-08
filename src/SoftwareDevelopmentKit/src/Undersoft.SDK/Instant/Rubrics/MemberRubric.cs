@@ -87,7 +87,6 @@
         {
             if (dst == null)
                 dst = new MemberRubric();
-
             dst.RubricInfo = this;
             dst.RubricName = RubricName;
             dst.RubricId = RubricId;

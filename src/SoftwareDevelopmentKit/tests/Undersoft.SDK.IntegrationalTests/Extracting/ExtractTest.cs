@@ -1,7 +1,5 @@
-using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Xunit;
 
 namespace Undersoft.SDK.IntegrationTests.Extracting;
 
@@ -28,7 +26,7 @@ public class ExtractTest
 
         instantCreator = new InstantCreator(
             InstantMocks.Instant_MemberRubric_FieldsAndPropertiesModel(),
-            "Instant_MemberRubric_FieldsAndPropertiesModel_ValueType", InstantType.ValueType
+            "Instant_MemberRubric_FieldsAndPropertiesModel_ValueType", InstantType.Reference
         );
         FieldsAndPropertiesModel fom = new FieldsAndPropertiesModel();
         instantSeriesCreator = new InstantSeriesCreator(instantCreator, "InstantSeries_Compilation_Test");
@@ -192,7 +190,7 @@ public class ExtractTest
     public unsafe void Extract_StructToBytesArray_Test()
     {
         byte[] b = instant.GetStructureBytes();
-        bool equal = b.BlockEqual(serializedBytesA);
+        bool equal = serializedBytesB.BlockEqual(serializedBytesA);
         Assert.True(equal);
         object ro = instant;
         serializedBytesB = new byte[instant.GetSize()];

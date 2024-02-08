@@ -1,7 +1,10 @@
-﻿@inherits EntryLayout
+﻿@inherits LayoutComponentBase
+
 
 <FluentMessageBarProvider Section="@Constant.MESSAGES_TOP" />
 
 @Body
 
+<FluentToastProvider MaxToastCount="10" />
 <FluentDialogProvider />
+<FluentTooltipProvider />

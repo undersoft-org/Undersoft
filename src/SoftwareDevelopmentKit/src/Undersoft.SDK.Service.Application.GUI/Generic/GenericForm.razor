@@ -9,11 +9,11 @@
     <EditForm EditContext="@Context" FormName="generic_form">
         <DataAnnotationsValidator />
         <CascadingValue Value="@Model">
-            <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="20">
-                @foreach (var _rubric in _rubrics.Where(r => r.Visible))
+            <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="15">
+                @foreach (var _rubric in _rubrics)
                 {
                     <!-- Auto Field -->
-                    <GenericField TModel="TModel" Rubric="@_rubric" />
+                    <GenericField TModel="TModel" Rubric="@_rubric"/>
                 }
             </FluentStack>
         </CascadingValue>
@@ -24,7 +24,7 @@
 </div>
 
 @code {
-    private IRubrics _rubrics => _proxy.Rubrics;
+    private IRubrics _rubrics => Model.DisplayRubrics;
     private IProxy _proxy => Model.Data.Proxy;
 
     protected override void OnInitialized()

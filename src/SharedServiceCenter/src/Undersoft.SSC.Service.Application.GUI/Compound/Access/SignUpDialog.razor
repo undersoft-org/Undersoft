@@ -12,11 +12,11 @@
 <CascadingValue Value="@Content">
     <CascadingValue Value="@FormContext">
 
-    <!-- Header -->
-    <GenericEditDialogHeader TModel="TModel" />
+        <!-- Header -->
+        <GenericEditDialogHeader TModel="TModel" />
 
-    <!-- Body -->
-    <GenericEditDialogBody TModel="TModel" />
+        <!-- Body -->
+        <GenericEditDialogBody TModel="TModel" />
 
     </CascadingValue>
 </CascadingValue>
@@ -24,17 +24,16 @@
 <!-- Footer -->
 <FluentDialogFooter>
     <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
-        <a>Already have an account?</a>
+        <FluentSpacer />
         <FluentButton OnClick="@OnSignIn" Appearance="Appearance.Lightweight">
             Sign in
         </FluentButton>
+        <FluentButton Appearance="Appearance.Accent"
+                      Disabled="@(!FormContext.Validate())"
+                      OnClick="@SaveAsync">
+            Sign up
+        </FluentButton>
     </FluentStack>
-    <FluentSpacer />
-    <FluentButton Appearance="Appearance.Accent"
-                  Disabled="@(!FormContext.Validate())"
-                  OnClick="@SaveAsync">
-        Sign up
-    </FluentButton>
 </FluentDialogFooter>
 
 @code
@@ -56,7 +55,7 @@
     {
         Content.NextPath = "access/sign_in";
 
-        await Dialog.CancelAsync();
+        await Dialog.CloseAsync(Content);
     }
 
     private async Task SaveAsync()

@@ -5,7 +5,8 @@ using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Service.Application.GUI.Generic;
 
-public class GenericData<TModel> : Origin, IGenericData<TModel> where TModel : class, IOrigin, IInnerProxy
+public class GenericData<TModel> : Origin, IGenericData<TModel>
+    where TModel : class, IOrigin, IInnerProxy
 {
     public GenericData()
     {
@@ -47,16 +48,24 @@ public class GenericData<TModel> : Origin, IGenericData<TModel> where TModel : c
 
     public string? Success { get; set; }
 
-    public Icon Icon { get; set; } = new Icons.Regular.Size24.AppGeneric();
+    public Icon? Icon { get; set; }
 
-    public string? Logo { get; set; } = "~/img/logo.png";
+    public string? Logo { get; set; } = "img/logo.png";
 
-    public string Height { get; set; } = "300px";
+    public string Height { get; set; } = "380px";
 
-    public string Width { get; set; } = "300px";
+    public string Width { get; set; } = "380px";
 
     private string? nextPath = null;
-    public string? NextPath { get { return nextPath; } set { nextPath = value; HaveNext = true; } }
+    public string? NextPath
+    {
+        get { return nextPath; }
+        set
+        {
+            nextPath = value;
+            HaveNext = true;
+        }
+    }
 
     public string? NextInvoke { get; set; } = null;
 
@@ -70,28 +79,42 @@ public class GenericData<TModel> : Origin, IGenericData<TModel> where TModel : c
 
     public void SetRequired(params string[] requiredList)
     {
-        var rubrics = Data.Proxy.Rubrics.Where(r => requiredList.Contains(r.RubricName));
-        rubrics.ForEach(r => { r.Required = true; r.Visible = true; r.Editable = true; });
+        var rubrics = requiredList.ForEach(r => Data.Proxy.Rubrics[r].ShalowCopy(new MemberRubric())
+        );
+        rubrics.ForEach(r =>
+        {
+            r.Required = true;
+            r.Visible = true;
+            r.Editable = true;
+        });
         DisplayRubrics.Put(rubrics);
     }
 
     public void SetVisible(params string[] visibleList)
     {
-        var rubrics = Data.Proxy.Rubrics.Where(r => visibleList.Contains(r.RubricName));
+        var rubrics = visibleList.ForEach(r => Data.Proxy.Rubrics[r].ShalowCopy(new MemberRubric())
+        );
         rubrics.ForEach(r => r.Visible = true);
         DisplayRubrics.Put(rubrics);
     }
 
     public void SetEditable(params string[] editableList)
     {
-        var rubrics = Data.Proxy.Rubrics.Where(r => editableList.Contains(r.RubricName));
+        var rubrics = editableList.ForEach(r => Data.Proxy.Rubrics[r].ShalowCopy(new MemberRubric())
+        );
         rubrics.ForEach(r => r.Editable = true);
         DisplayRubrics.Put(rubrics);
     }
 
     public void SetDisplayNames(params DisplayPair[] displayPairList)
     {
-        var rubrics = displayPairList.ForEach(d => { var rubric = Data.Proxy.Rubrics[d.RubricName]; rubric.DisplayName = d.DisplayName; rubric.Visible = true; return rubric; });
+        var rubrics = displayPairList.ForEach(d =>
+        {
+            var rubric = Data.Proxy.Rubrics[d.RubricName].ShalowCopy(new MemberRubric());
+            rubric.DisplayName = d.DisplayName;
+            rubric.Visible = true;
+            return rubric;
+        });
         DisplayRubrics.Put(rubrics);
     }
 }

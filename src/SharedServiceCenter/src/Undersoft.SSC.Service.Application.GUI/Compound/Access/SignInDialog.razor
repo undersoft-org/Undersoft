@@ -10,41 +10,33 @@
 @implements IDialogContentComponent<IGenericData<TModel>>
 
 <CascadingValue Value="@Content">
+    <CascadingValue Value="@FormContext">
     
     <!-- Header -->
     <GenericEditDialogHeader TModel="TModel" />
 
+    <!-- Body -->
+    <GenericEditDialogBody TModel="TModel"/>
+
+    </CascadingValue>
 </CascadingValue>
-
-<!-- Body -->
-<FluentDialogBody>
-
-    <!-- Form -->
-    <GenericForm TModel="@TModel" Model="@Content" Context="@FormContext" />
-
-    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
-        <a>Some problem with credentials?</a>
-        <FluentButton OnClick="@OnResetPassword" Appearance="Appearance.Lightweight">
-            Reset password 
-        </FluentButton>
-    </FluentStack>
-
-</FluentDialogBody>
 
 <!-- Footer -->
 <FluentDialogFooter>
     <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
-        <a>Don't have an account?</a>
-        <FluentButton OnClick="@OnSignUp" Appearance="Appearance.Lightweight">
+        <FluentButton Id="ResetPassword" OnClick="@OnResetPassword" Appearance="Appearance.Lightweight">
+            Password recovery
+        </FluentButton>
+        <FluentSpacer />
+        <FluentButton Id="SignUp" OnClick="@OnSignUp" Appearance="Appearance.Lightweight">
             Sign up
         </FluentButton>
+        <FluentButton Id="SignIn" Appearance="Appearance.Accent"
+                      Disabled="@(!FormContext.Validate())"
+                      OnClick="@SaveAsync">
+            Sign in
+        </FluentButton>
     </FluentStack>
-    <FluentSpacer />
-    <FluentButton Appearance="Appearance.Accent"
-                  Disabled="@(!FormContext.Validate())"
-                  OnClick="@SaveAsync">
-        Sign in
-    </FluentButton>
 </FluentDialogFooter>
 
 @code

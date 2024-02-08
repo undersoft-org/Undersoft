@@ -12,10 +12,15 @@
 {
     private AccessDialog<SignUpDialog<Credentials>, Credentials> _dialog = default!;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        _dialog = _servicer.Initialize<AccessDialog<SignUpDialog<Credentials>, Credentials>>();
-        await SigningUp("Sign up");
+        _dialog = _servicer.Initialize<AccessDialog<SignUpDialog<Credentials>, Credentials>>();    
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await SigningUp("Sign up");
     }
 
     private async Task SigningUp(string title, string description = "")
@@ -24,6 +29,7 @@
         var data = new GenericData<Credentials>(new Credentials(), title);
         data.SetRequired("FirstName", "LastName", "Email", "Password", "RetypePassword");
         data.Description = description;
+        data.Height = "640px";       
 
         while (true)
         {

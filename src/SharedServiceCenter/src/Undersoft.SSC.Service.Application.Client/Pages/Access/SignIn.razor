@@ -10,11 +10,16 @@
 {
     private IGenericDialog<Credentials> _dialog = default!;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        _dialog = _servicer.Initialize<AccessDialog<SignInDialog<Credentials>, Credentials>>();
-        await SigningIn("Sign in");
+        _dialog = _servicer.Initialize<AccessDialog<SignInDialog<Credentials>, Credentials>>();       
     }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        await SigningIn("Sign in");
+    }    
 
     private async Task SigningIn(string title, string description = "")
     {
@@ -22,6 +27,7 @@
         data.SetRequired(nameof(Credentials.Email), nameof(Credentials.Password));
         data.SetVisible(nameof(Credentials.SaveAccountInCookies));
         data.Description = description;
+        data.Height = "440px";
 
         while (true)
         {

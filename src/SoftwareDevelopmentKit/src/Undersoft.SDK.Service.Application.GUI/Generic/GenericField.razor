@@ -11,25 +11,25 @@
         @if (_type.IsAssignableTo(typeof(long)))
         {
             <div>
-                <FluentNumberField Id="@id" Name="@name" @bind-Value="@data" Label="@displayName" Required="@required" />
+                <FluentNumberField Id="@name" Name="@name" @bind-Value="@data" Label="@displayName" Required="@required" />
             </div>
         }
         else if (_type.IsAssignableTo(typeof(DateTime)))
         {
             <div>
-                <FluentDatePicker Id="@id" Name="@name" @bind-Value="@timeValue" Label="@displayName" Required="@required" />
+                <FluentDatePicker Id="@name" Name="@name" @bind-Value="@timeValue" Label="@displayName" Required="@required" />
             </div>
         }
         else if (_type.IsAssignableTo(typeof(bool)))
         {
             <div>
-                <FluentCheckbox Id="@id" Name="@name" @bind-Value="@boolValue" Label="@displayName" Required="@required" />
+                <FluentCheckbox Id="@name" Name="@name" @bind-Value="@boolValue" Label="@displayName" Required="@required" />
             </div>
         }
         else
         {
             <div>
-                <FluentTextField Id="@id" Name="@name" @bind-Value="@textValue" Label="@displayName" TextFieldType="@textFieldType" InputMode="@inputMode" Required="@required" />
+                <FluentTextField Id="@name" Name="@name" @bind-Value="@textValue" Label="@displayName" TextFieldType="@textFieldType" InputMode="@inputMode" Required="@required" />
             </div>
         }
         <div>
@@ -39,7 +39,7 @@
     else if (_type == typeof(string) || _type.IsAssignableTo(typeof(IFormattable)))
     {
         <div>
-            <FluentTextField Id="@id" Name="@name" @bind-Value="@textValue" Label="@displayName" TextFieldType="@textFieldType" InputMode="@inputMode" Required="@required" />
+            <FluentTextField Id="@name" Name="@name" @bind-Value="@textValue" Label="@displayName" TextFieldType="@textFieldType" InputMode="@inputMode" Required="@required" />
             <FluentValidationMessage For="@(() => data)" />
         </div>
     }
@@ -57,10 +57,9 @@
     {
         _type = Rubric.RubricType;
         _proxy = Model.Data.Proxy;
-        _index = Rubric.RubricId;
-        id = $"{Rubric.RubricName}-{_index.ToString()}";
-
+        _index = Rubric.RubricId;       
         name = Rubric.RubricName;
+
         if (Rubric.DisplayName != null)
             displayName = Rubric.DisplayName;
         else
@@ -77,9 +76,7 @@
     [Parameter]
     public IRubric Rubric { get; set; } = default!;
 
-    protected string id = default!;
-
-    protected string name { get; set; } = "";
+    protected string? name { get; set; } = "";
 
     protected string? displayName { get; set; }
 

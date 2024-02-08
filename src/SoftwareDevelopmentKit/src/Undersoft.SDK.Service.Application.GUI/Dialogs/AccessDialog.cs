@@ -17,11 +17,12 @@ public class AccessDialog<TDialog, TModel> : GenericDialog<TDialog, TModel> wher
     {
         if (Service != null)
         {
-            Reference = await Service.ShowDialogAsync<TDialog>(data, new DialogParameters()
+            Reference = await Service.ShowDialogAsync<TDialog>(data, new DialogParameters<IGenericData<TModel>>()
             {
                 Height = data.Height,
                 Width = data.Width,
                 Title = data.Title,
+                Content = data,
                 PreventDismissOnOverlayClick = true,
                 ShowDismiss = false,
                 PreventScroll = true,
@@ -36,7 +37,7 @@ public class AccessDialog<TDialog, TModel> : GenericDialog<TDialog, TModel> wher
                             dialog.style.opacity = '0.0';
                             let animation = dialog.animate([
                                 {{ opacity: '1', transform: '' }},
-                                {{ opacity: '0', transform: 'translateX(200%%)' }}
+                                {{ opacity: '0', transform: 'translateX(100%)' }}
                             ], {{
                                 duration: 1000,
                             }});

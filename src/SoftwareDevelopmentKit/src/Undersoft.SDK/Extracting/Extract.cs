@@ -9,6 +9,8 @@ namespace Undersoft.SDK.Extracting
     {
         private static IExtract extractor = ExtractCompiler.GetExtractor();
 
+        public static IExtract Perform => extractor;
+
         public unsafe static bool BlockEqual(
             byte* source,
             long srcOffset,
@@ -32,6 +34,8 @@ namespace Undersoft.SDK.Extracting
                     return false;
             return true;
         }
+
+
 
         public unsafe static bool BlockEqual(byte[] source, byte[] dest)
         {
@@ -345,20 +349,20 @@ namespace Undersoft.SDK.Extracting
         {
             if (structure is ValueType)
             {
-                StructureToPointer((ValueType)structure, binary);
+                ValueStructureToPointer(structure, binary);
                 return;
             }
 
             Marshal.StructureToPtr(structure, binary, true);
         }
 
-        public unsafe static void StructureToPointer(ValueType structure, byte* binary)
+        public unsafe static void ValueStructureToPointer(ValueType structure, byte* binary)
         {
             IntPtr p = new IntPtr(binary);
-            StructureToPointer(structure, p);
+            ValueStructureToPointer(structure, p);
         }
 
-        public unsafe static void StructureToPointer(ValueType structure, IntPtr binary)
+        public unsafe static void ValueStructureToPointer(object structure, IntPtr binary)
         {
             var t = structure.GetType();
             if (t.IsPrimitive)
