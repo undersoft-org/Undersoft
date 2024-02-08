@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Security;
 using Undersoft.SDK.Service;
+using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Application.Access;
 using Undersoft.SSC.Service.Clients;
 using Undersoft.SSC.Service.Contracts;

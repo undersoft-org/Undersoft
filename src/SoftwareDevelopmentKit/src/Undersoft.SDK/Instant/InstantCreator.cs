@@ -172,7 +172,7 @@
                 if (!Rubrics.TryGet("code", out MemberRubric mr))
                 {
                     mr = new MemberRubric(f);
-                    mr.InstantCreatorField = f;
+                    mr.InstantField = f;
                     Rubrics.Insert(0, mr);
                 }
                 mr.RubricName = "code";

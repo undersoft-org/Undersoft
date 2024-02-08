@@ -5,9 +5,9 @@ using Undersoft.SDK.Service.Server.Accounts;
 
 namespace Undersoft.SSC.Service.Server.Validators;
 
-public class AccountValidator : CommandValidator<Account>
+public class AccountsValidator : CommandSetValidator<Account>
 {
-    public AccountValidator(IServicer ultimatr) : base(ultimatr)
+    public AccountsValidator(IServicer ultimatr) : base(ultimatr)
     {
         ValidationScope(
             CommandMode.Any,
@@ -36,7 +36,8 @@ public class AccountValidator : CommandValidator<Account>
                             a.User != null
                                 ? a.User.Email == cmd.Credentials.Email
                                     || a.User.UserName == cmd.Credentials.UserName
-                                : false
+                                : false,
+                    "Account already exists"
                 );
             }
         );

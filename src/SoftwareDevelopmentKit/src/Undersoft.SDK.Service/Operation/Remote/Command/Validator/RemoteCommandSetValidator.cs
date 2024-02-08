@@ -214,7 +214,7 @@ public class RemoteCommandSetValidator<TModel> : RemoteCommandSetValidatorBase<R
         where TDto : class, IOrigin, IInnerProxy
         where TStore : IDataServiceStore
     {
-        var _repository = _servicer.Load<TStore, TDto>();
+        var _repository = _servicer.Open<TStore, TDto>();
         RuleForEach(e => e)
             .MustAsync(async (cmd, cancel) => await _repository.Exist(command(cmd.Model)))
             .WithMessage(
@@ -231,7 +231,7 @@ public class RemoteCommandSetValidator<TModel> : RemoteCommandSetValidatorBase<R
         where TDto : class, IOrigin, IInnerProxy
         where TStore : IDataServiceStore
     {
-        var _repository = _servicer.Load<TStore, TDto>();
+        var _repository = _servicer.Open<TStore, TDto>();
         RuleForEach(e => e)
             .MustAsync(async (cmd, cancel) => await _repository.NotExist(command(cmd.Model)))
             .WithMessage(

@@ -1,11 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Mapper;
-using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Remote.Repository;
 using Undersoft.SDK.Service.Data.Repository.Client;
 using Undersoft.SDK.Service.Data.Repository.Source;
-using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Data.Store.Repository;
 
 namespace Undersoft.SDK.Service.Data.Repository
@@ -28,13 +26,13 @@ namespace Undersoft.SDK.Service.Data.Repository
         IDataMapper GetMapper();
         IRepositorySource GetSource<TStore, TEntity>() where TEntity : class, IOrigin, IInnerProxy;
         IEnumerable<IRepositorySource> GetSources();
-        IRemoteRepository<TDto> load<TDto>() where TDto : class, IOrigin, IInnerProxy;
-        IRemoteRepository<TDto> Load<TDto>() where TDto : class, IOrigin, IInnerProxy;
-        IRemoteRepository<TDto> Load<TDto>(Type contextType) where TDto : class, IOrigin, IInnerProxy;
-        IRemoteRepository<TDto> load<TStore, TDto>()
+        IRemoteRepository<TDto> open<TDto>() where TDto : class, IOrigin, IInnerProxy;
+        IRemoteRepository<TDto> Open<TDto>() where TDto : class, IOrigin, IInnerProxy;
+        IRemoteRepository<TDto> Open<TDto>(Type contextType) where TDto : class, IOrigin, IInnerProxy;
+        IRemoteRepository<TDto> open<TStore, TDto>()
             where TStore : IDataServiceStore
             where TDto : class, IOrigin, IInnerProxy;
-        IRemoteRepository<TDto> Load<TStore, TDto>()
+        IRemoteRepository<TDto> Open<TStore, TDto>()
             where TStore : IDataServiceStore
             where TDto : class, IOrigin, IInnerProxy;
         bool TryGetClient(Type contextType, out IRepositoryClient source);

@@ -4,7 +4,7 @@ using System.Text;
 using Undersoft.SDK.Extracting;
 using Undersoft.SDK.Instant.Updating;
 
-namespace Undersoft.SDK.Security
+namespace Undersoft.SDK.Service.Access
 {
     [Serializable]
     public class SecurityString : ISecurityString

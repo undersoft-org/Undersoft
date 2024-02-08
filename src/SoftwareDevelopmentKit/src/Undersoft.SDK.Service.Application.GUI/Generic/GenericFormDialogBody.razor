@@ -4,13 +4,14 @@
 @using Undersoft.SDK
 
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
+@typeparam TValidator where TValidator : class, IValidator<IGenericData<TModel>>
 
 <div>
     <!-- Body -->
     <FluentDialogBody>
 
         <!-- Auto Form -->
-        <GenericForm TModel="@TModel" Model="@Content" Context="@FormContext" />
+        <GenericForm TValidator="TValidator" TModel="@TModel" Model="@Content" Context="@FormContext" />
 
     </FluentDialogBody>
 </div>

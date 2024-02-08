@@ -1,13 +1,13 @@
 ﻿namespace Undersoft.SDK.Instant.Proxies;
 
-using Undersoft.SDK.Series;
 using Rubrics;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;
-using Uniques;
 using Undersoft.SDK;
+using Undersoft.SDK.Series;
+using Uniques;
 
 public class ProxyCompiler : ProxyCompilerBase
 {
@@ -31,7 +31,7 @@ public class ProxyCompiler : ProxyCompilerBase
 
         CreateSerialCodeProperty(tb, typeof(Uscn), "Code");
 
-       // CreateValueArrayProperty(tb);
+        // CreateValueArrayProperty(tb);
 
         CreateItemByIntProperty(tb);
 
@@ -41,9 +41,9 @@ public class ProxyCompiler : ProxyCompilerBase
 
         CreateTypeIdProperty(tb);
 
-       // CreateGetUniqueBytesMethod(tb);
+        // CreateGetUniqueBytesMethod(tb);
 
-       // CreateGetBytesMethod(tb);
+        // CreateGetBytesMethod(tb);
 
         CreateEqualsMethod(tb);
 
@@ -124,13 +124,13 @@ public class ProxyCompiler : ProxyCompilerBase
                     if (mr.Field != null)
                     {
                         if (!(mr.Field.IsBackingField))
-                            ResolveMemberAttributes(null, new MemberRubric(mr.Field));
+                            ResolveMemberAttributes(null, mr.Field, mr.Member);
                         else if (mr.Property != null)
-                            ResolveMemberAttributes(null, new MemberRubric(mr.Property));
+                            ResolveMemberAttributes(null, mr.Property, mr.Member);
                     }
                     else if (mr.Property != null)
                     {
-                        ResolveMemberAttributes(null, new MemberRubric(mr.Property));
+                        ResolveMemberAttributes(null, mr.Property, mr.Member);
                     }
                 }
             );
@@ -600,7 +600,7 @@ public class ProxyCompiler : ProxyCompilerBase
             PropertyAttributes.HasDefault,
             type,
             new Type[] { type }
-        );        
+        );
 
 
 
@@ -664,7 +664,7 @@ public class ProxyCompiler : ProxyCompilerBase
             newFieldModel.SetMember(new MemberRubric(prop));
             rubricBuilders.Add(newFieldModel);
         }
-        else if(existedFiedModel != null)
+        else if (existedFiedModel != null)
         {
             existedFiedModel.SetMember(new MemberRubric(prop));
         }
@@ -968,7 +968,6 @@ public class ProxyCompiler : ProxyCompilerBase
             TypeAttributes.AnsiClass
                 | TypeAttributes.Public
                 | TypeAttributes.Class
-                | TypeAttributes.Serializable
         );
 
         tb.SetCustomAttribute(

@@ -6,7 +6,6 @@ namespace Undersoft.SDK.Instant.Stocks
     using System.IO;
     using System.Runtime.InteropServices;
     using Undersoft.SDK.Instant.Proxies;
-    using Undersoft.SDK.Security;
 
     public unsafe class StockContext : InnerProxy, IStockContext, IDisposable
     {
@@ -109,8 +108,6 @@ namespace Undersoft.SDK.Instant.Stocks
         }
 
         public int ServerCount { get; set; } = 1;
-
-        public ServiceSite Site { get; set; }
 
         public ushort StockId { get; set; } = 0;
 
@@ -244,7 +241,7 @@ namespace Undersoft.SDK.Instant.Stocks
                     fixed (byte* msgbuff = buffer)
                     {
                         Extract.CopyBlock(GCHandle.FromIntPtr(binReceivePtr).AddrOfPinnedObject().ToPointer(), (ulong)destid, msgbuff, (ulong)offset, (ulong)length);
-                        
+
                     }
                 }
             }

@@ -1,6 +1,7 @@
 ﻿@using Undersoft.SDK.Instant.Updating
 @using Undersoft.SDK.Service;
 @using Undersoft.SDK.Service.Application.Access;
+@using Undersoft.SDK.Service.Access;
 
 @page "/access/confirm_email"
 @inject IAccountAccess _access
@@ -13,7 +14,7 @@
 
     protected override void OnInitialized()
     {
-        _dialog = _servicer.Initialize<AccessDialog<ConfirmEmailDialog<Credentials>, Credentials>>();
+        _dialog = _servicer.Initialize<AccessDialog<ConfirmEmailDialog<Credentials, AccessValidator>, Credentials>>();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -24,8 +25,8 @@
 
     private async Task ConfirmingEmail(string title, string description = "")
     {       
-        var data = new GenericData<Credentials>(new Credentials(), title);
-        data.SetRequired("EmailConfirmationToken");
+        var data = new GenericData<Credentials>(new Credentials(), CommandMode.Setup, title);
+        data.SetVisible("EmailConfirmationToken");
         data.Description = description;
 
         while (true)

@@ -33,7 +33,7 @@
             );
             rubricBuilders.ForEach(
                 (fp, x) =>
-                {                   
+                {
                     fp.Member.RubricId = x;
                     fp.Member.FieldId = x;
                 }
@@ -61,12 +61,10 @@
 
         public MemberInfo[] GetMembers(Type modelType)
         {
-            //var excludedNames = new string[] { "proxy" };
             return modelType
                 .GetMembers(BindingFlags.Instance | BindingFlags.Public)
                 .Where(
                     m =>
-                        //!excludedNames.Contains(m.Name.ToLower())
                          (
                             m.MemberType == MemberTypes.Field
                             || (

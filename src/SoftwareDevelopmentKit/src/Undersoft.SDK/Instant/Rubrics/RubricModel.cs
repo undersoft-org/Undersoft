@@ -18,7 +18,7 @@
             {
                 SetField((FieldRubric)member.RubricInfo);
                 Member ??= member;
-                Member.InstantCreatorField = member.InstantCreatorField;
+                Member.InstantField = member.InstantField;
             }
             else if (member.MemberType == MemberTypes.Property)
             {

@@ -1,21 +1,28 @@
-using Undersoft.SDK.Series;
-using Undersoft.SDK.Service.Data.Entity;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System;
+using Undersoft.SDK.Instant.Rubrics.Attributes;
+using Undersoft.SDK.Series;
 
 namespace Undersoft.SDK.IntegrationTests.Instant
 {
     public class Agreement : Origin
     {
+        [DisplayRubric("Agreement kind")]
         public AgreementKind Kind { get; set; }
-        [Key]
+        [IdentityRubric]
+        [RequiredRubric]
         public Guid UserId { get; set; }
+        [RequiredRubric]
+        [DisplayRubric("Version number")]
         public long VersionId { get; set; }
+        [RequiredRubric]
         public long FormatId { get; set; }
+        [RequiredRubric]
         public string Language { get; set; } = "pl";
+        [VisibleRubric]
         public string Comments { get; set; } = "Comments";
+        [DisplayRubric("Email address")]
         public string Email { get; set; } = "fdfds";
+        [DisplayRubric("Phone number")]
         public string PhoneNumber { get; set; } = "3453453";
 
         public virtual Listing<AgreementFormat> Formats { get; set; } = null;

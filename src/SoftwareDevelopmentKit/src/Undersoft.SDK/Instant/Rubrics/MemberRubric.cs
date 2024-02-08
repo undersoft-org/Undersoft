@@ -54,7 +54,7 @@
             )
         {
             InstantType = member.InstantType;
-            InstantCreatorField = member.InstantCreatorField;
+            InstantField = member.InstantField;
             FieldId = member.FieldId;
             RubricOffset = member.RubricOffset;
             IsKey = member.IsKey;
@@ -93,7 +93,7 @@
             dst.Visible = Visible;
             dst.Editable = Editable;
             dst.InstantType = InstantType;
-            dst.InstantCreatorField = InstantCreatorField;
+            dst.InstantField = InstantField;
             dst.FieldId = FieldId;
             dst.RubricOffset = RubricOffset;
             dst.IsKey = IsKey;
@@ -104,6 +104,24 @@
             dst.DisplayName = DisplayName;
             dst.Id = (long)RubricName.UniqueKey64();
 
+            return dst;
+        }
+
+        public MemberRubric CopyAttributeValues(MemberRubric dst)
+        {
+            if (dst == null)
+                dst = new MemberRubric();
+            dst.RubricInfo = this;
+            dst.RubricName = RubricName;
+            dst.Visible = Visible;
+            dst.Editable = Editable;
+            dst.RubricOffset = RubricOffset;
+            dst.IsKey = IsKey;
+            dst.IsIdentity = IsIdentity;
+            dst.IsAutoincrement = IsAutoincrement;
+            dst.IdentityOrder = IdentityOrder;
+            dst.Required = Required;
+            dst.DisplayName = DisplayName;
             return dst;
         }
 
@@ -168,7 +186,7 @@
 
         public int FieldId { get; set; }
 
-        public FieldInfo InstantCreatorField { get; set; }
+        public FieldInfo InstantField { get; set; }
 
         public Type InstantType { get; set; }
 

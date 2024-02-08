@@ -60,6 +60,7 @@
         _index = Rubric.RubricId;       
         name = Rubric.RubricName;
 
+
         if (Rubric.DisplayName != null)
             displayName = Rubric.DisplayName;
         else
@@ -88,8 +89,8 @@
 
     protected object? data
     {
-        get { return _proxy[_index]; }
-        set { _proxy[_index] = value; }
+        get { return Model[_index]; }
+        set { Model[_index] = value; }
     }
 
     protected string? textValue

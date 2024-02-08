@@ -8,12 +8,12 @@ using Undersoft.SDK.Service.Operation.Command;
 
 namespace Undersoft.SDK.Service.Server.Behaviour
 {
-    public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class CommandSetValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : ICommandSet, IRequest<TResponse>
     {
         private readonly IEnumerable<IValidator<TResponse>> _validators;
 
-        public ValidationBehaviour(IEnumerable<IValidator<TResponse>> validators)
+        public CommandSetValidationBehaviour(IEnumerable<IValidator<TResponse>> validators)
         {
             _validators = validators;
         }

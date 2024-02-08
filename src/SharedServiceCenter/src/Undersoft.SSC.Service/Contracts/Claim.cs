@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using Undersoft.SDK.Security;
+using Undersoft.SDK.Service.Access;
 
 namespace Undersoft.SSC.Service.Contracts;
 

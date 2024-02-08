@@ -4,6 +4,7 @@
 @using Undersoft.SDK
 
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
+@typeparam TValidator where TValidator : class, IValidator<IGenericData<TModel>>
 
 @implements IDialogContentComponent<IGenericData<TModel>>
 
@@ -11,13 +12,13 @@
     <CascadingValue Value="@FormContext">
 
         <!-- Header -->
-        <GenericEditDialogHeader TModel="TModel" />
+        <GenericFormDialogHeader TModel="TModel" />
 
         <!-- Body -->
-        <GenericEditDialogBody TModel="TModel" />
+        <GenericFormDialogBody TValidator="TValidator" TModel="TModel" />
 
         <!-- Footer -->
-        <GenericEditDialogFooter TModel="TModel" />
+        <GenericFormDialogFooter TModel="TModel" />
 
     </CascadingValue>
 </CascadingValue>
@@ -34,7 +35,7 @@
 
     protected override void OnInitialized()
     {
-        FormContext = new EditContext(Content);
+        FormContext = new EditContext(Content.Data);
     }
 
     private async Task SaveAsync()

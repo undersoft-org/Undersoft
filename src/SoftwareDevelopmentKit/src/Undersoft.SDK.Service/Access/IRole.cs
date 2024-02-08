@@ -1,6 +1,6 @@
 ﻿using Undersoft.SDK.Series;
 
-namespace Undersoft.SDK.Security
+namespace Undersoft.SDK.Service.Access
 {
     public interface IRole
     {

@@ -1,5 +1,6 @@
 ﻿@using Undersoft.SDK.Instant.Updating
-@using Undersoft.SDK.Service
+@using Undersoft.SDK.Service;
+@using Undersoft.SDK.Service.Access
 
 @page "/access/sign_in"
 @inject IAccountAccess _access
@@ -12,18 +13,18 @@
 
     protected override void OnInitialized()
     {
-        _dialog = _servicer.Initialize<AccessDialog<SignInDialog<Credentials>, Credentials>>();       
+        _dialog = _servicer.Initialize<AccessDialog<SignInDialog<Credentials, AccessValidator>, Credentials>>();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-
-        await SigningIn("Sign in");
+        if(firstRender)
+            await SigningIn("Sign in");
     }    
 
     private async Task SigningIn(string title, string description = "")
     {
-        var data = new GenericData<Credentials>(new Credentials(), title);
+        var data = new GenericData<Credentials>(new Credentials(), CommandMode.Access, title);
         data.SetRequired(nameof(Credentials.Email), nameof(Credentials.Password));
         data.SetVisible(nameof(Credentials.SaveAccountInCookies));
         data.Description = description;

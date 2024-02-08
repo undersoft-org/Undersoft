@@ -34,8 +34,7 @@ namespace Undersoft.SDK
         public event PropertyChangedEventHandler PropertyChanged;
 
         [Key]
-        [KeyRubric]
-        [IdentityRubric]
+        [KeyRubric(Order = 0)]
         [DataMember(Order = 1)]
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -52,7 +51,7 @@ namespace Undersoft.SDK
             }
         }
 
-        [IdentityRubric]
+        [IdentityRubric(Order = 1)]
         [DataMember(Order = 2)]
         [Column(Order = 2)]
         public virtual long TypeId
@@ -85,7 +84,7 @@ namespace Undersoft.SDK
         public virtual string TypeName { get; set; }
 
         [Required]
-        [IdentityRubric]
+        [IdentityRubric(Order = 2)]
         [StringLength(32)]
         [ConcurrencyCheck]
         [DataMember(Order = 4)]

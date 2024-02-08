@@ -3,7 +3,7 @@
     [Flags]
     public enum CommandMode
     {
-        Any = 31,
+        Any = 511,
         Create = 1,
         Change = 2,
         Update = 4,

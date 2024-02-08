@@ -1,15 +1,15 @@
 ﻿namespace Undersoft.SDK.Instant
 {
     using Extracting;
+    using Microsoft.IdentityModel.Tokens;
+    using Rubrics;
+    using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
     using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
-    using System.Linq;
     using Undersoft.SDK.Series;
     using Uniques;
-    using Rubrics;
-    using Microsoft.IdentityModel.Tokens;
 
     public class InstantCompilerReferenceTypes : InstantCompiler
     {
@@ -71,7 +71,7 @@
 
                     if (fb != null)
                     {
-                        ResolveInstantCreatorAttributes(fb, attributeAtMember);
+                        ResolveMemberAttributes(fb, attributeAtMember.RubricInfo, attributeAtMember);
 
                         PropertyBuilder pi = createProperty(tb, fb, fp.Type, fp.Name);
 

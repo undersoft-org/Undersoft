@@ -3,7 +3,6 @@
 namespace Undersoft.SDK.Instant
 {
     using Attributes;
-    using Undersoft.SDK.Series;
     using Rubrics;
     using Rubrics.Attributes;
     using System.Collections.Generic;
@@ -11,8 +10,9 @@ namespace Undersoft.SDK.Instant
     using System.Reflection;
     using System.Reflection.Emit;
     using System.Runtime.InteropServices;
-    using Uniques;
     using Undersoft.SDK;
+    using Undersoft.SDK.Series;
+    using Uniques;
 
     public enum InstantType
     {
@@ -38,53 +38,49 @@ namespace Undersoft.SDK.Instant
             length = rubricBuilders.Count;
         }
 
-        void resolveDisplayRubricAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+
+        void resolveInstantCreatorDisplayAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
         {
-            object[] o = mi.GetCustomAttributes(typeof(DisplayRubricAttribute), false);
-            if ((o != null) && o.Any())
+            object o = mi.GetCustomAttributes(typeof(DisplayRubricAttribute), false).FirstOrDefault();
+            if ((o != null))
             {
-                DisplayRubricAttribute fda = (DisplayRubricAttribute)o.First();
+                DisplayRubricAttribute fda = (DisplayRubricAttribute)o;
                 ;
                 mr.DisplayName = fda.Name;
 
                 if (fb != null)
-                    CreateDisplayRubricAttribute(fb, fda);
+                    CreateInstantCreatorDisplayAttribute(fb, fda);
             }
             else if (mr.DisplayName != null)
             {
-                CreateDisplayRubricAttribute(fb, new DisplayRubricAttribute(mr.DisplayName));
+                CreateInstantCreatorDisplayAttribute(fb, new DisplayRubricAttribute(mr.DisplayName));
             }
         }
 
-        void resolveIdentityRubricAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        void resolveInstantCreatorIdentityAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
         {
             if (!mr.IsKey)
             {
-                object[] o = mi.GetCustomAttributes(typeof(IdentityRubricAttribute), false);
-                if ((o != null) && o.Any())
+                object o = mi.GetCustomAttributes(typeof(IdentityRubricAttribute), false).FirstOrDefault();
+                if ((o != null))
                 {
-                    IdentityRubricAttribute fia = (IdentityRubricAttribute)o.First();
+                    IdentityRubricAttribute fia = (IdentityRubricAttribute)o;
                     mr.IsIdentity = true;
                     mr.IsAutoincrement = fia.IsAutoincrement;
-
-                    if (Identities.ContainsKey(fia.Order))
-                        fia.Order = (short)(Identities.LastOrDefault().Key + 1);
-
+                    fia.Order = (short)(Identities.Count);
                     mr.IdentityOrder = fia.Order;
                     Identities.Add(mr.IdentityOrder, mr);
 
                     if (fb != null)
-                        CreateIdentityRubricAttribute(fb, fia);
+                        CreateInstantCreatorIdentityAttribute(fb, fia);
                 }
                 else if (mr.IsIdentity)
                 {
-                    if (Identities.ContainsKey(mr.IdentityOrder))
-                        mr.IdentityOrder += (short)(Identities.LastOrDefault().Key + 1);
-
+                    mr.IdentityOrder = (short)(Identities.Count);
                     Identities.Add(mr.IdentityOrder, mr);
 
                     if (fb != null)
-                        CreateIdentityRubricAttribute(
+                        CreateInstantCreatorIdentityAttribute(
                             fb,
                             new IdentityRubricAttribute
                             {
@@ -96,43 +92,43 @@ namespace Undersoft.SDK.Instant
             }
         }
 
-        void resolveKeyRubricAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        void resolveInstantCreatorKeyAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
         {
-            object[] o = mi.GetCustomAttributes(typeof(KeyAttribute), false);
-            if ((o == null) || !o.Any())
-                o = mi.GetCustomAttributes(typeof(KeyRubricAttribute), false);
+            object o = mi.GetCustomAttributes(typeof(KeyAttribute), false).FirstOrDefault();
+            if ((o == null))
+                o = mi.GetCustomAttributes(typeof(KeyRubricAttribute), false).FirstOrDefault();
             else
-                o[0] = new KeyRubricAttribute();
-
-            if ((o != null) && o.Any())
             {
-                KeyRubricAttribute fka = (KeyRubricAttribute)o.First();
+                o = new object();
+                o = new KeyRubricAttribute();
+            }
+
+            if ((o != null))
+            {
+                KeyRubricAttribute fka = (KeyRubricAttribute)o;
                 mr.IsKey = true;
                 mr.IsIdentity = true;
                 mr.IsAutoincrement = fka.IsAutoincrement;
 
-                if (Identities.ContainsKey(fka.Order))
-                    fka.Order = (short)(Identities.LastOrDefault().Key + 1);
-
+                fka.Order = (short)(Identities.Count);
                 mr.IdentityOrder = fka.Order;
                 Identities.Add(mr.IdentityOrder, mr);
+
                 mr.Required = true;
 
                 if (fb != null)
-                    CreateKeyRubricAttribute(fb, fka);
+                    CreateInstantCreatorKeyAttribute(fb, fka);
             }
             else if (mr.IsKey)
             {
                 mr.IsIdentity = true;
                 mr.Required = true;
 
-                if (Identities.ContainsKey(mr.IdentityOrder))
-                    mr.IdentityOrder += (short)(Identities.LastOrDefault().Key + 1);
-
+                mr.IdentityOrder = (short)(Identities.Count);
                 Identities.Add(mr.IdentityOrder, mr);
 
                 if (fb != null)
-                    CreateKeyRubricAttribute(
+                    CreateInstantCreatorKeyAttribute(
                         fb,
                         new KeyRubricAttribute
                         {
@@ -143,38 +139,64 @@ namespace Undersoft.SDK.Instant
             }
         }
 
-        void resolveRquiredRubricAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        void resolveInstantCreatorRquiredAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
         {
-            object[] o = mi.GetCustomAttributes(typeof(RequiredRubricAttribute), false);
-            if ((o != null) && o.Any())
+            object o = mi.GetCustomAttributes(typeof(RequiredAttribute), false).FirstOrDefault();
+            if ((o == null))
+                o = mi.GetCustomAttributes(typeof(RequiredRubricAttribute), false).FirstOrDefault();
+            else
+            {
+                o = new object();
+                o = new RequiredRubricAttribute();
+            }
+
+            if ((o != null))
             {
                 mr.Required = true;
 
                 if (fb != null)
-                    CreateRequiredRubricAttribute(fb);
+                    CreateInstantCreatorRequiredAttribute(fb);
             }
             else if (mr.Required)
             {
                 if (fb != null)
-                    CreateRequiredRubricAttribute(fb);
+                    CreateInstantCreatorRequiredAttribute(fb);
             }
         }
 
-        void resolveTreatmentRubricAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        void resolveInstantCreatorVisibleAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
         {
-            object[] o = mi.GetCustomAttributes(typeof(RubricAggregateAttribute), false);
-            if ((o != null) && o.Any())
+            object o = mi.GetCustomAttributes(typeof(VisibleRubricAttribute), false).FirstOrDefault();
+            if ((o != null))
             {
-                RubricAggregateAttribute fta = (RubricAggregateAttribute)o.First();
+                mr.Visible = true;
+
+                if (fb != null)
+                    CreateInstantCreatorVisibleAttribute(fb);
+            }
+            else if (mr.Visible)
+            {
+                if (fb != null)
+                    CreateInstantCreatorVisibleAttribute(fb);
+            }
+        }
+
+        void resolveInstantCreatorTreatmentAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        {
+            object o = mi.GetCustomAttributes(typeof(RubricAggregateAttribute), false).FirstOrDefault();
+            if ((o != null))
+            {
+                RubricAggregateAttribute fta = (RubricAggregateAttribute)o;
                 ;
+
                 mr.AggregationOperand = fta.SummaryOperand;
 
                 if (fb != null)
-                    CreateTreatmentRubricAttribute(fb, fta);
+                    CreateInstantCreatorTreatmentAttribute(fb, fta);
             }
             else if (mr.AggregationOperand != AggregationOperand.None)
             {
-                CreateTreatmentRubricAttribute(
+                CreateInstantCreatorTreatmentAttribute(
                     fb,
                     new RubricAggregateAttribute { SummaryOperand = mr.AggregationOperand }
                 );
@@ -257,7 +279,7 @@ namespace Undersoft.SDK.Instant
             );
         }
 
-        public virtual void CreateDisplayRubricAttribute(
+        public virtual void CreateInstantCreatorDisplayAttribute(
             FieldBuilder field,
             DisplayRubricAttribute attrib
         )
@@ -267,7 +289,7 @@ namespace Undersoft.SDK.Instant
             );
         }
 
-        public virtual void CreateIdentityRubricAttribute(
+        public virtual void CreateInstantCreatorIdentityAttribute(
             FieldBuilder field,
             IdentityRubricAttribute attrib
         )
@@ -286,7 +308,7 @@ namespace Undersoft.SDK.Instant
             );
         }
 
-        public virtual void CreateKeyRubricAttribute(FieldBuilder field, KeyRubricAttribute attrib)
+        public virtual void CreateInstantCreatorKeyAttribute(FieldBuilder field, KeyRubricAttribute attrib)
         {
             field.SetCustomAttribute(
                 new CustomAttributeBuilder(
@@ -302,14 +324,21 @@ namespace Undersoft.SDK.Instant
             );
         }
 
-        public virtual void CreateRequiredRubricAttribute(FieldBuilder field)
+        public virtual void CreateInstantCreatorRequiredAttribute(FieldBuilder field)
         {
             field.SetCustomAttribute(
                 new CustomAttributeBuilder(figureRequiredCtor, Type.EmptyTypes)
             );
         }
 
-        public virtual void CreateTreatmentRubricAttribute(
+        public void CreateInstantCreatorVisibleAttribute(FieldBuilder field)
+        {
+            field.SetCustomAttribute(
+                new CustomAttributeBuilder(figureVisibleCtor, Type.EmptyTypes)
+            );
+        }
+
+        public virtual void CreateInstantCreatorTreatmentAttribute(
             FieldBuilder field,
             RubricAggregateAttribute attrib
         )
@@ -658,24 +687,28 @@ namespace Undersoft.SDK.Instant
 
         public abstract TypeBuilder GetTypeBuilder(string typeName);
 
-        public virtual void ResolveInstantCreatorAttributes(FieldBuilder fb, MemberRubric mr)
+        public MemberRubric ResolveMemberAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
         {
-            MemberInfo mi = mr.RubricInfo;
             if (
                 !(((IMemberRubric)mi).MemberInfo is FieldBuilder)
                 && !(((IMemberRubric)mi).MemberInfo is PropertyBuilder)
             )
             {
-                resolveKeyRubricAttributes(fb, mi, mr);
+                mi = ((IMemberRubric)mi).MemberInfo;
 
-                resolveIdentityRubricAttributes(fb, mi, mr);
+                resolveInstantCreatorKeyAttributes(fb, mi, mr);
 
-                resolveRquiredRubricAttributes(fb, mi, mr);
+                resolveInstantCreatorIdentityAttributes(fb, mi, mr);
 
-                resolveDisplayRubricAttributes(fb, mi, mr);
+                resolveInstantCreatorRquiredAttributes(fb, mi, mr);
 
-                resolveTreatmentRubricAttributes(fb, mi, mr);
+                resolveInstantCreatorVisibleAttributes(fb, mi, mr);
+
+                resolveInstantCreatorDisplayAttributes(fb, mi, mr);
+
+                resolveInstantCreatorTreatmentAttributes(fb, mi, mr);
             }
+            return mr;
         }
 
         public virtual void ResolveMarshalAsAttributeForArray(
@@ -685,9 +718,9 @@ namespace Undersoft.SDK.Instant
         )
         {
             MemberInfo _member = member.RubricInfo;
-            if ((member is MemberRubric) && (member.InstantCreatorField != null))
+            if ((member is MemberRubric) && (member.InstantField != null))
             {
-                _member = member.InstantCreatorField;
+                _member = member.InstantField;
             }
 
             object[] o = _member.GetCustomAttributes(typeof(MarshalAsAttribute), false);
@@ -736,9 +769,9 @@ namespace Undersoft.SDK.Instant
         )
         {
             MemberInfo _member = member.RubricInfo;
-            if ((member is MemberRubric) && (member.InstantCreatorField != null))
+            if ((member is MemberRubric) && (member.InstantField != null))
             {
-                _member = member.InstantCreatorField;
+                _member = member.InstantField;
             }
 
             object[] o = _member.GetCustomAttributes(typeof(MarshalAsAttribute), false);

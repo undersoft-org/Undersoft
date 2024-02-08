@@ -148,7 +148,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
-                    Authorized = table.Column<bool>(type: "boolean", nullable: false),
+                    IsAvailable = table.Column<bool>(type: "boolean", nullable: false),
                     Authenticated = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -163,6 +163,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RegistrationCompleted = table.Column<bool>(type: "boolean", nullable: false),
+                    IsLockedOut = table.Column<bool>(type: "boolean", nullable: false),
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     AccountId = table.Column<long>(type: "bigint", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),

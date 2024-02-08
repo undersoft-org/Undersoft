@@ -1,6 +1,6 @@
 ﻿using Undersoft.SDK.Instant.Proxies;
 
-namespace Undersoft.SDK.Security
+namespace Undersoft.SDK.Service.Access
 {
     public interface IAuthorization : IOrigin, IInnerProxy
     {

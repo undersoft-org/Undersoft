@@ -15,13 +15,8 @@ using Operation.Query;
 using Operation.Query.Handler;
 using Undersoft.SDK.Service.Data.Contract;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation.Command;
-using Undersoft.SDK.Service.Operation.Command.Handler;
 using Undersoft.SDK.Service.Operation.Command.Notification;
 using Undersoft.SDK.Service.Operation.Command.Notification.Handler;
-using Undersoft.SDK.Service.Operation.Command.Validator;
-using Undersoft.SDK.Service.Operation.Query;
-using Undersoft.SDK.Service.Operation.Query.Handler;
 
 public partial class ServerSetup
 {
@@ -34,7 +29,8 @@ public partial class ServerSetup
         service.AddValidatorsFromAssemblies(assemblies, ServiceLifetime.Singleton, null, true);
 
         service.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
-        service.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+        service.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandValidationBehaviour<,>));
+        service.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandSetValidationBehaviour<,>));
 
         service.AddMediatR(assemblies);
 
@@ -472,7 +468,7 @@ public partial class ServerSetup
                                 typeof(UpdatedHandler<,,>).MakeGenericType(store, entityType, dto)
                             );
                         }
-                       // mapper.TryCreateMap(entityType, dto);
+                        // mapper.TryCreateMap(entityType, dto);
                     }
                 }
             }

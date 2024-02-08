@@ -6,6 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Undersoft.SDK.Security;
+using Undersoft.SDK.Service.Access;
 
 namespace Undersoft.SDK.Service.Data.Repository
 {

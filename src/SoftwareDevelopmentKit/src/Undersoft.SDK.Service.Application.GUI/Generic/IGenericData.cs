@@ -1,12 +1,20 @@
 ﻿using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Instant.Rubrics;
+using Undersoft.SDK.Service.Operation.Command;
 
 namespace Undersoft.SDK.Service.Application.GUI.Generic
 {
-    public interface IGenericData<TModel> where TModel : class, IOrigin, IInnerProxy
+    public interface IGenericData<TModel> : IGenericData where TModel : class, IOrigin, IInnerProxy
     {
-        TModel Data { get; set; }
+        new TModel Data { get; set; }
+    }
+
+    public interface IGenericData
+    {
+        object? this[int id] { get; set; }
+        object? this[string name] { get; set; }
+        IInnerProxy Data { get; set; }
         string? Description { get; set; }
         string? Note { get; set; }
         string? Info { get; set; }
@@ -22,6 +30,7 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
         IRubrics DisplayRubrics { get; set; }
         string? Title { get; set; }
         string Width { get; set; }
+        CommandMode CommandMode { get; set; }
 
         void SetRequired(params string[] requiredList);
         void SetVisible(params string[] visibleList);

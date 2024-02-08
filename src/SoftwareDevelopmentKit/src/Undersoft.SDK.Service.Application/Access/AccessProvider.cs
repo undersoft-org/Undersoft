@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text.Json;
 using Undersoft.SDK.Security;
 using Undersoft.SDK.Series;
+using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Application.Extensions;
 using Undersoft.SDK.Service.Data.Remote.Repository;
 using Undersoft.SDK.Service.Data.Store;

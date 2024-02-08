@@ -8,6 +8,7 @@ using Instant.Updating;
 using Logging;
 using Series;
 using Undersoft.SDK.Security;
+using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Entity;
 using Undersoft.SDK.Service.Data.Mapper;

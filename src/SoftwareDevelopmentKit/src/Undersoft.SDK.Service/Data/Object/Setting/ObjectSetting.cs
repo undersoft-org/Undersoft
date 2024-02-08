@@ -3,11 +3,9 @@ using System.Runtime.Serialization;
 
 namespace Undersoft.SDK.Service.Data.Object.Setting;
 
-using AutoMapper;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Undersoft.SDK.Instant.Rubrics.Attributes;
 using Undersoft.SDK.Serialization;
 using Undersoft.SDK.Service.Data.Identifier;
 
@@ -20,7 +18,6 @@ public class ObjectSetting<TSetting, TKind> : DataObject, ISerializableJsonDocum
     [NotMapped]
     [JsonIgnore]
     [IgnoreDataMember]
-    [IgnoreMap]
     internal IJsonDocumentSerializer _serializer;
 
     public ObjectSetting() : base()

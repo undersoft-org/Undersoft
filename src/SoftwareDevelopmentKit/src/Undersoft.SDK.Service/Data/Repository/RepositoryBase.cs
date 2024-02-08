@@ -11,6 +11,7 @@ using Data.Entity;
 using Invoking;
 using Undersoft.SDK;
 using Undersoft.SDK.Security;
+using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Remote;
 using Undersoft.SDK.Service.Data.Remote.Repository;

@@ -66,20 +66,20 @@ public class RepositoryManager : Registry<IDataStoreContext>, IDisposable, IAsyn
         return Manager.GetService<IStoreRepository<TStore, TEntity>>();
     }
 
-    public IRemoteRepository<TDto> load<TStore, TDto>() where TDto : class, IOrigin, IInnerProxy where TStore : IDataServiceStore
+    public IRemoteRepository<TDto> open<TStore, TDto>() where TDto : class, IOrigin, IInnerProxy where TStore : IDataServiceStore
     {
-        return Load<TStore, TDto>();
+        return Open<TStore, TDto>();
     }
-    public IRemoteRepository<TDto> load<TDto>() where TDto : class, IOrigin, IInnerProxy
+    public IRemoteRepository<TDto> open<TDto>() where TDto : class, IOrigin, IInnerProxy
     {
-        return Load<TDto>();
+        return Open<TDto>();
     }
 
-    public IRemoteRepository<TDto> Load<TDto>() where TDto : class, IOrigin, IInnerProxy
+    public IRemoteRepository<TDto> Open<TDto>() where TDto : class, IOrigin, IInnerProxy
     {
-        return Load<TDto>(OpenDataRegistry.GetContextTypes<TDto>().FirstOrDefault());
+        return Open<TDto>(OpenDataRegistry.GetContextTypes<TDto>().FirstOrDefault());
     }
-    public IRemoteRepository<TDto> Load<TDto>(Type contextType)
+    public IRemoteRepository<TDto> Open<TDto>(Type contextType)
        where TDto : class, IOrigin, IInnerProxy
     {
         return (IRemoteRepository<TDto>)Manager.GetService(typeof(IRemoteRepository<,>)
@@ -87,7 +87,7 @@ public class RepositoryManager : Registry<IDataStoreContext>, IDisposable, IAsyn
                                                  .Stores[contextType],
                                                   typeof(TDto)));
     }
-    public IRemoteRepository<TDto> Load<TStore, TDto>() where TDto : class, IOrigin, IInnerProxy where TStore : IDataServiceStore
+    public IRemoteRepository<TDto> Open<TStore, TDto>() where TDto : class, IOrigin, IInnerProxy where TStore : IDataServiceStore
     {
         var result = Manager.GetService<IRemoteRepository<TStore, TDto>>();
         return result;

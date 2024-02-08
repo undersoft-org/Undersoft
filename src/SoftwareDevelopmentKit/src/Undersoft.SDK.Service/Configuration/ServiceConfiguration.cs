@@ -7,6 +7,7 @@ using System.Collections.Generic;
 namespace Undersoft.SDK.Service.Configuration;
 
 using Undersoft.SDK.Security;
+using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Repository;
 using Undersoft.SDK.Service.Data.Store;

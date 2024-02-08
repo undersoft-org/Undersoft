@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 
 namespace Undersoft.SDK.Service.Data.Object.Detail;
 
-using AutoMapper;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -20,7 +19,6 @@ public class ObjectDetail<TDetail, TKind> : DataObject, ISerializableJsonDocumen
     [NotMapped]
     [JsonIgnore]
     [IgnoreDataMember]
-    [IgnoreMap]
     internal IJsonDocumentSerializer _serializer;
 
     public ObjectDetail() : base()
@@ -34,7 +32,7 @@ public class ObjectDetail<TDetail, TKind> : DataObject, ISerializableJsonDocumen
     }
 
     [DataMember(Order = 12)]
-    public virtual byte[] Data { get; set; } 
+    public virtual byte[] Data { get; set; }
 
     [DataMember(Order = 13)]
     public virtual JsonDocument Document { get; set; }
@@ -52,7 +50,7 @@ public class ObjectDetail<TDetail, TKind> : DataObject, ISerializableJsonDocumen
     public virtual T GetObject<T>()
     {
         return _serializer.GetObject<T>();
-    } 
+    }
 
     public virtual object GetObject()
     {

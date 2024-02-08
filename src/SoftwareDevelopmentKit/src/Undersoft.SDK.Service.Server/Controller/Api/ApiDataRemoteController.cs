@@ -63,7 +63,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel, TServi
     [HttpGet("count")]
     public virtual async Task<IActionResult> Count()
     {
-        return Ok(await Task.Run(() => _servicer.load<TStore, TDto>().Count()));
+        return Ok(await Task.Run(() => _servicer.open<TStore, TDto>().Count()));
     }
 
     [HttpGet("{key}")]

@@ -1,12 +1,8 @@
-using System;
-
-
 namespace Undersoft.SDK.IntegrationTests.Instant
 {
+    using System.Reflection;
     using Undersoft.SDK.Instant;
     using Undersoft.SDK.Uniques;
-    using System.Reflection;
-
     using Xunit;
 
     public class InstantTest
@@ -22,8 +18,8 @@ namespace Undersoft.SDK.IntegrationTests.Instant
             InstantCreator referenceType = new InstantCreator<Agreement>();
             IInstant InstantB = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(referenceType, new Agreement());
 
-            //  InstantCreator valueType = new InstantCreator<Agreement>(InstantType.ValueType);
-            //  IInstant InstantC = Instant_Compilation_Helper_Test(valueType, new Agreement());
+            InstantCreator valueType = new InstantCreator<Agreement>(InstantType.ValueType);
+            IInstant InstantC = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(valueType, new Agreement());
         }
 
         [Fact]
@@ -76,24 +72,6 @@ namespace Undersoft.SDK.IntegrationTests.Instant
             fom = new FieldsOnlyModel();
             IInstant InstantB = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(valueType, fom);
         }
-
-        //[Fact]
-        //public void Instant_Copy_Values_From_Object_To_Object_Using_Compiled_ValueArray_Property__Test()
-        //{
-        //    InstantCreator referenceType = new InstantCreator(typeof(FieldsAndPropertiesModel));
-
-        //    Instant_Creation_Compilation_ValueArray_Property_Operations_On_New_RuntimeType_Object_Instance_Test(
-        //        referenceType,
-        //        Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(referenceType, new FieldsAndPropertiesModel())
-        //    );
-
-        //    InstantCreator valueType = new InstantCreator(typeof(PropertiesOnlyModel), InstantType.ValueType);
-
-        //    Instant_Creation_Compilation_ValueArray_Property_Operations_On_New_RuntimeType_Object_Instance_Test(
-        //        valueType,
-        //        Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(valueType, new FieldsAndPropertiesModel())
-        //    );
-        //}
 
         private IInstant Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(InstantCreator str, Agreement fom)
         {

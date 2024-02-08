@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Undersoft.SDK.Security;
+using Undersoft.SDK.Service.Access;
 using Claim = System.Security.Claims.Claim;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
@@ -223,7 +224,6 @@ public class AccountManager : Registry<IAccount>, IAccountManager
             return (Account)account;
         var _account = new Account();
         _account.User = await User.FindByEmailAsync(email);
-        _account.User.IsLockedOut = await User.IsLockedOutAsync(_account.User);
         if ((await MapAccount(_account)).User != null)
         {
             Put(_account?.User?.Email, _account);
@@ -254,6 +254,7 @@ public class AccountManager : Registry<IAccount>, IAccountManager
         if (account.User != null)
         {
             account.Credentials.PatchFrom(account.User);
+            account.User.IsLockedOut = await User.IsLockedOutAsync(account.User);
             account.Roles = (await User.GetRolesAsync(account.User))
                 .Select(async r => await Role.FindByNameAsync(r))
                 .Select(t => t.Result)

@@ -1,10 +1,10 @@
 ﻿using System.Runtime.Serialization;
 using Undersoft.SDK.Instant.Proxies;
 
-namespace Undersoft.SDK.Security
+namespace Undersoft.SDK.Service.Access
 {
     [DataContract]
-    public class AuthorizationNotes: Identifiable
+    public class AuthorizationNotes : Identifiable
     {
         [DataMember(Order = 0)]
         public string Errors { get; set; }

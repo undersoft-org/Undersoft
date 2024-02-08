@@ -1,14 +1,14 @@
 ﻿namespace Undersoft.SDK.Instant
 {
     using Extracting;
+    using Rubrics;
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
     using System.Runtime.Serialization;
+    using Undersoft.SDK;
     using Undersoft.SDK.Series;
     using Uniques;
-    using Rubrics;
-    using Undersoft.SDK;
 
     public class InstantCompilerDerivedTypes : InstantCompiler
     {
@@ -107,18 +107,18 @@
             rubricBuilders
                 .AsValues()
                 .ForEach(
-                    (m) =>
+                    (mr) =>
                     {
-                        if (m.Field != null)
+                        if (mr.Field != null)
                         {
-                            if (!(m.Field.IsBackingField))
-                                ResolveInstantCreatorAttributes(null, new MemberRubric(m.Field));
-                            else if (m.Property != null)
-                                ResolveInstantCreatorAttributes(null, new MemberRubric(m.Property));
+                            if (!(mr.Field.IsBackingField))
+                                ResolveMemberAttributes(null, mr.Field, mr.Member);
+                            else if (mr.Property != null)
+                                ResolveMemberAttributes(null, mr.Property, mr.Member);
                         }
-                        else if (m.Property != null)
+                        else if (mr.Property != null)
                         {
-                            ResolveInstantCreatorAttributes(null, new MemberRubric(m.Property));
+                            ResolveMemberAttributes(null, mr.Property, mr.Member);
                         }
                     }
                 );

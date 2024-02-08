@@ -1,14 +1,14 @@
 ﻿namespace Undersoft.SDK.Instant
 {
-    using Undersoft.SDK.Extracting;
+    using Rubrics;
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
     using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
+    using Undersoft.SDK.Extracting;
     using Undersoft.SDK.Series;
     using Undersoft.SDK.Uniques;
-    using Rubrics;
 
     public class InstantCompilerValueTypes : InstantCompiler
     {
@@ -78,7 +78,7 @@
 
                     if (fb != null)
                     {
-                        ResolveInstantCreatorAttributes(fb, attributeAtMember);
+                        ResolveMemberAttributes(fb, attributeAtMember.RubricInfo, attributeAtMember);
 
                         PropertyBuilder pi = null;
                         if (fp.Type != typeof(string))

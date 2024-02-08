@@ -1,14 +1,13 @@
 ﻿namespace Undersoft.SDK.Instant.Rubrics
 {
-    using System.Collections.Generic;
-    using Undersoft.SDK.Extracting;
-    using System.Linq;
     using Series;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Undersoft.SDK.Extracting;
     using Undersoft.SDK.Series;
     using Undersoft.SDK.Series.Base;
-    using Uniques;
     using Uniques.Hashing;
-    
+
 
     public partial class MemberRubrics : ListingBase<MemberRubric>, IRubrics
     {
@@ -160,7 +159,7 @@
             }
 
             AsValues()
-                .Where(r => r.IsKey || r.RubricType is IUnique)
+                .Where(r => r.IsKey || r.RubricType is IIdentifiable)
                 .ForEach(r => r.IsUnique = true)
                 .ToArray();
         }

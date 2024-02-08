@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
-using Undersoft.SDK.Instant.Proxies;
-using Undersoft.SDK.Instant.Updating;
+using Undersoft.SDK.Service.Data.Object;
 
-namespace Undersoft.SDK.Security
+namespace Undersoft.SDK.Service.Access
 {
     [DataContract]
-    public class Authorization : InnerProxy, IAuthorization
+    public class Authorization : DataObject, IAuthorization
     {
         [NotMapped]
         [DataMember(Order = 16)]

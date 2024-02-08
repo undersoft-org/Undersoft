@@ -14,6 +14,7 @@ using Data.Cache;
 using Data.Mapper;
 using Microsoft.IdentityModel.Tokens;
 using Undersoft.SDK.Security;
+using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Repository;
 using Undersoft.SDK.Service.Data.Repository.Client;

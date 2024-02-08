@@ -1,8 +1,8 @@
 ﻿using System.Runtime.Serialization;
-using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Instant.Rubrics.Attributes;
+using Undersoft.SDK.Service.Data.Object;
 
-namespace Undersoft.SDK.Security
+namespace Undersoft.SDK.Service.Access
 {
     [Serializable]
     public enum ServiceSite
@@ -26,7 +26,7 @@ namespace Undersoft.SDK.Security
     }
 
     [DataContract]
-    public class Credentials : InnerProxy, ICredentials
+    public class Credentials : DataObject, ICredentials
     {
         [DataMember(Order = 0)]
         public ServiceSite? Site { get; set; }
