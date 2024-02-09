@@ -54,7 +54,7 @@ public class GenericValidator<TModel> : GenericValidatorBase<IGenericData<TModel
         {
             RuleFor(member)
                 .NotEmpty()
-                .WithMessage($"{member.Parameters.FirstOrDefault()?.Name} is required!");
+                .WithMessage($"{member.GetMemberName()} is required!");
         }
     }
 
@@ -113,7 +113,7 @@ public class GenericValidator<TModel> : GenericValidatorBase<IGenericData<TModel
     {
         foreach (var member in members)
         {
-            RuleFor(member).NotEqual(item).WithMessage($"value not equal: {item}");
+            RuleFor(member).NotEqual(item).WithMessage($"{member.GetMemberName()} not equal: {item}");
         }
     }
 
@@ -132,7 +132,7 @@ public class GenericValidator<TModel> : GenericValidatorBase<IGenericData<TModel
     {
         foreach (var member in members)
         {
-            RuleFor(member).Equal(item).WithMessage($"value equal: {item}");
+            RuleFor(member).Equal(item).WithMessage($"{member.GetMemberName()} equal: {item}");
         }
     }
 
@@ -150,7 +150,7 @@ public class GenericValidator<TModel> : GenericValidatorBase<IGenericData<TModel
         {
             RuleFor(member)
                 .Must(SupportedLanguages.Contains)
-                .WithMessage("Agreement language must conform to ISO 639-1.");
+                .WithMessage($"{member.GetMemberName()} language must conform to ISO 639-1.");
         }
     }
 

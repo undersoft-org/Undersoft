@@ -1,11 +1,13 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.FluentUI.AspNetCore.Components;
-using Undersoft.SDK.Security;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Application.Access;
+using Undersoft.SDK.Service.Application.GUI.Generic;
+using Undersoft.SSC.Service.Application.GUI.Compound.Access;
 using Undersoft.SSC.Service.Clients;
 using Undersoft.SSC.Service.Contracts;
 
@@ -41,7 +43,9 @@ namespace Undersoft.SSC.Service.Application.Client
                         .AddFluentUIComponents((o) => { o.UseTooltipServiceProvider = true; })
                         .AddScoped<AccessProvider<Account>>()
                         .AddScoped<AuthenticationStateProvider, AccessProvider<Account>>()
-                        .AddScoped<IAccountAccess, AccessProvider<Account>>();
+                        .AddScoped<IAccountAccess, AccessProvider<Account>>()
+                        .AddScoped<IValidator<IGenericData<Credentials>>, AccessValidator>()
+                        .AddScoped<AccessValidator>();
                     reg.MergeServices(services, true);
                 }
             );

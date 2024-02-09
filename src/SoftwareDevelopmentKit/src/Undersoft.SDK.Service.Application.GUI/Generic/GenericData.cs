@@ -9,26 +9,36 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic;
 public class GenericData<TModel> : GenericData, IGenericData<TModel>
     where TModel : class, IOrigin, IInnerProxy
 {
-    public GenericData() : base()
+    public GenericData()
     {
         Data = typeof(TModel).New<TModel>();
         _proxy = Data.Proxy;
+        CommandMode = CommandMode.Any;
     }
 
-    public GenericData(CommandMode mode) : base(mode)
+    public GenericData(CommandMode mode)
     {
         Data = typeof(TModel).New<TModel>();
         _proxy = Data.Proxy;
+        CommandMode = mode;
     }
 
-    public GenericData(TModel data) : base(data, CommandMode.Any) { }
+    public GenericData(TModel data) : this(data, CommandMode.Any) { }
 
-    public GenericData(TModel data, CommandMode mode, string title = "") : base(data, mode, title)
+    public GenericData(TModel data, CommandMode mode, string title = "")
     {
+        Data = data;
+        _proxy = data.Proxy;
+        Title = title;
+        CommandMode = mode;
     }
 
-    public GenericData(TModel data, CommandMode mode, string title, params string[] displayList) : base(data, mode, title, displayList)
+    public GenericData(TModel data, CommandMode mode, string title, params string[] displayList) : this(data, mode, title)
     {
+        if (displayList != null && displayList.Any())
+        {
+            SetVisible(displayList);
+        }
     }
 
     public override void ClearData() => Data = typeof(TModel).New<TModel>();
@@ -99,7 +109,6 @@ public class GenericData : Origin, IGenericData
         Data = data;
         _proxy = data.Proxy;
         Title = title;
-
         if (displayList != null && displayList.Any())
         {
             SetVisible(displayList);

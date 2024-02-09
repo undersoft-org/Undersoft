@@ -9,10 +9,9 @@
     <!-- Footer -->
     <FluentDialogFooter>
         <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Right">
-            <FluentButton Appearance="Appearance.Accent"
-                          Disabled="@(!FormContext.Validate())"
+            <FluentButton Appearance="Appearance.Accent"                         
                           OnClick="@SaveAsync">
-                Ok
+                OK
             </FluentButton>
             <FluentButton OnClick="@CancelAsync" Appearance="Appearance.Neutral">
                 Cancel

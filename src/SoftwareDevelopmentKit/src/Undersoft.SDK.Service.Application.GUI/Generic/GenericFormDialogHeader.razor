@@ -12,7 +12,10 @@
             <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
                 <a><img src=@Content.Logo /></a>
                 <FluentSpacer />
-                <FluentIcon Value="@Content.Icon" />
+                @if (Content.Icon != null)
+                {
+                    <FluentIcon Value="@Content.Icon" />
+                }
                 <FluentLabel Typo="Typography.PaneHeader">
                     @Dialog.Instance.Parameters.Title
                 </FluentLabel>
