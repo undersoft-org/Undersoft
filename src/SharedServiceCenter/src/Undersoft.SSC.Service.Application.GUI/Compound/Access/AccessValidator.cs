@@ -13,54 +13,54 @@ public class AccessValidator : GenericValidator<Credentials>
             CommandMode.Access | CommandMode.Create | CommandMode.Update,
             () =>
             {
-                ValidateEmail(p => p.Data.Email);
+                ValidateEmail(p => p.Model.Email);
             }
         );
         ValidationScope(
             CommandMode.Access | CommandMode.Create | CommandMode.Change,
             () =>
             {
-                ValidateRequired(p => p.Data.Password);
+                ValidateRequired(p => p.Model.Password);
             }
         ); ;
         ValidationScope(
             CommandMode.Create,
             () =>
             {
-                ValidateRequired(p => p.Data.FirstName);
-                ValidateRequired(p => p.Data.LastName);
-                ValidateRequired(p => p.Data.RetypePassword);
-                ValidateNotEqual(p => p.Data.Password, p => p.Data.RetypePassword);
+                ValidateRequired(p => p.Model.FirstName);
+                ValidateRequired(p => p.Model.LastName);
+                ValidateRequired(p => p.Model.RetypePassword);
+                ValidateNotEqual(p => p.Model.Password, p => p.Model.RetypePassword);
             }
         );
         ValidationScope(
             CommandMode.Create | CommandMode.Change,
             () =>
             {
-                ValidateRequired(p => p.Data.NewPassword);
-                ValidateRequired(p => p.Data.RetypePassword);
-                ValidateNotEqual(p => p.Data.NewPassword, p => p.Data.RetypePassword);
+                ValidateRequired(p => p.Model.NewPassword);
+                ValidateRequired(p => p.Model.RetypePassword);
+                ValidateNotEqual(p => p.Model.NewPassword, p => p.Model.RetypePassword);
             }
         );
         ValidationScope(
             CommandMode.Change,
             () =>
             {
-                ValidateRequired(p => p.Data.RetypePassword);
+                ValidateRequired(p => p.Model.RetypePassword);
             }
         );
         ValidationScope(
             CommandMode.Setup,
             () =>
             {
-                ValidateRequired(p => p.Data.EmailConfirmationToken);
+                ValidateRequired(p => p.Model.EmailConfirmationToken);
             }
         );
         ValidationScope(
             CommandMode.Delete,
             () =>
             {
-                ValidateRequired(p => p.Data.PasswordResetToken);
+                ValidateRequired(p => p.Model.PasswordResetToken);
             }
         );
     }

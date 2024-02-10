@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Instant.Proxies;
-using Undersoft.SDK.Instant.Rubrics;
+using Undersoft.SDK.Invoking;
+using Undersoft.SDK.Service.Application.GUI.Rubrics;
 using Undersoft.SDK.Service.Operation.Command;
 using Undersoft.SDK.Uniques;
 
@@ -11,15 +13,15 @@ public class GenericData<TModel> : GenericData, IGenericData<TModel>
 {
     public GenericData()
     {
-        Data = typeof(TModel).New<TModel>();
-        _proxy = Data.Proxy;
+        Model = typeof(TModel).New<TModel>();
+        _proxy = Model.Proxy;
         CommandMode = CommandMode.Any;
     }
 
     public GenericData(CommandMode mode)
     {
-        Data = typeof(TModel).New<TModel>();
-        _proxy = Data.Proxy;
+        Model = typeof(TModel).New<TModel>();
+        _proxy = Model.Proxy;
         CommandMode = mode;
     }
 
@@ -27,7 +29,7 @@ public class GenericData<TModel> : GenericData, IGenericData<TModel>
 
     public GenericData(TModel data, CommandMode mode, string title = "")
     {
-        Data = data;
+        Model = data;
         _proxy = data.Proxy;
         Title = title;
         CommandMode = mode;
@@ -41,49 +43,50 @@ public class GenericData<TModel> : GenericData, IGenericData<TModel>
         }
     }
 
-    public override void ClearData() => Data = typeof(TModel).New<TModel>();
+    public override void ClearData() => Model = typeof(TModel).New<TModel>();
 
-    public new TModel Data { get; set; } = default!;
+    public new TModel Model { get; set; } = default!;
 
     public override void SetRequired(params string[] requiredList)
     {
-        var rubrics = requiredList.ForEach(r => Data.Proxy.Rubrics[r].ShalowCopy(new MemberRubric())
-        );
+        var rubrics = requiredList.ForEach(r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric()))));
+
         rubrics.ForEach(r =>
         {
             r.Required = true;
             r.Visible = true;
             r.Editable = true;
         });
-        DisplayRubrics.Put(rubrics);
+
+        ViewRubrics.Put(rubrics);
     }
 
     public override void SetVisible(params string[] visibleList)
     {
-        var rubrics = visibleList.ForEach(r => Data.Proxy.Rubrics[r].ShalowCopy(new MemberRubric())
-        );
+        var rubrics = visibleList.ForEach(r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric()))));
+
         rubrics.ForEach(r => r.Visible = true);
-        DisplayRubrics.Put(rubrics);
+        ViewRubrics.Put(rubrics);
     }
 
     public override void SetEditable(params string[] editableList)
     {
-        var rubrics = editableList.ForEach(r => Data.Proxy.Rubrics[r].ShalowCopy(new MemberRubric())
-        );
+        var rubrics = editableList.ForEach(r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric()))));
+
         rubrics.ForEach(r => r.Editable = true);
-        DisplayRubrics.Put(rubrics);
+        ViewRubrics.Put(rubrics);
     }
 
     public override void SetDisplayNames(params DisplayPair[] displayPairList)
     {
         var rubrics = displayPairList.ForEach(d =>
         {
-            var rubric = Data.Proxy.Rubrics[d.RubricName].ShalowCopy(new MemberRubric());
+            var rubric = Model.Proxy.Rubrics[d.RubricName].ShalowCopy(new ViewRubric());
             rubric.DisplayName = d.DisplayName;
             rubric.Visible = true;
-            return rubric;
+            return (ViewRubric)((object)rubric);
         });
-        DisplayRubrics.Put(rubrics);
+        ViewRubrics.Put(rubrics);
     }
 }
 
@@ -99,14 +102,14 @@ public class GenericData : Origin, IGenericData
 
     public GenericData(IInnerProxy data, CommandMode mode, string title = "") : this(mode)
     {
-        Data = data;
+        Model = data;
         _proxy = data.Proxy;
         Title = title;
     }
 
     public GenericData(IInnerProxy data, CommandMode mode, string title, params string[] displayList) : this(mode)
     {
-        Data = data;
+        Model = data;
         _proxy = data.Proxy;
         Title = title;
         if (displayList != null && displayList.Any())
@@ -115,21 +118,9 @@ public class GenericData : Origin, IGenericData
         }
     }
 
-    public object? this[int id]
-    {
-        get => _proxy[id];
-        set => _proxy[id] = value;
-    }
+    public virtual void ClearData() => Model = Model.GetType().New<IInnerProxy>();
 
-    public object? this[string propertyName]
-    {
-        get => _proxy[propertyName];
-        set => _proxy[propertyName] = value;
-    }
-
-    public virtual void ClearData() => Data = Data.GetType().New<IInnerProxy>();
-
-    public virtual IInnerProxy Data { get; set; } = default!;
+    public virtual IInnerProxy Model { get; set; } = default!;
 
     public string? Title { get; set; } = null;
 
@@ -147,9 +138,9 @@ public class GenericData : Origin, IGenericData
 
     public string? Logo { get; set; } = "img/logo.png";
 
-    public string Height { get; set; } = "380px";
+    public string Height { get; set; } = "500px";
 
-    public string Width { get; set; } = "380px";
+    public string Width { get; set; } = "440px";
 
     private string? nextPath = null;
     public string? NextPath
@@ -170,49 +161,55 @@ public class GenericData : Origin, IGenericData
 
     public CommandMode CommandMode { get; set; }
 
-    public IRubric SelectedRubric { get; set; } = default!;
+    public IViewRubric SelectedRubric { get; set; } = default!;
 
-    public IRubrics DisplayRubrics { get; set; } = new MemberRubrics();
+    public IViewRubrics ViewRubrics { get; set; } = new ViewRubrics();
+
+    public IInvoker FieldValidator { get; set; }
+
+    public IInvoker FormValidator { get; set; }
+
+    public event EventHandler<ValidationRequestedEventArgs>? OnValidationRequested;
 
     public virtual void SetRequired(params string[] requiredList)
     {
-        var rubrics = requiredList.ForEach(r => Data.ToProxy().Rubrics[r].ShalowCopy(new MemberRubric())
-        );
+        var rubrics = requiredList.ForEach(r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric()))));
+
         rubrics.ForEach(r =>
         {
             r.Required = true;
             r.Visible = true;
             r.Editable = true;
         });
-        DisplayRubrics.Put(rubrics);
+        ViewRubrics.Put(rubrics);
     }
 
     public virtual void SetVisible(params string[] visibleList)
     {
-        var rubrics = visibleList.ForEach(r => Data.ToProxy().Rubrics[r].ShalowCopy(new MemberRubric())
-        );
+        var rubrics = visibleList.ForEach(r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric()))));
+
         rubrics.ForEach(r => r.Visible = true);
-        DisplayRubrics.Put(rubrics);
+        ViewRubrics.Put(rubrics);
     }
 
     public virtual void SetEditable(params string[] editableList)
     {
-        var rubrics = editableList.ForEach(r => Data.ToProxy().Rubrics[r].ShalowCopy(new MemberRubric())
-        );
+        var rubrics = editableList.ForEach(r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric()))));
+
         rubrics.ForEach(r => r.Editable = true);
-        DisplayRubrics.Put(rubrics);
+        ViewRubrics.Put(rubrics);
     }
 
     public virtual void SetDisplayNames(params DisplayPair[] displayPairList)
     {
         var rubrics = displayPairList.ForEach(d =>
         {
-            var rubric = Data.ToProxy().Rubrics[d.RubricName].ShalowCopy(new MemberRubric());
+            var rubric = Model.ToProxy().Rubrics[d.RubricName].ShalowCopy(new ViewRubric());
             rubric.DisplayName = d.DisplayName;
             rubric.Visible = true;
-            return rubric;
+            return (ViewRubric)((object)rubric);
         });
-        DisplayRubrics.Put(rubrics);
+        ViewRubrics.Put(rubrics);
     }
 }
 

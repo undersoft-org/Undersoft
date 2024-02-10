@@ -1,6 +1,7 @@
 ﻿@using System.ComponentModel.DataAnnotations
 @using Undersoft.SDK.Instant.Proxies
 @using Undersoft.SDK.Instant.Rubrics
+@using Undersoft.SDK.Invoking
 @using Undersoft.SDK
 
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
@@ -51,7 +52,9 @@
 
     private async Task SaveAsync()
     {
-        if (FormContext.Validate())
+        var isValid = (bool)(await Content.FormValidator.InvokeAsync());
+
+        if (isValid)
         {
             await Dialog.CloseAsync(Content);
         }

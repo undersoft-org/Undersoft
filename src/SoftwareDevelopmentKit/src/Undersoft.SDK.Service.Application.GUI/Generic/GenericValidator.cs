@@ -162,7 +162,7 @@ public class GenericValidator<TModel> : GenericValidatorBase<IGenericData<TModel
     {
         var _repository = _servicer.Open<TStore, TDto>();
 
-        RuleFor(e => e.Data)
+        RuleFor(e => e.Model)
             .MustAsync(
                 async (cmd, cancel) =>
                 {
@@ -180,7 +180,7 @@ public class GenericValidator<TModel> : GenericValidatorBase<IGenericData<TModel
     {
         var _repository = _servicer.Open<TStore, TDto>();
 
-        RuleFor(e => e.Data)
+        RuleFor(e => e.Model)
             .MustAsync(
                 async (cmd, cancel) =>
                 {

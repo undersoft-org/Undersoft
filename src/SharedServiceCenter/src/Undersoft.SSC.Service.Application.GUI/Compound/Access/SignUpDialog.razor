@@ -1,6 +1,7 @@
 ﻿@using System.ComponentModel.DataAnnotations
 @using Undersoft.SDK.Instant.Proxies
 @using Undersoft.SDK.Instant.Rubrics
+@using Undersoft.SDK.Invoking
 @using Undersoft.SDK
 
 @inject NavigationManager _navigation
@@ -11,8 +12,6 @@
 @implements IDialogContentComponent<IGenericData<TModel>>
 
 <CascadingValue Value="@Content">
-    <CascadingValue Value="@FormContext">
-
         <!-- Header -->
         <GenericFormDialogHeader TModel="TModel" />
 
@@ -20,7 +19,6 @@
         <GenericFormDialogBody TValidator="TValidator" TModel="TModel" />
 
     </CascadingValue>
-</CascadingValue>
 
 <!-- Footer -->
 <FluentDialogFooter>
@@ -38,18 +36,11 @@
 
 @code
 {
-    public EditContext FormContext { get; set; } = default!;
-
     [Parameter]
     public IGenericData<TModel> Content { get; set; } = default!;
 
     [CascadingParameter]
     public FluentDialog Dialog { get; set; } = default!;
-
-    protected override void OnInitialized()
-    {
-        FormContext = new EditContext(Content);
-    }
 
     private async Task OnSignIn(MouseEventArgs e)
     {
@@ -60,7 +51,9 @@
 
     private async Task SaveAsync()
     {
-        if (FormContext.Validate())
+        var isValid = (bool)(await Content.FormValidator.InvokeAsync());
+
+        if (isValid)
         {
             await Dialog.CloseAsync(Content);
         }

@@ -26,7 +26,6 @@
 
     private async Task SigningUp(string title, string description = "")
     {
-        var notes = new AuthorizationNotes();
         var data = new GenericData<Credentials>(new Credentials(), CommandMode.Create, title);
         data.SetVisible("FirstName", "LastName", "Email", "Password", "RetypePassword");
         data.Description = description;
@@ -44,16 +43,16 @@
                     _navigation.NavigateTo(content.NextPath);
                     return;
                 }
-                content.Data.UserName = $"{content.Data.FirstName} {content.Data.LastName}";
+                content.Model.UserName = $"{content.Model.FirstName} {content.Model.LastName}";
 
-                var result = await _access.SignUp(new Account() { Credentials = content.Data });
+                var result = await _access.SignUp(new Account() { Credentials = content.Model });
 
                 if (result.Notes.Status != SigningStatus.Failure && result.Notes.Errors == null)
                 {
                     _navigation.NavigateTo("access/confirm_email");
                     return;
                 }
-                data.PatchFrom(result.Notes);
+                result.Notes.PatchTo(data);
             }
         }
     }

@@ -9,45 +9,23 @@
 @implements IDialogContentComponent<IGenericData<TModel>>
 
 <CascadingValue Value="@Content">
-    <CascadingValue Value="@FormContext">
 
-        <!-- Header -->
-        <GenericFormDialogHeader TModel="TModel" />
+    <!-- Header -->
+    <GenericFormDialogHeader TModel="TModel" />
 
-        <!-- Body -->
-        <GenericFormDialogBody TValidator="TValidator" TModel="TModel" />
+    <!-- Body -->
+    <GenericFormDialogBody TValidator="TValidator" TModel="TModel" />
 
-        <!-- Footer -->
-        <GenericFormDialogFooter TModel="TModel" />
+    <!-- Footer -->
+    <GenericFormDialogFooter TModel="TModel" />
 
-    </CascadingValue>
 </CascadingValue>
 
 @code
 {
-    public EditContext FormContext { get; set; } = default!;
-
     [Parameter]
     public IGenericData<TModel> Content { get; set; } = default!;
 
     [CascadingParameter]
     public FluentDialog Dialog { get; set; } = default!;
-
-    protected override void OnInitialized()
-    {
-        FormContext = new EditContext(Content);
-    }
-
-    private async Task SaveAsync()
-    {
-        if (FormContext.Validate())
-        {
-            await Dialog.CloseAsync(Content);
-        }
-    }
-
-    private async Task CancelAsync(MouseEventArgs e)
-    {
-        await Dialog.CancelAsync();
-    }
 }

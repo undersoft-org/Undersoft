@@ -33,7 +33,7 @@ public abstract class GenericValidatorBase<TData> : AbstractValidator<TData>
     {
         foreach (string propertyName in propertyNames)
         {
-            RuleFor(a => a[propertyName])
+            RuleFor(a => a.Model.Proxy[propertyName])
                 .NotEmpty()
                 .WithMessage(a => $"{propertyName} is required!");
         }
@@ -43,7 +43,7 @@ public abstract class GenericValidatorBase<TData> : AbstractValidator<TData>
     {
         foreach (string propertyName in propertyNames)
         {
-            RuleFor(a => a[propertyName])
+            RuleFor(a => a.Model.Proxy[propertyName])
                 .Must(SupportedLanguages.Contains)
                 .WithMessage("Language must conform to ISO 639-1.");
         }
@@ -53,7 +53,7 @@ public abstract class GenericValidatorBase<TData> : AbstractValidator<TData>
     {
         foreach (string propertyName in propertyNames)
         {
-            RuleFor(e => e[propertyName])
+            RuleFor(e => e.Model.Proxy[propertyName])
                 .NotEqual(item)
                 .WithMessage($"{propertyName} is not equal: {item}");
         }
@@ -63,7 +63,7 @@ public abstract class GenericValidatorBase<TData> : AbstractValidator<TData>
     {
         foreach (string propertyName in propertyNames)
         {
-            RuleFor(e => e[propertyName])
+            RuleFor(e => e.Model.Proxy[propertyName])
                 .Equal(item)
                 .WithMessage($"{propertyName} is equal: {item}");
         }
@@ -73,7 +73,7 @@ public abstract class GenericValidatorBase<TData> : AbstractValidator<TData>
     {
         foreach (string propertyName in propertyNames)
         {
-            RuleFor(a => a[propertyName].ToString())
+            RuleFor(a => a.Model.Proxy[propertyName].ToString())
                 .MinimumLength(min)
                 .WithMessage($"{propertyName} minimum text rubricCount: {max} characters")
                 .MaximumLength(max)
@@ -85,7 +85,7 @@ public abstract class GenericValidatorBase<TData> : AbstractValidator<TData>
     {
         foreach (string propertyName in propertyNames)
         {
-            RuleFor(e => e[propertyName])
+            RuleFor(e => e.Model.Proxy[propertyName])
                 .IsInEnum()
                 .WithMessage($"Incorrect {propertyName} number");
         }
@@ -95,9 +95,9 @@ public abstract class GenericValidatorBase<TData> : AbstractValidator<TData>
     {
         foreach (string emailPropertyName in emailPropertyNames)
         {
-            RuleFor(a => a[emailPropertyName].ToString())
+            RuleFor(a => a.Model.Proxy[emailPropertyName].ToString())
                 .EmailAddress()
-                .When(a => !string.IsNullOrEmpty(a[emailPropertyName].ToString()))
+                .When(a => !string.IsNullOrEmpty(a.Model.Proxy[emailPropertyName].ToString()))
                 .WithMessage($"Invalid {emailPropertyName} address.");
         }
     }
@@ -116,7 +116,7 @@ public abstract class GenericValidatorBase<TData> : AbstractValidator<TData>
                     return await _servicer
                         .Open<TStore, TDto>()
                         .Exist(
-                            buildPredicate<TDto>(cmd.Data, operand, propertyNames)
+                            buildPredicate<TDto>(cmd.Model, operand, propertyNames)
                         );
                 }
             )
@@ -137,7 +137,7 @@ public abstract class GenericValidatorBase<TData> : AbstractValidator<TData>
                     return await _servicer
                         .Open<TStore, TDto>()
                         .NotExist(
-                            buildPredicate<TDto>(cmd.Data, operand, propertyNames)
+                            buildPredicate<TDto>(cmd.Model, operand, propertyNames)
                         );
                 }
             )

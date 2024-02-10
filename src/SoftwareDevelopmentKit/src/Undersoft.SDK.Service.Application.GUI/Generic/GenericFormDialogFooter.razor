@@ -23,9 +23,6 @@
 @code
 {
     [CascadingParameter]
-    public EditContext FormContext { get; set; } = default!;
-
-    [CascadingParameter]
     public IGenericData<TModel> Content { get; set; } = default!;
 
     [CascadingParameter]
@@ -33,7 +30,8 @@
 
     private async Task SaveAsync()
     {
-        if (FormContext.Validate())
+        var isValid = await Content.FormValidator.InvokeAsync();
+        if ((bool)isValid)
         {
             await Dialog.CloseAsync(Content);
         }

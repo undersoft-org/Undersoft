@@ -11,16 +11,13 @@
     <FluentDialogBody>
 
         <!-- Auto Form -->
-        <GenericForm TValidator="TValidator" TModel="@TModel" Model="@Content" Context="@FormContext" />
+        <GenericForm TValidator="TValidator" TModel="@TModel" Content="@Content" />
 
     </FluentDialogBody>
 </div>
 
 @code
 {
-    [CascadingParameter]
-    public EditContext FormContext { get; set; } = default!;
-
     [CascadingParameter]
     public IGenericData<TModel> Content { get; set; } = default!;
 

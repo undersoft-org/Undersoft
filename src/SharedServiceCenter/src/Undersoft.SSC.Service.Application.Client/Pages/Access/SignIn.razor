@@ -28,7 +28,7 @@
         data.SetRequired(nameof(Credentials.Email), nameof(Credentials.Password));
         data.SetVisible(nameof(Credentials.SaveAccountInCookies));
         data.Description = description;
-        data.Height = "440px";
+        data.Height = "500px";
 
         while (true)
         {
@@ -44,7 +44,7 @@
                     return;
                 }
 
-                var result = await _access.SignIn(new Account() { Credentials = content.Data });
+                var result = await _access.SignIn(new Account() { Credentials = content.Model });
 
                 if (result.Credentials.Authenticated)
                 {
@@ -58,7 +58,7 @@
                     return;
                 }
                 data.ClearData();
-                data.PatchFrom(result.Notes);
+                result.Notes.PatchTo(data);
             }
             else
             {

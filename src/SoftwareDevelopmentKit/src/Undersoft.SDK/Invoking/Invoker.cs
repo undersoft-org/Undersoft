@@ -1,7 +1,5 @@
 ﻿using System.Reflection;
-using System.Reflection.Emit;
 using Undersoft.SDK.Instant.Updating;
-using Undersoft.SDK.Series;
 using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Invoking
@@ -62,11 +60,10 @@ namespace Undersoft.SDK.Invoking
             TargetObject = targetMethod.Target;
             Type t = TargetObject.GetType();
             MethodInfo m = targetMethod.Method;
-
+            Info = m;
             if (m.GetParameters().Any())
             {
                 NumberOfArguments = m.GetParameters().Length;
-                Info = m;
                 Parameters = m.GetParameters();
                 Arguments = new Arguments(m.Name, Parameters);
             }
@@ -106,7 +103,8 @@ namespace Undersoft.SDK.Invoking
                             && m.GetParameters().All(p => parameterTypes.Contains(p.ParameterType))
                     )
                     .FirstOrDefault()
-            ) { }
+            )
+        { }
 
         public Invoker(
             Type targetType,
@@ -122,7 +120,8 @@ namespace Undersoft.SDK.Invoking
                             && m.GetParameters().All(p => parameterTypes.Contains(p.ParameterType))
                     ),
                 constructorParameters
-            ) { }
+            )
+        { }
 
         public Invoker(Type targetType, params object[] constructorParameters)
             : this(targetType.GetMethods().FirstOrDefault(m => m.IsPublic), constructorParameters)
@@ -461,7 +460,7 @@ namespace Undersoft.SDK.Invoking
 
                 var obj = Invoke(target, parameters);
 
-                return await GetObjectTaskResult<T>(obj);            
+                return await GetObjectTaskResult<T>(obj);
             }
             catch (Exception e)
             {
@@ -545,7 +544,6 @@ namespace Undersoft.SDK.Invoking
             QualifiedName = getQualifiedName();
             Id = QualifiedName.UniqueKey64();
             TypeId = Info.DeclaringType.UniqueKey();
-            ;
             Time = DateTime.Now;
         }
 
@@ -573,16 +571,18 @@ namespace Undersoft.SDK.Invoking
 
         private string getQualifiedName()
         {
-            return $"{Info.DeclaringType.FullName}."
-                + $"{Info.Name}"
-                + $"{new String(Parameters.SelectMany(p => "." + p.ParameterType.Name).ToArray())}";
+            var name = $"{Info.DeclaringType.FullName}.{Info.Name}";
+            if (Parameters != null)
+                name += $"({new String(Parameters.SelectMany(p => ", " + p.ParameterType.Name).ToArray())})";
+            return name;
         }
 
         private static string getQualifiedName(MethodInfo info, ParameterInfo[] parameters)
         {
-            return $"{info.DeclaringType.FullName}."
-                + $"{info.Name}"
-                + $"{new String(parameters.SelectMany(p => "." + p.ParameterType.Name).ToArray())}";
+            var name = $"{info.DeclaringType.FullName}.{info.Name}";
+            if (parameters != null)
+                name += $"({new String(parameters.SelectMany(p => ", " + p.ParameterType.Name).ToArray())})";
+            return name;
         }
 
         public static string GetName(Type type, string methodName, params Type[] parameterTypes)

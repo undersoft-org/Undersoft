@@ -3,42 +3,48 @@
 @using Undersoft.SDK.Instant.Proxies
 @using Undersoft.SDK.Instant.Rubrics
 @using Undersoft.SDK
+@using Undersoft.SDK.Invoking
 
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 @typeparam TValidator where TValidator : class, IValidator<IGenericData<TModel>>
- 
+
 <div class="generics generic-form forms">
-    <EditForm EditContext="@Context" FormName="generic_form">
-        <GenericFormValidator TValidator="TValidator" TModel="TModel" />
-        <CascadingValue Value="@Model">
-            <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="15">
-                @foreach (var _rubric in _rubrics)
-                {
-                    <!-- Auto Field -->
-                    <GenericField TModel="TModel" Rubric="@_rubric"/>
-                }
-            </FluentStack>
-        </CascadingValue>
-        <div style="color: var(--error);">
-            <FluentValidationSummary />
-        </div>
-    </EditForm>
+    <CascadingValue Value="@FormContext">
+        <EditForm EditContext="@FormContext" FormName="generic_form">
+            <GenericFormValidator TValidator="TValidator" TModel="TModel" />
+                <CascadingValue Value="@Content">
+                    <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="5">
+                        @foreach (var _rubric in _rubrics)
+                        {                    
+                            <GenericField TModel="TModel" Rubric="@_rubric" />
+                        }
+                    </FluentStack>
+                </CascadingValue>
+        </EditForm>
+    </CascadingValue>
 </div>
 
 @code {
-    private IRubrics _rubrics => Model.DisplayRubrics;
-    private IProxy _proxy => Model.Data.Proxy;
+    private IViewRubrics _rubrics => Content.ViewRubrics;
+    private IProxy _proxy => Content.Model.Proxy;
 
     protected override void OnInitialized()
     {
-        if (Context == null)
-            Context = new EditContext(Model);
+        FormContext = new EditContext(Content);
+        FormContext.OnFieldChanged += FieldChanged;
     }
 
-    [Parameter]
-    public EditContext Context { get; set; } = default!;
+    public EditContext FormContext { get; set; } = default!;
 
     [Parameter]
-    public IGenericData<TModel> Model { get; set; } = default!;
+    public IGenericData<TModel> Content { get; set; } = default!;
+
+    private void FieldChanged(object? sender, FieldChangedEventArgs args)
+    {
+        if (OnFieldChanged != null)
+            OnFieldChanged(sender, args);
+    }
+
+    public event EventHandler<FieldChangedEventArgs>? OnFieldChanged;
 }
 

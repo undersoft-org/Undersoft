@@ -2,6 +2,9 @@
 @using FluentValidation.Results;
 @using Microsoft.AspNetCore.Components.Forms;
 @using Undersoft.SDK.Instant.Proxies;
+@using Undersoft.SDK.Instant.Rubrics
+@using Undersoft.SDK.Invoking
+@using Undersoft.SDK.Series
 @using ValidationResult = FluentValidation.Results.ValidationResult;
 
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
@@ -10,7 +13,10 @@
 @code
 {
     [CascadingParameter]
-    private EditContext EditContext { get; set; } = default!;
+    private EditContext FormContext { get; set; } = default!;
+
+    [CascadingParameter]
+    private IGenericData<TModel> Content { get; set; } = default!;
 
     [Inject]
     private IValidator<IGenericData<TModel>> Validator { get; set; } = default!;
@@ -19,86 +25,99 @@
 
     public override async Task SetParametersAsync(ParameterView parameters)
     {
-        EditContext previousEditContext = EditContext;
+        EditContext previousEditContext = FormContext;
 
         await base.SetParametersAsync(parameters);
 
-        if (EditContext != previousEditContext)
+        Content.FormValidator = new Invoker(this.ValidateFormAsync);
+        Content.FieldValidator = new Invoker(this.ValidateFieldAsync);
+
+        if (FormContext != previousEditContext)
             EditContextChanged();
     }
 
     void EditContextChanged()
     {
-        System.Diagnostics.Debug.WriteLine("EditContext has changed");
-
-        ValidationMessageStore = new ValidationMessageStore(EditContext);
-
-        System.Diagnostics.Debug.WriteLine("New ValidationMessageStore created");
+        ValidationMessageStore = new ValidationMessageStore(FormContext);
 
         HookUpEditContextEvents();
     }
 
     private void HookUpEditContextEvents()
     {
-        EditContext.OnValidationRequested += ValidationRequested;
-
-        EditContext.OnFieldChanged += FieldChanged;
-
-        System.Diagnostics.Debug.WriteLine(
-            "Hooked up EditContext events (OnValidationRequested and OnFieldChanged)"
-        );
+        FormContext.OnFieldChanged += FieldChanged;
     }
 
-    async void ValidationRequested(object? sender, ValidationRequestedEventArgs args)
+    public async Task<bool> ValidateFormAsync()
     {
-        System.Diagnostics.Debug.WriteLine(
-            "OnValidationRequested triggered: Validating whole object"
-        );
-
         ValidationMessageStore.Clear();
+        Content.ViewRubrics.ForEach(r => r.Errors.Clear());
 
-        var validationContext = new ValidationContext<IGenericData<TModel>>(
-            (IGenericData<TModel>)EditContext.Model
-        );
+        var context = new ValidationContext<IGenericData<TModel>>(Content);
+        var result = await Validator.ValidateAsync(context);
 
-        ValidationResult result = await Validator.ValidateAsync(validationContext);
+        if (result.Errors.Any())
+        {
+            result.Errors.ForEach(e =>
+               {
+                   var rubric = Content.ViewRubrics[e.PropertyName.Replace("Model.", "")];
+                   rubric.Errors.Clear();
+                   if (rubric.Errors.TryAdd(e.ErrorMessage))
+                       ValidationMessageStore.Add(rubric.FieldIdentifier, e.ErrorMessage);
+               });
+            FormContext.NotifyValidationStateChanged();
+            return false;
+        }
 
-        AddValidationResult(EditContext.Model, result);
+        FormContext.NotifyValidationStateChanged();
+        return true;
+    }
+
+    public async Task<bool> ValidateFieldAsync(string propertyName)
+    {      
+        IViewRubric rubric = Content.ViewRubrics[propertyName];  
+
+        ValidationMessageStore.Clear(rubric.FieldIdentifier);
+        rubric.Errors.Clear();
+
+        var context = new ValidationContext<IGenericData<TModel>>(Content);
+        var result = await Validator.ValidateAsync(context);
+        var _result = new ValidationResult(result.Errors.Where(e => e.PropertyName.Contains(rubric.RubricName)));
+
+        if (_result.Errors.Any())
+        {
+            _result.Errors.ForEach(e =>
+            {
+                if (rubric.Errors.TryAdd(e.ErrorMessage))
+                    ValidationMessageStore.Add(rubric.FieldIdentifier, e.ErrorMessage);
+            });
+            FormContext.NotifyValidationStateChanged();
+            return false;
+        }
+        FormContext.NotifyValidationStateChanged();
+        return true;
     }
 
     async void FieldChanged(object? sender, FieldChangedEventArgs args)
     {
-        System.Diagnostics.Debug.WriteLine(
-            $"OnFieldChanged triggered: Validating a single property named {args.FieldIdentifier.FieldName}"
-                + $" on class {args.FieldIdentifier.Model.GetType().Name}"
-        );
+        ValidationMessageStore.Clear(args.FieldIdentifier);
+        dynamic field = args.FieldIdentifier.Model;        
+        IViewRubric rubric = field.Rubric;
+        rubric.Errors.Clear();
 
-        FieldIdentifier fieldIdentifier = args.FieldIdentifier;
+        var context = new ValidationContext<IGenericData<TModel>>(Content);
+        var result = await Validator.ValidateAsync(context);        
+        var _result = new ValidationResult(result.Errors.Where(e => e.PropertyName.Contains(rubric.RubricName)));
 
-        ValidationMessageStore.Clear(fieldIdentifier);
-
-        var propertiesToValidate = new string[] { fieldIdentifier.FieldName };
-        var fluentValidationContext = new ValidationContext<IGenericData<TModel>>(
-            instanceToValidate: (IGenericData<TModel>)fieldIdentifier.Model,
-            propertyChain: new FluentValidation.Internal.PropertyChain(),
-            validatorSelector: new FluentValidation.Internal.MemberNameValidatorSelector(
-                propertiesToValidate
-            )
-        );
-
-        ValidationResult result = await Validator.ValidateAsync(fluentValidationContext);
-
-        AddValidationResult(fieldIdentifier.Model, result);
-    }
-
-    void AddValidationResult(object model, ValidationResult validationResult)
-    {
-        foreach (ValidationFailure error in validationResult.Errors)
+        if (_result.Errors.Any())
         {
-            var fieldIdentifier = new FieldIdentifier(model, error.PropertyName);
-            ValidationMessageStore.Add(fieldIdentifier, error.ErrorMessage);
-        }
-        EditContext.NotifyValidationStateChanged();
+            _result.Errors.ForEach(e =>
+               {
+                   if (rubric.Errors.TryAdd(e.ErrorMessage))
+                       ValidationMessageStore.Add(args.FieldIdentifier, e.ErrorMessage);
+               });
+            rubric.GenericField.NotifyStateHasChanged();
+        }                       
+        FormContext.NotifyValidationStateChanged();
     }
-
 }
