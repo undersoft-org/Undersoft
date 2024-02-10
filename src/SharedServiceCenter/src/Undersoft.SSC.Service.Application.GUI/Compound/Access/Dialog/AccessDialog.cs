@@ -27,6 +27,7 @@ public class AccessDialog<TDialog, TModel> : ViewDialog<TDialog, TModel> where T
                 Content = data,
                 PreventDismissOnOverlayClick = true,
                 ShowDismiss = false,
+                Modal = false,
                 PreventScroll = true,
                 OnDialogClosing = EventCallback.Factory.Create<DialogInstance>(this, async (instance) =>
                 {
