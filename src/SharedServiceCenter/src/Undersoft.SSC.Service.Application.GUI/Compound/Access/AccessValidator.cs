@@ -1,6 +1,6 @@
 ﻿using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Access;
-using Undersoft.SDK.Service.Application.GUI.View;
+using Undersoft.SDK.Service.Application.GUI.Generic;
 using Undersoft.SDK.Service.Operation.Command;
 
 namespace Undersoft.SSC.Service.Application.GUI.Compound.Access;
@@ -14,6 +14,7 @@ public class AccessValidator : ViewValidator<Credentials>
             () =>
             {
                 ValidateEmail(p => p.Model.Email);
+                ValidateRequired(p => p.Model.Email);
             }
         );
         ValidationScope(
@@ -22,7 +23,7 @@ public class AccessValidator : ViewValidator<Credentials>
             {
                 ValidateRequired(p => p.Model.Password);
             }
-        ); ;
+        );
         ValidationScope(
             CommandMode.Create,
             () =>
@@ -30,23 +31,16 @@ public class AccessValidator : ViewValidator<Credentials>
                 ValidateRequired(p => p.Model.FirstName);
                 ValidateRequired(p => p.Model.LastName);
                 ValidateRequired(p => p.Model.RetypePassword);
-                ValidateNotEqual(p => p.Model.Password, p => p.Model.RetypePassword);
-            }
-        );
-        ValidationScope(
-            CommandMode.Create | CommandMode.Change,
-            () =>
-            {
-                ValidateRequired(p => p.Model.NewPassword);
-                ValidateRequired(p => p.Model.RetypePassword);
-                ValidateNotEqual(p => p.Model.NewPassword, p => p.Model.RetypePassword);
+                ValidateNotEqual(p => p.Model.RetypePassword, p => p.Model.Password);
             }
         );
         ValidationScope(
             CommandMode.Change,
             () =>
             {
+                ValidateRequired(p => p.Model.NewPassword);
                 ValidateRequired(p => p.Model.RetypePassword);
+                ValidateNotEqual(p => p.Model.RetypePassword, p => p.Model.NewPassword);
             }
         );
         ValidationScope(

@@ -11,22 +11,21 @@
 <div class="generics generic-form forms">
     <CascadingValue Value="@FormContext">
         <EditForm EditContext="@FormContext" FormName="generic_form">
-            <GenericFormValidator TValidator="TValidator" TModel="TModel" />
-                <CascadingValue Value="@Content">
-                    <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="5">
-                        @foreach (var _rubric in _rubrics)
-                        {                    
-                            <GenericField TModel="TModel" Rubric="@_rubric" />
-                        }
-                    </FluentStack>
-                </CascadingValue>
+            <CascadingValue Value="@Content">
+                <GenericValidator TValidator="TValidator" TModel="TModel" />
+                <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="3">
+                    @foreach (var _rubric in _rubrics)
+                    {
+                        <GenericField TModel="TModel" Rubric="@_rubric" />
+                    }
+                </FluentStack>
+            </CascadingValue>
         </EditForm>
     </CascadingValue>
 </div>
 
 @code {
     private IViewRubrics _rubrics => Content.ViewRubrics;
-    private IProxy _proxy => Content.Model.Proxy;
 
     protected override void OnInitialized()
     {

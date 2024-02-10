@@ -1,9 +1,12 @@
 ﻿@inherits LayoutComponentBase
 
-<FluentMessageBarProvider Section="@Constant.MESSAGES_TOP" />
 
-@Body
+<FluentDesignSystemProvider ControlCornerRadius="0" LayerCornerRadius="0" Density="1" AccentBaseColor="#16202e">
+    <FluentMessageBarProvider Section="@Constant.MESSAGES_TOP" />
 
-<FluentToastProvider MaxToastCount="10" />
-<FluentDialogProvider />
-<FluentTooltipProvider />
+    @Body
+
+    <FluentToastProvider MaxToastCount="10" />
+    <FluentDialogProvider />
+    <FluentTooltipProvider />
+</FluentDesignSystemProvider>

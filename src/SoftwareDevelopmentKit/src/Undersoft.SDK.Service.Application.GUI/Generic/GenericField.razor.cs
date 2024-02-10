@@ -65,6 +65,12 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
 
         public long TypeId { get; set; }
 
+        public string? Class { get; set; } = "";
+
+        public string? Style { get; set; }
+
+        public string? Attributes { get; set; }
+
         public TModel Model => Content.Model;
 
         [CascadingParameter]
@@ -89,7 +95,7 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
         [Parameter]
         public IViewRubric Rubric { get; set; } = default!;
 
-        public void NotifyStateHasChanged()
+        public void RenderView()
         {
             this.StateHasChanged();
         }

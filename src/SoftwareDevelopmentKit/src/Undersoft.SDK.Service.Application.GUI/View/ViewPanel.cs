@@ -4,7 +4,7 @@ using Undersoft.SDK.Service.Application.GUI.Generic;
 
 namespace Undersoft.SDK.Service.Application.GUI.View;
 
-public class ViewPanel<TPanel, TModel> : ComponentBase, IViewPanel<TModel> where TPanel : IDialogContentComponent<IViewData<TModel>> where TModel : class, IOrigin, IInnerProxy
+public class ViewPanel<TPanel, TModel> : ComponentBase, IViewDialog<TModel> where TPanel : IDialogContentComponent<IViewData<TModel>> where TModel : class, IOrigin, IInnerProxy
 {
     public ViewPanel(IDialogService dialogService)
     {

@@ -20,7 +20,7 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-            await ConfirmingEmail("Confirm email");
+            await ConfirmingEmail("Email confirmation");
     }
 
     private async Task ConfirmingEmail(string title, string description = "")

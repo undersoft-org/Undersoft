@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 using System.Collections;
 using System.Linq.Expressions;
-using Undersoft.SDK.Service.Application.GUI.Generic;
 
-namespace Undersoft.SDK.Service.Application.GUI.View;
+namespace Undersoft.SDK.Service.Application.GUI.Generic;
 
 using Undersoft.SDK.Instant.Proxies;
+using Undersoft.SDK.Service.Application.GUI.View;
 using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Operation.Command;
 
@@ -63,7 +63,7 @@ public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IVali
     {
         foreach (var member in members)
         {
-            RuleFor(member).EmailAddress().WithMessage($"Invalid email address.");
+            RuleFor(member).EmailAddress().WithMessage($"Invalid email address!");
         }
     }
 

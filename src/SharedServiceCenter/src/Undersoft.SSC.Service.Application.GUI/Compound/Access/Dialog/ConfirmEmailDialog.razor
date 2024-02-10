@@ -52,9 +52,7 @@
 
     private async Task SaveAsync()
     {
-        var isValid = (bool)(await Content.FormValidator.InvokeAsync());
-
-        if (isValid)
+        if ((await Content.Validator.ValidateAsync()).IsValid)
         {
             await Dialog.CloseAsync(Content);
         }

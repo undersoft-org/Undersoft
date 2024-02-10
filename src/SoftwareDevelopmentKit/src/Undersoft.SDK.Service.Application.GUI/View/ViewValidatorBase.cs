@@ -10,7 +10,7 @@ using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Data.Store;
 
 public abstract class ViewValidatorBase<TData> : AbstractValidator<TData>
-    where TData : IGenericData
+    where TData : IViewData
 {
     protected static readonly string[] SupportedLanguages;
 

@@ -11,7 +11,7 @@
         <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Right">
             <FluentButton Appearance="Appearance.Accent"                         
                           OnClick="@SaveAsync">
-                OK
+                Submit
             </FluentButton>
             <FluentButton OnClick="@CancelAsync" Appearance="Appearance.Neutral">
                 Cancel
@@ -30,8 +30,8 @@
 
     private async Task SaveAsync()
     {
-        var isValid = await Content.FormValidator.InvokeAsync();
-        if ((bool)isValid)
+        var result = await Content.Validator.ValidateAsync();
+        if (result.IsValid)
         {
             await Dialog.CloseAsync(Content);
         }

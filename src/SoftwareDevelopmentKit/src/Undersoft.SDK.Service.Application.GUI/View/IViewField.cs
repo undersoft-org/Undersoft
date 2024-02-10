@@ -3,10 +3,14 @@
     public interface IViewField
     {
         long Id { get; set; }
-        IViewRubric Rubric { get; set; }
         long TypeId { get; set; }
         object? Value { get; set; }
+        string? Class { get; set; }
+        string? Style { get; set; }
+        string? Attributes { get; set; }
 
-        void NotifyStateHasChanged();
+        IViewRubric Rubric { get; set; }
+
+        void RenderView();
     }
 }

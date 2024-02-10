@@ -1,7 +1,5 @@
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Instant.Proxies;
-using Undersoft.SDK.Invoking;
 using Undersoft.SDK.Service.Application.GUI.View;
 using Undersoft.SDK.Service.Operation.Command;
 using Undersoft.SDK.Uniques;
@@ -35,7 +33,8 @@ public class ViewData<TModel> : ViewData, IViewData<TModel>
         CommandMode = mode;
     }
 
-    public ViewData(TModel data, CommandMode mode, string title, params string[] displayList) : this(data, mode, title)
+    public ViewData(TModel data, CommandMode mode, string title, params string[] displayList)
+        : this(data, mode, title)
     {
         if (displayList != null && displayList.Any())
         {
@@ -49,8 +48,9 @@ public class ViewData<TModel> : ViewData, IViewData<TModel>
 
     public override void SetRequired(params string[] requiredList)
     {
-        var rubrics = requiredList.ForEach(r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric()))));
-
+        var rubrics = requiredList.ForEach(
+            r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
+        );
         rubrics.ForEach(r =>
         {
             r.Required = true;
@@ -63,16 +63,18 @@ public class ViewData<TModel> : ViewData, IViewData<TModel>
 
     public override void SetVisible(params string[] visibleList)
     {
-        var rubrics = visibleList.ForEach(r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric()))));
-
+        var rubrics = visibleList.ForEach(
+            r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
+        );
         rubrics.ForEach(r => r.Visible = true);
         ViewRubrics.Put(rubrics);
     }
 
     public override void SetEditable(params string[] editableList)
     {
-        var rubrics = editableList.ForEach(r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric()))));
-
+        var rubrics = editableList.ForEach(
+            r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
+        );
         rubrics.ForEach(r => r.Editable = true);
         ViewRubrics.Put(rubrics);
     }
@@ -90,7 +92,7 @@ public class ViewData<TModel> : ViewData, IViewData<TModel>
     }
 }
 
-public class ViewData : Origin, IGenericData
+public class ViewData : Origin, IViewData
 {
     protected IProxy _proxy;
 
@@ -98,7 +100,11 @@ public class ViewData : Origin, IGenericData
 
     public ViewData(IInnerProxy data) : this(data, CommandMode.Any) { }
 
-    public ViewData(CommandMode mode) { CommandMode = mode; }
+    public ViewData(CommandMode mode)
+    {
+        CommandMode = mode;
+        _proxy = default!;
+    }
 
     public ViewData(IInnerProxy data, CommandMode mode, string title = "") : this(mode)
     {
@@ -107,7 +113,8 @@ public class ViewData : Origin, IGenericData
         Title = title;
     }
 
-    public ViewData(IInnerProxy data, CommandMode mode, string title, params string[] displayList) : this(mode)
+    public ViewData(IInnerProxy data, CommandMode mode, string title, params string[] displayList)
+        : this(mode)
     {
         Model = data;
         _proxy = data.Proxy;
@@ -138,9 +145,9 @@ public class ViewData : Origin, IGenericData
 
     public string? Logo { get; set; } = "img/logo.png";
 
-    public string Height { get; set; } = "500px";
+    public string Height { get; set; } = "450px";
 
-    public string Width { get; set; } = "440px";
+    public string Width { get; set; } = "400px";
 
     private string? nextPath = null;
     public string? NextPath
@@ -165,16 +172,15 @@ public class ViewData : Origin, IGenericData
 
     public IViewRubrics ViewRubrics { get; set; } = new ViewRubrics();
 
-    public IInvoker FieldValidator { get; set; }
+    public string? Class { get; set; }
 
-    public IInvoker FormValidator { get; set; }
-
-    public event EventHandler<ValidationRequestedEventArgs>? OnValidationRequested;
+    public IViewValidator Validator { get; set; }
 
     public virtual void SetRequired(params string[] requiredList)
     {
-        var rubrics = requiredList.ForEach(r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric()))));
-
+        var rubrics = requiredList.ForEach(
+            r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
+        );
         rubrics.ForEach(r =>
         {
             r.Required = true;
@@ -186,16 +192,18 @@ public class ViewData : Origin, IGenericData
 
     public virtual void SetVisible(params string[] visibleList)
     {
-        var rubrics = visibleList.ForEach(r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric()))));
-
+        var rubrics = visibleList.ForEach(
+            r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
+        );
         rubrics.ForEach(r => r.Visible = true);
         ViewRubrics.Put(rubrics);
     }
 
     public virtual void SetEditable(params string[] editableList)
     {
-        var rubrics = editableList.ForEach(r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric()))));
-
+        var rubrics = editableList.ForEach(
+            r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
+        );
         rubrics.ForEach(r => r.Editable = true);
         ViewRubrics.Put(rubrics);
     }
@@ -210,6 +218,17 @@ public class ViewData : Origin, IGenericData
             return (ViewRubric)((object)rubric);
         });
         ViewRubrics.Put(rubrics);
+    }
+
+    public void RenderView()
+    {
+        ViewRubrics.ForEach(r => { if (r.Field != null) r.Field.RenderView(); });
+    }
+
+    public void ClearErrors()
+    {
+        Errors = null;
+        ViewRubrics.ForEach(r => r.Errors.Clear());
     }
 }
 
@@ -227,3 +246,14 @@ public class DisplayPair : Identifiable
     public string DisplayName { get; set; }
 }
 
+
+public class ViewDataSubmitEventArgs : EventArgs
+{
+    public ViewDataSubmitEventArgs(ViewData data)
+    {
+        Data = data;
+    }
+
+    public ViewData Data { get; }
+
+}

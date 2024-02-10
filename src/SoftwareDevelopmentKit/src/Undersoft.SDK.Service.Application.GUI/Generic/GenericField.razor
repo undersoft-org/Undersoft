@@ -9,47 +9,50 @@
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 
 <div>
-    <FluentStack Orientation="Orientation.Vertical" >
-    @if (_type.IsPrimitive)
-    {
-        @if (_type.IsAssignableTo(typeof(long)))
+    <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
+        @if (_type.IsPrimitive)
         {
-            <FluentNumberField Name="@_name" @bind-Value="@_numberValue" Label="@_label" DisplayName="@_name" Required="@_required" />
+            @if (_type.IsAssignableTo(typeof(long)))
+            {
+                <FluentNumberField Name="@_name" @bind-Value="@_numberValue" Label="@_label" DisplayName="@_name" Required="@_required" />
+            }
+            else if (_type.IsAssignableTo(typeof(double)))
+            {
+                <FluentNumberField Name="@_name" @bind-Value="@_decimalValue" Label="@_label" DisplayName="@_name" Required="@_required" />
+            }
+            else if (_type.IsAssignableTo(typeof(DateTime)))
+            {
+                <FluentDatePicker Name="@_name" @bind-Value="@_timeValue" Label="@_label" DisplayName="@_name" Required="@_required" />
+            }
+            else if (_type.IsAssignableTo(typeof(bool)))
+            {
+                <FluentCheckbox Name="@_name" @bind-Value="@_bitValue" Label="@_label" DisplayName="@_name" Required="@_required" />
+            }
+            else
+            {
+                <FluentTextField Name="@_name" @bind-Value="@_textValue" Label="@_label" DisplayName="@_name" TextFieldType="@_textFieldType" InputMode="@_inputMode" Required="@_required" />
+            }
         }
-        else if (_type.IsAssignableTo(typeof(double)))
+        else if (_type == typeof(string) || _type.IsAssignableTo(typeof(IFormattable)))
         {
-            <FluentNumberField Name="@_name" @bind-Value="@_decimalValue" Label="@_label" DisplayName="@_name" Required="@_required" />
+            @if (_size > 128)
+            {
+                <FluentTextArea Maxlength="@_size" Form="generic_form" Id="@_name" Name="@_name" @bind-Value="@_textValue" Label="@_label" DisplayName="@_name" Required="@_required" />
+            }
+            else
+            {
+                <FluentTextField Name="@_name" @bind-Value="@_textValue" Label="@_label" DisplayName="@_name" TextFieldType="@_textFieldType" InputMode="@_inputMode" Required="@_required" />
+            }
         }
-        else if (_type.IsAssignableTo(typeof(DateTime)))
-        {
-            <FluentDatePicker Name="@_name" @bind-Value="@_timeValue" Label="@_label" DisplayName="@_name" Required="@_required" />
-        }
-        else if (_type.IsAssignableTo(typeof(bool)))
-        {
-            <FluentCheckbox Name="@_name" @bind-Value="@_bitValue" Label="@_label" DisplayName="@_name" Required="@_required" />
-        }
-        else
-        {
-            <FluentTextField Name="@_name" @bind-Value="@_textValue" Label="@_label" DisplayName="@_name" TextFieldType="@_textFieldType" InputMode="@_inputMode" Required="@_required" />
-        }
-    }
-    else if (_type == typeof(string) || _type.IsAssignableTo(typeof(IFormattable)))
-    {
-        @if (_size > 128)
-        {
-            <FluentTextArea Maxlength="@_size" Form="generic_form" Id="@_name" Name="@_name" @bind-Value="@_textValue" Label="@_label" DisplayName="@_name" Required="@_required" />
-        }
-        else
-        {
-            <FluentTextField Name="@_name" @bind-Value="@_textValue" Label="@_label" DisplayName="@_name" TextFieldType="@_textFieldType" InputMode="@_inputMode" Required="@_required" />
-        }
-    }
-    @foreach(var error in Rubric.Errors)
+    </FluentStack>
+</div>
+<FluentStack Orientation="Orientation.Vertical" VerticalGap="0" HorizontalAlignment="HorizontalAlignment.Center">
+    @foreach (var error in Rubric.Errors)
     {
         <FluentLabel Typo="Typography.Body" Color="Color.Error">
             @error
         </FluentLabel>
     }
-    </FluentStack>
-</div>
+</FluentStack>
+
 

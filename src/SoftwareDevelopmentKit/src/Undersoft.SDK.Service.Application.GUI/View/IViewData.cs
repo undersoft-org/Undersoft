@@ -1,21 +1,20 @@
 ﻿using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Instant.Proxies;
-using Undersoft.SDK.Invoking;
 using Undersoft.SDK.Service.Application.GUI.View;
 using Undersoft.SDK.Service.Operation.Command;
 
 namespace Undersoft.SDK.Service.Application.GUI.Generic
 {
-    public interface IViewData<TModel> : IGenericData where TModel : class, IOrigin, IInnerProxy
+    public interface IViewData<TModel> : IViewData where TModel : class, IOrigin, IInnerProxy
     {
         new TModel Model { get; set; }
     }
 
-    public interface IGenericData
+    public interface IViewData
     {
         IInnerProxy Model { get; set; }
         string? Description { get; set; }
-        string? Note { get; set; }
+        string? Class { get; set; }
         string? Info { get; set; }
         string? Errors { get; set; }
         string? Success { get; set; }
@@ -32,8 +31,10 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
         string Width { get; set; }
         CommandMode CommandMode { get; set; }
 
-        IInvoker FormValidator { get; set; }
-        IInvoker FieldValidator { get; set; }
+        void RenderView();
+        void ClearErrors();
+
+        IViewValidator Validator { get; set; }
 
         void SetRequired(params string[] requiredList);
         void SetVisible(params string[] visibleList);
