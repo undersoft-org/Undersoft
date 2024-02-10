@@ -18,8 +18,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
 
             modelBuilder
                 .ApplyIdentifiers<Application>()
-                .RalateSetToSetExplicitly<Service, Application>(r => r.Services, r => r.Applications, ExpandSite.OnRight)
-                .RelateSetToSet<Application, Member>(r => r.Applications, r => r.Members, ExpandSite.OnRight)
+                .RalateSetToSetExplicitly<Service, Application>(
+                    r => r.Services,
+                    r => r.Applications,
+                    ExpandSite.OnRight
+                )
+                .RelateSetToSet<Application, Member>(
+                    r => r.Applications,
+                    r => r.Members,
+                    ExpandSite.OnRight
+                )
                 .RelateSetToSet<Application, Setting>(
                     r => r.Applications,
                     r => r.Settings,
@@ -33,7 +41,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Mappings
                 .RelateSetToSet<Application, Detail>(
                     r => r.Applications,
                     r => r.Details,
-                    ExpandSite.OnRight, true
+                    ExpandSite.OnRight,
+                    true
                 )
                 .RelateOneToSet<Default, Application>(
                     r => r.Default,

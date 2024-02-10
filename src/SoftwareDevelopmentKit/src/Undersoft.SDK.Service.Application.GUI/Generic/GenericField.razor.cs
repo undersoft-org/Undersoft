@@ -2,11 +2,11 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.FluentUI.AspNetCore.Components;
 using System.Diagnostics.CodeAnalysis;
 using Undersoft.SDK.Instant.Proxies;
-using Undersoft.SDK.Service.Application.GUI.Rubrics;
+using Undersoft.SDK.Service.Application.GUI.View;
 
 namespace Undersoft.SDK.Service.Application.GUI.Generic
 {
-    public partial class GenericField<TModel> : ComponentBase, IIdentifiable, IGenericField where TModel : class, IOrigin, IInnerProxy
+    public partial class GenericField<TModel> : ComponentBase, IIdentifiable, IViewField where TModel : class, IOrigin, IInnerProxy
     {
         private Type _type = default!;
         private IProxy _proxy = default!;
@@ -58,7 +58,7 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
             Id = Rubric.Id;
             TypeId = Model.TypeId;
             Rubric.FieldIdentifier = new FieldIdentifier(this, _name);
-            Rubric.GenericField = this;
+            Rubric.Field = this;
         }
 
         public long Id { get; set; }
@@ -68,7 +68,7 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
         public TModel Model => Content.Model;
 
         [CascadingParameter]
-        public IGenericData<TModel> Content { get; set; } = default!;
+        public IViewData<TModel> Content { get; set; } = default!;
 
         [CascadingParameter]
         protected EditContext FormContext { get; set; } = default!;

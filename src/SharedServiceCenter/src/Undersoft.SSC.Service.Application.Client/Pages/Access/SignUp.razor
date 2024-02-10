@@ -3,6 +3,7 @@
 @using Undersoft.SDK.Instant.Rubrics.Attributes
 @using Undersoft.SDK.Service;
 @using Undersoft.SDK.Service.Access;
+@using Undersoft.SDK.Service.Application.GUI.View;
 
 @page "/access/sign_up"
 @inject IAccountAccess _access
@@ -11,7 +12,7 @@
 
 @code
 {
-    private IGenericDialog<Credentials> _dialog = default!;
+    private IViewDialog<Credentials> _dialog = default!;
 
     protected override void OnInitialized()
     {
@@ -26,7 +27,7 @@
 
     private async Task SigningUp(string title, string description = "")
     {
-        var data = new GenericData<Credentials>(new Credentials(), CommandMode.Create, title);
+        var data = new ViewData<Credentials>(new Credentials(), CommandMode.Create, title);
         data.SetVisible("FirstName", "LastName", "Email", "Password", "RetypePassword");
         data.Description = description;
         data.Height = "640px";

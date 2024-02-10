@@ -1,0 +1,76 @@
+﻿@using Undersoft.SDK.Service
+@using Undersoft.SDK.Service.Data.Event
+
+@implements IDisposable
+@inject IServicer _servicer
+@inject IMessageService MessageService
+
+<FluentButton Appearance="Appearance.Accent" OnClick="OpenNotificationCenterAsync" Title="Notification center">
+    @if (MessageService.Count(Constant.MESSAGES_NOTIFICATION_CENTER) > 0)
+    {
+        <FluentCounterBadge Count="@MessageService.Count(Constant.MESSAGES_NOTIFICATION_CENTER)"
+                        Max="9"
+                        ShowOverflow="true"
+                        BackgroundColor="@Color.Error"
+                        Color="Color.Fill"
+                        Appearance="Appearance.Accent"
+                        ShowZero=true>
+        <ChildContent>
+            @NotificationIcon()
+        </ChildContent>
+    </FluentCounterBadge>
+}
+else
+{
+    @NotificationIcon() 
+}
+</FluentButton>
+
+    @code {
+
+    private IDialogReference? _reference;
+
+    private IViewDialog<Event> _panel = default!;
+
+    protected override void OnInitialized()
+    {      
+        MessageService.OnMessageItemsUpdated += UpdateCount;
+    }
+
+    private void UpdateCount()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    private RenderFragment NotificationIcon() =>
+        @<FluentIcon Value="@(new Icons.Regular.Size20.Alert())" Color="Color.Neutral"  Title="Notification center" />;
+
+    private async Task OpenNotificationCenterAsync()
+    {
+        _panel = _servicer.Initialize<EventPanel<EventNotificationPanel<Event>, Event>>();
+        if (_panel.Reference != null)
+        {
+            DialogResult result = await _panel.Reference.Result;
+            HandlePanel(result);
+        }
+    }
+
+    private static void HandlePanel(DialogResult result)
+    {
+        if (result.Cancelled)
+        {
+            return;
+        }
+
+        if (result.Data is not null)
+        {
+            return;
+        }
+    }
+
+    public void Dispose()
+    {
+        MessageService.OnMessageItemsUpdated -= UpdateCount;
+    }
+
+}

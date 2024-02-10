@@ -1,11 +1,11 @@
 ﻿using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Access;
-using Undersoft.SDK.Service.Application.GUI.Generic;
+using Undersoft.SDK.Service.Application.GUI.View;
 using Undersoft.SDK.Service.Operation.Command;
 
 namespace Undersoft.SSC.Service.Application.GUI.Compound.Access;
 
-public class AccessValidator : GenericValidator<Credentials>
+public class AccessValidator : ViewValidator<Credentials>
 {
     public AccessValidator(IServicer servicer) : base(servicer)
     {

@@ -4,9 +4,9 @@
 @using Undersoft.SDK
 
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
-@typeparam TValidator where TValidator : class, IValidator<IGenericData<TModel>>
+@typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
 
-@implements IDialogContentComponent<IGenericData<TModel>>
+@implements IDialogContentComponent<IViewData<TModel>>
 
 <CascadingValue Value="@Content">
 
@@ -24,7 +24,7 @@
 @code
 {
     [Parameter]
-    public IGenericData<TModel> Content { get; set; } = default!;
+    public IViewData<TModel> Content { get; set; } = default!;
 
     [CascadingParameter]
     public FluentDialog Dialog { get; set; } = default!;

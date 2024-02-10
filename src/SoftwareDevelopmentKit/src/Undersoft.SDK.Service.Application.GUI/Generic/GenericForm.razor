@@ -6,7 +6,7 @@
 @using Undersoft.SDK.Invoking
 
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
-@typeparam TValidator where TValidator : class, IValidator<IGenericData<TModel>>
+@typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
 
 <div class="generics generic-form forms">
     <CascadingValue Value="@FormContext">
@@ -37,7 +37,7 @@
     public EditContext FormContext { get; set; } = default!;
 
     [Parameter]
-    public IGenericData<TModel> Content { get; set; } = default!;
+    public IViewData<TModel> Content { get; set; } = default!;
 
     private void FieldChanged(object? sender, FieldChangedEventArgs args)
     {

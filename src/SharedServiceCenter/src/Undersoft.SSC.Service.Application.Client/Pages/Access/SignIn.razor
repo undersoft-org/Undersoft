@@ -9,7 +9,7 @@
 
 @code
 {
-    private IGenericDialog<Credentials> _dialog = default!;
+    private IViewDialog<Credentials> _dialog = default!;
 
     protected override void OnInitialized()
     {
@@ -24,7 +24,7 @@
 
     private async Task SigningIn(string title, string description = "")
     {
-        var data = new GenericData<Credentials>(new Credentials(), CommandMode.Access, title);
+        var data = new ViewData<Credentials>(new Credentials(), CommandMode.Access, title);
         data.SetRequired(nameof(Credentials.Email), nameof(Credentials.Password));
         data.SetVisible(nameof(Credentials.SaveAccountInCookies));
         data.Description = description;

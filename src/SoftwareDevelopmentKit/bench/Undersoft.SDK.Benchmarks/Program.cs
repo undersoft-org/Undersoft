@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Running;
+using Undersoft.SDK.Benchmarks.Instant.Math;
 using Undersoft.SDK.Benchmarks.Series;
 
 namespace Undersoft.Benchmarks
@@ -7,14 +8,12 @@ namespace Undersoft.Benchmarks
     {
         static void Main(string[] args)
         {
-            //  BenchmarkRunner.Run<MathsetBenchmark>();
+            BenchmarkRunner.Run<InstantMathBenchmark>();
 
-            // var metod = new RegistryBenchmark();
-
-            //  metod.Dictionary_Add_Test();
+            var regBench = new RegistryBenchmark();
+            regBench.Dictionary_Add_Test();
 
             BenchmarkRunner.Run<RegistryBenchmark>();
-
         }
     }
 }

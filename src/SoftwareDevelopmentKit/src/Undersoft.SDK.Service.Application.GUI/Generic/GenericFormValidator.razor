@@ -6,9 +6,10 @@
 @using Undersoft.SDK.Invoking
 @using Undersoft.SDK.Series
 @using ValidationResult = FluentValidation.Results.ValidationResult;
+@using Undersoft.SDK.Service.Application.GUI.View;
 
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
-@typeparam TValidator where TValidator : class, IValidator<IGenericData<TModel>>
+@typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
 
 @code
 {
@@ -16,10 +17,10 @@
     private EditContext FormContext { get; set; } = default!;
 
     [CascadingParameter]
-    private IGenericData<TModel> Content { get; set; } = default!;
+    private IViewData<TModel> Content { get; set; } = default!;
 
     [Inject]
-    private IValidator<IGenericData<TModel>> Validator { get; set; } = default!;
+    private IValidator<IViewData<TModel>> Validator { get; set; } = default!;
 
     private ValidationMessageStore ValidationMessageStore = default!;
 
@@ -53,7 +54,7 @@
         ValidationMessageStore.Clear();
         Content.ViewRubrics.ForEach(r => r.Errors.Clear());
 
-        var context = new ValidationContext<IGenericData<TModel>>(Content);
+        var context = new ValidationContext<IViewData<TModel>>(Content);
         var result = await Validator.ValidateAsync(context);
 
         if (result.Errors.Any())
@@ -80,7 +81,7 @@
         ValidationMessageStore.Clear(rubric.FieldIdentifier);
         rubric.Errors.Clear();
 
-        var context = new ValidationContext<IGenericData<TModel>>(Content);
+        var context = new ValidationContext<IViewData<TModel>>(Content);
         var result = await Validator.ValidateAsync(context);
         var _result = new ValidationResult(result.Errors.Where(e => e.PropertyName.Contains(rubric.RubricName)));
 
@@ -105,7 +106,7 @@
         IViewRubric rubric = field.Rubric;
         rubric.Errors.Clear();
 
-        var context = new ValidationContext<IGenericData<TModel>>(Content);
+        var context = new ValidationContext<IViewData<TModel>>(Content);
         var result = await Validator.ValidateAsync(context);        
         var _result = new ValidationResult(result.Errors.Where(e => e.PropertyName.Contains(rubric.RubricName)));
 
@@ -116,7 +117,7 @@
                    if (rubric.Errors.TryAdd(e.ErrorMessage))
                        ValidationMessageStore.Add(args.FieldIdentifier, e.ErrorMessage);
                });
-            rubric.GenericField.NotifyStateHasChanged();
+            rubric.Field.NotifyStateHasChanged();
         }                       
         FormContext.NotifyValidationStateChanged();
     }

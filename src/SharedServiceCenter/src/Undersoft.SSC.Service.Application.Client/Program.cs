@@ -32,7 +32,9 @@ namespace Undersoft.SSC.Service.Application.Client
                 })
                 .Manager;
 
-            await manager.BuildInternalProvider().UseServiceClients();
+            await manager
+                    .BuildInternalProvider()
+                    .UseServiceClients();
 
             builder.ConfigureContainer(
                 manager.GetProviderFactory(),
@@ -44,7 +46,7 @@ namespace Undersoft.SSC.Service.Application.Client
                         .AddScoped<AccessProvider<Account>>()
                         .AddScoped<AuthenticationStateProvider, AccessProvider<Account>>()
                         .AddScoped<IAccountAccess, AccessProvider<Account>>()
-                        .AddScoped<IValidator<IGenericData<Credentials>>, AccessValidator>()
+                        .AddScoped<IValidator<IViewData<Credentials>>, AccessValidator>()
                         .AddScoped<AccessValidator>();
                     reg.MergeServices(services, true);
                 }
