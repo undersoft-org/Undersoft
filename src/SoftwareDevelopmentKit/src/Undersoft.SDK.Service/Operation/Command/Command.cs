@@ -7,6 +7,7 @@ using Undersoft.SDK;
 
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Object;
+using Undersoft.SDK.Service.Operation;
 using Uniques;
 
 public class Command<TDto> : CommandBase, IRequest<Command<TDto>>, IIdentifiable where TDto : class, IOrigin, IInnerProxy
@@ -16,23 +17,23 @@ public class Command<TDto> : CommandBase, IRequest<Command<TDto>>, IIdentifiable
 
     protected Command() { }
 
-    protected Command(CommandMode commandMode, TDto dataObject)
+    protected Command(OperationType commandMode, TDto dataObject)
     {
         CommandMode = commandMode;
         base.Contract = dataObject;
     }
 
-    protected Command(CommandMode commandMode, EventPublishMode publishMode, TDto dataObject)
+    protected Command(OperationType commandMode, EventPublishMode publishMode, TDto dataObject)
         : base(dataObject, commandMode, publishMode) { }
 
     protected Command(
-        CommandMode commandMode,
+        OperationType commandMode,
         EventPublishMode publishMode,
         TDto dataObject,
         params object[] keys
     ) : base(dataObject, commandMode, publishMode, keys) { }
 
-    protected Command(CommandMode commandMode, EventPublishMode publishMode, params object[] keys)
+    protected Command(OperationType commandMode, EventPublishMode publishMode, params object[] keys)
         : base(commandMode, publishMode, keys) { }
 
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Service.Application.GUI.View;
-using Undersoft.SDK.Service.Operation.Command;
+using Undersoft.SDK.Service.Operation;
 
 namespace Undersoft.SDK.Service.Application.GUI.Generic
 {
@@ -10,7 +10,7 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
         new TModel Model { get; set; }
     }
 
-    public interface IViewData
+    public interface IViewData : IView
     {
         IInnerProxy Model { get; set; }
         string? Description { get; set; }
@@ -21,7 +21,7 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
         bool HaveNext { get; set; }
         string Height { get; set; }
         Icon? Icon { get; set; }
-        bool IsCanceled { get; set; }
+        bool Canceled { get; set; }
         string? Logo { get; set; }
         string? NextInvoke { get; set; }
         string? NextPath { get; set; }
@@ -29,9 +29,10 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
         IViewRubrics ViewRubrics { get; set; }
         string? Title { get; set; }
         string Width { get; set; }
-        CommandMode CommandMode { get; set; }
+        OperationType CommandMode { get; set; }
 
-        void RenderView();
+        IView View { get; set; }
+
         void ClearErrors();
 
         IViewValidator Validator { get; set; }

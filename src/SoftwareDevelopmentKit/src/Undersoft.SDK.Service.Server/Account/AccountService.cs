@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ServiceStack;
-using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Server.Accounts.Email;
 
@@ -55,6 +54,11 @@ public class AccountService : IAccountAction, IAccountAccess
                 _creds.Password,
                 new string[] { "User" }
             );
+            if (!account.Notes.IsSuccess)
+            {
+                identity.Notes = account.Notes;
+                return identity;
+            }
         }
         else
         {
@@ -73,7 +77,7 @@ public class AccountService : IAccountAction, IAccountAccess
     {
         var account = AccountInfo(identity);
 
-        if (account.Credentials.IsAvailable)
+        if (account.Credentials.IsLockedOut)
         {
             var principal = await _manager.SignIn.CreateUserPrincipalAsync(
                 await _manager.User.FindByEmailAsync(account.Credentials.Email)
@@ -93,7 +97,7 @@ public class AccountService : IAccountAction, IAccountAccess
     {
         var account = AccountInfo(identity);
 
-        if (account.Credentials.IsAvailable)
+        if (account.Credentials.IsLockedOut)
         {
             var token = await _manager.RenewToken(identity.Credentials.SessionToken);
             if (token != null)
@@ -124,7 +128,7 @@ public class AccountService : IAccountAction, IAccountAccess
         if (!_manager.TryGetByEmail(_creds.Email, out var account))
         {
             _creds.Password = null;
-            _creds.IsAvailable = false;
+            _creds.IsLockedOut = false;
             _creds.Authenticated = false;
             _creds.EmailConfirmed = false;
             _creds.PhoneNumberConfirmed = false;
@@ -140,9 +144,9 @@ public class AccountService : IAccountAction, IAccountAccess
         var creds = account.Credentials;
         creds.PatchFrom(_creds);
         if (account.User.LockoutEnabled)
-            creds.IsAvailable = account.User.IsLockedOut;
+            creds.IsLockedOut = account.User.IsLockedOut;
         else
-            creds.IsAvailable = true;
+            creds.IsLockedOut = false;
         creds.Authenticated = false;
         creds.EmailConfirmed = account.User.EmailConfirmed;
         creds.PhoneNumberConfirmed = account.User.PhoneNumberConfirmed;
@@ -156,7 +160,7 @@ public class AccountService : IAccountAction, IAccountAccess
 
         var _creds = account?.Credentials;
 
-        if (_creds.IsAvailable)
+        if (!_creds.IsLockedOut)
         {
             if (await _manager.CheckPassword(_creds.Email, _creds.Password) == null)
             {
@@ -176,13 +180,22 @@ public class AccountService : IAccountAction, IAccountAccess
                 };
             }
         }
+        else
+        {
+            _creds.Authenticated = false;
+            account.Notes = new AuthorizationNotes()
+            {
+                Errors = "Account is locked out",
+                Status = SigningStatus.InvalidPassword
+            };
+        }
         _creds.Password = null;
         return account;
     }
 
     public async Task<IAuthorization> ConfirmEmail(IAuthorization account)
     {
-        if (account != null && account.Credentials.IsAvailable)
+        if (account != null && account.Credentials.IsLockedOut)
         {
             var _creds = account.Credentials;
             if (!_creds.EmailConfirmed)
@@ -253,7 +266,7 @@ public class AccountService : IAccountAction, IAccountAccess
     {
         account = AccountInfo(account);
 
-        if (account != null && account.Credentials.IsAvailable)
+        if (account != null && account.Credentials.IsLockedOut)
         {
             var _creds = account.Credentials;
             if (_creds.PasswordResetToken != null)
@@ -366,7 +379,7 @@ public class AccountService : IAccountAction, IAccountAccess
     {
         if (
             account != null
-            && account.Credentials.IsAvailable
+            && account.Credentials.IsLockedOut
             && account.Credentials.Authenticated
             && account.Credentials.EmailConfirmed
         )

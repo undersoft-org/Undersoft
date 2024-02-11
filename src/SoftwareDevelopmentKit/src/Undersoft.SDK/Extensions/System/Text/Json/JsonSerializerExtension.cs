@@ -31,14 +31,14 @@ namespace System.Text.Json
             else
                 _jsonOptions.PatchTo(opt);
 #endif
-#if NET7_0
-        var flds = typeof(JsonSerializerOptions).GetRuntimeFields();
-        flds.Single(f => f.Name == "_defaultIgnoreCondition")
-            .SetValue(JsonSerializerOptions.Default, JsonIgnoreCondition.WhenWritingNull);
-        flds.Single(f => f.Name == "_referenceHandler")
-            .SetValue(JsonSerializerOptions.Default, ReferenceHandler.IgnoreCycles);
-        flds.Single(f => f.Name == "_numberHandling")
-            .SetValue(JsonSerializerOptions.Default, JsonNumberHandling.AllowReadingFromString);
+#if NET8_0
+            var flds = typeof(JsonSerializerOptions).GetRuntimeFields();
+            flds.Single(f => f.Name == "_defaultIgnoreCondition")
+                .SetValue(JsonSerializerOptions.Default, JsonIgnoreCondition.WhenWritingNull);
+            flds.Single(f => f.Name == "_referenceHandler")
+                .SetValue(JsonSerializerOptions.Default, ReferenceHandler.IgnoreCycles);
+            flds.Single(f => f.Name == "_numberHandling")
+                .SetValue(JsonSerializerOptions.Default, JsonNumberHandling.AllowReadingFromString);
 #endif
         }
 
@@ -170,7 +170,7 @@ namespace System.Text.Json
         {
             return JsonSerializer.Deserialize(str, type, _jsonOptions);
         }
-    
+
         public static object FromJson(this Stream str, Type type)
         {
             return JsonSerializer.Deserialize(str, type, _jsonOptions);

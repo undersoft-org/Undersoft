@@ -10,7 +10,7 @@ public class ViewRubric : MemberRubric, IViewRubric
 
     public ISeries<string> Errors { get; set; } = new Listing<string>();
 
-    public IViewField Field { get; set; } = default!;
+    public IViewField View { get; set; } = default!;
 
     public ViewRubric ShallowCopy(ViewRubric dst)
     {

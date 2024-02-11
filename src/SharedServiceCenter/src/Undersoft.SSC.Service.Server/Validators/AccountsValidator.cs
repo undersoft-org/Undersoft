@@ -1,5 +1,5 @@
 ﻿using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation.Command;
+using Undersoft.SDK.Service.Operation;
 using Undersoft.SDK.Service.Operation.Command.Validator;
 using Undersoft.SDK.Service.Server.Accounts;
 
@@ -10,7 +10,7 @@ public class AccountsValidator : CommandSetValidator<Account>
     public AccountsValidator(IServicer ultimatr) : base(ultimatr)
     {
         ValidationScope(
-            CommandMode.Any,
+            OperationType.Any,
             () =>
             {
                 ValidateEmail(p => p.Contract.Credentials.Email);
@@ -18,7 +18,7 @@ public class AccountsValidator : CommandSetValidator<Account>
         );
 
         ValidationScope(
-            CommandMode.Create | CommandMode.Upsert,
+            OperationType.Create | OperationType.Upsert,
             () =>
             {
                 ValidateRequired(p => p.Contract.Credentials.UserName);
@@ -27,7 +27,7 @@ public class AccountsValidator : CommandSetValidator<Account>
             }
         );
         ValidationScope(
-            CommandMode.Create,
+            OperationType.Create,
             () =>
             {
                 ValidateNotExist<IReportStore, Account>(
@@ -42,7 +42,7 @@ public class AccountsValidator : CommandSetValidator<Account>
             }
         );
         ValidationScope(
-            CommandMode.Update | CommandMode.Change | CommandMode.Delete,
+            OperationType.Update | OperationType.Change | OperationType.Delete,
             () =>
             {
                 ValidateRequired(p => p.Contract.Credentials.SessionToken);

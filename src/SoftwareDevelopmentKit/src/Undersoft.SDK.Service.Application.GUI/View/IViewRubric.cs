@@ -10,6 +10,6 @@ namespace Undersoft.SDK.Service.Application.GUI.View
 
         ISeries<string> Errors { get; set; }
 
-        IViewField Field { get; set; }
+        IViewField View { get; set; }
     }
 }

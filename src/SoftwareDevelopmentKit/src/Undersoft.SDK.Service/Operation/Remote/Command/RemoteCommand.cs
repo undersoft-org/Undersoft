@@ -2,7 +2,6 @@
 
 using System.Text.Json.Serialization;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Operation.Command;
 
 namespace Undersoft.SDK.Service.Operation.Remote.Command;
 
@@ -13,23 +12,23 @@ public class RemoteCommand<TModel> : RemoteCommandBase, IRequest<RemoteCommand<T
 
     protected RemoteCommand() { }
 
-    protected RemoteCommand(CommandMode commandMode, TModel dataObject)
+    protected RemoteCommand(OperationType commandMode, TModel dataObject)
     {
         CommandMode = commandMode;
         base.Model = dataObject;
     }
 
-    protected RemoteCommand(CommandMode commandMode, EventPublishMode publishMode, TModel dataObject)
+    protected RemoteCommand(OperationType commandMode, EventPublishMode publishMode, TModel dataObject)
         : base(dataObject, commandMode, publishMode) { }
 
     protected RemoteCommand(
-        CommandMode commandMode,
+        OperationType commandMode,
         EventPublishMode publishMode,
         TModel dataObject,
         params object[] keys
     ) : base(dataObject, commandMode, publishMode, keys) { }
 
-    protected RemoteCommand(CommandMode commandMode, EventPublishMode publishMode, params object[] keys)
+    protected RemoteCommand(OperationType commandMode, EventPublishMode publishMode, params object[] keys)
         : base(commandMode, publishMode, keys) { }
 
     public override long Id

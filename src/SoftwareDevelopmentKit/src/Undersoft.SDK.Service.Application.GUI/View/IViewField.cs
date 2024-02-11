@@ -1,6 +1,8 @@
-﻿namespace Undersoft.SDK.Service.Application.GUI.View
+﻿using Undersoft.SDK.Service.Application.GUI.Generic;
+
+namespace Undersoft.SDK.Service.Application.GUI.View
 {
-    public interface IViewField
+    public interface IViewField : IView
     {
         long Id { get; set; }
         long TypeId { get; set; }
@@ -10,7 +12,5 @@
         string? Attributes { get; set; }
 
         IViewRubric Rubric { get; set; }
-
-        void RenderView();
     }
 }

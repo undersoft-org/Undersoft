@@ -7,25 +7,26 @@ using Undersoft.SDK.Service.Data.Object;
 using Series;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK;
+using Undersoft.SDK.Service.Operation;
 
 public class CommandSet<TDto>
     : Catalog<Command<TDto>>,
         IRequest<CommandSet<TDto>>,
         ICommandSet<TDto> where TDto : class, IOrigin, IInnerProxy
 {
-    public CommandMode CommandMode { get; set; }
+    public OperationType CommandMode { get; set; }
 
     public EventPublishMode PublishMode { get; set; }
 
     protected CommandSet() : base() { }
 
-    protected CommandSet(CommandMode commandMode) : base()
+    protected CommandSet(OperationType commandMode) : base()
     {
         CommandMode = commandMode;
     }
 
     protected CommandSet(
-        CommandMode commandMode,
+        OperationType commandMode,
         EventPublishMode publishPattern,
         Command<TDto>[] DtoCommands
     ) : base(DtoCommands)

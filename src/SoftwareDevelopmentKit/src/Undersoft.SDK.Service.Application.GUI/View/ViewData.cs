@@ -1,7 +1,7 @@
 using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Service.Application.GUI.View;
-using Undersoft.SDK.Service.Operation.Command;
+using Undersoft.SDK.Service.Operation;
 using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Service.Application.GUI.Generic;
@@ -13,19 +13,19 @@ public class ViewData<TModel> : ViewData, IViewData<TModel>
     {
         Model = typeof(TModel).New<TModel>();
         _proxy = Model.Proxy;
-        CommandMode = CommandMode.Any;
+        CommandMode = OperationType.Any;
     }
 
-    public ViewData(CommandMode mode)
+    public ViewData(OperationType mode)
     {
         Model = typeof(TModel).New<TModel>();
         _proxy = Model.Proxy;
         CommandMode = mode;
     }
 
-    public ViewData(TModel data) : this(data, CommandMode.Any) { }
+    public ViewData(TModel data) : this(data, OperationType.Any) { }
 
-    public ViewData(TModel data, CommandMode mode, string title = "")
+    public ViewData(TModel data, OperationType mode, string title = "")
     {
         Model = data;
         _proxy = data.Proxy;
@@ -33,7 +33,7 @@ public class ViewData<TModel> : ViewData, IViewData<TModel>
         CommandMode = mode;
     }
 
-    public ViewData(TModel data, CommandMode mode, string title, params string[] displayList)
+    public ViewData(TModel data, OperationType mode, string title, params string[] displayList)
         : this(data, mode, title)
     {
         if (displayList != null && displayList.Any())
@@ -98,22 +98,22 @@ public class ViewData : Origin, IViewData
 
     public ViewData() { }
 
-    public ViewData(IInnerProxy data) : this(data, CommandMode.Any) { }
+    public ViewData(IInnerProxy data) : this(data, OperationType.Any) { }
 
-    public ViewData(CommandMode mode)
+    public ViewData(OperationType mode)
     {
         CommandMode = mode;
         _proxy = default!;
     }
 
-    public ViewData(IInnerProxy data, CommandMode mode, string title = "") : this(mode)
+    public ViewData(IInnerProxy data, OperationType mode, string title = "") : this(mode)
     {
         Model = data;
         _proxy = data.Proxy;
         Title = title;
     }
 
-    public ViewData(IInnerProxy data, CommandMode mode, string title, params string[] displayList)
+    public ViewData(IInnerProxy data, OperationType mode, string title, params string[] displayList)
         : this(mode)
     {
         Model = data;
@@ -162,11 +162,13 @@ public class ViewData : Origin, IViewData
 
     public string? NextInvoke { get; set; } = null;
 
-    public bool IsCanceled { get; set; }
+    public bool Canceled { get; set; }
+
+    public bool Selected { get; set; }
 
     public bool HaveNext { get; set; }
 
-    public CommandMode CommandMode { get; set; }
+    public OperationType CommandMode { get; set; }
 
     public IViewRubric SelectedRubric { get; set; } = default!;
 
@@ -220,9 +222,14 @@ public class ViewData : Origin, IViewData
         ViewRubrics.Put(rubrics);
     }
 
+    public IView View { get; set; }
+
     public void RenderView()
     {
-        ViewRubrics.ForEach(r => { if (r.Field != null) r.Field.RenderView(); });
+        if (View != null)
+            View.RenderView();
+        else
+            ViewRubrics.ForEach(r => { if (r.View != null) r.View.RenderView(); });
     }
 
     public void ClearErrors()
@@ -244,16 +251,4 @@ public class DisplayPair : Identifiable
     public string RubricName { get; set; }
 
     public string DisplayName { get; set; }
-}
-
-
-public class ViewDataSubmitEventArgs : EventArgs
-{
-    public ViewDataSubmitEventArgs(ViewData data)
-    {
-        Data = data;
-    }
-
-    public ViewData Data { get; }
-
 }

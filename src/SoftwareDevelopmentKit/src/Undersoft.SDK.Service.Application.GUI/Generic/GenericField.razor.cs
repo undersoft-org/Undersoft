@@ -58,7 +58,7 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
             Id = Rubric.Id;
             TypeId = Model.TypeId;
             Rubric.FieldIdentifier = new FieldIdentifier(this, _name);
-            Rubric.Field = this;
+            Rubric.View = this;
         }
 
         public long Id { get; set; }

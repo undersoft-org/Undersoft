@@ -1,7 +1,6 @@
 ﻿using FluentValidation.Results;
 using MediatR;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Operation.Command;
 
 namespace Undersoft.SDK.Service.Operation.Remote.Command;
 
@@ -10,19 +9,19 @@ public class RemoteCommandSet<TModel>
         IRequest<RemoteCommandSet<TModel>>,
         IRemoteCommandSet<TModel> where TModel : class, IOrigin, IInnerProxy
 {
-    public CommandMode CommandMode { get; set; }
+    public OperationType CommandMode { get; set; }
 
     public EventPublishMode PublishMode { get; set; }
 
     protected RemoteCommandSet() : base(true) { }
 
-    protected RemoteCommandSet(CommandMode commandMode) : base()
+    protected RemoteCommandSet(OperationType commandMode) : base()
     {
         CommandMode = commandMode;
     }
 
     protected RemoteCommandSet(
-        CommandMode commandMode,
+        OperationType commandMode,
         EventPublishMode publishPattern,
         RemoteCommand<TModel>[] DtoCommands
     ) : base(DtoCommands)

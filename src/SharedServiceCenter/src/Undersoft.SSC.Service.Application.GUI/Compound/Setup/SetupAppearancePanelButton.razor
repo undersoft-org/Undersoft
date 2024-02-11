@@ -23,7 +23,7 @@
 
     private async Task OpenAppearancePanel()
     {
-        var data = new ViewData<Credentials>(new Credentials(), CommandMode.Change);
+        var data = new ViewData<Credentials>(new Credentials(), OperationType.Change);
 
         await _dialog.Show(data);
     }

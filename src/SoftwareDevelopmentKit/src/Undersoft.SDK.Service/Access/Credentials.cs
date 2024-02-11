@@ -102,7 +102,7 @@ namespace Undersoft.SDK.Service.Access
         public bool Authenticated { get; set; }
 
         [DataMember(Order = 19)]
-        public bool IsAvailable { get; set; }
+        public bool IsLockedOut { get; set; }
 
         [DataMember(Order = 20)]
         public string ReturnPath { get; set; }
@@ -110,7 +110,7 @@ namespace Undersoft.SDK.Service.Access
         [RequiredRubric]
         [DataMember(Order = 21)]
         [DisplayRubric("Retype password")]
-        public string RetypePassword { get; set; }
+        public string RetypedPassword { get; set; }
 
         [RequiredRubric]
         [DataMember(Order = 22)]

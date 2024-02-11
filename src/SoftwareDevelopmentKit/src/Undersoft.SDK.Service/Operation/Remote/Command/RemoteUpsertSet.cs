@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace Undersoft.SDK.Service.Operation.Remote.Command;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation.Command;
+using Undersoft.SDK.Service.Operation;
 
 public class RemoteUpsertSet<TStore, TDto, TModel> : RemoteCommandSet<TModel>
     where TDto : class, IOrigin, IInnerProxy
@@ -19,7 +19,7 @@ public class RemoteUpsertSet<TStore, TDto, TModel> : RemoteCommandSet<TModel>
 
     public RemoteUpsertSet(EventPublishMode publishPattern, TModel input, object key)
         : base(
-            CommandMode.Change,
+            OperationType.Change,
             publishPattern,
             new[]
             {
@@ -38,7 +38,7 @@ public class RemoteUpsertSet<TStore, TDto, TModel> : RemoteCommandSet<TModel>
         Func<TDto, Expression<Func<TDto, bool>>> predicate
     )
         : base(
-            CommandMode.Upsert,
+            OperationType.Upsert,
             publishPattern,
             inputs
                 .Select(
@@ -57,7 +57,7 @@ public class RemoteUpsertSet<TStore, TDto, TModel> : RemoteCommandSet<TModel>
         params Func<TDto, Expression<Func<TDto, bool>>>[] conditions
     )
         : base(
-            CommandMode.Upsert,
+            OperationType.Upsert,
             publishPattern,
             inputs
                 .Select(

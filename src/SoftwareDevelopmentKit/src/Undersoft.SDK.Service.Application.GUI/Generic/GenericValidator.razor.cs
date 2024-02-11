@@ -51,7 +51,7 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
             {
                 result.Errors.GroupBy(e => e.PropertyName).ForEach(r =>
                 {
-                    var rubric = Content.ViewRubrics[r.Key.Replace("Model.", "")];
+                    var rubric = Content.ViewRubrics[r.Key.Split(".").LastOrDefault()];
                     if (rubric != null)
                     {
                         rubric.Errors.Clear();
@@ -77,7 +77,7 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
 
             var context = new ValidationContext<IViewData<TModel>>(Content);
             var result = await Validator.ValidateAsync(context);
-            var _result = new ValidationResult(result.Errors.Where(e => e.PropertyName.Replace("Model.", "").Equals(rubric.RubricName)));
+            var _result = new ValidationResult(result.Errors.Where(e => rubric.RubricName.Equals(e.PropertyName.Split(".").LastOrDefault())));
 
             if (_result.Errors.Any())
             {
@@ -87,7 +87,7 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
                         ValidationMessageStore.Add(rubric.FieldIdentifier, e.ErrorMessage);
                 });
             }
-            rubric.Field.RenderView();
+            rubric.View.RenderView();
             FormContext.NotifyValidationStateChanged();
             return _result;
         }
@@ -101,7 +101,7 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
 
             var context = new ValidationContext<IViewData<TModel>>(Content);
             var result = await Validator.ValidateAsync(context);
-            var _result = new ValidationResult(result.Errors.Where(e => e.PropertyName.Replace("Model.", "").Equals(rubric.RubricName)));
+            var _result = new ValidationResult(result.Errors.Where(e => rubric.RubricName.Equals(e.PropertyName.Split(".").LastOrDefault())));
 
             if (_result.Errors.Any())
             {
@@ -111,7 +111,7 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
                         ValidationMessageStore.Add(args.FieldIdentifier, e.ErrorMessage);
                 });
             }
-            rubric.Field.RenderView();
+            rubric.View.RenderView();
             FormContext.NotifyValidationStateChanged();
         }
     }

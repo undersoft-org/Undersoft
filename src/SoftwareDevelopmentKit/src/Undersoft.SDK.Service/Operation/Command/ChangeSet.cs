@@ -7,6 +7,7 @@ using Undersoft.SDK.Service.Data.Object;
 
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Operation;
 
 public class ChangeSet<TStore, TEntity, TDto> : CommandSet<TDto>
     where TEntity : class, IOrigin, IInnerProxy
@@ -18,7 +19,7 @@ public class ChangeSet<TStore, TEntity, TDto> : CommandSet<TDto>
 
     public ChangeSet(EventPublishMode publishPattern, TDto input, object key)
         : base(
-            CommandMode.Change,
+            OperationType.Change,
             publishPattern,
             new[] { new Change<TStore, TEntity, TDto>(publishPattern, input, key) }
         )
@@ -26,7 +27,7 @@ public class ChangeSet<TStore, TEntity, TDto> : CommandSet<TDto>
 
     public ChangeSet(EventPublishMode publishPattern, TDto[] inputs)
         : base(
-            CommandMode.Change,
+            OperationType.Change,
             publishPattern,
             inputs.Select(c => new Change<TStore, TEntity, TDto>(publishPattern, c, c.Id)).ToArray()
         )
@@ -38,7 +39,7 @@ public class ChangeSet<TStore, TEntity, TDto> : CommandSet<TDto>
         Func<TDto, Expression<Func<TEntity, bool>>> predicate
     )
         : base(
-            CommandMode.Change,
+            OperationType.Change,
             publishPattern,
             inputs
                 .Select(c => new Change<TStore, TEntity, TDto>(publishPattern, c, predicate))

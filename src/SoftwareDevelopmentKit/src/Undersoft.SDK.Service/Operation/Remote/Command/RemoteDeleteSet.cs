@@ -2,7 +2,6 @@
 using System.Text.Json.Serialization;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation.Command;
 
 namespace Undersoft.SDK.Service.Operation.Remote.Command;
 
@@ -16,7 +15,7 @@ public class RemoteDeleteSet<TStore, TDto, TModel> : RemoteCommandSet<TModel>
 
     public RemoteDeleteSet(EventPublishMode publishPattern, object key)
         : base(
-            CommandMode.Create,
+            OperationType.Create,
             publishPattern,
             new[] { new RemoteDelete<TStore, TDto, TModel>(publishPattern, key) }
         )
@@ -24,7 +23,7 @@ public class RemoteDeleteSet<TStore, TDto, TModel> : RemoteCommandSet<TModel>
 
     public RemoteDeleteSet(EventPublishMode publishPattern, TModel input, object key)
         : base(
-            CommandMode.Create,
+            OperationType.Create,
             publishPattern,
             new[] { new RemoteDelete<TStore, TDto, TModel>(publishPattern, input, key) }
         )
@@ -32,7 +31,7 @@ public class RemoteDeleteSet<TStore, TDto, TModel> : RemoteCommandSet<TModel>
 
     public RemoteDeleteSet(EventPublishMode publishPattern, TModel[] inputs)
         : base(
-            CommandMode.Delete,
+            OperationType.Delete,
             publishPattern,
             inputs
                 .Select(input => new RemoteDelete<TStore, TDto, TModel>(publishPattern, input))
@@ -46,7 +45,7 @@ public class RemoteDeleteSet<TStore, TDto, TModel> : RemoteCommandSet<TModel>
         Func<TDto, Expression<Func<TDto, bool>>> predicate
     )
         : base(
-            CommandMode.Delete,
+            OperationType.Delete,
             publishPattern,
             inputs
                 .Select(

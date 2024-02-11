@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 namespace Undersoft.SDK.Service.Operation.Remote.Command.Validator;
 
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation.Command;
+using Undersoft.SDK.Service.Operation;
 using Undersoft.SDK.Service.Operation.Remote.Command;
 using Undersoft.SDK.Service.Operation.Remote.Validator;
 
@@ -13,12 +13,12 @@ public class RemoteCommandValidator<TModel> : RemoteCommandValidatorBase<RemoteC
 {
     public RemoteCommandValidator(IServicer ultimateService) : base(ultimateService) { }
 
-    protected void ValidationScope<T>(CommandMode commandMode, Action actions)
+    protected void ValidationScope<T>(OperationType commandMode, Action actions)
     {
         ValidationScope(typeof(T), commandMode, actions);
     }
 
-    protected void ValidationScope(Type type, CommandMode commandMode, Action actions)
+    protected void ValidationScope(Type type, OperationType commandMode, Action actions)
     {
         WhenAsync(
             (cmd, cancel) =>
@@ -34,7 +34,7 @@ public class RemoteCommandValidator<TModel> : RemoteCommandValidatorBase<RemoteC
         );
     }
 
-    protected void ValidationScope(CommandMode commandMode, Action actions)
+    protected void ValidationScope(OperationType commandMode, Action actions)
     {
         WhenAsync(
             (cmd, cancel) =>

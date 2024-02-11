@@ -2,7 +2,6 @@
 using System.Text.Json.Serialization;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation.Command;
 
 namespace Undersoft.SDK.Service.Operation.Remote.Command;
 
@@ -16,7 +15,7 @@ public class RemoteChangeSet<TStore, TDto, TModel> : RemoteCommandSet<TModel>
 
     public RemoteChangeSet(EventPublishMode publishPattern, TModel input, object key)
         : base(
-            CommandMode.Change,
+            OperationType.Change,
             publishPattern,
             new[] { new RemoteChange<TStore, TDto, TModel>(publishPattern, input, key) }
         )
@@ -24,7 +23,7 @@ public class RemoteChangeSet<TStore, TDto, TModel> : RemoteCommandSet<TModel>
 
     public RemoteChangeSet(EventPublishMode publishPattern, TModel[] inputs)
         : base(
-            CommandMode.Change,
+            OperationType.Change,
             publishPattern,
             inputs.Select(c => new RemoteChange<TStore, TDto, TModel>(publishPattern, c, c.Id)).ToArray()
         )
@@ -36,7 +35,7 @@ public class RemoteChangeSet<TStore, TDto, TModel> : RemoteCommandSet<TModel>
         Func<TModel, Expression<Func<TDto, bool>>> predicate
     )
         : base(
-            CommandMode.Change,
+            OperationType.Change,
             publishPattern,
             inputs
                 .Select(c => new RemoteChange<TStore, TDto, TModel>(publishPattern, c, predicate))

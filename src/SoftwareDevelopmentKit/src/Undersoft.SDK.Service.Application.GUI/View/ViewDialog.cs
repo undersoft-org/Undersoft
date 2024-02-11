@@ -26,6 +26,7 @@ public class ViewDialog<TDialog, TModel> : IViewDialog<TModel> where TDialog : I
                 Height = data.Height,
                 Width = data.Width,
                 Title = data.Title,
+                Id = data.Model.TypeId.ToString(),
             });
 
             var result = await Reference.Result;
@@ -69,5 +70,11 @@ public class ViewDialog<TDialog, TModel> : IViewDialog<TModel> where TDialog : I
                 Content = (IViewData<TModel>)result.Data;
             }
         }
+    }
+
+    public void RenderView()
+    {
+        if (Content?.View != null)
+            Content.View.RenderView();
     }
 }

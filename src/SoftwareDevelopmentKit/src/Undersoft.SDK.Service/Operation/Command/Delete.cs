@@ -15,13 +15,13 @@ public class Delete<TStore, TEntity, TDto> : Command<TDto>
     public Func<TEntity, Expression<Func<TEntity, bool>>> Predicate { get; }
 
     public Delete(EventPublishMode publishPattern, TDto input)
-        : base(CommandMode.Delete, publishPattern, input) { }
+        : base(OperationType.Delete, publishPattern, input) { }
 
     public Delete(
         EventPublishMode publishPattern,
         TDto input,
         Func<TEntity, Expression<Func<TEntity, bool>>> predicate
-    ) : base(CommandMode.Delete, publishPattern, input)
+    ) : base(OperationType.Delete, publishPattern, input)
     {
         Predicate = predicate;
     }
@@ -29,11 +29,11 @@ public class Delete<TStore, TEntity, TDto> : Command<TDto>
     public Delete(
         EventPublishMode publishPattern,
         Func<TEntity, Expression<Func<TEntity, bool>>> predicate
-    ) : base(CommandMode.Delete, publishPattern)
+    ) : base(OperationType.Delete, publishPattern)
     {
         Predicate = predicate;
     }
 
     public Delete(EventPublishMode publishPattern, params object[] keys)
-        : base(CommandMode.Delete, publishPattern, keys) { }
+        : base(OperationType.Delete, publishPattern, keys) { }
 }

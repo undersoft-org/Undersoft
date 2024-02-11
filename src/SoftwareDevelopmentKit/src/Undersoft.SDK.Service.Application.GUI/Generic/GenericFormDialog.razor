@@ -7,6 +7,7 @@
 @typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
 
 @implements IDialogContentComponent<IViewData<TModel>>
+@implements IView
 
 
 <CascadingValue Value="@Content">
@@ -29,4 +30,15 @@
 
     [CascadingParameter]
     public FluentDialog Dialog { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        Content.View = this;
+        base.OnInitialized();
+    }
+
+    public void RenderView()
+    {
+        this.StateHasChanged();
+    }
 }

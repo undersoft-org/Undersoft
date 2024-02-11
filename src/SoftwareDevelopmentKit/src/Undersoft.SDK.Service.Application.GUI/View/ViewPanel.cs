@@ -75,4 +75,11 @@ public class ViewPanel<TPanel, TModel> : ComponentBase, IViewDialog<TModel> wher
             }
         }
     }
+
+    public void RenderView()
+    {
+        if (Content?.View != null)
+            Content.View.RenderView();
+    }
+
 }

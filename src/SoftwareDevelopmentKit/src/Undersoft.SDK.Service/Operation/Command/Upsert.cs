@@ -5,6 +5,7 @@ namespace Undersoft.SDK.Service.Operation.Command;
 
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Operation;
 
 public class Upsert<TStore, TEntity, TDto> : Command<TDto>
     where TDto : class, IOrigin, IInnerProxy
@@ -21,7 +22,7 @@ public class Upsert<TStore, TEntity, TDto> : Command<TDto>
         EventPublishMode publishPattern,
         TDto input,
         Func<TEntity, Expression<Func<TEntity, bool>>> predicate
-    ) : base(CommandMode.Upsert, publishPattern, input)
+    ) : base(OperationType.Upsert, publishPattern, input)
     {
         Predicate = predicate;
     }
@@ -31,7 +32,7 @@ public class Upsert<TStore, TEntity, TDto> : Command<TDto>
         TDto input,
         Func<TEntity, Expression<Func<TEntity, bool>>> predicate,
         params Func<TEntity, Expression<Func<TEntity, bool>>>[] conditions
-    ) : base(CommandMode.Upsert, publishPattern, input)
+    ) : base(OperationType.Upsert, publishPattern, input)
     {
         Predicate = predicate;
         Conditions = conditions;

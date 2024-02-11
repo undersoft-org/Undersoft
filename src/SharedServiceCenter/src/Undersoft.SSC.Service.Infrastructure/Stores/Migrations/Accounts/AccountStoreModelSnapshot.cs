@@ -55,7 +55,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
 
-                    b.Property<bool>("IsAvailable")
+                    b.Property<bool>("IsLockedOut")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Label")

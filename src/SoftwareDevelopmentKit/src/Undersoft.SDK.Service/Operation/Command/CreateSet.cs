@@ -16,7 +16,7 @@ public class CreateSet<TStore, TEntity, TDto> : CommandSet<TDto>
 
     public CreateSet(EventPublishMode publishPattern, TDto input, object key)
         : base(
-            CommandMode.Create,
+            OperationType.Create,
             publishPattern,
             new[] { new Create<TStore, TEntity, TDto>(publishPattern, input, key) }
         )
@@ -24,7 +24,7 @@ public class CreateSet<TStore, TEntity, TDto> : CommandSet<TDto>
 
     public CreateSet(EventPublishMode publishPattern, TDto[] inputs)
         : base(
-            CommandMode.Create,
+            OperationType.Create,
             publishPattern,
             inputs
                 .Select(input => new Create<TStore, TEntity, TDto>(publishPattern, input))
@@ -38,7 +38,7 @@ public class CreateSet<TStore, TEntity, TDto> : CommandSet<TDto>
         Func<TEntity, Expression<Func<TEntity, bool>>> predicate
     )
         : base(
-            CommandMode.Create,
+            OperationType.Create,
             publishPattern,
             inputs
                 .Select(

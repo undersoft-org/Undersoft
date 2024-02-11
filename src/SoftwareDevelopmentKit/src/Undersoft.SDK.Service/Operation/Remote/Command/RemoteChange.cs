@@ -2,7 +2,6 @@
 using System.Text.Json.Serialization;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation.Command;
 
 namespace Undersoft.SDK.Service.Operation.Remote.Command;
 
@@ -15,13 +14,13 @@ public class RemoteChange<TStore, TDto, TModel> : RemoteCommand<TModel>
     public Func<TModel, Expression<Func<TDto, bool>>> Predicate { get; }
 
     public RemoteChange(EventPublishMode publishMode, TModel input, params object[] keys)
-        : base(CommandMode.Change, publishMode, input, keys) { }
+        : base(OperationType.Change, publishMode, input, keys) { }
 
     public RemoteChange(
         EventPublishMode publishMode,
         TModel input,
         Func<TModel, Expression<Func<TDto, bool>>> predicate
-    ) : base(CommandMode.Change, publishMode, input)
+    ) : base(OperationType.Change, publishMode, input)
     {
         Predicate = predicate;
     }

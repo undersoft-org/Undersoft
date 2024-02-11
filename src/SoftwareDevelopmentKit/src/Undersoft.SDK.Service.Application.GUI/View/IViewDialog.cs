@@ -4,7 +4,7 @@ using Undersoft.SDK.Service.Application.GUI.Generic;
 
 namespace Undersoft.SDK.Service.Application.GUI.View
 {
-    public interface IViewDialog<TModel> where TModel : class, IOrigin, IInnerProxy
+    public interface IViewDialog<TModel> : IView where TModel : class, IOrigin, IInnerProxy
     {
         IViewData<TModel>? Content { get; }
         IDialogReference? Reference { get; }

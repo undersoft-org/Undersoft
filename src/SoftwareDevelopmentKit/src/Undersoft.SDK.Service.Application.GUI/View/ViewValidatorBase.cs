@@ -9,8 +9,7 @@ using Instant.Proxies;
 using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Data.Store;
 
-public abstract class ViewValidatorBase<TData> : AbstractValidator<TData>
-    where TData : IViewData
+public abstract class ViewValidatorBase<TData> : AbstractValidator<TData> where TData : IViewData
 {
     protected static readonly string[] SupportedLanguages;
 
@@ -103,7 +102,23 @@ public abstract class ViewValidatorBase<TData> : AbstractValidator<TData>
         }
     }
 
-    protected void ValidateExist<TStore, TDto>(
+    protected void ValidateExist<TStore, TDto>(LogicOperand operand, params string[] propertyNames)
+        where TDto : class, IOrigin, IInnerProxy
+        where TStore : IDataServiceStore
+    {
+        RuleFor(e => e)
+            .MustAsync(
+                async (cmd, cancel) =>
+                {
+                    return await _servicer
+                        .Open<TStore, TDto>()
+                        .Exist(buildPredicate<TDto>(cmd.Model, operand, propertyNames));
+                }
+            )
+            .WithMessage($"{typeof(TDto).Name} already exists");
+    }
+
+    protected void ValidateNotExist<TStore, TDto>(
         LogicOperand operand,
         params string[] propertyNames
     )
@@ -116,30 +131,7 @@ public abstract class ViewValidatorBase<TData> : AbstractValidator<TData>
                 {
                     return await _servicer
                         .Open<TStore, TDto>()
-                        .Exist(
-                            buildPredicate<TDto>(cmd.Model, operand, propertyNames)
-                        );
-                }
-            )
-            .WithMessage($"{typeof(TDto).Name} already exists");
-    }
-
-    protected void ValidateNotExist<TStore, TDto>(
-        LogicOperand operand,
-        params string[] propertyNames
-    )
-        where TDto : class, IOrigin, IInnerProxy
-      where TStore : IDataServiceStore
-    {
-        RuleFor(e => e)
-            .MustAsync(
-                async (cmd, cancel) =>
-                {
-                    return await _servicer
-                        .Open<TStore, TDto>()
-                        .NotExist(
-                            buildPredicate<TDto>(cmd.Model, operand, propertyNames)
-                        );
+                        .NotExist(buildPredicate<TDto>(cmd.Model, operand, propertyNames));
                 }
             )
             .WithMessage($"{typeof(TDto).Name} does not exists");

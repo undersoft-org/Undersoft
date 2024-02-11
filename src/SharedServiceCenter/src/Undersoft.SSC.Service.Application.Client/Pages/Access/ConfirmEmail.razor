@@ -25,7 +25,7 @@
 
     private async Task ConfirmingEmail(string title, string description = "")
     {       
-        var data = new ViewData<Credentials>(new Credentials(), CommandMode.Setup, title);
+        var data = new ViewData<Credentials>(new Credentials(), OperationType.Setup, title);
         data.SetVisible("EmailConfirmationToken");
         data.Description = description;
 

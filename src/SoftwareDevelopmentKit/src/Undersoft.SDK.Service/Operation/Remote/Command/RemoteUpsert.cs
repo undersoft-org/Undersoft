@@ -5,7 +5,7 @@ namespace Undersoft.SDK.Service.Operation.Remote.Command;
 
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation.Command;
+using Undersoft.SDK.Service.Operation;
 
 public class RemoteUpsert<TStore, TDto, TModel> : RemoteCommand<TModel>
     where TDto : class, IOrigin, IInnerProxy
@@ -22,7 +22,7 @@ public class RemoteUpsert<TStore, TDto, TModel> : RemoteCommand<TModel>
         EventPublishMode publishPattern,
         TModel input,
         Func<TDto, Expression<Func<TDto, bool>>> predicate
-    ) : base(CommandMode.Upsert, publishPattern, input)
+    ) : base(OperationType.Upsert, publishPattern, input)
     {
         Predicate = predicate;
     }
@@ -32,7 +32,7 @@ public class RemoteUpsert<TStore, TDto, TModel> : RemoteCommand<TModel>
         TModel input,
         Func<TDto, Expression<Func<TDto, bool>>> predicate,
         params Func<TDto, Expression<Func<TDto, bool>>>[] conditions
-    ) : base(CommandMode.Upsert, publishPattern, input)
+    ) : base(OperationType.Upsert, publishPattern, input)
     {
         Predicate = predicate;
         Conditions = conditions;

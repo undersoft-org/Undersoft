@@ -19,7 +19,7 @@ public class UpdateSet<TStore, TEntity, TDto> : CommandSet<TDto>
 
     public UpdateSet(EventPublishMode publishPattern, TDto input, object key)
         : base(
-            CommandMode.Change,
+            OperationType.Change,
             publishPattern,
             new[] { new Update<TStore, TEntity, TDto>(publishPattern, input, key) }
         )
@@ -27,7 +27,7 @@ public class UpdateSet<TStore, TEntity, TDto> : CommandSet<TDto>
 
     public UpdateSet(EventPublishMode publishPattern, TDto[] inputs)
         : base(
-            CommandMode.Update,
+            OperationType.Update,
             publishPattern,
             inputs
                 .Select(input => new Update<TStore, TEntity, TDto>(publishPattern, input))
@@ -41,7 +41,7 @@ public class UpdateSet<TStore, TEntity, TDto> : CommandSet<TDto>
         Func<TDto, Expression<Func<TEntity, bool>>> predicate
     )
         : base(
-            CommandMode.Update,
+            OperationType.Update,
             publishPattern,
             inputs
                 .Select(
@@ -60,7 +60,7 @@ public class UpdateSet<TStore, TEntity, TDto> : CommandSet<TDto>
         params Func<TDto, Expression<Func<TEntity, bool>>>[] conditions
     )
         : base(
-            CommandMode.Update,
+            OperationType.Update,
             publishPattern,
             inputs
                 .Select(

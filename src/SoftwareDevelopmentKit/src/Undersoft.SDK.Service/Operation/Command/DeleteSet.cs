@@ -7,6 +7,7 @@ using Undersoft.SDK.Service.Data.Object;
 
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Operation;
 
 public class DeleteSet<TStore, TEntity, TDto> : CommandSet<TDto>
     where TEntity : class, IOrigin, IInnerProxy
@@ -18,7 +19,7 @@ public class DeleteSet<TStore, TEntity, TDto> : CommandSet<TDto>
 
     public DeleteSet(EventPublishMode publishPattern, object key)
         : base(
-            CommandMode.Create,
+            OperationType.Create,
             publishPattern,
             new[] { new Delete<TStore, TEntity, TDto>(publishPattern, key) }
         )
@@ -26,7 +27,7 @@ public class DeleteSet<TStore, TEntity, TDto> : CommandSet<TDto>
 
     public DeleteSet(EventPublishMode publishPattern, TDto input, object key)
         : base(
-            CommandMode.Create,
+            OperationType.Create,
             publishPattern,
             new[] { new Delete<TStore, TEntity, TDto>(publishPattern, input, key) }
         )
@@ -34,7 +35,7 @@ public class DeleteSet<TStore, TEntity, TDto> : CommandSet<TDto>
 
     public DeleteSet(EventPublishMode publishPattern, TDto[] inputs)
         : base(
-            CommandMode.Delete,
+            OperationType.Delete,
             publishPattern,
             inputs
                 .Select(input => new Delete<TStore, TEntity, TDto>(publishPattern, input))
@@ -48,7 +49,7 @@ public class DeleteSet<TStore, TEntity, TDto> : CommandSet<TDto>
         Func<TEntity, Expression<Func<TEntity, bool>>> predicate
     )
         : base(
-            CommandMode.Delete,
+            OperationType.Delete,
             publishPattern,
             inputs
                 .Select(

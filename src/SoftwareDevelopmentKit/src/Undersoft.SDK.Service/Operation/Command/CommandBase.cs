@@ -7,6 +7,7 @@ namespace Undersoft.SDK.Service.Operation.Command;
 using Undersoft.SDK.Service.Data.Entity;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Object;
+using Undersoft.SDK.Service.Operation;
 
 public abstract class CommandBase : ICommand
 {
@@ -38,7 +39,7 @@ public abstract class CommandBase : ICommand
 
     public string ErrorMessages => Result.ToString();
 
-    public CommandMode CommandMode { get; set; }
+    public OperationType CommandMode { get; set; }
 
     public EventPublishMode PublishMode { get; set; }
 
@@ -53,13 +54,13 @@ public abstract class CommandBase : ICommand
         Result = new ValidationResult();
     }
 
-    protected CommandBase(CommandMode commandMode, EventPublishMode publishMode) : this()
+    protected CommandBase(OperationType commandMode, EventPublishMode publishMode) : this()
     {
         CommandMode = commandMode;
         PublishMode = publishMode;
     }
 
-    protected CommandBase(object entryData, CommandMode commandMode, EventPublishMode publishMode)
+    protected CommandBase(object entryData, OperationType commandMode, EventPublishMode publishMode)
         : this(commandMode, publishMode)
     {
         Contract = entryData;
@@ -67,7 +68,7 @@ public abstract class CommandBase : ICommand
 
     protected CommandBase(
         object entryData,
-        CommandMode commandMode,
+        OperationType commandMode,
         EventPublishMode publishMode,
         params object[] keys
     ) : this(commandMode, publishMode, keys)
@@ -76,7 +77,7 @@ public abstract class CommandBase : ICommand
     }
 
     protected CommandBase(
-        CommandMode commandMode,
+        OperationType commandMode,
         EventPublishMode publishMode,
         params object[] keys
     ) : this(commandMode, publishMode)

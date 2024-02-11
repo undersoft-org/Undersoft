@@ -8,6 +8,7 @@
 @typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
 
 @implements IDialogContentComponent<IViewData<TModel>>
+@implements IView
 
 <CascadingValue Value="@Content">
     <CascadingValue Value="@FormContext">
@@ -47,6 +48,7 @@
 
     protected override void OnInitialized()
     {
+        Content.View = this;
         FormContext = new EditContext(Content);
     }
 
@@ -61,5 +63,10 @@
     private async Task SendAgain(MouseEventArgs e)
     {
         await Dialog.CancelAsync();
+    }
+
+    public void RenderView()
+    {
+        this.StateHasChanged();
     }
 }

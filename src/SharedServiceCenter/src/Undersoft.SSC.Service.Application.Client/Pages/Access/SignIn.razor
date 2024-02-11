@@ -24,7 +24,7 @@
 
     private async Task SigningIn(string title, string description = "")
     {
-        var data = new ViewData<Credentials>(new Credentials(), CommandMode.Access, title);
+        var data = new ViewData<Credentials>(new Credentials(), OperationType.Access, title);
         data.SetRequired(nameof(Credentials.Email), nameof(Credentials.Password));
         data.SetVisible(nameof(Credentials.SaveAccountInCookies));
         data.Description = description;
@@ -52,9 +52,9 @@
                         if (result.Credentials.RegistrationCompleted)
                             _navigation.NavigateTo("");
                         else
-                            _navigation.NavigateTo("/account/register_account");
+                            _navigation.NavigateTo("/access/register_account");
                     else
-                        _navigation.NavigateTo("/account/confirm_email");
+                        _navigation.NavigateTo("/access/confirm_email");
                     return;
                 }
                 data.ClearData();

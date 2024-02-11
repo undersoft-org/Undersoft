@@ -18,13 +18,13 @@ public class Update<TStore, TEntity, TDto> : Command<TDto>
     public Func<TEntity, Expression<Func<TEntity, bool>>>[] Conditions { get; }
 
     public Update(EventPublishMode publishPattern, TDto input, params object[] keys)
-        : base(CommandMode.Update, publishPattern, input, keys) { }
+        : base(OperationType.Update, publishPattern, input, keys) { }
 
     public Update(
         EventPublishMode publishPattern,
         TDto input,
         Func<TEntity, Expression<Func<TEntity, bool>>> predicate
-    ) : base(CommandMode.Update, publishPattern, input)
+    ) : base(OperationType.Update, publishPattern, input)
     {
         Predicate = predicate;
     }
@@ -34,7 +34,7 @@ public class Update<TStore, TEntity, TDto> : Command<TDto>
         TDto input,
         Func<TEntity, Expression<Func<TEntity, bool>>> predicate,
         params Func<TEntity, Expression<Func<TEntity, bool>>>[] conditions
-    ) : base(CommandMode.Update, publishPattern, input)
+    ) : base(OperationType.Update, publishPattern, input)
     {
         Predicate = predicate;
         Conditions = conditions;

@@ -10,6 +10,7 @@
 @typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
 
 @implements IDialogContentComponent<IViewData<TModel>>
+@implements IView
 
 <CascadingValue Value="@Content">
         <!-- Header -->
@@ -49,11 +50,22 @@
         await Dialog.CloseAsync(Content);
     }
 
+    protected override void OnInitialized()
+    {
+        Content.View = this;
+        base.OnInitialized();
+    }
+
     private async Task SaveAsync()
     {
         if ((await Content.Validator.ValidateAsync()).IsValid)
         {
             await Dialog.CloseAsync(Content);
         }
+    }
+
+    public void RenderView()
+    {
+        this.StateHasChanged();
     }
 }

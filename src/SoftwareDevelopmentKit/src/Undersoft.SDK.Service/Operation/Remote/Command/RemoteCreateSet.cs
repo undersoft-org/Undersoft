@@ -2,7 +2,6 @@
 using System.Text.Json.Serialization;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation.Command;
 
 namespace Undersoft.SDK.Service.Operation.Remote.Command;
 
@@ -16,7 +15,7 @@ public class RemoteCreateSet<TStore, TDto, TModel> : RemoteCommandSet<TModel>
 
     public RemoteCreateSet(EventPublishMode publishPattern, TModel input, object key)
         : base(
-            CommandMode.Create,
+            OperationType.Create,
             publishPattern,
             new[] { new RemoteCreate<TStore, TDto, TModel>(publishPattern, input, key) }
         )
@@ -24,7 +23,7 @@ public class RemoteCreateSet<TStore, TDto, TModel> : RemoteCommandSet<TModel>
 
     public RemoteCreateSet(EventPublishMode publishPattern, TModel[] inputs)
         : base(
-            CommandMode.Create,
+            OperationType.Create,
             publishPattern,
             inputs
                 .Select(input => new RemoteCreate<TStore, TDto, TModel>(publishPattern, input))
@@ -38,7 +37,7 @@ public class RemoteCreateSet<TStore, TDto, TModel> : RemoteCommandSet<TModel>
         Func<TDto, Expression<Func<TDto, bool>>> predicate
     )
         : base(
-            CommandMode.Create,
+            OperationType.Create,
             publishPattern,
             inputs
                 .Select(

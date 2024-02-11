@@ -6,7 +6,7 @@ namespace Undersoft.SDK.Service.Operation.Remote.Command.Validator;
 
 using Undersoft.SDK.Service.Data.Entity;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation.Command;
+using Undersoft.SDK.Service.Operation;
 using Undersoft.SDK.Service.Operation.Remote.Command;
 using Undersoft.SDK.Service.Operation.Remote.Validator;
 
@@ -14,12 +14,12 @@ public class RemoteCommandSetValidator<TModel> : RemoteCommandSetValidatorBase<R
 {
     public RemoteCommandSetValidator(IServicer ultimateService) : base(ultimateService) { }
 
-    protected void ValidationScope<T>(CommandMode commandMode, Action validations)
+    protected void ValidationScope<T>(OperationType commandMode, Action validations)
     {
         ValidationScope(typeof(T), commandMode, validations);
     }
 
-    protected void ValidationScope(Type type, CommandMode commandMode, Action validations)
+    protected void ValidationScope(Type type, OperationType commandMode, Action validations)
     {
         WhenAsync(
             async (cmd, cancel) =>
@@ -33,7 +33,7 @@ public class RemoteCommandSetValidator<TModel> : RemoteCommandSetValidatorBase<R
         );
     }
 
-    protected void ValidationScope(CommandMode commandMode, Action validations)
+    protected void ValidationScope(OperationType commandMode, Action validations)
     {
         WhenAsync(
             async (cmd, cancel) =>

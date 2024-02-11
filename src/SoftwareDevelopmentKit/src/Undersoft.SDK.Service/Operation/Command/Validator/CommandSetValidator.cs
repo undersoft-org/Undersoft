@@ -5,18 +5,19 @@ using System.Linq.Expressions;
 namespace Undersoft.SDK.Service.Operation.Command.Validator;
 
 using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Operation;
 using Undersoft.SDK.Service.Operation.Command;
 
 public class CommandSetValidator<TDto> : CommandSetValidatorBase<CommandSet<TDto>> where TDto : class, IOrigin, IInnerProxy
 {
     public CommandSetValidator(IServicer ultimateService) : base(ultimateService) { }
 
-    protected void ValidationScope<T>(CommandMode commandMode, Action validations)
+    protected void ValidationScope<T>(OperationType commandMode, Action validations)
     {
         ValidationScope(typeof(T), commandMode, validations);
     }
 
-    protected void ValidationScope(Type type, CommandMode commandMode, Action validations)
+    protected void ValidationScope(Type type, OperationType commandMode, Action validations)
     {
         WhenAsync(
             async (cmd, cancel) =>
@@ -30,7 +31,7 @@ public class CommandSetValidator<TDto> : CommandSetValidatorBase<CommandSet<TDto
         );
     }
 
-    protected void ValidationScope(CommandMode commandMode, Action validations)
+    protected void ValidationScope(OperationType commandMode, Action validations)
     {
         WhenAsync(
             async (cmd, cancel) =>

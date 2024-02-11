@@ -22,7 +22,7 @@ public abstract class InvocationBase : IInvocation
 
     public string ErrorMessages => Result.ToString();
 
-    public CommandMode CommandMode { get; set; }
+    public OperationType CommandMode { get; set; }
 
     public virtual object Input => Arguments;
 
@@ -35,19 +35,19 @@ public abstract class InvocationBase : IInvocation
         Result = new ValidationResult();
     }
 
-    protected InvocationBase(CommandMode commandMode) : this()
+    protected InvocationBase(OperationType commandMode) : this()
     {
         CommandMode = commandMode;
     }
 
-    protected InvocationBase(CommandMode commandMode, Type serviceType, string method, object argument)
+    protected InvocationBase(OperationType commandMode, Type serviceType, string method, object argument)
         : this(commandMode)
     {
         Arguments = new Arguments(method, argument, serviceType.FullName);
         Arguments.TargetType = serviceType;
     }
 
-    protected InvocationBase(CommandMode commandMode, Type serviceType, string method, Arguments arguments)
+    protected InvocationBase(OperationType commandMode, Type serviceType, string method, Arguments arguments)
         : this(commandMode)
     {
         Arguments = arguments;
@@ -55,7 +55,7 @@ public abstract class InvocationBase : IInvocation
         Arguments.TargetType = serviceType;
     }
 
-    protected InvocationBase(CommandMode commandMode, Type serviceType, string method, object[] arguments)
+    protected InvocationBase(OperationType commandMode, Type serviceType, string method, object[] arguments)
        : this(commandMode)
     {
         var args = new Arguments(method, serviceType.FullName);
@@ -64,7 +64,7 @@ public abstract class InvocationBase : IInvocation
         Arguments = args;
     }
 
-    protected InvocationBase(CommandMode commandMode, Type serviceType, string method, byte[] binaries)
+    protected InvocationBase(OperationType commandMode, Type serviceType, string method, byte[] binaries)
        : this(commandMode)
     {
         Arguments = new Arguments(method, binaries);

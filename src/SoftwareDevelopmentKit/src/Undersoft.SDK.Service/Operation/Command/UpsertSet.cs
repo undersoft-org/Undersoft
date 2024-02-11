@@ -5,6 +5,7 @@ namespace Undersoft.SDK.Service.Operation.Command;
 
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Operation;
 
 public class UpsertSet<TStore, TEntity, TDto> : CommandSet<TDto>
     where TDto : class, IOrigin, IInnerProxy
@@ -19,7 +20,7 @@ public class UpsertSet<TStore, TEntity, TDto> : CommandSet<TDto>
 
     public UpsertSet(EventPublishMode publishPattern, TDto input, object key)
         : base(
-            CommandMode.Change,
+            OperationType.Change,
             publishPattern,
             new[]
             {
@@ -38,7 +39,7 @@ public class UpsertSet<TStore, TEntity, TDto> : CommandSet<TDto>
         Func<TEntity, Expression<Func<TEntity, bool>>> predicate
     )
         : base(
-            CommandMode.Upsert,
+            OperationType.Upsert,
             publishPattern,
             inputs
                 .Select(
@@ -57,7 +58,7 @@ public class UpsertSet<TStore, TEntity, TDto> : CommandSet<TDto>
         params Func<TEntity, Expression<Func<TEntity, bool>>>[] conditions
     )
         : base(
-            CommandMode.Upsert,
+            OperationType.Upsert,
             publishPattern,
             inputs
                 .Select(

@@ -19,6 +19,6 @@
         string SessionToken { get; set; }
         string UserName { get; set; }
         bool Authenticated { get; set; }
-        bool IsAvailable { get; set; }
+        bool IsLockedOut { get; set; }
     }
 }

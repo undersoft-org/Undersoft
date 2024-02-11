@@ -7,18 +7,18 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic;
 using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Service.Application.GUI.View;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation.Command;
+using Undersoft.SDK.Service.Operation;
 
 public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IValidator<IViewData<TModel>> where TModel : class, IOrigin, IInnerProxy
 {
     public ViewValidator(IServicer servicer) : base(servicer) { }
 
-    protected void ValidationScope<T>(CommandMode commandMode, Action actions)
+    protected void ValidationScope<T>(OperationType commandMode, Action actions)
     {
         ValidationScope(typeof(T), commandMode, actions);
     }
 
-    protected void ValidationScope(Type type, CommandMode commandMode, Action actions)
+    protected void ValidationScope(Type type, OperationType commandMode, Action actions)
     {
         WhenAsync(
             (cmd, cancel) =>
@@ -34,7 +34,7 @@ public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IVali
         );
     }
 
-    protected void ValidationScope(CommandMode GenericDataMode, Action actions)
+    protected void ValidationScope(OperationType GenericDataMode, Action actions)
     {
         WhenAsync(
             (cmd, cancel) =>
@@ -77,9 +77,9 @@ public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IVali
         {
             RuleFor(member)
                 .MinimumLength(min)
-                .WithMessage($"minimum text rubricCount: {max} characters")
+                .WithMessage($"{member.GetMemberName()} minimum length is {min} characters.")
                 .MaximumLength(max)
-                .WithMessage($"maximum text rubricCount: {max} characters");
+                .WithMessage($"{member.GetMemberName()} maximum length is {max} characters");
         }
     }
 
@@ -93,9 +93,9 @@ public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IVali
         {
             RuleFor(member)
                 .Must(a => a.Count >= min)
-                .WithMessage($"Items count below minimum quantity")
+                .WithMessage($"{member.GetMemberName()} count below minimum {min}!")
                 .Must(a => a.Count <= max)
-                .WithMessage($"Items count above maximum quantity");
+                .WithMessage($"{member.GetMemberName()} count above maximum {max}!");
         }
     }
 
@@ -103,7 +103,7 @@ public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IVali
     {
         foreach (var member in members)
         {
-            RuleFor(member).IsInEnum().WithMessage($"Incorrect enum value");
+            RuleFor(member).IsInEnum().WithMessage($"Incorrect value");
         }
     }
 
@@ -114,7 +114,7 @@ public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IVali
     {
         foreach (var member in members)
         {
-            RuleFor(member).NotEqual(item).WithMessage($"{member.GetMemberName()} not equal: {item}");
+            RuleFor(member).NotEqual(item, EqualityComparer<object>.Default).WithMessage($"{member.GetMemberName()} not equal: {item}");
         }
     }
 
@@ -123,7 +123,7 @@ public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IVali
         Expression<Func<IViewData<TModel>, object>> second
     )
     {
-        RuleFor(first).NotEqual(second).WithMessage($"{first.GetMemberName()} not equal {second.GetMemberName()}");
+        RuleFor(first).NotEqual(second, EqualityComparer<object>.Default).WithMessage($"{first.GetMemberName()} not equal {second.GetMemberName()}");
     }
 
     protected void ValidateEqual(
@@ -133,7 +133,7 @@ public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IVali
     {
         foreach (var member in members)
         {
-            RuleFor(member).Equal(item).WithMessage($"{member.GetMemberName()} equal: {item}");
+            RuleFor(member).Equal(item, EqualityComparer<object>.Default).WithMessage($"{member.GetMemberName()} equal: {item}");
         }
     }
 
@@ -142,7 +142,7 @@ public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IVali
         Expression<Func<IViewData<TModel>, object>> second
     )
     {
-        RuleFor(first).Equal(second).WithMessage($"{first.GetMemberName()} equal {second.GetMemberName()}");
+        RuleFor(first).Equal(second, EqualityComparer<object>.Default).WithMessage($"{first.GetMemberName()} equal {second.GetMemberName()}");
     }
 
     protected void ValidateLanguage(params Expression<Func<IViewData<TModel>, object>>[] members)

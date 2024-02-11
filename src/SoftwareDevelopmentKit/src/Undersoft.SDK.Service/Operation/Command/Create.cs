@@ -7,6 +7,7 @@ using Undersoft.SDK.Service.Data.Object;
 
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Service.Operation;
 
 public class Create<TStore, TEntity, TDto> : Command<TDto>
     where TEntity : class, IOrigin, IInnerProxy
@@ -17,13 +18,13 @@ public class Create<TStore, TEntity, TDto> : Command<TDto>
     public Func<TEntity, Expression<Func<TEntity, bool>>> Predicate { get; }
 
     public Create(EventPublishMode publishPattern, TDto input)
-        : base(CommandMode.Create, publishPattern, input)
+        : base(OperationType.Create, publishPattern, input)
     {
         input.AutoId();
     }
 
     public Create(EventPublishMode publishPattern, TDto input, object key)
-        : base(CommandMode.Create, publishPattern, input)
+        : base(OperationType.Create, publishPattern, input)
     {
         input.SetId(key);
     }
@@ -32,7 +33,7 @@ public class Create<TStore, TEntity, TDto> : Command<TDto>
         EventPublishMode publishPattern,
         TDto input,
         Func<TEntity, Expression<Func<TEntity, bool>>> predicate
-    ) : base(CommandMode.Create, publishPattern, input)
+    ) : base(OperationType.Create, publishPattern, input)
     {
         input.AutoId();
         Predicate = predicate;

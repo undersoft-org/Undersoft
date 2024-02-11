@@ -5,7 +5,7 @@ namespace Undersoft.SDK.Service.Operation.Invocation;
 
 using IdentityModel.Client;
 using Undersoft.SDK.Service.Data;
-using Undersoft.SDK.Service.Operation.Command;
+using Undersoft.SDK.Service.Operation;
 using Uniques;
 
 public class Invocation<TDto> : InvocationBase, IRequest<Invocation<TDto>> where TDto : class
@@ -16,16 +16,16 @@ public class Invocation<TDto> : InvocationBase, IRequest<Invocation<TDto>> where
 
     protected Invocation() { }
 
-    protected Invocation(CommandMode commandMode, Type serviceType, string method, object argument)
+    protected Invocation(OperationType commandMode, Type serviceType, string method, object argument)
         : base(commandMode, serviceType, method, argument) { }
 
-    protected Invocation(CommandMode commandMode, Type serviceType, string method, Arguments arguemnts)
+    protected Invocation(OperationType commandMode, Type serviceType, string method, Arguments arguemnts)
         : base(commandMode, serviceType, method, arguemnts) { }
 
-    protected Invocation(CommandMode commandMode, Type serviceType, string method, object[] arguments)
+    protected Invocation(OperationType commandMode, Type serviceType, string method, object[] arguments)
        : base(commandMode, serviceType, method, arguments) { }
 
-    protected Invocation(CommandMode commandMode, Type serviceType, string method, byte[] binaries)
+    protected Invocation(OperationType commandMode, Type serviceType, string method, byte[] binaries)
       : base(commandMode, serviceType, method, binaries) { }
 
     public int CompareTo(IUnique other)

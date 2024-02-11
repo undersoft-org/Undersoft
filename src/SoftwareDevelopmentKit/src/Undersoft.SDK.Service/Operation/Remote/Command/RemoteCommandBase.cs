@@ -2,7 +2,6 @@
 
 using System.Text.Json.Serialization;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Operation.Command;
 
 namespace Undersoft.SDK.Service.Operation.Remote.Command;
 
@@ -36,7 +35,7 @@ public abstract class RemoteCommandBase : IRemoteCommand
 
     public string ErrorMessages => Result.ToString();
 
-    public CommandMode CommandMode { get; set; }
+    public OperationType CommandMode { get; set; }
 
     public EventPublishMode PublishMode { get; set; }
 
@@ -51,13 +50,13 @@ public abstract class RemoteCommandBase : IRemoteCommand
         Result = new ValidationResult();
     }
 
-    protected RemoteCommandBase(CommandMode commandMode, EventPublishMode publishMode) : this()
+    protected RemoteCommandBase(OperationType commandMode, EventPublishMode publishMode) : this()
     {
         CommandMode = commandMode;
         PublishMode = publishMode;
     }
 
-    protected RemoteCommandBase(object entryData, CommandMode commandMode, EventPublishMode publishMode)
+    protected RemoteCommandBase(object entryData, OperationType commandMode, EventPublishMode publishMode)
         : this(commandMode, publishMode)
     {
         Model = entryData;
@@ -65,7 +64,7 @@ public abstract class RemoteCommandBase : IRemoteCommand
 
     protected RemoteCommandBase(
         object entryData,
-        CommandMode commandMode,
+        OperationType commandMode,
         EventPublishMode publishMode,
         params object[] keys
     ) : this(commandMode, publishMode, keys)
@@ -74,7 +73,7 @@ public abstract class RemoteCommandBase : IRemoteCommand
     }
 
     protected RemoteCommandBase(
-        CommandMode commandMode,
+        OperationType commandMode,
         EventPublishMode publishMode,
         params object[] keys
     ) : this(commandMode, publishMode)

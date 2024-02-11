@@ -1,7 +1,6 @@
 ﻿using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Access;
 using Claim = System.Security.Claims.Claim;
 
@@ -79,34 +78,48 @@ public class AccountManager : Registry<IAccount>, IAccountManager
 
     public async Task<Account> SetUser(string username, string email, string password, IEnumerable<string> roles, IEnumerable<string> scopes = null)
     {
+        IdentityResult result = null;
         if (!TryGetByEmail(email, out IAccount account))
         {
             account = new Account(username, email, roles);
-            if (!(await User.CreateAsync(account.User, password)).Succeeded)
-                return null;
+            result = await User.CreateAsync(account.User, password);
+            if (!result.Succeeded)
+            {
+                account.Notes.Errors = result.Errors.Select(e => e.Description).Aggregate((a, b) => a + ", " + b);
+                account.Notes.Status = SigningStatus.Failure;
+                return (Account)account;
+            }
         }
         else
         {
-            await User.RemoveFromRolesAsync(account.User, account.Roles.Select(r => r.Name));
-            await User.RemoveClaimsAsync(account.User, account.GetClaims());
+            result = await User.RemoveFromRolesAsync(account.User, account.Roles.Select(r => r.Name));
+            if (result.Succeeded)
+                result = await User.RemoveClaimsAsync(account.User, account.GetClaims());
         }
-
-        await User.AddToRolesAsync(account.User, roles);
-        await User.AddClaimsAsync(
-            account.User,
-            new Claim[]
-            {
+        if (result.Succeeded)
+            result = await User.AddToRolesAsync(account.User, roles);
+        if (result.Succeeded)
+            result = await User.AddClaimsAsync(
+                account.User,
+                new Claim[]
+                {
                 new Claim(JwtClaimTypes.Id, account.Id.ToString()),
                 new Claim("user_id", account.UserId.ToString()),
                 new Claim(JwtClaimTypes.Email, account.User.Email),
                 new Claim(JwtClaimTypes.Name, account.User.UserName),
                 new Claim("code_no", account.CodeNo),
-            }
-            .Concat(roles?.Select(r => new Claim(JwtClaimTypes.Role, r)))
-            .Concat(scopes?.Select(r => new Claim(JwtClaimTypes.Scope, r)))
-        );
+                }
+                .Concat(roles?.Select(r => new Claim(JwtClaimTypes.Role, r)))
+                .Concat(scopes?.Select(r => new Claim(JwtClaimTypes.Scope, r)))
+            );
+        if (!result.Succeeded)
+        {
+            account.Notes.Errors = result.Errors.Select(e => e.Description).Aggregate((a, b) => a + ", " + b);
+            account.Notes.Status = SigningStatus.Failure;
+            return (Account)account;
+        }
         var _account = (Account)account;
-        await MapAccount(_account);
+        _account = await MapAccount(_account);
         Put(_account);
         return _account;
     }
@@ -227,7 +240,7 @@ public class AccountManager : Registry<IAccount>, IAccountManager
         if ((await MapAccount(_account)).User != null)
         {
             Put(_account?.User?.Email, _account);
-            account.UserId = _account.User.Id;
+            _account.UserId = _account.User.Id;
         }
         Put(_account);
         return _account;
