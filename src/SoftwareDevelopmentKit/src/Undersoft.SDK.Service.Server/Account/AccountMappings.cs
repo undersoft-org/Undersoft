@@ -14,19 +14,7 @@ namespace Undersoft.SDK.Service.Server.Accounts
         {
             builder.ToTable(TABLE_NAME, DataStoreSchema.DomainSchema);
 
-            builder
-                .HasMany<Role>(r => r.Roles)
-                .WithMany(a => a.Accounts)
-                .UsingEntity<AccountRole>(
-                    j => j.HasOne(a => a.Role).WithMany().HasForeignKey(r => r.AccountRoleId),
-                    j => j.HasOne(a => a.Account).WithMany().HasForeignKey(r => r.AccountId),
-                    j =>
-                    {
-                        j.HasKey(k => new { k.AccountId, k.AccountRoleId });
-                    }
-                );
-
-            builder.HasMany(c => c.Claims).WithOne(c => c.Account).HasForeignKey(c => c.AccountId);
+            //builder.HasMany(c => c.Claims).WithOne(c => c.Account).HasForeignKey(c => c.AccountId);
 
             builder.HasMany(c => c.Tokens).WithOne(c => c.Account).HasForeignKey(c => c.AccountId);
 
@@ -42,13 +30,13 @@ namespace Undersoft.SDK.Service.Server.Accounts
         }
     }
 
-    public class AccountClaimMappings : EntityTypeMapping<AccountClaim>
-    {
-        public override void Configure(EntityTypeBuilder<AccountClaim> builder)
-        {
-            builder.HasOne(c => c.Account).WithMany(c => c.Claims).HasForeignKey(c => c.AccountId);
-        }
-    }
+    //public class AccountClaimMappings : EntityTypeMapping<AccountClaim>
+    //{
+    //    public override void Configure(EntityTypeBuilder<AccountClaim> builder)
+    //    {
+    //        builder.HasOne(c => c.Account).WithMany(c => c.Claims).HasForeignKey(c => c.AccountId);
+    //    }
+    //}
 
     public class AccountTokenMappings : EntityTypeMapping<AccountToken>
     {

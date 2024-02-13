@@ -8,9 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OpenTelemetry.Exporter;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
 
 namespace Undersoft.SDK.Service.Server;
 
@@ -24,7 +21,6 @@ using System.Diagnostics.Metrics;
 using Undersoft.SDK.Service.Configuration;
 using Undersoft.SDK.Service.Data.Repository.Source;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Infrastructure.Database;
 
 public partial class ServerSetup : ServiceSetup, IServerSetup
 {
@@ -259,10 +255,10 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
             o => o.TokenLifespan = TimeSpan.FromHours(3)
         );
 
-        registry.AddTransient<AccountEmailConfirmationTokenProvider<IdentityUser>>();
-        registry.AddTransient<AccountPasswordResetTokenProvider<IdentityUser>>();
-        registry.AddTransient<AccountChangeEmailTokenProvider<IdentityUser>>();
-        registry.AddTransient<AccountRegistrationProcessTokenProvider<IdentityUser>>();
+        registry.AddTransient<AccountEmailConfirmationTokenProvider<AccountUser>>();
+        registry.AddTransient<AccountPasswordResetTokenProvider<AccountUser>>();
+        registry.AddTransient<AccountChangeEmailTokenProvider<AccountUser>>();
+        registry.AddTransient<AccountRegistrationProcessTokenProvider<AccountUser>>();
 
         AddAuthentication();
         AddAuthorization();
@@ -326,7 +322,7 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
     public IServerSetup AddSwagger()
     {
         string ver = configuration.Version;
-        var ao = configuration.AccessOptions;        
+        var ao = configuration.AccessOptions;
 
         //registry.AddApiVersioning(options =>
         //{
@@ -341,7 +337,7 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
         //        });               
 
         //registry.AddTransient<IConfigureOptions<SwaggerGenOptions>, OpenApiOptions>();
-        
+
         registry.AddSwaggerGen(options =>
         {
             options.SwaggerDoc(
@@ -362,7 +358,7 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
                     {
                         Password = new OpenApiOAuthFlow
                         {
-                            TokenUrl = new Uri($"{ao.ServerBaseUrl}/data/open/Authorization/Signin")
+                            TokenUrl = new Uri($"{ao.ServerBaseUrl}/open/auth/Account/Access/SignIn")
                         }
                     }
                 }
@@ -372,8 +368,8 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
             //var filePath = Path.Combine(System.AppContext.BaseDirectory, "Undersoft.SSC.Service.Server.xml");
             //options.IncludeXmlComments(filePath);
             //options.IncludeGrpcXmlComments(filePath, includeControllerXmlComments: true);
-        });        
-        
+        });
+
         return this;
     }
 

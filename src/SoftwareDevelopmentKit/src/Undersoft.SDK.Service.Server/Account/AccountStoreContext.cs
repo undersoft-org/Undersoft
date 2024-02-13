@@ -1,12 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MongoDB.Driver;
 using System.Collections;
-using Undersoft.SDK.Logging;
-using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Infrastructure.Database;
-using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
 
@@ -40,7 +35,7 @@ public partial class AccountStoreContext<TStore>
         builder.HasDefaultSchema("Accounts");
         builder
             .ApplyMapping<Account>(new AccountMappings())
-            .ApplyMapping<AccountClaim>(new AccountClaimMappings())
+            //.ApplyMapping<AccountClaim>(new AccountClaimMappings())
             .ApplyMapping<AccountToken>(new AccountTokenMappings())
             .ApplyMapping<Role>(new RolemMappings());
 
@@ -79,7 +74,7 @@ public partial class AccountStoreContext<TStore>
     }
 
     public IQueryable<TEntity> EntitySet<TEntity>() where TEntity : class
-    {                        
+    {
         return base.Set<TEntity>();
     }
 

@@ -39,14 +39,18 @@ public class AccountManager : Registry<IAccount>, IAccountManager
         string token = null;
         var account = await CheckPassword(email, password);
         if (account != null)
-            token = Token.Generate(account.GetClaims());
+        {
+            var claims = await User.GetClaimsAsync(account.User);
+            token = Token.Generate(claims);
+        }
         return token;
     }
-    public string GetToken(IAuthorization auth)
+    public async Task<string> GetToken(IAuthorization auth)
     {
         if (!TryGetByEmail(auth.Credentials.Email, out IAccount account))
             return null;
-        return Token.Generate(account.GetClaims());
+        var claims = await User.GetClaimsAsync(account.User);
+        return Token.Generate(claims);
     }
 
     public async Task<bool> CheckToken(string token)
@@ -62,7 +66,7 @@ public class AccountManager : Registry<IAccount>, IAccountManager
         {
             var emailClaim = validation.ClaimsIdentity.Claims.Where(c => c.Type == JwtClaimTypes.Email).FirstOrDefault();
             if (emailClaim != null)
-                _token = GetToken(new Authorization() { Credentials = new Credentials() { Email = emailClaim.Value } });
+                _token = await GetToken(new Authorization() { Credentials = new Credentials() { Email = emailClaim.Value } });
         }
         return _token;
     }
@@ -94,24 +98,37 @@ public class AccountManager : Registry<IAccount>, IAccountManager
         {
             result = await User.RemoveFromRolesAsync(account.User, account.Roles.Select(r => r.Name));
             if (result.Succeeded)
-                result = await User.RemoveClaimsAsync(account.User, account.GetClaims());
+            {
+                var claims = await User.GetClaimsAsync(account.User);
+                result = await User.RemoveClaimsAsync(account.User, claims);
+            }
         }
         if (result.Succeeded)
+        {
+            foreach (var role in roles)
+                await SetRole(role);
+
             result = await User.AddToRolesAsync(account.User, roles);
+        }
         if (result.Succeeded)
-            result = await User.AddClaimsAsync(
-                account.User,
-                new Claim[]
+        {
+            var basicClaims = new Claim[]
                 {
                 new Claim(JwtClaimTypes.Id, account.Id.ToString()),
                 new Claim("user_id", account.UserId.ToString()),
                 new Claim(JwtClaimTypes.Email, account.User.Email),
                 new Claim(JwtClaimTypes.Name, account.User.UserName),
                 new Claim("code_no", account.CodeNo),
-                }
-                .Concat(roles?.Select(r => new Claim(JwtClaimTypes.Role, r)))
-                .Concat(scopes?.Select(r => new Claim(JwtClaimTypes.Scope, r)))
+                };
+            if (roles != null)
+                basicClaims.Concat(roles?.Select(r => new Claim(JwtClaimTypes.Role, r)));
+            if (scopes != null)
+                basicClaims.Concat(scopes?.Select(r => new Claim(JwtClaimTypes.Scope, r)));
+
+            result = await User.AddClaimsAsync(
+                account.User, basicClaims
             );
+        }
         if (!result.Succeeded)
         {
             account.Notes.Errors = result.Errors.Select(e => e.Description).Aggregate((a, b) => a + ", " + b);
@@ -163,7 +180,6 @@ public class AccountManager : Registry<IAccount>, IAccountManager
         if (claim != null)
         {
             var _claim = new AccountClaim() { ClaimType = claim.Type, ClaimValue = claim.Value, Id = id, UserId = account.UserId };
-            account.Claims.Add(_claim);
             await User.RemoveClaimAsync(account.User, claim);
             var result = await User.AddClaimAsync(account.User, claim);
             if (result.Succeeded)

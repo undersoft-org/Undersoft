@@ -27,17 +27,18 @@ public class AccountService : IAccountAction, IAccountAccess
 
         if (account.Credentials.Authenticated)
         {
-            account.Credentials.SessionToken = _manager.GetToken(account);
+            account.Credentials.SessionToken = await _manager.GetToken(account);
             account.Notes = new AuthorizationNotes()
             {
                 Success = "Signed in",
                 Status = SigningStatus.SignedIn
             };
-            var user = await _manager.GetByEmail(account.Credentials.Email);
+            var _account = await _manager.GetByEmail(account.Credentials.Email);
+            var claims = await _manager.User.GetClaimsAsync(_account.User);
             await _manager.SignIn.SignInWithClaimsAsync(
-                user.User,
+                _account.User,
                 account.Credentials.SaveAccountInCookies,
-                user.GetClaims()
+                claims
             );
         }
         return account;

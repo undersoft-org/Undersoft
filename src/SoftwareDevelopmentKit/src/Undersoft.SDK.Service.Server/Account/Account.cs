@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Claims;
 using Undersoft.SDK.Service.Access;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
@@ -36,7 +37,8 @@ public class Account : Authorization, IEntity, IAccount
 
     public virtual Listing<Role> Roles { get; set; }
 
-    public virtual Listing<AccountClaim> Claims { get; set; }
+    [NotMapped]
+    public Listing<AccountClaim> Claims { get; set; }
 
     public virtual Listing<AccountToken> Tokens { get; set; }
 
