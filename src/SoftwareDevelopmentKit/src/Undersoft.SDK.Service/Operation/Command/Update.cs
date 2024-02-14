@@ -1,8 +1,6 @@
-﻿using Undersoft.SDK.Service.Data.Object;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Text.Json.Serialization;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Data.Store;
 
 namespace Undersoft.SDK.Service.Operation.Command;
 
@@ -12,10 +10,10 @@ public class Update<TStore, TEntity, TDto> : Command<TDto>
     where TStore : IDataServerStore
 {
     [JsonIgnore]
-    public Func<TEntity, Expression<Func<TEntity, bool>>> Predicate { get; }
+    public Func<TDto, Expression<Func<TEntity, bool>>> Predicate { get; }
 
     [JsonIgnore]
-    public Func<TEntity, Expression<Func<TEntity, bool>>>[] Conditions { get; }
+    public Func<TDto, Expression<Func<TEntity, bool>>>[] Conditions { get; }
 
     public Update(EventPublishMode publishPattern, TDto input, params object[] keys)
         : base(OperationType.Update, publishPattern, input, keys) { }
@@ -23,7 +21,7 @@ public class Update<TStore, TEntity, TDto> : Command<TDto>
     public Update(
         EventPublishMode publishPattern,
         TDto input,
-        Func<TEntity, Expression<Func<TEntity, bool>>> predicate
+        Func<TDto, Expression<Func<TEntity, bool>>> predicate
     ) : base(OperationType.Update, publishPattern, input)
     {
         Predicate = predicate;
@@ -32,8 +30,8 @@ public class Update<TStore, TEntity, TDto> : Command<TDto>
     public Update(
         EventPublishMode publishPattern,
         TDto input,
-        Func<TEntity, Expression<Func<TEntity, bool>>> predicate,
-        params Func<TEntity, Expression<Func<TEntity, bool>>>[] conditions
+        Func<TDto, Expression<Func<TEntity, bool>>> predicate,
+        params Func<TDto, Expression<Func<TEntity, bool>>>[] conditions
     ) : base(OperationType.Update, publishPattern, input)
     {
         Predicate = predicate;

@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Text.Json.Serialization;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Data.Store;
 
 namespace Undersoft.SDK.Service.Operation.Remote.Command;
 
@@ -11,7 +10,7 @@ public class RemoteDelete<TStore, TDto, TModel> : RemoteCommand<TModel>
     where TStore : IDataServiceStore
 {
     [JsonIgnore]
-    public Func<TDto, Expression<Func<TDto, bool>>> Predicate { get; }
+    public Func<TModel, Expression<Func<TDto, bool>>> Predicate { get; }
 
     public RemoteDelete(EventPublishMode publishPattern, TModel input)
         : base(OperationType.Delete, publishPattern, input) { }
@@ -19,7 +18,7 @@ public class RemoteDelete<TStore, TDto, TModel> : RemoteCommand<TModel>
     public RemoteDelete(
         EventPublishMode publishPattern,
         TModel input,
-        Func<TDto, Expression<Func<TDto, bool>>> predicate
+        Func<TModel, Expression<Func<TDto, bool>>> predicate
     ) : base(OperationType.Delete, publishPattern, input)
     {
         Predicate = predicate;
@@ -27,7 +26,7 @@ public class RemoteDelete<TStore, TDto, TModel> : RemoteCommand<TModel>
 
     public RemoteDelete(
         EventPublishMode publishPattern,
-        Func<TDto, Expression<Func<TDto, bool>>> predicate
+        Func<TModel, Expression<Func<TDto, bool>>> predicate
     ) : base(OperationType.Delete, publishPattern)
     {
         Predicate = predicate;

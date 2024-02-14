@@ -4,7 +4,6 @@ using System.Text.Json.Serialization;
 namespace Undersoft.SDK.Service.Operation.Command.Notification;
 using Command;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation.Command;
 
 public class Deleted<TStore, TEntity, TDto> : Notification<Command<TDto>>
     where TDto : class, IOrigin, IInnerProxy
@@ -12,7 +11,7 @@ public class Deleted<TStore, TEntity, TDto> : Notification<Command<TDto>>
     where TStore : IDataServerStore
 {
     [JsonIgnore]
-    public Func<TEntity, Expression<Func<TEntity, bool>>> Predicate { get; }
+    public Func<TDto, Expression<Func<TEntity, bool>>> Predicate { get; }
 
     public Deleted(Delete<TStore, TEntity, TDto> command) : base(command)
     {

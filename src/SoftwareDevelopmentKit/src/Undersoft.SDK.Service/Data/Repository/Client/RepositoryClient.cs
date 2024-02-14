@@ -6,7 +6,6 @@ using Configuration;
 using Logging;
 using Microsoft.OData.Edm;
 using Series;
-using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Object;

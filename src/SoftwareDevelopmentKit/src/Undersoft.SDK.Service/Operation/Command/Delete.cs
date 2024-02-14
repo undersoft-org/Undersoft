@@ -1,8 +1,6 @@
-﻿using Undersoft.SDK.Service.Data.Object;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Text.Json.Serialization;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Data.Store;
 
 namespace Undersoft.SDK.Service.Operation.Command;
 
@@ -12,7 +10,7 @@ public class Delete<TStore, TEntity, TDto> : Command<TDto>
     where TStore : IDataServerStore
 {
     [JsonIgnore]
-    public Func<TEntity, Expression<Func<TEntity, bool>>> Predicate { get; }
+    public Func<TDto, Expression<Func<TEntity, bool>>> Predicate { get; }
 
     public Delete(EventPublishMode publishPattern, TDto input)
         : base(OperationType.Delete, publishPattern, input) { }
@@ -20,7 +18,7 @@ public class Delete<TStore, TEntity, TDto> : Command<TDto>
     public Delete(
         EventPublishMode publishPattern,
         TDto input,
-        Func<TEntity, Expression<Func<TEntity, bool>>> predicate
+        Func<TDto, Expression<Func<TEntity, bool>>> predicate
     ) : base(OperationType.Delete, publishPattern, input)
     {
         Predicate = predicate;
@@ -28,7 +26,7 @@ public class Delete<TStore, TEntity, TDto> : Command<TDto>
 
     public Delete(
         EventPublishMode publishPattern,
-        Func<TEntity, Expression<Func<TEntity, bool>>> predicate
+        Func<TDto, Expression<Func<TEntity, bool>>> predicate
     ) : base(OperationType.Delete, publishPattern)
     {
         Predicate = predicate;

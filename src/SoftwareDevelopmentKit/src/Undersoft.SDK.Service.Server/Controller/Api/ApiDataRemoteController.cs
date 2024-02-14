@@ -88,7 +88,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel, TServi
 
         return Ok(
             await _servicer
-                .Report(
+                .Entry(
                     new RemoteFilter<TStore, TDto, TModel>(
                         0,
                         0,
@@ -109,7 +109,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel, TServi
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Entry(new RemoteCreateSet<TStore, TDto, TModel>(_publishMode, dtos))
+            .Send(new RemoteCreateSet<TStore, TDto, TModel>(_publishMode, dtos))
             .ConfigureAwait(false);
 
         object[] response = result
@@ -129,7 +129,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel, TServi
         _keysetter(key).Invoke(dto);
 
         var result = await _servicer
-            .Entry(new RemoteCreateSet<TStore, TDto, TModel>(_publishMode, new[] { dto }))
+            .Send(new RemoteCreateSet<TStore, TDto, TModel>(_publishMode, new[] { dto }))
             .ConfigureAwait(false);
 
         var response = result
@@ -147,7 +147,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel, TServi
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Entry(new RemoteChangeSet<TStore, TDto, TModel>(_publishMode, dtos, _predicate))
+            .Send(new RemoteChangeSet<TStore, TDto, TModel>(_publishMode, dtos, _predicate))
             .ConfigureAwait(false);
         var response = result
             .ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
@@ -166,7 +166,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel, TServi
         _keysetter(key).Invoke(dto);
 
         var result = await _servicer
-            .Entry(
+            .Send(
                 new RemoteChangeSet<TStore, TDto, TModel>(_publishMode, new[] { dto }, _predicate)
             )
             .ConfigureAwait(false);
@@ -186,7 +186,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel, TServi
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Entry(new RemoteUpdateSet<TStore, TDto, TModel>(_publishMode, dtos, _predicate))
+            .Send(new RemoteUpdateSet<TStore, TDto, TModel>(_publishMode, dtos, _predicate))
             .ConfigureAwait(false);
 
         var response = result
@@ -206,7 +206,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel, TServi
         _keysetter(key).Invoke(dto);
 
         var result = await _servicer
-            .Entry(
+            .Send(
                 new RemoteUpdateSet<TStore, TDto, TModel>(_publishMode, new[] { dto }, _predicate)
             )
             .ConfigureAwait(false);
@@ -226,7 +226,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel, TServi
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Entry(new RemoteDeleteSet<TStore, TDto, TModel>(_publishMode, dtos))
+            .Send(new RemoteDeleteSet<TStore, TDto, TModel>(_publishMode, dtos))
             .ConfigureAwait(false);
 
         var response = result
@@ -246,7 +246,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel, TServi
         _keysetter(key).Invoke(dto);
 
         var result = await _servicer
-            .Entry(new RemoteDeleteSet<TStore, TDto, TModel>(_publishMode, new[] { dto }))
+            .Send(new RemoteDeleteSet<TStore, TDto, TModel>(_publishMode, new[] { dto }))
             .ConfigureAwait(false);
 
         var response = result

@@ -33,7 +33,7 @@ public class UpdateHandler<TStore, TEntity, TDto>
 
         try
         {
-            if (request.Predicate == null)
+            if (request.Keys != null)
                 request.Entity = await _repository.SetBy(request.Contract, request.Keys);
             else if (request.Conditions == null)
                 request.Entity = await _repository.SetBy(request.Contract, request.Predicate);

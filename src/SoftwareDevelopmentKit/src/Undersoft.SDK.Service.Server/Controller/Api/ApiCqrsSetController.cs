@@ -50,7 +50,7 @@ public class ApiCqrsSetController<TKey, TEntry, TReport, TEntity, TDto, TService
     {
         return Ok(
             await _servicer
-                .Send(new Get<TReport, TEntity, TDto>((page - 1) * limit, limit))
+                .Entry(new Get<TReport, TEntity, TDto>((page - 1) * limit, limit))
                 .ConfigureAwait(true)
         );
     }
@@ -74,7 +74,7 @@ public class ApiCqrsSetController<TKey, TEntry, TReport, TEntity, TDto, TService
 
         return Ok(
             await _servicer
-                .Send(
+                .Entry(
                     new Filter<TReport, TEntity, TDto>(
                         0,
                         0,

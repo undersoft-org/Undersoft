@@ -10,15 +10,14 @@ using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
 
-
 [OpenDataRemote]
 public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel, TService>
-    : OpenServiceRemoteController<TStore, TService, TDto>, IOpenDataRemoteController<TKey, TDto, TModel>
+    : OpenServiceRemoteController<TStore, TService, TDto>,
+        IOpenDataRemoteController<TKey, TDto, TModel>
     where TModel : class, IOrigin, IInnerProxy
     where TDto : class, IOrigin, IInnerProxy
     where TStore : IDataServiceStore
     where TService : class
-
 {
     protected Func<TKey, Func<TModel, object>> _keysetter = k => e => e.SetId(k);
     protected Func<TKey, Expression<Func<TDto, bool>>> _keymatcher = k => e => k.Equals(e.Id);
@@ -33,10 +32,10 @@ public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel, TServ
     ) : this(servicer, null, k => e => e.SetId(k), k => e => k.Equals(e.Id), publishMode) { }
 
     protected OpenDataRemoteController(
-       IServicer servicer,
-       Func<TModel, Expression<Func<TDto, bool>>> predicate,
-       EventPublishMode publishMode = EventPublishMode.PropagateCommand
-   ) : this(servicer, predicate, k => e => e.SetId(k), k => e => k.Equals(e.Id), publishMode) { }
+        IServicer servicer,
+        Func<TModel, Expression<Func<TDto, bool>>> predicate,
+        EventPublishMode publishMode = EventPublishMode.PropagateCommand
+    ) : this(servicer, predicate, k => e => e.SetId(k), k => e => k.Equals(e.Id), publishMode) { }
 
     protected OpenDataRemoteController(
         IServicer servicer,
@@ -60,84 +59,68 @@ public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel, TServ
     [EnableQuery]
     public virtual async Task<UniqueOne<TModel>> Get([FromRoute] TKey key)
     {
-        return new UniqueOne<TModel>(await _servicer.Entry(new RemoteFindQuery<TStore, TDto, TModel>(_keymatcher(key))));
+        return new UniqueOne<TModel>(
+            await _servicer.Entry(new RemoteFindQuery<TStore, TDto, TModel>(_keymatcher(key)))
+        );
     }
 
     public virtual async Task<IActionResult> Post([FromBody] TModel dto)
     {
-        bool isValid = false;
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+        var result = await _servicer.Send(
+            new RemoteCreate<TStore, TDto, TModel>(_publishMode, dto)
+        );
 
-        var result = await _servicer.Entry(new RemoteCreateSet<TStore, TDto, TModel>
-                                                (_publishMode, new[] { dto }))
-                                                    .ConfigureAwait(false);
-
-        var response = result.ForEach(c => (isValid = c.IsValid)
-                                              ? c.Id as object
-                                              : c.ErrorMessages).ToArray();
-        return !isValid
-               ? UnprocessableEntity(response)
-               : Created(response);
+        return !result.IsValid
+            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            : Created(result.Id as object);
     }
 
     public virtual async Task<IActionResult> Patch([FromRoute] TKey key, [FromBody] TModel dto)
     {
-        bool isValid = false;
-
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Entry(new RemoteChangeSet<TStore, TDto, TModel>
-                                              (_publishMode, new[] { dto }, _predicate))
-                                                 .ConfigureAwait(false);
+        var result = await _servicer.Send(
+            new RemoteChange<TStore, TDto, TModel>(_publishMode, dto, _predicate)
+        );
 
-        var response = result.ForEach(c => (isValid = c.IsValid)
-                                              ? c.Id as object
-                                              : c.ErrorMessages).ToArray();
-        return !isValid
-               ? UnprocessableEntity(response)
-               : Updated(response);
+        return !result.IsValid
+            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            : Updated(result.Id as object);
     }
 
     public virtual async Task<IActionResult> Put([FromRoute] TKey key, [FromBody] TModel dto)
     {
-        bool isValid = false;
-
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Entry(new RemoteUpdateSet<TStore, TDto, TModel>
-                                                    (_publishMode, new[] { dto }, _predicate))
-                                                        .ConfigureAwait(false);
+        var result = await _servicer.Send(
+            new RemoteUpdate<TStore, TDto, TModel>(_publishMode, dto, _predicate)
+        );
 
-        var response = result.ForEach(c => (isValid = c.IsValid)
-                                              ? c.Id as object
-                                              : c.ErrorMessages).ToArray();
-        return !isValid
-               ? UnprocessableEntity(response)
-               : Updated(response);
+        return !result.IsValid
+            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            : Updated(result.Id as object);
     }
 
     public virtual async Task<IActionResult> Delete([FromRoute] TKey key)
     {
-        bool isValid = false;
-
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Entry(new RemoteDeleteSet<TStore, TDto, TModel>
-                                                             (_publishMode, key))
-                                                                    .ConfigureAwait(false);
+        var result = await _servicer.Send(
+            new RemoteDelete<TStore, TDto, TModel>(_publishMode, key)
+        );
 
-        var response = result.ForEach(c => (isValid = c.IsValid)
-                                               ? c.Id as object
-                                               : c.ErrorMessages).ToArray();
-        return !isValid
-               ? UnprocessableEntity(response)
-               : Ok(response);
+        return !result.IsValid
+            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            : Updated(result.Id as object);
     }
 }

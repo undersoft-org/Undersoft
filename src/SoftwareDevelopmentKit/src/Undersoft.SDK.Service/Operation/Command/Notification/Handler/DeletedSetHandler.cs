@@ -58,8 +58,8 @@ public class DeletedSetHandler<TStore, TEntity, TDto>
                                 .ToCatalog();
                         else
                             entities = _repository
-                                .Delete(
-                                    request.Select(d => (TEntity)d.Command.Entity),
+                                .DeleteBy(
+                                    request.Select(d => (TDto)d.Command.Contract),
                                     request.Predicate
                                 )
                                 .ToCatalog();

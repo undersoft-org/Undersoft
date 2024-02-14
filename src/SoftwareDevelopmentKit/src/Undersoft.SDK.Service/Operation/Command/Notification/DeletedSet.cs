@@ -5,7 +5,6 @@ namespace Undersoft.SDK.Service.Operation.Command.Notification;
 
 using Command;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation.Command;
 
 public class DeletedSet<TStore, TEntity, TDto> : NotificationSet<Command<TDto>>
     where TDto : class, IOrigin, IInnerProxy
@@ -13,7 +12,7 @@ public class DeletedSet<TStore, TEntity, TDto> : NotificationSet<Command<TDto>>
     where TStore : IDataServerStore
 {
     [JsonIgnore]
-    public Func<TEntity, Expression<Func<TEntity, bool>>> Predicate { get; }
+    public Func<TDto, Expression<Func<TEntity, bool>>> Predicate { get; }
 
     public DeletedSet(DeleteSet<TStore, TEntity, TDto> commands)
         : base(

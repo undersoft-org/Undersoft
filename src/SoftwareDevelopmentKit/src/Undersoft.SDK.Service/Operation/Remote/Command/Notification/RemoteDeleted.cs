@@ -4,7 +4,6 @@ using System.Text.Json.Serialization;
 namespace Undersoft.SDK.Service.Operation.Remote.Command.Notification;
 using Command;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation.Remote.Command;
 
 public class RemoteDeleted<TStore, TDto, TModel> : RemoteNotification<RemoteCommand<TModel>>
     where TDto : class, IOrigin, IInnerProxy
@@ -12,7 +11,7 @@ public class RemoteDeleted<TStore, TDto, TModel> : RemoteNotification<RemoteComm
     where TStore : IDataServiceStore
 {
     [JsonIgnore]
-    public Func<TDto, Expression<Func<TDto, bool>>> Predicate { get; }
+    public Func<TModel, Expression<Func<TDto, bool>>> Predicate { get; }
 
     public RemoteDeleted(RemoteDelete<TStore, TDto, TModel> command) : base(command)
     {

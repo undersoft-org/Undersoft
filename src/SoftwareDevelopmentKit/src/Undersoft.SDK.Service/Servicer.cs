@@ -3,7 +3,6 @@
 namespace Undersoft.SDK.Service;
 
 using Invoking;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Undersoft.SDK.Service.Data.Repository.Client;
 using Undersoft.SDK.Service.Data.Repository.Source;
@@ -16,7 +15,7 @@ public class Servicer : ServiceManager, IServicer, IMediator
     public Servicer() : base() { }
 
     public Servicer(IServiceManager serviceManager) : base(serviceManager) { }
-   
+
     protected IMediator Mediator => mediator ??= Session.ServiceProvider.GetService<IMediator>();
 
     public IAsyncEnumerable<TResponse> CreateStream<TResponse>(
@@ -39,9 +38,9 @@ public class Servicer : ServiceManager, IServicer, IMediator
     {
         using (var session = CreateSession())
         {
-           return session.ServiceProvider
-                .GetService<IMediator>()
-                .CreateStream(request, cancellationToken);
+            return session.ServiceProvider
+                 .GetService<IMediator>()
+                 .CreateStream(request, cancellationToken);
         }
     }
 
@@ -51,7 +50,7 @@ public class Servicer : ServiceManager, IServicer, IMediator
     {
         return new Lazy<R>(function.Invoke(base.GetService<T>()));
     }
-   
+
     public Task<R> Run<T, R>(Func<T, Task<R>> function) where T : class
     {
         return Task.Run(async () => await function.Invoke(base.GetService<T>()));
@@ -63,7 +62,7 @@ public class Servicer : ServiceManager, IServicer, IMediator
     }
 
     public Task<object> Run<T>(string methodname, params object[] parameters) where T : class
-    {        
+    {
         return new Invoker(base.GetService<T>(), methodname).InvokeAsync(parameters);
     }
 
@@ -101,7 +100,7 @@ public class Servicer : ServiceManager, IServicer, IMediator
     {
         using (var servicer = new Servicer(Manager))
         {
-           return await servicer.Mediator.Send(request, cancellationToken);
+            return await servicer.Mediator.Send(request, cancellationToken);
         }
     }
 
@@ -134,12 +133,12 @@ public class Servicer : ServiceManager, IServicer, IMediator
 
     public async Task<TResponse> Report<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
     {
-        return await base.GetService<IMediator>().Send(request, cancellationToken);
+        return await Mediator.Send(request, cancellationToken);
     }
 
     public async Task<object> Report(object request, CancellationToken cancellationToken = default)
     {
-        return await base.GetService<IMediator>().Send(request, cancellationToken);
+        return await Mediator.Send(request, cancellationToken);
     }
 
     public async Task<TResponse> Entry<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
@@ -179,7 +178,7 @@ public class Servicer : ServiceManager, IServicer, IMediator
         {
             using (var session = CreateSession())
             {
-               await function.Invoke(session.ServiceProvider.GetService<T>());
+                await function.Invoke(session.ServiceProvider.GetService<T>());
             }
         });
     }

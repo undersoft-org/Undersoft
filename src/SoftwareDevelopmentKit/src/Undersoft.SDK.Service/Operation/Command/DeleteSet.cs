@@ -3,8 +3,6 @@ using System.Text.Json.Serialization;
 
 namespace Undersoft.SDK.Service.Operation.Command;
 
-using Undersoft.SDK.Service.Data.Object;
-
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Operation;
@@ -15,7 +13,7 @@ public class DeleteSet<TStore, TEntity, TDto> : CommandSet<TDto>
     where TStore : IDataServerStore
 {
     [JsonIgnore]
-    public Func<TEntity, Expression<Func<TEntity, bool>>> Predicate { get; }
+    public Func<TDto, Expression<Func<TEntity, bool>>> Predicate { get; }
 
     public DeleteSet(EventPublishMode publishPattern, object key)
         : base(
@@ -46,7 +44,7 @@ public class DeleteSet<TStore, TEntity, TDto> : CommandSet<TDto>
     public DeleteSet(
         EventPublishMode publishPattern,
         TDto[] inputs,
-        Func<TEntity, Expression<Func<TEntity, bool>>> predicate
+        Func<TDto, Expression<Func<TEntity, bool>>> predicate
     )
         : base(
             OperationType.Delete,

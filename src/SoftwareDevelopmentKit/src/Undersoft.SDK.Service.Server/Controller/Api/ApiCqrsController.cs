@@ -44,7 +44,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
     public override async Task<IActionResult> Get([FromHeader] int page, [FromHeader] int limit)
     {
         return Ok(
-            await _servicer.Send(new Get<TReport, TEntity, TDto>((page - 1) * limit, limit)).ConfigureAwait(true)
+            await _servicer.Entry(new Get<TReport, TEntity, TDto>((page - 1) * limit, limit)).ConfigureAwait(true)
         );
     }
 
@@ -59,8 +59,8 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
     {
         return Ok(
            _keymatcher == null
-               ? await _servicer.Send(new Find<TReport, TEntity, TDto>(key)).ConfigureAwait(false)
-               : await _servicer.Send(new Find<TReport, TEntity, TDto>(_keymatcher(key))).ConfigureAwait(false));
+               ? await _servicer.Entry(new Find<TReport, TEntity, TDto>(key)).ConfigureAwait(false)
+               : await _servicer.Entry(new Find<TReport, TEntity, TDto>(_keymatcher(key))).ConfigureAwait(false));
     }
 
     [HttpPost("query")]
@@ -76,7 +76,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
 
         return Ok(
             await _servicer
-                .Send(
+                .Entry(
                     new Filter<TReport, TEntity, TDto>(0, 0,
                         new FilterExpression<TEntity>(query.FilterItems).Create(),
                         new SortExpression<TEntity>(query.SortItems)

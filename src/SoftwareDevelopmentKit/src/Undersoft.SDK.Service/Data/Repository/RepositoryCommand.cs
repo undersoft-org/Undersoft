@@ -333,6 +333,27 @@ public abstract partial class Repository<TEntity> : IRepositoryCommand<TEntity> 
         }
     }
 
+    public virtual Task<TEntity> Set<TModel>(
+        TModel delta,
+        Func<TModel, Expression<Func<TEntity, bool>>> predicate
+    ) where TModel : class, IOrigin
+    {
+        return Task.Run(() =>
+        {
+            TEntity entity = null;
+            if (predicate != null)
+                entity = this[false, predicate(delta)];
+            else
+                entity = this[new object[] { delta.Id }];
+
+            if (entity != null)
+            {
+                return InnerSet((TEntity)delta.PutTo(entity.Proxy, PatchingEvent).Target);
+            }
+            return default;
+        });
+    }
+
     public virtual async IAsyncEnumerable<TEntity> SetAsync<TModel>(IEnumerable<TModel> models)
         where TModel : class, IOrigin
     {

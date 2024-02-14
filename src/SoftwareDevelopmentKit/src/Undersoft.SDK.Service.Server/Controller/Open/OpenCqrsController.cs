@@ -61,7 +61,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Entry(new Create<TEntry, TEntity, TDto>(_publishMode, dto));
+        var result = await _servicer.Send(new Create<TEntry, TEntity, TDto>(_publishMode, dto));
 
         return !result.IsValid
             ? UnprocessableEntity(result.ErrorMessages.ToArray())

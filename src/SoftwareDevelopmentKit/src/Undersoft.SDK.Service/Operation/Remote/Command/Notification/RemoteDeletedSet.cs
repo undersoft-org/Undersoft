@@ -5,7 +5,6 @@ namespace Undersoft.SDK.Service.Operation.Remote.Command.Notification;
 
 using Command;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation.Remote.Command;
 
 public class RemoteDeletedSet<TStore, TDto, TModel> : RemoteNotificationSet<RemoteCommand<TModel>>
     where TDto : class, IOrigin, IInnerProxy
@@ -13,7 +12,7 @@ public class RemoteDeletedSet<TStore, TDto, TModel> : RemoteNotificationSet<Remo
     where TStore : IDataServiceStore
 {
     [JsonIgnore]
-    public Func<TDto, Expression<Func<TDto, bool>>> Predicate { get; }
+    public Func<TModel, Expression<Func<TDto, bool>>> Predicate { get; }
 
     public RemoteDeletedSet(RemoteDeleteSet<TStore, TDto, TModel> commands)
         : base(

@@ -31,12 +31,12 @@ public class DeleteSetHandler<TStore, TEntity, TDto>
         {
             IEnumerable<TEntity> entities;
             if (request.Predicate == null)
-                entities = _repository.DeleteBy(request.ForOnly(d => d.IsValid, d => d.Contract));
+                entities = _repository.DeleteBy(request.ForOnly(d => d.IsValid, d => d.Contract)).Commit();
             else
                 entities = _repository.DeleteBy(
                     request.ForOnly(d => d.IsValid, d => d.Contract),
                     request.Predicate
-                );
+                ).Commit();
 
             await entities
                 .ForEachAsync(

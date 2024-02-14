@@ -15,7 +15,7 @@ public class DeleteSetAsync<TStore, TEntity, TDto>
     where TStore : IDataServerStore
 {
     [JsonIgnore]
-    public Func<TEntity, Expression<Func<TEntity, bool>>> Predicate { get; }
+    public Func<TDto, Expression<Func<TEntity, bool>>> Predicate { get; }
 
     public DeleteSetAsync(EventPublishMode publishPattern, object key) : base(publishPattern, key)
     { }
@@ -29,6 +29,6 @@ public class DeleteSetAsync<TStore, TEntity, TDto>
     public DeleteSetAsync(
         EventPublishMode publishPattern,
         TDto[] inputs,
-        Func<TEntity, Expression<Func<TEntity, bool>>> predicate
+        Func<TDto, Expression<Func<TEntity, bool>>> predicate
     ) : base(publishPattern, inputs, predicate) { }
 }

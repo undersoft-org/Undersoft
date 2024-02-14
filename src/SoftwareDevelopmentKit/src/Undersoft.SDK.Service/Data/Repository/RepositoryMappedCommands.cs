@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Data.Repository;
 
 using Undersoft.SDK;
-using Undersoft.SDK.Service.Data.Repository;
-using Uniques;
 
 public partial class Repository<TEntity> : IRepositoryMappedCommand<TEntity> where TEntity : class, IOrigin, IInnerProxy
 {
@@ -42,26 +36,32 @@ public partial class Repository<TEntity> : IRepositoryMappedCommand<TEntity> whe
     {
         return this.Delete(MapFrom(model));
     }
-    public virtual TEntity DeleteBy<TDto>(TDto model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate)
+    public virtual TEntity DeleteBy<TDto>(TDto model, Func<TDto, Expression<Func<TEntity, bool>>> predicate)
     {
-        return Delete(predicate.Invoke(MapFrom(model)));
+        return Delete(predicate.Invoke(model));
     }
     public virtual IEnumerable<TEntity> DeleteBy<TDto>(IEnumerable<TDto> model)
     {
         return Delete(MapFrom(model));
     }
-    public virtual IEnumerable<TEntity> DeleteBy<TDto>(IEnumerable<TDto> model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate)
+    public virtual IEnumerable<TEntity> DeleteBy<TDto>(IEnumerable<TDto> model, Func<TDto, Expression<Func<TEntity, bool>>> predicate)
     {
-        return Delete(MapFrom(model), predicate);
+        foreach (var dto in model)
+        {
+            yield return Delete(predicate.Invoke(dto));
+        }
     }
 
     public virtual IAsyncEnumerable<TEntity> DeleteByAsync<TDto>(IEnumerable<TDto> model)
     {
         return DeleteAsync(MapFrom(model));
     }
-    public virtual IAsyncEnumerable<TEntity> DeleteByAsync<TDto>(IEnumerable<TDto> model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate)
+    public virtual async IAsyncEnumerable<TEntity> DeleteByAsync<TDto>(IEnumerable<TDto> model, Func<TDto, Expression<Func<TEntity, bool>>> predicate)
     {
-        return DeleteAsync(MapFrom(model), predicate);
+        foreach (var dto in model)
+        {
+            yield return await Task.Run(() => Delete(predicate.Invoke(dto)));
+        }
     }
 
     public virtual async Task<TEntity> SetBy<TDto>(TDto model) where TDto : class, IOrigin
@@ -79,6 +79,10 @@ public partial class Repository<TEntity> : IRepositoryMappedCommand<TEntity> whe
     public virtual IEnumerable<TEntity> SetBy<TDto>(IEnumerable<TDto> entity) where TDto : class, IOrigin
     {
         return Set(entity).Commit();
+    }
+    public virtual async Task<TEntity> SetBy<TDto>(TDto model, Func<TDto, Expression<Func<TEntity, bool>>> predicate) where TDto : class, IOrigin
+    {
+        return await Set(model, predicate);
     }
     public virtual IEnumerable<TEntity> SetBy<TDto>(IEnumerable<TDto> models, Func<TDto, Expression<Func<TEntity, bool>>> predicate, params Func<TDto, Expression<Func<TEntity, bool>>>[] conditions) where TDto : class, IOrigin
     {

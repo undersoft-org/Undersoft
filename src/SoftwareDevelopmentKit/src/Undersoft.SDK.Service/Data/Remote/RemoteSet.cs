@@ -307,20 +307,21 @@ namespace Undersoft.SDK.Service.Data.Remote
 
         protected override void InsertItem(int index, TEntity item)
         {
-            _deck.Insert(index, item);
             base.InsertItem(index, item);
+            _deck.Insert(index, item);
         }
 
         protected override void RemoveItem(int index)
         {
-            _deck.RemoveAt(index);
             base.RemoveItem(index);
+            _deck.RemoveAt(index);
         }
 
         protected override void SetItem(int index, TEntity item)
         {
-            _deck.Set(item.Id, item);
             base.SetItem(index, item);
+            _deck.Set(item.Id, item);
+
         }
 
         protected override void ClearItems()

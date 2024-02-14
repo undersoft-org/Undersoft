@@ -34,12 +34,10 @@ public class ChangeHandler<TStore, TEntity, TDto>
         {
             if (request.Keys != null)
                 request.Entity = await _repository
-                    .PatchBy(request.Contract, request.Keys)
-                    .ConfigureAwait(false);
+                    .PatchBy(request.Contract, request.Keys);
             else
                 request.Entity = await _repository
-                    .PatchBy(request.Contract, request.Predicate)
-                    .ConfigureAwait(false);
+                    .PatchBy(request.Contract, request.Predicate);
 
             if (request.Entity == null)
                 throw new Exception(

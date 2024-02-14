@@ -53,7 +53,7 @@ public class DeletedHandler<TStore, TEntity, TDto>
                             result = await _repository.Delete(request.Predicate);
                         else
                             result = _repository.DeleteBy(
-                                request.Data,
+                                request.Command.Contract,
                                 request.Predicate
                             );
 

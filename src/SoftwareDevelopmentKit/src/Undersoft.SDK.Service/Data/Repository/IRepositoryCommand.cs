@@ -40,7 +40,8 @@ namespace Undersoft.SDK.Service.Data.Repository
         IEnumerable<TEntity> Set<TModel>(IEnumerable<TModel> entities, Func<TModel, Expression<Func<TEntity, bool>>> predicate, params Func<TModel, Expression<Func<TEntity, bool>>>[] conditions) where TModel : class, IOrigin;
         Task<TEntity> Set<TModel>(TModel entity) where TModel : class, IOrigin;
         Task<TEntity> Set<TModel>(TModel entity, Func<TModel, Expression<Func<TEntity, bool>>> predicate, params Func<TModel, Expression<Func<TEntity, bool>>>[] conditions) where TModel : class, IOrigin;
-        Task<TEntity> Set<TModel>(TModel entity, object key, Func<TEntity, Expression<Func<TEntity, bool>>> condition) where TModel : class, IOrigin;
+        Task<TEntity> Set<TModel>(TModel entity, object key, Func<TEntity, Expression<Func<TEntity, bool>>> conditions) where TModel : class, IOrigin;
+        Task<TEntity> Set<TModel>(TModel entity, Func<TModel, Expression<Func<TEntity, bool>>> predicate) where TModel : class, IOrigin;
         Task<TEntity> Set<TModel>(TModel entity, params object[] key) where TModel : class;
         IAsyncEnumerable<TEntity> SetAsync<TModel>(IEnumerable<TModel> models) where TModel : class, IOrigin;
         IAsyncEnumerable<TEntity> SetAsync<TModel>(IEnumerable<TModel> entities, Func<TModel, Expression<Func<TEntity, bool>>> predicate, params Func<TModel, Expression<Func<TEntity, bool>>>[] conditions) where TModel : class, IOrigin;
