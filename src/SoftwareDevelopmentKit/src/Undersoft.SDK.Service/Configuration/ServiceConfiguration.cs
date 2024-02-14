@@ -1,12 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
-using System;
-using System.Collections.Generic;
 
 namespace Undersoft.SDK.Service.Configuration;
 
-using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Repository;
@@ -21,7 +18,7 @@ public class ServiceConfiguration : IServiceConfiguration
     public AccessServerOptions AccessOptions => _accessoptions ??= GetAccessServerConfiguration();
 
     private RepositoryOptions _repository;
-    public RepositoryOptions Repositories => _repository ??= GetRepositoryConfiguration(); 
+    public RepositoryOptions Repositories => _repository ??= GetRepositoryConfiguration();
 
     public string this[string key]
     {
@@ -77,10 +74,12 @@ public class ServiceConfiguration : IServiceConfiguration
     public string Name => config.GetSection("General")["Name"];
     public string TypeName => config.GetSection("General")["TypeName"];
 
-    public string DataServiceRoutes(string name)
+    public string StoreRoutes(string name)
     {
         return config.GetSection("StoreRoutes")[name];
     }
+
+    public string UserSecretsId => config.GetSection("General")["UserSecretsId"];
 
     public IConfigurationSection Repository()
     {

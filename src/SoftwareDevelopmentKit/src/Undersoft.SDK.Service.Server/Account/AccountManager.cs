@@ -87,12 +87,6 @@ public class AccountManager : Registry<IAccount>, IAccountManager
         {
             account = new Account(username, email, roles);
             result = await User.CreateAsync(account.User, password);
-            if (!result.Succeeded)
-            {
-                account.Notes.Errors = result.Errors.Select(e => e.Description).Aggregate((a, b) => a + ", " + b);
-                account.Notes.Status = SigningStatus.Failure;
-                return (Account)account;
-            }
         }
         else
         {
@@ -121,9 +115,9 @@ public class AccountManager : Registry<IAccount>, IAccountManager
                 new Claim("code_no", account.CodeNo),
                 };
             if (roles != null)
-                basicClaims.Concat(roles?.Select(r => new Claim(JwtClaimTypes.Role, r)));
+                basicClaims = basicClaims.Concat(roles?.Select(r => new Claim(JwtClaimTypes.Role, r))).ToArray();
             if (scopes != null)
-                basicClaims.Concat(scopes?.Select(r => new Claim(JwtClaimTypes.Scope, r)));
+                basicClaims = basicClaims.Concat(scopes?.Select(r => new Claim(JwtClaimTypes.Scope, r))).ToArray();
 
             result = await User.AddClaimsAsync(
                 account.User, basicClaims

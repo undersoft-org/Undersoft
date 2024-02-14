@@ -28,7 +28,7 @@ public class AccountEmailSender : IEmailSender
         var client = new SendGridClient(apiKey);
         var msg = new SendGridMessage()
         {
-            From = new EmailAddress("undersoft@undersoft.org"),
+            From = new EmailAddress("undersoft@undersoft.pl", "Undersoft"),
             Subject = subject,
             PlainTextContent = message,
             HtmlContent = message

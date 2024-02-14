@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace Undersoft.SDK.Service.Configuration;
 
@@ -18,9 +14,9 @@ public static class ServiceConfigurationHelper
         options = options ?? new ConfigurationOptions();
         options.EnvironmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-        if (options.BasePath == null)        
-            options.BasePath = Directory.GetCurrentDirectory();        
-       
+        if (options.BasePath == null)
+            options.BasePath = Directory.GetCurrentDirectory();
+
         string suffix = ".json";
         if (!(options.EnvironmentName == null))
             suffix = $".{options.EnvironmentName}.json";
@@ -33,20 +29,20 @@ public static class ServiceConfigurationHelper
                optionalName => builder.AddJsonFile($"{optionalName}{suffix}", optional: true, reloadOnChange: true)
             );
 
-        if(args != null)
+        if (args != null)
             builder.AddCommandLine(args);
 
-        //if (options.EnvironmentName == "Development")
-        //{
-        //    if (options.UserSecretsId != null)
-        //    {
-        //        builder.AddUserSecrets(options.UserSecretsId);
-        //    }
-        //    else if (options.UserSecretsAssembly != null)
-        //    {
-        //        builder.AddUserSecrets(options.UserSecretsAssembly, true);
-        //    }
-        //}
+        if (options.EnvironmentName == "Development")
+        {
+            if (options.UserSecretsId != null)
+            {
+                builder.AddUserSecrets(options.UserSecretsId);
+            }
+            else if (options.UserSecretsAssembly != null)
+            {
+                builder.AddUserSecrets(options.UserSecretsAssembly, true);
+            }
+        }
 
         builderAction?.Invoke(builder);
 

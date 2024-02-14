@@ -23,9 +23,9 @@ public class AccountService : IAccountAction, IAccountAccess
 
     public async Task<IAuthorization> SignIn(IAuthorization identity)
     {
-        var account = await Authenticate(identity);
+        var account = await ConfirmEmail(await Authenticate(identity));
 
-        if (account.Credentials.Authenticated)
+        if (account.Credentials.Authenticated && account.Credentials.EmailConfirmed)
         {
             account.Credentials.SessionToken = await _manager.GetToken(account);
             account.Notes = new AuthorizationNotes()
@@ -196,7 +196,7 @@ public class AccountService : IAccountAction, IAccountAccess
 
     public async Task<IAuthorization> ConfirmEmail(IAuthorization account)
     {
-        if (account != null && account.Credentials.IsLockedOut)
+        if (account != null && !account.Credentials.IsLockedOut)
         {
             var _creds = account.Credentials;
             if (!_creds.EmailConfirmed)
@@ -251,7 +251,6 @@ public class AccountService : IAccountAction, IAccountAccess
                     Info = "Please check your email",
                     Status = SigningStatus.EmailNotConfirmed,
                 };
-                account.Credentials.Authenticated = false;
                 this.Security<Accesslog>(account.Notes.Info, account);
             }
             else
@@ -267,7 +266,7 @@ public class AccountService : IAccountAction, IAccountAccess
     {
         account = AccountInfo(account);
 
-        if (account != null && account.Credentials.IsLockedOut)
+        if (account != null && !account.Credentials.IsLockedOut)
         {
             var _creds = account.Credentials;
             if (_creds.PasswordResetToken != null)
@@ -380,7 +379,7 @@ public class AccountService : IAccountAction, IAccountAccess
     {
         if (
             account != null
-            && account.Credentials.IsLockedOut
+            && !account.Credentials.IsLockedOut
             && account.Credentials.Authenticated
             && account.Credentials.EmailConfirmed
         )

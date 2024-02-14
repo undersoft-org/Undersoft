@@ -54,9 +54,10 @@
                         else
                             _navigation.NavigateTo("/access/register_account");
                     else
-                        _navigation.NavigateTo("/access/confirm_email");
+                        _navigation.NavigateTo($"/access/confirm_email/{result.Credentials.Email}");
                     return;
-                }
+                }                
+
                 data.ClearData();
                 result.Notes.PatchTo(data);
             }

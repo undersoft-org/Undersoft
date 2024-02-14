@@ -3,7 +3,7 @@
 @using Undersoft.SDK.Service.Application.Access;
 @using Undersoft.SDK.Service.Access;
 
-@page "/access/confirm_email"
+@page "/access/confirm_email/{email?}"
 @inject IAccountAccess _access
 @inject NavigationManager _navigation
 @inject IServicer _servicer
@@ -11,6 +11,9 @@
 @code
 {
     private IViewDialog<Credentials> _dialog = default!;
+
+    [Parameter]
+    public string? Email { get; set; }
 
     protected override void OnInitialized()
     {
@@ -25,9 +28,12 @@
 
     private async Task ConfirmingEmail(string title, string description = "")
     {       
-        var data = new ViewData<Credentials>(new Credentials(), OperationType.Setup, title);
+        var data = new ViewData<Credentials>(new Credentials() { Email = Email }, OperationType.Setup, title);
         data.SetVisible("EmailConfirmationToken");
         data.Description = description;
+        data.Height = "330px";
+        data.Width = "340px";
+
 
         while (true)
         {          

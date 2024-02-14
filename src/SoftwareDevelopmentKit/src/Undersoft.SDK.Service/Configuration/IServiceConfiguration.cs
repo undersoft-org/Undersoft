@@ -20,7 +20,7 @@ public interface IServiceConfiguration : IConfiguration
     ClientProvider ClientProvider(string name);
     IEnumerable<IConfigurationSection> Clients();
     string TypeName { get; }
-    string DataServiceRoutes(string name);
+    string StoreRoutes(string name);
     IConfigurationSection Source(string name);
     int SourcePoolSize(IConfigurationSection endpoint);
     string SourceConnectionString(IConfigurationSection endpoint);

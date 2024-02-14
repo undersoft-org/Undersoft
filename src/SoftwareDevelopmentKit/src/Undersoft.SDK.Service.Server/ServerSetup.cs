@@ -221,7 +221,7 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
                 options.Tokens.ProviderMap.Add(
                     "AccountEmailConfirmationTokenProvider",
                     new TokenProviderDescriptor(
-                        typeof(AccountEmailConfirmationTokenProvider<IdentityUser>)
+                        typeof(AccountEmailConfirmationTokenProvider<AccountUser>)
                     )
                 );
                 options.Tokens.EmailConfirmationTokenProvider =
@@ -229,21 +229,21 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
                 options.Tokens.ProviderMap.Add(
                     "AccountPasswordResetTokenProvider",
                     new TokenProviderDescriptor(
-                        typeof(AccountPasswordResetTokenProvider<IdentityUser>)
+                        typeof(AccountPasswordResetTokenProvider<AccountUser>)
                     )
                 );
                 options.Tokens.PasswordResetTokenProvider = "AccountPasswordResetTokenProvider";
                 options.Tokens.ProviderMap.Add(
                     "AccountChangeEmailTokenProvider",
                     new TokenProviderDescriptor(
-                        typeof(AccountChangeEmailTokenProvider<IdentityUser>)
+                        typeof(AccountChangeEmailTokenProvider<AccountUser>)
                     )
                 );
                 options.Tokens.ChangeEmailTokenProvider = "AccountChangeEmailTokenProvider";
                 options.Tokens.ProviderMap.Add(
                     "AccountRegistrationProcessTokenProvider",
                     new TokenProviderDescriptor(
-                        typeof(AccountRegistrationProcessTokenProvider<IdentityUser>)
+                        typeof(AccountRegistrationProcessTokenProvider<AccountUser>)
                     )
                 );
                 options.Tokens.ChangePhoneNumberTokenProvider =
