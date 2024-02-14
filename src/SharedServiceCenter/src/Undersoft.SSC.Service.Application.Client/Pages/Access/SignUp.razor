@@ -52,7 +52,7 @@
 
                 if (result.Notes.Status != SigningStatus.Failure && result.Notes.Errors == null)
                 {
-                    _navigation.NavigateTo("access/confirm_email");
+                    _navigation.NavigateTo($"access/confirm_email/{result.Credentials.Email}");
                     return;
                 }
                 result.Notes.PatchTo(data);                

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using System.Security.Claims;
 using System.Text.Json;
-using Undersoft.SDK.Security;
 using Undersoft.SDK.Series;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Application.Extensions;
@@ -21,6 +20,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
     private readonly IRemoteRepository<IAccountStore, TAccount> _repository;
     private readonly string TOKENKEY = "TOKENKEY";
     private readonly string EXPIRATIONTOKENKEY = "EXPIRATIONTOKENKEY";
+    private readonly string EMAIL = "EMAIL";
 
     private AuthenticationState Anonymous =>
         new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
@@ -39,6 +39,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
     public async override Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         var token = await js.GetFromLocalStorage(TOKENKEY);
+        var email = await js.GetFromLocalStorage(EMAIL);
 
         if (string.IsNullOrEmpty(token))
         {
@@ -58,7 +59,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
             if (IsTokenExpired(expirationTime.AddMinutes(-5)))
             {
                 var auth = await Renew(
-                    new Authorization() { Credentials = new Credentials() { SessionToken = token } }
+                    new Authorization() { Credentials = new Credentials() { Email = email, SessionToken = token } }
                 );
 
                 if (auth != null)
@@ -66,6 +67,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
                     _authorization.Credentials = auth.Credentials;
                     token = auth.Credentials.SessionToken;
                 }
+
                 if (token == null)
                     return Anonymous;
             }
@@ -125,10 +127,12 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
         if (result == null)
             return null;
 
-        _authorization = result;
+        _authorization.Credentials = result.Credentials;
+        _authorization.Notes = result.Notes;
         if (result.Credentials.SessionToken != null)
         {
             await js.SetInLocalStorage(TOKENKEY, result.Credentials.SessionToken);
+            await js.SetInLocalStorage(EMAIL, result.Credentials.Email);
             var authState = GetAccessState(result.Credentials.SessionToken);
             NotifyAuthenticationStateChanged(Task.FromResult((AuthenticationState)authState));
         }
@@ -137,11 +141,16 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
 
     public async Task<IAuthorization> SignUp(IAuthorization auth)
     {
-        return await _repository.Access(nameof(SignUp), auth);
+        var result = await _repository.Access(nameof(SignUp), auth);
+        _authorization.Credentials = result.Credentials;
+        _authorization.Notes = result.Notes;
+        return result;
     }
 
     public async Task<IAuthorization> SignOut(IAuthorization auth)
     {
+        auth.Credentials.Email = await js.GetFromLocalStorage(EMAIL);
+
         var result = await _repository.Access(nameof(SignOut), auth);
 
         await CleanUp();
@@ -160,6 +169,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
         if (result.Credentials.SessionToken != null)
         {
             await js.SetInLocalStorage(TOKENKEY, result.Credentials.SessionToken);
+            await js.SetInLocalStorage(EMAIL, result.Credentials.Email);
             var authState = GetAccessState(result.Credentials.SessionToken);
             NotifyAuthenticationStateChanged(Task.FromResult((AuthenticationState)authState));
         }
@@ -223,6 +233,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
         var auth = _authorization;
         await js.RemoveItem(TOKENKEY);
         await js.RemoveItem(EXPIRATIONTOKENKEY);
+        await js.RemoveItem(EMAIL);
         auth.Notes = null;
         auth.Credentials.SessionToken = null;
         auth.Credentials = null;

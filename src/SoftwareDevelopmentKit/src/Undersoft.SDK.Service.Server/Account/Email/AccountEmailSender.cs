@@ -35,9 +35,11 @@ public class AccountEmailSender : IEmailSender
         };
         msg.AddTo(new EmailAddress(toEmail));
 
-        // Disable click tracking.
-        // See https://sendgrid.com/docs/User_Guide/Settings/tracking.html
         msg.SetClickTracking(false, false);
+        msg.SetOpenTracking(false);
+        msg.SetGoogleAnalytics(false);
+        msg.SetSubscriptionTracking(false);
+
         var response = await client.SendEmailAsync(msg);
         if (response.IsSuccessStatusCode)
             this.Success<Emaillog>($"Email to {toEmail} queued successfully!");

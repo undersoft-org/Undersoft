@@ -12,6 +12,8 @@ public class AccountService : IAccountAction, IAccountAccess
     private IAccountManager _manager;
     private IEmailSender _email;
 
+    private static ISeries<string> TokenRegistry = new Registry<string>();
+
     public AccountService() { }
 
     public AccountService(IServicer servicer, IAccountManager accountManager, IEmailSender email)
@@ -203,11 +205,13 @@ public class AccountService : IAccountAction, IAccountAccess
             {
                 if (_creds.EmailConfirmationToken != null)
                 {
+                    var _code = int.Parse(_creds.EmailConfirmationToken);
+                    var _token = TokenRegistry.Get(_code);
                     var result = await _manager.User.ConfirmEmailAsync(
                         (await _manager.GetByEmail(_creds.Email)).User,
-                        _creds.EmailConfirmationToken
+                        _token
                     );
-
+                    TokenRegistry.Remove(_code);
                     if (result.Succeeded)
                     {
                         _creds.EmailConfirmed = true;
@@ -237,12 +241,14 @@ public class AccountService : IAccountAction, IAccountAccess
                 var token = await _manager.User.GenerateEmailConfirmationTokenAsync(
                     (await _manager.GetByEmail(_creds.Email)).User
                 );
+                var code = Math.Abs(token.UniqueKey32());
+                TokenRegistry.Add(code, token);
                 _ = _servicer.Serve<IEmailSender>(
                     e =>
                         e.SendEmailAsync(
                             _creds.Email,
                             "Verfication code to confirm your email address and proceed with account registration process",
-                            EmailTemplate.GetVerificationCodeMessage(token)
+                            EmailTemplate.GetVerificationCodeMessage(code.ToString())
                         )
                 );
 

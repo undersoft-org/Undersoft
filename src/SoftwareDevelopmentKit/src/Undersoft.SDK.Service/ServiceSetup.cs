@@ -13,7 +13,6 @@ using Configuration;
 using Data.Cache;
 using Data.Mapper;
 using Microsoft.IdentityModel.Tokens;
-using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Repository;
@@ -75,13 +74,13 @@ public partial class ServiceSetup : IServiceSetup
 
     public void AddJsonSerializerDefaults()
     {
-#if NET6_0
+
         var newopts = new JsonSerializerOptions();
         newopts.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         newopts.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         newopts.NumberHandling = JsonNumberHandling.AllowReadingFromString;
         newopts.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
-
+#if NET6_0
         var fld = (
             typeof(JsonSerializerOptions).GetField(
                 "s_defaultOptions",
@@ -95,7 +94,7 @@ public partial class ServiceSetup : IServiceSetup
         else
             manager.Mapper.Map(newopts, opt);
 #endif
-#if NET7_0
+#if NET8_0
         var flds = typeof(JsonSerializerOptions).GetRuntimeFields();
         flds.Single(f => f.Name == "_defaultIgnoreCondition")
             .SetValue(JsonSerializerOptions.Default, JsonIgnoreCondition.WhenWritingNull);
@@ -154,7 +153,7 @@ public partial class ServiceSetup : IServiceSetup
     }
 
     public IServiceSetup AddRepositoryClients()
-    {        
+    {
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
         Type[] serviceTypes = assemblies.SelectMany(a => a.DefinedTypes).Select(t => t.UnderlyingSystemType).ToArray();
         return AddRepositoryClients(serviceTypes);
@@ -175,7 +174,7 @@ public partial class ServiceSetup : IServiceSetup
             string connectionString = config.ClientConnectionString(client).Trim();
             int poolsize = config.ClientPoolSize(client);
             Type contextType = serviceTypes
-                .Where(t => t.FullName.Contains(client.Key))                
+                .Where(t => t.FullName.Contains(client.Key))
                 .FirstOrDefault();
 
             if (
@@ -241,14 +240,14 @@ public partial class ServiceSetup : IServiceSetup
 
         AddLogging();
 
-        AddMapper(new DataMapper());        
+        AddMapper(new DataMapper());
 
         AddJsonSerializerDefaults();
 
         if (clientTypes != null)
             AddRepositoryClients(clientTypes);
         else
-            AddRepositoryClients();   
+            AddRepositoryClients();
 
         AddImplementations();
 

@@ -2,6 +2,11 @@
 
 public static class EmailTemplate
 {
+    public static string GetVerificationLinkMessage(string baseUrl, string email, string token)
+    {
+        return CodeMessage.Replace("{confirmation_code}", token);
+    }
+
     public static string GetVerificationCodeMessage(string token)
     {
         return CodeMessage.Replace("{confirmation_code}", token);
