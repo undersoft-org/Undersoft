@@ -2,12 +2,9 @@
 
 namespace Undersoft.SDK.Service.Data.Repository;
 
-using IdentityModel;
 using Instant.Updating;
 using Series;
 using Undersoft.SDK;
-using Undersoft.SDK.Service.Data.Entity;
-using Undersoft.SDK.Service.Data.Repository;
 using Undersoft.SDK.Service.Data.Store;
 
 public abstract partial class Repository<TEntity> : IRepositoryCommand<TEntity> where TEntity : class, IOrigin, IInnerProxy
@@ -399,12 +396,12 @@ public abstract partial class Repository<TEntity> : IRepositoryCommand<TEntity> 
         ISeries<TEntity> deck = null;
         if (expanders.Any())
         {
-            deck = this[Query.WhereIn(p => p.Id, entities.Select(e => e.Id)), expanders].ToChain();
+            deck = this[Query.WhereIn(p => p.Id, entities.Select(e => e.Id)), expanders].ToListing();
         }
         else
         {
-            var dtos = entities.ToChain();
-            deck = lookup<TModel>(entities).ToChain();
+            var dtos = entities.ToListing();
+            deck = lookup<TModel>(entities).ToListing();
             if (deck.Count < dtos.Count)
                 deck.Add(
                     this[
@@ -418,7 +415,7 @@ public abstract partial class Repository<TEntity> : IRepositoryCommand<TEntity> 
         return entities.ForOnly(
             entity => deck.ContainsKey(entity.Id),
             entity => InnerSet((TEntity)entity.PatchTo(deck[entity.Id].Proxy, PatchingEvent).Target)
-        );
+        ).Commit();
     }
 
     public virtual Task<TEntity> Patch<TModel>(TModel delta, params object[] keys)

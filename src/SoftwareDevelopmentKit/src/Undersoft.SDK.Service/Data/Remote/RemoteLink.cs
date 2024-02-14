@@ -4,9 +4,9 @@ using Undersoft.SDK.Service.Data.Object;
 
 public class RemoteLink<TSource, TTarget> : RemoteLink, IRemoteLink<TSource, TTarget> where TSource : class, IOrigin, IInnerProxy where TTarget : class, IOrigin, IInnerProxy
 {
-    public new TSource  LeftEntity { get; set; }
+    public virtual new TSource LeftEntity { get; set; }
 
-    public new TTarget RightEntity { get; set; }
+    public virtual new TTarget RightEntity { get; set; }
 }
 
 public class RemoteLink : DataObject

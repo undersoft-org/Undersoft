@@ -32,10 +32,10 @@ public class ChangeSetHandler<TStore, TEntity, TDto>
         {
             IEnumerable<TEntity> entities;
             if (request.Predicate == null)
-                entities = _repository.PatchBy(request.ForOnly(d => d.IsValid, d => d.Contract));
+                entities = _repository.PatchBy(request.ForOnly(d => d.IsValid, d => d.Contract).Commit());
             else
                 entities = _repository.PatchBy(
-                    request.ForOnly(d => d.IsValid, d => d.Contract),
+                    request.ForOnly(d => d.IsValid, d => d.Contract).Commit(),
                     request.Predicate
                 );
 

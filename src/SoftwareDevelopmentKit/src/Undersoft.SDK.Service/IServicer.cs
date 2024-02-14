@@ -25,6 +25,7 @@ namespace Undersoft.SDK.Service
         Task<int> SaveClients(bool asTransaction = false);
         Task<int> SaveStore(IRepositorySource endpoint, bool asTransaction = false);
         Task<int> SaveStores(bool asTransaction = false);
+        Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default);
         Task<object> Report(object request, CancellationToken cancellationToken = default);
         Task<TResponse> Report<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default);
         Task<object> Entry(object request, CancellationToken cancellationToken = default);

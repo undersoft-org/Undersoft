@@ -5,11 +5,10 @@ using System.Linq.Expressions;
 namespace Undersoft.SDK.Service.Server.Controller.Open;
 using Operation.Command;
 using Operation.Query;
+using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Uniques;
-using Undersoft.SDK.Service.Data.Client.Attributes;
 
 
 [OpenData]
@@ -46,14 +45,14 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
     [EnableQuery]
     public override async Task<IQueryable<TDto>> Get()
     {
-        return await _servicer.Report(new GetQuery<TReport, TEntity, TDto>());
+        return await _servicer.Send(new GetQuery<TReport, TEntity, TDto>());
     }
 
     [EnableQuery]
     public override async Task<UniqueOne<TDto>> Get([FromRoute] TKey key)
     {
         return new UniqueOne<TDto>(
-            await _servicer.Report(new FindQuery<TReport, TEntity, TDto>(_keymatcher(key)))
+            await _servicer.Send(new FindQuery<TReport, TEntity, TDto>(_keymatcher(key)))
         );
     }
 
@@ -62,7 +61,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Entry(new Create<TEntry, TEntity, TDto>(_publishMode, dto));
+        var result = await _servicer.Send(new Create<TEntry, TEntity, TDto>(_publishMode, dto));
 
         return !result.IsValid
             ? UnprocessableEntity(result.ErrorMessages.ToArray())
@@ -76,7 +75,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Entry(
+        var result = await _servicer.Send(
             new Change<TEntry, TEntity, TDto>(_publishMode, dto, _predicate)
         );
 
@@ -92,7 +91,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Entry(
+        var result = await _servicer.Send(
             new Update<TEntry, TEntity, TDto>(_publishMode, dto, _predicate)
         );
 
@@ -106,7 +105,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Entry(new Delete<TEntry, TEntity, TDto>(_publishMode, key));
+        var result = await _servicer.Send(new Delete<TEntry, TEntity, TDto>(_publishMode, key));
 
         return !result.IsValid
             ? UnprocessableEntity(result.ErrorMessages.ToArray())

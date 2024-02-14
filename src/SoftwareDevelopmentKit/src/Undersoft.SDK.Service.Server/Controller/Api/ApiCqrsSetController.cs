@@ -7,7 +7,6 @@ using Operation.Command;
 using Operation.Query;
 using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Data.Repository;
 using Undersoft.SDK.Service.Data.Store;
@@ -51,7 +50,7 @@ public class ApiCqrsSetController<TKey, TEntry, TReport, TEntity, TDto, TService
     {
         return Ok(
             await _servicer
-                .Report(new Get<TReport, TEntity, TDto>((page - 1) * limit, limit))
+                .Send(new Get<TReport, TEntity, TDto>((page - 1) * limit, limit))
                 .ConfigureAwait(true)
         );
     }
@@ -75,7 +74,7 @@ public class ApiCqrsSetController<TKey, TEntry, TReport, TEntity, TDto, TService
 
         return Ok(
             await _servicer
-                .Entry(
+                .Send(
                     new Filter<TReport, TEntity, TDto>(
                         0,
                         0,
@@ -96,7 +95,7 @@ public class ApiCqrsSetController<TKey, TEntry, TReport, TEntity, TDto, TService
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Entry(
+            .Send(
                 new CreateSet<TEntry, TEntity, TDto>(_publishMode, dtos)
                 {
                     Processings = Transformations
@@ -119,7 +118,7 @@ public class ApiCqrsSetController<TKey, TEntry, TReport, TEntity, TDto, TService
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Entry(
+            .Send(
                 new ChangeSet<TEntry, TEntity, TDto>(_publishMode, dtos, _predicate)
                 {
                     Processings = Transformations
@@ -141,7 +140,7 @@ public class ApiCqrsSetController<TKey, TEntry, TReport, TEntity, TDto, TService
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Entry(
+            .Send(
                 new UpdateSet<TEntry, TEntity, TDto>(_publishMode, dtos, _predicate)
                 {
                     Processings = Transformations
@@ -164,7 +163,7 @@ public class ApiCqrsSetController<TKey, TEntry, TReport, TEntity, TDto, TService
             return BadRequest(ModelState);
 
         var result = await _servicer
-            .Entry(
+            .Send(
                 new DeleteSet<TEntry, TEntity, TDto>(_publishMode, dtos)
                 {
                     Processings = Transformations

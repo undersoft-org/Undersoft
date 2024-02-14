@@ -6,12 +6,11 @@ namespace Undersoft.SDK.Service.Server.Controller.Open;
 
 using Operation.Command;
 using Operation.Query;
+using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Repository;
 using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Uniques;
-using Undersoft.SDK.Service.Data.Client.Attributes;
 
 [OpenData]
 public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
@@ -54,7 +53,7 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
     [EnableQuery]
     public virtual async Task<IQueryable<TDto>> Get()
     {
-        return await _servicer.Report(new GetQuery<TStore, TEntity, TDto>(Transformations));
+        return await _servicer.Send(new GetQuery<TStore, TEntity, TDto>(Transformations));
     }
 
     [EnableQuery]
@@ -75,7 +74,7 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Entry(
+        var result = await _servicer.Send(
             new Create<TStore, TEntity, TDto>(_publishMode, dto) { Processings = Transformations }
         );
 
@@ -91,7 +90,7 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Entry(
+        var result = await _servicer.Send(
             new Change<TStore, TEntity, TDto>(_publishMode, dto, _predicate)
             {
                 Processings = Transformations
@@ -110,7 +109,7 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Entry(
+        var result = await _servicer.Send(
             new Update<TStore, TEntity, TDto>(_publishMode, dto, _predicate)
             {
                 Processings = Transformations
@@ -127,7 +126,7 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Entry(
+        var result = await _servicer.Send(
             new Delete<TStore, TEntity, TDto>(_publishMode, key) { Processings = Transformations }
         );
 

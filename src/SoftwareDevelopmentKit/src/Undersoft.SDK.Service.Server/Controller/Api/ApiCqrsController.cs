@@ -7,7 +7,6 @@ using Operation.Command;
 using Operation.Query;
 using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Data.Store;
 
@@ -20,7 +19,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
     where TEntry : IDataServerStore
     where TReport : IDataServerStore
     where TService : class
-{ 
+{
     protected ApiCqrsController() { }
 
     protected ApiCqrsController(
@@ -45,7 +44,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
     public override async Task<IActionResult> Get([FromHeader] int page, [FromHeader] int limit)
     {
         return Ok(
-            await _servicer.Report(new Get<TReport, TEntity, TDto>((page - 1) * limit, limit)).ConfigureAwait(true)
+            await _servicer.Send(new Get<TReport, TEntity, TDto>((page - 1) * limit, limit)).ConfigureAwait(true)
         );
     }
 
@@ -60,8 +59,8 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
     {
         return Ok(
            _keymatcher == null
-               ? await _servicer.Report(new Find<TReport, TEntity, TDto>(key)).ConfigureAwait(false)
-               : await _servicer.Report(new Find<TReport, TEntity, TDto>(_keymatcher(key))).ConfigureAwait(false));
+               ? await _servicer.Send(new Find<TReport, TEntity, TDto>(key)).ConfigureAwait(false)
+               : await _servicer.Send(new Find<TReport, TEntity, TDto>(_keymatcher(key))).ConfigureAwait(false));
     }
 
     [HttpPost("query")]
@@ -77,7 +76,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
 
         return Ok(
             await _servicer
-                .Report(
+                .Send(
                     new Filter<TReport, TEntity, TDto>(0, 0,
                         new FilterExpression<TEntity>(query.FilterItems).Create(),
                         new SortExpression<TEntity>(query.SortItems)
@@ -95,7 +94,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Entry(new CreateSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Send(new CreateSet<TEntry, TEntity, TDto>
                                                     (_publishMode, dtos)).ConfigureAwait(false);
 
         object[] response = result.ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
@@ -113,7 +112,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Entry(new CreateSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Send(new CreateSet<TEntry, TEntity, TDto>
                                                 (_publishMode, new[] { dto }))
                                                     .ConfigureAwait(false);
 
@@ -133,7 +132,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Entry(new ChangeSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Send(new ChangeSet<TEntry, TEntity, TDto>
                                                                 (_publishMode, dtos, _predicate))
                                                                     .ConfigureAwait(false);
         var response = result.ForEach(c => (isValid = c.IsValid)
@@ -153,7 +152,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Entry(new ChangeSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Send(new ChangeSet<TEntry, TEntity, TDto>
                                               (_publishMode, new[] { dto }, _predicate))
                                                  .ConfigureAwait(false);
 
@@ -173,7 +172,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Entry(new UpdateSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Send(new UpdateSet<TEntry, TEntity, TDto>
                                                                     (_publishMode, dtos, _predicate))
                                                                                 .ConfigureAwait(false);
 
@@ -192,7 +191,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Entry(new UpdateSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Send(new UpdateSet<TEntry, TEntity, TDto>
                                                     (_publishMode, new[] { dto }, _predicate))
                                                         .ConfigureAwait(false);
 
@@ -212,7 +211,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Entry(new DeleteSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Send(new DeleteSet<TEntry, TEntity, TDto>
                                                             (_publishMode, dtos))
                                                              .ConfigureAwait(false);
 
@@ -234,7 +233,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Entry(new DeleteSet<TEntry, TEntity, TDto>
+        var result = await _servicer.Send(new DeleteSet<TEntry, TEntity, TDto>
                                                              (_publishMode, new[] { dto }))
                                                                     .ConfigureAwait(false);
 
