@@ -56,7 +56,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel, TServi
     public virtual async Task<IActionResult> Get([FromHeader] int page, [FromHeader] int limit)
     {
         return Ok(
-            await _servicer.Report(new RemoteGet<TStore, TDto, TModel>((page - 1) * limit, limit))
+            await _servicer.Entry(new RemoteGet<TStore, TDto, TModel>((page - 1) * limit, limit))
         );
     }
 
@@ -71,8 +71,8 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel, TServi
     {
         return Ok(
            _keymatcher == null
-               ? await _servicer.Report(new RemoteFind<TStore, TDto, TModel>(key)).ConfigureAwait(false)
-               : await _servicer.Report(new RemoteFind<TStore, TDto, TModel>(_keymatcher(key))).ConfigureAwait(false));
+               ? await _servicer.Entry(new RemoteFind<TStore, TDto, TModel>(key)).ConfigureAwait(false)
+               : await _servicer.Entry(new RemoteFind<TStore, TDto, TModel>(_keymatcher(key))).ConfigureAwait(false));
     }
 
     [HttpPost("query")]

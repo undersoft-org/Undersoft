@@ -1,13 +1,6 @@
 using Microsoft.OData.Client;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using Undersoft.SDK.Series;
-using System.Threading.Tasks;
-using Undersoft.SDK.Uniques;
-using Undersoft.SDK.Service.Data.Entity;
 using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Remote.Repository;
 
@@ -95,7 +88,9 @@ namespace Undersoft.SDK.Service.Data.Remote
             get
             {
                 if (!_deck.TryGet(key, out TEntity entity))
-                    Load(_query.CreateFunctionQuery<TEntity>(KeyString(key), true));
+                {
+                    Load(_query.Where(e => e.Id.Equals(key)));
+                }
                 _deck.TryGet(key, out entity);
                 return entity;
             }
@@ -111,8 +106,13 @@ namespace Undersoft.SDK.Service.Data.Remote
         {
             get
             {
+                if (keys.Length < 2)
+                    return this[keys[0]];
+
                 if (!_deck.TryGet(keys, out TEntity entity))
-                    Load(_query.CreateFunctionQuery<TEntity>(KeyString(keys), true));
+                {
+                    Load(_query.WhereIn(e => e.Id, keys));
+                }
                 _deck.TryGet(keys, out entity);
                 return entity;
             }
@@ -343,6 +343,11 @@ namespace Undersoft.SDK.Service.Data.Remote
         }
 
         public string KeyString(params object[] keys)
+        {
+            return $"{typeof(TEntity).Name}({(keys.Length > 1 ? keys.Aggregate(string.Empty, (a, b) => $"{a},{b}") : keys[0])})";
+        }
+
+        public string KeyStringOnly(params object[] keys)
         {
             return $"{typeof(TEntity).Name}({(keys.Length > 1 ? keys.Aggregate(string.Empty, (a, b) => $"{a},{b}") : keys[0])})";
         }

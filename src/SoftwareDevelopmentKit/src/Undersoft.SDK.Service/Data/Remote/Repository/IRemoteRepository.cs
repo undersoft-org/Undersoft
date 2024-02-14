@@ -1,7 +1,5 @@
 ﻿using Microsoft.OData.Client;
-using System.Linq.Expressions;
 using Undersoft.SDK.Service.Data.Client;
-using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Repository;
 
 namespace Undersoft.SDK.Service.Data.Remote.Repository;
@@ -17,7 +15,7 @@ public interface IRemoteRepository<TEntity> : IRepository<TEntity> where TEntity
     string Name { get; }
 
     Task<IEnumerable<TEntity>> FindMany(params object[] keys);
-    DataServiceQuery<TEntity> FindQuery(params object[] keys);
+    IQueryable<TEntity> FindQuery(params object[] keys);
     DataServiceQuerySingle<TEntity> FindQuerySingle(params object[] keys);
 
     string KeyString(params object[] keys);

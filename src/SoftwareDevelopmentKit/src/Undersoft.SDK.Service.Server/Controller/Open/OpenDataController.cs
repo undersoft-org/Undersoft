@@ -53,14 +53,14 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
     [EnableQuery]
     public virtual async Task<IQueryable<TDto>> Get()
     {
-        return await _servicer.Send(new GetQuery<TStore, TEntity, TDto>(Transformations));
+        return await _servicer.Entry(new GetQuery<TStore, TEntity, TDto>(Transformations));
     }
 
     [EnableQuery]
     public virtual async Task<UniqueOne<TDto>> Get([FromRoute] TKey key)
     {
         return new UniqueOne<TDto>(
-            await _servicer.Report(
+            await _servicer.Entry(
                 new FindQuery<TStore, TEntity, TDto>(_keymatcher(key))
                 {
                     Processings = Transformations

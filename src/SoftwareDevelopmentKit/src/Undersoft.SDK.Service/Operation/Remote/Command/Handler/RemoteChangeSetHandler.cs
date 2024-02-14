@@ -31,10 +31,10 @@ public class RemoteChangeSetHandler<TStore, TDto, TModel>
         {
             IEnumerable<TDto> dtos;
             if (request.Predicate == null)
-                dtos = _repository.Patch(request.ForOnly(d => d.IsValid, d => d.Model));
+                dtos = _repository.Patch(request.ForOnly(d => d.IsValid, d => d.Model).Commit());
             else
                 dtos = _repository.Patch(
-                    request.ForOnly(d => d.IsValid, d => d.Model),
+                    request.ForOnly(d => d.IsValid, d => d.Model).Commit(),
                     request.Predicate
                 );
 

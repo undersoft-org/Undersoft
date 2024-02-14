@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Collections;
+﻿using System.Collections;
 using Undersoft.SDK.Series;
 using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Instant.Updating;
 
+using Instant.Rubrics;
 using Invoking;
 using Proxies;
-using Instant.Rubrics;
 
 public class Updater : IUpdater
 {
@@ -260,15 +258,13 @@ public class Updater : IUpdater
                     if (_target.Rubrics.TryGet(name, out MemberRubric targetRubric))
                     {
                         var originValue = Source[originRubric.RubricId];
+
                         var targetIndex = targetRubric.RubricId;
                         var targetValue = _target[targetIndex];
 
-                        if (
-                            !originValue.NullOrEquals(targetValue)                            
-                        )
+                        if (!originValue.NullOrEquals(targetValue))
                         {
-                            if (
-                                !RecursiveUpdate(
+                            if (!RecursiveUpdate(
                                     originValue,
                                     targetValue,
                                     target,
@@ -307,9 +303,7 @@ public class Updater : IUpdater
                     var originValue = Source[index];
                     var targetValue = _target[index];
 
-                    if (
-                        originValue != null
-                        && !RecursiveUpdate(originValue, targetValue, target, rubric, rubric)
+                    if (originValue != null && !RecursiveUpdate(originValue, targetValue, target, rubric, rubric)
                     )
                     {
                         _item.TargetIndex = index;
@@ -321,7 +315,7 @@ public class Updater : IUpdater
         );
         return _updates;
     }
-    
+
     protected UpdatedItem[] PutNotEqualTypes(IProxy target)
     {
         counter = 0;
@@ -338,19 +332,20 @@ public class Updater : IUpdater
                     if (_target.Rubrics.TryGet(name, out MemberRubric targetRubric))
                     {
                         var originValue = Source[originRubric.RubricId];
+
+                        if (originValue == null)
+                            return;
+
                         var targetIndex = targetRubric.RubricId;
                         var targetValue = _target[targetIndex];
 
-                        if (
-                            originValue != null
-                            && !RecursiveUpdate(
-                                originValue,
-                                targetValue,
-                                target,
-                                originRubric,
-                                targetRubric
-                            )
-                        )
+                        if (originValue != null && !RecursiveUpdate(
+                              originValue,
+                              targetValue,
+                              target,
+                              originRubric,
+                              targetRubric
+                          ))
                         {
                             _item.TargetIndex = targetIndex;
                             _item.OriginValue = originValue;
@@ -390,6 +385,9 @@ public class Updater : IUpdater
 
         if (originType.IsAssignableTo(typeof(ICollection)))
         {
+            if (originValue == null)
+                originValue = originType.New();
+
             ICollection originItems = (ICollection)originValue;
             var originItemType = originType.GetEnumerableElementType();
             if (originItemType == null || !originItemType.IsValueType)
@@ -520,10 +518,10 @@ public class Updater : IUpdater
         get =>
             excludedRubrics ??= new HashSet<string>(
                 new string[]
-                {       
+                {
                     "proxy",
-                "valuearray" 
-                }                
+                "valuearray"
+                }
             );
     }
 

@@ -29,7 +29,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
 
     protected ApiDataController() { }
 
-    protected ApiDataController(IServicer servicer) : base(servicer) { }    
+    protected ApiDataController(IServicer servicer) : base(servicer) { }
 
     protected ApiDataController(
         IServicer servicer,
@@ -48,14 +48,14 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
         _keysetter = keysetter;
         _publishMode = publishMode;
     }
-       
-    public virtual Func<IRepository<TEntity>, IQueryable<TEntity>> Transformations { get; set; }   
-       
+
+    public virtual Func<IRepository<TEntity>, IQueryable<TEntity>> Transformations { get; set; }
+
     [HttpGet]
     public virtual async Task<IActionResult> Get([FromHeader] int page, [FromHeader] int limit)
     {
         return Ok(
-            await _servicer.Report(new Get<TStore, TEntity, TDto>((page - 1) * limit, limit)).ConfigureAwait(true)
+            await _servicer.Send(new Get<TStore, TEntity, TDto>((page - 1) * limit, limit)).ConfigureAwait(true)
         );
     }
 
@@ -70,9 +70,9 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
     {
         return Ok(
            _keymatcher == null
-               ? await _servicer.Report(new Find<TStore, TEntity, TDto>(key)).ConfigureAwait(false)
-               : await _servicer.Report(new Find<TStore, TEntity, TDto>(_keymatcher(key))).ConfigureAwait(false));     
-    } 
+               ? await _servicer.Send(new Find<TStore, TEntity, TDto>(key)).ConfigureAwait(false)
+               : await _servicer.Send(new Find<TStore, TEntity, TDto>(_keymatcher(key))).ConfigureAwait(false));
+    }
 
     [HttpPost("query")]
     public virtual async Task<IActionResult> Post([FromBody] QuerySet query)
@@ -87,7 +87,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
 
         return Ok(
             await _servicer
-                .Report(
+                .Send(
                     new Filter<TStore, TEntity, TDto>(0, 0,
                         new FilterExpression<TEntity>(query.FilterItems).Create(),
                         new SortExpression<TEntity>(query.SortItems)
@@ -105,7 +105,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Entry(new CreateSet<TStore, TEntity, TDto>
+        var result = await _servicer.Send(new CreateSet<TStore, TEntity, TDto>
                                                     (_publishMode, dtos)).ConfigureAwait(false);
 
         object[] response = result.ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
@@ -123,7 +123,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Entry(new CreateSet<TStore, TEntity, TDto>
+        var result = await _servicer.Send(new CreateSet<TStore, TEntity, TDto>
                                                 (_publishMode, new[] { dto }))
                                                     .ConfigureAwait(false);
 
@@ -143,7 +143,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Entry(new ChangeSet<TStore, TEntity, TDto>
+        var result = await _servicer.Send(new ChangeSet<TStore, TEntity, TDto>
                                                                 (_publishMode, dtos, _predicate))
                                                                     .ConfigureAwait(false);
         var response = result.ForEach(c => (isValid = c.IsValid)
@@ -163,7 +163,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Entry(new ChangeSet<TStore, TEntity, TDto>
+        var result = await _servicer.Send(new ChangeSet<TStore, TEntity, TDto>
                                               (_publishMode, new[] { dto }, _predicate))
                                                  .ConfigureAwait(false);
 
@@ -183,7 +183,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Entry(new UpdateSet<TStore, TEntity, TDto>
+        var result = await _servicer.Send(new UpdateSet<TStore, TEntity, TDto>
                                                                     (_publishMode, dtos, _predicate))
                                                                                 .ConfigureAwait(false);
 
@@ -202,7 +202,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Entry(new UpdateSet<TStore, TEntity, TDto>
+        var result = await _servicer.Send(new UpdateSet<TStore, TEntity, TDto>
                                                     (_publishMode, new[] { dto }, _predicate))
                                                         .ConfigureAwait(false);
 
@@ -222,7 +222,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Entry(new DeleteSet<TStore, TEntity, TDto>
+        var result = await _servicer.Send(new DeleteSet<TStore, TEntity, TDto>
                                                             (_publishMode, dtos))
                                                              .ConfigureAwait(false);
 
@@ -244,7 +244,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Entry(new DeleteSet<TStore, TEntity, TDto>
+        var result = await _servicer.Send(new DeleteSet<TStore, TEntity, TDto>
                                                              (_publishMode, new[] { dto }))
                                                                     .ConfigureAwait(false);
 

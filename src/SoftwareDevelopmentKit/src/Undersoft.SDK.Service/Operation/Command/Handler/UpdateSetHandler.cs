@@ -31,15 +31,15 @@ public class UpdateSetHandler<TStore, TEntity, TDto>
         {
             IEnumerable<TEntity> entities = null;
             if (request.Predicate == null)
-                entities = _repository.SetBy(request.ForOnly(d => d.IsValid, d => d.Contract));
+                entities = _repository.SetBy(request.ForOnly(d => d.IsValid, d => d.Contract).Commit());
             else if (request.Conditions == null)
                 entities = _repository.SetBy(
-                    request.ForOnly(d => d.IsValid, d => d.Contract),
+                    request.ForOnly(d => d.IsValid, d => d.Contract).Commit(),
                     request.Predicate
                 );
             else
                 entities = _repository.SetBy(
-                    request.ForOnly(d => d.IsValid, d => d.Contract),
+                    request.ForOnly(d => d.IsValid, d => d.Contract).Commit(),
                     request.Predicate,
                     request.Conditions
                 );

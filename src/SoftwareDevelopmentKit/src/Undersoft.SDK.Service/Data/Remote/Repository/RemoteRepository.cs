@@ -7,7 +7,6 @@ using Instant.Proxies;
 using Instant.Updating;
 using Logging;
 using Series;
-using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Entity;
@@ -148,12 +147,12 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
     {
         get
         {
-            DataServiceQuery<TEntity> query = remoteContext.CreateQuery<TEntity>(KeyString(keys), true);
+            DataServiceQuerySingle<TEntity> query = FindQuerySingle(keys);
             if (expanders != null)
                 foreach (Expression<Func<TEntity, object>> expander in expanders)
                     query = query.Expand(expander);
 
-            var entity = query.FirstOrDefault();
+            TEntity entity = query.GetValue();
             if (entity != null)
                 if (remoteSet.ContainsKey(keys))
                     remoteSet[keys] = entity;
@@ -163,13 +162,13 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
         }
         set
         {
-            DataServiceQuery<TEntity> query = remoteContext.CreateQuery<TEntity>(KeyString(keys), true);
+            DataServiceQuerySingle<TEntity> query = FindQuerySingle(keys);
             if (expanders != null)
                 if (expanders != null)
                     foreach (Expression<Func<TEntity, object>> expander in expanders)
                         query = query.Expand(expander);
 
-            TEntity entity = query.FirstOrDefault();
+            TEntity entity = query.GetValue();
             if (entity != null)
             {
                 value.PatchTo(Stamp(entity), PatchingEvent);
@@ -187,24 +186,44 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
     {
         get
         {
-            DataServiceQuery<TEntity> query = FindQuery(keys);
+            DataServiceQuerySingle<TEntity> query = FindQuerySingle(keys);
             if (expanders != null)
                 foreach (Expression<Func<TEntity, object>> expander in expanders)
                     query = query.Expand(expander);
 
-            remoteSet.Load(query);
+            remoteSet.Load(query.GetValue());
             return remoteSet[keys].ToQueryable().Select(selector).FirstOrDefault();
         }
         set
         {
-            DataServiceQuery<TEntity> query = FindQuery(keys);
+            DataServiceQuerySingle<TEntity> query = FindQuerySingle(keys);
             if (expanders != null)
                 foreach (Expression<Func<TEntity, object>> expander in expanders)
                     query = query.Expand(expander);
 
-            remoteSet.Load(query);
+            remoteSet.Load(query.GetValue());
             remoteSet.AsQueryable().Select(selector).FirstOrDefault().PatchFrom(value);
         }
+    }
+
+    public override IEnumerable<TEntity> lookup<TModel>(IEnumerable<TModel> entities)
+    {
+        return entities.ForEach(e => lookup(e.Id)).Commit();
+    }
+
+    public override TEntity lookup<TModel>(TModel entity)
+    {
+        return lookup(entity.Id);
+    }
+
+    private TEntity lookup(object key)
+    {
+        var item = cache.Lookup<TEntity>(key);
+        if (item != null)
+            remoteSet.Load(item);
+        else
+            item = remoteSet[key];
+        return item;
     }
 
     private TEntity lookup(params object[] keys)
@@ -252,7 +271,6 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
 
     protected override TEntity InnerSet(TEntity entity)
     {
-        //dsContext.UpdateObject(Stamp(entity));
         if (entity != null)
         {
             var id = Stamp(entity).Id;
@@ -304,7 +322,7 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
         }
 
         return -1;
-    }    
+    }
 
     public override object TracePatching(object item, string propertyName = null, Type type = null)
     {
@@ -375,6 +393,11 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
         return $"{Name}({(keys.Length > 1 ? keys.Aggregate(string.Empty, (a, b) => $"{a},{b}") : keys[0])})";
     }
 
+    public string KeyStringOnly(params object[] keys)
+    {
+        return $"({(keys.Length > 1 ? keys.Aggregate(string.Empty, (a, b) => $"{a},{b}") : keys[0])})";
+    }
+
     public override TEntity NewEntry(params object[] parameters)
     {
         TEntity entity = Sign(typeof(TEntity).New<TEntity>(parameters));
@@ -385,14 +408,14 @@ public partial class RemoteRepository<TEntity> : Repository<TEntity>, IRemoteRep
     public DataServiceQuerySingle<TEntity> FindQuerySingle(params object[] keys)
     {
         if (keys != null)
-            return remoteQuery.CreateFunctionQuerySingle<TEntity>(KeyString(keys), true);
+            return Context.CreateFunctionQuerySingle<TEntity>(KeyString(keys), null, true);
         return null;
     }
 
-    public DataServiceQuery<TEntity> FindQuery(params object[] keys)
+    public IQueryable<TEntity> FindQuery(params object[] keys)
     {
         if (keys != null)
-            return remoteQuery.CreateFunctionQuery<TEntity>(KeyString(keys), true);
+            return Query.WhereIn(e => e.Id, keys);
         return null;
     }
 

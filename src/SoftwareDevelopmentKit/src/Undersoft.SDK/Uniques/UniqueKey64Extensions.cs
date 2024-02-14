@@ -1,11 +1,11 @@
 ﻿namespace Undersoft.SDK.Uniques
 {
+    using Hashing;
     using System.Collections;
-    using Undersoft.SDK.Extracting;
     using System.Runtime.CompilerServices;
     using System.Text;
-    using Hashing;
     using Undersoft.SDK;
+    using Undersoft.SDK.Extracting;
 
     public unsafe static class UniqueKey64Extensions
     {
@@ -130,6 +130,12 @@
             {
                 if (obj is ICollection)
                     return NullOrEquals((ICollection)obj, value);
+                return obj.Equals(value);
+            }
+            if (value != null)
+            {
+                if (value is ICollection)
+                    return NullOrEquals((ICollection)value, obj);
                 return obj.Equals(value);
             }
             return (obj == null && value == null);

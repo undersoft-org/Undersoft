@@ -31,15 +31,15 @@ public class RemoteUpdateSetHandler<TStore, TDto, TModel>
         {
             IEnumerable<TDto> entities = null;
             if (request.Predicate == null)
-                entities = _repository.SetBy(request.ForOnly(d => d.IsValid, d => d.Model));
+                entities = _repository.SetBy(request.ForOnly(d => d.IsValid, d => d.Model).Commit());
             else if (request.Conditions == null)
                 entities = _repository.SetBy(
-                    request.ForOnly(d => d.IsValid, d => d.Model),
+                    request.ForOnly(d => d.IsValid, d => d.Model).Commit(),
                     request.Predicate
                 );
             else
                 entities = _repository.SetBy(
-                    request.ForOnly(d => d.IsValid, d => d.Model),
+                    request.ForOnly(d => d.IsValid, d => d.Model).Commit(),
                     request.Predicate,
                     request.Conditions
                 );

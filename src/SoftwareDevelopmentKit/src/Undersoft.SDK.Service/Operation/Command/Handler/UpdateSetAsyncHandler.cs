@@ -31,15 +31,15 @@ public class UpdateSetAsyncHandler<TStore, TEntity, TDto>
         {
             IAsyncEnumerable<TEntity> entities;
             if (request.Predicate == null)
-                entities = _repository.SetByAsync(request.ForOnly(d => d.IsValid, d => d.Contract));
+                entities = _repository.SetByAsync(request.ForOnly(d => d.IsValid, d => d.Contract).Commit());
             else if (request.Conditions == null)
                 entities = _repository.SetByAsync(
-                    request.ForOnly(d => d.IsValid, d => d.Contract),
+                    request.ForOnly(d => d.IsValid, d => d.Contract).Commit(),
                     request.Predicate
                 );
             else
                 entities = _repository.SetByAsync(
-                    request.ForOnly(d => d.IsValid, d => d.Contract),
+                    request.ForOnly(d => d.IsValid, d => d.Contract).Commit(),
                     request.Predicate,
                     request.Conditions
                 );

@@ -6,9 +6,9 @@ namespace Undersoft.SDK.Service.Server.Controller.Open;
 
 using Operation.Remote.Command;
 using Operation.Remote.Query;
+using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Data.Client.Attributes;
 
 
 [OpenDataRemote]
@@ -48,19 +48,19 @@ public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel, TServ
     {
         _keymatcher = keymatcher;
         _keysetter = keysetter;
-        _publishMode = publishMode;        
+        _publishMode = publishMode;
     }
 
     [EnableQuery]
     public virtual IQueryable<TModel> Get()
     {
-        return _servicer.Report(new RemoteGetQuery<TStore, TDto, TModel>()).Result;
+        return _servicer.Entry(new RemoteGetQuery<TStore, TDto, TModel>()).Result;
     }
 
     [EnableQuery]
     public virtual async Task<UniqueOne<TModel>> Get([FromRoute] TKey key)
     {
-        return new UniqueOne<TModel>(await _servicer.Report(new RemoteFindQuery<TStore, TDto, TModel>(_keymatcher(key))));
+        return new UniqueOne<TModel>(await _servicer.Entry(new RemoteFindQuery<TStore, TDto, TModel>(_keymatcher(key))));
     }
 
     public virtual async Task<IActionResult> Post([FromBody] TModel dto)

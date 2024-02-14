@@ -371,7 +371,7 @@ public abstract partial class Repository<TEntity> : IRepositoryCommand<TEntity> 
         return null;
     }
 
-    private IEnumerable<TEntity> lookup<TModel>(IEnumerable<TModel> entities)
+    public virtual IEnumerable<TEntity> lookup<TModel>(IEnumerable<TModel> entities)
         where TModel : class, IOrigin
     {
         var items = entities.ForEach(e => cache.Lookup<TEntity>(e.Id)).Where(e => e != null);
@@ -380,7 +380,7 @@ public abstract partial class Repository<TEntity> : IRepositoryCommand<TEntity> 
         return items;
     }
 
-    private TEntity lookup<TModel>(TModel entity) where TModel : class, IOrigin
+    public virtual TEntity lookup<TModel>(TModel entity) where TModel : class, IOrigin
     {
         var item = cache.Lookup<TEntity>(entity.Id);
         if (item != null)

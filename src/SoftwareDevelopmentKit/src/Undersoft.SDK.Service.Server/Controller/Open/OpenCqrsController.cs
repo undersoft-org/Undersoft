@@ -45,14 +45,14 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
     [EnableQuery]
     public override async Task<IQueryable<TDto>> Get()
     {
-        return await _servicer.Send(new GetQuery<TReport, TEntity, TDto>());
+        return await _servicer.Entry(new GetQuery<TReport, TEntity, TDto>());
     }
 
     [EnableQuery]
     public override async Task<UniqueOne<TDto>> Get([FromRoute] TKey key)
     {
         return new UniqueOne<TDto>(
-            await _servicer.Send(new FindQuery<TReport, TEntity, TDto>(_keymatcher(key)))
+            await _servicer.Entry(new FindQuery<TReport, TEntity, TDto>(_keymatcher(key)))
         );
     }
 
@@ -61,7 +61,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer.Send(new Create<TEntry, TEntity, TDto>(_publishMode, dto));
+        var result = await _servicer.Entry(new Create<TEntry, TEntity, TDto>(_publishMode, dto));
 
         return !result.IsValid
             ? UnprocessableEntity(result.ErrorMessages.ToArray())
