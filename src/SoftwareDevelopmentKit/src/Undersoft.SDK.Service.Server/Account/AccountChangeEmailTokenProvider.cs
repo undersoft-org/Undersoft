@@ -5,12 +5,12 @@ using Microsoft.Extensions.Options;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
 
-public class AccountEmailConfirmationTokenProvider<TUser>
+public class AccountChangeEmailTokenProvider<TUser>
                               : DataProtectorTokenProvider<TUser> where TUser : class
 {
-    public AccountEmailConfirmationTokenProvider(
+    public AccountChangeEmailTokenProvider(
         IDataProtectionProvider dataProtectionProvider,
-        IOptions<AccountEmailConfirmationTokenProviderOptions> options,
+        IOptions<AccountChangeEmailTokenProviderOptions> options,
         ILogger<DataProtectorTokenProvider<TUser>> logger)
                                        : base(dataProtectionProvider, options, logger)
     {

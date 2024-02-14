@@ -23,7 +23,7 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-            await ConfirmingEmail("Email confirmation");
+            await ConfirmingEmail("Email confirmation", "Please check your e-mail");
     }
 
     private async Task ConfirmingEmail(string title, string description = "")
@@ -32,8 +32,7 @@
         data.SetVisible("EmailConfirmationToken");
         data.Description = description;
         data.Height = "350px";
-        data.Width = "400px";
-
+        data.Width = "350px";
 
         while (true)
         {          

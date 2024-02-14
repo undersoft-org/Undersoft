@@ -277,14 +277,20 @@ public class AccountService : IAccountAction, IAccountAccess
             var _creds = account.Credentials;
             if (_creds.PasswordResetToken != null)
             {
+                IdentityResult result = null;
                 var newpassword = GenerateRandomPassword();
-                var result = await _manager.User.ResetPasswordAsync(
-                    (await _manager.GetByEmail(_creds.Email)).User,
-                    _creds.PasswordResetToken,
-                    newpassword
-                );
-
-                if (result.Succeeded)
+                var _code = int.Parse(_creds.PasswordResetToken);
+                var _token = TokenRegistry.Get(_code);
+                if (_token != null)
+                {
+                    result = await _manager.User.ResetPasswordAsync(
+                        (await _manager.GetByEmail(_creds.Email)).User,
+                        _token,
+                        newpassword
+                    );
+                }
+                TokenRegistry.Remove(_code);
+                if (result != null && result.Succeeded)
                 {
                     account.Credentials.Authenticated = true;
                     account.Notes = new AuthorizationNotes()
@@ -317,16 +323,18 @@ public class AccountService : IAccountAction, IAccountAccess
                 _creds.PasswordResetToken = null;
                 return account;
             }
+
             var token = await _manager.User.GeneratePasswordResetTokenAsync(
                 (await _manager.GetByEmail(_creds.Email)).User
             );
-
+            var code = Math.Abs(token.UniqueKey32());
+            TokenRegistry.Add(code, token);
             _ = _servicer.Serve<IEmailSender>(
                 e =>
                     e.SendEmailAsync(
                         _creds.Email,
                         "Verfication code to confirm your decision about resetting the password and sending generated one to your email",
-                        EmailTemplate.GetVerificationCodeMessage(token)
+                        EmailTemplate.GetVerificationCodeMessage(code.ToString())
                     )
             );
 

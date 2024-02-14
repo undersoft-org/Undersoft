@@ -1,8 +1,4 @@
-﻿using IdentityModel.Client;
-using Microsoft.OData;
-using Microsoft.OData.Client;
-using ProtoBuf.Meta;
-using System.Linq.Expressions;
+﻿using Microsoft.OData.Client;
 using System.Text.Json;
 
 namespace Undersoft.SDK.Service.Data.Remote.Repository;
@@ -65,7 +61,7 @@ public partial class RemoteRepository<TEntity>
         var response = (
             await remoteContext.ExecuteAsync<Arguments>(
                 new Uri($"{remoteContext.BaseUri.OriginalString}/{Name}/{action}"),
-                "POST", 
+                "POST",
                 _params
             )
         ).FirstOrDefault();

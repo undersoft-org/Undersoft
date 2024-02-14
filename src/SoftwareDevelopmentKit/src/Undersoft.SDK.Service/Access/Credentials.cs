@@ -75,7 +75,7 @@ namespace Undersoft.SDK.Service.Access
 
         [RequiredRubric]
         [DataMember(Order = 12)]
-        [DisplayRubric("Password reset verification code")]
+        [DisplayRubric("Recovery verification code")]
         public string PasswordResetToken { get; set; }
 
         [RequiredRubric]

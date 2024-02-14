@@ -8,8 +8,8 @@
 <div>
     <!-- Header -->
     <FluentDialogHeader>
-        <FluentStack Orientation="Orientation.Vertical">
-            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+        <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalGap="20">
+            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" VerticalGap="0">
                 <a><img src=@Content.Logo /></a>
                 <FluentSpacer />
                 @if (Content.Icon != null)
@@ -20,7 +20,7 @@
                     @Dialog.Instance.Parameters.Title
                 </FluentLabel>
             </FluentStack>
-            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+            <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalGap="0">
             <FluentLabel Typo="Typography.Body">
                 @Content.Description
             </FluentLabel>
@@ -45,5 +45,4 @@
 
     [CascadingParameter]
     public FluentDialog Dialog { get; set; } = default!;
-
 }

@@ -19,24 +19,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.21.9" />
-    <PackageReference Include="Grpc.Core" Version="2.44.0" />
-    <PackageReference Include="Grpc.Core.Api" Version="2.44.0" />
-    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.44.0" />
     <PackageReference Include="IdentityModel" Version="6.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.*-*" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.*-*" />
     <PackageReference Include="Microsoft.OData.ModelBuilder" Version="1.0.9" />
     <PackageReference Include="Polly" Version="6.1.2" />
-    <PackageReference Include="protobuf-net" Version="3.1.22" />
-    <PackageReference Include="protobuf-net.Core" Version="3.1.22" />
-    <PackageReference Include="protobuf-net.Grpc" Version="1.0.177" />
-    <PackageReference Include="protobuf-net.Grpc.ClientFactory" Version="1.0.177" />
-    <PackageReference Include="protobuf-net.Grpc.Native" Version="1.0.177" />
-    <PackageReference Include="protobuf-net.Grpc.Reflection" Version="1.0.177" />
-    <PackageReference Include="protobuf-net.MSBuild" Version="3.1.22" />
-    <PackageReference Include="protobuf-net.Reflection" Version="3.1.22" />
-    <PackageReference Include="protobuf-net.ServiceModel" Version="3.1.17" />
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="FluentValidation" Version="10.3.4" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.3.4" />

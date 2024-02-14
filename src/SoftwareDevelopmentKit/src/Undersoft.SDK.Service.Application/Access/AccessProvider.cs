@@ -20,7 +20,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
     private readonly IRemoteRepository<IAccountStore, TAccount> _repository;
     private readonly string TOKENKEY = "TOKENKEY";
     private readonly string EXPIRATIONTOKENKEY = "EXPIRATIONTOKENKEY";
-    private readonly string EMAIL = "EMAIL";
+    private readonly string EMAILKEY = "EMAILKEY";
 
     private AuthenticationState Anonymous =>
         new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
@@ -39,7 +39,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
     public async override Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         var token = await js.GetFromLocalStorage(TOKENKEY);
-        var email = await js.GetFromLocalStorage(EMAIL);
+        var email = await js.GetFromLocalStorage(EMAILKEY);
 
         if (string.IsNullOrEmpty(token))
         {
@@ -132,7 +132,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
         if (result.Credentials.SessionToken != null)
         {
             await js.SetInLocalStorage(TOKENKEY, result.Credentials.SessionToken);
-            await js.SetInLocalStorage(EMAIL, result.Credentials.Email);
+            await js.SetInLocalStorage(EMAILKEY, result.Credentials.Email);
             var authState = GetAccessState(result.Credentials.SessionToken);
             NotifyAuthenticationStateChanged(Task.FromResult((AuthenticationState)authState));
         }
@@ -149,7 +149,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
 
     public async Task<IAuthorization> SignOut(IAuthorization auth)
     {
-        auth.Credentials.Email = await js.GetFromLocalStorage(EMAIL);
+        auth.Credentials.Email = await js.GetFromLocalStorage(EMAILKEY);
 
         var result = await _repository.Access(nameof(SignOut), auth);
 
@@ -169,7 +169,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
         if (result.Credentials.SessionToken != null)
         {
             await js.SetInLocalStorage(TOKENKEY, result.Credentials.SessionToken);
-            await js.SetInLocalStorage(EMAIL, result.Credentials.Email);
+            await js.SetInLocalStorage(EMAILKEY, result.Credentials.Email);
             var authState = GetAccessState(result.Credentials.SessionToken);
             NotifyAuthenticationStateChanged(Task.FromResult((AuthenticationState)authState));
         }
@@ -233,7 +233,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
         var auth = _authorization;
         await js.RemoveItem(TOKENKEY);
         await js.RemoveItem(EXPIRATIONTOKENKEY);
-        await js.RemoveItem(EMAIL);
+        await js.RemoveItem(EMAILKEY);
         auth.Notes = null;
         auth.Credentials.SessionToken = null;
         auth.Credentials = null;
