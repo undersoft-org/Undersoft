@@ -8,7 +8,6 @@ using Logging;
 using Undersoft.SDK.Service.Data.Entity;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SDK.Service.Operation.Command;
 using Uniques;
 
 public abstract class Notification<TCommand> : Event, INotification where TCommand : CommandBase

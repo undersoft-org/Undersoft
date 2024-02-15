@@ -1,11 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Undersoft.SDK.Uniques;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Access;
 
 namespace Undersoft.SDK.Service.Data.Repository
@@ -47,14 +42,14 @@ namespace Undersoft.SDK.Service.Data.Repository
         public DbContextConfigurationSnapshot(
             bool? autoDetectChangesEnabled,
             QueryTrackingBehavior? queryTrackingBehavior,
-            bool? autoTransactionsEnabled,
+            AutoTransactionBehavior autoTransactionsBehaviour,
             bool? lazyLoadingEnabled,
             CascadeTiming? cascadeDeleteTiming,
             CascadeTiming? deleteOrphansTiming)
         {
             AutoDetectChangesEnabled = autoDetectChangesEnabled;
             QueryTrackingBehavior = queryTrackingBehavior;
-            AutoTransactionsEnabled = autoTransactionsEnabled;
+            this.AutoTransactionBehavior = autoTransactionsBehaviour;
             LazyLoadingEnabled = lazyLoadingEnabled;
             CascadeDeleteTiming = cascadeDeleteTiming;
             DeleteOrphansTiming = deleteOrphansTiming;
@@ -70,7 +65,7 @@ namespace Undersoft.SDK.Service.Data.Repository
 
         public virtual QueryTrackingBehavior? QueryTrackingBehavior { get; }
 
-        public virtual bool? AutoTransactionsEnabled { get; }
+        public virtual AutoTransactionBehavior AutoTransactionBehavior { get; }
     }
 
 }

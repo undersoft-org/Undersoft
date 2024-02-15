@@ -3,13 +3,12 @@
     using Instant.Proxies;
     using Math;
     using Querying;
+    using Rubrics;
     using SDK.Series;
     using SDK.Series.Base;
     using SDK.Uniques;
-    using Rubrics;
     using System.IO;
     using System.Linq;
-    using Undersoft.SDK.Instant.Math;
 
     public abstract class InstantRegistrySeries : ListingBase<IInstant>, IInstantSeries
     {

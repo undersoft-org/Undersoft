@@ -353,13 +353,10 @@
             string dbName = DBName;
             sb.AppendLine(@"    ");
             sb.AppendFormat(@"UPDATE [{0}].[dbo].[" + tName + "] SET ", dbName);
-            bool isUpdateCol = false;
             string delim = "";
             int c = 0;
             for (int i = 0; i < columns.Length; i++)
             {
-                if (columns[i].RubricName.ToLower() == "updated")
-                    isUpdateCol = true;
 
                 if (c > 0)
                     delim = ",";

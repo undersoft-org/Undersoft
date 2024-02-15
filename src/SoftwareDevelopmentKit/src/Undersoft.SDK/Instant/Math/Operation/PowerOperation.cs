@@ -1,12 +1,11 @@
 ﻿namespace Undersoft.SDK.Instant.Math.Operation
 {
-    using System;
-    using Set;
-    using Formulas;
     using Binary.Formulas;
+    using Formulas;
+    using Set;
+    using System;
     using System.Reflection.Emit;
     using Undersoft.SDK.Instant.Math;
-    using Undersoft.SDK.Instant.Math.Formulas;
 
     [Serializable]
     public class PowerOperation : BinaryFormula

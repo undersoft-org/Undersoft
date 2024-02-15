@@ -8,7 +8,6 @@ namespace Undersoft.SDK.Service.Data.Repository.Client
         IRepositoryClient this[string contextName] { get; set; }
         IRepositoryClient this[Type contextType] { get; set; }
 
-        void Add(IRepositoryClient repoSource);
         IRepositoryClient<TContext> Add<TContext>(IRepositoryClient<TContext> repoSource) where TContext : OpenDataContext;
         IRepositoryClient Get(Type contextType);
         IRepositoryClient<TContext> Get<TContext>() where TContext : OpenDataContext;
@@ -19,7 +18,6 @@ namespace Undersoft.SDK.Service.Data.Repository.Client
         int PoolCount<TContext>() where TContext : OpenDataContext;
         IRepositoryClient<TContext> Put<TContext>(IRepositoryClient<TContext> repoSource) where TContext : OpenDataContext;
         bool Remove<TContext>() where TContext : OpenDataContext;
-        bool TryAdd(IRepositoryClient repoSource);
         bool TryAdd(Type contextType, IRepositoryClient repoSource);
         bool TryAdd<TContext>(IRepositoryClient<TContext> repoSource) where TContext : OpenDataContext;
         bool TryGet(Type contextType, out IRepositoryClient repoSource);

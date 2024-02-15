@@ -404,6 +404,8 @@
 
     public class Applog : Baselog, ILogSate { }
 
+    public class Instantlog : Baselog, ILogSate { }
+
     public class Eventlog : Baselog, ILogSate { }
 
     public class Domainlog : Baselog, ILogSate { }

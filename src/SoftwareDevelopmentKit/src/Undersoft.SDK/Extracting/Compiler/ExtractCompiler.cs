@@ -24,7 +24,6 @@
                     | TypeAttributes.AutoClass
                     | TypeAttributes.AnsiClass
                     | TypeAttributes.Class
-                    | TypeAttributes.Serializable
                     | TypeAttributes.BeforeFieldInit
             );
 

@@ -5,12 +5,11 @@ using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Server.Controller.Open;
 
-using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Operation.Command;
 using Operation.Query;
+using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Data.Client.Attributes;
 
 
 [OpenData]
@@ -64,73 +63,61 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto>
 
     public virtual async Task<IActionResult> Post([FromBody] TDto dto)
     {
-        bool isValid = false;
-
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer
-            .Entry(new CreateSet<TStore, TEntity, TDto>(_publishMode, new[] { dto }))
-            .ConfigureAwait(false);
+        var result = await _servicer.Send(
+            new Create<TStore, TEntity, TDto>(_publishMode, dto)
+        );
 
-        var response = result
-            .ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
-            .ToArray();
-        return !isValid ? UnprocessableEntity(response) : Created(response);
+        return !result.IsValid
+            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            : Created(result.Contract);
     }
 
     public virtual async Task<IActionResult> Patch([FromRoute] TKey key, [FromBody] TDto dto)
     {
-        bool isValid = false;
-
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer
-            .Entry(new ChangeSet<TStore, TEntity, TDto>(_publishMode, new[] { dto }, _predicate))
-            .ConfigureAwait(false);
+        var result = await _servicer.Send(
+            new Change<TStore, TEntity, TDto>(_publishMode, dto, _predicate)
+        );
 
-        var response = result
-            .ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
-            .ToArray();
-        return !isValid ? UnprocessableEntity(response) : Updated(response);
+        return !result.IsValid
+            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            : Updated(result.Id as object);
     }
 
     public virtual async Task<IActionResult> Put([FromRoute] TKey key, [FromBody] TDto dto)
     {
-        bool isValid = false;
-
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer
-            .Entry(new UpdateSet<TStore, TEntity, TDto>(_publishMode, new[] { dto }, _predicate))
-            .ConfigureAwait(false);
+        var result = await _servicer.Send(
+            new Update<TStore, TEntity, TDto>(_publishMode, dto, _predicate)
+        );
 
-        var response = result
-            .ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
-            .ToArray();
-        return !isValid ? UnprocessableEntity(response) : Updated(response);
+        return !result.IsValid
+            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            : Updated(result.Id as object);
     }
 
     public virtual async Task<IActionResult> Delete([FromRoute] TKey key)
     {
-        bool isValid = false;
-
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _servicer
-            .Entry(new DeleteSet<TStore, TEntity, TDto>(_publishMode, key))
-            .ConfigureAwait(false);
+        var result = await _servicer.Send(
+            new Delete<TStore, TEntity, TDto>(_publishMode, key)
+        );
 
-        var response = result
-            .ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
-            .ToArray();
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
+        return !result.IsValid
+            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            : Ok(result.Id as object);
     }
 }

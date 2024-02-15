@@ -5,7 +5,6 @@ namespace Undersoft.SDK.Service.Data.Object.Detail
     public interface IDetail : IDataObject
     {
         JsonDocument Document { get; set; }
-        string TypeName { get; set; }
         string Name { get; set; }
 
         T GetObject<T>();

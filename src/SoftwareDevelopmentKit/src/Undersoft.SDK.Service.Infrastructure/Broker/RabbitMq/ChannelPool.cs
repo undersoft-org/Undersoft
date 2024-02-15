@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using RabbitMQ.Client;
+using System.Collections.Concurrent;
+using System.Diagnostics;
 
 
 namespace Undersoft.SDK.Service.Data.Event.Provider.RabbitMq
@@ -29,15 +26,20 @@ namespace Undersoft.SDK.Service.Data.Event.Provider.RabbitMq
             Logger = NullLogger<ChannelPool>.Instance;
         }
 
-        public virtual IChannelAccessor Acquire(string channelName = null, string connectionName = null)
+        public virtual IChannelAccessor Acquire(string? channelName = null, string? connectionName = null)
         {
             CheckDisposed();
 
             channelName = channelName ?? "";
 
+            var channel = CreateChannel(channelName, connectionName);
+
+            if (channel == null)
+                throw new Exception("Connection name cannot be null");
+
             var poolItem = Channels.GetOrAdd(
                 channelName,
-                _ => new ChannelPoolItem(CreateChannel(channelName, connectionName))
+                _ => new ChannelPoolItem(channel)
             );
 
             poolItem.Acquire();
@@ -49,11 +51,13 @@ namespace Undersoft.SDK.Service.Data.Event.Provider.RabbitMq
             );
         }
 
-        protected virtual IModel CreateChannel(string channelName, string connectionName)
+        protected virtual IModel? CreateChannel(string? channelName, string? connectionName)
         {
-            return ConnectionPool
-                .Get(connectionName)
-                .CreateModel();
+            if (connectionName != null)
+                return ConnectionPool
+                    .Get(connectionName)
+                    .CreateModel();
+            return null;
         }
 
         protected void CheckDisposed()

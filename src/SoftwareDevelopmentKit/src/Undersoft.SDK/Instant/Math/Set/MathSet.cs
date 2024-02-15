@@ -1,13 +1,11 @@
 ﻿namespace Undersoft.SDK.Instant.Math.Set
 {
+    using Formulas;
     using System.Linq.Expressions;
     using System.Reflection.Emit;
-    using Formulas;
-    using Rubrics;
     using Undersoft.SDK.Instant.Math;
-    using Undersoft.SDK.Instant.Math.Formulas;
     using Undersoft.SDK.Instant.Series;
-
+    using Undersoft.SDK.Logging;
 
     public class MathSet<T> : MathSet
     {
@@ -281,6 +279,7 @@
                     }
                     catch (Exception ex)
                     {
+                        this.Warning<Instantlog>("Assign rubric by name to formula failed", null, ex);
                         return null;
                     }
                 }

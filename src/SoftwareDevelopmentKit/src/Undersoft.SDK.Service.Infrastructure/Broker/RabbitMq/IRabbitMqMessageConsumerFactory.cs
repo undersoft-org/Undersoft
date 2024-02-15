@@ -14,7 +14,7 @@
         IRabbitMqMessageConsumer Create(
             ExchangeDeclareConfiguration exchange,
             QueueDeclareConfiguration queue,
-            string connectionName = null
+            string? connectionName = null
         );
     }
 }

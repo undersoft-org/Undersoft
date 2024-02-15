@@ -1,8 +1,7 @@
 ﻿namespace Undersoft.SDK.Instant.Math.Operation.Binary.Formulas
 {
-    using System;
     using Math.Formulas;
-    using Undersoft.SDK.Instant.Math.Formulas;
+    using System;
 
     [Serializable]
     public abstract class BinaryFormula : Formula

@@ -1,13 +1,12 @@
 ﻿namespace Undersoft.SDK.Instant.Math.Operation
 {
-    using System;
-    using Unsigned.Operator;
-    using Set;
     using Math.Formulas;
+    using Set;
+    using System;
     using System.Reflection;
     using System.Reflection.Emit;
     using Undersoft.SDK.Instant.Math;
-    using Undersoft.SDK.Instant.Math.Formulas;
+    using Unsigned.Operator;
 
     [Serializable]
     public class FunctionOperation : UnsignedOperator

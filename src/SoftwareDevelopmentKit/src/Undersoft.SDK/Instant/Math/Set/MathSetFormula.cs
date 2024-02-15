@@ -3,10 +3,8 @@
     using Formulas;
     using Instant.Rubrics;
     using SDK.Uniques;
-    using Set;
     using System;
     using Undersoft.SDK.Instant.Math;
-    using Undersoft.SDK.Instant.Math.Formulas;
 
     public class MathSetFormula : IIdentifiable
     {
@@ -27,9 +25,6 @@
 
         [NonSerialized]
         private MathSetComputer computer;
-
-        [NonSerialized]
-        private SubMathSet subSet;
 
         public MathSetFormula(MathSetRoutine routineSet, MemberRubric rubric)
         {

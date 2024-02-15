@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Reflection;
     using System.Runtime.InteropServices;
+    using Undersoft.SDK.Logging;
     using Undersoft.SDK.Series;
     using Undersoft.SDK.Uniques;
 
@@ -22,7 +23,6 @@
     {
         protected RubricBuilder rubricBuilder = new RubricBuilder();
         protected ISeries<RubricModel> rubricModels = new Registry<RubricModel>();
-        private MemberRubric[] memberRubrics;
         private Type compiledType;
 
         public InstantCreator(
@@ -184,6 +184,7 @@
             }
             catch (Exception ex)
             {
+                this.Warning<Instantlog>("Marshal cannot establish size of type", null, ex);
                 Size = Rubrics.BinarySize;
             }
         }
@@ -201,6 +202,7 @@
             }
             catch (Exception ex)
             {
+                this.Warning<Instantlog>("Marshal cannot establish size of type", null, ex);
                 Size = Rubrics.BinarySize;
             }
         }

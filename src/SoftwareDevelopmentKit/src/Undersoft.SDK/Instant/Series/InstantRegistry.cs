@@ -1,15 +1,14 @@
 ﻿namespace Undersoft.SDK.Instant.Series
 {
     using Instant.Proxies;
+    using Math;
+    using Querying;
+    using Rubrics;
     using SDK.Series;
     using SDK.Series.Base;
-    using Uniques;
-    using Rubrics;
     using System.IO;
     using System.Linq;
-    using Querying;
-    using Math;
-    using Undersoft.SDK.Instant.Math;
+    using Uniques;
 
     public abstract class InstantRegistry : RegistryBase<IInstant>, IInstantSeries
     {

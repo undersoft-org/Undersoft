@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using Undersoft.SDK.Logging;
     using Undersoft.SDK.Uniques;
 
     public static class DbNetTypes
@@ -123,7 +124,10 @@
                     sqlNetVal = fieldRow[fieldName];
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                Log.Warning<Instantlog>("Unable to convert sql type to dotnet type", null, ex);
+            }
             return sqlNetVal;
         }
 

@@ -3,10 +3,9 @@ using System.Text.Json;
 
 namespace Undersoft.SDK.Service.Operation.Remote.Command.Notification;
 
-using Undersoft.SDK.Service.Data.Object;
 using Remote.Command;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Operation.Remote.Command;
+using Undersoft.SDK.Service.Data.Object;
 
 public abstract class RemoteNotification<TCommand> : Event, INotification where TCommand : RemoteCommandBase
 {

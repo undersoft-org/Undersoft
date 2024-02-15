@@ -80,7 +80,7 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
 
         return !result.IsValid
             ? UnprocessableEntity(result.ErrorMessages.ToArray())
-            : Created(result.Id as object);
+            : Created(result.Contract);
     }
 
     public virtual async Task<IActionResult> Patch([FromRoute] TKey key, [FromBody] TDto dto)

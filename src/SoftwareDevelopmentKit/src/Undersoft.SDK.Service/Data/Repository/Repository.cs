@@ -6,7 +6,6 @@ using Undersoft.SDK.Service.Data.Cache;
 namespace Undersoft.SDK.Service.Data.Repository;
 
 using Data.Object;
-using Undersoft.SDK.Service.Data.Repository;
 using Undersoft.SDK.Service.Data.Repository.Client;
 using Undersoft.SDK.Service.Data.Repository.Pagination;
 using Undersoft.SDK.Service.Data.Repository.Source;
@@ -91,20 +90,6 @@ public abstract partial class Repository<TEntity> : Repository, IPagedSet<TEntit
         {
             RemoteProperties.DoEach(async (o) => await o.LoadAsync(entity));
         }
-    }
-
-    public T Sign<T>(T entity) where T : IUniqueIdentifiable
-    {
-        entity.Sign();
-        cache?.MemorizeAsync(entity);
-        return entity;
-    }
-
-    public T Stamp<T>(T entity) where T : IUniqueIdentifiable
-    {
-        entity.Stamp();
-        cache?.MemorizeAsync(entity);
-        return entity;
     }
 
     public TEntity Sign(TEntity entity)

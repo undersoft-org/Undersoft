@@ -1,11 +1,9 @@
 ﻿namespace Undersoft.SDK.Instant.Math.Set
 {
-    using SDK.Instant;
     using Formulas;
-    using Rubrics;
+    using SDK.Instant;
     using System.Reflection.Emit;
     using Undersoft.SDK.Instant.Math;
-    using Undersoft.SDK.Instant.Math.Formulas;
     using Undersoft.SDK.Instant.Series;
 
     [Serializable]

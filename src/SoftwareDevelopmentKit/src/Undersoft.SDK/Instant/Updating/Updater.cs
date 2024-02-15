@@ -530,7 +530,7 @@ public class Updater : IUpdater
         return source.Equals(other);
     }
 
-    public int CompareTo(IUnique? other)
+    public int CompareTo(IUnique other)
     {
         return source.CompareTo(other);
     }

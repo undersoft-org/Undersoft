@@ -38,14 +38,16 @@ public class DeleteHandler<TStore, TEntity, TDto>
                 {
                     if (request.Keys != null)
                         request.Entity = await _repository.Delete(request.Keys);
-                    else if (request.Contract == null && request.Predicate != null)
-                        request.Entity = await _repository.Delete(request.Predicate);
-                    else
-                        request.Entity = _repository.DeleteBy(
-                            request.Contract,
-                            request.Predicate
-                        );
-
+                    else if (request.Contract != null)
+                    {
+                        if (request.Predicate == null)
+                            request.Entity = _repository.DeleteBy(request.Contract);
+                        else
+                            request.Entity = _repository.DeleteBy(
+                                request.Contract,
+                                request.Predicate
+                            );
+                    }
                     if (request.Entity == null)
                         throw new Exception(
                             $"{GetType().Name} for entity"

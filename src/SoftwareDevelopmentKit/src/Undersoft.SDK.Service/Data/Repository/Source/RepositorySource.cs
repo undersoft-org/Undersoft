@@ -238,9 +238,8 @@ public class RepositorySource : Registry<IRepositoryContext>, IRepositorySource
 
             if (database != null)
             {
-                database.AutoTransactionsEnabled =
-                    _configurationSnapshot?.AutoTransactionsEnabled == null
-                    || _configurationSnapshot.AutoTransactionsEnabled.Value;
+                if (_configurationSnapshot != null)
+                    database.AutoTransactionBehavior = _configurationSnapshot.AutoTransactionBehavior;
             }
         }
         else
@@ -379,7 +378,7 @@ public class RepositorySource : Registry<IRepositoryContext>, IRepositorySource
         _configurationSnapshot = new DbContextConfigurationSnapshot(
             _changeTracker?.AutoDetectChangesEnabled,
             _changeTracker?.QueryTrackingBehavior,
-            ((DbContext)Context).Database?.AutoTransactionsEnabled,
+            ((DbContext)Context).Database.AutoTransactionBehavior,
             _changeTracker?.LazyLoadingEnabled,
             _changeTracker?.CascadeDeleteTiming,
             _changeTracker?.DeleteOrphansTiming

@@ -14,6 +14,14 @@ public partial class Repository<TEntity> : IRepositoryMappedCommand<TEntity> whe
     {
         return Add(MapFrom(model), predicate);
     }
+    public virtual async Task<TEntity> AddByAsync<TDto>(TDto model)
+    {
+        return await Task.Run(() => AddBy<TDto>(model));
+    }
+    public virtual async Task<TEntity> AddByAsync<TDto>(TDto model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate)
+    {
+        return await Task.Run(() => AddBy<TDto>(model, predicate));
+    }
     public virtual IEnumerable<TEntity> AddBy<TDto>(IEnumerable<TDto> model)
     {
         return Add(MapFrom(model));

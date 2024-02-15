@@ -2,7 +2,6 @@
 
 namespace Undersoft.SDK.Service.Data.Remote;
 using Undersoft.SDK.Service.Data.Client;
-using Uniques;
 
 public static class RemoteLinkExtensions
 {
@@ -24,8 +23,8 @@ public static class RemoteLinkExtensions
     public static OpenDataContext RemoteOneToSet<TOrigin, TTarget>(this OpenDataContext context,
                                                              Expression<Func<TOrigin, object>> originkey,
                                                              Expression<Func<TTarget, object>> targetkey)
-                                                         where TOrigin : class, IUniqueIdentifiable
-                                                         where TTarget : class, IUniqueIdentifiable
+                                                         where TOrigin : class, IOrigin, IInnerProxy
+                                                         where TTarget : class, IOrigin, IInnerProxy
     {
 
         var remote = new RemoteOneToSet<TOrigin, TTarget>(originkey, targetkey);
@@ -37,8 +36,8 @@ public static class RemoteLinkExtensions
     public static OpenDataContext RemoteOneToOne<TOrigin, TTarget>(this OpenDataContext context,
                                                             Expression<Func<TOrigin, object>> originkey,
                                                              Expression<Func<TTarget, object>> targetkey)
-                                                        where TOrigin : class, IUniqueIdentifiable
-                                                        where TTarget : class, IUniqueIdentifiable
+                                                        where TOrigin : class, IOrigin, IInnerProxy
+                                                        where TTarget : class, IOrigin, IInnerProxy
     {
         var remote = new RemoteOneToOne<TOrigin, TTarget>(originkey, targetkey);
         context.Remotes.Put(remote.Name, remote);

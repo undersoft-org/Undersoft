@@ -17,9 +17,6 @@
         private double[] oSums;
         private double[] outputs;
 
-        private string hActivation; // "log-sigmoid" or "tanh"
-        private string oActivation; // "log-sigmoid" or "tanh"
-
         private double[] oGrads; // output gradients for back-propagation
         private double[] hGrads; // hidden gradients for back-propagation
 

@@ -1,15 +1,10 @@
 ﻿using Undersoft.SDK.Extracting;
-using System.Threading;
 using Undersoft.SDK.Uniques;
-using Undersoft.SDK.Instant.Proxies;
-using System;
 
 namespace Undersoft.SDK.Instant.Stocks
 {
     public abstract class SharedStock : StockBase, IIdentifiable
     {
-        private Uscn code;
-
         protected ManualResetEvent WriteWaitEvent { get; private set; }
         protected ManualResetEvent ReadWaitEvent { get; private set; }
 

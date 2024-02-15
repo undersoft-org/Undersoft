@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using System.Linq.Expressions;
-using System.Text.Json.Serialization;
 
 namespace Undersoft.SDK.Service.Operation.Command;
 
@@ -14,9 +13,6 @@ public class DeleteSetAsync<TStore, TEntity, TDto>
     where TDto : class, IOrigin, IInnerProxy
     where TStore : IDataServerStore
 {
-    [JsonIgnore]
-    public Func<TDto, Expression<Func<TEntity, bool>>> Predicate { get; }
-
     public DeleteSetAsync(EventPublishMode publishPattern, object key) : base(publishPattern, key)
     { }
 

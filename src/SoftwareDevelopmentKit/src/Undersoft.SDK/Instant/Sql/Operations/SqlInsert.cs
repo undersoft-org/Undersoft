@@ -384,14 +384,10 @@
             sb.AppendLine(@"  ");
             sb.AppendFormat(@"INSERT INTO [{0}].[dbo].[" + tName + "] (", dbName);
             sbv.Append(@"SELECT ");
-            bool isUpdateCol = false;
             string delim = "";
             int c = 0;
             for (int i = 0; i < rubrics.Length; i++)
             {
-                if (rubrics[i].RubricName.ToLower() == "updated")
-                    isUpdateCol = true;
-
                 if (c > 0)
                     delim = ",";
                 sb.AppendFormat(

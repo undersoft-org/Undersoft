@@ -1,14 +1,11 @@
 ﻿namespace Undersoft.SDK.Series.Base
 {
+    using Enumerators;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using Undersoft.SDK.Uniques;
-    using Enumerators;
-    using System.ServiceModel;
-    using System.ComponentModel;
     using Undersoft.SDK;
-    using System.Linq.Expressions;
+    using Undersoft.SDK.Uniques;
 
     public abstract class TypedSeriesBase<V> : Identifiable, IIdentifiable, ITypedSeries<V> where V : IIdentifiable
     {
@@ -436,7 +433,7 @@
 
         public ISeriesItem<V> Set(long key, V value)
         {
-            return massDeckImplementation.Set(key, value);
+            return InnerSet(key, value);
         }
 
         public ISeriesItem<V> Set(IIdentifiable key, V value)
@@ -1402,7 +1399,7 @@
 
         public virtual IEnumerator<IUnique<V>> GetUniqueEnumerator()
         {
-            return new  SeriesItemKeyEnumerator<V>(this);
+            return new SeriesItemKeyEnumerator<V>(this);
         }
 
         public virtual IEnumerator<ISeriesItem<V>> GetEnumerator()
@@ -1545,8 +1542,6 @@
         }
 
         protected bool disposedValue = false;
-
-        private ITypedSeries<V> massDeckImplementation;
 
         protected virtual void Dispose(bool disposing)
         {

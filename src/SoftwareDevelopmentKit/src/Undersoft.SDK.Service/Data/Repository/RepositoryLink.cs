@@ -9,7 +9,6 @@ using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Remote;
 using Undersoft.SDK.Service.Data.Remote.Repository;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Data.Remote.Repository;
 
 public class RepositoryLink<TStore, TOrigin, TTarget>
     : RemoteRepository<TStore, TTarget>,

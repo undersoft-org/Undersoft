@@ -1,16 +1,15 @@
 ﻿
 namespace Undersoft.SDK.Series.Base
 {
+    using Enumerators;
     using System.Collections;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Undersoft.SDK.Uniques;
-    using Enumerators;
-    using System.ComponentModel;
     using Undersoft.SDK;
-    using System.Linq.Expressions;
+    using Undersoft.SDK.Uniques;
 
     public abstract class SeriesBase<V> : Identifiable, IIdentifiable, ISeries<V>, ISet<V>, IAsyncDisposable, IListSource
     {
@@ -415,7 +414,7 @@ namespace Undersoft.SDK.Series.Base
         {
             foreach (V item in items)
                 InnerPut(item);
-        }        
+        }
 
         protected abstract bool InnerAdd(long key, V value);
         protected abstract bool InnerAdd(V value);
@@ -742,7 +741,7 @@ namespace Undersoft.SDK.Series.Base
         public virtual bool Contains(ISeriesItem<V> item)
         {
             return InnerContainsKey(item.Id);
-        }        
+        }
         public virtual bool Contains(V item)
         {
             return InnerContainsKey(unique.Key(item));
@@ -813,7 +812,7 @@ namespace Undersoft.SDK.Series.Base
         public virtual bool Remove(ISeriesItem<V> item)
         {
             return InnerRemove(item.Id).Equals(default(V)) ? false : true;
-        }        
+        }
         public virtual bool TryRemove(object key)
         {
             V result = InnerRemove(unique.Key(key));
@@ -866,7 +865,7 @@ namespace Undersoft.SDK.Series.Base
             else
                 foreach (ISeriesItem<V> ves in this)
                     array[i++] = ves;
-        }        
+        }
         public virtual void CopyTo(Array array, int index)
         {
             int c = count, i = index, l = array.Length;
@@ -1104,8 +1103,6 @@ namespace Undersoft.SDK.Series.Base
 
         protected bool disposedValue = false;
 
-        public virtual event PropertyChangedEventHandler PropertyChanged;
-
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -1157,13 +1154,13 @@ namespace Undersoft.SDK.Series.Base
         }
 
         public DateTime Created { get; set; }
-        
+
         public string Creator { get; set; }
-        
+
         public DateTime Modified { get; set; }
-        
+
         public string Modifier { get; set; }
-        
+
         public int OriginId { get => (int)code.OriginId; set => code.OriginId = (uint)value; }
 
         public Type ElementType => typeof(V);
@@ -1203,11 +1200,11 @@ namespace Undersoft.SDK.Series.Base
         }
         public virtual bool IsSubsetOf(IEnumerable<V> other)
         {
-           return (this.Count <= other.Count()) && this.All(e => other.Contains(e));
+            return (this.Count <= other.Count()) && this.All(e => other.Contains(e));
         }
         public virtual bool IsSupersetOf(IEnumerable<V> other)
         {
-           return (this.Count >= other.Count()) && other.All(e => this.Contains(e));
+            return (this.Count >= other.Count()) && other.All(e => this.Contains(e));
         }
         public virtual bool Overlaps(IEnumerable<V> other)
         {
@@ -1228,5 +1225,5 @@ namespace Undersoft.SDK.Series.Base
             this.Add(other);
         }
 
-    }   
+    }
 }

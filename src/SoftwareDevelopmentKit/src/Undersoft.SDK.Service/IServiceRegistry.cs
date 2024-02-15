@@ -11,7 +11,6 @@ namespace Undersoft.SDK.Service
         IServiceManager Manager { get; }
         IServiceCollection Services { get; set; }
 
-        void Add(ServiceDescriptor item);
         ServiceObject AddObject(Type type);
         ServiceObject AddObject(Type type, object obj);
         ServiceObject<T> AddObject<T>() where T : class;
@@ -19,10 +18,8 @@ namespace Undersoft.SDK.Service
         ServiceObject<T> AddObject<T>(T obj) where T : class;
         IServiceProvider BuildServiceProviderFromFactory();
         IServiceProvider BuildServiceProviderFromFactory<TContainerBuilder>([NotNull] Action<TContainerBuilder> builderAction = null);
-        bool Contains(ServiceDescriptor item);
         bool ContainsKey(Type type);
         bool ContainsKey<TService>();
-        void CopyTo(ServiceDescriptor[] array, int arrayIndex);
         ServiceDescriptor Get(Type contextType);
         ServiceDescriptor Get<TService>() where TService : class;
         long GetKey(ServiceDescriptor item);
@@ -42,13 +39,10 @@ namespace Undersoft.SDK.Service
         Lazy<T> GetServiceLazy<T>() where T : class;
         object GetSingleton(Type type);
         T GetSingleton<T>() where T : class;
-        int IndexOf(ServiceDescriptor item);
-        void Insert(int index, ServiceDescriptor item);
         bool IsAdded(Type type);
         bool IsAdded<T>() where T : class;
         void MergeServices(bool actualizeExternalServices = true);
         void MergeServices(IServiceCollection services, bool actualizeExternalServices = true);
-        bool Remove(ServiceDescriptor item);
         bool Remove<TContext>() where TContext : class;
         ISeriesItem<ServiceDescriptor> Set(ServiceDescriptor descriptor);
         bool TryAdd(ServiceDescriptor profile);

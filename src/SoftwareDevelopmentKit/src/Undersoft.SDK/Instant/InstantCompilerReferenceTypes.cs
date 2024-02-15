@@ -538,7 +538,6 @@
                 typeSignature,
                 TypeAttributes.Class
                     | TypeAttributes.Public
-                    | TypeAttributes.Serializable
                     | TypeAttributes.AnsiClass
                     | TypeAttributes.SequentialLayout
             );

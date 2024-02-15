@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Undersoft.SDK.Service.Data.Store;
 
 namespace Undersoft.SDK.Service.Data.Repository.Source
 {
@@ -9,7 +8,6 @@ namespace Undersoft.SDK.Service.Data.Repository.Source
         IRepositorySource this[string contextName] { get; set; }
         IRepositorySource this[Type contextType] { get; set; }
 
-        void Add(IRepositorySource repoSource);
         IRepositorySource<TContext> Add<TContext>(IRepositorySource<TContext> repoSource) where TContext : DbContext;
         IRepositorySource Get(Type contextType);
         IRepositorySource<TContext> Get<TContext>() where TContext : DbContext;
@@ -20,7 +18,6 @@ namespace Undersoft.SDK.Service.Data.Repository.Source
         int PoolCount<TContext>() where TContext : DbContext;
         IRepositorySource<TContext> Put<TContext>(IRepositorySource<TContext> repoSource) where TContext : DbContext;
         bool Remove<TContext>() where TContext : DbContext;
-        bool TryAdd(IRepositorySource repoSource);
         bool TryAdd(Type contextType, IRepositorySource repoSource);
         bool TryAdd<TContext>(IRepositorySource<TContext> repoSource) where TContext : DbContext;
         bool TryGet(Type contextType, out IRepositorySource repoSource);

@@ -31,7 +31,7 @@ namespace Undersoft.SDK
         [IgnoreDataMember]
         protected Uscn code;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public virtual event PropertyChangedEventHandler PropertyChanged;
 
         [Key]
         [KeyRubric(Order = 0)]

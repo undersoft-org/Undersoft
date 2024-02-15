@@ -1,13 +1,13 @@
 ﻿namespace Undersoft.SDK.Instant.Series
 {
+    using Instant.Proxies;
+    using Rubrics;
+    using SDK.Uniques;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
     using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
-    using SDK.Uniques;
-    using Rubrics;
-    using Instant.Proxies;
 
     public class InstantSeriesCompiler
     {
@@ -1119,7 +1119,6 @@
                 typeSignature,
                 TypeAttributes.Class
                     | TypeAttributes.Public
-                    | TypeAttributes.Serializable
                     | TypeAttributes.AnsiClass
             );
 

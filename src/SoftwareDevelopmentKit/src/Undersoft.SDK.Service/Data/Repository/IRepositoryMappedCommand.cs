@@ -8,6 +8,8 @@ namespace Undersoft.SDK.Service.Data.Repository
         IEnumerable<TEntity> AddBy<TDto>(IEnumerable<TDto> models, Func<TEntity, Expression<Func<TEntity, bool>>> predicate);
         TEntity AddBy<TDto>(TDto model);
         TEntity AddBy<TDto>(TDto model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate);
+        Task<TEntity> AddByAsync<TDto>(TDto model);
+        Task<TEntity> AddByAsync<TDto>(TDto model, Func<TEntity, Expression<Func<TEntity, bool>>> predicate);
         IAsyncEnumerable<TEntity> AddByAsync<TDto>(IEnumerable<TDto> model);
         IAsyncEnumerable<TEntity> AddByAsync<TDto>(IEnumerable<TDto> models, Func<TEntity, Expression<Func<TEntity, bool>>> predicate);
 

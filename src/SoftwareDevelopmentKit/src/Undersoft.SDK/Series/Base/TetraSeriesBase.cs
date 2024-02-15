@@ -1,16 +1,12 @@
-﻿using System.Linq;
-using System.Collections;
-using System.Linq.Expressions;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Collections.Concurrent;
 
 namespace Undersoft.SDK.Series.Base
 {
-    using Tetra;
-    using Uniques;
     using Enumerators;
-    using System.ComponentModel;
+    using Tetra;
     using Undersoft.SDK;
+    using Uniques;
 
     public abstract class TetraSeriesBase<V>
         : Identifiable,
@@ -20,7 +16,7 @@ namespace Undersoft.SDK.Series.Base
             ICollection<ISeriesItem<V>>,
             IList<ISeriesItem<V>>,
             IProducerConsumerCollection<V>,
-            IDisposable,            
+            IDisposable,
             IIdentifiable
     {
         static protected readonly float CONFLICTS_PERCENT_LIMIT = 0.25f;
@@ -72,7 +68,7 @@ namespace Undersoft.SDK.Series.Base
             --removed;
         }
 
-        public TetraSeriesBase(int capacity = 16, HashBits bits = HashBits.bit64) 
+        public TetraSeriesBase(int capacity = 16, HashBits bits = HashBits.bit64)
         {
             size = capacity;
             minSize = capacity;
@@ -83,6 +79,7 @@ namespace Undersoft.SDK.Series.Base
             last = first;
             ValueEquals = getValueComparer();
             code = new Uscn(Unique.NewId);
+            catalogImplementation = new Catalog<V>();
         }
 
         public TetraSeriesBase(
@@ -285,7 +282,7 @@ namespace Undersoft.SDK.Series.Base
         public ISeriesItem<V> GetItem(IIdentifiable key)
         {
             return catalogImplementation.GetItem(key);
-        }        
+        }
 
         public ISeriesItem<V> Set(object key, V value)
         {
@@ -300,12 +297,12 @@ namespace Undersoft.SDK.Series.Base
         public ISeriesItem<V> Set(IIdentifiable key, V value)
         {
             return catalogImplementation.Set(key, value);
-        }        
+        }
 
         public ISeriesItem<V> Set(V value)
         {
             return catalogImplementation.Set(value);
-        }        
+        }
 
         public ISeriesItem<V> Set(ISeriesItem<V> value)
         {
@@ -325,7 +322,7 @@ namespace Undersoft.SDK.Series.Base
         public int Set(IEnumerable<ISeriesItem<V>> values)
         {
             return catalogImplementation.Set(values);
-        }        
+        }
 
         public ISeriesItem<V> EnsureGet(object key, Func<long, V> sureaction)
         {
@@ -709,7 +706,7 @@ namespace Undersoft.SDK.Series.Base
         public virtual bool Contains(ISeriesItem<V> item)
         {
             return InnerContainsKey(item.Id);
-        }        
+        }
 
         public virtual bool Contains(V item)
         {
@@ -788,7 +785,7 @@ namespace Undersoft.SDK.Series.Base
         public virtual bool Remove(ISeriesItem<V> item)
         {
             return InnerRemove(item.Id).Equals(default(V)) ? false : true;
-        }        
+        }
 
         public virtual bool TryRemove(object key)
         {
@@ -881,7 +878,7 @@ namespace Undersoft.SDK.Series.Base
             else
                 foreach (V ves in this.AsValues())
                     array[i++] = ves;
-        }        
+        }
 
         public virtual V[] ToArray()
         {
@@ -932,7 +929,7 @@ namespace Undersoft.SDK.Series.Base
         public virtual IEnumerable<ISeriesItem<V>> AsItems()
         {
             return (IEnumerable<ISeriesItem<V>>)this;
-        }        
+        }
 
         public virtual IEnumerator<ISeriesItem<V>> GetEnumerator()
         {
@@ -942,7 +939,7 @@ namespace Undersoft.SDK.Series.Base
         IEnumerator<V> IEnumerable<V>.GetEnumerator()
         {
             return new SeriesItemEnumerator<V>(this);
-        }        
+        }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -1090,6 +1087,7 @@ namespace Undersoft.SDK.Series.Base
         }
 
         private bool disposedValue = false;
+
         private ISeries<V> catalogImplementation;
 
         protected virtual void Dispose(bool disposing)
@@ -1123,7 +1121,7 @@ namespace Undersoft.SDK.Series.Base
             return code.CompareTo(other);
         }
 
-        public IUnique Empty => Usid.Empty;   
+        public IUnique Empty => Usid.Empty;
 
         public Type ItemType
         {
@@ -1131,13 +1129,13 @@ namespace Undersoft.SDK.Series.Base
         }
 
         public DateTime Created { get; set; }
-        
+
         public string Creator { get; set; }
-        
+
         public DateTime Modified { get; set; }
-        
+
         public string Modifier { get; set; }
-        
+
         public int OriginId
         {
             get => (int)code.OriginId;

@@ -804,7 +804,6 @@
                 TypeAttributes.AutoClass
                     | TypeAttributes.Public
                     | TypeAttributes.BeforeFieldInit
-                    | TypeAttributes.Serializable
                     | TypeAttributes.AutoLayout
             );
 

@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Linq.Expressions;
-using Undersoft.SDK.Service.Data.Client;
 
 namespace Undersoft.SDK.Service.Data.Remote;
 
@@ -11,7 +10,6 @@ public class RemoteSetToSet<TOrigin, TTarget> : RemoteRelation<TOrigin, TTarget>
     private IRubric _nodeRubric;
     private Expression<Func<TTarget, object>> _targetKey;
     private Func<IRemoteLink<TOrigin, TTarget>, object> _joinKey;
-    private Func<TOrigin, IEnumerable<IRemoteLink<TOrigin, TTarget>>> _middleSet;
 
     public RemoteSetToSet() : base() { }
 
@@ -34,7 +32,7 @@ public class RemoteSetToSet<TOrigin, TTarget> : RemoteRelation<TOrigin, TTarget>
     {
         var proxy = ((IInnerProxy)entity).Proxy;
         var nodeRubric = _nodeRubric ??= GetNodeRubric(proxy.Rubrics);
-            
+
         if (nodeRubric == null)
             return null;
 
@@ -48,30 +46,30 @@ public class RemoteSetToSet<TOrigin, TTarget> : RemoteRelation<TOrigin, TTarget>
 
     private IRubric GetNodeRubric(IRubrics rubrics)
     {
-         return rubrics.Where(r =>
-         {
-             if (r.RubricType.IsAssignableTo(typeof(IEnumerable)))
-             {
-                 var elemType = r.RubricType.GetEnumerableElementType();
-                 if (elemType.IsAssignableTo(typeof(IRemoteLink)))
-                 {
-                     var targetType = elemType.GetGenericArguments().LastOrDefault();
-                     var originType = elemType.GetGenericArguments().FirstOrDefault();
+        return rubrics.Where(r =>
+        {
+            if (r.RubricType.IsAssignableTo(typeof(IEnumerable)))
+            {
+                var elemType = r.RubricType.GetEnumerableElementType();
+                if (elemType.IsAssignableTo(typeof(IRemoteLink)))
+                {
+                    var targetType = elemType.GetGenericArguments().LastOrDefault();
+                    var originType = elemType.GetGenericArguments().FirstOrDefault();
 
-                     if (
-                         (
-                             targetType.Name.Equals(typeof(TTarget).Name)
-                             && originType.Name.Equals(typeof(TOrigin).Name)
-                         )
-                         || (
-                             originType.Name.Equals(typeof(TTarget).Name)
-                             && targetType.Name.Equals(typeof(TOrigin).Name)
-                         )
-                     )
-                         return true;
-                 }
-             }
-             return false;
-         }).FirstOrDefault();
+                    if (
+                        (
+                            targetType.Name.Equals(typeof(TTarget).Name)
+                            && originType.Name.Equals(typeof(TOrigin).Name)
+                        )
+                        || (
+                            originType.Name.Equals(typeof(TTarget).Name)
+                            && targetType.Name.Equals(typeof(TOrigin).Name)
+                        )
+                    )
+                        return true;
+                }
+            }
+            return false;
+        }).FirstOrDefault();
     }
 }

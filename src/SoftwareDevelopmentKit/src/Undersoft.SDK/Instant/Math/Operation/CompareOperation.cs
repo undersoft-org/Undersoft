@@ -1,13 +1,12 @@
 ﻿namespace Undersoft.SDK.Instant.Math.Operation;
 
-using System;
-using System.Reflection.Emit;
-using Formulas;
 using Binary.Formulas;
 using Binary.Operator;
+using Formulas;
 using Set;
+using System;
+using System.Reflection.Emit;
 using Undersoft.SDK.Instant.Math;
-using Undersoft.SDK.Instant.Math.Formulas;
 
 [Serializable]
 public class CompareOperation : BinaryFormula

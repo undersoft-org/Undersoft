@@ -65,7 +65,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
 
         return !result.IsValid
             ? UnprocessableEntity(result.ErrorMessages.ToArray())
-            : Created(result.Id as object);
+            : Created(result.Contract);
     }
 
     public override async Task<IActionResult> Patch([FromRoute] TKey key, [FromBody] TDto dto)

@@ -7,7 +7,7 @@
     using Undersoft.SDK.Series;
 
     public class SqlAccessor
-    { 
+    {
         public SqlAccessor() { }
 
         public IInstantSeries Get(
@@ -59,7 +59,7 @@
             }
             catch (Exception ex)
             {
-                return null;
+                throw ex;
             }
         }
 
@@ -76,7 +76,7 @@
             }
             catch (Exception ex)
             {
-                return null;
+                throw ex;
             }
         }
 
@@ -93,7 +93,7 @@
             }
             catch (Exception ex)
             {
-                return null;
+                throw ex;
             }
         }
     }

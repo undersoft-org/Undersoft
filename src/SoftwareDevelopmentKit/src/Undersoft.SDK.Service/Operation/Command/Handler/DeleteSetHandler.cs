@@ -14,11 +14,11 @@ public class DeleteSetHandler<TStore, TEntity, TDto>
     where TStore : IDataServerStore
 {
     protected readonly IStoreRepository<TEntity> _repository;
-    protected readonly IServicer _uservice;
+    protected readonly IServicer _servicer;
 
-    public DeleteSetHandler(IServicer uservice, IStoreRepository<TStore, TEntity> repository)
+    public DeleteSetHandler(IServicer servicer, IStoreRepository<TStore, TEntity> repository)
     {
-        _uservice = uservice;
+        _servicer = servicer;
         _repository = repository;
     }
 
@@ -44,10 +44,9 @@ public class DeleteSetHandler<TStore, TEntity, TDto>
                     {
                         request[e.Id].Entity = e;
                     }
-                )
-                .ConfigureAwait(false);
+                );
 
-            _ = _uservice
+            _ = _servicer
                 .Publish(new DeletedSet<TStore, TEntity, TDto>(request))
                 .ConfigureAwait(false);
         }

@@ -5,7 +5,6 @@ namespace Undersoft.SDK.Service.Operation.Remote.Command.Notification;
 
 using Command;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation.Remote.Command;
 
 public class RemoteUpsertedSet<TStore, TDto, TModel> : RemoteNotificationSet<RemoteCommand<TModel>>
     where TDto : class, IOrigin, IInnerProxy

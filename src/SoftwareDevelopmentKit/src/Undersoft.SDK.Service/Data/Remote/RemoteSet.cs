@@ -63,7 +63,7 @@ namespace Undersoft.SDK.Service.Data.Remote
     {
         protected DataServiceContext context;
         protected DataServiceQuery<TEntity> _query;
-        protected ISeries<TEntity> _deck = new Registry<TEntity>();
+        protected ISeries<TEntity> _listing = new Listing<TEntity>();
         protected object origin;
         protected string name;
 
@@ -87,11 +87,11 @@ namespace Undersoft.SDK.Service.Data.Remote
         {
             get
             {
-                if (!_deck.TryGet(key, out TEntity entity))
+                if (!_listing.TryGet(key, out TEntity entity))
                 {
                     Load(_query.Where(e => e.Id.Equals(key)));
                 }
-                _deck.TryGet(key, out entity);
+                _listing.TryGet(key, out entity);
                 return entity;
             }
             set
@@ -109,11 +109,11 @@ namespace Undersoft.SDK.Service.Data.Remote
                 if (keys.Length < 2)
                     return this[keys[0]];
 
-                if (!_deck.TryGet(keys, out TEntity entity))
+                if (!_listing.TryGet(keys, out TEntity entity))
                 {
                     Load(_query.WhereIn(e => e.Id, keys));
                 }
-                _deck.TryGet(keys, out entity);
+                _listing.TryGet(keys, out entity);
                 return entity;
             }
             set
@@ -308,39 +308,39 @@ namespace Undersoft.SDK.Service.Data.Remote
         protected override void InsertItem(int index, TEntity item)
         {
             base.InsertItem(index, item);
-            _deck.Insert(index, item);
+            _listing.Put(item.Id, this[index]);
         }
 
         protected override void RemoveItem(int index)
         {
             base.RemoveItem(index);
-            _deck.RemoveAt(index);
+            _listing.RemoveAt(index);
         }
 
         protected override void SetItem(int index, TEntity item)
         {
             base.SetItem(index, item);
-            _deck.Set(item.Id, item);
+            _listing.Set(item.Id, this[index]);
 
         }
 
         protected override void ClearItems()
         {
-            _deck.Clear();
             base.ClearItems();
+            _listing.Clear();
         }
 
         protected override void MoveItem(int oldIndex, int newIndex)
         {
-            var olditem = _deck[oldIndex];
-            _deck.RemoveAt(oldIndex);
-            _deck[newIndex] = olditem;
             base.MoveItem(oldIndex, newIndex);
+            var olditem = _listing[oldIndex];
+            _listing.RemoveAt(oldIndex);
+            _listing[newIndex] = olditem;
         }
 
         public bool ContainsKey(object key)
         {
-            return _deck.ContainsKey(key);
+            return _listing.ContainsKey(key);
         }
 
         public string KeyString(params object[] keys)

@@ -40,7 +40,7 @@ public class ObjectSetting<TSetting, TKind> : DataObject, ISerializableJsonDocum
     public virtual string Name { get; set; }
 
     [DataMember(Order = 15)]
-    public virtual IdentifierSet<TSetting>? Identifiers { get; set; }
+    public virtual IdentifierSet<TSetting> Identifiers { get; set; }
 
     [DataMember(Order = 16)]
     public TKind Kind { get; set; }

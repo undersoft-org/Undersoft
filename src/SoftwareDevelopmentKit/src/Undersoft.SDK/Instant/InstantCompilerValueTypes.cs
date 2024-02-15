@@ -598,7 +598,6 @@
             tb = moduleBuilder.DefineType(
                 typeSignature,
                 TypeAttributes.Public
-                    | TypeAttributes.Serializable
                     | TypeAttributes.Class
                     | TypeAttributes.AnsiClass
                     | TypeAttributes.SequentialLayout,

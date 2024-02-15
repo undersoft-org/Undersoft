@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.Serialization;
-
-namespace Undersoft.SDK.Service.Data.Blob
+﻿namespace Undersoft.SDK.Service.Data.Blob
 {
     public class BlobAlreadyExistsException : Exception
     {
@@ -22,10 +19,5 @@ namespace Undersoft.SDK.Service.Data.Blob
 
         }
 
-        public BlobAlreadyExistsException(SerializationInfo serializationInfo, StreamingContext context)
-            : base(serializationInfo, context)
-        {
-
-        }
     }
 }

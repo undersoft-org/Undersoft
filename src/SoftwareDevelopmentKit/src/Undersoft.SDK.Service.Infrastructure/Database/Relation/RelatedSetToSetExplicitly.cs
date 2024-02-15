@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Undersoft.SDK.Service.Infrastructure.Database.Relation;
 
-using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Remote;
 using Undersoft.SDK.Service.Data.Store;
 
@@ -31,7 +30,7 @@ public class RelatedSetToSetExplicitly<TLeft, TRight>
     public RelatedSetToSetExplicitly(
         ModelBuilder modelBuilder,
         ExpandSite expandSite = ExpandSite.None,
-        string dbSchema = null
+        string? dbSchema = null
     ) : this(modelBuilder, null, null, null, null, expandSite, dbSchema, dbSchema) { }
 
     public RelatedSetToSetExplicitly(
@@ -39,18 +38,18 @@ public class RelatedSetToSetExplicitly<TLeft, TRight>
         string leftName,
         string rightName,
         ExpandSite expandSite = ExpandSite.None,
-        string dbSchema = null
+        string? dbSchema = null
     ) : this(modelBuilder, leftName, null, rightName, null, expandSite, dbSchema, dbSchema) { }
 
     public RelatedSetToSetExplicitly(
         ModelBuilder modelBuilder,
-        string leftName,
-        string leftTableName,
-        string rightName,
-        string rightTableName,
+        string? leftName,
+        string? leftTableName,
+        string? rightName,
+        string? rightTableName,
         ExpandSite expandSite = ExpandSite.None,
-        string parentSchema = null,
-        string childSchema = null
+        string? parentSchema = null,
+        string? childSchema = null
     )
     {
         _modelBuilder = modelBuilder;

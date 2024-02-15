@@ -2,8 +2,6 @@
 {
     using System.Collections;
     using System.Collections.Generic;
-    
-    using Undersoft.SDK.Series.Spectrum;
     using Undersoft.SDK.Uniques;
     using vanEmdeBoasTree;
 
@@ -212,12 +210,12 @@
             return serialcode.GetIdBytes();
         }
 
-        public bool Equals(IUnique? other)
+        public bool Equals(IUnique other)
         {
             return serialcode.Equals(other);
         }
 
-        public int CompareTo(IUnique? other)
+        public int CompareTo(IUnique other)
         {
             return serialcode.CompareTo(other);
         }

@@ -7,7 +7,7 @@
     {
         internal const int ROUNDS = 16;
 
-        internal RNGCryptoServiceProvider randomSource;
+        internal RandomNumberGenerator randomSource;
 
         private uint[] bf_P;
 
@@ -33,13 +33,13 @@
 
         public CryptoBlowFish(byte[] cipherKey)
         {
-            randomSource = new RNGCryptoServiceProvider();
+            randomSource = RandomNumberGenerator.Create();
             SetupKey(cipherKey);
         }
 
         public CryptoBlowFish(string hexKey)
         {
-            randomSource = new RNGCryptoServiceProvider();
+            randomSource = RandomNumberGenerator.Create();
             SetupKey(HexToByte(hexKey));
         }
 

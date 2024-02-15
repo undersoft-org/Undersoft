@@ -1,17 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Undersoft.SDK.Logging;
 
 namespace Undersoft.SDK.Service.Data.Store;
 
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Polly;
 using System.Collections;
 using Undersoft.SDK.Service;
-using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SDK.Service.Data.Store;
-using Uniques;
 
 public class DataStoreContext<TStore> : DataStoreContext, IDataStoreContext<TStore>
     where TStore : IDataServerStore
@@ -99,7 +94,8 @@ public class DataStoreContext : DbContext, IDataStoreContext, IResettableService
 
     public new TEntity Remove<TEntity>(TEntity entity) where TEntity : class
     {
-        return base.Update(entity).Entity;
+        var _entity = Find<TEntity>(((IIdentifiable)entity).Id);
+        return base.Remove(_entity).Entity;
     }
 
     public new object Attach(object entity)

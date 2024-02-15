@@ -1,12 +1,11 @@
 ﻿namespace Undersoft.SDK.Series.Base
 {
+    using Instant.Updating;
+    using Invoking;
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.ComponentModel;
-    using Instant;
     using Uniques;
-    using Invoking;
-    using Instant.Updating;
 
     public class TracedListingBase<V>
         : ListingBase<V>,
@@ -15,8 +14,6 @@
             INotifyPropertyChanging,
             INotifyCollectionChanged where V : class, ITracedSeries
     {
-        int readers;
-
         public TracedListingBase() : this(false, 17, HashBits.bit64) { }
 
         public TracedListingBase(int capacity = 17, HashBits bits = HashBits.bit64)

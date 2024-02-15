@@ -31,10 +31,10 @@ public class CreateSetAsyncHandler<TStore, TEntity, TDto>
         {
             IAsyncEnumerable<TEntity> entities;
             if (request.Predicate == null)
-                entities = _repository.AddByAsync(request.ForOnly(d => d.IsValid, d => d.Contract).Commit());
+                entities = _repository.AddByAsync(request.ForOnly(d => d.IsValid, d => d.Contract));
             else
                 entities = _repository.AddByAsync(
-                    request.ForOnly(d => d.IsValid, d => d.Contract).Commit(),
+                    request.ForOnly(d => d.IsValid, d => d.Contract),
                     request.Predicate
                 );
 
