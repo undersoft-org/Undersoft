@@ -1,5 +1,5 @@
-namespace Undersoft.SDK
-{ 
+namespace Undersoft.SDK.Service
+{
     public interface IOperation
     {
         public object Input { get; }

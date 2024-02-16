@@ -4,7 +4,7 @@ using Undersoft.SSC.Service.Contracts;
 
 namespace Undersoft.SSC.Service.Application.Models;
 
-public class Service : ModelBase<Service, Detail, Setting, MemberGroup>, IModel
+public class Service : ModelBase<Service, Detail, Setting, MemberGroup>, IViewModel
 {
     public Service() { Group = MemberGroup.Servitizer; }
 

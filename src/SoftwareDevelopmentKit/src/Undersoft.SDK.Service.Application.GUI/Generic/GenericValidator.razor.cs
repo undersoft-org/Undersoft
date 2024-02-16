@@ -51,7 +51,7 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
             {
                 result.Errors.GroupBy(e => e.PropertyName).ForEach(r =>
                 {
-                    var rubric = Content.ViewRubrics[r.Key.Split(".").LastOrDefault()];
+                    var rubric = Content.Rubrics[r.Key.Split(".").LastOrDefault()];
                     if (rubric != null)
                     {
                         rubric.Errors.Clear();
@@ -70,7 +70,7 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
 
         public async Task<ValidationResult> ValidateAsync(string propertyName)
         {
-            IViewRubric rubric = Content.ViewRubrics[propertyName];
+            IViewRubric rubric = Content.Rubrics[propertyName];
 
             ValidationMessageStore.Clear(rubric.FieldIdentifier);
             rubric.Errors.Clear();

@@ -6,10 +6,14 @@
 <AuthorizeView>
     <Authorized>
         @context.User.Identity?.Name
-        <button class="nav-link btn btn-link" @onclick="BeginSignOut">Sign out</button>
+        <FluentButton OnClick="@BeginSignOut" Appearance="Appearance.Lightweight">
+            Sign out
+        </FluentButton>
     </Authorized>
     <NotAuthorized>
-        <a href="account/signin">Sign in</a>
+        <FluentButton OnClick="@BeginSignIn" Appearance="Appearance.Lightweight">
+            Sign in
+        </FluentButton>
     </NotAuthorized>
 </AuthorizeView>
 
@@ -17,5 +21,10 @@
     private void BeginSignOut(MouseEventArgs args)
     {
         Navigation.NavigateTo("access/sign_out");
+    }
+
+    private void BeginSignIn(MouseEventArgs args)
+    {
+        Navigation.NavigateTo("access/sign_in");
     }
 }

@@ -2,6 +2,7 @@
 @using Undersoft.SDK.Service.Application.GUI;
 @using Undersoft.SDK.Service.Access;
 @using Undersoft.SDK.Service.Application.GUI.View;
+@using Undersoft.SDK.Service.Operation
 
 @inject NavigationManager _navigation
 @inject IServicer _servicer
@@ -14,18 +15,24 @@
 
 @code
 {
-    private SetupPanel<SetupAppearancePanel<Credentials>, Credentials> _dialog = default!;
+    private IViewPanel<AppearanceState> _panel = default!;
 
     protected override void OnInitialized()
     {
-        _dialog = _servicer.Initialize<SetupPanel<SetupAppearancePanel<Credentials>, Credentials>>();
+        _panel = _servicer.Initialize<ViewPanel<GenericAppearancePanel<AppearanceState>, AppearanceState>>();
     }
 
     private async Task OpenAppearancePanel()
     {
-        var data = new ViewData<Credentials>(new Credentials(), OperationType.Change);
+        var data = new ViewData<AppearanceState>();
+        data.HorizontalAlignment = HorizontalAlignment.Right;
 
-        await _dialog.Show(data);
+        await _panel.Show(data, (p) => 
+        { 
+            p.ShowDismiss = true; 
+            p.PrimaryAction = "Ok"; 
+            p.Alignment = HorizontalAlignment.Right;            
+        });
     }
 }
 }

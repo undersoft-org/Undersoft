@@ -4,7 +4,9 @@ using Undersoft.SDK.Service.Application.GUI.Generic;
 
 namespace Undersoft.SDK.Service.Application.GUI.View;
 
-public class ViewPanel<TPanel, TModel> : ComponentBase, IViewDialog<TModel> where TPanel : IDialogContentComponent<IViewData<TModel>> where TModel : class, IOrigin, IInnerProxy
+public class ViewPanel<TPanel, TModel> : ComponentBase, IViewPanel<TModel>
+    where TPanel : IDialogContentComponent<IViewData<TModel>>
+    where TModel : class, IOrigin, IInnerProxy
 {
     public ViewPanel(IDialogService dialogService)
     {
@@ -21,17 +23,19 @@ public class ViewPanel<TPanel, TModel> : ComponentBase, IViewDialog<TModel> wher
     {
         if (Service != null)
         {
-            var dialog = await Service.ShowPanelAsync<TPanel>(data, new DialogParameters<TModel>()
-            {
-                Height = data.Height,
-                Width = data.Width,
-                Title = data.Title,
-                ShowTitle = true,
-                Alignment = HorizontalAlignment.Right,
-                PrimaryAction = "OK",
-                SecondaryAction = null,
-                ShowDismiss = true
-            });
+            var dialog = await Service.ShowPanelAsync<TPanel>(
+                data,
+                new DialogParameters<TModel>()
+                {
+                    Height = data.Height,
+                    Width = data.Width,
+                    Title = data.Title,
+                    ShowTitle = true,
+                    Alignment = data.HorizontalAlignment,
+                    SecondaryActionEnabled = false,
+                    ShowDismiss = true
+                }
+            );
 
             var result = await dialog.Result;
             if (!result.Cancelled && result.Data != null)
@@ -76,10 +80,29 @@ public class ViewPanel<TPanel, TModel> : ComponentBase, IViewDialog<TModel> wher
         }
     }
 
+    public virtual async Task Update(
+        string id,
+        IViewData<TModel> data,
+        Action<DialogParameters>? setup = null
+    )
+    {
+        if (Service != null)
+        {
+            var parameters = new DialogParameters<IViewData<TModel>>();
+            parameters.Height = data.Height;
+            parameters.Width = data.Width;
+            parameters.Title = data.Title;
+            parameters.Id = data.Model.TypeId.ToString();
+            parameters.Content = data;
+            if (setup != null)
+                setup(parameters);
+            Reference = await Service.UpdateDialogAsync<IViewData<TModel>>(id, parameters);
+        }
+    }
+
     public void RenderView()
     {
         if (Content?.View != null)
             Content.View.RenderView();
     }
-
 }

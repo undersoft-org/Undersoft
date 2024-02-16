@@ -26,7 +26,7 @@ public class ViewDialog<TDialog, TModel> : IViewDialog<TModel> where TDialog : I
                 Height = data.Height,
                 Width = data.Width,
                 Title = data.Title,
-                Id = data.Model.TypeId.ToString(),
+                Id = data.Model.TypeId.ToString()
             });
 
             var result = await Reference.Result;
@@ -45,8 +45,9 @@ public class ViewDialog<TDialog, TModel> : IViewDialog<TModel> where TDialog : I
             parameters.Height = data.Height;
             parameters.Width = data.Width;
             parameters.Title = data.Title;
+            parameters.Id = data.Model.TypeId.ToString();
             setup(parameters);
-            Reference = await Service.ShowPanelAsync<TDialog>(data, parameters);
+            Reference = await Service.ShowDialogAsync<TDialog>(data, parameters);
 
             var result = await Reference.Result;
             if (!result.Cancelled && result.Data != null)
@@ -62,13 +63,29 @@ public class ViewDialog<TDialog, TModel> : IViewDialog<TModel> where TDialog : I
         {
             var parameters = new DialogParameters<TModel>();
             setup(parameters);
-            Reference = await Service.ShowPanelAsync<TDialog>(parameters);
+            Reference = await Service.ShowDialogAsync<TDialog>(parameters);
 
             var result = await Reference.Result;
             if (!result.Cancelled && result.Data != null)
             {
                 Content = (IViewData<TModel>)result.Data;
             }
+        }
+    }
+
+    public virtual async Task Update(string id, IViewData<TModel> data, Action<DialogParameters>? setup = null)
+    {
+        if (Service != null)
+        {
+            var parameters = new DialogParameters<IViewData<TModel>>();
+            parameters.Height = data.Height;
+            parameters.Width = data.Width;
+            parameters.Title = data.Title;
+            parameters.Id = data.Model.TypeId.ToString();
+            parameters.Content = data;
+            if (setup != null)
+                setup(parameters);
+            Reference = await Service.UpdateDialogAsync<IViewData<TModel>>(id, parameters);
         }
     }
 

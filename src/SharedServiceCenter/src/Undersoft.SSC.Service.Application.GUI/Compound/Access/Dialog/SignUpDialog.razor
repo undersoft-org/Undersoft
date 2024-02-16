@@ -45,7 +45,7 @@
 
     private async Task OnSignIn(MouseEventArgs e)
     {
-        Content.NextPath = "access/sign_in";
+        Content.NextHref = "access/sign_in";
 
         await Dialog.CloseAsync(Content);
     }

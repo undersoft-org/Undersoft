@@ -3,7 +3,7 @@ using Undersoft.SSC.Service.Contracts;
 
 namespace Undersoft.SSC.Service.Application.Models;
 
-public class Reminder : Member, IModel
+public class Reminder : Member, IViewModel
 {
     public Reminder() { Group = MemberGroup.Servitizer; }
 

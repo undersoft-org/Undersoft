@@ -10,12 +10,10 @@
     public class MemberRubric : MemberInfo, IRubric
     {
         Uscn code = Uscn.Empty;
-
         IOrigin origin = new Origin();
-
         public object deltamark;
-
         public bool deltamarkset = false;
+        public string label;
 
         public MemberRubric() { }
 
@@ -288,6 +286,7 @@
         public string TypeName { get; set; }
 
         public DateTime Time { get => DateTime.FromBinary(code.Time); set => code.Time = value.ToBinary(); }
-        public string Label { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public string Label { get => label ??= DisplayName ?? RubricName; set => label = value; }
     }
 }

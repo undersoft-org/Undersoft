@@ -59,14 +59,14 @@
 
     private async Task OnSignUp(MouseEventArgs e)
     {
-        Content.NextPath = "access/sign_up";
+        Content.NextHref = "access/sign_up";
 
         await Dialog.CloseAsync(Content);
     }
 
     private async Task OnResetPassword(MouseEventArgs e)
     {
-        Content.NextPath = "access/reset_password";
+        Content.NextHref = "access/reset_password";
 
         await Dialog.CloseAsync(Content);
     }

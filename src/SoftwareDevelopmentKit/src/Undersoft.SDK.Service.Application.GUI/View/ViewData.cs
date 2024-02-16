@@ -1,55 +1,43 @@
 using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Instant.Proxies;
+using Undersoft.SDK.Series.Base;
 using Undersoft.SDK.Service.Application.GUI.View;
 using Undersoft.SDK.Service.Operation;
 using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Service.Application.GUI.Generic;
 
-public class ViewData<TModel> : ViewData, IViewData<TModel>
-    where TModel : class, IOrigin, IInnerProxy
+public class ViewData<TModel> : ListingBase<IViewData<TModel>>, IViewData<TModel> where TModel : class, IOrigin, IInnerProxy
 {
-    public ViewData()
+    protected IProxy _proxy = default!;
+    protected IView _view = default!;
+
+    public ViewData() : this(typeof(TModel).New<TModel>(), OperationType.Any)
     {
-        Model = typeof(TModel).New<TModel>();
-        _proxy = Model.Proxy;
-        CommandMode = OperationType.Any;
     }
 
-    public ViewData(OperationType mode)
+    public ViewData(OperationType mode) : this(typeof(TModel).New<TModel>(), mode)
     {
-        Model = typeof(TModel).New<TModel>();
-        _proxy = Model.Proxy;
-        CommandMode = mode;
     }
 
     public ViewData(TModel data) : this(data, OperationType.Any) { }
 
-    public ViewData(TModel data, OperationType mode, string title = "")
+    public ViewData(TModel data, OperationType mode, string title = "") : base(true)
     {
         Model = data;
         _proxy = data.Proxy;
         Title = title;
-        CommandMode = mode;
+        Operation = mode;
     }
 
-    public ViewData(TModel data, OperationType mode, string title, params string[] displayList)
-        : this(data, mode, title)
-    {
-        if (displayList != null && displayList.Any())
-        {
-            SetVisible(displayList);
-        }
-    }
+    public virtual void ClearData() => Model = typeof(TModel).New<TModel>();
 
-    public override void ClearData() => Model = typeof(TModel).New<TModel>();
+    public virtual TModel Model { get; set; } = default!;
 
-    public new TModel Model { get; set; } = default!;
-
-    public override void SetRequired(params string[] requiredList)
+    public virtual void SetRequired(params string[] requiredList)
     {
         var rubrics = requiredList.ForEach(
-            r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
+            r => (ViewRubric)((object)(_proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
         );
         rubrics.ForEach(r =>
         {
@@ -58,82 +46,46 @@ public class ViewData<TModel> : ViewData, IViewData<TModel>
             r.Editable = true;
         });
 
-        ViewRubrics.Put(rubrics);
+        Rubrics.Put(rubrics);
     }
 
-    public override void SetVisible(params string[] visibleList)
+    public virtual void SetVisible(params string[] visibleList)
     {
         var rubrics = visibleList.ForEach(
-            r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
+            r => (ViewRubric)((object)(_proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
         );
         rubrics.ForEach(r => r.Visible = true);
-        ViewRubrics.Put(rubrics);
+        Rubrics.Put(rubrics);
     }
 
-    public override void SetEditable(params string[] editableList)
+    public virtual void SetEditable(params string[] editableList)
     {
         var rubrics = editableList.ForEach(
-            r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
+            r => (ViewRubric)((object)(_proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
         );
         rubrics.ForEach(r => r.Editable = true);
-        ViewRubrics.Put(rubrics);
+        Rubrics.Put(rubrics);
     }
 
-    public override void SetDisplayNames(params DisplayPair[] displayPairList)
+    public virtual void SetDisplayNames(params DisplayPair[] displayPairList)
     {
         var rubrics = displayPairList.ForEach(d =>
         {
-            var rubric = Model.Proxy.Rubrics[d.RubricName].ShalowCopy(new ViewRubric());
+            var rubric = _proxy.Rubrics[d.RubricName].ShalowCopy(new ViewRubric());
             rubric.DisplayName = d.DisplayName;
             rubric.Visible = true;
             return (ViewRubric)((object)rubric);
         });
-        ViewRubrics.Put(rubrics);
-    }
-}
-
-public class ViewData : Origin, IViewData
-{
-    protected IProxy _proxy;
-
-    public ViewData() { }
-
-    public ViewData(IInnerProxy data) : this(data, OperationType.Any) { }
-
-    public ViewData(OperationType mode)
-    {
-        CommandMode = mode;
-        _proxy = default!;
+        Rubrics.Put(rubrics);
     }
 
-    public ViewData(IInnerProxy data, OperationType mode, string title = "") : this(mode)
-    {
-        Model = data;
-        _proxy = data.Proxy;
-        Title = title;
-    }
+    public string ViewId => Id.ToString();
 
-    public ViewData(IInnerProxy data, OperationType mode, string title, params string[] displayList)
-        : this(mode)
-    {
-        Model = data;
-        _proxy = data.Proxy;
-        Title = title;
-        if (displayList != null && displayList.Any())
-        {
-            SetVisible(displayList);
-        }
-    }
-
-    public virtual void ClearData() => Model = Model.GetType().New<IInnerProxy>();
-
-    public virtual IInnerProxy Model { get; set; } = default!;
+    public bool IsSingle => Count == 0;
 
     public string? Title { get; set; } = null;
 
     public string? Description { get; set; } = null;
-
-    public string? Note { get; set; } = null;
 
     public string? Info { get; set; }
 
@@ -143,99 +95,77 @@ public class ViewData : Origin, IViewData
 
     public Icon? Icon { get; set; }
 
-    public string? Logo { get; set; } = "img/logo.png";
+    public string? Logo { get; set; }
 
     public string Height { get; set; } = "450px";
 
     public string Width { get; set; } = "400px";
 
-    private string? nextPath = null;
-    public string? NextPath
+    public string? Href { get; set; }
+
+    public HorizontalAlignment HorizontalAlignment { get; set; }
+
+    public ViewDelegates Delegates { get; set; } = new ViewDelegates();
+
+    public ViewInvokers Invokers { get; set; } = new ViewInvokers();
+
+    private string? nextHref = null;
+    public string? NextHref
     {
-        get { return nextPath; }
+        get { return nextHref; }
         set
         {
-            nextPath = value;
+            nextHref = value;
             HaveNext = true;
         }
     }
 
-    public string? NextInvoke { get; set; } = null;
-
     public bool Canceled { get; set; }
 
-    public bool Selected { get; set; }
+    public bool Checked { get; set; }
 
     public bool HaveNext { get; set; }
 
-    public OperationType CommandMode { get; set; }
+    public OperationType Operation { get; set; }
 
-    public IViewRubric SelectedRubric { get; set; } = default!;
+    public IViewRubric ActiveRubric { get; set; } = default!;
 
-    public IViewRubrics ViewRubrics { get; set; } = new ViewRubrics();
+    public IViewRubrics Rubrics { get; set; } = new ViewRubrics();
 
     public string? Class { get; set; }
 
-    public IViewValidator Validator { get; set; }
+    public IViewValidator Validator { get; set; } = default!;
 
-    public virtual void SetRequired(params string[] requiredList)
+    public IView? View
     {
-        var rubrics = requiredList.ForEach(
-            r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
-        );
-        rubrics.ForEach(r =>
+        get => _view;
+        set
         {
-            r.Required = true;
-            r.Visible = true;
-            r.Editable = true;
-        });
-        ViewRubrics.Put(rubrics);
+            if (value != null)
+            {
+                if (ViewTypeName == null)
+                    ViewTypeName = value.GetType().FullName;
+                _view = value;
+            }
+        }
     }
 
-    public virtual void SetVisible(params string[] visibleList)
-    {
-        var rubrics = visibleList.ForEach(
-            r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
-        );
-        rubrics.ForEach(r => r.Visible = true);
-        ViewRubrics.Put(rubrics);
-    }
+    public string? ViewTypeName { get; set; }
 
-    public virtual void SetEditable(params string[] editableList)
-    {
-        var rubrics = editableList.ForEach(
-            r => (ViewRubric)((object)(Model.Proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
-        );
-        rubrics.ForEach(r => r.Editable = true);
-        ViewRubrics.Put(rubrics);
-    }
-
-    public virtual void SetDisplayNames(params DisplayPair[] displayPairList)
-    {
-        var rubrics = displayPairList.ForEach(d =>
-        {
-            var rubric = Model.ToProxy().Rubrics[d.RubricName].ShalowCopy(new ViewRubric());
-            rubric.DisplayName = d.DisplayName;
-            rubric.Visible = true;
-            return (ViewRubric)((object)rubric);
-        });
-        ViewRubrics.Put(rubrics);
-    }
-
-    public IView View { get; set; }
+    IInnerProxy IViewData.Model { get => this.Model; set => this.Model = (TModel)value; }
 
     public void RenderView()
     {
         if (View != null)
             View.RenderView();
         else
-            ViewRubrics.ForEach(r => { if (r.View != null) r.View.RenderView(); });
+            Rubrics.ForEach(r => { if (r.View != null) r.View.RenderView(); });
     }
 
     public void ClearErrors()
     {
         Errors = null;
-        ViewRubrics.ForEach(r => r.Errors.Clear());
+        Rubrics.ForEach(r => r.Errors.Clear());
     }
 }
 

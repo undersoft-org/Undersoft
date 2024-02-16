@@ -29,6 +29,7 @@
         data.SetVisible(nameof(Credentials.SaveAccountInCookies));
         data.Description = description;
         data.Height = "420px";
+        data.Logo = "img/logo.png";
 
         while (true)
         {
@@ -38,9 +39,9 @@
 
             if (content != null)
             {
-                if (content.HaveNext && content.NextPath != null)
+                if (content.HaveNext && content.NextHref != null)
                 {
-                    _navigation.NavigateTo(content.NextPath);
+                    _navigation.NavigateTo(content.NextHref);
                     return;
                 }
 
@@ -52,7 +53,7 @@
                         if (result.Credentials.RegistrationCompleted)
                             _navigation.NavigateTo("");
                         else
-                            _navigation.NavigateTo("/access/register_account");
+                            _navigation.NavigateTo("/access/registration");
                     else
                         _navigation.NavigateTo($"/access/confirm_email/{result.Credentials.Email}");
                     return;

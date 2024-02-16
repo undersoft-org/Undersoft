@@ -1,0 +1,44 @@
+﻿@using Undersoft.SDK.Service
+@using Undersoft.SDK.Service.Data.Event
+@using Undersoft.SSC.Service.Contracts
+
+@inject IServicer _servicer
+@inject IMessageService MessageService
+
+<FluentButton Appearance="Appearance.Accent" OnClick="OpenAccountPanelAsync" Title="Notification center">
+        <FluentPersona Initials="SU"
+                       Status="PresenceStatus.Available"
+                       StatusSize="PresenceBadgeSize.Small"
+                       StatusTitle="He is available"
+                       ImageSize="50px">
+        </FluentPersona>
+</FluentButton>
+
+    @code {
+
+    private IViewPanel<Account> _panel = default!;
+
+    protected override void OnInitialized()
+    {      
+        _panel = _servicer.Initialize<ViewPanel<GenericAccountPanel<Account>, Account>>();
+    }
+
+    private async Task OpenAccountPanelAsync()
+    {
+         await _panel.Show((p) =>
+            {
+                p.Alignment = HorizontalAlignment.Right;
+                p.Title = $"Profile";
+                p.PrimaryAction = "Ok";
+                p.SecondaryAction = null;
+                p.ShowDismiss = true;
+            });
+
+        HandlePanel(_panel.Content);
+    }
+
+    private void HandlePanel(IViewData<Account>? result)
+    {
+        
+    }
+}

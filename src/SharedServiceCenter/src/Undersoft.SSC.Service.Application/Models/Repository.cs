@@ -3,7 +3,7 @@ using Undersoft.SSC.Service.Contracts;
 
 namespace Undersoft.SSC.Service.Application.Models;
 
-public class Repository : Member, IModel
+public class Repository : Member, IViewModel
 {
     public Repository() { Group = MemberGroup.Servitizer; }
 

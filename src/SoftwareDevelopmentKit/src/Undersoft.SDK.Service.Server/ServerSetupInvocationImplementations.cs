@@ -24,8 +24,8 @@ public partial class ServerSetup
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
         IServiceCollection deck = service
-            .AddTransient<ISeries<IModel>, Registry<IModel>>()
-            .AddScoped<ITypedSeries<IModel>, TypedRegistry<IModel>>();
+            .AddTransient<ISeries<IViewModel>, Registry<IViewModel>>()
+            .AddScoped<ITypedSeries<IViewModel>, TypedRegistry<IViewModel>>();
 
         var controllerTypes = assemblies
             .SelectMany(

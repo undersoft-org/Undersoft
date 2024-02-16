@@ -8,30 +8,33 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
     public interface IViewData<TModel> : IViewData where TModel : class, IOrigin, IInnerProxy
     {
         new TModel Model { get; set; }
-    }
-
-    public interface IViewData : IView
-    {
-        IInnerProxy Model { get; set; }
+        string ViewId { get; }
         string? Description { get; set; }
         string? Class { get; set; }
         string? Info { get; set; }
         string? Errors { get; set; }
         string? Success { get; set; }
+        bool IsSingle { get; }
         bool HaveNext { get; set; }
         string Height { get; set; }
         Icon? Icon { get; set; }
         bool Canceled { get; set; }
         string? Logo { get; set; }
-        string? NextInvoke { get; set; }
-        string? NextPath { get; set; }
-        IViewRubric SelectedRubric { get; set; }
-        IViewRubrics ViewRubrics { get; set; }
+        string? Href { get; set; }
+        string? NextHref { get; set; }
+        IViewRubric ActiveRubric { get; set; }
         string? Title { get; set; }
         string Width { get; set; }
-        OperationType CommandMode { get; set; }
+        OperationType Operation { get; set; }
 
-        IView View { get; set; }
+        HorizontalAlignment HorizontalAlignment { get; set; }
+
+        ViewDelegates Delegates { get; set; }
+        ViewInvokers Invokers { get; set; }
+
+        IView? View { get; set; }
+
+        string? ViewTypeName { get; set; }
 
         void ClearErrors();
 
@@ -41,5 +44,12 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
         void SetVisible(params string[] visibleList);
         void SetEditable(params string[] editableList);
         void SetDisplayNames(params DisplayPair[] displayPairs);
+    }
+
+
+    public interface IViewData : IView, IIdentifiable
+    {
+        IInnerProxy Model { get; set; }
+        IViewRubrics Rubrics { get; set; }
     }
 }

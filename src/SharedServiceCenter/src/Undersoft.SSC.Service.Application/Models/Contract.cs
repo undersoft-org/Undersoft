@@ -5,7 +5,7 @@ using Undersoft.SSC.Service.Contracts.Details;
 
 namespace Undersoft.SSC.Service.Application.Models;
 
-public class Contract : Member, IModel
+public class Contract : Member, IViewModel
 {
     public Contract() { Group = MemberGroup.Organization; }
 

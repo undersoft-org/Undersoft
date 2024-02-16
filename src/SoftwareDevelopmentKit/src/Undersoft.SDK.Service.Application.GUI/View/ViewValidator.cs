@@ -25,7 +25,7 @@ public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IVali
                 Task.Run(
                     () =>
                     {
-                        return ((int)cmd.CommandMode & (int)commandMode) > 0
+                        return ((int)cmd.Operation & (int)commandMode) > 0
                             && GetType().UnderlyingSystemType.IsAssignableTo(type);
                     },
                     cancel
@@ -41,7 +41,7 @@ public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IVali
                 Task.Run(
                     () =>
                     {
-                        return ((int)cmd.CommandMode & (int)GenericDataMode) > 0;
+                        return ((int)cmd.Operation & (int)GenericDataMode) > 0;
                     },
                     cancel
                 ),

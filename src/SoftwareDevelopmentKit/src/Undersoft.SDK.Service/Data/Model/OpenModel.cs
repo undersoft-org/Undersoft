@@ -10,7 +10,7 @@ using Undersoft.SDK.Service.Data.Object.Setting;
 
 [DataContract]
 [StructLayout(LayoutKind.Sequential)]
-public class OpenModel<TViewModel, TDetail, TSetting, TGroup> : DataObject, IModel
+public class OpenModel<TViewModel, TDetail, TSetting, TGroup> : DataObject, IViewModel
     where TViewModel : IDataObject
     where TDetail : class, IDetail, new()
     where TSetting : class, ISetting, new()

@@ -4,6 +4,7 @@
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 
 @implements IDialogContentComponent<IViewData<TModel>>
+@implements IView
 
 <div>
     <FluentDesignTheme @ref=_theme
@@ -100,6 +101,17 @@
     public LocalizationDirection? Direction { get; set; }
 
     private static IEnumerable<DesignThemeModes> AllModes => Enum.GetValues<DesignThemeModes>();
+
+    protected override void OnInitialized()
+    {
+        Content.View = this;
+        base.OnInitialized();
+    }
+
+    public void RenderView()
+    {
+        this.StateHasChanged();
+    }
 
     private static IEnumerable<OfficeColor?> AllOfficeColors
     {

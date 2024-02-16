@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Undersoft.SDK.Service.Data.Repository.Source;
-using Undersoft.SDK.Service.Data.Store;
 
 namespace Undersoft.SDK.Service
 {
@@ -13,9 +12,9 @@ namespace Undersoft.SDK.Service
         public ServiceSourceProviderConfiguration(IServiceRegistry registry) { _registry = registry; }
 
         IServiceRegistry _registry { get; set; }
-        
+
         public virtual IServiceRegistry AddSourceProvider(StoreProvider provider)
-        {            
+        {
             if (!DataStoreRegistry.SourceProviders.ContainsKey((int)provider))
             {
                 switch (provider)
@@ -42,7 +41,7 @@ namespace Undersoft.SDK.Service
                 case StoreProvider.MemoryDb:
                     return builder.UseInternalServiceProvider(new ServiceManager())
                         .UseInMemoryDatabase(connectionString)
-                        //.UseLazyLoadingProxies()
+                        .UseLazyLoadingProxies()
                         .ConfigureWarnings(
                             w => w.Ignore(
                                 InMemoryEventId

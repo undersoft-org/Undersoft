@@ -11,17 +11,17 @@
             <FluentAnchor Appearance="Appearance.Hypertext"
                           Href="http://github.com/undersoft-org/undersoft" Target="_blank" Rel="noreferrer noopener"
                           title="Shared Service Center source on GitHub" aria-label="SSC Repo">
-                <FluentIcon Value="@(new Icons.Regular.Size20.AnimalCat())" Color="Color.FillInverse" />
+                <FluentIcon Value="@(new Addons.Size20.GitHub())" Color="Color.FillInverse" />
             </FluentAnchor>
         </div>
         <div class="notifications">
-            <EventNotificationPanelButton />
+            <GenericNotificationPanelButton />
         </div>
         <div class="settings">
-            <SetupAppearancePanelButton />
+            <GenericAppearancePanelButton />
         </div>
         <div class="person">
-            <AccessStateButton />
+            <GenericAccountPanelButton />
         </div>
     </FluentHeader>
     <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
@@ -30,7 +30,7 @@
             <div class="content">
                 <article id="article">
 
-                    <FluentMessageBarProvider Section="@Constant.MESSAGES_TOP" />
+                    <FluentMessageBarProvider Section="@ViewSection.TOP" />
 
                     @Body
 

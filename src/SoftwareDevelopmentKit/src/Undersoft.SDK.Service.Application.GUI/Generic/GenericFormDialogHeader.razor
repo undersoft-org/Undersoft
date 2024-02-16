@@ -9,8 +9,12 @@
     <!-- Header -->
     <FluentDialogHeader>
         <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalGap="20">
+            <FluentMessageBarProvider Section="@ViewSection.DIALOG" MaxMessageCount="1" />
             <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" VerticalGap="0">
-                <a><img src=@Content.Logo /></a>
+                @if (Content.Logo != null)
+                {
+                    <a><img src=@Content.Logo /></a>
+                }
                 <FluentSpacer />
                 @if (Content.Icon != null)
                 {

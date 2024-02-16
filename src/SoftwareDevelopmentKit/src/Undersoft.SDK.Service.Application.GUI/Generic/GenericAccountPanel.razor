@@ -1,0 +1,29 @@
+﻿@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+
+@implements IDialogContentComponent<IViewData<TModel>>
+@implements IView
+@inject IMessageService MessageService
+
+<div>
+
+    <FluentStack>
+
+    </FluentStack>
+</div>
+
+@code {
+    [Parameter]
+    public IViewData<TModel> Content { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        Content.View = this;
+        base.OnInitialized();
+    }
+
+    public void RenderView()
+    {
+        this.StateHasChanged();
+    }
+
+}

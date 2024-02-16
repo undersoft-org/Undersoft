@@ -6,7 +6,7 @@ using Undersoft.SDK.Service.Application.GUI.View;
 
 namespace Undersoft.SDK.Service.Application.GUI.Generic
 {
-    public partial class GenericField<TModel> : ComponentBase, IIdentifiable, IViewField where TModel : class, IOrigin, IInnerProxy
+    public partial class GenericField<TModel> : ComponentBase, IIdentifiable, IViewItem where TModel : class, IOrigin, IInnerProxy
     {
         private Type _type = default!;
         private IProxy _proxy = default!;
@@ -64,6 +64,10 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
         public long Id { get; set; }
 
         public long TypeId { get; set; }
+
+        public string? Label { get => _label; set { _label = value; } }
+
+        public Icon? Icon { get; set; }
 
         public string? Class { get; set; } = "";
 

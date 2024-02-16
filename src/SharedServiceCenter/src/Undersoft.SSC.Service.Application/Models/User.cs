@@ -7,7 +7,7 @@ using Undersoft.SSC.Service.Contracts.Settings;
 
 namespace Undersoft.SSC.Service.Application.Models;
 
-public class User : ModelBase<User, Detail, Setting, MemberGroup>, IModel
+public class User : ModelBase<User, Detail, Setting, MemberGroup>, IViewModel
 {
     public User() { Group = MemberGroup.User; }
 
