@@ -136,7 +136,7 @@
             {
                 if (value is ICollection)
                     return NullOrEquals((ICollection)value, obj);
-                return obj.Equals(value);
+                return value.Equals(obj);
             }
             return (obj == null && value == null);
         }

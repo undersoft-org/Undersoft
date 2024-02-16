@@ -40,13 +40,15 @@ public partial class Repository<TEntity> : IRepositoryMappedCommand<TEntity> whe
         return AddAsync(MapFrom(models));
     }
 
-    public virtual TEntity DeleteBy<TDto>(TDto model)
+    public virtual async Task<TEntity> DeleteBy<TDto>(TDto model)
     {
-        return this.Delete(MapFrom(model));
+        return await this.Delete(((IIdentifiable)model).Id);
     }
-    public virtual TEntity DeleteBy<TDto>(TDto model, Func<TDto, Expression<Func<TEntity, bool>>> predicate)
+    public virtual async Task<TEntity> DeleteBy<TDto>(TDto model, Func<TDto, Expression<Func<TEntity, bool>>> predicate)
     {
-        return Delete(predicate.Invoke(model));
+        if (predicate != null)
+            return Delete(predicate.Invoke(model));
+        return await DeleteBy(model);
     }
     public virtual IEnumerable<TEntity> DeleteBy<TDto>(IEnumerable<TDto> model)
     {

@@ -15,8 +15,8 @@ namespace Undersoft.SDK.Service.Data.Repository
 
         IEnumerable<TEntity> DeleteBy<TDto>(IEnumerable<TDto> model);
         IEnumerable<TEntity> DeleteBy<TDto>(IEnumerable<TDto> model, Func<TDto, Expression<Func<TEntity, bool>>> predicate);
-        TEntity DeleteBy<TDto>(TDto model);
-        TEntity DeleteBy<TDto>(TDto model, Func<TDto, Expression<Func<TEntity, bool>>> predicate);
+        Task<TEntity> DeleteBy<TDto>(TDto model);
+        Task<TEntity> DeleteBy<TDto>(TDto model, Func<TDto, Expression<Func<TEntity, bool>>> predicate);
         IAsyncEnumerable<TEntity> DeleteByAsync<TDto>(IEnumerable<TDto> model);
         IAsyncEnumerable<TEntity> DeleteByAsync<TDto>(IEnumerable<TDto> model, Func<TDto, Expression<Func<TEntity, bool>>> predicate);
 

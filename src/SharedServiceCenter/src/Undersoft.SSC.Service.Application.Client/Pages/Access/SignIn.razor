@@ -53,7 +53,7 @@
                         if (result.Credentials.RegistrationCompleted)
                             _navigation.NavigateTo("");
                         else
-                            _navigation.NavigateTo("/access/registration");
+                            _navigation.NavigateTo("/access/register_account");
                     else
                         _navigation.NavigateTo($"/access/confirm_email/{result.Credentials.Email}");
                     return;

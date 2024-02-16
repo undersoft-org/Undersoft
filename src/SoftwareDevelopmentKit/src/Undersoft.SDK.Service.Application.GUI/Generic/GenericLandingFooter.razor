@@ -1,15 +1,14 @@
-﻿@inherits GenericLayout
+﻿@inherits FluentComponentBase
 
 <FluentFooter Style="@("height: 40px; color: white;")">
     <div class="version">
         <small>
-            Version: @_version
-            &nbsp;-&nbsp;        
-            Author: Dariusz Hanc - dh@undersoft.org
+            Version: @AppearanceState?.Version
+            &nbsp;-&nbsp;
+            Author: Dariusz Hanc - undersoft@undersoft.pl
         </small>
     </div>
     <FluentSpacer />
-
     <div class="copy">
         <small>Undersoft © 2024. All rights reserved  </small>
     </div>

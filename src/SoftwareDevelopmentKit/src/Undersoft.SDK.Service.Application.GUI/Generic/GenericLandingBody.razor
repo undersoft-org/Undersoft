@@ -1,29 +1,22 @@
-﻿@inherits LayoutComponentBase
+﻿@inherits FluentComponentBase
 
-  <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
-                 
-        <FluentBodyContent id="body-content" Style="height: calc(100dvh - 90px);">
-        
-            <div class="content">
-
-                <article id="article">
-
+<FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+    <FluentBodyContent id="body-content"  Style="height: calc(100dvh - 90px);">
+        <div class="content">
+            <article id="article">
                 <FluentMessageBarProvider Section="@ViewSection.TOP" />
-
+                <CascadingValue Value=@OnRefreshTableOfContents>
                     @Body
-
-                </article>
-
-                <aside>
-
-                </aside>
-
-                <FluentToastProvider MaxToastCount="10" />
-                <FluentDialogProvider />
-                <FluentTooltipProvider />
-
-            </div>
-
-        </FluentBodyContent>
-
-    </FluentStack>
+                </CascadingValue>
+            </article>
+            <aside>
+                <GenericPageContents @ref=_toc />
+                <GenericConsole />
+                <GenericGoTopButton />
+            </aside>
+            <FluentToastProvider MaxToastCount="10" />
+            <FluentDialogProvider />
+            <FluentTooltipProvider />
+        </div>
+    </FluentBodyContent>
+</FluentStack>

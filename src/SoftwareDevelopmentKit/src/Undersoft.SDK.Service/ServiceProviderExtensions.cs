@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using Undersoft.SDK.Service.Hosting;
-using Undersoft.SDK.Service.Data.Repository;
 
 namespace Undersoft.SDK.Service
 {
@@ -37,7 +35,7 @@ namespace Undersoft.SDK.Service
             service
                 .GetType()
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .Where(p => p.GetCustomAttribute<InjectAttribute>() != null)
+                .Where(p => p.GetCustomAttribute<InjectPropertyAttribute>() != null)
                 .ForEach(prop => prop.SetValue(service, provider.GetService(prop.PropertyType)));
         }
 
@@ -60,5 +58,5 @@ namespace Undersoft.SDK.Service
     }
 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class InjectAttribute : Attribute { }
+    public class InjectPropertyAttribute : Attribute { }
 }

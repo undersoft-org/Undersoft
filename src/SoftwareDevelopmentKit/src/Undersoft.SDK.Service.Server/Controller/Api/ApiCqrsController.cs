@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using System.Text.Json;
 
 namespace Undersoft.SDK.Service.Server.Controller.Api;
+
 using Operation.Command;
 using Operation.Query;
 using Undersoft.SDK.Service.Data.Client.Attributes;
@@ -13,7 +14,8 @@ using Undersoft.SDK.Service.Data.Store;
 [ApiController]
 [ApiData]
 [Route($"{StoreRoutes.ApiDataRoute}/[controller]")]
-public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> : ApiDataController<TKey, TEntry, TEntity, TDto, TService>
+public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService>
+    : ApiDataController<TKey, TEntry, TEntity, TDto, TService>
     where TDto : class, IOrigin, IInnerProxy
     where TEntity : class, IOrigin, IInnerProxy
     where TEntry : IDataServerStore
@@ -44,7 +46,9 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
     public override async Task<IActionResult> Get([FromHeader] int page, [FromHeader] int limit)
     {
         return Ok(
-            await _servicer.Entry(new Get<TReport, TEntity, TDto>((page - 1) * limit, limit)).ConfigureAwait(true)
+            await _servicer
+                .Report(new Get<TReport, TEntity, TDto>((page - 1) * limit, limit))
+                .ConfigureAwait(true)
         );
     }
 
@@ -58,9 +62,12 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
     public override async Task<IActionResult> Get([FromRoute] TKey key)
     {
         return Ok(
-           _keymatcher == null
-               ? await _servicer.Entry(new Find<TReport, TEntity, TDto>(key)).ConfigureAwait(false)
-               : await _servicer.Entry(new Find<TReport, TEntity, TDto>(_keymatcher(key))).ConfigureAwait(false));
+            _keymatcher == null
+                ? await _servicer.Entry(new Find<TReport, TEntity, TDto>(key)).ConfigureAwait(false)
+                : await _servicer
+                    .Report(new Find<TReport, TEntity, TDto>(_keymatcher(key)))
+                    .ConfigureAwait(false)
+        );
     }
 
     [HttpPost("query")]
@@ -76,8 +83,10 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
 
         return Ok(
             await _servicer
-                .Entry(
-                    new Filter<TReport, TEntity, TDto>(0, 0,
+                .Report(
+                    new Filter<TReport, TEntity, TDto>(
+                        0,
+                        0,
                         new FilterExpression<TEntity>(query.FilterItems).Create(),
                         new SortExpression<TEntity>(query.SortItems)
                     )
@@ -89,159 +98,76 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService> :
     [HttpPost]
     public override async Task<IActionResult> Post([FromBody] TDto[] dtos)
     {
-        bool isValid = false;
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var result = await _servicer.Send(new CreateSet<TEntry, TEntity, TDto>
-                                                    (_publishMode, dtos)).ConfigureAwait(false);
-
-        object[] response = result.ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
-            .ToArray();
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
+        return (!ModelState.IsValid)
+            ? BadRequest(ModelState)
+            : await ExecuteSet(new ChangeSet<TEntry, TEntity, TDto>(_publishMode, dtos));
     }
 
     [HttpPost("{key}")]
     public override async Task<IActionResult> Post([FromRoute] TKey key, [FromBody] TDto dto)
     {
-        bool isValid = false;
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Send(new CreateSet<TEntry, TEntity, TDto>
-                                                (_publishMode, new[] { dto }))
-                                                    .ConfigureAwait(false);
-
-        var response = result.ForEach(c => (isValid = c.IsValid)
-                                              ? c.Id as object
-                                              : c.ErrorMessages).ToArray();
-        return !isValid
-               ? UnprocessableEntity(response)
-               : Ok(response);
+        return (!ModelState.IsValid)
+            ? BadRequest(ModelState)
+            : await Execute(new Create<TEntry, TEntity, TDto>(_publishMode, dto));
     }
 
     [HttpPatch]
     public override async Task<IActionResult> Patch([FromBody] TDto[] dtos)
     {
-        bool isValid = false;
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var result = await _servicer.Send(new ChangeSet<TEntry, TEntity, TDto>
-                                                                (_publishMode, dtos, _predicate))
-                                                                    .ConfigureAwait(false);
-        var response = result.ForEach(c => (isValid = c.IsValid)
-                                              ? c.Id as object
-                                              : c.ErrorMessages).ToArray();
-        return !isValid
-               ? UnprocessableEntity(response)
-               : Ok(response);
+        return (!ModelState.IsValid)
+            ? BadRequest(ModelState)
+            : await ExecuteSet(
+                new ChangeSet<TEntry, TEntity, TDto>(_publishMode, dtos, _predicate)
+            );
     }
 
     [HttpPatch("{key}")]
     public override async Task<IActionResult> Patch([FromRoute] TKey key, [FromBody] TDto dto)
     {
-        bool isValid = false;
-
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Send(new ChangeSet<TEntry, TEntity, TDto>
-                                              (_publishMode, new[] { dto }, _predicate))
-                                                 .ConfigureAwait(false);
-
-        var response = result.ForEach(c => (isValid = c.IsValid)
-                                              ? c.Id as object
-                                              : c.ErrorMessages).ToArray();
-        return !isValid
-               ? UnprocessableEntity(response)
-               : Ok(response);
+        return (!ModelState.IsValid)
+            ? BadRequest(ModelState)
+            : await Execute(new Change<TEntry, TEntity, TDto>(_publishMode, dto, _predicate));
     }
 
     [HttpPut]
     public override async Task<IActionResult> Put([FromBody] TDto[] dtos)
     {
-        bool isValid = false;
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var result = await _servicer.Send(new UpdateSet<TEntry, TEntity, TDto>
-                                                                    (_publishMode, dtos, _predicate))
-                                                                                .ConfigureAwait(false);
-
-        var response = result.ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
-            .ToArray();
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
+        return (!ModelState.IsValid)
+            ? BadRequest(ModelState)
+            : await ExecuteSet(
+                new UpdateSet<TEntry, TEntity, TDto>(_publishMode, dtos, _predicate)
+            );
     }
 
     [HttpPut("{key}")]
     public override async Task<IActionResult> Put([FromRoute] TKey key, [FromBody] TDto dto)
     {
-        bool isValid = false;
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Send(new UpdateSet<TEntry, TEntity, TDto>
-                                                    (_publishMode, new[] { dto }, _predicate))
-                                                        .ConfigureAwait(false);
-
-        var response = result.ForEach(c => (isValid = c.IsValid)
-                                              ? c.Id as object
-                                              : c.ErrorMessages).ToArray();
-        return !isValid
-               ? UnprocessableEntity(response)
-               : Ok(response);
+        return (!ModelState.IsValid)
+            ? BadRequest(ModelState)
+            : await Execute(new Update<TEntry, TEntity, TDto>(_publishMode, dto, _predicate));
     }
 
     [HttpDelete]
     public override async Task<IActionResult> Delete([FromBody] TDto[] dtos)
     {
-        bool isValid = false;
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var result = await _servicer.Send(new DeleteSet<TEntry, TEntity, TDto>
-                                                            (_publishMode, dtos))
-                                                             .ConfigureAwait(false);
-
-        var response = result.ForEach(c => (isValid = c.IsValid)
-                                                   ? c.Id as object
-                                                   : c.ErrorMessages).ToArray();
-        return !isValid
-               ? UnprocessableEntity(response)
-               : Ok(response);
+        return (!ModelState.IsValid)
+            ? BadRequest(ModelState)
+            : await ExecuteSet(new DeleteSet<TEntry, TEntity, TDto>(_publishMode, dtos));
     }
 
     [HttpDelete("{key}")]
     public override async Task<IActionResult> Delete([FromRoute] TKey key, [FromBody] TDto dto)
     {
-        bool isValid = false;
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer.Send(new DeleteSet<TEntry, TEntity, TDto>
-                                                             (_publishMode, new[] { dto }))
-                                                                    .ConfigureAwait(false);
-
-        var response = result.ForEach(c => (isValid = c.IsValid)
-                                               ? c.Id as object
-                                               : c.ErrorMessages).ToArray();
-        return !isValid
-               ? UnprocessableEntity(response)
-               : Ok(response);
+        return (!ModelState.IsValid)
+            ? BadRequest(ModelState)
+            : await Execute(new Delete<TEntry, TEntity, TDto>(_publishMode, dto));
     }
 }

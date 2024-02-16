@@ -7,6 +7,7 @@
 <div>
 
     <FluentStack>
+
         <FluentSpacer />
         
         <FluentAnchor Appearance="@Appearance.Hypertext" Href="" @onclick="@(e => MessageService.Clear(ViewSection.PANEL) )">
@@ -20,12 +21,9 @@
 </div>
 
 @code {
-    [Parameter]
-    public IViewData<TModel> Content { get; set; } = default!;
 
     protected override void OnInitialized()
     {
-        Content.View = this;
         base.OnInitialized();
     }
 

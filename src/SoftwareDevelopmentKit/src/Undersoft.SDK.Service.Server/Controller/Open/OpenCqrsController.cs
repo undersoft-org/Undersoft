@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.OData.Query;
 using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Server.Controller.Open;
+
 using Operation.Command;
 using Operation.Query;
 using Undersoft.SDK.Service.Data.Client.Attributes;
@@ -45,14 +46,14 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
     [EnableQuery]
     public override async Task<IQueryable<TDto>> Get()
     {
-        return await _servicer.Entry(new GetQuery<TReport, TEntity, TDto>());
+        return await _servicer.Report(new GetQuery<TReport, TEntity, TDto>());
     }
 
     [EnableQuery]
     public override async Task<UniqueOne<TDto>> Get([FromRoute] TKey key)
     {
         return new UniqueOne<TDto>(
-            await _servicer.Entry(new FindQuery<TReport, TEntity, TDto>(_keymatcher(key)))
+            await _servicer.Report(new FindQuery<TReport, TEntity, TDto>(_keymatcher(key)))
         );
     }
 
@@ -64,7 +65,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
         var result = await _servicer.Send(new Create<TEntry, TEntity, TDto>(_publishMode, dto));
 
         return !result.IsValid
-            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            ? UnprocessableEntity(result.ErrorMessages)
             : Created(result.Contract);
     }
 
@@ -80,7 +81,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
         );
 
         return !result.IsValid
-            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            ? UnprocessableEntity(result.ErrorMessages)
             : Updated(result.Id as object);
     }
 
@@ -96,7 +97,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
         );
 
         return !result.IsValid
-            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            ? UnprocessableEntity(result.ErrorMessages)
             : Updated(result.Id as object);
     }
 
@@ -108,7 +109,7 @@ public abstract class OpenCqrsController<TKey, TEntry, TReport, TEntity, TDto, T
         var result = await _servicer.Send(new Delete<TEntry, TEntity, TDto>(_publishMode, key));
 
         return !result.IsValid
-            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            ? UnprocessableEntity(result.ErrorMessages)
             : Ok(result.Id as object);
     }
 }

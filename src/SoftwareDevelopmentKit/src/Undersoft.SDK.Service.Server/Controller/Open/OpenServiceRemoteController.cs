@@ -32,7 +32,7 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = Invocation(
+        var result = Invoke(
             args,
             (arg) => new RemoteAction<TStore, TService, TDto>(arg.Key, arg.Value)
         );
@@ -50,7 +50,7 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = Invocation(
+        var result = Invoke(
             args,
             (arg) => new RemoteAction<TStore, TService, TDto>(arg.Key, arg.Value)
         );
@@ -68,7 +68,7 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = Invocation(
+        var result = Invoke(
             args,
             (arg) => new RemoteSetup<TStore, TService, TDto>(arg.Key, arg.Value)
         );
@@ -80,7 +80,7 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
         return !response.IsValid ? UnprocessableEntity(payload) : Ok(payload);
     }
 
-    public virtual Task<Arguments>[] Invocation(
+    public virtual Task<Arguments>[] Invoke(
        IDictionary<string, Arguments> args,
        Func<KeyValuePair<string, Arguments>, Invocation<TDto>> invocation
    )

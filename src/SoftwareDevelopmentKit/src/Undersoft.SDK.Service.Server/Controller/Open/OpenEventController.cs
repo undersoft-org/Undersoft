@@ -71,7 +71,7 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto>
         );
 
         return !result.IsValid
-            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            ? UnprocessableEntity(result.ErrorMessages)
             : Created(result.Contract);
     }
 
@@ -87,7 +87,7 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto>
         );
 
         return !result.IsValid
-            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            ? UnprocessableEntity(result.ErrorMessages)
             : Updated(result.Id as object);
     }
 
@@ -103,7 +103,7 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto>
         );
 
         return !result.IsValid
-            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            ? UnprocessableEntity(result.ErrorMessages)
             : Updated(result.Id as object);
     }
 
@@ -117,7 +117,7 @@ public abstract class OpenEventController<TKey, TStore, TEntity, TDto>
         );
 
         return !result.IsValid
-            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            ? UnprocessableEntity(result.ErrorMessages)
             : Ok(result.Id as object);
     }
 }

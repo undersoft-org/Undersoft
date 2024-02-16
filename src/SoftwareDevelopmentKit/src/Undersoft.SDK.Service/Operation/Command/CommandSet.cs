@@ -3,14 +3,13 @@ using MediatR;
 
 namespace Undersoft.SDK.Service.Operation.Command;
 
-using Undersoft.SDK.Service.Data.Object;
 using Series;
-using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK;
+using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Operation;
 
 public class CommandSet<TDto>
-    : Catalog<Command<TDto>>,
+    : Listing<Command<TDto>>,
         IRequest<CommandSet<TDto>>,
         ICommandSet<TDto> where TDto : class, IOrigin, IInnerProxy
 {

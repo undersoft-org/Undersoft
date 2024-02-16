@@ -13,6 +13,18 @@ public class AppearanceState : ViewwModel
 
     public event Action? OnChange;
 
+    public string Version { get; set; } = string.Empty;
+
+    public bool IsDarkMode { get; set; }
+
+    public bool IsDevice { get; set; }
+
+    public int? Density { get; set; } = 1;
+
+    public int? ControlCornerRadius { get; set; } = 3;
+
+    public int? LayerCornerRadius { get; set; } = 5;
+
     public void SetDirection(LocalizationDirection dir)
     {
         Dir = dir;

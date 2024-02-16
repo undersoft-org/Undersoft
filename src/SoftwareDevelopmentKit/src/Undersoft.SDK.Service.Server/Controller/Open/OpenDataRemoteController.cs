@@ -53,14 +53,14 @@ public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel, TServ
     [EnableQuery]
     public virtual IQueryable<TModel> Get()
     {
-        return _servicer.Entry(new RemoteGetQuery<TStore, TDto, TModel>()).Result;
+        return _servicer.Report(new RemoteGetQuery<TStore, TDto, TModel>()).Result;
     }
 
     [EnableQuery]
     public virtual async Task<UniqueOne<TModel>> Get([FromRoute] TKey key)
     {
         return new UniqueOne<TModel>(
-            await _servicer.Entry(new RemoteFindQuery<TStore, TDto, TModel>(_keymatcher(key)))
+            await _servicer.Report(new RemoteFindQuery<TStore, TDto, TModel>(_keymatcher(key)))
         );
     }
 
@@ -74,7 +74,7 @@ public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel, TServ
         );
 
         return !result.IsValid
-            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            ? UnprocessableEntity(result.ErrorMessages)
             : Created(result.Contract);
     }
 
@@ -90,7 +90,7 @@ public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel, TServ
         );
 
         return !result.IsValid
-            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            ? UnprocessableEntity(result.ErrorMessages)
             : Updated(result.Id as object);
     }
 
@@ -106,7 +106,7 @@ public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel, TServ
         );
 
         return !result.IsValid
-            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            ? UnprocessableEntity(result.ErrorMessages)
             : Updated(result.Id as object);
     }
 
@@ -120,7 +120,7 @@ public abstract class OpenDataRemoteController<TKey, TStore, TDto, TModel, TServ
         );
 
         return !result.IsValid
-            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            ? UnprocessableEntity(result.ErrorMessages)
             : Updated(result.Id as object);
     }
 }

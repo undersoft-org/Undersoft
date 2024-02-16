@@ -18,7 +18,7 @@
       "src\\SoftwareDevelopmentKit\\src\\Undersoft.SDK.Service.Server\\Undersoft.SDK.Service.Server.csproj",
       "src\\SoftwareDevelopmentKit\\src\\Undersoft.SDK.Service\\Undersoft.SDK.Service.csproj",
       "src\\SoftwareDevelopmentKit\\src\\Undersoft.SDK\\Undersoft.SDK.csproj",
-      "src\\SoftwareDevelopmentKit\\tests\\Undersoft.SDK.IntegrationalTests\\Undersoft.SDK.IntegrationalTests.csproj"
+      "src\\SoftwareDevelopmentKit\\tests\\Undersoft.SDK.IntegrationTests\\Undersoft.SDK.IntegrationTests.csproj"
     ]
   }
 }

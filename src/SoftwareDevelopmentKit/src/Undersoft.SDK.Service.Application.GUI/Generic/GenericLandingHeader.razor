@@ -1,24 +1,27 @@
 ﻿@inherits FluentComponentBase
 
-<FluentHeader>
+<FluentHeader Height="70">
     <a href="/">
-        <img src="img/logo.png" />
+        <img src="img/logo-dark.png" />
     </a>
     <FluentSpacer />
     <div class="links">
-        <FluentAnchor Appearance="Appearance.Hypertext"
-                      Href="http://github.com/undersoft-org/undersoft" Target="_blank" Rel="noreferrer noopener"
-                      title="Shared Service Center source on GitHub" aria-label="SSC Repo">
-            <FluentIcon Value="@(new Addons.Size20.GitHub())" Color="Color.FillInverse" />
-        </FluentAnchor>
-        <div class="notifications">
-            <GenericNotificationPanelButton />
-        </div>
-        <div class="settings">
-            <GenericAppearancePanelButton />
-        </div>
-        <div class="persona">
-            <GenericAccountPanelButton />
-        </div>
+        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+            <FluentAnchor Appearance="Appearance.Hypertext"
+                          Href="http://github.com/undersoft-org/undersoft" Target="_blank" Rel="noreferrer noopener"
+                          title="Shared Service Center source on GitHub" aria-label="SSC Repo">
+                <FluentIcon Value="@(new Addons.Size20.GitHub())" Color="Color.FillInverse" />
+            </FluentAnchor>
+            <div class="notifications">
+                <GenericNotificationPanelButton />
+            </div>
+            <div class="settings">
+                <GenericAppearancePanelButton />
+            </div>
+            <div class="persona">
+                <GenericAccountPanelButton />
+            </div>
+        </FluentStack>
     </div>
+
 </FluentHeader>

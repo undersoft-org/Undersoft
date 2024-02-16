@@ -5,6 +5,7 @@ using System.Text.Json;
 namespace Undersoft.SDK.Service.Server.Controller.Api;
 
 using Data.Query;
+using MediatR;
 using Operation.Remote.Command;
 using Operation.Remote.Query;
 using Undersoft.SDK.Service.Data.Client.Attributes;
@@ -42,61 +43,31 @@ public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
         _keymatcher = keymatcher;
     }
 
+    [HttpGet]
+    public virtual async Task<IActionResult> Get([FromHeader] int page, [FromHeader] int limit)
+    {
+        return Ok(
+            await _servicer.Entry(new RemoteGet<TStore, TDto, TModel>((page - 1) * limit, limit))
+        );
+    }
+
     [HttpGet("count")]
     public virtual async Task<IActionResult> Count()
     {
         return Ok(await Task.Run(() => _servicer.open<TStore, TDto>().Count()));
     }
 
-    [HttpGet]
-    public virtual async Task<IActionResult> Get()
-    {
-        return Ok(
-            await _servicer.Report(new RemoteGet<TStore, TDto, TModel>(0, 0)).ConfigureAwait(true)
-        );
-    }
-
     [HttpGet("{key}")]
     public virtual async Task<IActionResult> Get(TKey key)
     {
-        Task<TModel> query =
-            _keymatcher == null
-                ? _servicer.Report(new RemoteFind<TStore, TDto, TModel>(key))
-                : _servicer.Report(new RemoteFind<TStore, TDto, TModel>(_keymatcher(key)));
-
-        return Ok(await query.ConfigureAwait(false));
-    }
-
-    [HttpGet("{offset}/{limit}")]
-    public virtual async Task<IActionResult> Get(int offset, int limit)
-    {
         return Ok(
-            await _servicer
-                .Report(new RemoteGet<TStore, TDto, TModel>(offset, limit))
-                .ConfigureAwait(true)
-        );
+           _keymatcher == null
+               ? await _servicer.Entry(new RemoteFind<TStore, TDto, TModel>(key)).ConfigureAwait(false)
+               : await _servicer.Entry(new RemoteFind<TStore, TDto, TModel>(_keymatcher(key))).ConfigureAwait(false));
     }
 
-    [HttpPost]
-    public virtual async Task<IActionResult> Post([FromBody] TModel[] dtos)
-    {
-        bool isValid = false;
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var result = await _servicer
-            .Entry(new RemoteCreateSet<TStore, TDto, TModel>(_publishMode, dtos))
-            .ConfigureAwait(false);
-
-        object[] response = result
-            .ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
-            .ToArray();
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
-    }
-
-    [HttpPost("query/{offset}/{limit}")]
-    public virtual async Task<IActionResult> Post(int offset, int limit, QuerySet query)
+    [HttpPost("query")]
+    public virtual async Task<IActionResult> Post([FromBody] QuerySet query)
     {
         query.FilterItems.ForEach(
             (fi) =>
@@ -108,10 +79,10 @@ public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
 
         return Ok(
             await _servicer
-                .Report(
+                .Entry(
                     new RemoteFilter<TStore, TDto, TModel>(
-                        offset,
-                        limit,
+                        0,
+                        0,
                         new FilterExpression<TDto>(query.FilterItems).Create(),
                         new SortExpression<TDto>(query.SortItems)
                     )
@@ -120,146 +91,99 @@ public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
         );
     }
 
-    [HttpPost("{key}")]
-    public virtual async Task<IActionResult> Post(TKey key, [FromBody] TModel dto)
+    [HttpPost]
+    public virtual async Task<IActionResult> Post([FromBody] TModel[] dtos)
     {
-        bool isValid = false;
+        return (!ModelState.IsValid)
+           ? BadRequest(ModelState)
+           : await ExecuteSet(new RemoteChangeSet<TStore, TDto, TModel>(_publishMode, dtos));
+    }
 
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
+    [HttpPost("{key}")]
+    public virtual async Task<IActionResult> Post([FromRoute] TKey key, [FromBody] TModel dto)
+    {
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer
-            .Entry(new RemoteCreateSet<TStore, TDto, TModel>(_publishMode, new[] { dto }))
-            .ConfigureAwait(false);
-
-        var response = result
-            .ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
-            .ToArray();
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
+        return (!ModelState.IsValid)
+            ? BadRequest(ModelState)
+            : await Execute(new RemoteCreate<TStore, TDto, TModel>(_publishMode, dto));
     }
 
     [HttpPatch]
     public virtual async Task<IActionResult> Patch([FromBody] TModel[] dtos)
     {
-        bool isValid = false;
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var result = await _servicer
-            .Entry(
-                new RemoteChangeSet<TStore, TDto, TModel>(EventPublishMode.PropagateCommand, dtos)
-            )
-            .ConfigureAwait(false);
-
-        object[] response = result
-            .ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
-            .ToArray();
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
+        return (!ModelState.IsValid)
+            ? BadRequest(ModelState)
+            : await ExecuteSet(
+                new RemoteChangeSet<TStore, TDto, TModel>(_publishMode, dtos, _predicate)
+            );
     }
 
     [HttpPatch("{key}")]
-    public virtual async Task<IActionResult> Patch(TKey key, [FromBody] TModel dto)
+    public virtual async Task<IActionResult> Patch([FromRoute] TKey key, [FromBody] TModel dto)
     {
-        bool isValid = false;
+        _keysetter(key).Invoke(dto);
 
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var result = await _servicer
-            .Entry(
-                new RemoteChange<TStore, TDto, TModel>(EventPublishMode.PropagateCommand, dto, key)
-            )
-            .ConfigureAwait(false);
-
-        object response = result.IsValid ? result.Id as object : result.ErrorMessages;
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
+        return (!ModelState.IsValid)
+            ? BadRequest(ModelState)
+            : await Execute(new RemoteChange<TStore, TDto, TModel>(_publishMode, dto, _predicate));
     }
 
     [HttpPut]
     public virtual async Task<IActionResult> Put([FromBody] TModel[] dtos)
     {
-        bool isValid = false;
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var result = await _servicer
-            .Entry(new RemoteUpdateSet<TStore, TDto, TModel>(_publishMode, dtos, _predicate))
-            .ConfigureAwait(false);
-
-        var response = result
-            .ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
-            .ToArray();
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
+        return (!ModelState.IsValid)
+            ? BadRequest(ModelState)
+            : await ExecuteSet(
+                new RemoteUpdateSet<TStore, TDto, TModel>(_publishMode, dtos, _predicate)
+            );
     }
 
     [HttpPut("{key}")]
-    public virtual async Task<IActionResult> Put(TKey key, [FromBody] TModel dto)
+    public virtual async Task<IActionResult> Put([FromRoute] TKey key, [FromBody] TModel dto)
     {
-        bool isValid = false;
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer
-            .Entry(
-                new RemoteUpdateSet<TStore, TDto, TModel>(_publishMode, new[] { dto }, _predicate)
-            )
-            .ConfigureAwait(false);
-
-        var response = result
-            .ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
-            .ToArray();
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
+        return (!ModelState.IsValid)
+            ? BadRequest(ModelState)
+            : await Execute(new RemoteUpdate<TStore, TDto, TModel>(_publishMode, dto, _predicate));
     }
 
     [HttpDelete]
     public virtual async Task<IActionResult> Delete([FromBody] TModel[] dtos)
     {
-        bool isValid = false;
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var result = await _servicer
-            .Entry(
-                new RemoteDeleteSet<TStore, TDto, TModel>(EventPublishMode.PropagateCommand, dtos)
-            )
-            .ConfigureAwait(false);
-
-        object[] response = result
-            .ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
-            .ToArray();
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
+        return (!ModelState.IsValid)
+            ? BadRequest(ModelState)
+            : await ExecuteSet(new RemoteDeleteSet<TStore, TDto, TModel>(_publishMode, dtos));
     }
 
     [HttpDelete("{key}")]
-    public virtual async Task<IActionResult> Delete(TKey key, [FromBody] TModel dto)
+    public virtual async Task<IActionResult> Delete([FromRoute] TKey key, [FromBody] TModel dto)
     {
-        bool isValid = false;
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
         _keysetter(key).Invoke(dto);
 
-        var result = await _servicer
-            .Entry(
-                new RemoteDeleteSet<TStore, TDto, TModel>(
-                    EventPublishMode.PropagateCommand,
-                    new[] { dto }
-                )
-            )
-            .ConfigureAwait(false);
+        return (!ModelState.IsValid)
+            ? BadRequest(ModelState)
+            : await Execute(new RemoteDelete<TStore, TDto, TModel>(_publishMode, dto));
+    }
 
-        var response = result
-            .ForEach(c => (isValid = c.IsValid) ? c.Id as object : c.ErrorMessages)
+    protected virtual async Task<IActionResult> ExecuteSet<TResult>(IRequest<TResult> request)
+        where TResult : RemoteCommandSet<TModel>
+    {
+        var result = await _servicer.Send(request).ConfigureAwait(false);
+
+        object[] response = result
+            .ForEach(c => c.IsValid ? c.Id as object : c.ErrorMessages)
             .ToArray();
-        return !isValid ? UnprocessableEntity(response) : Ok(response);
+
+        return result.Any(c => !c.IsValid) ? UnprocessableEntity(response) : Ok(response);
+    }
+
+    protected virtual async Task<IActionResult> Execute<TResult>(IRequest<TResult> request)
+        where TResult : RemoteCommand<TModel>
+    {
+        var result = await _servicer.Send(request).ConfigureAwait(false);
+
+        return !result.IsValid ? UnprocessableEntity(result.ErrorMessages) : Ok(result.Id);
     }
 }

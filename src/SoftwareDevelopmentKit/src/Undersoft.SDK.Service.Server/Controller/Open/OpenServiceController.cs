@@ -33,7 +33,7 @@ public abstract class OpenServiceController<TStore, TService, TModel>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = Invocation(
+        var result = Invoke(
             args,
             (arg) => new Action<TStore, TService, TModel>(arg.Key, arg.Value)
         );
@@ -51,7 +51,7 @@ public abstract class OpenServiceController<TStore, TService, TModel>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = Invocation(
+        var result = Invoke(
             args,
             (arg) => new Action<TStore, TService, TModel>(arg.Key, arg.Value)
         );
@@ -69,7 +69,7 @@ public abstract class OpenServiceController<TStore, TService, TModel>
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = Invocation(
+        var result = Invoke(
             args,
             (arg) => new Setup<TStore, TService, TModel>(arg.Key, arg.Value)
         );
@@ -81,7 +81,7 @@ public abstract class OpenServiceController<TStore, TService, TModel>
         return !response.IsValid ? UnprocessableEntity(payload) : Ok(payload);
     }
 
-    public virtual Task<Arguments>[] Invocation(
+    public virtual Task<Arguments>[] Invoke(
         IDictionary<string, Arguments> args,
         Func<KeyValuePair<string, Arguments>, Invocation<TModel>> invocation
     )

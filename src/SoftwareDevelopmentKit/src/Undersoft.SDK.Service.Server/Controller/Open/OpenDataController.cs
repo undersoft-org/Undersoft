@@ -53,14 +53,14 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
     [EnableQuery]
     public virtual async Task<IQueryable<TDto>> Get()
     {
-        return await _servicer.Entry(new GetQuery<TStore, TEntity, TDto>(Transformations));
+        return await _servicer.Report(new GetQuery<TStore, TEntity, TDto>(Transformations));
     }
 
     [EnableQuery]
     public virtual async Task<UniqueOne<TDto>> Get([FromRoute] TKey key)
     {
         return new UniqueOne<TDto>(
-            await _servicer.Entry(
+            await _servicer.Report(
                 new FindQuery<TStore, TEntity, TDto>(_keymatcher(key))
                 {
                     Processings = Transformations
@@ -79,7 +79,7 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
         );
 
         return !result.IsValid
-            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            ? UnprocessableEntity(result.ErrorMessages)
             : Created(result.Contract);
     }
 
@@ -98,7 +98,7 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
         );
 
         return !result.IsValid
-            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            ? UnprocessableEntity(result.ErrorMessages)
             : Updated(result.Id as object);
     }
 
@@ -117,7 +117,7 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
         );
 
         return !result.IsValid
-            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            ? UnprocessableEntity(result.ErrorMessages)
             : Updated(result.Id as object);
     }
 
@@ -131,7 +131,7 @@ public abstract class OpenDataController<TKey, TStore, TEntity, TDto, TService>
         );
 
         return !result.IsValid
-            ? UnprocessableEntity(result.ErrorMessages.ToArray())
+            ? UnprocessableEntity(result.ErrorMessages)
             : Ok(result.Id as object);
     }
 }

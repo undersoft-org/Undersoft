@@ -1,79 +1,110 @@
 ﻿using Microsoft.AspNetCore.Components.Routing;
 using System.Reflection;
+using Undersoft.SDK.Service.Application.GUI.Models;
 
-namespace Undersoft.SDK.Service.Application.GUI.Generic
+namespace Undersoft.SDK.Service.Application.GUI.Generic;
+
+public partial class GenericLayout : LayoutComponentBase
 {
-    public partial class GenericLayout
+    private const string JAVASCRIPT_FILE =
+        "./_content/Undersoft.SDK.Service.Application.GUI/Generic/GenericLayout.razor.js";
+    public string? Version;
+    public bool IsDarkMode;
+    public bool IsDevice;
+    protected bool _mobile;
+    protected string? _prevUri;
+    private GenericPageContents? _toc;
+    private bool _menuChecked = true;
+
+    [Parameter]
+    public string Color { get; set; } = "#194d6d";
+
+    [Parameter]
+    public int? Density { get; set; } = 1;
+
+    [Parameter]
+    public int? ControlCornerRadius { get; set; } = 3;
+
+    [Parameter]
+    public int? LayerCornerRadius { get; set; } = 5;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
+    [Inject]
+    public IJSRuntime JSRuntime { get; set; } = default!;
+
+    private AppearanceState AppearanceState { get; set; } = default!;
+
+    protected override void OnInitialized()
     {
-        private const string JAVASCRIPT_FILE = "./_content/Undersoft.SDK.Service.Application.GUI/Generic/GenericLayout.razor.js";
-        protected string? _version;
-        protected bool _mobile;
-        protected string? _prevUri;
-        // private TableOfContents? _toc;
-        private bool _menuChecked = true;
-
-        [Inject]
-        private NavigationManager NavigationManager { get; set; } = default!;
-
-        [Inject]
-        public IJSRuntime JSRuntime { get; set; } = default!;
-
-        [Parameter]
-        public RenderFragment? Body { get; set; }
-
-        protected override void OnInitialized()
+        AppearanceState = new AppearanceState()
         {
-            var versionAttribute = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>();
-            if (versionAttribute != null)
+            Color = Color,
+            Density = Density,
+            ControlCornerRadius = ControlCornerRadius,
+            LayerCornerRadius = LayerCornerRadius
+        };
+        var versionAttribute = Assembly
+            .GetExecutingAssembly()
+            .GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+        if (versionAttribute != null)
+        {
+            var version = versionAttribute.InformationalVersion;
+            var plusIndex = version.IndexOf('+');
+            if (plusIndex >= 0 && plusIndex + 9 < version.Length)
             {
-                var version = versionAttribute.InformationalVersion;
-                var plusIndex = version.IndexOf('+');
-                if (plusIndex >= 0 && plusIndex + 9 < version.Length)
-                {
-                    _version = version[..(plusIndex + 9)];
-                }
-                else
-                {
-                    _version = version;
-                }
+                AppearanceState.Version = version[..(plusIndex + 9)];
             }
-
-            _prevUri = NavigationManager.Uri;
-            NavigationManager.LocationChanged += LocationChanged;
-        }
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
+            else
             {
-                var jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", JAVASCRIPT_FILE);
-                _mobile = await jsModule.InvokeAsync<bool>("isDevice");
-                await jsModule.DisposeAsync();
+                AppearanceState.Version = version;
             }
         }
 
-        //public EventCallback OnRefreshTableOfContents => EventCallback.Factory.Create(this, RefreshTableOfContentsAsync);
+        _prevUri = NavigationManager.Uri;
+        NavigationManager.LocationChanged += LocationChanged;
+    }
 
-        //private async Task RefreshTableOfContentsAsync()
-        //{
-        //   // await _toc!.Refresh();
-        //}
-
-        private void HandleChecked()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
         {
-            _menuChecked = !_menuChecked;
+            var jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>(
+                "import",
+                JAVASCRIPT_FILE
+            );
+            AppearanceState.IsDevice = _mobile = await jsModule.InvokeAsync<bool>("isDevice");
+            AppearanceState.IsDarkMode = await jsModule.InvokeAsync<bool>("isDarkMode");
+            await jsModule.DisposeAsync();
         }
+    }
 
-        private void LocationChanged(object? sender, LocationChangedEventArgs e)
+    public EventCallback OnRefreshTableOfContents =>
+        EventCallback.Factory.Create(this, RefreshTableOfContentsAsync);
+
+    private async Task RefreshTableOfContentsAsync()
+    {
+        await _toc!.RefreshAsync();
+    }
+
+    private void HandleChecked()
+    {
+        _menuChecked = !_menuChecked;
+    }
+
+    private void LocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        if (
+            !e.IsNavigationIntercepted
+            && new Uri(_prevUri!).AbsolutePath != new Uri(e.Location).AbsolutePath
+        )
         {
-            if (!e.IsNavigationIntercepted && new Uri(_prevUri!).AbsolutePath != new Uri(e.Location).AbsolutePath)
+            _prevUri = e.Location;
+            if (_mobile && _menuChecked == true)
             {
-                _prevUri = e.Location;
-                if (_mobile && _menuChecked == true)
-                {
-                    _menuChecked = false;
-                    StateHasChanged();
-                }
+                _menuChecked = false;
+                StateHasChanged();
             }
         }
     }

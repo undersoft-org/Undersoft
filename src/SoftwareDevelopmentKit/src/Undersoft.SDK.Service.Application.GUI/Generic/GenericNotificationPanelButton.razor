@@ -5,10 +5,9 @@
 @inject IServicer _servicer
 @inject IMessageService MessageService
 
-<FluentButton Appearance="Appearance.Accent" OnClick="OpenNotificationPanelAsync" Title="Notification center">
-    @if (MessageService.Count(ViewSection.PANEL) > 0)
-    {
-        <FluentCounterBadge Count="@MessageService.Count(ViewSection.PANEL)"
+@if (MessageService.Count(ViewSection.PANEL) > 0)
+{
+    <FluentCounterBadge Count="@MessageService.Count(ViewSection.PANEL)"
                         Max="9"
                         ShowOverflow="true"
                         BackgroundColor="@Color.Error"
@@ -22,16 +21,16 @@
 }
 else
 {
-    @NotificationIcon() 
+    @NotificationIcon()
 }
-</FluentButton>
 
-    @code {
+@code
+{
 
     private IViewPanel<Event> _panel = default!;
 
     protected override void OnInitialized()
-    {      
+    {
         MessageService.OnMessageItemsUpdated += UpdateCount;
         _panel = _servicer.Initialize<ViewPanel<GenericNotificationPanel<Event>, Event>>();
     }
@@ -41,25 +40,25 @@ else
         InvokeAsync(StateHasChanged);
     }
 
-    private RenderFragment NotificationIcon() => @<FluentIcon Value="@(new Icons.Regular.Size20.Alert())" Color="Color.Neutral"  Title="Notification center" />;
+    private RenderFragment NotificationIcon() => @<FluentIcon Value="@(new Icons.Regular.Size20.Alert())" Color="Color.Neutral" Title="Notification center" OnClick="OpenNotificationPanelAsync" />;
 
     private async Task OpenNotificationPanelAsync()
     {
-         await _panel.Show((p) =>
-            {
-                p.Alignment = HorizontalAlignment.Right;
-                p.Title = $"Notifications";
-                p.PrimaryAction = null;
-                p.SecondaryAction = null;
-                p.ShowDismiss = true;
-            });
+        await _panel.Show((p) =>
+           {
+               p.Alignment = HorizontalAlignment.Right;
+               p.Title = $"Notifications";
+               p.PrimaryAction = null;
+               p.SecondaryAction = null;
+               p.ShowDismiss = true;
+           });
 
         HandlePanel(_panel.Content);
     }
 
     private void HandlePanel(IViewData<Event>? result)
     {
-        
+
     }
 
     public void Dispose()

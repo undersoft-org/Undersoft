@@ -41,7 +41,7 @@ public class RemoteDeleteHandler<TStore, TDto, TModel>
                     else if (request.Model == null && request.Predicate != null)
                         request.Contract = await _repository.Delete(request.Predicate);
                     else
-                        request.Contract = _repository.DeleteBy(
+                        request.Contract = await _repository.DeleteBy(
                             request.Model,
                             request.Predicate
                         );

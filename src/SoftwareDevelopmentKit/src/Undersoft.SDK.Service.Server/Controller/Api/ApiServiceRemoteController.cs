@@ -6,7 +6,6 @@ using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Data.Store;
 
-
 [ApiController]
 [ApiServiceRemote]
 public abstract class ApiServiceRemoteController<TStore, TService, TModel>
@@ -20,15 +19,16 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
 
     protected ApiServiceRemoteController() { }
 
-    protected ApiServiceRemoteController(
-        IServicer servicer
-    )
+    protected ApiServiceRemoteController(IServicer servicer)
     {
         _servicer = servicer;
     }
 
     [HttpPost("Action/{method}")]
-    public virtual async Task<IActionResult> Action([FromRoute] string method, [FromBody] Arguments arguments)
+    public virtual async Task<IActionResult> Action(
+        [FromRoute] string method,
+        [FromBody] Arguments arguments
+    )
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -37,13 +37,14 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
             new RemoteAction<TStore, TService, TModel>(method, arguments)
         );
 
-        return !result.IsValid
-            ? BadRequest(result.ErrorMessages)
-            : Ok(result.Response);
+        return !result.IsValid ? BadRequest(result.ErrorMessages) : Ok(result.Response);
     }
 
     [HttpPost("Access/{method}")]
-    public virtual async Task<IActionResult> Access([FromRoute] string method, [FromBody] Arguments arguments)
+    public virtual async Task<IActionResult> Access(
+        [FromRoute] string method,
+        [FromBody] Arguments arguments
+    )
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -52,13 +53,14 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
             new RemoteAction<TStore, TService, TModel>(method, arguments)
         );
 
-        return !result.IsValid
-            ? BadRequest(result.ErrorMessages)
-            : Ok(result.Response);
+        return !result.IsValid ? BadRequest(result.ErrorMessages) : Ok(result.Response);
     }
 
     [HttpPost("Setup/{method}")]
-    public virtual async Task<IActionResult> Setup([FromRoute] string method, [FromBody] Arguments arguments)
+    public virtual async Task<IActionResult> Setup(
+        [FromRoute] string method,
+        [FromBody] Arguments arguments
+    )
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -67,8 +69,6 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
             new RemoteAction<TStore, TService, TModel>(method, arguments)
         );
 
-        return !result.IsValid
-            ? BadRequest(result.ErrorMessages)
-            : Ok(result.Response);
+        return !result.IsValid ? BadRequest(result.ErrorMessages) : Ok(result.Response);
     }
 }
