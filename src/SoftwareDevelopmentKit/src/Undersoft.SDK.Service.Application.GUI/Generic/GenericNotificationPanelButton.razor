@@ -40,7 +40,7 @@ else
         InvokeAsync(StateHasChanged);
     }
 
-    private RenderFragment NotificationIcon() => @<FluentIcon Value="@(new Icons.Regular.Size20.Alert())" Color="Color.Neutral" Title="Notification center" OnClick="OpenNotificationPanelAsync" />;
+    private RenderFragment NotificationIcon() => @<FluentIcon Value="@(new Icons.Regular.Size20.Alert())" Color="Color.Fill" Title="Notification center" OnClick="OpenNotificationPanelAsync" />;
 
     private async Task OpenNotificationPanelAsync()
     {

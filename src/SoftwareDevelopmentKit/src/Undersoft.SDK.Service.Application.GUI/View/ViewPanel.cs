@@ -73,7 +73,7 @@ public class ViewPanel<TPanel, TModel> : ComponentBase, IViewPanel<TModel>
             Reference = await Service.ShowPanelAsync<TPanel>(parameters);
 
             var result = await Reference.Result;
-            if (!result.Cancelled && result.Data != null)
+            if (!result.Cancelled && result.Data != null && result.Data is IViewData)
             {
                 Content = (IViewData<TModel>)result.Data;
             }

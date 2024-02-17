@@ -22,6 +22,9 @@
 
 @code {
 
+    [Parameter]
+    public IViewData<TModel> Content { get; set; } = default!;
+
     protected override void OnInitialized()
     {
         base.OnInitialized();

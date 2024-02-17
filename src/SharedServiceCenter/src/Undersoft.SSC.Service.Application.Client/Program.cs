@@ -7,6 +7,7 @@ using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Application.Access;
 using Undersoft.SDK.Service.Application.GUI.Generic;
+using Undersoft.SDK.Service.Application.GUI.Models;
 using Undersoft.SSC.Service.Application.GUI.Compound.Access;
 using Undersoft.SSC.Service.Clients;
 using Undersoft.SSC.Service.Contracts;
@@ -43,6 +44,7 @@ namespace Undersoft.SSC.Service.Application.Client
                     var reg = manager.GetRegistry();
                     reg.AddAuthorizationCore()
                         .AddFluentUIComponents((o) => { o.UseTooltipServiceProvider = true; })
+                        .AddSingleton<AppearanceState>()
                         .AddScoped<AccessProvider<Account>>()
                         .AddScoped<AuthenticationStateProvider, AccessProvider<Account>>()
                         .AddScoped<IAccountAccess, AccessProvider<Account>>()

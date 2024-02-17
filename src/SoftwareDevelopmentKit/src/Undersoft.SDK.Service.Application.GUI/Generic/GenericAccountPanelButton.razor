@@ -5,10 +5,10 @@
 @inject IServicer _servicer
 @inject IMessageService MessageService
 
-<FluentPersona Initials="SU" @onclick="OpenAccountPanelAsync"
-               ImageSize="40px">
+<a @onclick="@OpenAccountPanelAsync">
+<FluentPersona Initials="SU" ImageSize="40px">
 </FluentPersona>
-
+</a>
 
 @code {
 
@@ -19,7 +19,7 @@
         _panel = _servicer.Initialize<ViewPanel<GenericAccountPanel<Account>, Account>>();
     }
 
-    private async Task OpenAccountPanelAsync()
+    private async Task OpenAccountPanelAsync(MouseEventArgs args)
     {
         await _panel.Show((p) =>
            {

@@ -25,5 +25,3 @@ export function backToTop() {
     document.documentElement.scrollTop = 0;
     document.getElementById('body-content').scrollTop = 0;
 }
-
-}

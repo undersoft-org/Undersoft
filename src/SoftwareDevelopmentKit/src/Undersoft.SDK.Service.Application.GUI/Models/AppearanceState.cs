@@ -1,4 +1,5 @@
 ﻿using Microsoft.FluentUI.AspNetCore.Components;
+using System.Text.Json.Serialization;
 
 namespace Undersoft.SDK.Service.Application.GUI.Models;
 
@@ -19,7 +20,10 @@ public class AppearanceState : ViewwModel
 
     public bool IsDevice { get; set; }
 
-    public int? Density { get; set; } = 1;
+    [JsonIgnore]
+    public bool IsLoaded { get; set; }
+
+    public int? Density { get; set; } = 0;
 
     public int? ControlCornerRadius { get; set; } = 3;
 

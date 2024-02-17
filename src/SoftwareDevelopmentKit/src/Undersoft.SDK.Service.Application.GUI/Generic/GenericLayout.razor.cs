@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components.Routing;
 using System.Reflection;
+using System.Text.Json;
+using Undersoft.SDK.Instant.Updating;
+using Undersoft.SDK.Service.Application.Extensions;
 using Undersoft.SDK.Service.Application.GUI.Models;
 
 namespace Undersoft.SDK.Service.Application.GUI.Generic;
@@ -15,12 +18,13 @@ public partial class GenericLayout : LayoutComponentBase
     protected string? _prevUri;
     private GenericPageContents? _toc;
     private bool _menuChecked = true;
+    private readonly string APPEARANCEKEY = "APPEARANCEKEY";
 
     [Parameter]
     public string Color { get; set; } = "#194d6d";
 
     [Parameter]
-    public int? Density { get; set; } = 1;
+    public int? Density { get; set; } = 0;
 
     [Parameter]
     public int? ControlCornerRadius { get; set; } = 3;
@@ -32,34 +36,30 @@ public partial class GenericLayout : LayoutComponentBase
     private NavigationManager NavigationManager { get; set; } = default!;
 
     [Inject]
-    public IJSRuntime JSRuntime { get; set; } = default!;
+    public IJSRuntime JS { get; set; } = default!;
 
+    [Inject]
     private AppearanceState AppearanceState { get; set; } = default!;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        AppearanceState = new AppearanceState()
+        if (!AppearanceState.IsLoaded)
         {
-            Color = Color,
-            Density = Density,
-            ControlCornerRadius = ControlCornerRadius,
-            LayerCornerRadius = LayerCornerRadius
-        };
+            var appearanceState = await JS.GetFromLocalStorage(APPEARANCEKEY);
+            if (appearanceState != null)
+                AppearanceState.PatchFromJson<AppearanceState, AppearanceState>(appearanceState);
+            else
+                await JS.SetInLocalStorage(APPEARANCEKEY, this.PatchTo(AppearanceState).ToJsonString());
+        }
+        AppearanceState.IsLoaded = true;
+
         var versionAttribute = Assembly
             .GetExecutingAssembly()
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>();
         if (versionAttribute != null)
         {
-            var version = versionAttribute.InformationalVersion;
-            var plusIndex = version.IndexOf('+');
-            if (plusIndex >= 0 && plusIndex + 9 < version.Length)
-            {
-                AppearanceState.Version = version[..(plusIndex + 9)];
-            }
-            else
-            {
-                AppearanceState.Version = version;
-            }
+            var version = versionAttribute.InformationalVersion.Split('+')[0];
+            AppearanceState.Version = version;
         }
 
         _prevUri = NavigationManager.Uri;
@@ -70,7 +70,7 @@ public partial class GenericLayout : LayoutComponentBase
     {
         if (firstRender)
         {
-            var jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>(
+            var jsModule = await JS.InvokeAsync<IJSObjectReference>(
                 "import",
                 JAVASCRIPT_FILE
             );

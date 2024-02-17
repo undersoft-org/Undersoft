@@ -16,8 +16,7 @@
     public IViewData<TModel> Content { get; set; } = default!;
 
     protected override void OnInitialized()
-    {
-        Content.View = this;
+    {       
         base.OnInitialized();
     }
 

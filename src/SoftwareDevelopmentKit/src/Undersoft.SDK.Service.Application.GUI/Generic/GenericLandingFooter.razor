@@ -1,15 +1,26 @@
 ﻿@inherits FluentComponentBase
 
-<FluentFooter Style="@("height: 40px; color: white;")">
-    <div class="version">
+
+<FluentFooter Style="@("display:flex; height: 40px; color: #a8b5bd; width:100%;")">
+
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" Width="100%">
+
+       <FluentLabel>
         <small>
-            Version: @AppearanceState?.Version
-            &nbsp;-&nbsp;
-            Author: Dariusz Hanc - undersoft@undersoft.pl
+        
+            Version: @(AppearanceState?.Version) - Author: dh@undersoft.pl
+        
         </small>
-    </div>
-    <FluentSpacer />
-    <div class="copy">
-        <small>Undersoft © 2024. All rights reserved  </small>
-    </div>
+        </FluentLabel>
+        <FluentSpacer/>
+        <FluentLabel>
+        <small>
+        
+           Undersoft © 2024. All rights reserved 
+        
+        </small>
+        </FluentLabel>
+
+    </FluentStack>
+
 </FluentFooter>

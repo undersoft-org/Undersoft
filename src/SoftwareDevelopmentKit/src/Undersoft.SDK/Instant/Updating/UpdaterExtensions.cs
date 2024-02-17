@@ -1,7 +1,6 @@
 ﻿namespace Undersoft.SDK.Instant.Updating
 {
     using Invoking;
-    using System.Text.Json;
 
     public static class UpdaterExtensions
     {
@@ -61,7 +60,7 @@
             return new Updater<T>(item, traceChanges).Put<E>();
         }
 
-        public static E PutTo<E>(this object item, IInvoker traceChanges = null)           
+        public static E PutTo<E>(this object item, IInvoker traceChanges = null)
            where E : class
         {
             return new Updater(item, traceChanges).Put<E>();
@@ -77,36 +76,6 @@
         public static object PutFrom(this object item, object source, IInvoker traceChanges = null)
         {
             return new Updater(source, traceChanges).Put(item);
-        }
-
-        public static E PatchFromJson<T, E>(this E obj, string str) where T : class where E : class
-        {
-            return str.FromJson<T>().PatchTo<T, E>(obj);
-        }
-
-        public static E PutFromJson<T, E>(this E obj, string str) where T : class where E : class
-        {
-            return str.FromJson<T>().PutTo<T, E>(obj);
-        }
-
-        public static E PatchFromJson<T, E>(this E obj, byte[] bytes) where T : class where E : class
-        {
-            return bytes.FromJson<T>().PatchTo<T, E>(obj);
-        }
-
-        public static E PutFromJson<T, E>(this E obj, byte[] bytes) where T : class where E : class
-        {
-            return bytes.FromJson<T>().PutTo<T, E>(obj);
-        }
-
-        public static E PatchFromJson<T, E>(this E obj, Stream str) where T : class where E : class
-        {
-            return str.FromJson<T>().PatchTo<T, E>(obj);
-        }
-
-        public static E PutFromJson<T, E>(this E obj, Stream str) where T : class where E : class
-        {
-            return str.FromJson<T>().PutTo<T, E>(obj);
         }
     }
 }
