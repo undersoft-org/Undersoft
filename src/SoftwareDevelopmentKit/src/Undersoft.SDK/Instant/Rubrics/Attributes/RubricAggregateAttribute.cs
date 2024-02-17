@@ -3,7 +3,7 @@
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class RubricAggregateAttribute : RubricAttribute
     {
-        public AggregationOperand SummaryOperand = AggregationOperand.None;
+        public AggregationOperand Operand = AggregationOperand.None;
 
         public RubricAggregateAttribute() { }
     }

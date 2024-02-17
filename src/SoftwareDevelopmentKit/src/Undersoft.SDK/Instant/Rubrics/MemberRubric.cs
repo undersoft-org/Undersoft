@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Reflection;
     using Undersoft.SDK;
+    using Undersoft.SDK.Invoking;
     using Uniques;
 
     public class MemberRubric : MemberInfo, IRubric
@@ -197,13 +198,25 @@
 
         public bool IsDBNull { get; set; }
 
-        public bool IsExpandable { get; set; }
+        public bool Expandable { get; set; }
 
         public bool IsIdentity { get; set; }
 
         public bool IsKey { get; set; }
 
         public bool IsUnique { get; set; }
+
+        public string LinkValue { get; set; }
+
+        public OperationType LinkOperation { get; set; }
+
+        public string InvokeMethod { get; set; }
+
+        public string InvokeTarget { get; set; }
+
+        public Type InvokeType { get; set; }
+
+        public IInvoker Invoker { get; set; }
 
         public MemberInfo MemberInfo => RubricInfo;
 

@@ -1,7 +1,7 @@
 ﻿namespace Undersoft.SDK.Instant.Rubrics
 {
     using Undersoft.SDK;
-    using Uniques;
+    using Undersoft.SDK.Invoking;
 
     public interface IRubric : IMemberRubric, IOrigin
     {
@@ -11,7 +11,7 @@
 
         bool IsDBNull { get; set; }
 
-        bool IsExpandable { get; set; }
+        bool Expandable { get; set; }
 
         bool IsIdentity { get; set; }
 
@@ -20,6 +20,16 @@
         bool IsUnique { get; set; }
 
         bool Required { get; set; }
+
+        string LinkValue { get; set; }
+
+        string InvokeMethod { get; set; }
+
+        string InvokeTarget { get; set; }
+
+        Type InvokeType { get; set; }
+
+        IInvoker Invoker { get; set; }
 
         AggregationOperand AggregationOperand { get; set; }
 
@@ -35,6 +45,6 @@
         Avg,
         Min,
         Max,
-        Bis
+        Concat
     }
 }

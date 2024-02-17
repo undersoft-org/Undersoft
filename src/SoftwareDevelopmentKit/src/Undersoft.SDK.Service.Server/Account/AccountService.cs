@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using ServiceStack;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Server.Accounts.Email;
+using Undersoft.SDK.Updating;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
 

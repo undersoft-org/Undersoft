@@ -1,6 +1,6 @@
 using Microsoft.FluentUI.AspNetCore.Components;
-using Undersoft.SDK.Instant.Updating;
 using Undersoft.SDK.Service.Application.GUI.Models;
+using Undersoft.SDK.Updating;
 
 namespace Undersoft.SDK.Service.Application.GUI.View;
 

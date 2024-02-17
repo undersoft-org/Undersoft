@@ -7,7 +7,7 @@ using Undersoft.SDK.Service.Data.Object;
 
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation;
+using Undersoft.SDK;
 
 public class ChangeSet<TStore, TEntity, TDto> : CommandSet<TDto>
     where TEntity : class, IOrigin, IInnerProxy

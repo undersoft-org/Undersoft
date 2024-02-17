@@ -16,6 +16,7 @@ using Undersoft.SDK.Service.Data.Remote;
 using Undersoft.SDK.Service.Data.Repository;
 using Undersoft.SDK.Service.Data.Repository.Client;
 using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Updating;
 
 public class RemoteRepository<TStore, TEntity>
     : RemoteRepository<TEntity>,

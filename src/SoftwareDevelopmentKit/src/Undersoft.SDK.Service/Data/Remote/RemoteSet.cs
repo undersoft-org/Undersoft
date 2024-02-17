@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq.Expressions;
 using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Remote.Repository;
+using Undersoft.SDK.Updating;
 
 namespace Undersoft.SDK.Service.Data.Remote
 {

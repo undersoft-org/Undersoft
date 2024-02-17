@@ -1,6 +1,7 @@
 ﻿using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Service.Application.GUI.View;
 using Undersoft.SDK.Service.Data.Event;
+using Undersoft.SDK.Updating;
 
 namespace Undersoft.SDK.Service.Application.GUI.Models;
 
@@ -46,16 +47,7 @@ public class Notification : Event
     public event Action<Message>? OnClose;
 
     public MessageOptions? Options =>
-        new MessageOptions()
-        {
-            Body = Message,
-            Intent = Intent,
-            Icon = Icon,
-            Link = Link,
-            Section = Section,
-            Timeout = Timeout,
-            Timestamp = DateTime.Now,
-            ClearAfterNavigation = true,
-            Title = Title
-        };
+        this.PatchTo(
+            new MessageOptions() { Timestamp = DateTime.Now, ClearAfterNavigation = true }
+        );
 }

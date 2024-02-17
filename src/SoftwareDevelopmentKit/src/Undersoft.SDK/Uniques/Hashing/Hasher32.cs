@@ -4,17 +4,17 @@
 
     public static class Hasher32
     {
-        public static unsafe Byte[] ComputeBytes(byte* ptr, int length, long seed = 0)
+        public static unsafe byte[] ComputeBytes(byte* ptr, int length, long seed = 0)
         {
             byte[] b = new byte[4];
             fixed (byte* pb = b)
             {
-                *((int*)pb) = (int)xxHash32.UnsafeComputeHash(ptr, length, (uint)seed);
+                *(int*)pb = (int)xxHash32.UnsafeComputeHash(ptr, length, (uint)seed);
             }
             return b;
         }
 
-        public static unsafe Byte[] ComputeBytes(byte[] bytes, long seed = 0)
+        public static unsafe byte[] ComputeBytes(byte[] bytes, long seed = 0)
         {
             byte[] b = new byte[4];
             fixed (
@@ -22,7 +22,7 @@
                     pa = bytes
             )
             {
-                *((int*)pb) = (int)xxHash32.UnsafeComputeHash(pa, bytes.Length, (uint)seed);
+                *(int*)pb = (int)xxHash32.UnsafeComputeHash(pa, bytes.Length, (uint)seed);
             }
             return b;
         }

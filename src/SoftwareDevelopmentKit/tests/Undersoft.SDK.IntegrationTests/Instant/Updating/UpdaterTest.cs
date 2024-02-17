@@ -6,6 +6,7 @@ using System;
 using Undersoft.SDK.Series;
 using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Uniques;
+using Undersoft.SDK.Updating;
 
 namespace Undersoft.SDK.IntegrationTests.Instant.Updating
 {

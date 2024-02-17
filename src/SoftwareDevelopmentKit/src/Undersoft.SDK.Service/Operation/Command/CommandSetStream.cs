@@ -2,8 +2,8 @@
 
 namespace Undersoft.SDK.Service.Operation.Command;
 
+using Undersoft.SDK;
 using Undersoft.SDK.Service.Data.Event;
-using Undersoft.SDK.Service.Operation;
 
 public class CommandSetStream<TDto>
     : CommandSet<TDto>,

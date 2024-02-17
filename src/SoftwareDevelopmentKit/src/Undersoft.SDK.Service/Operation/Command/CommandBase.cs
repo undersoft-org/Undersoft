@@ -3,11 +3,10 @@ using System.Text.Json.Serialization;
 
 namespace Undersoft.SDK.Service.Operation.Command;
 
-
+using Undersoft.SDK;
 using Undersoft.SDK.Service.Data.Entity;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SDK.Service.Operation;
 
 public abstract class CommandBase : ICommand
 {

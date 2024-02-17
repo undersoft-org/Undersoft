@@ -23,7 +23,7 @@ namespace Undersoft.SDK.Estimating
             {EstimatingExceptionList.DataTypeConvertDouble, "Wrong data type: input cannot be converted to double" },
             {EstimatingExceptionList.DataTypeInconsistentXY, "Wrong data type: input X inconsistent with Y" },
             {EstimatingExceptionList.InputParameterInconsistent, "Input inconsistent estimator parameter size" },
-            {EstimatingExceptionList.MethodCannotBeProceeded, "Method cannot be proceeded for this estimator" },
+            {EstimatingExceptionList.MethodCannotBeProceeded, "InvokeMethod cannot be proceeded for this estimator" },
             {EstimatingExceptionList.Error, "Error - System Crash" }
         };
 

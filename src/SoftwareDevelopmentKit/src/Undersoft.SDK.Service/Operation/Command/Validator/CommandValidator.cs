@@ -4,8 +4,8 @@ using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Operation.Command.Validator;
 
+using Undersoft.SDK;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation;
 using Undersoft.SDK.Service.Operation.Command;
 
 public class CommandValidator<TDto> : CommandValidatorBase<Command<TDto>> where TDto : class, IOrigin, IInnerProxy

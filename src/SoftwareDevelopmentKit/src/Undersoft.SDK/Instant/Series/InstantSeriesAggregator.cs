@@ -1,9 +1,9 @@
 ﻿namespace Undersoft.SDK.Instant.Series;
 
-using Undersoft.SDK.Instant.Updating;
 using Rubrics;
 
 using System.Linq;
+using Undersoft.SDK.Updating;
 
 public static class InstantSeriesAggregator
 {
@@ -101,7 +101,7 @@ public static class InstantSeriesAggregator
                                                                 : (
                                                                     (
                                                                         s.AggregationOperand
-                                                                        == AggregationOperand.Bis
+                                                                        == AggregationOperand.Concat
                                                                     )
                                                                         ? Convert.ChangeType(
                                                                             series.View

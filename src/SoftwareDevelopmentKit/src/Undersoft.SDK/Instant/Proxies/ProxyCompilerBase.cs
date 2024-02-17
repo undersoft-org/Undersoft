@@ -1,24 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace Undersoft.SDK.Instant.Proxies;
 
-namespace Undersoft.SDK.Instant.Proxies;
-
-using Attributes;
 using Rubrics;
-using Rubrics.Attributes;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Runtime.InteropServices;
 using Undersoft.SDK.Series;
 using Uniques;
 
-public abstract class ProxyCompilerBase : InstantCompilerConstructors
+public abstract class ProxyCompilerBase : InstantCompilerBase
 {
     protected int rubricCount;
     protected InstantType instantType;
     protected ProxyCreator proxyCreator;
-    public SortedList<short, MemberRubric> Identities = new SortedList<short, MemberRubric>();
 
     public ISeries<RubricModel> rubricBuilders;
 
@@ -29,171 +21,9 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         rubricCount = this.rubricBuilders.Count;
     }
 
-    void resolveInstantCreatorDisplayAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
-    {
-        object o = mi.GetCustomAttributes(typeof(DisplayRubricAttribute), false).FirstOrDefault();
-        if ((o != null))
-        {
-            DisplayRubricAttribute fda = (DisplayRubricAttribute)o;
-            ;
-            mr.DisplayName = fda.Name;
-
-            if (fb != null)
-                CreateInstantCreatorDisplayAttribute(fb, fda);
-        }
-        else if (mr.DisplayName != null)
-        {
-            CreateInstantCreatorDisplayAttribute(fb, new DisplayRubricAttribute(mr.DisplayName));
-        }
-    }
-
-    void resolveInstantCreatorIdentityAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
-    {
-        if (!mr.IsKey)
-        {
-            object o = mi.GetCustomAttributes(typeof(IdentityRubricAttribute), false).FirstOrDefault();
-            if ((o != null))
-            {
-                IdentityRubricAttribute fia = (IdentityRubricAttribute)o;
-                mr.IsIdentity = true;
-                mr.IsAutoincrement = fia.IsAutoincrement;
-                fia.Order = (short)(Identities.Count);
-                mr.IdentityOrder = fia.Order;
-                Identities.Add(mr.IdentityOrder, mr);
-
-                if (fb != null)
-                    CreateInstantCreatorIdentityAttribute(fb, fia);
-            }
-            else if (mr.IsIdentity)
-            {
-                mr.IdentityOrder = (short)(Identities.Count);
-                Identities.Add(mr.IdentityOrder, mr);
-
-                if (fb != null)
-                    CreateInstantCreatorIdentityAttribute(
-                        fb,
-                        new IdentityRubricAttribute
-                        {
-                            IsAutoincrement = mr.IsAutoincrement,
-                            Order = mr.IdentityOrder
-                        }
-                    );
-            }
-        }
-    }
-
-    void resolveInstantCreatorKeyAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
-    {
-        object o = mi.GetCustomAttributes(typeof(KeyAttribute), false).FirstOrDefault();
-        if ((o == null))
-            o = mi.GetCustomAttributes(typeof(KeyRubricAttribute), false).FirstOrDefault();
-        else
-        {
-            o = new object();
-            o = new KeyRubricAttribute();
-        }
-
-        if ((o != null))
-        {
-            KeyRubricAttribute fka = (KeyRubricAttribute)o;
-            mr.IsKey = true;
-            mr.IsIdentity = true;
-            mr.IsAutoincrement = fka.IsAutoincrement;
-
-            fka.Order = (short)(Identities.Count);
-            mr.IdentityOrder = fka.Order;
-            Identities.Add(mr.IdentityOrder, mr);
-
-            mr.Required = true;
-
-            if (fb != null)
-                CreateInstantCreatorKeyAttribute(fb, fka);
-        }
-        else if (mr.IsKey)
-        {
-            mr.IsIdentity = true;
-            mr.Required = true;
-
-            mr.IdentityOrder = (short)(Identities.Count);
-            Identities.Add(mr.IdentityOrder, mr);
-
-            if (fb != null)
-                CreateInstantCreatorKeyAttribute(
-                    fb,
-                    new KeyRubricAttribute
-                    {
-                        IsAutoincrement = mr.IsAutoincrement,
-                        Order = mr.IdentityOrder
-                    }
-                );
-        }
-    }
-
-    void resolveInstantCreatorRquiredAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
-    {
-        object o = mi.GetCustomAttributes(typeof(RequiredAttribute), false).FirstOrDefault();
-        if ((o == null))
-            o = mi.GetCustomAttributes(typeof(RequiredRubricAttribute), false).FirstOrDefault();
-        else
-        {
-            o = new object();
-            o = new RequiredRubricAttribute();
-        }
-
-        if ((o != null))
-        {
-            mr.Required = true;
-
-            if (fb != null)
-                CreateInstantCreatorRequiredAttribute(fb);
-        }
-        else if (mr.Required)
-        {
-            if (fb != null)
-                CreateInstantCreatorRequiredAttribute(fb);
-        }
-    }
-
-    void resolveInstantCreatorVisibleAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
-    {
-        object o = mi.GetCustomAttributes(typeof(VisibleRubricAttribute), false).FirstOrDefault();
-        if ((o != null))
-        {
-            mr.Visible = true;
-
-            if (fb != null)
-                CreateInstantCreatorVisibleAttribute(fb);
-        }
-        else if (mr.Visible)
-        {
-            if (fb != null)
-                CreateInstantCreatorVisibleAttribute(fb);
-        }
-    }
-
-    void resolveInstantCreatorTreatmentAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
-    {
-        object o = mi.GetCustomAttributes(typeof(RubricAggregateAttribute), false).FirstOrDefault();
-        if ((o != null))
-        {
-            RubricAggregateAttribute fta = (RubricAggregateAttribute)o;
-            ;
-
-            mr.AggregationOperand = fta.SummaryOperand;
-
-            if (fb != null)
-                CreateInstantCreatorTreatmentAttribute(fb, fta);
-        }
-        else if (mr.AggregationOperand != AggregationOperand.None)
-        {
-            CreateInstantCreatorTreatmentAttribute(
-                fb,
-                new RubricAggregateAttribute { SummaryOperand = mr.AggregationOperand }
-            );
-        }
-    }
-
     public abstract Type CompileProxyType(string typeName);
+
+    public abstract TypeBuilder GetTypeBuilder(string typeName);
 
     public abstract void CreateCompareToMethod(TypeBuilder tb);
 
@@ -201,94 +31,19 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
 
     public abstract void CreateFieldsAndProperties(TypeBuilder tb);
 
-    public void CreateInstantCreatorAsAttribute(FieldBuilder field, InstantAsAttribute attrib)
-    {
-        field.SetCustomAttribute(
-            new CustomAttributeBuilder(
-                marshalAsCtor,
-                new object[] { attrib.Value },
-                new FieldInfo[] { typeof(MarshalAsAttribute).GetField("SizeConst") },
-                new object[] { attrib.SizeConst }
-            )
-        );
-    }
-
-    public void CreateInstantCreatorDisplayAttribute(FieldBuilder field, DisplayRubricAttribute attrib)
-    {
-        field.SetCustomAttribute(
-            new CustomAttributeBuilder(figureDisplayCtor, new object[] { attrib.Name })
-        );
-    }
-
-    public void CreateInstantCreatorIdentityAttribute(
-        FieldBuilder field,
-        IdentityRubricAttribute attrib
-    )
-    {
-        field.SetCustomAttribute(
-            new CustomAttributeBuilder(
-                figureIdentityCtor,
-                Type.EmptyTypes,
-                new FieldInfo[]
-                {
-                    typeof(IdentityRubricAttribute).GetField("Order"),
-                    typeof(IdentityRubricAttribute).GetField("IsAutoincrement")
-                },
-                new object[] { attrib.Order, attrib.IsAutoincrement }
-            )
-        );
-    }
-
-    public void CreateInstantCreatorKeyAttribute(FieldBuilder field, KeyRubricAttribute attrib)
-    {
-        field.SetCustomAttribute(
-            new CustomAttributeBuilder(
-                figureKeyCtor,
-                Type.EmptyTypes,
-                new FieldInfo[]
-                {
-                    typeof(KeyRubricAttribute).GetField("Order"),
-                    typeof(KeyRubricAttribute).GetField("IsAutoincrement")
-                },
-                new object[] { attrib.Order, attrib.IsAutoincrement }
-            )
-        );
-    }
-
-    public void CreateInstantCreatorRequiredAttribute(FieldBuilder field)
-    {
-        field.SetCustomAttribute(
-            new CustomAttributeBuilder(figureRequiredCtor, Type.EmptyTypes)
-        );
-    }
-
-    public void CreateInstantCreatorVisibleAttribute(FieldBuilder field)
-    {
-        field.SetCustomAttribute(
-            new CustomAttributeBuilder(figureVisibleCtor, Type.EmptyTypes)
-        );
-    }
-
-    public void CreateInstantCreatorTreatmentAttribute(
-        FieldBuilder field,
-        RubricAggregateAttribute attrib
-    )
-    {
-        field.SetCustomAttribute(
-            new CustomAttributeBuilder(
-                seriesTreatmentCtor,
-                Type.EmptyTypes,
-                new FieldInfo[]
-                {
-                    typeof(RubricAggregateAttribute).GetField("AggregationOperand"),
-                    typeof(RubricAggregateAttribute).GetField("AggregationOperand")
-                },
-                new object[] { attrib.SummaryOperand }
-            )
-        );
-    }
-
     public abstract void CreateGetBytesMethod(TypeBuilder tb);
+
+    public abstract void CreateTargetProperty(TypeBuilder tb, Type type, string name);
+
+    public abstract void CreateItemByIntProperty(TypeBuilder tb);
+
+    public abstract void CreateItemByStringProperty(TypeBuilder tb);
+
+    public abstract void CreateRubricsProperty(TypeBuilder tb, Type type, string name);
+
+    public abstract void CreateCodeProperty(TypeBuilder tb, Type type, string name);
+
+    public abstract void CreateValueArrayProperty(TypeBuilder tb);
 
     public virtual void CreateGetEmptyProperty(TypeBuilder tb)
     {
@@ -361,7 +116,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         il.Emit(OpCodes.Ret);
     }
 
-    public virtual void CreateGetUniqueBytesMethod(TypeBuilder tb)
+    public virtual void CreateGetIdBytesMethod(TypeBuilder tb)
     {
         MethodInfo createArray = typeof(IUnique).GetMethod("GetIdBytes");
 
@@ -384,7 +139,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         il.Emit(OpCodes.Ret);
     }
 
-    public virtual void CreateGetUniqueKeyMethod(TypeBuilder tb)
+    public virtual void CreateGetIdMethod(TypeBuilder tb)
     {
         MethodInfo createArray = typeof(IUnique).GetMethod("GetId");
 
@@ -408,7 +163,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         il.Emit(OpCodes.Ret);
     }
 
-    public virtual void CreateGetUniqueSeedMethod(TypeBuilder tb)
+    public virtual void CreateGetTypeIdMethod(TypeBuilder tb)
     {
         MethodInfo createArray = typeof(IUnique).GetMethod("GetTypeId");
 
@@ -432,29 +187,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         il.Emit(OpCodes.Ret);
     }
 
-    public abstract void CreateTargetProperty(TypeBuilder tb, Type type, string name);
-
-    public abstract void CreateItemByIntProperty(TypeBuilder tb);
-
-    public abstract void CreateItemByStringProperty(TypeBuilder tb);
-
-    public void CreateMarshaAslAttribute(FieldBuilder field, MarshalAsAttribute attrib)
-    {
-        field.SetCustomAttribute(
-            new CustomAttributeBuilder(
-                marshalAsCtor,
-                new object[] { attrib.Value },
-                new FieldInfo[] { typeof(MarshalAsAttribute).GetField("SizeConst") },
-                new object[] { attrib.SizeConst }
-            )
-        );
-    }
-
-    public abstract void CreateRubricsProperty(TypeBuilder tb, Type type, string name);
-
-    public abstract void CreateSerialCodeProperty(TypeBuilder tb, Type type, string name);
-
-    public virtual void CreateSetUniqueKeyMethod(TypeBuilder tb)
+    public virtual void CreateSetIdMethod(TypeBuilder tb)
     {
         MethodInfo createArray = typeof(IUnique).GetMethod("SetId");
 
@@ -479,7 +212,7 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         il.Emit(OpCodes.Ret);
     }
 
-    public virtual void CreateSetUniqueSeedMethod(TypeBuilder tb)
+    public virtual void CreateSetTypeIdMethod(TypeBuilder tb)
     {
         MethodInfo createArray = typeof(IUnique).GetMethod("SetTypeId");
 
@@ -618,133 +351,4 @@ public abstract class ProxyCompilerBase : InstantCompilerConstructors
         il.Emit(OpCodes.Ret);
     }
 
-    public abstract void CreateValueArrayProperty(TypeBuilder tb);
-
-    public abstract TypeBuilder GetTypeBuilder(string typeName);
-
-    public MemberRubric ResolveMemberAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
-    {
-        if (
-            !(((IMemberRubric)mi).MemberInfo is FieldBuilder)
-            && !(((IMemberRubric)mi).MemberInfo is PropertyBuilder)
-        )
-        {
-            mi = ((IMemberRubric)mi).MemberInfo;
-
-            resolveInstantCreatorKeyAttributes(fb, mi, mr);
-
-            resolveInstantCreatorIdentityAttributes(fb, mi, mr);
-
-            resolveInstantCreatorRquiredAttributes(fb, mi, mr);
-
-            resolveInstantCreatorVisibleAttributes(fb, mi, mr);
-
-            resolveInstantCreatorDisplayAttributes(fb, mi, mr);
-
-            resolveInstantCreatorTreatmentAttributes(fb, mi, mr);
-        }
-        return mr;
-    }
-
-    public void ResolveMarshalAsAttributeForArray(
-        FieldBuilder field,
-        MemberRubric member,
-        Type type
-    )
-    {
-        MemberInfo _member = member.RubricInfo;
-        if ((member is MemberRubric) && (member.InstantField != null))
-        {
-            _member = member.InstantField;
-        }
-
-        object[] o = _member.GetCustomAttributes(typeof(MarshalAsAttribute), false);
-        if ((o == null) || !o.Any())
-        {
-            o = _member.GetCustomAttributes(typeof(InstantAsAttribute), false);
-            if ((o != null) && o.Any())
-            {
-                InstantAsAttribute faa = (InstantAsAttribute)o.First();
-                CreateInstantCreatorAsAttribute(
-                    field,
-                    new InstantAsAttribute(UnmanagedType.ByValArray)
-                    {
-                        SizeConst = (faa.SizeConst < 1) ? 64 : faa.SizeConst
-                    }
-                );
-            }
-            else
-            {
-                int size = 64;
-                if (member.RubricSize > 0)
-                    size = member.RubricSize;
-                CreateInstantCreatorAsAttribute(
-                    field,
-                    new InstantAsAttribute(UnmanagedType.ByValArray) { SizeConst = size }
-                );
-            }
-        }
-        else
-        {
-            MarshalAsAttribute maa = (MarshalAsAttribute)o.First();
-            CreateMarshaAslAttribute(
-                field,
-                new MarshalAsAttribute(UnmanagedType.ByValArray)
-                {
-                    SizeConst = (maa.SizeConst < 1) ? 64 : maa.SizeConst
-                }
-            );
-        }
-    }
-
-    public void ResolveMarshalAsAttributeForString(
-        FieldBuilder field,
-        MemberRubric member,
-        Type type
-    )
-    {
-        MemberInfo _member = member.RubricInfo;
-        if ((member is MemberRubric) && (member.InstantField != null))
-        {
-            _member = member.InstantField;
-        }
-
-        object[] o = _member.GetCustomAttributes(typeof(MarshalAsAttribute), false);
-        if ((o == null) || !o.Any())
-        {
-            o = _member.GetCustomAttributes(typeof(InstantAsAttribute), false);
-            if ((o != null) && o.Any())
-            {
-                InstantAsAttribute maa = (InstantAsAttribute)o.First();
-                CreateInstantCreatorAsAttribute(
-                    field,
-                    new InstantAsAttribute(UnmanagedType.ByValTStr)
-                    {
-                        SizeConst = (maa.SizeConst < 1) ? 64 : maa.SizeConst
-                    }
-                );
-            }
-            else
-            {
-                int size = 64;
-                if (member.RubricSize > 0)
-                    size = member.RubricSize;
-                CreateInstantCreatorAsAttribute(
-                    field,
-                    new InstantAsAttribute(UnmanagedType.ByValTStr) { SizeConst = size }
-                );
-            }
-        }
-        else
-        {
-            MarshalAsAttribute maa = (MarshalAsAttribute)o.First();
-            CreateMarshaAslAttribute(
-                field,
-                new MarshalAsAttribute(UnmanagedType.ByValTStr)
-                {
-                    SizeConst = (maa.SizeConst < 1) ? 64 : maa.SizeConst
-                }
-            );
-        }
-    }
 }

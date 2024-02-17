@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using Undersoft.SDK.Service.Data.Object;
+using Undersoft.SDK.Updating;
 
 namespace Undersoft.SDK.Service.Access
 {

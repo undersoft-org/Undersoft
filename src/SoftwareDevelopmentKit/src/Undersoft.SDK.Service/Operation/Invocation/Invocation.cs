@@ -4,8 +4,9 @@ using System.Text.Json.Serialization;
 namespace Undersoft.SDK.Service.Operation.Invocation;
 
 using IdentityModel.Client;
+using Undersoft.SDK;
 using Undersoft.SDK.Service.Data;
-using Undersoft.SDK.Service.Operation;
+using Undersoft.SDK.Uniques;
 using Uniques;
 
 public class Invocation<TDto> : InvocationBase, IRequest<Invocation<TDto>> where TDto : class

@@ -1,24 +1,19 @@
 using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Series.Base;
-using Undersoft.SDK.Service.Application.GUI.View;
-using Undersoft.SDK.Service.Operation;
+using Undersoft.SDK.Service.Application.GUI.Generic;
 using Undersoft.SDK.Uniques;
 
-namespace Undersoft.SDK.Service.Application.GUI.Generic;
+namespace Undersoft.SDK.Service.Application.GUI.View;
 
-public class ViewData<TModel> : ListingBase<IViewData<TModel>>, IViewData<TModel> where TModel : class, IOrigin, IInnerProxy
+public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where TModel : class, IOrigin, IInnerProxy
 {
     protected IProxy _proxy = default!;
     protected IView _view = default!;
 
-    public ViewData() : this(typeof(TModel).New<TModel>(), OperationType.Any)
-    {
-    }
+    public ViewData() : this(typeof(TModel).New<TModel>(), OperationType.Any) { }
 
-    public ViewData(OperationType mode) : this(typeof(TModel).New<TModel>(), mode)
-    {
-    }
+    public ViewData(OperationType mode) : this(typeof(TModel).New<TModel>(), mode) { }
 
     public ViewData(TModel data) : this(data, OperationType.Any) { }
 
@@ -34,10 +29,15 @@ public class ViewData<TModel> : ListingBase<IViewData<TModel>>, IViewData<TModel
 
     public virtual TModel Model { get; set; } = default!;
 
+    public virtual void SetRubrics()
+    {
+        Rubrics.Put((ViewRubric)(object)_proxy.Rubrics.ForOnly(r => r.Visible, r => r.ShalowCopy(new ViewRubric())));
+    }
+
     public virtual void SetRequired(params string[] requiredList)
     {
         var rubrics = requiredList.ForEach(
-            r => (ViewRubric)((object)(_proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
+            r => (ViewRubric)(object)_proxy.Rubrics[r].ShalowCopy(new ViewRubric())
         );
         rubrics.ForEach(r =>
         {
@@ -52,7 +52,7 @@ public class ViewData<TModel> : ListingBase<IViewData<TModel>>, IViewData<TModel
     public virtual void SetVisible(params string[] visibleList)
     {
         var rubrics = visibleList.ForEach(
-            r => (ViewRubric)((object)(_proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
+            r => (ViewRubric)(object)_proxy.Rubrics[r].ShalowCopy(new ViewRubric())
         );
         rubrics.ForEach(r => r.Visible = true);
         Rubrics.Put(rubrics);
@@ -61,7 +61,7 @@ public class ViewData<TModel> : ListingBase<IViewData<TModel>>, IViewData<TModel
     public virtual void SetEditable(params string[] editableList)
     {
         var rubrics = editableList.ForEach(
-            r => (ViewRubric)((object)(_proxy.Rubrics[r].ShalowCopy(new ViewRubric())))
+            r => (ViewRubric)(object)_proxy.Rubrics[r].ShalowCopy(new ViewRubric())
         );
         rubrics.ForEach(r => r.Editable = true);
         Rubrics.Put(rubrics);
@@ -74,7 +74,7 @@ public class ViewData<TModel> : ListingBase<IViewData<TModel>>, IViewData<TModel
             var rubric = _proxy.Rubrics[d.RubricName].ShalowCopy(new ViewRubric());
             rubric.DisplayName = d.DisplayName;
             rubric.Visible = true;
-            return (ViewRubric)((object)rubric);
+            return (ViewRubric)(object)rubric;
         });
         Rubrics.Put(rubrics);
     }
@@ -152,7 +152,7 @@ public class ViewData<TModel> : ListingBase<IViewData<TModel>>, IViewData<TModel
 
     public string? ViewTypeName { get; set; }
 
-    IInnerProxy IViewData.Model { get => this.Model; set => this.Model = (TModel)value; }
+    IInnerProxy IViewData.Model { get => Model; set => Model = (TModel)value; }
 
     public void RenderView()
     {

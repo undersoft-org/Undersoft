@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Text.Json.Serialization;
 using Undersoft.SDK.Extracting;
-using Undersoft.SDK.Instant.Updating;
+using Undersoft.SDK.Updating;
 
 namespace System.Text.Json
 {

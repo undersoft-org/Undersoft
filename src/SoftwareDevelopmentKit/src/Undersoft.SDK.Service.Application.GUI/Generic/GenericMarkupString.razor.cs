@@ -46,7 +46,7 @@ public partial class GenericMarkupString : FluentComponentBase
     {
         if (Content is null && string.IsNullOrEmpty(FromAsset))
         {
-            throw new ArgumentException("You need to provide either Content or FromAsset parameter");
+            throw new ArgumentException("You need to provide either Data or FromAsset parameter");
         }
 
         InternalContent = Content;

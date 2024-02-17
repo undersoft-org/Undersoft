@@ -3,9 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace Undersoft.SDK.Service.Operation.Command;
 
+using Undersoft.SDK;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
-using Undersoft.SDK.Service.Operation;
 
 public class Upsert<TStore, TEntity, TDto> : Command<TDto>
     where TDto : class, IOrigin, IInnerProxy

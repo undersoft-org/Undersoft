@@ -6,6 +6,7 @@
     using Undersoft.SDK.Extracting;
     using Undersoft.SDK.Series;
     using Undersoft.SDK.Series.Base;
+    using Undersoft.SDK.Uniques.Hashing;
     using Uniques.Hashing;
 
 

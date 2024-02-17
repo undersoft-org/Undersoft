@@ -3,24 +3,39 @@
 @using Undersoft.SDK.Instant.Rubrics
 @using Undersoft.SDK
 
-@inherits ComponentBase
+@inherits ViewBase
 @implements IIdentifiable
 @implements IViewItem
-@typeparam TModel where TModel : class, IOrigin, IInnerProxy
-@typeparam TMenu where TMenu : class, IOrigin, IInnerProxy
 
 <div>
     <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
-        
+        @if (Rubric.Visible)
+        {
+            @if (!Rubric.Expandable)
+            {
+
+                @if (_type == typeof(bool))
+                {
+                    <FluentMenuItem Role="MenuItemRole.MenuItemCheckbox" Label="@_label" OnClick="@((e) => Rubric.Invoker.InvokeAsync(Value))" />
+                }
+                else
+                {
+                    <FluentMenuItem Label="@_label" OnClick="@((e) => Rubric.Invoker.InvokeAsync(Value))" />
+                }
+            }
+            else
+            {
+                <FluentMenuItem Label="@_label" OnClick="@((e) => Rubric.Invoker.InvokeAsync(Value))">
+                    <MenuItems>
+                        @foreach(var rubric in ChildRubrics)
+                        {
+                            <GenericMenu Parent="@Parent"/>
+                        }
+                    </MenuItems>
+                </FluentMenuItem>
+            }
+        }
     </FluentStack>
 </div>
-<FluentStack Orientation="Orientation.Vertical" VerticalGap="0" HorizontalAlignment="HorizontalAlignment.Center">
-    @foreach (var error in Rubric.Errors)
-    {
-        <FluentLabel Typo="Typography.Body" Color="Color.Error">
-            @error
-        </FluentLabel>
-    }
-</FluentStack>
 
 

@@ -6,14 +6,14 @@ using Undersoft.SDK.Service.Application.GUI.View;
 
 namespace Undersoft.SDK.Service.Application.GUI.Generic
 {
-    public partial class GenericField<TModel> : ComponentBase, IIdentifiable, IViewItem where TModel : class, IOrigin, IInnerProxy
+    public partial class GenericField<TModel> : ViewBase<TModel>, IIdentifiable, IViewItem where TModel : class, IOrigin, IInnerProxy
     {
         private Type _type = default!;
         private IProxy _proxy = default!;
         private int _index;
         private int _size;
         private string? _name { get; set; } = "";
-        private string? _label { get; set; }
+        private string _label { get; set; } = default!;
         private bool _required { get; set; }
         private InputMode _inputMode { get; set; } = InputMode.None;
         private TextFieldType _textFieldType { get; set; } = TextFieldType.Text;
@@ -47,7 +47,7 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
         protected override void OnInitialized()
         {
             _type = Rubric.RubricType;
-            _proxy = Content.Model.Proxy;
+            _proxy = Data.Model.Proxy;
             _index = Rubric.RubricId;
             _size = Rubric.RubricSize;
             _name = Rubric.RubricName;
@@ -56,29 +56,17 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
             _inputMode = GetInputMode();
             _textFieldType = GetTexType();
             Id = Rubric.Id;
-            TypeId = Model.TypeId;
+            TypeId = DataModel.TypeId;
             Rubric.FieldIdentifier = new FieldIdentifier(this, _name);
             Rubric.View = this;
         }
 
-        public long Id { get; set; }
+        public override string Label { get => _label; set { _label = value; } }
 
-        public long TypeId { get; set; }
-
-        public string? Label { get => _label; set { _label = value; } }
-
-        public Icon? Icon { get; set; }
-
-        public string? Class { get; set; } = "";
-
-        public string? Style { get; set; }
-
-        public string? Attributes { get; set; }
-
-        public TModel Model => Content.Model;
+        public TModel DataModel => Data.Model;
 
         [CascadingParameter]
-        public IViewData<TModel> Content { get; set; } = default!;
+        public override IViewData<TModel> Data { get; set; } = default!;
 
         [CascadingParameter]
         protected EditContext FormContext { get; set; } = default!;
@@ -97,12 +85,7 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
         private EventCallback<object?> ValueChanged { get; set; }
 
         [Parameter]
-        public IViewRubric Rubric { get; set; } = default!;
-
-        public void RenderView()
-        {
-            this.StateHasChanged();
-        }
+        public override IViewRubric Rubric { get; set; } = default!;
 
         private InputMode GetInputMode()
         {

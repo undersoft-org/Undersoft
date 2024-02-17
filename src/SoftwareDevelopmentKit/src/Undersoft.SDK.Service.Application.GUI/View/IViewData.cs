@@ -1,14 +1,13 @@
 ﻿using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Instant.Proxies;
-using Undersoft.SDK.Service.Application.GUI.View;
-using Undersoft.SDK.Service.Operation;
+using Undersoft.SDK.Series;
+using Undersoft.SDK.Service.Application.GUI.Generic;
 
-namespace Undersoft.SDK.Service.Application.GUI.Generic
+namespace Undersoft.SDK.Service.Application.GUI.View
 {
-    public interface IViewData<TModel> : IViewData where TModel : class, IOrigin, IInnerProxy
+    public interface IViewData<TModel> : IViewData, ISeries<IViewData> where TModel : class, IOrigin, IInnerProxy
     {
         new TModel Model { get; set; }
-        string ViewId { get; }
         string? Description { get; set; }
         string? Class { get; set; }
         string? Info { get; set; }
@@ -22,7 +21,6 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
         string? Logo { get; set; }
         string? Href { get; set; }
         string? NextHref { get; set; }
-        IViewRubric ActiveRubric { get; set; }
         string? Title { get; set; }
         string Width { get; set; }
         OperationType Operation { get; set; }
@@ -49,7 +47,9 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
 
     public interface IViewData : IView, IIdentifiable
     {
+        string ViewId { get; }
         IInnerProxy Model { get; set; }
+        IViewRubric ActiveRubric { get; set; }
         IViewRubrics Rubrics { get; set; }
     }
 }

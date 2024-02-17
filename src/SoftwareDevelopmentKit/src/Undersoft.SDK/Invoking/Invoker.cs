@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
-using Undersoft.SDK.Instant.Updating;
 using Undersoft.SDK.Uniques;
+using Undersoft.SDK.Updating;
 
 namespace Undersoft.SDK.Invoking
 {

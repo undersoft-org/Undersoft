@@ -7,7 +7,7 @@ using Undersoft.SDK;
 
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SDK.Service.Operation;
+using Undersoft.SDK.Uniques;
 using Uniques;
 
 public class Command<TDto> : CommandBase, IRequest<Command<TDto>>, IIdentifiable where TDto : class, IOrigin, IInnerProxy

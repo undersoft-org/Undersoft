@@ -24,7 +24,7 @@
 
             CreateFieldsAndProperties(tb);
 
-            CreateSerialCodeProperty(tb, typeof(Uscn), "Code");
+            CreateCodeProperty(tb, typeof(Uscn), "Code");
 
             CreateValueArrayProperty(tb);
 
@@ -32,9 +32,9 @@
 
             CreateItemByStringProperty(tb);
 
-            CreateKeyProperty(tb);
+            CreateIdProperty(tb);
 
-            CreateTypeKeyProperty(tb);
+            CreateTypeIdProperty(tb);
 
             // CreateGetUniqueBytesMethod(tb);
 
@@ -77,9 +77,9 @@
 
                         pi.SetCustomAttribute(
                             new CustomAttributeBuilder(
-                                dataMemberCtor,
+                                DataMemberCtor,
                                 new object[0],
-                                dataMemberProps,
+                                DataMemberProps,
                                 new object[2] { i++, fp.Name }
                             )
                         );
@@ -354,7 +354,7 @@
             }
         }
 
-        public override void CreateSerialCodeProperty(TypeBuilder tb, Type type, string name)
+        public override void CreateCodeProperty(TypeBuilder tb, Type type, string name)
         {
             RubricModel fp = null;
             var field = rubricBuilders.FirstOrDefault(
@@ -430,9 +430,9 @@
 
             prop.SetCustomAttribute(
                 new CustomAttributeBuilder(
-                    dataMemberCtor,
+                    DataMemberCtor,
                     new object[0],
-                    dataMemberProps,
+                    DataMemberProps,
                     new object[2] { 0, name.ToUpper() }
                 )
             );
@@ -544,9 +544,9 @@
 
             tb.SetCustomAttribute(
                 new CustomAttributeBuilder(
-                    structLayoutCtor,
+                    StructLayoutCtor,
                     new object[] { LayoutKind.Sequential },
-                    structLayoutFields,
+                    StructLayoutFields,
                     new object[] { CharSet.Ansi, 1 }
                 )
             );

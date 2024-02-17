@@ -5,6 +5,7 @@
     using Undersoft.SDK.Uniques;
     using Base;
     using Instant.Updating;
+    using Undersoft.SDK.Updating;
 
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]

@@ -1,5 +1,5 @@
-﻿@using Undersoft.SDK
-@using Undersoft.SDK.Instant.Proxies
+﻿@    using Undersoft.SDK
+@    using Undersoft.SDK.Instant.Proxies
 
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 
@@ -89,7 +89,7 @@
     private FluentDesignTheme? _theme;
 
     [Parameter]
-    public IViewData<TModel> Content { get; set; } = default!;
+    public IViewData<TModel> Data { get; set; } = default!;
 
     [Inject]
     public required GlobalState GlobalState { get; set; }
@@ -104,7 +104,7 @@
 
     protected override void OnInitialized()
     {
-        Content.View = this;
+        Data.View = this;
         base.OnInitialized();
     }
 

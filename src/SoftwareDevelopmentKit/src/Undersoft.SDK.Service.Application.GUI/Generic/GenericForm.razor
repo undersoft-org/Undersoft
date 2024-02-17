@@ -11,7 +11,7 @@
 <div class="generics generic-form forms">
     <CascadingValue Value="@FormContext">
         <EditForm EditContext="@FormContext" FormName="generic_form">
-            <CascadingValue Value="@Content">
+            <CascadingValue Value="@Data">
                 <GenericValidator TValidator="TValidator" TModel="TModel" />
                 <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="3">
                     @foreach (var _rubric in _rubrics)
@@ -25,18 +25,18 @@
 </div>
 
 @code {
-    private IViewRubrics _rubrics => Content.Rubrics;
+    private IViewRubrics _rubrics => Data.Rubrics;
 
     protected override void OnInitialized()
     {
-        FormContext = new EditContext(Content);
+        FormContext = new EditContext(Data);
         FormContext.OnFieldChanged += FieldChanged;
     }
 
     public EditContext FormContext { get; set; } = default!;
 
     [Parameter]
-    public IViewData<TModel> Content { get; set; } = default!;
+    public IViewData<TModel> Data { get; set; } = default!;
 
     private void FieldChanged(object? sender, FieldChangedEventArgs args)
     {

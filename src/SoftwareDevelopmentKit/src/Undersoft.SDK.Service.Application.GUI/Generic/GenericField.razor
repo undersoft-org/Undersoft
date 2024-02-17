@@ -3,7 +3,7 @@
 @using Undersoft.SDK.Instant.Rubrics
 @using Undersoft.SDK
 
-@inherits ComponentBase
+@inherits ViewBase<TModel>
 @implements IIdentifiable
 @implements IViewItem
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy

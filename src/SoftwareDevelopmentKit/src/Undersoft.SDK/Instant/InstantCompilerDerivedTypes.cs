@@ -19,7 +19,7 @@
         {
             TypeBuilder tb = GetTypeBuilder(typeName);
 
-            CreateSerialCodeProperty(tb, typeof(Uscn), "Code");
+            CreateCodeProperty(tb, typeof(Uscn), "Code");
 
             CreateFieldsAndProperties(tb);
 
@@ -29,9 +29,9 @@
 
             CreateItemByStringProperty(tb);
 
-            CreateKeyProperty(tb);
+            CreateIdProperty(tb);
 
-            CreateTypeKeyProperty(tb);
+            CreateTypeIdProperty(tb);
 
             //CreateGetUniqueBytesMethod(tb);
 
@@ -188,7 +188,7 @@
             il.Emit(OpCodes.Ret);
         }
 
-        public override void CreateGetUniqueBytesMethod(TypeBuilder tb)
+        public override void CreateGetIdBytesMethod(TypeBuilder tb)
         {
             MethodInfo createArray = typeof(IInstant).GetMethod("GetIdBytes");
 
@@ -490,7 +490,7 @@
             }
         }
 
-        public override void CreateSerialCodeProperty(TypeBuilder tb, Type type, string name)
+        public override void CreateCodeProperty(TypeBuilder tb, Type type, string name)
         {
             RubricModel fp = null;
             var field = rubricBuilders
@@ -565,9 +565,9 @@
 
             prop.SetCustomAttribute(
                 new CustomAttributeBuilder(
-                    dataMemberCtor,
+                    DataMemberCtor,
                     new object[0],
-                    dataMemberProps,
+                    DataMemberProps,
                     new object[2] { 0, name.ToUpper() }
                 )
             );
@@ -582,7 +582,7 @@
             }
         }
 
-        public override void CreateKeyProperty(TypeBuilder tb)
+        public override void CreateIdProperty(TypeBuilder tb)
         {
             PropertyBuilder prop = tb.DefineProperty(
                 "Id",
@@ -639,7 +639,7 @@
             il.Emit(OpCodes.Ret);
         }
 
-        public override void CreateTypeKeyProperty(TypeBuilder tb)
+        public override void CreateTypeIdProperty(TypeBuilder tb)
         {
             PropertyBuilder prop = tb.DefineProperty(
                 "TypeId",

@@ -1,6 +1,5 @@
 using Undersoft.SDK.Extracting;
 using Undersoft.SDK.Instant.Rubrics.Attributes;
-using Undersoft.SDK.Instant.Updating;
 
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.InteropServices;
@@ -10,6 +9,7 @@ using System.Text.Json.Serialization;
 using System;
 using System.Linq.Expressions;
 using System.Xml.Linq;
+using Undersoft.SDK.Updating;
 
 namespace Undersoft.SDK.Serialization;
 

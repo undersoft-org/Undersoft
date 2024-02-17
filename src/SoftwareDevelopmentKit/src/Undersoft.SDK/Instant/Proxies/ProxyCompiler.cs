@@ -23,15 +23,13 @@ public class ProxyCompiler : ProxyCompilerBase
     {
         TypeBuilder tb = GetTypeBuilder(typeName + "Proxy");
 
-        CreateTargetProperty(tb, typeof(object), "Target");
+        CreateTargetProperty(tb, typeof(object), "InvokeTarget");
 
         CreateRubricsProperty(tb, typeof(MemberRubrics), "Rubrics");
 
         CreateFieldsAndProperties(tb);
 
-        CreateSerialCodeProperty(tb, typeof(Uscn), "Code");
-
-        // CreateValueArrayProperty(tb);
+        CreateCodeProperty(tb, typeof(Uscn), "Code");
 
         CreateItemByIntProperty(tb);
 
@@ -40,10 +38,6 @@ public class ProxyCompiler : ProxyCompilerBase
         CreateIdProperty(tb);
 
         CreateTypeIdProperty(tb);
-
-        // CreateGetUniqueBytesMethod(tb);
-
-        // CreateGetBytesMethod(tb);
 
         CreateEqualsMethod(tb);
 
@@ -197,7 +191,7 @@ public class ProxyCompiler : ProxyCompilerBase
         il.Emit(OpCodes.Ret);
     }
 
-    public override void CreateGetUniqueBytesMethod(TypeBuilder tb)
+    public override void CreateGetIdBytesMethod(TypeBuilder tb)
     {
         MethodInfo createArray = typeof(IUnique).GetMethod("GetIdBytes");
 
@@ -281,9 +275,9 @@ public class ProxyCompiler : ProxyCompilerBase
 
         prop.SetCustomAttribute(
             new CustomAttributeBuilder(
-                dataMemberCtor,
+                DataMemberCtor,
                 new object[0],
-                dataMemberProps,
+                DataMemberProps,
                 new object[2] { rubricCount + 1, name.ToUpper() }
             )
         );
@@ -569,7 +563,7 @@ public class ProxyCompiler : ProxyCompilerBase
         }
     }
 
-    public override void CreateSerialCodeProperty(TypeBuilder tb, Type type, string name)
+    public override void CreateCodeProperty(TypeBuilder tb, Type type, string name)
     {
 
         RubricModel newFieldModel = null;
@@ -653,9 +647,9 @@ public class ProxyCompiler : ProxyCompilerBase
 
         prop.SetCustomAttribute(
             new CustomAttributeBuilder(
-                dataMemberCtor,
+                DataMemberCtor,
                 new object[0],
-                dataMemberProps,
+                DataMemberProps,
                 new object[2] { 0, name.ToUpper() }
             )
         );
@@ -728,9 +722,9 @@ public class ProxyCompiler : ProxyCompilerBase
 
         prop.SetCustomAttribute(
             new CustomAttributeBuilder(
-                dataMemberCtor,
+                DataMemberCtor,
                 new object[0],
-                dataMemberProps,
+                DataMemberProps,
                 new object[2] { rubricCount + 2, name.ToUpper() }
             )
         );

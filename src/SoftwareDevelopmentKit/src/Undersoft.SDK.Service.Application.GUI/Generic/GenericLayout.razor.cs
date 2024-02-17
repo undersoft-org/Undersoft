@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components.Routing;
 using System.Reflection;
 using System.Text.Json;
-using Undersoft.SDK.Instant.Updating;
 using Undersoft.SDK.Service.Application.Extensions;
 using Undersoft.SDK.Service.Application.GUI.Models;
+using Undersoft.SDK.Updating;
 
 namespace Undersoft.SDK.Service.Application.GUI.Generic;
 

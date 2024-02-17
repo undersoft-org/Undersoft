@@ -1,6 +1,7 @@
 ﻿using Undersoft.SDK;
 using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Access;
+using Undersoft.SDK.Updating;
 
 namespace Undersoft.SSC.Service.Application.Models
 {

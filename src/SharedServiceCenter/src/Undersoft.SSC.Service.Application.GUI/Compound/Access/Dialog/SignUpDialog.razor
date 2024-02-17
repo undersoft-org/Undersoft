@@ -1,8 +1,9 @@
-﻿@using System.ComponentModel.DataAnnotations
-@using Undersoft.SDK.Instant.Proxies
-@using Undersoft.SDK.Instant.Rubrics
-@using Undersoft.SDK.Invoking
-@using Undersoft.SDK
+﻿@    using System.ComponentModel.DataAnnotations
+@    using Undersoft.SDK.Instant.Proxies
+@    using Undersoft.SDK.Instant.Rubrics
+@    using Undersoft.SDK.Invoking
+@    using Undersoft.SDK;
+    using Undersoft.SDK.Service.Application.GUI.Models
 
 @inject NavigationManager _navigation
 
@@ -12,7 +13,7 @@
 @implements IDialogContentComponent<IViewData<TModel>>
 @implements IView
 
-<CascadingValue Value="@Content">
+<CascadingValue Value="@Data">
         <!-- Header -->
         <GenericFormDialogHeader TModel="TModel" />
 
@@ -38,29 +39,29 @@
 @code
 {
     [Parameter]
-    public IViewData<TModel> Content { get; set; } = default!;
+    public IViewData<TModel> Data { get; set; } = default!;
 
     [CascadingParameter]
     public FluentDialog Dialog { get; set; } = default!;
 
     private async Task OnSignIn(MouseEventArgs e)
     {
-        Content.NextHref = "access/sign_in";
+        Data.NextHref = "access/sign_in";
 
-        await Dialog.CloseAsync(Content);
+        await Dialog.CloseAsync(Data);
     }
 
     protected override void OnInitialized()
     {
-        Content.View = this;
+        Data.View = this;
         base.OnInitialized();
     }
 
     private async Task SaveAsync()
     {
-        if ((await Content.Validator.ValidateAsync()).IsValid)
+        if ((await Data.Validator.ValidateAsync()).IsValid)
         {
-            await Dialog.CloseAsync(Content);
+            await Dialog.CloseAsync(Data);
         }
     }
 
