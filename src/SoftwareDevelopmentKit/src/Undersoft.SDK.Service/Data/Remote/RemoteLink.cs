@@ -1,5 +1,6 @@
 namespace Undersoft.SDK.Service.Data.Remote;
 
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Object;
 
 public class RemoteLink<TSource, TTarget> : RemoteLink, IRemoteLink<TSource, TTarget> where TSource : class, IOrigin, IInnerProxy where TTarget : class, IOrigin, IInnerProxy

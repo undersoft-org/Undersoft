@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Undersoft.SDK.Service.Infrastructure.Database.Relation;
 
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Remote;
 using Undersoft.SDK.Service.Data.Store;
 

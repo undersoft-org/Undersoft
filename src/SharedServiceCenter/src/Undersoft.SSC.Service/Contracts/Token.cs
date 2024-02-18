@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using Undersoft.SDK.Proxies;
 
 namespace Undersoft.SSC.Service.Contracts;
 

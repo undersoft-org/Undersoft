@@ -1,10 +1,8 @@
 ﻿namespace Undersoft.SDK.Series
 {
-    using Undersoft.SDK.Instant;
+    using Base;
     using System.Runtime.InteropServices;
     using Undersoft.SDK.Uniques;
-    using Base;
-    using Instant.Updating;
     using Undersoft.SDK.Updating;
 
     [Serializable]

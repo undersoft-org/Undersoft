@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Series;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Query;

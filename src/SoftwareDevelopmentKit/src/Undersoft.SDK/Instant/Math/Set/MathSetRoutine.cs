@@ -4,7 +4,7 @@
     using SDK.Series;
     using SDK.Series.Base;
     using Set;
-    using Instant.Rubrics;
+    using Rubrics;
     using Undersoft.SDK.Instant.Series;
 
     public class MathSetRoutine : ListingBase<MathSetFormula>

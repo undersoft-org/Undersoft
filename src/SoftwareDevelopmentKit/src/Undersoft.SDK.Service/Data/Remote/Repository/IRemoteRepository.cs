@@ -1,4 +1,5 @@
 ﻿using Microsoft.OData.Client;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Repository;
 

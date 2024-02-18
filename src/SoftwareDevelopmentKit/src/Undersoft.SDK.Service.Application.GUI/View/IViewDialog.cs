@@ -1,5 +1,5 @@
 ﻿using Microsoft.FluentUI.AspNetCore.Components;
-using Undersoft.SDK.Instant.Proxies;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Application.GUI.Generic;
 
 namespace Undersoft.SDK.Service.Application.GUI.View

@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Instant.Series
 {
-    using Instant.Proxies;
+    using Proxies;
     using Rubrics;
     using SDK.Uniques;
     using System.Collections.Generic;
@@ -8,6 +8,7 @@
     using System.Reflection.Emit;
     using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
+    using Undersoft.SDK.Proxies;
 
     public class InstantSeriesCompiler
     {

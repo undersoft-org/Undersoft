@@ -2,9 +2,9 @@
 
 namespace Undersoft.SDK.Instant.Math;
 
+using Rubrics;
 using System.Collections.Generic;
 using System.Linq;
-using Instant.Rubrics;
 
 public static class InstantMathExtensions
 {

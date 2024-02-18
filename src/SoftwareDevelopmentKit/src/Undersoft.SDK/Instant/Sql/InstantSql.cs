@@ -1,5 +1,5 @@
-using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Instant.Series;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Series.Base;
 
 namespace Undersoft.SDK.Instant.Sql

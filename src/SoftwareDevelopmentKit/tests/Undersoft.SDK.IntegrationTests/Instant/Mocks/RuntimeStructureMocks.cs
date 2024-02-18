@@ -2,7 +2,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant;
 
 using System.Linq;
 using System.Reflection;
-using Undersoft.SDK.Instant.Rubrics;
+using Undersoft.SDK.Rubrics;
 
 public static class InstantMocks
 {

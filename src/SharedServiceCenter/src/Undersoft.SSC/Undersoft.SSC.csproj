@@ -35,8 +35,8 @@
     <Using Include="Undersoft.SDK.Invoking" />
     <Using Include="Undersoft.SDK.Series" />
     <Using Include="Undersoft.SDK.Instant" />
-    <Using Include="Undersoft.SDK.Instant.Updating" />
-    <Using Include="Undersoft.SDK.Instant.Proxies" />
+    <Using Include="Undersoft.SDK.Updating" />
+    <Using Include="Undersoft.SDK.Proxies" />
     <Using Include="Undersoft.SDK.Logging" />
     <Using Include="Undersoft.SDK.Uniques" />
   </ItemGroup>

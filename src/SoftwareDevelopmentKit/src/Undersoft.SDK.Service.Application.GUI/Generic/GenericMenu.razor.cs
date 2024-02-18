@@ -3,33 +3,32 @@ using Undersoft.SDK.Service.Application.GUI.View;
 
 namespace Undersoft.SDK.Service.Application.GUI.Generic
 {
-    public partial class GenericMenu : ViewBase
+    public partial class GenericMenu : ViewItem
     {
-        private IViewRubrics _rubrics => Data.Rubrics;
-
         protected override void OnInitialized()
         {
+            Data.MapRubrics();
             if (Parent == null)
                 Root = this;
+            base.OnInitialized();
         }
 
         [Parameter]
         public string AnchorId { get; set; } = default!;
 
         [Parameter]
-        public MouseButton Trigger { get; set; } = default!;
+        public bool Anchored { get; set; } = default!;
+
+        [Parameter]
+        public MouseButton Trigger { get; set; } = MouseButton.Left;
 
         [Parameter]
         public IViewItem? Parent { get; set; }
 
         public IViewItem? Root { get; set; }
 
-        private void OnMenuChange(MenuChangeEventArgs args)
+        public void OnMenuChange(MenuChangeEventArgs args)
         {
-            if (args is not null && args.Value is not null)
-                _ = args.Value;
         }
     }
-
-
 }

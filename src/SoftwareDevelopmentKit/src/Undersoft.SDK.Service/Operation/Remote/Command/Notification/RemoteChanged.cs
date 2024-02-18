@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 namespace Undersoft.SDK.Service.Operation.Remote.Command.Notification;
 
 using Command;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Store;
 
 public class RemoteChanged<TStore, TDto, TModel> : RemoteNotification<RemoteCommand<TModel>>

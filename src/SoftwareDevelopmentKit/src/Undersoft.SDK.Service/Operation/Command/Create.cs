@@ -8,6 +8,7 @@ using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK;
+using Undersoft.SDK.Proxies;
 
 public class Create<TStore, TEntity, TDto> : Command<TDto>
     where TEntity : class, IOrigin, IInnerProxy

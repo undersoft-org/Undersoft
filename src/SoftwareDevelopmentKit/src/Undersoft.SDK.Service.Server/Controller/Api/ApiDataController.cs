@@ -7,6 +7,7 @@ namespace Undersoft.SDK.Service.Server.Controller.Api;
 using MediatR;
 using Operation.Command;
 using Operation.Query;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Query;

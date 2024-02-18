@@ -1,4 +1,5 @@
-﻿using Undersoft.SDK.Service.Data.Object;
+﻿using Undersoft.SDK.Proxies;
+using Undersoft.SDK.Service.Data.Object;
 
 namespace Undersoft.SDK.Service.Data.Remote
 {

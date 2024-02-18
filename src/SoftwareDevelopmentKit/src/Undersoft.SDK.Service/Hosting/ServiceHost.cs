@@ -25,6 +25,8 @@ namespace Undersoft.SDK.Service.Hosting
 
         public IServiceProvider Services => Host.Services;
 
+        public IServicer Servicer { get; set; }
+
         public void Dispose()
         {
             Host.Dispose();

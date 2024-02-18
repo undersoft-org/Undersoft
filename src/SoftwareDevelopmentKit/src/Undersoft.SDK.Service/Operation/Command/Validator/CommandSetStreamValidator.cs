@@ -1,4 +1,6 @@
-﻿namespace Undersoft.SDK.Service.Operation.Command.Validator;
+﻿using Undersoft.SDK.Proxies;
+
+namespace Undersoft.SDK.Service.Operation.Command.Validator;
 
 
 

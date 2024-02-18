@@ -1,9 +1,10 @@
 ﻿@using System.ComponentModel.DataAnnotations
-@using Undersoft.SDK.Instant.Proxies
-@using Undersoft.SDK.Instant.Rubrics
-@using Undersoft.SDK
+@using Undersoft.SDK.Proxies
+@using Undersoft.SDK.Rubrics
+@using Undersoft.SDK;
+@using Undersoft.SDK.Proxies
 
-@inherits ViewBase<TModel>
+@inherits ViewItem<TModel>
 @implements IIdentifiable
 @implements IViewItem
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy

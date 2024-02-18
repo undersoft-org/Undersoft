@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Remote.Repository;
 using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Operation.Remote.Query;

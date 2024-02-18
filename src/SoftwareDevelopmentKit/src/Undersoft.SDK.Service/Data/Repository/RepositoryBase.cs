@@ -3,14 +3,12 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Collections;
 using System.Linq.Expressions;
 using Undersoft.SDK.Service.Data.Mapper;
-using Undersoft.SDK.Service.Data.Repository;
 
 namespace Undersoft.SDK.Service.Data.Repository;
 
 using Data.Entity;
 using Invoking;
 using Undersoft.SDK;
-using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Remote;

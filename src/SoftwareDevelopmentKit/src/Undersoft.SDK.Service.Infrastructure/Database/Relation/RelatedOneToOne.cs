@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Undersoft.SDK.Proxies;
 
 namespace Undersoft.SDK.Service.Infrastructure.Database.Relation;
 public class RelatedOneToOne<TParent, TChild>

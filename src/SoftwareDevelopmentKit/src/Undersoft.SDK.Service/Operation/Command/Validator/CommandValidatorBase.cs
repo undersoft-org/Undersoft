@@ -4,7 +4,8 @@ using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Operation.Command.Validator;
 
-using Instant.Proxies;
+using Proxies;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Operation.Command;

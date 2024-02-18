@@ -3,7 +3,7 @@
 namespace Undersoft.SDK.Service.Operation.Remote.Command;
 
 using Undersoft.SDK;
-
+using Undersoft.SDK.Proxies;
 
 public interface IRemoteCommandSet<TModel> : IRemoteCommandSet where TModel : class, IOrigin, IInnerProxy
 {

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.OData.Formatter;
 
 namespace Undersoft.SDK.Service.Server.Controller.Open;
 
-
+using Undersoft.SDK.Proxies;
 using Uniques;
 
 public interface IOpenEventController<TKey, TEntity, TDto> where TDto : class, IOrigin, IInnerProxy

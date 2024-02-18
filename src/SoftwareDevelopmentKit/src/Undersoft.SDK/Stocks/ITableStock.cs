@@ -6,7 +6,7 @@ using System.Security.Permissions;
 using System.Diagnostics;
 using System.Threading;
 using Undersoft.SDK.Uniques;
-using Undersoft.SDK.Instant.Proxies;
+using Undersoft.SDK.Proxies;
 
 namespace Undersoft.SDK.Stocks
 {

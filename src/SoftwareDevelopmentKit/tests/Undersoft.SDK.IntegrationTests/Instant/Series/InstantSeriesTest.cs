@@ -3,8 +3,8 @@ namespace Undersoft.SDK.IntegrationTests.Instant
     using System.Collections.Generic;
     using System.Reflection;
     using Undersoft.SDK.Instant;
-    using Undersoft.SDK.Instant.Proxies;
     using Undersoft.SDK.Instant.Series;
+    using Undersoft.SDK.Proxies;
     using Xunit;
 
     public class InstantSeriesTest
@@ -117,7 +117,7 @@ namespace Undersoft.SDK.IntegrationTests.Instant
                     r.RubricId == instantSeriesCreator.Rubrics[r.RubricId].RubricId
                     && r.RubricName == instantSeriesCreator.Rubrics[r.RubricId].RubricName
                     && r.RubricType == instantSeriesCreator.Rubrics[r.RubricId].RubricType
-            ));            
+            ));
         }
 
         private IInstant Instant_Compilation_Helper_Test(
@@ -127,9 +127,9 @@ namespace Undersoft.SDK.IntegrationTests.Instant
         {
             IInstant rts = Instant.Create();
 
-            for (int i = 1; i < Instant.Rubrics.Count; i++)
+            for (int i = 1; i < instantSeriesCreator.Rubrics.Count; i++)
             {
-                var r = Instant.Rubrics[i].RubricInfo;
+                var r = instantSeriesCreator.Rubrics[i].RubricInfo;
                 if (r.MemberType == MemberTypes.Field)
                 {
                     var fi = fom.GetType().GetField(((FieldInfo)r).Name);

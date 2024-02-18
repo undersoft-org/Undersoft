@@ -3,6 +3,7 @@ using Undersoft.SDK.Service.Data.Query;
 using System.Linq.Expressions;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Repository.Pagination;
+using Undersoft.SDK.Proxies;
 
 namespace Undersoft.SDK.Service.Data.Repository
 {

@@ -4,9 +4,8 @@ using System.Linq;
 using Undersoft.SDK.Instant;
 using Undersoft.SDK.Instant.Math;
 using Undersoft.SDK.Instant.Math.Set;
-using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Instant.Series;
-using Undersoft.SDK.Instant.Series.Querying;
+using Undersoft.SDK.Proxies;
 using Xunit;
 
 public class InstantMathTest
@@ -110,7 +109,7 @@ public class InstantMathTest
     [Fact]
     public void InstantMath_Member_By_String_Computation_LogicOnStack_Test()
     {
-        
+
         instantMath = new InstantMath(instantSeries);
 
         MathSet ml = instantMath["SellNetPrice"];

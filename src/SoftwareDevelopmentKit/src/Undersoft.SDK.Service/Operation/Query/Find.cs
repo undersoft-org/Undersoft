@@ -2,6 +2,7 @@
 
 namespace Undersoft.SDK.Service.Operation.Query;
 
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Store;
 

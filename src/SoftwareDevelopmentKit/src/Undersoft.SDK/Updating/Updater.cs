@@ -4,10 +4,10 @@ using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Updating;
 
-using Instant.Rubrics;
+using Rubrics;
 using Invoking;
 using Undersoft.SDK;
-using Undersoft.SDK.Instant.Proxies;
+using Undersoft.SDK.Proxies;
 
 public class Updater : IUpdater
 {

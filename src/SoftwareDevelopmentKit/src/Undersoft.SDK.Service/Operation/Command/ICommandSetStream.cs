@@ -1,4 +1,6 @@
-﻿namespace Undersoft.SDK.Service.Operation.Command;
+﻿using Undersoft.SDK.Proxies;
+
+namespace Undersoft.SDK.Service.Operation.Command;
 
 
 

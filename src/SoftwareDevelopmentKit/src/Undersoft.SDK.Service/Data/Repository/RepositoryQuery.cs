@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Data.Repository;
+using Undersoft.SDK.Proxies;
 
 namespace Undersoft.SDK.Service.Data.Repository;
 

@@ -6,7 +6,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Database;
 using Data.Entity;
 using System.Linq.Expressions;
 using Undersoft.SDK;
-using Undersoft.SDK.Instant.Proxies;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Identifier;
 using Undersoft.SDK.Service.Infrastructure.Database.Relation;
 

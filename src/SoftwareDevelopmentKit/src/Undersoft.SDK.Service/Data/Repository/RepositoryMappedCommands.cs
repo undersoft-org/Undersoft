@@ -3,6 +3,7 @@
 namespace Undersoft.SDK.Service.Data.Repository;
 
 using Undersoft.SDK;
+using Undersoft.SDK.Proxies;
 
 public partial class Repository<TEntity> : IRepositoryMappedCommand<TEntity> where TEntity : class, IOrigin, IInnerProxy
 {

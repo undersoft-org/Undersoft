@@ -14,10 +14,10 @@
 //namespace Undersoft.SDK.Uniques;
 
 //using Uniques;
-//using Instant.Proxies;
+//using Proxies;
 //using Instant.Attributes;
-//using Instant.Rubrics;
-//using Instant.Rubrics.Attributes;
+//using Rubrics;
+//using Rubrics.Attributes;
 //using Undersoft.SDK.Extracting;
 //using Undersoft.SDK.Serialization;
 //using Undersoft.SDK;

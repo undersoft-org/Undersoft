@@ -1,15 +1,15 @@
 using Undersoft.SDK.IntegrationTests.Instant;
 
-namespace Undersoft.SDK.IntegrationTests.Instant.Proxies
+namespace Undersoft.SDK.IntegrationTests.Proxies
 {
     using Undersoft.SDK.Instant.Series;
     using System;
     using System.Reflection;
 
     using Xunit;
-    using Undersoft.SDK.Instant.Proxies;
     using Undersoft.SDK.Instant;
     using Undersoft.SDK.Uniques;
+    using Undersoft.SDK.Proxies;
 
     public class ProxiesTest
     {

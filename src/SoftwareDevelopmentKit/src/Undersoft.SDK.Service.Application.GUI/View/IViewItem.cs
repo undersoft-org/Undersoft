@@ -15,5 +15,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View
         string? Attributes { get; set; }
 
         IViewRubric Rubric { get; set; }
+
+        IViewData Data { get; set; }
     }
 }

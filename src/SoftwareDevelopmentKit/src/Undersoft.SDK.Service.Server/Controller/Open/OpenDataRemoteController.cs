@@ -6,6 +6,7 @@ namespace Undersoft.SDK.Service.Server.Controller.Open;
 
 using Operation.Remote.Command;
 using Operation.Remote.Query;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;

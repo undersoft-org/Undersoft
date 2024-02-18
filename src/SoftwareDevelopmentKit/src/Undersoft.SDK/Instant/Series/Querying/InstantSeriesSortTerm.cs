@@ -2,7 +2,7 @@
 
 using System;
 using System.Linq;
-using Instant.Rubrics;
+using Rubrics;
 
 [Serializable]
 public class InstantSeriesSortTerm : IInstantSeriesSortTerm

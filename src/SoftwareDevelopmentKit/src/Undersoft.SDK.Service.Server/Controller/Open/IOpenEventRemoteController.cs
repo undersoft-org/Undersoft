@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
+using Undersoft.SDK.Proxies;
 
 
 namespace Undersoft.SDK.Service.Server.Controller.Open

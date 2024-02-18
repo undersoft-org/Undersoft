@@ -3,7 +3,7 @@
 //namespace Undersoft.SDK.Uniques
 //{
 //    using Undersoft.SDK;
-//    using Undersoft.SDK.Instant.Proxies;
+//    using Undersoft.SDK.Proxies;
 
 //    public interface IUniqueIdentifiable :
 //            IEquatable<IUniqueIdentifiable>,

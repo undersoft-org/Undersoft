@@ -1,7 +1,9 @@
 ﻿@inherits LayoutComponentBase
 @layout GenericLayout
 
-<GenericLandingHeader />
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+
+<GenericLandingHeader TModel="TModel" />
 <GenericLandingBody>
     @Body
 </GenericLandingBody>

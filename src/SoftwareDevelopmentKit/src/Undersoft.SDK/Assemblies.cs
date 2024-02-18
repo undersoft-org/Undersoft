@@ -3,7 +3,7 @@
     using System.Linq;
     using System.Reflection;
     using System.Runtime.InteropServices;
-    using Undersoft.SDK.Instant.Plugins;
+    using Undersoft.SDK.Plugging;
 
     public static partial class Assemblies
     {
@@ -29,7 +29,7 @@
         }
 
         public static Type ForceFindType(string name, string nameSpace = null)
-        {   
+        {
             var asms = AppDomain.CurrentDomain.GetAssemblies();
             var namespaceFirstBlock = AppDomain.CurrentDomain.FriendlyName.Split('.').First();
             var plugin = new Plugin();
@@ -58,7 +58,7 @@
             return null;
         }
 
-        public static Type FindTypeByFullName(string fullname) 
+        public static Type FindTypeByFullName(string fullname)
         {
             var asms = AppDomain.CurrentDomain.GetAssemblies();
             var namespaceFirstBlock = AppDomain.CurrentDomain.FriendlyName.Split('.').First();
@@ -71,7 +71,7 @@
                     foreach (var extype in extypes)
                     {
                         if (
-                            namespaceFirstBlock.Equals(extype.Namespace.Split('.').First())                            
+                            namespaceFirstBlock.Equals(extype.Namespace.Split('.').First())
                         )
                         {
                             if (extype.FullName.Equals(fullname))
@@ -274,6 +274,6 @@
                             typeList.Add(type);
             }
             return typeList;
-        }      
+        }
     }
 }

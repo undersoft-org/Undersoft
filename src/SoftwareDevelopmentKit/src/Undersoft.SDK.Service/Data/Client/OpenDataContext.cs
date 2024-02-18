@@ -1,8 +1,6 @@
 ﻿using Microsoft.OData.Client;
 using Microsoft.OData.Edm;
-using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Access;
-using Undersoft.SDK.Service.Data.Remote;
 
 namespace Undersoft.SDK.Service.Data.Client
 {

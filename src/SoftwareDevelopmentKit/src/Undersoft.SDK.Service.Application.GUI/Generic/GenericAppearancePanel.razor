@@ -1,5 +1,5 @@
-﻿@    using Undersoft.SDK
-@    using Undersoft.SDK.Instant.Proxies
+﻿@using Undersoft.SDK
+@using Undersoft.SDK.Proxies
 
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 
@@ -41,7 +41,7 @@
                       CheckedMessage="Left to Right"
                       UncheckedMessage="Right to Left"
                       Value="@_ltr"
-                      ValueChanged="HandleDirectionChanged"/>
+                      ValueChanged="HandleDirectionChanged" />
         <FluentLabel>
             These values (except for Direction) are persisted in the LocalStorage.
             and will be recovered during your next visits.<br /><br />
@@ -55,13 +55,13 @@
                     This site stores settings for the theme and color and downloaded samples, emoji and icons in the browser' cache and local storage.
                 </p>
                 <p>
-                    You can check the contents of the cache and storage in the browser's developer tools. If you are using Edge or Chrome, you can do this by 
+                    You can check the contents of the cache and storage in the browser's developer tools. If you are using Edge or Chrome, you can do this by
                     going to the Application tab and then clicking on the Cache Storage or Local Storagesection.<br />
                     In Firefox, you can do this by going to the Storage tab and then clicking on the Cache Storage or Local Storage section.
                 </p>
 
                 <p>
-                    If you feel like you're not seeing the latest and greatest of samples. emoji or icons, or you want to clear out the stored theme and color, 
+                    If you feel like you're not seeing the latest and greatest of samples. emoji or icons, or you want to clear out the stored theme and color,
                     click the button below to clear the cache and delete local storage.
                 </p>
                 <p>
@@ -70,7 +70,7 @@
             </Body>
         </FluentPopover>
 
-        <FluentStack VerticalAlignment="VerticalAlignment.Center" >
+        <FluentStack VerticalAlignment="VerticalAlignment.Center">
             <FluentButton OnClick="@ResetSiteAsync">Reset settings</FluentButton>
             <FluentIcon Id="info" Value="@(new Icons.Regular.Size24.Info())" OnClick="@(() => _popVisible = !_popVisible)" />
         </FluentStack>
@@ -82,14 +82,14 @@
 </div>
 
 
-@code{
+@code {
     private string? _status;
     private bool _popVisible;
     private bool _ltr = true;
     private FluentDesignTheme? _theme;
 
     [Parameter]
-    public IViewData<TModel> Data { get; set; } = default!;
+    public IViewData<TModel> Content { get; set; } = default!;
 
     [Inject]
     public required GlobalState GlobalState { get; set; }
@@ -104,7 +104,7 @@
 
     protected override void OnInitialized()
     {
-        Data.View = this;
+        Content.View = this;
         base.OnInitialized();
     }
 

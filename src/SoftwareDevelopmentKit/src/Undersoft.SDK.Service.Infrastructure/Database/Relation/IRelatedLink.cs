@@ -2,6 +2,7 @@
 
 namespace Undersoft.SDK.Service.Infrastructure.Database.Relation;
 
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Object;
 using Uniques;
 

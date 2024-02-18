@@ -1,9 +1,11 @@
 ﻿namespace Undersoft.SDK.Service.Data.Cache;
 
-using Instant.Proxies;
-using Instant.Rubrics;
+using Proxies;
+using Rubrics;
 using Invoking;
 using Undersoft.SDK;
+using Undersoft.SDK.Proxies;
+using Undersoft.SDK.Rubrics;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Store;
 

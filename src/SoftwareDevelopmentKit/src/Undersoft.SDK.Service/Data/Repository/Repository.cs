@@ -6,6 +6,7 @@ using Undersoft.SDK.Service.Data.Cache;
 namespace Undersoft.SDK.Service.Data.Repository;
 
 using Data.Object;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Repository.Client;
 using Undersoft.SDK.Service.Data.Repository.Pagination;
 using Undersoft.SDK.Service.Data.Repository.Source;

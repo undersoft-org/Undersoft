@@ -4,6 +4,8 @@ using System.Runtime.Serialization;
 namespace Undersoft.SDK.Service.Data.Model;
 
 using Identifier;
+using Undersoft.SDK.Proxies;
+using Undersoft.SDK.Rubrics;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Object.Detail;
 using Undersoft.SDK.Service.Data.Object.Setting;

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Data.Store.Repository;

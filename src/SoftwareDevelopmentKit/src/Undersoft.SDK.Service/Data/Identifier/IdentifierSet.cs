@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Updating;
 

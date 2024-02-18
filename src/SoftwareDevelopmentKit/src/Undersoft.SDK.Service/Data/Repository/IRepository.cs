@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Repository.Pagination;
 
 namespace Undersoft.SDK.Service.Data.Repository

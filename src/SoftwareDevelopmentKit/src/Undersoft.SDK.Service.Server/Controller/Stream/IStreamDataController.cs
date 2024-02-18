@@ -2,6 +2,7 @@
 
 namespace Undersoft.SDK.Service.Server.Controller.Stream;
 
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Data.Response;

@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text;
 using Undersoft.SDK.Extracting;
-using Undersoft.SDK.Instant.Updating;
+using Undersoft.SDK.Updating;
 
 namespace Undersoft.SDK.Service.Access
 {

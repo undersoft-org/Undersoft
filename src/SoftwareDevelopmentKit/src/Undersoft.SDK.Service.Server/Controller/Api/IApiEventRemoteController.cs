@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Undersoft.SDK.Proxies;
 
 namespace Undersoft.SDK.Service.Server.Controller.Api;
 public interface IApiEventRemoteController<TKey, TDto, TModel> where TModel : class, IOrigin, IInnerProxy

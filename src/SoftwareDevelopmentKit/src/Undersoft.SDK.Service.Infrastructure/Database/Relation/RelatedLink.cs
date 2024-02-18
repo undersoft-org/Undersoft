@@ -2,6 +2,7 @@ namespace Undersoft.SDK.Service.Infrastructure.Database.Relation;
 
 using System.Text.Json.Serialization;
 using Undersoft.SDK;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Object;
 
 public class RelatedLink<TLeft, TRight> : RelatedLink, IRelatedLink<TLeft, TRight> where TLeft : class, IOrigin, IInnerProxy where TRight : class, IOrigin, IInnerProxy

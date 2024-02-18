@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-
-namespace Undersoft.SDK.Service.Configuration;
+﻿namespace Undersoft.SDK.Service.Configuration;
 using Microsoft.Extensions.Configuration;
-using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Store;

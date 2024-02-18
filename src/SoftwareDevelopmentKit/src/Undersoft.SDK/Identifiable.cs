@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Undersoft.SDK.Instant.Attributes;
-using Undersoft.SDK.Instant.Rubrics.Attributes;
+using Undersoft.SDK.Rubrics.Attributes;
 using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK

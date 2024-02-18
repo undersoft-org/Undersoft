@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Undersoft.SDK.Service.Infrastructure.Database.Relation;
 
-using Undersoft.SDK.Instant.Proxies;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Store;
 
 public class RelatedSetToSet<TLeft, TRight>

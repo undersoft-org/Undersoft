@@ -1,0 +1,45 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using Undersoft.SDK.Rubrics
+@using Undersoft.SDK.Invoking
+@using Undersoft.SDK.Proxies
+
+@inherits ViewItem<TModel>
+
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+
+<div class="generic top-menu">
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Right" HorizontalGap="5">
+        @foreach (var rubric in Data.Rubrics)
+        {
+             <div id="@($"{Model.Id}-{@rubric.Id}")">
+                <FluentLabel Typo="Typography.Subject" Weight="FontWeight.Bold" Color="Color.Lightweight">
+                    @rubric.DisplayName
+                </FluentLabel>
+            </div>
+            <div>
+                <GenericMenu Rubric="@rubric" AnchorId="@($"{Model.Id}-{@rubric.Id}")" Data="@(Data[rubric.RubricId])" Anchored="true" />
+            </div>
+        }
+    </FluentStack>
+</div>
+
+@code
+{
+    protected override void OnParametersSet()
+    {
+        if (Data == null) Data = new ViewData<TModel>(typeof(TModel).New<TModel>());
+
+        Data.MapRubrics();
+        Data.Rubrics.ForEach(r =>
+            {
+                Model.Proxy[r.RubricId] = r.RubricType.New();
+                if (r.DisplayName == null)
+                    r.DisplayName = r.RubricName;
+            });
+        Data.Put(Data.Rubrics.ForEach(r => typeof(ViewData<>).MakeGenericType(r.RubricType).New<IViewData>(Model.Proxy[r.RubricId])));
+
+        base.OnParametersSet();
+    }
+}
+
+

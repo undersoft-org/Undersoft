@@ -3,6 +3,7 @@
 namespace Undersoft.SDK.Service.Data.Repository;
 
 using Series;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Repository;
 
 public partial class Repository<TEntity> : IRepositoryMapper<TEntity>

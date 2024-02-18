@@ -1,6 +1,8 @@
 ﻿using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Data.Remote;
+
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Client;
 
 public static class RemoteLinkExtensions

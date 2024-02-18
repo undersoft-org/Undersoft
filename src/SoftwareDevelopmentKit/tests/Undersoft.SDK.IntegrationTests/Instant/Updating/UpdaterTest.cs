@@ -1,12 +1,12 @@
 using Undersoft.SDK.Instant;
-using Undersoft.SDK.Instant.Updating;
+using Undersoft.SDK.Updating;
 using System.Collections.Generic;
 using Xunit;
 using System;
 using Undersoft.SDK.Series;
-using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Uniques;
 using Undersoft.SDK.Updating;
+using Undersoft.SDK.Proxies;
 
 namespace Undersoft.SDK.IntegrationTests.Instant.Updating
 {

@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 namespace Undersoft.SDK.Service.Operation.Command.Validator;
 
 using Undersoft.SDK;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Operation.Command;
 

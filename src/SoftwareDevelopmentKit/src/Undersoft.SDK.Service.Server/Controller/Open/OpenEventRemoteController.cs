@@ -10,6 +10,7 @@ using Data.Event;
 using Documentation;
 using Operation.Remote.Command;
 using Operation.Remote.Query;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Data.Store;
 

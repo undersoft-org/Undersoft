@@ -4,6 +4,7 @@ namespace Undersoft.SDK.Service.Data.Remote;
 
 using Entity;
 using System.Runtime.Serialization;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Object;
 using Uniques;
 

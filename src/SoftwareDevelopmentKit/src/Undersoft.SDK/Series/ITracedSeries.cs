@@ -1,7 +1,6 @@
 ﻿namespace Undersoft.SDK.Series
 {
     using Invoking;
-    using Instant.Updating;
     using Undersoft.SDK.Updating;
 
     public interface ITracedSeries

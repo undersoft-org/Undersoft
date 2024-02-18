@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Undersoft.SDK.Instant.Rubrics;
+    using Undersoft.SDK.Rubrics;
 
     public class DbTable
     {

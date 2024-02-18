@@ -1,7 +1,7 @@
 ﻿namespace Undersoft.SDK.Stocks
 {
     using System;
-    using Undersoft.SDK.Instant.Proxies;
+    using Undersoft.SDK.Proxies;
 
     public interface IStockContext : IDisposable, IOrigin, IInnerProxy
     {

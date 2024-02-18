@@ -1,9 +1,6 @@
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using Undersoft.SDK.Instant;
 using Undersoft.SDK.Instant.Series;
-using Undersoft.SDK.Instant.Stocks;
 using Undersoft.SDK.Series;
 using Undersoft.SDK.Uniques;
 

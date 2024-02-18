@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
-using Undersoft.SDK.Instant.Rubrics;
+using Undersoft.SDK.Rubrics;
 using Undersoft.SDK.Series;
 
 namespace Undersoft.SDK.Service.Application.GUI.View;

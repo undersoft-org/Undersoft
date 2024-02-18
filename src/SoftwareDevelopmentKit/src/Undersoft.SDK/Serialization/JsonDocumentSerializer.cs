@@ -1,5 +1,5 @@
 using Undersoft.SDK.Extracting;
-using Undersoft.SDK.Instant.Rubrics.Attributes;
+using Undersoft.SDK.Rubrics.Attributes;
 
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.InteropServices;

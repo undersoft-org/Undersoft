@@ -5,6 +5,7 @@ namespace Undersoft.SDK.Service.Operation.Command;
 
 using Series;
 using Undersoft.SDK;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Event;
 
 public class CommandSet<TDto>

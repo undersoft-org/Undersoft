@@ -1,6 +1,5 @@
 ﻿namespace Undersoft.SDK.Series.Base
 {
-    using Instant.Updating;
     using Invoking;
     using System.Collections.Generic;
     using System.Collections.Specialized;

@@ -2,8 +2,9 @@
 
 namespace Undersoft.SDK.Updating;
 
-using Instant.Proxies;
-using Instant.Rubrics;
+using Proxies;
+using Rubrics;
+using Undersoft.SDK.Proxies;
 
 public interface IUpdater : IInstant
 {

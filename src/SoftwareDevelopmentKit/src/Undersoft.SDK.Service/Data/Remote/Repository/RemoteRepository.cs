@@ -3,9 +3,8 @@ using System.Linq.Expressions;
 
 namespace Undersoft.SDK.Service.Data.Remote.Repository;
 
-using Instant.Proxies;
-using Instant.Updating;
 using Logging;
+using Proxies;
 using Series;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Data.Client;

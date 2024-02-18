@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 namespace Undersoft.SDK.Service.Operation.Remote.Command;
 
 using Undersoft.SDK;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
 

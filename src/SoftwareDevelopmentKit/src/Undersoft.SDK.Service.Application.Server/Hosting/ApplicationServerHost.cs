@@ -17,7 +17,7 @@ public class ApplicationServerHost : ServiceHost, IHost, IApplicationServerHost
         Configure(builder);
     }
 
-    public ApplicationServerHost(string[] args = null)
+    public ApplicationServerHost(string[]? args = null)
         : this(ServiceConfigurationHelper.BuildConfiguration(args)) { }
 
     public ApplicationServerHost(IConfiguration configuration)
@@ -53,7 +53,7 @@ public class ApplicationServerHost : ServiceHost, IHost, IApplicationServerHost
 
     public Registry<ApplicationHost> ApplicationHosts { get; set; } = default!;
 
-    private Registry<IServiceProvider> hostedApplications;
+    private Registry<IServiceProvider>? hostedApplications;
     public Registry<IServiceProvider> HostedApplications =>
         hostedApplications ??= ApplicationHosts.Select(s => s.Services).ToRegistry();
 }

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace Undersoft.SDK.Service.Operation.Command;
 
 using Undersoft.SDK;
-
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Uniques;

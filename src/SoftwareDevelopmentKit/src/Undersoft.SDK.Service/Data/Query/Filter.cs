@@ -1,7 +1,7 @@
 ﻿using System;
-using Undersoft.SDK.Instant.Rubrics;
 using System.Linq.Expressions;
 using System.Text.Json.Serialization;
+using Undersoft.SDK.Rubrics;
 
 namespace Undersoft.SDK.Service.Data.Query
 {

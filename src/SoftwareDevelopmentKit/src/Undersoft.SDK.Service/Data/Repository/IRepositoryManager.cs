@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Mapper;
 using Undersoft.SDK.Service.Data.Remote.Repository;

@@ -5,11 +5,13 @@ using System.Reflection;
 
 namespace Undersoft.SDK.Service.Data.Store;
 
-using Instant.Proxies;
-using Instant.Rubrics;
+using Proxies;
+using Rubrics;
 using System.Collections;
 using System.Collections.Generic;
 using Undersoft.SDK;
+using Undersoft.SDK.Proxies;
+using Undersoft.SDK.Rubrics;
 using Undersoft.SDK.Service.Data.Entity;
 using Undersoft.SDK.Service.Data.Identifier;
 using Undersoft.SDK.Service.Data.Object;

@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Instant.Math;
 
-using Instant.Rubrics;
+using Rubrics;
 using SDK.Series;
 using Set;
 using System.Linq;

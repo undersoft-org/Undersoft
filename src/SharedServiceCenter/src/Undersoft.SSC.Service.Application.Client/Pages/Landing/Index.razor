@@ -1,0 +1,16 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using Undersoft.SDK.Proxies
+
+@page "/landing"
+
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+
+<PageTitle>Undersoft</PageTitle>
+
+<FluentStack Orientation="Orientation.Horizontal">
+    <FluentLabel Typo="Typography.Subject">
+        Welcome in Undersoft! - Founded by unicorn software developer, Dariusz Hanc - Since 2006 in software engeenering. Creative development using advanced and low level dotnet programming technologies. Constant research and development of own software development kit with application engine. Provide creating modern, scalable, high performance cloud eco systems and solutions, that gave long term advantage in short time of application delivery! 
+    </FluentLabel>
+    <FluentSpacer />
+    <AccessStateButton />
+</FluentStack>

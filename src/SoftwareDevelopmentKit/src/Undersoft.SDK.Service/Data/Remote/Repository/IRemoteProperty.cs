@@ -3,6 +3,7 @@
 namespace Undersoft.SDK.Service.Data.Remote.Repository;
 
 using Undersoft.SDK;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Remote;
 using Undersoft.SDK.Service.Data.Repository;
 using Undersoft.SDK.Service.Data.Store;

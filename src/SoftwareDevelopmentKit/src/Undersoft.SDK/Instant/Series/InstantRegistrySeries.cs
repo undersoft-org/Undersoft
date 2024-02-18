@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Instant.Series
 {
-    using Instant.Proxies;
+    using Proxies;
     using Math;
     using Querying;
     using Rubrics;
@@ -9,6 +9,7 @@
     using SDK.Uniques;
     using System.IO;
     using System.Linq;
+    using Undersoft.SDK.Proxies;
 
     public abstract class InstantRegistrySeries : ListingBase<IInstant>, IInstantSeries
     {

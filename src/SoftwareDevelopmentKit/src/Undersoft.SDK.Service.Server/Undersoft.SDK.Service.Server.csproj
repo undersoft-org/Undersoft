@@ -125,11 +125,11 @@
     <Using Include="Undersoft.SDK.Instant" />
     <Using Include="Undersoft.SDK.Instant.Series.Querying" />
     <Using Include="Undersoft.SDK.Instant.Attributes" />
-    <Using Include="Undersoft.SDK.Instant.Rubrics" />
+    <Using Include="Undersoft.SDK.Rubrics" />
     <Using Include="Undersoft.SDK.Instant.Series" />
     <Using Include="Undersoft.SDK.Instant.Math" />
-    <Using Include="Undersoft.SDK.Instant.Updating" />
-    <Using Include="Undersoft.SDK.Instant.Proxies" />
+    <Using Include="Undersoft.SDK.Updating" />
+    <Using Include="Undersoft.SDK.Proxies" />
     <Using Include="Undersoft.SDK.Logging" />
     <Using Include="Undersoft.SDK.Uniques" />
     <Using Include="Undersoft.SDK.Serialization" />

@@ -6,8 +6,8 @@ namespace Undersoft.SDK.Benchmarks.Instant.Math
     using Undersoft.SDK.Instant;
     using Undersoft.SDK.Instant.Math;
     using Undersoft.SDK.Instant.Math.Set;
-    using Undersoft.SDK.Instant.Proxies;
     using Undersoft.SDK.Instant.Series;
+    using Undersoft.SDK.Proxies;
 
     [MemoryDiagnoser]
     [RankColumn]

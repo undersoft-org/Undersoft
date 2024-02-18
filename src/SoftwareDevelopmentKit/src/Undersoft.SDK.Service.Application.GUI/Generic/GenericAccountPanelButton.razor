@@ -1,14 +1,14 @@
-﻿@    using Undersoft.SDK.Service
-@    using Undersoft.SDK.Service.Data.Event
-@    using Undersoft.SSC.Service.Contracts
+﻿@using Undersoft.SDK.Service
+@using Undersoft.SDK.Service.Data.Event
+@using Undersoft.SSC.Service.Contracts
 
 @inject IServicer _servicer
 @inject IMessageService MessageService
 
-<a @onclick="@OpenAccountPanelAsync">
-<FluentPersona Initials="SU" ImageSize="40px">
+<href @onclick="@OpenAccountPanelAsync">
+<FluentPersona Initials="SU" ImageSize="35px">
 </FluentPersona>
-</a>
+</href>
 
 @code {
 
@@ -16,7 +16,7 @@
 
     protected override void OnInitialized()
     {
-        _panel = _servicer.Initialize<ViewPanel<GenericAccountPanel<Account>, Account>>();
+        _panel = _servicer.Initialize<ViewPanel<GenericAccountPanel<Account, GenericAccountPanelValidator>, Account>>();
     }
 
     private async Task OpenAccountPanelAsync(MouseEventArgs args)

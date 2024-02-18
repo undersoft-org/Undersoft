@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Undersoft.SDK.Instant.Proxies;
 using Undersoft.SDK.Instant.Series;
+using Undersoft.SDK.Proxies;
 using Xunit;
 
 namespace Undersoft.SDK.IntegrationTests.Instant

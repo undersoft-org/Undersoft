@@ -6,7 +6,7 @@
     using System.Reflection.Emit;
     using System.Runtime.InteropServices;
     using Undersoft.SDK.Instant.Attributes;
-    using Undersoft.SDK.Instant.Rubrics;
+    using Undersoft.SDK.Rubrics;
 
     public class InstantCompilerBase : InstantCompilerBaseConstructors
     {

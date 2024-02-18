@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Undersoft.SDK.Service.Infrastructure.Database.Relation;
 
 using Undersoft.SDK;
+using Undersoft.SDK.Proxies;
 
 public class RelatedOneToSet<TParent, TChild> where TParent : class, IOrigin, IInnerProxy where TChild : class, IOrigin, IInnerProxy
 {

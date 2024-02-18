@@ -3,6 +3,8 @@
 namespace Undersoft.SDK.Service.Data.Remote;
 
 using Undersoft.SDK;
+using Undersoft.SDK.Proxies;
+using Undersoft.SDK.Rubrics;
 
 public interface IRemoteRelation<TOrigin, TTarget> : IRemoteRelation where TOrigin : class, IOrigin, IInnerProxy where TTarget : class, IOrigin, IInnerProxy
 {

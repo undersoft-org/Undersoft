@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.FluentUI.AspNetCore.Components;
 using System.Diagnostics.CodeAnalysis;
-using Undersoft.SDK.Instant.Proxies;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Application.GUI.View;
 
 namespace Undersoft.SDK.Service.Application.GUI.Generic
 {
-    public partial class GenericField<TModel> : ViewBase<TModel>, IIdentifiable, IViewItem where TModel : class, IOrigin, IInnerProxy
+    public partial class GenericField<TModel> : ViewItem<TModel>, IIdentifiable, IViewItem where TModel : class, IOrigin, IInnerProxy
     {
         private Type _type = default!;
         private IProxy _proxy = default!;
@@ -56,22 +56,20 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
             _inputMode = GetInputMode();
             _textFieldType = GetTexType();
             Id = Rubric.Id;
-            TypeId = DataModel.TypeId;
+            TypeId = Model.TypeId;
             Rubric.FieldIdentifier = new FieldIdentifier(this, _name);
             Rubric.View = this;
         }
 
         public override string Label { get => _label; set { _label = value; } }
 
-        public TModel DataModel => Data.Model;
-
         [CascadingParameter]
-        public override IViewData<TModel> Data { get; set; } = default!;
+        public override IViewData<TModel> GenericData { get => (IViewData<TModel>)base.Data; set => base.Data = value; }
 
         [CascadingParameter]
         protected EditContext FormContext { get; set; } = default!;
 
-        public object? Value
+        public override object? Value
         {
             get { return _proxy[_index]; }
             set

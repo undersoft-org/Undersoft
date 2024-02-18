@@ -1,10 +1,6 @@
-﻿using Undersoft.SDK.Updating;
-
-namespace Undersoft.SDK.Updating
+﻿namespace Undersoft.SDK.Updating
 {
     using Invoking;
-    using Proxies;
-    using Undersoft.SDK.Updating;
 
     public class Updater<T> : Updater, IUpdater<T> where T : class
     {

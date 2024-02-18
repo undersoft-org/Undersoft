@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Undersoft.SDK.Service.Data.Identifier;
 
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Store;
 
 public class IdentifiersMapping<TObject> : IIdentifiersMapping where TObject : class, IOrigin, IInnerProxy

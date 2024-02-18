@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace Undersoft.SDK.Service.Data.Remote;
 
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Object;
 using Uniques;
 

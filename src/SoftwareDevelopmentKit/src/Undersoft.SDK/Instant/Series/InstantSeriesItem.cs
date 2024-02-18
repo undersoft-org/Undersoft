@@ -1,13 +1,10 @@
 ﻿namespace Undersoft.SDK.Instant.Series
 {
     using SDK.Extracting;
-    using System.Linq;
-    using System.Runtime.InteropServices;
     using SDK.Series;
     using SDK.Series.Base;
     using SDK.Uniques;
-    using Rubrics;
-    using Undersoft.SDK.Instant.Updating;
+    using System.Runtime.InteropServices;
 
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
@@ -22,7 +19,7 @@
         }
 
         public InstantSeriesItem(ulong key, IInstant value) : base(key, value)
-        { 
+        {
         }
 
         public InstantSeriesItem(IInstant value) : base(value)
@@ -105,7 +102,7 @@
         {
             get => value.Id;
             set => this.value.Id = value;
-        }              
+        }
 
         public Uscn Code
         {

@@ -1,7 +1,7 @@
 namespace Undersoft.SDK.IntegrationTests.Instant
 {
     using Undersoft.SDK.Instant.Attributes;
-    using Undersoft.SDK.Instant.Rubrics.Attributes;
+    using Undersoft.SDK.Rubrics.Attributes;
     using Undersoft.SDK.Uniques;
     using System.Runtime.InteropServices;
     using System;

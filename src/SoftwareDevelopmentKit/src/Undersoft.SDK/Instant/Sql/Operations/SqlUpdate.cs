@@ -6,7 +6,7 @@
     using System.Globalization;
     using System.Linq;
     using System.Text;
-    using Undersoft.SDK.Instant.Rubrics;
+    using Undersoft.SDK.Rubrics;
     using Undersoft.SDK.Instant.Series;
     using Undersoft.SDK.Series;
 

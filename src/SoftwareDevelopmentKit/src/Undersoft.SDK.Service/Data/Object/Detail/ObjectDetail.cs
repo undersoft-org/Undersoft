@@ -6,7 +6,7 @@ namespace Undersoft.SDK.Service.Data.Object.Detail;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Undersoft.SDK.Instant.Rubrics.Attributes;
+using Undersoft.SDK.Rubrics.Attributes;
 using Undersoft.SDK.Serialization;
 using Undersoft.SDK.Service.Data.Identifier;
 

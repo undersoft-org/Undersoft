@@ -3,6 +3,7 @@
 namespace Undersoft.SDK.Service.Operation.Command;
 
 using Undersoft.SDK;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Event;
 
 public class CommandSetStream<TDto>

@@ -3,6 +3,7 @@ using MediatR;
 
 namespace Undersoft.SDK.Service.Operation.Command.Notification.Handler;
 using Logging;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Data.Store.Repository;

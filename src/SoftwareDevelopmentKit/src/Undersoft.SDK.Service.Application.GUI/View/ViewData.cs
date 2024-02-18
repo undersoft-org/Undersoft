@@ -1,5 +1,5 @@
 using Microsoft.FluentUI.AspNetCore.Components;
-using Undersoft.SDK.Instant.Proxies;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Series.Base;
 using Undersoft.SDK.Service.Application.GUI.Generic;
 using Undersoft.SDK.Uniques;
@@ -10,6 +10,7 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
 {
     protected IProxy _proxy = default!;
     protected IView _view = default!;
+    protected long? typeId;
 
     public ViewData() : this(typeof(TModel).New<TModel>(), OperationType.Any) { }
 
@@ -29,10 +30,15 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
 
     public virtual TModel Model { get; set; } = default!;
 
-    public virtual void SetRubrics()
+    public virtual IViewRubrics MapRubrics()
     {
-        Rubrics.Put((ViewRubric)(object)_proxy.Rubrics.ForOnly(r => r.Visible, r => r.ShalowCopy(new ViewRubric())));
+        Rubrics.Put(_proxy.Rubrics.ForOnly(r => r.Visible, r => (ViewRubric)(object)r.ShalowCopy(new ViewRubric())));
+        return Rubrics;
     }
+
+    public override long Id { get => Model.Id; set => Model.Id = value; }
+
+    public override long TypeId { get => typeId ??= this.GetType().UniqueKey32(); set => typeId = value; }
 
     public virtual void SetRequired(params string[] requiredList)
     {
@@ -67,7 +73,7 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
         Rubrics.Put(rubrics);
     }
 
-    public virtual void SetDisplayNames(params DisplayPair[] displayPairList)
+    public virtual void SetDisplay(params DisplayPair[] displayPairList)
     {
         var rubrics = displayPairList.ForEach(d =>
         {

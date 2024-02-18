@@ -5,7 +5,8 @@ using System.Runtime.Serialization;
 namespace Undersoft.SDK.Service.Data.Object;
 
 using Event;
-using Instant.Proxies;
+using Proxies;
+using Undersoft.SDK.Proxies;
 
 [DataContract]
 [StructLayout(LayoutKind.Sequential)]

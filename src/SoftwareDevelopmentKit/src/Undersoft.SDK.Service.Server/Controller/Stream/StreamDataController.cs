@@ -13,7 +13,7 @@ using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Data.Response;
 using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SDK.Service.Data.Client.Attributes;
-
+using Undersoft.SDK.Proxies;
 
 [StreamData]
 public abstract class StreamDataController<TKey, TEntry, TReport, TEntity, TDto> : ControllerBase, IStreamDataController<TDto>

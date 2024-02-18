@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Repository;
 
 namespace Undersoft.SDK.Service.Data.Store.Repository

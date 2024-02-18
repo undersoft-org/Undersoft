@@ -3,10 +3,10 @@
 namespace Undersoft.SDK.Series;
 
 using Base;
-using Instant.Proxies;
-using Instant.Rubrics;
 using Invoking;
+using Rubrics;
 using Undersoft.SDK;
+using Undersoft.SDK.Proxies;
 
 public class TypedCache<V> : TypedRegistryBase<V> where V : IIdentifiable
 {
@@ -175,7 +175,7 @@ public class TypedCache<V> : TypedRegistryBase<V> where V : IIdentifiable
         }
 
         return item;
-    }      
+    }
 
     public virtual ITypedSeries<IIdentifiable> CacheSet<T>() where T : IIdentifiable
     {

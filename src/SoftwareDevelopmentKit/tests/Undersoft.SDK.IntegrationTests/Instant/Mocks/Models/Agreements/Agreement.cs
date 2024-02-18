@@ -1,5 +1,5 @@
 using System.Collections.ObjectModel;
-using Undersoft.SDK.Instant.Rubrics.Attributes;
+using Undersoft.SDK.Rubrics.Attributes;
 using Undersoft.SDK.Series;
 
 namespace Undersoft.SDK.IntegrationTests.Instant

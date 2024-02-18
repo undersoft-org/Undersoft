@@ -1,6 +1,4 @@
-﻿using Undersoft.SDK.Instant.Updating;
-
-namespace Undersoft.SDK.Updating
+﻿namespace Undersoft.SDK.Updating
 {
     using Invoking;
 

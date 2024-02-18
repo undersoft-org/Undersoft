@@ -1,4 +1,5 @@
 ﻿@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+@typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
 
 @implements IDialogContentComponent<IViewData<TModel>>
 @implements IView
@@ -6,7 +7,7 @@
 
 <div>
     <FluentStack>
-
+        <GenericForm  TValidator="TValidator" Data="@Content" TModel="TModel" ></GenericForm>
     </FluentStack>
 </div>
 

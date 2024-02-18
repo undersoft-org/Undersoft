@@ -1,5 +1,5 @@
 ﻿using System.Runtime.Serialization;
-using Undersoft.SDK.Instant.Rubrics.Attributes;
+using Undersoft.SDK.Rubrics.Attributes;
 using Undersoft.SDK.Service.Data.Object;
 
 namespace Undersoft.SDK.Service.Access

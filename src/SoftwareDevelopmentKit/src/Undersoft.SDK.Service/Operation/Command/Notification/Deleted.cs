@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Undersoft.SDK.Service.Operation.Command.Notification;
 using Command;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Store;
 
 public class Deleted<TStore, TEntity, TDto> : Notification<Command<TDto>>

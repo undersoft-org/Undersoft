@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 
 namespace Undersoft.SDK.Service.Data.Remote;
 
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Object;
 
 public class RemoteNode<TLeft, TRight> : KeyedCollection<long, IRemoteLink<TLeft, TRight>>, IFindableSeries, IRemoteNodeSet<TLeft, TRight> where TLeft : class, IOrigin, IInnerProxy where TRight : class, IOrigin, IInnerProxy

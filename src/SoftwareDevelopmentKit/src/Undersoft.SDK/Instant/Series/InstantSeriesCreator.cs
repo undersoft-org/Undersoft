@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Instant.Series
 {
-    using Instant.Proxies;
+    using Proxies;
     using SDK.Uniques;
     using Rubrics;
     using System.Linq;

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 
 using System.Text.Json.Serialization;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Event;
 
 namespace Undersoft.SDK.Service.Operation.Remote.Command;

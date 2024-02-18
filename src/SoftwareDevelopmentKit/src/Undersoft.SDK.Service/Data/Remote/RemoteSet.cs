@@ -1,6 +1,7 @@
 using Microsoft.OData.Client;
 using System.Collections;
 using System.Linq.Expressions;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Remote.Repository;
 using Undersoft.SDK.Updating;

@@ -3,7 +3,7 @@
     using System.Data;
     using System.Globalization;
     using System.Linq;
-    using Undersoft.SDK.Instant.Rubrics;
+    using Undersoft.SDK.Rubrics;
     using Undersoft.SDK.Instant.Series;
     using Undersoft.SDK.Uniques;
 

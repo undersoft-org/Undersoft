@@ -3,6 +3,7 @@ using Undersoft.SDK.Service.Data.Object;
 using System.Linq.Expressions;
 using Undersoft.SDK.Service.Data.Event;
 using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Proxies;
 
 namespace Undersoft.SDK.Service.Operation.Command;
 

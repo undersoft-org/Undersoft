@@ -1,4 +1,6 @@
-﻿namespace Undersoft.SDK.Service.Data.Repository
+﻿using Undersoft.SDK.Proxies;
+
+namespace Undersoft.SDK.Service.Data.Repository
 {
     public interface IRepositoryMapper<TEntity> where TEntity : class, IOrigin, IInnerProxy
     {

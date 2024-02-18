@@ -5,6 +5,7 @@ namespace Undersoft.SDK.Service.Data.Repository;
 
 using Client;
 using Source;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Remote.Repository;
 using Undersoft.SDK.Service.Data.Store;

@@ -1,7 +1,7 @@
 ﻿namespace Undersoft.SDK.Instant.Math.Set
 {
     using Formulas;
-    using Instant.Rubrics;
+    using Rubrics;
     using SDK.Uniques;
     using System;
     using Undersoft.SDK.Instant.Math;

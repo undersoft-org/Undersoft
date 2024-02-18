@@ -5,6 +5,7 @@ namespace Undersoft.SDK.Service.Server.Controller.Open;
 
 using System.Linq;
 using System.Text.Json;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Data.Store;

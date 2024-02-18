@@ -1,7 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.FluentUI.AspNetCore.Components;
-using Undersoft.SDK.Instant.Proxies;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Application.GUI.View;
 using ValidationResult = FluentValidation.Results.ValidationResult;
 

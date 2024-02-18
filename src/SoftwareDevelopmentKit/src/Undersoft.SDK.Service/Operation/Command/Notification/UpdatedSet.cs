@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 namespace Undersoft.SDK.Service.Operation.Command.Notification;
 
 using Command;
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Store;
 
 public class UpdatedSet<TStore, TEntity, TDto> : NotificationSet<Command<TDto>>

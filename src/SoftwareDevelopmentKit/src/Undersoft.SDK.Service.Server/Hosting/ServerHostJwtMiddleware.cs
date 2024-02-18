@@ -1,10 +1,4 @@
-
-using IdentityModel.Client;
 using Microsoft.AspNetCore.Http;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Undersoft.SDK.Security;
 using Undersoft.SDK.Service.Access;
 
 namespace Undersoft.SDK.Service.Server.Hosting;

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using Undersoft.SDK.Instant.Attributes;
-using Undersoft.SDK.Instant.Rubrics.Attributes;
+using Undersoft.SDK.Rubrics.Attributes;
 using Undersoft.SDK.Logging;
 using Undersoft.SDK.Uniques;
 

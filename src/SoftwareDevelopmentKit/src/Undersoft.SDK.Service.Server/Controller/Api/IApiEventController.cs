@@ -2,6 +2,7 @@
 
 namespace Undersoft.SDK.Service.Server.Controller.Api;
 
+using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Data.Query;
 
 public interface IApiEventController<TKey, TEntity, TDto> where TDto : class, IOrigin, IInnerProxy

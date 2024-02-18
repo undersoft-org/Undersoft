@@ -1,11 +1,14 @@
 ﻿@inherits FluentComponentBase
 
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+
 <FluentHeader Height="50">
     <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" Width="100%">        
         <a href="/">
             <img src="img/logo-white.png" />
-        </a>
-        <FluentSpacer/>    
+        </a>     
+        <FluentSpacer/>
+        <GenericTopMenu TModel="TModel" />
         <div class="personals">
         <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
             <FluentAnchor Appearance="Appearance.Hypertext" Href="http://github.com/undersoft-org/undersoft" Target="_blank" Rel="noreferrer noopener" title="Shared Service Center source on GitHub" aria-label="SSC Repo">
