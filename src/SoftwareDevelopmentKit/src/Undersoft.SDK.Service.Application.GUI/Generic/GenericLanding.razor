@@ -2,8 +2,9 @@
 @layout GenericLayout
 
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
+@typeparam TAccount where TAccount : class, IOrigin, IInnerProxy
 
-<GenericLandingHeader TModel="TModel" />
+<GenericLandingHeader TModel="TModel" TAccount="TAccount" />
 <GenericLandingBody>
     @Body
 </GenericLandingBody>

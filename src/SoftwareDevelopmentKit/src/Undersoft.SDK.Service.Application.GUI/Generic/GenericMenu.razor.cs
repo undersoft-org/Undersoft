@@ -14,6 +14,12 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
         }
 
         [Parameter]
+        public HorizontalPosition Position { get; set; } = HorizontalPosition.Center;
+
+        [Parameter]
+        public override string? Style { get; set; }
+
+        [Parameter]
         public string AnchorId { get; set; } = default!;
 
         [Parameter]

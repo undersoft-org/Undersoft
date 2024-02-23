@@ -1,0 +1,36 @@
+﻿@using Undersoft.SDK.Service
+@using Undersoft.SDK.Service.Data.Event
+@using Undersoft.SSC.Service.Contracts
+
+@inherits ViewItem<TModel>
+
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+
+<div id="account_menu" role="button">
+<FluentPersona Initials="?" ImageSize="35px" StatusSize="PresenceBadgeSize.Tiny" >
+</FluentPersona>
+</div>
+
+<div>
+    <GenericMenu Position="@(HorizontalPosition.Center)" Rubric="Data.Rubrics[0]" AnchorId="account_menu" Data="@(Data[0])" Anchored="true" Style="@("margin-top:8px;")" />
+</div>
+
+@code {
+
+    protected override void OnParametersSet()
+    {
+        if (Data == null)
+            Data = new ViewData<TModel>(typeof(TModel).New<TModel>());
+
+        Data.MapRubrics();
+        Data.Rubrics.ForEach(r =>
+            {
+                Model.Proxy[r.RubricId] = r.RubricType.New();
+                if (r.DisplayName == null)
+                    r.DisplayName = r.RubricName;
+            });
+        Data.Put(Data.Rubrics.ForEach(r => typeof(ViewData<>).MakeGenericType(r.RubricType).New<IViewData>(Model.Proxy[r.RubricId])));
+
+        base.OnParametersSet();
+    }
+}

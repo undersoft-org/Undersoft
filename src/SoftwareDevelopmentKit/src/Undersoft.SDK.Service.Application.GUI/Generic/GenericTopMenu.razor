@@ -17,7 +17,7 @@
                 </FluentLabel>
             </div>
             <div>
-                <GenericMenu Rubric="@rubric" AnchorId="@($"{Model.CodeNo}{@rubric.CodeNo}")" Data="@(Data[rubric.RubricId])" Anchored="true" />
+                <GenericMenu Position="@(HorizontalPosition.Center)" Rubric="@rubric" AnchorId="@($"{Model.CodeNo}{@rubric.CodeNo}")" Data="@(Data[rubric.RubricId])" Anchored="true" Style="@("margin-top:15px;")" />
             </div>
         }
     </FluentStack>
