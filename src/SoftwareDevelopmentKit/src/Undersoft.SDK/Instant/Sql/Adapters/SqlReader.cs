@@ -12,7 +12,7 @@
     {
         ISeries<ISeries<IInstant>> DeleteRead(IInstantSeries toInsertCards);
 
-        IInstantSeries InjectRead(string tableName, ISeries<string> keyNames = null);
+        IInstantSeries ReadLoaded(string tableName, ISeries<string> keyNames = null);
 
         ISeries<ISeries<IInstant>> InsertRead(IInstantSeries toInsertCards);
 
@@ -147,7 +147,7 @@
             return iSet;
         }
 
-        public IInstantSeries InjectRead(string tableName, ISeries<string> keyNames = null)
+        public IInstantSeries ReadLoaded(string tableName, ISeries<string> keyNames = null)
         {
             DataTable schema = dr.GetSchemaTable();
             List<MemberRubric> columns = new List<MemberRubric>(

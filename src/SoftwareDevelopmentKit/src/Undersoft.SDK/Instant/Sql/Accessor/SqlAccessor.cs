@@ -27,7 +27,7 @@
 
                 try
                 {
-                    return sqa.ExecuteInject(sqlQry, tableName, keyNames);
+                    return sqa.ExecuteLoad(sqlQry, tableName, keyNames);
                 }
                 catch (Exception ex)
                 {

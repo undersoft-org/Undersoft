@@ -5,8 +5,8 @@
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
-    using Undersoft.SDK.Rubrics;
     using Undersoft.SDK.Instant.Series;
+    using Undersoft.SDK.Rubrics;
     using Undersoft.SDK.Series;
 
     public enum BulkPrepareType
@@ -256,7 +256,7 @@
             return _is;
         }
 
-        public IInstantSeries ExecuteInject(string sqlqry, string tableName = null)
+        public IInstantSeries ExecuteLoad(string sqlqry, string tableName = null)
         {
             SqlCommand cmd = new SqlCommand(sqlqry, _cn);
             cmd.Prepare();
@@ -264,13 +264,13 @@
                 _cn.Open();
             IDataReader sdr = cmd.ExecuteReader();
             SqlReader<IInstantSeries> dr = new SqlReader<IInstantSeries>(sdr);
-            IInstantSeries it = dr.InjectRead(tableName);
+            IInstantSeries it = dr.ReadLoaded(tableName);
             sdr.Dispose();
             cmd.Dispose();
             return it;
         }
 
-        public IInstantSeries ExecuteInject(
+        public IInstantSeries ExecuteLoad(
             string sqlqry,
             string tableName,
             ISeries<string> keyNames = null
@@ -284,7 +284,7 @@
                     _cn.Open();
                 IDataReader sdr = cmd.ExecuteReader();
                 SqlReader<IInstantSeries> dr = new SqlReader<IInstantSeries>(sdr);
-                IInstantSeries it = dr.InjectRead(tableName, keyNames);
+                IInstantSeries it = dr.ReadLoaded(tableName, keyNames);
                 sdr.Dispose();
                 cmd.Dispose();
                 return it;

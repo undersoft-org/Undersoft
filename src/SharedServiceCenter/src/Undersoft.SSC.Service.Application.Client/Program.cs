@@ -6,6 +6,7 @@ using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Application.Access;
+using Undersoft.SDK.Service.Application.GUI.Generic;
 using Undersoft.SDK.Service.Application.GUI.Models;
 using Undersoft.SDK.Service.Application.GUI.View;
 using Undersoft.SSC.Service.Application.GUI.Compound.Access;
@@ -49,6 +50,8 @@ namespace Undersoft.SSC.Service.Application.Client
                         .AddScoped<AuthenticationStateProvider, AccessProvider<Account>>()
                         .AddScoped<IAccountAccess, AccessProvider<Account>>()
                         .AddScoped<IValidator<IViewData<Credentials>>, AccessValidator>()
+                        .AddScoped<IValidator<IViewData<Account>>, GenericAccountPanelValidator>()
+                        .AddScoped<GenericAccountPanelValidator>()
                         .AddScoped<AccessValidator>();
                     reg.MergeServices(services, true);
                 }

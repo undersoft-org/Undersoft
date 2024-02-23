@@ -10,34 +10,34 @@
 <div>
     <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
         <div>
-        @if (Rubric.Visible)
-        {
-            @if (!Rubric.Expandable)
+            @if (Rubric.Visible)
             {
-
-                @if (_type == typeof(bool))
+                @if (!Rubric.Expandable)
                 {
-                    <FluentMenuItem Role="MenuItemRole.MenuItemCheckbox" Label="@_label" />
+
+                    @if (_type == typeof(bool))
+                    {
+                        <FluentMenuItem Id="@ViewId" Label="@_label" Role="MenuItemRole.MenuItemCheckbox" Style="text-align:center;" />
+                    }
+                    else
+                    {
+                        <FluentMenuItem Id="@ViewId" Label="@_label" Style="text-align:center;" />
+                    }
                 }
                 else
                 {
-                    <FluentMenuItem Label="@_label" />
+                    <FluentMenuItem Id="@ViewId" Label="@_label" Style="text-align:center;">
+                        <MenuItems>
+                            @foreach (var rubric in ExpandData.Rubrics)
+                            {
+                                <div>
+                                    <GenericMenuItem Rubric="@rubric" Data="ExpandData" Parent="@this" />
+                                </div>
+                            }
+                        </MenuItems>
+                    </FluentMenuItem>
                 }
             }
-            else
-            {
-                <FluentMenuItem Id="@ViewId" Label="@_label" OnClick="@((e) => Rubric.Invoker.InvokeAsync(Value))">
-                    <MenuItems>
-                        @foreach (var rubric in ExpandData.Rubrics)
-                        {
-                            <div>
-                                <GenericMenuItem Rubric="@rubric" Data="ExpandData" Parent="@this" />
-                            </div>
-                        }
-                    </MenuItems>
-                </FluentMenuItem>
-            }
-        }
         </div>
     </FluentStack>
 </div>

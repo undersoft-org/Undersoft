@@ -46,7 +46,7 @@
                     {
                         if (!keysFromDeck)
                         {
-                            Catalog<int> colOrdinal = new Catalog<int>(
+                            Chain<int> colOrdinal = new Chain<int>(
                                 t.Rubrics
                                     .AsValues()
                                     .Where(
@@ -60,7 +60,7 @@
                                     )
                                     .Select(o => o.FieldId)
                             );
-                            Catalog<int> keyOrdinal = new Catalog<int>(
+                            Chain<int> keyOrdinal = new Chain<int>(
                                 t.Rubrics
                                     .AsValues()
                                     .Where(
@@ -82,7 +82,7 @@
                         }
                         else
                         {
-                            Catalog<int> colOrdinal = new Catalog<int>(
+                            Chain<int> colOrdinal = new Chain<int>(
                                 t.Rubrics
                                     .AsValues()
                                     .Where(
@@ -93,7 +93,7 @@
                                     )
                                     .Select(o => o.FieldId)
                             );
-                            Catalog<int> keyOrdinal = new Catalog<int>(
+                            Chain<int> keyOrdinal = new Chain<int>(
                                 t.Rubrics
                                     .AsValues()
                                     .Where(
@@ -122,7 +122,7 @@
                         foreach (string dbtNameMix in dbtNameMixList)
                         {
                             dbtName = dbtNameMix;
-                            Catalog<int> colOrdinal = new Catalog<int>(
+                            Chain<int> colOrdinal = new Chain<int>(
                                 t.Rubrics
                                     .AsValues()
                                     .Where(
@@ -136,7 +136,7 @@
                                     )
                                     .Select(o => o.FieldId)
                             );
-                            Catalog<int> keyOrdinal = new Catalog<int>(
+                            Chain<int> keyOrdinal = new Chain<int>(
                                 (
                                     t.Rubrics
                                         .AsValues()
@@ -150,7 +150,7 @@
                                 )
                             );
                             if (keyOrdinal.Count == 0)
-                                keyOrdinal = new Catalog<int>(
+                                keyOrdinal = new Chain<int>(
                                     t.Rubrics.KeyRubrics
                                         .AsValues()
                                         .Where(
@@ -176,7 +176,7 @@
                         foreach (string dbtNameMix in dbtNameMixList)
                         {
                             dbtName = dbtNameMix;
-                            Catalog<int> colOrdinal = new Catalog<int>(
+                            Chain<int> colOrdinal = new Chain<int>(
                                 t.Rubrics
                                     .AsValues()
                                     .Where(
@@ -187,7 +187,7 @@
                                     )
                                     .Select(o => o.FieldId)
                             );
-                            Catalog<int> keyOrdinal = new Catalog<int>(
+                            Chain<int> keyOrdinal = new Chain<int>(
                                 t.Rubrics
                                     .AsValues()
                                     .Where(
@@ -199,7 +199,7 @@
                                     .Select(o => o.FieldId)
                             );
                             if (keyOrdinal.Count == 0)
-                                keyOrdinal = new Catalog<int>(
+                                keyOrdinal = new Chain<int>(
                                     t.Rubrics.KeyRubrics
                                         .AsValues()
                                         .Where(

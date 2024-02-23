@@ -1,6 +1,6 @@
 ﻿using Undersoft.SDK.Service.Data.Object;
 
-namespace Undersoft.SSC.Service.Application.GUI.Compound.Landing.TopMenu.Advantage;
+namespace Undersoft.SSC.Service.Application.GUI.Compound.Landing.TopMenu.Categories;
 
 public class AdvantageMenu : DataObject
 {

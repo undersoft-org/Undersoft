@@ -8,16 +8,16 @@
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 
 <div class="generic top-menu">
-    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Right" HorizontalGap="5">
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Right" HorizontalGap="10">
         @foreach (var rubric in Data.Rubrics)
         {
-             <div id="@($"{Model.Id}-{@rubric.Id}")">
-                <FluentLabel Typo="Typography.Subject" Weight="FontWeight.Bold" Color="Color.Lightweight">
+            <div id="@($"{Model.CodeNo}{@rubric.CodeNo}")" role="button">
+                <FluentLabel Typo="Typography.Body" Weight="FontWeight.Bold" Color="Color.Lightweight">
                     @rubric.DisplayName
                 </FluentLabel>
             </div>
             <div>
-                <GenericMenu Rubric="@rubric" AnchorId="@($"{Model.Id}-{@rubric.Id}")" Data="@(Data[rubric.RubricId])" Anchored="true" />
+                <GenericMenu Rubric="@rubric" AnchorId="@($"{Model.CodeNo}{@rubric.CodeNo}")" Data="@(Data[rubric.RubricId])" Anchored="true" />
             </div>
         }
     </FluentStack>
@@ -27,7 +27,8 @@
 {
     protected override void OnParametersSet()
     {
-        if (Data == null) Data = new ViewData<TModel>(typeof(TModel).New<TModel>());
+        if (Data == null)
+            Data = new ViewData<TModel>(typeof(TModel).New<TModel>());
 
         Data.MapRubrics();
         Data.Rubrics.ForEach(r =>

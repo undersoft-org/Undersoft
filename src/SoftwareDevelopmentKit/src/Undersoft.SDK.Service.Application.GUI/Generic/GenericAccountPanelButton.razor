@@ -5,10 +5,10 @@
 @inject IServicer _servicer
 @inject IMessageService MessageService
 
-<href @onclick="@OpenAccountPanelAsync">
-<FluentPersona Initials="SU" ImageSize="35px">
+<div role="button" @onclick="@OpenAccountPanelAsync">
+<FluentPersona Initials="?" ImageSize="35px" StatusSize="PresenceBadgeSize.Tiny" >
 </FluentPersona>
-</href>
+</div>
 
 @code {
 
@@ -21,10 +21,10 @@
 
     private async Task OpenAccountPanelAsync(MouseEventArgs args)
     {
-        await _panel.Show((p) =>
+        await _panel.Show(new ViewData<Account>(), (p) =>
            {
                p.Alignment = HorizontalAlignment.Right;
-               p.Title = $"Profile";
+               p.Title = $"Account";
                p.PrimaryAction = "Ok";
                p.SecondaryAction = null;
                p.ShowDismiss = true;
