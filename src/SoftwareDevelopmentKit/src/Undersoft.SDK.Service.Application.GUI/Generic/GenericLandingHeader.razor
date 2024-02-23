@@ -3,30 +3,36 @@
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 @typeparam TAccount where TAccount : class, IOrigin, IInnerProxy
 
-<FluentHeader Height="50">
+<FluentHeader class="top-bar" Height="50">
     <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" Width="100%">
         <a href="/landing">
             <img src="img/logo-white.png" />
         </a>
         <FluentSpacer />
-        <GenericTopMenu TModel="TModel" />
-        <div class="personals">
-            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+        <div class="top-bar-tools">     
+            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" Style="margin-top:6px;">
+                <GenericTopMenu TModel="TModel" />
+                <div class="search-top-field" style="margin-top:-6px;">
+                    <FluentSearch Placeholder="Search" />
+                </div>
+                <div class="github">
                 <FluentAnchor Appearance="Appearance.Hypertext" Href="http://github.com/undersoft-org/undersoft" Target="_blank" Rel="noreferrer noopener" title="Shared Service Center source on GitHub" aria-label="SSC Repo">
-                    <a style="line-height:2;">
+                    <div style="line-height:2;">
                         <FluentIcon Value="@(new Addons.Size20.GitHub())" Width="18" Color="Color.Fill" />
-                    </a>
+                    </div>
                 </FluentAnchor>
+                </div>
                 <div class="notification">
                     <GenericNotificationPanelButton />
                 </div>
                 <div class="appearance">
                     <GenericAppearancePanelButton />
                 </div>
-                <div class="account">
-                    <GenericAccountMenu TModel="TAccount" />
-                </div>
+
             </FluentStack>
+        </div>
+        <div class="account">
+            <GenericAccountMenu TModel="TAccount" />
         </div>
     </FluentStack>
 </FluentHeader>

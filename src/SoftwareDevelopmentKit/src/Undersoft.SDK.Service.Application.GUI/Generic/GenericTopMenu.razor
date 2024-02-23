@@ -8,16 +8,18 @@
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 
 <div class="generic top-menu">
-    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Right" HorizontalGap="10">
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Right" HorizontalGap="5">
         @foreach (var rubric in Data.Rubrics)
         {
             <div id="@($"{Model.CodeNo}{@rubric.CodeNo}")" role="button">
-                <FluentLabel Typo="Typography.Body" Weight="FontWeight.Bold" Color="Color.Lightweight">
+@*                 <FluentLabel Typo="Typography.Body" Weight="FontWeight.Bold" Color="Color.Lightweight">
                     @rubric.DisplayName
-                </FluentLabel>
+                </FluentLabel> *@
+                <FluentIcon Value="@(new Icons.Regular.Size20.LineHorizontal4())" Color="Color.Fill" Title="Categories" />
+
             </div>
             <div>
-                <GenericMenu Position="@(HorizontalPosition.Center)" Rubric="@rubric" AnchorId="@($"{Model.CodeNo}{@rubric.CodeNo}")" Data="@(Data[rubric.RubricId])" Anchored="true" Style="@("margin-top:15px;")" />
+                <GenericMenu Position="@(HorizontalPosition.Center)" Rubric="@rubric" AnchorId="@($"{Model.CodeNo}{@rubric.CodeNo}")" Data="@(Data[rubric.RubricId])" Anchored="true" Style="@("margin-top:10px;")" />
             </div>
         }
     </FluentStack>
