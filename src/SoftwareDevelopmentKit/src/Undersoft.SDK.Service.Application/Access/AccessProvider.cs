@@ -196,16 +196,14 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
         return _authorization = result;
     }
 
-    public IAuthorization? AccountInfo(IAuthorization auth)
+    public async Task<IAuthorization?> AccountInfo(IAuthorization auth)
     {
-        var result = _repository.Access(nameof(AccountInfo), auth);
+        var result = await _repository.Access(nameof(AccountInfo), auth);
 
         if (result == null)
             return null;
 
-        Task.WaitAll(result);
-
-        return _authorization = result.Result;
+        return _authorization = result;
     }
 
     public async Task<IAuthorization?> ConfirmEmail(IAuthorization auth)

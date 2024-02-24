@@ -15,6 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\Access\AccountPanel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\img\logo-grey.png" />
     <_ContentIncludedByDefault Remove="wwwroot\img\logo-white.png" />
   </ItemGroup>

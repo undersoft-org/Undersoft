@@ -1,36 +1,22 @@
-﻿@using Undersoft.SDK.Service
-@using Undersoft.SDK.Service.Data.Event
-@using Undersoft.SSC.Service.Contracts
+﻿@using System.ComponentModel.DataAnnotations
+@using FluentValidation
+@using Undersoft.SDK.Proxies
+@using Undersoft.SDK.Rubrics
+@using Undersoft.SDK
+@using Undersoft.SDK.Invoking
 
-@inherits ViewItem<TModel>
+@inherits ViewItem
 
-@typeparam TModel where TModel : class, IOrigin, IInnerProxy
 
-<div id="account_menu" role="button">
-<FluentPersona Initials="?" ImageSize="35px">
-</FluentPersona>
-</div>
-
-<div>
-    <GenericMenu Position="@(HorizontalPosition.Left)" Rubric="Data.Rubrics[0]" AnchorId="account_menu" Data="@(Data[0])" Anchored="true" Style="@("margin-top:8px;")" />
-</div>
-
-@code {
-
-    protected override void OnParametersSet()
-    {
-        if (Data == null)
-            Data = new ViewData<TModel>(typeof(TModel).New<TModel>());
-
-        Data.MapRubrics();
-        Data.Rubrics.ForEach(r =>
+<CascadingValue Value="@Data">
+    <CascadingValue Value="@Root">
+        <FluentMenu Style="@Style" Anchor="@AnchorId" Trigger="@Trigger" Anchored="@Anchored" HorizontalPosition="HorizontalPosition.Left" Width="100px">
+            @foreach (var rubric in Data.Rubrics)
             {
-                Model.Proxy[r.RubricId] = r.RubricType.New();
-                if (r.DisplayName == null)
-                    r.DisplayName = r.RubricName;
-            });
-        Data.Put(Data.Rubrics.ForEach(r => typeof(ViewData<>).MakeGenericType(r.RubricType).New<IViewData>(Model.Proxy[r.RubricId])));
+                <GenericMenuItem Rubric="@rubric" Parent="@this"  />
+            }
+        </FluentMenu>
+    </CascadingValue>
+</CascadingValue>
 
-        base.OnParametersSet();
-    }
-}
+

@@ -1,6 +1,6 @@
 ﻿using Undersoft.SDK.Rubrics.Attributes;
 using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SSC.Service.Application.GUI.Compound.Landing.TopMenu.Account;
+using Undersoft.SSC.Service.Application.GUI.Compound.Landing.TopMenu.Accounts;
 
 namespace Undersoft.SSC.Service.Application.GUI.Compound.Landing.TopMenu;
 

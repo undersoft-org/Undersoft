@@ -1,13 +1,16 @@
 ﻿using Undersoft.SDK.Rubrics.Attributes;
+using Undersoft.SDK.Service.Application.GUI.View;
 using Undersoft.SDK.Service.Data.Object;
+using Undersoft.SSC.Service.Application.GUI.Compound.Access;
+using Undersoft.SSC.Service.Contracts;
 
-namespace Undersoft.SSC.Service.Application.GUI.Compound.Landing.TopMenu.Account;
+namespace Undersoft.SSC.Service.Application.GUI.Compound.Landing.TopMenu.Accounts;
 
 public class AccountMenu : DataObject
 {
-    [Link]
     [VisibleRubric]
-    public string Profile { get; set; } = "/access/profile";
+    [Invoke(typeof(AccountPanel), "OpenAccountPanel")]
+    public IViewPanel<Account> Profile { get; set; } = default!;
 
     [Link]
     [VisibleRubric]

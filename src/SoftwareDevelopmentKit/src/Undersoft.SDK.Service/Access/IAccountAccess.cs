@@ -6,6 +6,6 @@
         Task<IAuthorization> SignOut(IAuthorization account);
         Task<IAuthorization> SignUp(IAuthorization account);
         Task<IAuthorization> Renew(IAuthorization account);
-        IAuthorization AccountInfo(IAuthorization account);
+        Task<IAuthorization> AccountInfo(IAuthorization account);
     }
 }

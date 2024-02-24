@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using ServiceStack;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Server.Accounts.Email;
-using Undersoft.SDK.Updating;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
 
@@ -79,7 +78,7 @@ public class AccountService : IAccountAction, IAccountAccess
 
     public async Task<IAuthorization> SignOut(IAuthorization identity)
     {
-        var account = AccountInfo(identity);
+        var account = await AccountInfo(identity);
 
         if (account.Credentials.IsLockedOut)
         {
@@ -99,7 +98,7 @@ public class AccountService : IAccountAction, IAccountAccess
 
     public async Task<IAuthorization> Renew(IAuthorization identity)
     {
-        var account = AccountInfo(identity);
+        var account = await AccountInfo(identity);
 
         if (account.Credentials.IsLockedOut)
         {
@@ -126,7 +125,7 @@ public class AccountService : IAccountAction, IAccountAccess
         return account;
     }
 
-    public IAuthorization AccountInfo(IAuthorization identity)
+    public async Task<IAuthorization> AccountInfo(IAuthorization identity)
     {
         var _creds = identity.Credentials;
         if (!_manager.TryGetByEmail(_creds.Email, out var account))
@@ -155,12 +154,12 @@ public class AccountService : IAccountAction, IAccountAccess
         creds.EmailConfirmed = account.User.EmailConfirmed;
         creds.PhoneNumberConfirmed = account.User.PhoneNumberConfirmed;
         creds.RegistrationCompleted = account.User.RegistrationCompleted;
-        return account;
+        return await Task.FromResult(account);
     }
 
     public async Task<IAuthorization> Authenticate(IAuthorization account)
     {
-        account = AccountInfo(account);
+        account = await AccountInfo(account);
 
         var _creds = account?.Credentials;
 
@@ -271,7 +270,7 @@ public class AccountService : IAccountAction, IAccountAccess
 
     public async Task<IAuthorization> ResetPassword(IAuthorization account)
     {
-        account = AccountInfo(account);
+        account = await AccountInfo(account);
 
         if (account != null && !account.Credentials.IsLockedOut)
         {

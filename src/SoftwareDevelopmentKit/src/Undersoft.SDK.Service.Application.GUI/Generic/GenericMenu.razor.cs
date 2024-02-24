@@ -10,6 +10,9 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
             Data.MapRubrics();
             if (Parent == null)
                 Root = this;
+
+
+
             base.OnInitialized();
         }
 

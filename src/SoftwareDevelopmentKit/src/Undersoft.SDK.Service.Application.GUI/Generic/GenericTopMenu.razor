@@ -19,7 +19,7 @@
 
             </div>
             <div>
-                <GenericMenu Position="@(HorizontalPosition.Right)" Rubric="@rubric" AnchorId="@($"{Model.CodeNo}{@rubric.CodeNo}")" Data="@(Data[rubric.RubricId])" Anchored="true" Style="@("margin-top:14px;")" />
+                <GenericMenu Position="HorizontalPosition.Right" Rubric="@rubric" AnchorId="@($"{Model.CodeNo}{@rubric.CodeNo}")" Data="@(Data[rubric.RubricId])" Anchored="true" Style="@("margin-top:14px;")" />
             </div>
         }
     </FluentStack>
