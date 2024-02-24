@@ -1,0 +1,64 @@
+﻿@using Undersoft.SDK.Proxies
+@using Undersoft.SDK.Updating
+@using Undersoft.SDK.Rubrics.Attributes
+@using Undersoft.SDK.Service;
+@using Undersoft.SDK.Service.Access;
+@using Undersoft.SDK.Service.Application.GUI.View;
+@using Undersoft.SDK.Service.Operation;
+@using Undersoft.SDK.Uniques;
+
+@page "/access/sign_up"
+@inject IAccountAccess _access
+@inject NavigationManager _navigation
+@inject IServicer _servicer
+
+@code
+{
+    private IViewDialog<Credentials> _dialog = default!;
+
+    protected override void OnInitialized()
+    {
+        _dialog = _servicer.Initialize<AccessDialog<SignUpDialog<Credentials, AccessValidator>, Credentials>>();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await SigningUp("Sign up");
+    }
+
+    private async Task SigningUp(string title, string description = "")
+    {
+        var data = new ViewData<Credentials>(new Credentials(), OperationType.Create, title);
+        data.SetVisible("FirstName", "LastName", "Email", "Password", "RetypedPassword");
+        data.Description = description;
+        data.Height = "600px";
+        data.Logo = "img/logo-grey.png";
+
+        while (true)
+        {
+            await _dialog.Show(data);
+
+            var content = _dialog.Content;
+            if (content != null)
+            {
+                if (content.HaveNext && content.NextHref != null)
+                {
+                    _navigation.NavigateTo(content.NextHref);
+                    return;
+                }
+                content.Model.UserName = $"{content.Model.FirstName.ToLowerInvariant()}_"
+                                       + $"{content.Model.LastName.ToLowerInvariant()}";
+
+                var result = await _access.SignUp(new Account() { Credentials = content.Model });
+
+                if (result.Notes.Status != SigningStatus.Failure && result.Notes.Errors == null)
+                {
+                    _navigation.NavigateTo($"access/confirm_email/{result.Credentials.Email}");
+                    return;
+                }
+                result.Notes.PatchTo(data);                
+            }
+        }
+    }
+}

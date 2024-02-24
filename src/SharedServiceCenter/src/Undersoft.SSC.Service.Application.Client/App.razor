@@ -1,19 +1,21 @@
-﻿@using Microsoft.FluentUI.AspNetCore.Components
+﻿@using Undersoft.SSC.Service.Application.GUI.Compound.Access
 
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(GenericLayout)">
+
                 <NotAuthorized>
                     @if (context.User.Identity?.IsAuthenticated != true)
                     {
-                        <AccessRedirection />
+                        <AccessRedirect />
                     }
                     else
                     {
                         <p role="alert">You are not authorized to access this resource.</p>
                     }
                 </NotAuthorized>
+
             </AuthorizeRouteView>
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
         </Found>

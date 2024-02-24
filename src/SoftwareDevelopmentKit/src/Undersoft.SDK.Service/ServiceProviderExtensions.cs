@@ -39,20 +39,37 @@ namespace Undersoft.SDK.Service
                 .ForEach(prop => prop.SetValue(service, provider.GetService(prop.PropertyType)));
         }
 
-        public static async Task LoadDataServiceModels(this IServiceProvider provider)
+        public static async Task LoadDataServiceModelsAsync(this IServiceProvider provider)
         {
             var sm = provider.GetService<IServiceManager>();
             foreach (var client in sm.GetClients())
             {
-                var model = await client.BuildMetadata();
+                var model = await client.BuildMetadataAsync();
             }
 
             sm.Registry.AddOpenDataRemoteImplementations();
         }
 
-        public static async Task<IServiceProvider> UseServiceClients(this IServiceProvider provider)
+        public static void LoadDataServiceModels(this IServiceProvider provider)
         {
-            await provider.LoadDataServiceModels();
+            var sm = provider.GetService<IServiceManager>();
+            foreach (var client in sm.GetClients())
+            {
+                var model = client.BuildMetadata();
+            }
+
+            sm.Registry.AddOpenDataRemoteImplementations();
+        }
+
+        public static async Task<IServiceProvider> UseServiceClientsAsync(this IServiceProvider provider)
+        {
+            await provider.LoadDataServiceModelsAsync();
+            return provider;
+        }
+
+        public static IServiceProvider UseServiceClients(this IServiceProvider provider)
+        {
+            provider.LoadDataServiceModels();
             return provider;
         }
     }

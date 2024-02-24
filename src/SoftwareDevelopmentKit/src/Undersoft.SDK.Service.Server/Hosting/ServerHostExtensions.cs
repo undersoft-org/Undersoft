@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 namespace Undersoft.SDK.Service.Server.Hosting;
 
 using Service.Hosting;
-using Undersoft.SDK.Service.Data.Repository;
 
 public static class ServerHostExtensions
 {
@@ -40,7 +39,7 @@ public static class ServerHostExtensions
         {
             Task.WaitAll(app.Manager.GetClients().ForEach((client) =>
             {
-                return client.BuildMetadata();
+                return client.BuildMetadataAsync();
             }).Commit());
 
             app.Manager.Registry.AddOpenDataRemoteImplementations();

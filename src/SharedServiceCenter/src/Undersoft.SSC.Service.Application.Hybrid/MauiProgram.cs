@@ -1,7 +1,18 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
-using Undersoft.SDK.Security;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.FluentUI.AspNetCore.Components;
+using System.Reflection;
 using Undersoft.SDK.Service;
+using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Application.Access;
+using Undersoft.SDK.Service.Application.GUI.Generic;
+using Undersoft.SDK.Service.Application.GUI.Models;
+using Undersoft.SDK.Service.Application.GUI.View;
+using Undersoft.SDK.Service.Data.Remote.Repository;
+using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SSC.Service.Application.GUI.Compound.Access;
 using Undersoft.SSC.Service.Clients;
 using Undersoft.SSC.Service.Contracts;
 
@@ -11,6 +22,19 @@ namespace Undersoft.SSC.Service.Application.Hybrid
     {
         public static MauiApp CreateMauiApp()
         {
+            var stream = Assembly
+                .GetExecutingAssembly()
+                .GetManifestResourceStream(
+                    $"Undersoft.SSC.Service.Application.Hybrid."
+                        + (
+                            (DeviceInfo.Platform == DevicePlatform.Android)
+                                ? "appsettings.android.json"
+                                : "appsettings.json"
+                        )
+                );
+            var config =
+                (stream != null) ? new ConfigurationBuilder().AddJsonStream(stream).Build() : null;
+
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -19,39 +43,48 @@ namespace Undersoft.SSC.Service.Application.Hybrid
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
 
-            builder.Services.AddMauiBlazorWebView();
-#if DEBUG
-            builder.Services.AddBlazorWebViewDeveloperTools();
-#endif
+            builder.Logging.AddDebug();
 
-            var setup = builder.Services
-                .AddServiceSetup(builder.Configuration)
-                .ConfigureServices(new[] { typeof(ApplicationClient) });
+            if (config != null)
+                builder.Configuration.AddConfiguration(config);
 
-            _ = setup.Manager.BuildInternalProvider().UseServiceClients();
+            var manager = builder.Services
+                .AddServiceSetup(config)
+                .ConfigureServices(new[] { typeof(ApplicationClient), typeof(AccessClient) })
+                .Manager;
+
+            _ = manager.BuildInternalProvider().UseServiceClientsAsync();
 
             builder.ConfigureContainer(
-                 setup.Manager.GetProviderFactory(),
-                 (services) =>
-                 {
-                     var reg = setup.Manager.GetRegistry();
-                     reg.Services = services;
-                     reg.AddAuthorizationCore();
-                     reg.AddScoped<AccessProvider<Account>>();
-                     reg.AddScoped<AuthenticationStateProvider, AccessProvider<Account>>(
-                         provider => provider.GetRequiredService<AccessProvider<Account>>()
-                     );
-                     reg.AddScoped<IAccountAccess, AccessProvider<Account>>(
-                         provider => provider.GetRequiredService<AccessProvider<Account>>()
-                     );
-                     reg.MergeServices(true);
-                 }
-             );
+                manager.GetProviderFactory(),
+                (services) =>
+                {
+                    var reg = manager.GetRegistry();
+                    reg.AddMauiBlazorWebView();
+                    reg.AddBlazorWebViewDeveloperTools();
+
+                    reg.AddAuthorizationCore()
+                        .AddFluentUIComponents(
+                            (o) =>
+                            {
+                                o.UseTooltipServiceProvider = true;
+                            }
+                        )
+                        .AddSingleton<AppearanceState>()
+                        .AddScoped<IRemoteRepository<IAccountStore, Account>, RemoteRepository<IAccountStore, Account>>()
+                        .AddScoped<AccessProvider<Account>>()
+                        .AddScoped<AuthenticationStateProvider, AccessProvider<Account>>()
+                        .AddScoped<IAccountAccess, AccessProvider<Account>>()
+                        .AddScoped<IValidator<IViewData<Credentials>>, AccessValidator>()
+                        .AddScoped<IValidator<IViewData<Account>>, GenericAccountPanelValidator>()
+                        .AddScoped<GenericAccountPanelValidator>()
+                        .AddScoped<AccessValidator>();
+                    reg.MergeServices(services, true);
+                }
+            );
 
             var host = builder.Build();
-
-            ServiceManager.SetProvider(host.Services);
-
+            manager.ReplaceProvider(host.Services);
             return host;
         }
     }

@@ -116,7 +116,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View
             set => origin.OriginId = value;
         }
 
-        public virtual string Label
+        public virtual string? Label
         {
             get => origin.Label;
             set => origin.Label = value;

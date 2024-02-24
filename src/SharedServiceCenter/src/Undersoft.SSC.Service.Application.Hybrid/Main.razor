@@ -1,11 +1,13 @@
-﻿<CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(Main).Assembly">
+﻿@using Microsoft.FluentUI.AspNetCore.Components
+
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(MauiProgram).Assembly">
         <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(GenericLayout)">
                 <NotAuthorized>
                     @if (context.User.Identity?.IsAuthenticated != true)
                     {
-                        <RedirectToSignIn />
+                        <AccessRedirect />
                     }
                     else
                     {
@@ -17,7 +19,7 @@
         </Found>
         <NotFound>
             <PageTitle>Not found</PageTitle>
-            <LayoutView Layout="@typeof(MainLayout)">
+            <LayoutView Layout="@typeof(GenericLayout)">
                 <p role="alert">Sorry, there's nothing at this address.</p>
             </LayoutView>
         </NotFound>

@@ -86,9 +86,16 @@ public class RepositoryClient : Catalog<IRepositoryContext>, IRepositoryClient
         return typeof(TContext).New<TContext>(uri);
     }
 
-    public async Task<IEdmModel> BuildMetadata()
+    public async Task<IEdmModel> BuildMetadataAsync()
     {
-        var edmModel = await Context.CreateServiceModel();
+        var edmModel = await Context.CreateServiceModelAsync();
+        Context.GetEdmEntityTypes();
+        return edmModel;
+    }
+
+    public IEdmModel BuildMetadata()
+    {
+        var edmModel = Context.CreateServiceModelSync();
         Context.GetEdmEntityTypes();
         return edmModel;
     }

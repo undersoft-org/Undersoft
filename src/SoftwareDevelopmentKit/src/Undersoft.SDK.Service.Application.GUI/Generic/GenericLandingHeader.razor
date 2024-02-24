@@ -5,16 +5,13 @@
 
 <FluentHeader class="top-bar" Height="50">
     <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" Width="100%">
-        <a href="/landing">
+        <a href="/landing" style="margin-left:-10px;">
             <img src="img/logo-white.png" />
         </a>
         <FluentSpacer />
         <div class="top-bar-tools">     
-            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" Style="margin-top:6px;">
+            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="15">
                 <GenericTopMenu TModel="TModel" />
-                <div class="search-top-field" style="margin-top:-6px;">
-                    <FluentSearch Placeholder="Search" />
-                </div>
                 <div class="github">
                 <FluentAnchor Appearance="Appearance.Hypertext" Href="http://github.com/undersoft-org/undersoft" Target="_blank" Rel="noreferrer noopener" title="Shared Service Center source on GitHub" aria-label="SSC Repo">
                     <div style="line-height:2;">
@@ -28,11 +25,11 @@
                 <div class="appearance">
                     <GenericAppearancePanelButton />
                 </div>
-
+                <div class="account" style="margin-right:-15px;">
+                    <GenericAccountMenu TModel="TAccount" />
+                </div>
             </FluentStack>
         </div>
-        <div class="account">
-            <GenericAccountMenu TModel="TAccount" />
-        </div>
+
     </FluentStack>
 </FluentHeader>

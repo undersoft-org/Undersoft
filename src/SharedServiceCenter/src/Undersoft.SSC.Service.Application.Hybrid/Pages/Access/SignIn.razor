@@ -1,0 +1,72 @@
+﻿@using Undersoft.SDK.Updating
+@using Undersoft.SDK.Service;
+@using Undersoft.SDK.Service.Access
+
+@page "/access/sign_in"
+@inject IAccountAccess _access
+@inject NavigationManager _navigation
+@inject IServicer _servicer
+
+@code
+{
+    private IViewDialog<Credentials> _dialog = default!;
+
+    protected override void OnInitialized()
+    {
+        _dialog = _servicer.Initialize<AccessDialog<SignInDialog<Credentials, AccessValidator>, Credentials>>();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+            await SigningIn("Sign in");
+    }    
+
+    private async Task SigningIn(string title, string description = "")
+    {
+        var data = new ViewData<Credentials>(new Credentials(), OperationType.Access, title);
+        data.SetRequired(nameof(Credentials.Email), nameof(Credentials.Password));
+        data.SetVisible(nameof(Credentials.SaveAccountInCookies));
+        data.Description = description;
+        data.Height = "400px";
+        data.Logo = "img/logo-grey.png";
+
+        while (true)
+        {
+            await _dialog.Show(data);
+
+            var content = _dialog.Content;
+
+            if (content != null)
+            {
+                if (content.HaveNext && content.NextHref != null)
+                {
+                    _navigation.NavigateTo(content.NextHref);
+                    return;
+                }
+
+                var result = await _access.SignIn(new Account() { Credentials = content.Model });
+
+                if (result.Credentials.Authenticated)
+                {
+                    if (result.Credentials.EmailConfirmed)
+                        if (result.Credentials.RegistrationCompleted)
+                            _navigation.NavigateTo("");
+                        else
+                            _navigation.NavigateTo("/access/register_account");
+                    else
+                        _navigation.NavigateTo($"/access/confirm_email/{result.Credentials.Email}");
+                    return;
+                }                
+
+                data.ClearData();
+                result.Notes.PatchTo(data);
+            }
+            else
+            {
+                _navigation.NavigateTo("");
+                return;
+            }
+        }
+    }
+}

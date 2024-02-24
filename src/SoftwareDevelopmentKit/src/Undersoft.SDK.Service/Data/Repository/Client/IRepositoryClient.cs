@@ -1,7 +1,4 @@
-using Undersoft.SDK.Uniques;
-using System;
 using Microsoft.OData.Edm;
-using Undersoft.SDK.Service.Data.Repository;
 using Undersoft.SDK.Service.Data.Client;
 
 namespace Undersoft.SDK.Service.Data.Repository.Client;
@@ -16,7 +13,8 @@ public interface IRepositoryClient
     bool Pooled { get; }
     Uri Route { get; }
 
-    Task<IEdmModel> BuildMetadata();
+    Task<IEdmModel> BuildMetadataAsync();
+    IEdmModel BuildMetadata();
     object CreateContext(Type contextType, Uri serviceRoot);
     TContext CreateContext<TContext>(Uri serviceRoot) where TContext : OpenDataContext;
     void CreatePool<TContext>();

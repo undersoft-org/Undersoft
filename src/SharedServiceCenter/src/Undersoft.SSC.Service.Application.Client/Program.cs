@@ -36,7 +36,7 @@ namespace Undersoft.SSC.Service.Application.Client
 
             await manager
                     .BuildInternalProvider()
-                    .UseServiceClients();
+                    .UseServiceClientsAsync();
 
             builder.ConfigureContainer(
                 manager.GetProviderFactory(),

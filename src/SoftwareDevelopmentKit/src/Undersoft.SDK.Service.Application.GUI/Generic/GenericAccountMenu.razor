@@ -7,12 +7,12 @@
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 
 <div id="account_menu" role="button">
-<FluentPersona Initials="?" ImageSize="35px" StatusSize="PresenceBadgeSize.Tiny" >
+<FluentPersona Initials="?" ImageSize="35px">
 </FluentPersona>
 </div>
 
 <div>
-    <GenericMenu Position="@(HorizontalPosition.Center)" Rubric="Data.Rubrics[0]" AnchorId="account_menu" Data="@(Data[0])" Anchored="true" Style="@("margin-top:8px;")" />
+    <GenericMenu Position="@(HorizontalPosition.Left)" Rubric="Data.Rubrics[0]" AnchorId="account_menu" Data="@(Data[0])" Anchored="true" Style="@("margin-top:8px;")" />
 </div>
 
 @code {
