@@ -80,6 +80,8 @@ namespace Undersoft.SDK.Service.Application.GUI.View
         [Parameter]
         public virtual IViewRubric Rubric { get; set; } = default!;
 
+        public object? Reference { get; set; } = default!;
+
         public string CodeNo
         {
             get => origin.CodeNo;

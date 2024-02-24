@@ -91,7 +91,13 @@
             dst.RubricId = RubricId;
             dst.Visible = Visible;
             dst.Editable = Editable;
+            dst.LinkValue = LinkValue;
+            dst.LinkOperation = LinkOperation;
+            dst.InvokeTarget = InvokeTarget;
+            dst.InvokeMethod = InvokeMethod;
+            dst.InvokeType = InvokeType;
             dst.InstantType = InstantType;
+            dst.Invoker = Invoker;
             dst.InstantField = InstantField;
             dst.FieldId = FieldId;
             dst.RubricOffset = RubricOffset;
@@ -101,6 +107,7 @@
             dst.IdentityOrder = IdentityOrder;
             dst.Required = Required;
             dst.DisplayName = DisplayName;
+            dst.IsLink = IsLink;
             dst.Id = RubricName.UniqueKey64();
 
             return dst;
@@ -114,6 +121,13 @@
             dst.RubricName = RubricName;
             dst.Visible = Visible;
             dst.Editable = Editable;
+            dst.LinkValue = LinkValue;
+            dst.LinkOperation = LinkOperation;
+            dst.InvokeTarget = InvokeTarget;
+            dst.InvokeMethod = InvokeMethod;
+            dst.InvokeType = InvokeType;
+            dst.InstantType = InstantType;
+            dst.Invoker = Invoker;
             dst.RubricOffset = RubricOffset;
             dst.IsKey = IsKey;
             dst.IsIdentity = IsIdentity;
@@ -121,6 +135,7 @@
             dst.IdentityOrder = IdentityOrder;
             dst.Required = Required;
             dst.DisplayName = DisplayName;
+            dst.IsLink = IsLink;
             return dst;
         }
 
@@ -202,6 +217,8 @@
 
         public bool IsIdentity { get; set; }
 
+        public bool IsLink { get; set; }
+
         public bool IsKey { get; set; }
 
         public bool IsUnique { get; set; }
@@ -230,8 +247,8 @@
 
         public object[] RubricAttributes
         {
-            get => VirtualInfo.RubricAttributes;
-            set => VirtualInfo.RubricAttributes = value;
+            get => (VirtualInfo != null) ? VirtualInfo.RubricAttributes : null;
+            set { if (VirtualInfo != null) VirtualInfo.RubricAttributes = value; }
         }
 
         public int RubricId { get => OriginId; set => OriginId = value; }

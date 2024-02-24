@@ -6,6 +6,9 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
 {
     public partial class GenericMenuItem : ViewItem
     {
+        [Inject]
+        private NavigationManager _navigation { get; set; } = default!;
+
         private Type _type = default!;
         private IProxy _proxy = default!;
         private IProxy _childProxy = default!;
@@ -55,5 +58,24 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
         public IViewItem Root { get; set; } = default!;
 
         public IViewData ExpandData { get; set; } = default!;
+
+        public void OnClick()
+        {
+            if (Rubric.IsLink)
+            {
+                if (Rubric.LinkValue != null)
+                    _navigation.NavigateTo(Rubric.LinkValue);
+                if (Rubric.RubricType == typeof(string))
+                {
+                    var uri = Value?.ToString();
+                    if (uri != null)
+                        _navigation.NavigateTo(uri);
+                }
+            }
+            if (Rubric.Invoker != null)
+            {
+                Rubric.Invoker.Invoke(Value);
+            }
+        }
     }
 }

@@ -6,7 +6,7 @@ namespace Undersoft.SDK.Service.Application.GUI.Generic
     {
         private GenericPageContents? _toc;
 
-        [Parameter]
+        [CascadingParameter]
         public RenderFragment? Body { get; set; }
 
         public EventCallback OnRefreshTableOfContents => EventCallback.Factory.Create(this, RefreshTableOfContentsAsync);

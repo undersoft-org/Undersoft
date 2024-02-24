@@ -5,7 +5,7 @@
 @typeparam TAccount where TAccount : class, IOrigin, IInnerProxy
 
 <GenericLandingHeader TModel="TModel" TAccount="TAccount" />
-<GenericLandingBody>
-    @Body
-</GenericLandingBody>
+<CascadingValue Value="@Body">
+    <GenericLandingBody />
+</CascadingValue>
 <GenericLandingFooter />

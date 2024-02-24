@@ -13,6 +13,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View
         string? Class { get; set; }
         string? Style { get; set; }
         string? Attributes { get; set; }
+        object? Reference { get; set; }
 
         IViewRubric Rubric { get; set; }
 

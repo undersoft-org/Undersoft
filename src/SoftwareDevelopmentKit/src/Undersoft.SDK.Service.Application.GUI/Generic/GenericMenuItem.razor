@@ -17,16 +17,16 @@
 
                     @if (_type == typeof(bool))
                     {
-                        <FluentMenuItem Id="@ViewId" Label="@_label" Role="MenuItemRole.MenuItemCheckbox" Style="text-align:center;" />
+                        <FluentMenuItem Id="@ViewId" Label="@_label" Role="MenuItemRole.MenuItemCheckbox" Style="text-align:center;" OnClick="@((e) => OnClick())" />
                     }
                     else
                     {
-                        <FluentMenuItem Id="@ViewId" Label="@_label" Style="text-align:center;" />
+                        <FluentMenuItem Id="@ViewId" Label="@_label" Style="text-align:center;" OnClick="@((e) => OnClick())" />
                     }
                 }
                 else
                 {
-                    <FluentMenuItem Id="@ViewId" Label="@_label" Style="text-align:center;">
+                    <FluentMenuItem Id="@ViewId" Label="@_label" Style="text-align:center;" OnClick="@((e) => OnClick())">
                         <MenuItems>
                             @foreach (var rubric in ExpandData.Rubrics)
                             {

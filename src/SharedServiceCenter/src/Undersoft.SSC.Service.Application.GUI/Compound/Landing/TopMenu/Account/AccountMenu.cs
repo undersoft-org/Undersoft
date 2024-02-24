@@ -5,19 +5,23 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Landing.TopMenu.Account
 
 public class AccountMenu : DataObject
 {
+    [Link]
     [VisibleRubric]
-    public ProfileMenu Profile { get; set; } = new ProfileMenu();
+    public string Profile { get; set; } = "/access/profile";
 
+    [Link]
     [VisibleRubric]
     [DisplayRubric("Sign up")]
-    public SignUpMenu SignUp { get; set; } = new SignUpMenu();
+    public string SignUp { get; set; } = "/access/sign_up";
 
+    [Link]
     [VisibleRubric]
     [DisplayRubric("Sign in")]
-    public SignInMenu SignIn { get; set; } = new SignInMenu();
+    public string SignIn { get; set; } = "/access/sign_in";
 
+    [Link]
     [VisibleRubric]
     [DisplayRubric("Sign out")]
-    public SignOutMenu SignOut { get; set; } = new SignOutMenu();
+    public string SignOut { get; set; } = "/access/sign_out";
 }
 

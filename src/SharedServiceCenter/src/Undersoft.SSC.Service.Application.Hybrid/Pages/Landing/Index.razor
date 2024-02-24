@@ -1,12 +1,16 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 @using Undersoft.SDK.Proxies
 
+@inject NavigationManager _navigation
+
 @page "/landing"
 
 <PageTitle>Undersoft</PageTitle>
 
-<FluentStack Orientation="Orientation.Horizontal">
-    <FluentLabel Typo="Typography.Subject">
-       Welcome in Undersoft
-    </FluentLabel>  
-</FluentStack>
+@code
+{
+    protected override void OnInitialized()
+    {
+        _navigation.NavigateTo("/landing/overview");
+    }
+}

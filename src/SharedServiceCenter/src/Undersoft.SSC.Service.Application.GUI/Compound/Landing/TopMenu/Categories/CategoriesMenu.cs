@@ -5,19 +5,24 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Landing.TopMenu.Categor
 
 public class CategoriesMenu : DataObject
 {
+    [Link]
     [VisibleRubric]
-    public OverviewMenu Overview { get; set; } = new OverviewMenu();
+    public string Overview { get; set; } = "/landing/overwiew";
 
+    [Link]
     [VisibleRubric]
-    public TechnologyMenu Technology { get; set; } = new TechnologyMenu();
+    public string Technology { get; set; } = "/landing/technology";
 
+    [Link]
     [VisibleRubric]
-    public SoftwareMenu Software { get; set; } = new SoftwareMenu();
+    public string Software { get; set; } = "/landing/software";
 
+    [Link]
     [VisibleRubric]
-    public AdvantageMenu Advantage { get; set; } = new AdvantageMenu();
+    public string Advantage { get; set; } = "/landing/advantage";
 
+    [Link]
     [VisibleRubric]
-    public AccessMenu Access { get; set; } = new AccessMenu();
+    public string Access { get; set; } = "/landing/access";
 }
 

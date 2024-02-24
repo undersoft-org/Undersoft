@@ -4,12 +4,10 @@
 
 @inject NavigationManager _navigation
 
-<PageTitle>Undersoft</PageTitle>
-
 @code
 {
     protected override void OnInitialized()
     {
-        _navigation.NavigateTo("/landing");
+        _navigation.NavigateTo("/landing/overview");
     }
 }

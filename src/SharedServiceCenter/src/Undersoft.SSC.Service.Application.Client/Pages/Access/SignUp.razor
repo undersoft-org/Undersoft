@@ -59,6 +59,11 @@
                 }
                 result.Notes.PatchTo(data);                
             }
+            else
+            {
+                _navigation.NavigateTo("");
+                return;
+            }
         }
     }
 }

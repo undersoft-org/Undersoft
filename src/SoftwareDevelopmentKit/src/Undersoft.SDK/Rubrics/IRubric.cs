@@ -21,6 +21,8 @@
 
         bool Required { get; set; }
 
+        bool IsLink { get; set; }
+
         string LinkValue { get; set; }
 
         string InvokeMethod { get; set; }

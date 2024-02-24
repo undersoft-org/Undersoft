@@ -410,7 +410,7 @@
 
         void resolveInstantCreatorExpandAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
         {
-            object o = mi.GetCustomAttributes(typeof(VisibleRubricAttribute), false).FirstOrDefault();
+            object o = mi.GetCustomAttributes(typeof(ExpandRubricAttribute), false).FirstOrDefault();
             if ((o != null))
             {
                 mr.Expandable = true;
@@ -449,13 +449,14 @@
 
         void resolveInstantCreatorLinkAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
         {
-            object o = mi.GetCustomAttributes(typeof(RubricAggregateAttribute), false).FirstOrDefault();
+            object o = mi.GetCustomAttributes(typeof(LinkAttribute), false).FirstOrDefault();
             if ((o != null))
             {
                 LinkAttribute fta = (LinkAttribute)o;
 
                 mr.LinkValue = fta.Value;
                 mr.LinkOperation = fta.Operation;
+                mr.IsLink = true;
 
                 if (fb != null)
                     CreateInstantCreatorLinkAttribute(fb, fta);
