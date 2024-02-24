@@ -7,7 +7,7 @@ public class CategoriesMenu : DataObject
 {
     [Link]
     [VisibleRubric]
-    public string Overview { get; set; } = "/landing/overwiew";
+    public string Overview { get; set; } = "/landing/overview";
 
     [Link]
     [VisibleRubric]

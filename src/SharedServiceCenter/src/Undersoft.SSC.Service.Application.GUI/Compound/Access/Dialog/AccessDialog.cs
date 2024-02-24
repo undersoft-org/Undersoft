@@ -41,7 +41,7 @@ public class AccessDialog<TDialog, TModel> : ViewDialog<TDialog, TModel> where T
                                 {{ opacity: '1', transform: '' }},
                                 {{ opacity: '0', transform: 'translateX(100%)' }}
                             ], {{
-                                duration: 1000,
+                                duration: 800,
                             }});
                             return animation.finished; // promise that resolves when the animation is complete or interrupted
                         }};
@@ -61,7 +61,7 @@ public class AccessDialog<TDialog, TModel> : ViewDialog<TDialog, TModel> where T
                                 {{ opacity: '0', transform: 'translateX(-100%)' }},
                                 {{ opacity: '1', transform: '' }},
                             ], {{
-                                duration: 1000,
+                                duration: 800,
                             }});
                             return animation.finished; // promise that resolves when the animation is complete or interrupted
                         }};

@@ -1,0 +1,10 @@
+﻿@inherits LayoutComponentBase
+@layout GenericLanding<CatgoriesTopMenu, AccountTopMenu>
+
+<FluentMessageBarProvider Section="@ViewSection.TOP" />
+
+@Body
+
+<FluentToastProvider MaxToastCount="10" />
+<FluentDialogProvider />
+<FluentTooltipProvider />
