@@ -42,7 +42,21 @@ public class Account : Authorization, IEntity, IAccount
 
     public virtual Listing<AccountToken> Tokens { get; set; }
 
+    public long? PersonalId
+    {
+        get; set;
+    }
+    public virtual AccountPersonal Personal { get; set; }
 
+    public virtual Listing<AccountProffesional> Proffesionals { get; set; }
+
+    public virtual Listing<AccountOrganization> Organizations { get; set; }
+
+    public virtual Listing<AccountConsent> Consents { get; set; }
+
+    public virtual Listing<AccountSubscription> Subscriptions { get; set; }
+
+    public virtual Listing<AccountPayment> Payments { get; set; }
 
     public IEnumerable<Claim> GetClaims()
     {

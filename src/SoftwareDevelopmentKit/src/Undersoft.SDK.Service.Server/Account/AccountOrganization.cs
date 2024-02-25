@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Service.Server.Accounts;
 
-public class AccountOrganiuzation : DataObject
+public class AccountOrganization : DataObject
 {
     public string Name { get; set; }
 
@@ -36,5 +36,6 @@ public class AccountOrganiuzation : DataObject
 
     public string Websites { get; set; }
 
+    public long? AccountId { get; set; }
     public virtual Account Account { get; set; }
 }

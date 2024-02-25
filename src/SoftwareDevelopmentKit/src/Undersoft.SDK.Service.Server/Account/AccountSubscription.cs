@@ -8,6 +8,12 @@ public class AccountSubscription : DataObject
 
     public DateTime EndDate { get; set; }
 
+    public double Quantity { get; set; }
+
+    public double Value { get; set; }
+
+    public string Currency { get; set; }
+
     public string SharedServiceCenter { get; set; }
 
     public string ApplicationServer { get; set; }
@@ -16,6 +22,7 @@ public class AccountSubscription : DataObject
 
     public string ServiceServer { get; set; }
 
+    public long? AccountId { get; set; }
     public virtual Account Account { get; set; }
 }
 

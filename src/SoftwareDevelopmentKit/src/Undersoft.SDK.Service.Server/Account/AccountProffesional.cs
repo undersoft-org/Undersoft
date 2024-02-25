@@ -18,5 +18,8 @@ public class AccountProffesional : DataObject
 
     public string Websites { get; set; }
 
+    public float Years { get; set; }
+
+    public long? AccountId { get; set; }
     public virtual Account Account { get; set; }
 }

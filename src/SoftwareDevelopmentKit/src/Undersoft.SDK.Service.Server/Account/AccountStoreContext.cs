@@ -35,9 +35,14 @@ public partial class AccountStoreContext<TStore>
         builder.HasDefaultSchema("Accounts");
         builder
             .ApplyMapping<Account>(new AccountMappings())
-            //.ApplyMapping<AccountClaim>(new AccountClaimMappings())
             .ApplyMapping<AccountToken>(new AccountTokenMappings())
-            .ApplyMapping<Role>(new RolemMappings());
+            .ApplyMapping<Role>(new RolemMappings())
+            .ApplyMapping<AccountPersonal>(new AccountPersonalMappings())
+            .ApplyMapping<AccountProffesional>(new AccountProffesionalMappings())
+            .ApplyMapping<AccountOrganization>(new AccountOrganizationsMappings())
+            .ApplyMapping<AccountSubscription>(new AccountSubscriptionsMappings())
+            .ApplyMapping<AccountConsent>(new AccountConsentsMappings())
+            .ApplyMapping<AccountPayment>(new AccountPaymentsMappings());
 
         builder.Entity<Account>(entity =>
         {
@@ -71,6 +76,30 @@ public partial class AccountStoreContext<TStore>
         {
             entity.ToTable("AccountTokens");
         });
+        builder.Entity<AccountPersonal>(entity =>
+        {
+            entity.ToTable(name: "AccountPersonals");
+        });
+        builder.Entity<AccountProffesional>(entity =>
+        {
+            entity.ToTable("AccountProffesionals");
+        });
+        builder.Entity<AccountOrganization>(entity =>
+        {
+            entity.ToTable("AccountOrganizations");
+        });
+        builder.Entity<AccountSubscription>(entity =>
+        {
+            entity.ToTable("AccountSubscriptions");
+        });
+        builder.Entity<AccountConsent>(entity =>
+        {
+            entity.ToTable("AccountConsents");
+        });
+        builder.Entity<AccountPayment>(entity =>
+        {
+            entity.ToTable("AccountPayments");
+        });
     }
 
     public IQueryable<TEntity> EntitySet<TEntity>() where TEntity : class
@@ -93,7 +122,10 @@ public partial class AccountStoreContext<TStore>
         return base.Add<TEntity>(entity).Entity;
     }
 
-    public async new ValueTask<TEntity> AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken) where TEntity : class
+    public async new ValueTask<TEntity> AddAsync<TEntity>(
+        TEntity entity,
+        CancellationToken cancellationToken
+    ) where TEntity : class
     {
         return await ValueTask.FromResult((await base.AddAsync<TEntity>(entity)).Entity);
     }
@@ -221,6 +253,4 @@ public partial class AccountStoreContext<TStore>
 
         return -1;
     }
-
-
 }
