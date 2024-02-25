@@ -1,5 +1,6 @@
 ﻿using Undersoft.SDK.Instant.Series;
 using Undersoft.SDK.Series;
+using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
 
 namespace Undersoft.SDK.Service.Application.GUI.View;
 

@@ -6,6 +6,7 @@
 @using Undersoft.SDK.Service.Application.GUI.View;
 @using Undersoft.SDK.Service.Operation;
 @using Undersoft.SDK.Uniques;
+@using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
 
 @page "/access/sign_up"
 @inject IAccountAccess _access
@@ -33,7 +34,7 @@
         data.SetVisible("FirstName", "LastName", "Email", "Password", "RetypedPassword");
         data.Description = description;
         data.Height = "600px";
-        data.Logo = "img/logo-grey.png";
+        data.Logo = "img/logo-black.png";
 
         while (true)
         {

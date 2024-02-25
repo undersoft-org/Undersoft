@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using Undersoft.SDK.Rubrics;
 using Undersoft.SDK.Series;
+using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
 
 namespace Undersoft.SDK.Service.Application.GUI.View;
 

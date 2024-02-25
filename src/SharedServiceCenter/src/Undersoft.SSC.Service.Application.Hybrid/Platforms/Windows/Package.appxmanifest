@@ -11,7 +11,7 @@
   xmlns:uap2="http://schemas.microsoft.com/appx/manifest/uap/windows10/2"
   IgnorableNamespaces="uap rescap iot uap3 uap4 uap6 uap2">
 
-  <Identity Name="undersoft.ssc.service.application.hybrid" Publisher="CN=User Name" Version="0.0.0.0" />
+  <Identity Name="Undersoft.SSC.Service.Application.Hybrid" Publisher="CN=User Name" Version="0.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="0BC3AD34-9CD5-45BF-8340-7D5F78B2A66B" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
@@ -44,18 +44,7 @@
           <uap:Rotation Preference="landscape"/></uap:InitialRotationPreference>
       </uap:VisualElements>
       <Extensions>
-        <uap:Extension Category="windows.appService">
-          <uap:AppService Name="undersoft" ServerName="undersoft"/>
-        </uap:Extension>
-        <uap:Extension Category="windows.fileOpenPicker">
-          <uap:FileOpenPicker>
-            <uap:SupportedFileTypes>
-              <uap:SupportsAnyFileType/>
-            </uap:SupportedFileTypes>
-          </uap:FileOpenPicker>
-        </uap:Extension>
-        <uap:Extension Category="windows.accountPictureProvider"/>
-        <Extension Category="windows.backgroundTasks" EntryPoint="./">
+        <Extension Category="windows.backgroundTasks"  StartPage="index.html">
           <BackgroundTasks>
             <Task Type="location"/>
             <Task Type="timer"/>
@@ -71,26 +60,6 @@
             <Task Type="bluetooth"/>
           </BackgroundTasks>
         </Extension>
-        <uap:Extension Category="windows.cameraSettings"/>
-        <uap:Extension Category="windows.protocol">
-          <uap:Protocol Name="undersoft"/>
-        </uap:Extension>
-        <uap:Extension Category="windows.cachedFileUpdater"/>
-        <uap3:Extension Category="windows.appExtensionHost">
-          <uap3:AppExtensionHost>
-            <uap3:Name>undersoft</uap3:Name>
-          </uap3:AppExtensionHost>
-        </uap3:Extension>
-        <uap:Extension Category="windows.webAccountProvider">
-          <uap:WebAccountProvider Url="https://undersoft.org" BackgroundEntryPoint="account/access"/>
-        </uap:Extension>
-        <uap:Extension Category="windows.shareTarget">
-          <uap:ShareTarget Description="undersoft">
-            <uap:SupportedFileTypes>
-              <uap:SupportsAnyFileType/>
-            </uap:SupportedFileTypes>
-          </uap:ShareTarget>
-        </uap:Extension>
       </Extensions>
       <uap:ApplicationContentUriRules>
         <uap:Rule Type="include" Match="https://*" WindowsRuntimeAccess="all"/>

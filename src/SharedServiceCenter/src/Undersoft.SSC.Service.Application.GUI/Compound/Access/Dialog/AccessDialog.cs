@@ -2,6 +2,7 @@ using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK;
 using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Application.GUI.View;
+using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
 
 namespace Undersoft.SSC.Service.Application.GUI.Compound.Access.Dialog;
 

@@ -1,0 +1,10 @@
+﻿using ValidationResult = FluentValidation.Results.ValidationResult;
+
+namespace Undersoft.SDK.Service.Application.GUI.View.Abstraction
+{
+    public interface IViewValidator
+    {
+        Task<ValidationResult> ValidateAsync();
+        Task<ValidationResult> ValidateAsync(string propertyName);
+    }
+}

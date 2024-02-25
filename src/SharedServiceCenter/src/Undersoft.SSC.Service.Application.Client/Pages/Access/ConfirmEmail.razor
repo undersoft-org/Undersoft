@@ -3,6 +3,7 @@
 @using Undersoft.SDK.Service.Application.Access;
 @using Undersoft.SDK.Service.Access;
 @using Undersoft.SDK.Uniques;
+@using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
 
 @page "/access/confirm_email/{email?}"
 @inject IAccountAccess _access
@@ -34,7 +35,7 @@
         data.Description = description;
         data.Height = "340px";
         data.Width = "350px";
-        data.Logo = "img/logo-grey.png";
+        data.Logo = "img/logo-black.png";
 
         while (true)
         {          

@@ -1,5 +1,5 @@
 ﻿using Undersoft.SDK.Rubrics.Attributes;
-using Undersoft.SDK.Service.Application.GUI.View;
+using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SSC.Service.Application.GUI.Compound.Access;
 using Undersoft.SSC.Service.Contracts;

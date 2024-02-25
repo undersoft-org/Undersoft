@@ -1,0 +1,48 @@
+﻿@inherits FluentComponentBase
+
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+@typeparam TAccount where TAccount : class, IOrigin, IInnerProxy
+
+<FluentHeader class="top-bar" Height="50">
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" Width="100%">
+        <a href="/landing" style="margin-left:-10px;">
+            @if (appearance.IsDarkMode)
+            {
+                <img src="img/logo-black.png" />
+            }
+            else
+            {
+                <img src="img/logo-white.png" />
+            }
+        </a>
+        <FluentSpacer />
+        <div class="top-bar-tools">
+            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="15">
+                <GenericTopMenu TModel="TModel" />
+                <div class="github">
+                    <FluentAnchor Appearance="Appearance.Hypertext" Href="http://github.com/undersoft-org/undersoft" Target="_blank" Rel="noreferrer noopener" title="Shared Service Center source on GitHub" aria-label="SSC Repo">
+                        <div style="line-height:2;">
+                            <FluentIcon Value="@(new ViewGraphic.Size20.GitHub())" Width="18" Color="Color.Fill" />
+                        </div>
+                    </FluentAnchor>
+                </div>
+                <div class="notification">
+                    <GenericNotificationPanelButton />
+                </div>
+                <div class="appearance">
+                    <GenericAppearancePanelButton />
+                </div>
+                <div class="account" style="margin-right:-15px;">
+                    <GenericAccountTopMenu TModel="TAccount" />
+                </div>
+            </FluentStack>
+        </div>
+
+    </FluentStack>
+</FluentHeader>
+
+@code
+{
+    [Inject]
+    private AppearanceState appearance { get; set; } = default!;
+}

@@ -1,5 +1,6 @@
 ﻿using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Service.Application.GUI.View;
+using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
 using Undersoft.SSC.Service.Contracts;
 
 namespace Undersoft.SSC.Service.Application.GUI.Compound.Access;

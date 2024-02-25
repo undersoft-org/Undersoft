@@ -15,7 +15,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.*-*" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.*-*" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.*-*" />
-    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.*-* " />
+    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.4.1" />
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.*-* " />
   </ItemGroup>
 

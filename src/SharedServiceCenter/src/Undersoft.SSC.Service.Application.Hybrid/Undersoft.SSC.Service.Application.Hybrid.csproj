@@ -58,7 +58,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\img\logo-grey.png" />
     <_ContentIncludedByDefault Remove="wwwroot\img\logo-white.png" />
     <_ContentIncludedByDefault Remove="wwwroot\img\logo.png" />
   </ItemGroup>
@@ -72,12 +71,10 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.*-*" />
-    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.*-*" /> 
-    <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />
+  <ItemGroup> 
+    <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.7" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="8.0.7" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
   </ItemGroup>
 
@@ -87,6 +84,9 @@
 
   <ItemGroup>
     <Content Update="Pages\Landing\Index.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Pages\Landing\LandingLayout.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
     <Content Update="wwwroot\appsettings.Development.json">

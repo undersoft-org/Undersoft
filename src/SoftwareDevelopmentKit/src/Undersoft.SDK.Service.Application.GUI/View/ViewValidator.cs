@@ -2,11 +2,11 @@
 using System.Collections;
 using System.Linq.Expressions;
 
-namespace Undersoft.SDK.Service.Application.GUI.Generic;
+namespace Undersoft.SDK.Service.Application.GUI.View;
 
 using Undersoft.SDK;
 using Undersoft.SDK.Proxies;
-using Undersoft.SDK.Service.Application.GUI.View;
+using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
 using Undersoft.SDK.Service.Data.Store;
 
 public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IValidator<IViewData<TModel>> where TModel : class, IOrigin, IInnerProxy
