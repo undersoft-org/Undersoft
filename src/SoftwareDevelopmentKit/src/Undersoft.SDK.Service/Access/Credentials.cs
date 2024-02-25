@@ -123,6 +123,21 @@ namespace Undersoft.SDK.Service.Access
         public string LastName { get; set; }
 
         [RequiredRubric]
+        [DataMember(Order = 24)]
+        [DisplayRubric("Terms acceptance")]
+        public bool TermsConsent { get; set; }
+
+        [RequiredRubric]
+        [DataMember(Order = 25)]
+        [DisplayRubric("Terms acceptance")]
+        public bool CookiesConsent { get; set; }
+
+        [RequiredRubric]
+        [DataMember(Order = 26)]
+        [DisplayRubric("Terms acceptance")]
+        public bool OptionalConsent { get; set; }
+
+        [RequiredRubric]
         [DataMember(Order = 6)]
         [DisplayRubric("New Password")]
         public string NewPassword { get; set; }

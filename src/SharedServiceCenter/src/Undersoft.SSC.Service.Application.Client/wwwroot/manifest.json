@@ -1,10 +1,10 @@
 {
-  "name": "Undersoft.SSC.Service.Application.CLient",
-  "short_name": "Undersoft.SSC.Client",
+  "name": "Undersoft Service Center",
+  "short_name": "Service Center",
   "start_url": "./",
-  "display": "standalone",
+  "display": "browser",
   "background_color": "#ffffff",
-  "theme_color": "#03173d",
+  "theme_color": "#194d6d",
   "prefer_related_applications": false,
   "icons": [
     {

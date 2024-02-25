@@ -10,7 +10,7 @@ public class AppearanceState : ViewwModel
 
     public ElementReference Container { get; set; } = default!;
 
-    public string? Color { get; set; }
+    public string? Color { get; set; } = "#00d7ff";
 
     public event Action? OnChange;
 

@@ -13,7 +13,14 @@
             <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" VerticalGap="0">
                 @if (Content.Logo != null)
                 {
-                    <a href=""><img src=@Content.Logo /></a>
+                    @if (appearance.IsDarkMode)
+                    {
+                        <a href=""><img src="@(Content.Logo.Replace("grey", "white"))" /></a>
+                    }
+                    else
+                    {
+                        <a href=""><img src="@Content.Logo" /></a>
+                    }
                 }
                 <FluentSpacer />
                 @if (Content.Icon != null)
@@ -44,6 +51,9 @@
 
 @code
 {
+    [Inject]
+    private AppearanceState appearance { get; set; } = default!;
+
     [CascadingParameter]
     public IViewData<TModel> Content { get; set; } = default!;
 

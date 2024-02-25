@@ -9,8 +9,7 @@
 <div>
     <FluentDesignTheme @ref=_theme
                        @bind-Mode="@Mode"
-                       @bind-OfficeColor="@OfficeColor"
-                       Direction="@Direction"
+                       @bind-CustomColor="@CurrentColor"                 
                        StorageName="theme" />
 
     <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
@@ -23,9 +22,9 @@
         <FluentSelect Label="Color"
                       Style="margin-bottom: 30px;"
                       Width="100%"
-                      Items="@(OfficeColorUtilities.AllColors.Cast<OfficeColor?>())"
+                      Items="@(UndersoftColorUtilities.AllColors.Cast<UndersoftColors?>())"
                       Height="200px"
-                      @bind-SelectedOption="@OfficeColor">
+                      @bind-SelectedOption="@UndersoftColor">
             <OptionTemplate>
                 <FluentStack>
                     <FluentIcon Value="@(new Icons.Filled.Size20.RectangleLandscape())"
@@ -36,12 +35,6 @@
             </OptionTemplate>
         </FluentSelect>
 
-        <FluentSwitch Label="Direction"
-                      Style="margin-bottom: 30px;"
-                      CheckedMessage="Left to Right"
-                      UncheckedMessage="Right to Left"
-                      Value="@_ltr"
-                      ValueChanged="HandleDirectionChanged" />
         <FluentLabel>
             These values (except for Direction) are persisted in the LocalStorage.
             and will be recovered during your next visits.<br /><br />
@@ -94,16 +87,21 @@
     [Inject]
     public required GlobalState GlobalState { get; set; }
 
-    public DesignThemeModes Mode { get; set; }
+    public AppearanceState AppearanceState { get; set; } = default!;
 
-    public OfficeColor? OfficeColor { get; set; }
+    public DesignThemeModes mode;
+    public DesignThemeModes Mode { get => mode; set { mode = value; AppearanceState.IsDarkMode = (value == DesignThemeModes.Dark) ? true : false; } }
 
-    public LocalizationDirection? Direction { get; set; }
+    private UndersoftColors? undersoftColors;
+    public UndersoftColors? UndersoftColor { get => undersoftColors; set { undersoftColors = value; AppearanceState.Color = value.ToAttributeValue(); } }
+
+    public string? CurrentColor { get => UndersoftColor.ToAttributeValue(); set => UndersoftColor = AllUndersoftColors.Where(c => c.ToAttributeValue() == value).FirstOrDefault();  }
 
     private static IEnumerable<DesignThemeModes> AllModes => Enum.GetValues<DesignThemeModes>();
 
     protected override void OnInitialized()
     {
+        AppearanceState = (AppearanceState)(object)Content.Model;
         Content.View = this;
         base.OnInitialized();
     }
@@ -113,27 +111,16 @@
         this.StateHasChanged();
     }
 
-    private static IEnumerable<OfficeColor?> AllOfficeColors
+    private static IEnumerable<UndersoftColors?> AllUndersoftColors
     {
         get
         {
-            return Enum.GetValues<OfficeColor>().Select(i => (OfficeColor?)i);
+            return Enum.GetValues<UndersoftColors>().Select(i => (UndersoftColors?)i);
         }
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
-        if (firstRender)
-        {
-            Direction = GlobalState.Dir;
-            _ltr = !Direction.HasValue || Direction.Value == LocalizationDirection.LeftToRight;
-        }
-    }
-
-    protected void HandleDirectionChanged(bool isLeftToRight)
-    {
-        _ltr = isLeftToRight;
-        Direction = isLeftToRight ? LocalizationDirection.LeftToRight : LocalizationDirection.RightToLeft;
     }
 
     private void ResetSiteAsync()
@@ -144,18 +131,16 @@
 
         _status = msg;
 
-        OfficeColor = OfficeColorUtilities.GetRandom();
+        UndersoftColor = UndersoftColorUtilities.GetRandom();
         Mode = DesignThemeModes.System;
     }
 
-    private static string? GetCustomColor(OfficeColor? color)
+    private string? GetCustomColor(UndersoftColors? color)
     {
         return color switch
         {
-            null => OfficeColorUtilities.GetRandom(true).ToAttributeValue(),
-            Microsoft.FluentUI.AspNetCore.Components.OfficeColor.Default => "#036ac4",
-            _ => color.ToAttributeValue(),
+            null => UndersoftColorUtilities.GetRandom(true).ToAttributeValue(),
+            UndersoftColors.Default => "#194d6d", _ => color.ToAttributeValue(),
         };
-
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.FluentUI.AspNetCore.Components;
 using System.Reflection;
 using System.Text.Json;
 using Undersoft.SDK.Service.Application.Extensions;
@@ -21,7 +22,9 @@ public partial class GenericLayout : LayoutComponentBase
     private readonly string APPEARANCEKEY = "APPEARANCEKEY";
 
     [Parameter]
-    public string Color { get; set; } = "#194d6d";
+    public string? Color { get; set; } = default!;
+
+    public DesignThemeModes Mode { get; set; }
 
     [Parameter]
     public int? Density { get; set; } = 0;
@@ -41,6 +44,9 @@ public partial class GenericLayout : LayoutComponentBase
     [Inject]
     private AppearanceState AppearanceState { get; set; } = default!;
 
+    [Inject]
+    private GlobalState GlobalState { get; set; } = default!;
+
     protected override async Task OnInitializedAsync()
     {
         if (!AppearanceState.IsLoaded)
@@ -52,10 +58,16 @@ public partial class GenericLayout : LayoutComponentBase
                 await JS.SetInLocalStorage(APPEARANCEKEY, this.PatchTo(AppearanceState).ToJsonString());
         }
         AppearanceState.IsLoaded = true;
+        Mode = AppearanceState.IsDarkMode ? DesignThemeModes.Dark : DesignThemeModes.Light;
+        Color = AppearanceState.Color;
+        Density = AppearanceState.Density;
+        ControlCornerRadius = AppearanceState.ControlCornerRadius;
+        LayerCornerRadius = AppearanceState.LayerCornerRadius;
 
         var versionAttribute = Assembly
             .GetExecutingAssembly()
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+
         if (versionAttribute != null)
         {
             var version = versionAttribute.InformationalVersion.Split('+')[0];
@@ -75,7 +87,6 @@ public partial class GenericLayout : LayoutComponentBase
                 JAVASCRIPT_FILE
             );
             AppearanceState.IsDevice = _mobile = await jsModule.InvokeAsync<bool>("isDevice");
-            AppearanceState.IsDarkMode = await jsModule.InvokeAsync<bool>("isDarkMode");
             await jsModule.DisposeAsync();
         }
     }
