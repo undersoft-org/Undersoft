@@ -17,7 +17,7 @@
                     @foreach (var _rubric in _rubrics)
                     {
                         <GenericField TModel="TModel" Rubric="@_rubric" />
-                    }                    
+                    }
                 </FluentStack>
             </CascadingValue>
         </EditForm>
@@ -39,13 +39,13 @@
         if (_firstRubric != null)
         {
             var reference = _firstRubric.View.Reference;
-            if(reference != null)
+            if (reference != null)
             {
                 ((FluentComponentBase)reference).Element.FocusAsync();
             }
         }
-   
-        base.OnAfterRender(firstRender);      
+
+        base.OnAfterRender(firstRender);
     }
 
     public EditContext FormContext { get; set; } = default!;

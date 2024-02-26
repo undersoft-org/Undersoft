@@ -4,34 +4,34 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Models;
 
 public enum UndersoftColors
 {
-    [Description("#194d6d")]
-    Default,
-    [Description("#16202e")]
-    Graphite,
-    [Description("#03295d")]
-    Lapis,
-    [Description("#194d6d")]
-    Aquamarine,
-    [Description("#2e496f")]
-    Tanzanite,
-    [Description("#265b3d")]
-    Jade,
-    [Description("#761a3d")]
-    Ruby,
-    [Description("#d3ffad")]
-    Olive,
-    [Description("#fffcc8")]
-    Khaki,
     [Description("#00d7ff")]
-    Lazure,
+    Default,
+    [Description("#004ed3")]
+    Color0,
+    [Description("#e500c0")]
+    Color1,
+    [Description("#194d6d")]
+    Color2,
     [Description("#ff835e")]
-    Tabasco,
-    [Description("#c3e8e8")]
-    Air,
-    [Description("#afbdbc")]
-    Grey,
-    [Description("#94a89a")]
-    Dust,
-    [Description("#6adfff")]
-    Ocean
+    Color3,
+    [Description("#25f38d")]
+    Color4,
+    [Description("#ff0057")]
+    Color5,
+    [Description("#0000ff")]
+    Color6,
+    [Description("#c2ff59")]
+    Color7,
+    [Description("#002261")]
+    Color8,
+    [Description("#588e91")]
+    Color9,
+    [Description("#00ffea")]
+    Color10,
+    [Description("#dbd5ff")]
+    Color11,
+    [Description("#b5deff")]
+    Color13,
+    [Description("#ffff00")]
+    Color14
 }

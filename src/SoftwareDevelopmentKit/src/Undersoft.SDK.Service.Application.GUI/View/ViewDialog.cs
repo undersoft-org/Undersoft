@@ -26,7 +26,9 @@ public class ViewDialog<TDialog, TModel> : IViewDialog<TModel> where TDialog : I
                 Height = data.Height,
                 Width = data.Width,
                 Title = data.Title,
-                Id = data.Model.TypeId.ToString()
+                Id = data.Model.TypeId.ToString(),
+                PrimaryAction = "Submit"
+
             });
 
             var result = await Reference.Result;
@@ -46,7 +48,8 @@ public class ViewDialog<TDialog, TModel> : IViewDialog<TModel> where TDialog : I
             parameters.Width = data.Width;
             parameters.Title = data.Title;
             parameters.Id = data.Model.TypeId.ToString();
-            setup(parameters);
+            parameters.PrimaryAction = "Submit";
+            setup.Invoke(parameters);
             Reference = await Service.ShowDialogAsync<TDialog>(data, parameters);
 
             var result = await Reference.Result;
@@ -62,6 +65,7 @@ public class ViewDialog<TDialog, TModel> : IViewDialog<TModel> where TDialog : I
         if (Service != null)
         {
             var parameters = new DialogParameters<TModel>();
+            parameters.PrimaryAction = "Submit";
             setup(parameters);
             Reference = await Service.ShowDialogAsync<TDialog>(parameters);
 
@@ -82,6 +86,7 @@ public class ViewDialog<TDialog, TModel> : IViewDialog<TModel> where TDialog : I
             parameters.Width = data.Width;
             parameters.Title = data.Title;
             parameters.Id = data.Model.TypeId.ToString();
+            parameters.PrimaryAction = "Submit";
             parameters.Content = data;
             if (setup != null)
                 setup(parameters);

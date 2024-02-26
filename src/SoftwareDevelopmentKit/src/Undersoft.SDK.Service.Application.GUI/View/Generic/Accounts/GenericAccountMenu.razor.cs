@@ -1,8 +1,6 @@
 using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Service.Application.Access;
-using Undersoft.SDK.Service.Application.GUI.View;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
-using Undersoft.SDK.Service.Application.GUI.View.Generic.Accounts;
 using Undersoft.SSC.Service.Contracts;
 
 namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Accounts
@@ -14,6 +12,9 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Accounts
 
         [Inject]
         private IServicer servicer { get; set; } = default!;
+
+        [Inject]
+        private IDialogService DialogService { get; set; } = default!;
 
         protected override async Task OnInitializedAsync()
         {
@@ -27,6 +28,8 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Accounts
                 {
                     _rubrics["Profile"].Visible = false;
                     _rubrics["SignOut"].Visible = false;
+                    _rubrics["SignIn"].Visible = true;
+                    _rubrics["SignUp"].Visible = true;
                 }
                 else
                 {
@@ -35,9 +38,11 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Accounts
                             GenericAccountPanel<Account, GenericAccountPanelValidator>,
                             Account
                         >
-                    >();
+                    >(DialogService);
                     _rubrics["SignIn"].Visible = false;
                     _rubrics["SignUp"].Visible = false;
+                    _rubrics["Profile"].Visible = true;
+                    _rubrics["SignOut"].Visible = true;
                 }
             }
 

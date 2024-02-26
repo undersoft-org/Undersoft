@@ -4,12 +4,12 @@ using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SSC.Service.Application.GUI.Compound.Access;
 using Undersoft.SSC.Service.Contracts;
 
-namespace Undersoft.SSC.Service.Application.GUI.Compound.Landing.TopMenu.Accounts;
+namespace Undersoft.SSC.Service.Application.GUI.Compound.Landing;
 
-public class AccountMenu : DataObject
+public class LandingAccountMenuItems : DataObject
 {
     [VisibleRubric]
-    [Invoke(typeof(AccountPanel), "OpenAccountPanel")]
+    [Invoke(typeof(LandingAccountPanel), "OpenAccountPanel")]
     public IViewPanel<Account> Profile { get; set; } = default!;
 
     [Link]

@@ -35,7 +35,8 @@ public class ViewPanel<TPanel, TModel> : ComponentBase, IViewPanel<TModel>
                     ShowTitle = true,
                     Alignment = data.HorizontalAlignment,
                     SecondaryActionEnabled = false,
-                    ShowDismiss = true
+                    ShowDismiss = true,
+                    PrimaryAction = "Submit"
                 }
             );
 
@@ -55,7 +56,12 @@ public class ViewPanel<TPanel, TModel> : ComponentBase, IViewPanel<TModel>
             parameters.Height = data.Height;
             parameters.Width = data.Width;
             parameters.Title = data.Title;
-            setup(parameters);
+            setup.Invoke(parameters);
+            if (parameters.PrimaryAction == "Ok")
+            {
+                parameters.PrimaryAction = "Save";
+                parameters.SecondaryAction = "Cancel";
+            }
             Reference = await Service.ShowPanelAsync<TPanel>(data, parameters);
 
             var result = await Reference.Result;
@@ -71,6 +77,7 @@ public class ViewPanel<TPanel, TModel> : ComponentBase, IViewPanel<TModel>
         if (Service != null)
         {
             var parameters = new DialogParameters<TModel>();
+            parameters.PrimaryAction = "Submit";
             setup(parameters);
             Reference = await Service.ShowPanelAsync<TPanel>(parameters);
 

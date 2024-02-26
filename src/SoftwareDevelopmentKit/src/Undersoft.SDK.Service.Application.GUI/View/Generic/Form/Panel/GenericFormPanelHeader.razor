@@ -10,7 +10,7 @@
     <FluentDialogHeader>
         <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalGap="20">
             <FluentMessageBarProvider Section="@ViewSection.DIALOG" MaxMessageCount="1" />
-            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" VerticalGap="0">
+            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" VerticalGap="0" Style="text-align: center;">
                 @if (Content.Icon != null)
                 {
                     <FluentIcon Value="@Content.Icon" />

@@ -1,9 +1,9 @@
 ﻿using Undersoft.SDK.Rubrics.Attributes;
 using Undersoft.SDK.Service.Data.Object;
 
-namespace Undersoft.SSC.Service.Application.GUI.Compound.Landing.TopMenu.Categories;
+namespace Undersoft.SSC.Service.Application.GUI.Compound.Landing;
 
-public class CategoriesMenu : DataObject
+public class LandingTopicMenuItems : DataObject
 {
     [Link]
     [VisibleRubric]

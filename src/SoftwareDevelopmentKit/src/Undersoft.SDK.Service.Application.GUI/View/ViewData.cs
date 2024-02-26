@@ -103,9 +103,9 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
 
     public string? Logo { get; set; }
 
-    public string Height { get; set; } = "450px";
+    public string Height { get; set; } = "400px";
 
-    public string Width { get; set; } = "400px";
+    public string Width { get; set; } = "360px";
 
     public string? Href { get; set; }
 

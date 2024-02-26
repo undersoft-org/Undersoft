@@ -29,11 +29,9 @@
 
     private IViewPanel<AppearanceState> _panel = default!;
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override void OnInitialized()
     {
-        if(firstRender)
-            _panel = _servicer.Initialize<ViewPanel<GenericAppearancePanel<AppearanceState>, AppearanceState>>(DialogService);
-        base.OnAfterRender(firstRender);
+        _panel = _servicer.Initialize<ViewPanel<GenericAppearancePanel<AppearanceState>, AppearanceState>>(DialogService);
     }
 
     private async Task OpenAppearancePanel()
@@ -45,7 +43,7 @@
         {
             p.ShowDismiss = true;
             p.Title = $"Appearance";
-            p.PrimaryAction = "Ok";
+            p.PrimaryAction = "Submit";
             p.Alignment = HorizontalAlignment.Right;
         });
 

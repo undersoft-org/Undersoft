@@ -1,17 +1,6 @@
-﻿@page "/access/sign_out"
+﻿@inherits SignOutBase
 
-@inject IAuthorization _auth
-@inject IAccountAccess _access
-@inject NavigationManager _navigation
+@page "/access/sign_out"
 
 <text>Sign out...</text>
 
-@code
-{
-    protected async override Task OnInitializedAsync()
-    {
-        await _access.SignOut(_auth);
-
-        _navigation.NavigateTo("", true);
-    }
-}

@@ -19,57 +19,18 @@ public class AccessDialog<TDialog, TModel> : ViewDialog<TDialog, TModel> where T
     {
         if (Service != null)
         {
+            data.Logo = ViewGraphic.Logo.ImageBlack.Source;
             Reference = await Service.ShowDialogAsync<TDialog>(data, new DialogParameters<IViewData<TModel>>()
             {
                 Height = data.Height,
                 Width = data.Width,
                 Title = data.Title,
+                PrimaryAction = "Submit",
                 Content = data,
                 PreventDismissOnOverlayClick = true,
                 ShowDismiss = false,
                 Modal = false,
-                PreventScroll = true,
-                OnDialogClosing = EventCallback.Factory.Create<DialogInstance>(this, async (instance) =>
-                {
-                    if (JS != null)
-                    {
-                        await JS.InvokeVoidAsync("eval", $@"
-                        async function func() {{
-                            let dialog = document.getElementById('{instance.Id}')?.dialog;
-                            if (!dialog) return;
-                            dialog.style.opacity = '0.0';
-                            let animation = dialog.animate([
-                                {{ opacity: '1', transform: '' }},
-                                {{ opacity: '0', transform: 'translateX(100%)' }}
-                            ], {{
-                                duration: 800,
-                            }});
-                            return animation.finished; // promise that resolves when the animation is complete or interrupted
-                        }};
-                        func();
-                    ");
-                    }
-                }),
-                OnDialogOpened = EventCallback.Factory.Create<DialogInstance>(this, async (instance) =>
-                {
-                    if (JS != null)
-                    {
-                        await JS.InvokeVoidAsync("eval", $@"
-                        async function func() {{
-                            let dialog = document.getElementById('{instance.Id}')?.dialog;
-                            if (!dialog) return;
-                            let animation = dialog.animate([
-                                {{ opacity: '0', transform: 'translateX(-100%)' }},
-                                {{ opacity: '1', transform: '' }},
-                            ], {{
-                                duration: 800,
-                            }});
-                            return animation.finished; // promise that resolves when the animation is complete or interrupted
-                        }};
-                        func();
-                    ");
-                    }
-                })
+                PreventScroll = true
             });
 
             var result = await Reference.Result;
