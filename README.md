@@ -1,2 +1,2 @@
-# Undersoft
-## All-in-One
+# Undersoft Shared Service Center Digital Ecosystem Developed using invented unique Software Development Kit for .NET giving advantage few times better then standard libraries used by community and software houses. Advantage gave Undersoft solutions to be unchasable by competitors on the market. There is undersoft then far, far nothing and on the botomthen comapny's delivering software on the market :)   
+# Digital ecosystem adaptive, open socio-technical system with properties of self-organization, scalability and sustainability.
