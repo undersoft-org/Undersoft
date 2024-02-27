@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
@@ -12,7 +11,7 @@ namespace Undersoft.SDK
 {
     [DataContract]
     [StructLayout(LayoutKind.Sequential)]
-    public class Identifiable : IIdentifiable, INotifyPropertyChanged
+    public class Identifiable : IIdentifiable
     {
         public Identifiable() : this(true) { }
 
@@ -30,8 +29,6 @@ namespace Undersoft.SDK
         [JsonIgnore]
         [IgnoreDataMember]
         protected Uscn code;
-
-        public virtual event PropertyChangedEventHandler PropertyChanged;
 
         [Key]
         [KeyRubric(Order = 0)]
@@ -93,7 +90,11 @@ namespace Undersoft.SDK
         public virtual string CodeNo
         {
             get => code;
-            set => code.FromTetrahex(value.ToCharArray());
+            set
+            {
+                if (value != null)
+                    code.FromTetrahex(value.ToCharArray());
+            }
         }
 
         [NotMapped]
@@ -113,9 +114,7 @@ namespace Undersoft.SDK
         public virtual long AutoId()
         {
             var key = code.Id;
-            return key != 0
-                ? key
-                : code.SetId(Unique.NewId);
+            return key != 0 ? key : code.SetId(Unique.NewId);
         }
 
         public virtual byte GetPriority()
@@ -157,7 +156,4 @@ namespace Undersoft.SDK
                 return SetId(id.UniqueKey64());
         }
     }
-
-
-
 }

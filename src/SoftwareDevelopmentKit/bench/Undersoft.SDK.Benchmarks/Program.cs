@@ -1,4 +1,8 @@
-﻿using BenchmarkDotNet.Running;
+﻿using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Exporters;
+using BenchmarkDotNet.Exporters.Csv;
+using BenchmarkDotNet.Running;
+using System;
 using Undersoft.SDK.Benchmarks.Instant.Math;
 using Undersoft.SDK.Benchmarks.Series;
 
@@ -8,12 +12,41 @@ namespace Undersoft.Benchmarks
     {
         static void Main(string[] args)
         {
-            BenchmarkRunner.Run<InstantMathBenchmark>();
+            var config = ManualConfig
+                .Create(DefaultConfig.Instance)
+                .WithOptions(ConfigOptions.JoinSummary)
+                .WithOptions(ConfigOptions.DisableLogFile);
+            config.AddExporter(CsvMeasurementsExporter.Default);
+            config.AddExporter(RPlotExporter.Default);
 
-            var regBench = new RegistryBenchmark();
-            regBench.Dictionary_Add_Test();
+            var summary = BenchmarkRunner.Run(
+                new[]
+                {
+                    BenchmarkConverter.TypeToBenchmarks(typeof(UpdaterMathBenchmark), config),
+                    BenchmarkConverter.TypeToBenchmarks(typeof(ChainBenchamrk), config),
+                    BenchmarkConverter.TypeToBenchmarks(typeof(CatalogBenchamrk), config),
+                    BenchmarkConverter.TypeToBenchmarks(typeof(ListingBenchamrk), config),
+                    BenchmarkConverter.TypeToBenchmarks(typeof(RegistryBenchmark), config),
+                    BenchmarkConverter.TypeToBenchmarks(typeof(ConcurrentCatalogBenchamrk), config),
+                    BenchmarkConverter.TypeToBenchmarks(typeof(ConcurrentRegistryBenchmark), config),
+                    BenchmarkConverter.TypeToBenchmarks(typeof(OrderedDictionaryBenchmark), config),
+                    BenchmarkConverter.TypeToBenchmarks(typeof(DictionaryBenchmark), config),
+                    BenchmarkConverter.TypeToBenchmarks(typeof(ConcurrentDictionaryBenchamrk), config),
+                    BenchmarkConverter.TypeToBenchmarks(typeof(InstantSeriesMathBenchmark), config),
+                    BenchmarkConverter.TypeToBenchmarks(typeof(InstantProxiesMathBenchmark), config)
+                }
+            );
 
-            BenchmarkRunner.Run<RegistryBenchmark>();
+            Console.ReadLine();
         }
     }
+
+    // Execute all benchmarks from given assembly example
+    //
+    //        BenchmarkRunner.Run(
+    //        typeof(MyBenchmark).Assembly,
+    //        ManualConfig
+    //            .Create(DefaultConfig.Instance)
+    //            .With(ConfigOptions.JoinSummary)
+    //            .With(ConfigOptions.DisableLogFile));
 }

@@ -16,13 +16,15 @@
         public bool deltamarkset = false;
         public string label;
 
-        public MemberRubric() { }
+        public MemberRubric()
+        {
+        }
 
         public MemberRubric(FieldInfo field) : this((IMemberRubric)new FieldRubric(field)) { }
 
         public MemberRubric(FieldRubric field) : this((IMemberRubric)field) { }
 
-        public MemberRubric(IMemberRubric member)
+        public MemberRubric(IMemberRubric member) : this()
         {
             RubricInfo = (MemberInfo)member;
             RubricName = member.RubricName;

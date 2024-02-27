@@ -8,7 +8,6 @@
     using System.Reflection.Emit;
     using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
-    using Undersoft.SDK.Proxies;
 
     public class InstantSeriesCompiler
     {
@@ -16,7 +15,7 @@
             new Type[] { typeof(UnmanagedType) }
         );
         private FieldBuilder count;
-        private Type seriesType = typeof(InstantRegistrySeries);
+        private Type seriesType = typeof(InstantListing);
         private InstantSeriesCreator series;
         private FieldBuilder rubricsField;
         private FieldBuilder serialCodeField;
@@ -250,7 +249,7 @@
             il.Emit(OpCodes.Ldarg_0);
             il.Emit(
                 OpCodes.Ldflda,
-                typeof(InstantRegistrySeries).GetField(
+                typeof(InstantListing).GetField(
                     "items",
                     BindingFlags.NonPublic | BindingFlags.Instance
                 )

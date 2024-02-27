@@ -1,15 +1,14 @@
 ﻿namespace Undersoft.SDK.Instant.Series
 {
-    using Proxies;
-    using SDK.Uniques;
     using Rubrics;
+    using SDK.Uniques;
     using System.Linq;
 
     public class InstantSeriesCreator<T> : InstantSeriesCreator
     {
-        public InstantSeriesCreator(InstantType mode = InstantType.Reference) : base(typeof(T), mode) { }
+        public InstantSeriesCreator(InstantType mode = InstantType.Reference, bool threadSafe = true) : base(typeof(T), mode, threadSafe) { }
 
-        public InstantSeriesCreator(string seriesName, InstantType mode = InstantType.Reference)
+        public InstantSeriesCreator(string seriesName, InstantType mode = InstantType.Reference, bool threadSafe = true)
             : base(typeof(T), seriesName, mode) { }
     }
 

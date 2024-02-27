@@ -45,19 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service.Infra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service.Application.GUI", "src\SoftwareDevelopmentKit\src\Undersoft.SDK.Service.Application.GUI\Undersoft.SDK.Service.Application.GUI.csproj", "{4C62EFA3-9AA6-4A91-988A-79F8411E93DB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.IntegrationTests", "src\SoftwareDevelopmentKit\tests\Undersoft.SDK.IntegrationTests\Undersoft.SDK.IntegrationTests.csproj", "{21986C90-122E-4046-AAD3-176BC1C449CB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Undersoft.SDK.UnitTests", "src\SoftwareDevelopmentKit\tests\Undersoft.SDK.UnitTests\Undersoft.SDK.UnitTests.csproj", "{ACF56DAF-FAA5-476C-A176-46D2EB04DE7F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Undersoft.SDK.Service.UnitTests", "src\SoftwareDevelopmentKit\tests\Undersoft.SDK.Service.UnitTests\Undersoft.SDK.Service.UnitTests.csproj", "{8E129DAF-5861-4701-8FDE-F5DE69A6F13A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Undersoft.SDK.Service.Server.UnitTests", "src\SoftwareDevelopmentKit\tests\Undersoft.SDK.Service.Server.UnitTests\Undersoft.SDK.Service.Server.UnitTests.csproj", "{1BF2397A-EB74-4B8F-A337-76BFECC43744}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Undersoft.SDK.Service.Infrastructure.UnitTests", "src\SoftwareDevelopmentKit\tests\Undersoft.SDK.Service.Infrastructure.UnitTests\Undersoft.SDK.Service.Infrastructure.UnitTests.csproj", "{41B35EFE-BD96-40F3-9E84-A5E4BC65BA53}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Undersoft.SDK.Service.Application.UnitTests", "src\SoftwareDevelopmentKit\tests\Undersoft.SDK.Service.Application.UnitTests\Undersoft.SDK.Service.Application.UnitTests.csproj", "{21593F77-47F3-4EB0-9783-95FEC0DB0D88}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Undersoft.SDK.Service.Application.Server.UnitTests", "src\SoftwareDevelopmentKit\tests\Undersoft.SDK.Service.Application.Server.UnitTests\Undersoft.SDK.Service.Application.Server.UnitTests.csproj", "{55FD9E37-1DF0-4DA7-AC39-F8FEADBCF915}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Tests", "src\SoftwareDevelopmentKit\tests\Undersoft.SDK.Tests\Undersoft.SDK.Tests.csproj", "{5AE5147B-57E5-49B1-A51B-7852B700CEE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,34 +123,10 @@ Global
 		{4C62EFA3-9AA6-4A91-988A-79F8411E93DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C62EFA3-9AA6-4A91-988A-79F8411E93DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C62EFA3-9AA6-4A91-988A-79F8411E93DB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{21986C90-122E-4046-AAD3-176BC1C449CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{21986C90-122E-4046-AAD3-176BC1C449CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{21986C90-122E-4046-AAD3-176BC1C449CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{21986C90-122E-4046-AAD3-176BC1C449CB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ACF56DAF-FAA5-476C-A176-46D2EB04DE7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ACF56DAF-FAA5-476C-A176-46D2EB04DE7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ACF56DAF-FAA5-476C-A176-46D2EB04DE7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ACF56DAF-FAA5-476C-A176-46D2EB04DE7F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8E129DAF-5861-4701-8FDE-F5DE69A6F13A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8E129DAF-5861-4701-8FDE-F5DE69A6F13A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8E129DAF-5861-4701-8FDE-F5DE69A6F13A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8E129DAF-5861-4701-8FDE-F5DE69A6F13A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1BF2397A-EB74-4B8F-A337-76BFECC43744}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1BF2397A-EB74-4B8F-A337-76BFECC43744}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1BF2397A-EB74-4B8F-A337-76BFECC43744}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1BF2397A-EB74-4B8F-A337-76BFECC43744}.Release|Any CPU.Build.0 = Release|Any CPU
-		{41B35EFE-BD96-40F3-9E84-A5E4BC65BA53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{41B35EFE-BD96-40F3-9E84-A5E4BC65BA53}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{41B35EFE-BD96-40F3-9E84-A5E4BC65BA53}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{41B35EFE-BD96-40F3-9E84-A5E4BC65BA53}.Release|Any CPU.Build.0 = Release|Any CPU
-		{21593F77-47F3-4EB0-9783-95FEC0DB0D88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{21593F77-47F3-4EB0-9783-95FEC0DB0D88}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{21593F77-47F3-4EB0-9783-95FEC0DB0D88}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{21593F77-47F3-4EB0-9783-95FEC0DB0D88}.Release|Any CPU.Build.0 = Release|Any CPU
-		{55FD9E37-1DF0-4DA7-AC39-F8FEADBCF915}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{55FD9E37-1DF0-4DA7-AC39-F8FEADBCF915}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{55FD9E37-1DF0-4DA7-AC39-F8FEADBCF915}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{55FD9E37-1DF0-4DA7-AC39-F8FEADBCF915}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AE5147B-57E5-49B1-A51B-7852B700CEE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AE5147B-57E5-49B1-A51B-7852B700CEE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AE5147B-57E5-49B1-A51B-7852B700CEE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AE5147B-57E5-49B1-A51B-7852B700CEE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -187,13 +151,7 @@ Global
 		{F8C902E9-0296-4A70-AC2E-36C817756DE3} = {A0E1E503-BBF6-42A5-88ED-85191AB41A06}
 		{BBDF6723-2035-46C2-8FF3-CFDFCD4DF8F7} = {A0E1E503-BBF6-42A5-88ED-85191AB41A06}
 		{4C62EFA3-9AA6-4A91-988A-79F8411E93DB} = {A0E1E503-BBF6-42A5-88ED-85191AB41A06}
-		{21986C90-122E-4046-AAD3-176BC1C449CB} = {F9FE065B-486D-4802-A960-68421E802341}
-		{ACF56DAF-FAA5-476C-A176-46D2EB04DE7F} = {F9FE065B-486D-4802-A960-68421E802341}
-		{8E129DAF-5861-4701-8FDE-F5DE69A6F13A} = {F9FE065B-486D-4802-A960-68421E802341}
-		{1BF2397A-EB74-4B8F-A337-76BFECC43744} = {F9FE065B-486D-4802-A960-68421E802341}
-		{41B35EFE-BD96-40F3-9E84-A5E4BC65BA53} = {F9FE065B-486D-4802-A960-68421E802341}
-		{21593F77-47F3-4EB0-9783-95FEC0DB0D88} = {F9FE065B-486D-4802-A960-68421E802341}
-		{55FD9E37-1DF0-4DA7-AC39-F8FEADBCF915} = {F9FE065B-486D-4802-A960-68421E802341}
+		{5AE5147B-57E5-49B1-A51B-7852B700CEE7} = {F9FE065B-486D-4802-A960-68421E802341}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F31728AB-97C6-4E0D-B412-898579AA77AD}

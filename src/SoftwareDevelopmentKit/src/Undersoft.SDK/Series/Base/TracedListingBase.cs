@@ -43,7 +43,7 @@
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-        public override event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public event PropertyChangingEventHandler PropertyChanging;
 

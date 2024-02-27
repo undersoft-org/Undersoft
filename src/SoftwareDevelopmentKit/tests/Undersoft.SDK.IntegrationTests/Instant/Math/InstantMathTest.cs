@@ -10,33 +10,57 @@ using Xunit;
 
 public class InstantMathTest
 {
-    private InstantCreator instantCreator;
-    private ProxySeriesCreator instatnProxiesCreator;
-    private InstantMath instantMath;
-    private IInstantSeries instantSeries;
+    private InstantCreator? instantCreator;
+    private ProxySeriesCreator? instatnProxiesCreator;
+    private InstantSeriesCreator? instatnSeriesCreator;
+    private InstantMath? instantMath;
+    private IInstantSeries instantSeries = default!;
+    private IInstantSeries instantProxies = default!;
 
     public InstantMathTest()
     {
-        instatnProxiesCreator = new ProxySeriesCreator<InstantMathTestDataModel>();
-
-        instantSeries = instatnProxiesCreator.Create();
+        createInstantProxies_Test_Helper();
+        createInstantSeries_Test_Helper();
 
         var price = nameof(InstantMathTestDataModel.NetPrice);
         var fee = nameof(InstantMathTestDataModel.SellFeeRate);
 
         for (int i = 0; i < 2000 * 1000; i++)
         {
-            IProxy row = instantSeries.NewProxy();
-            row.Target = new InstantMathTestDataModel();
+            IProxy proxyRow = instantProxies.NewProxy();
+            IInstant instantRow = instantSeries.NewInstant();
+            proxyRow.Target = instantRow;
 
-            row[price] = (double)row[price] + i;
-            row[fee] = (double)row[fee] / 2;
-            instantSeries.Add(i, row);
+            instantRow[price] = (double)instantRow[price] + i;
+            instantRow[fee] = (double)instantRow[fee] / 2;
+            instantSeries.Add(i, instantRow);
+            instantProxies.Add(i, proxyRow);
         }
+    }
+
+    private void createInstantProxies_Test_Helper()
+    {
+        instatnProxiesCreator = new ProxySeriesCreator<InstantMathTestDataModel>();
+
+        instantProxies = instatnProxiesCreator.Create();
+    }
+
+    private void createInstantSeries_Test_Helper()
+    {
+        instatnSeriesCreator = new InstantSeriesCreator<InstantMathTestDataModel>();
+
+        instantSeries = instatnSeriesCreator.Create();
     }
 
     [Fact]
     public void InstantMath_Generic_Member_Computation_Test()
+    {
+        InstantMath_Generic_Member_Computation_Method(instantSeries);
+
+        InstantMath_Generic_Member_Computation_Method(instantProxies);
+    }
+
+    private void InstantMath_Generic_Member_Computation_Method(IInstantSeries series)
     {
         var genericInstantMath = new InstantMath<InstantMathTestDataModel>(instantSeries);
 
@@ -62,6 +86,13 @@ public class InstantMathTest
     [Fact]
     public void InstantMath_Member_By_String_Computation_Test()
     {
+        InstantMath_Member_By_String_Computation_Method(instantSeries);
+
+        InstantMath_Member_By_String_Computation_Method(instantProxies);
+    }
+
+    private void InstantMath_Member_By_String_Computation_Method(IInstantSeries series)
+    {
         instantMath = new InstantMath(instantSeries);
 
         var ms0 = instantMath["SellNetPrice"];
@@ -84,6 +115,13 @@ public class InstantMathTest
 
     [Fact]
     public void InstantMath_Generic_Member_Parallel_Computation_In_4_Chunks_Test()
+    {
+        InstantMath_Generic_Member_Parallel_Computation_In_4_Chunks_Method(instantSeries);
+
+        InstantMath_Generic_Member_Parallel_Computation_In_4_Chunks_Method(instantProxies);
+    }
+
+    private void InstantMath_Generic_Member_Parallel_Computation_In_4_Chunks_Method(IInstantSeries series)
     {
         var genericInstantMath = new InstantMath<InstantMathTestDataModel>(instantSeries);
 
@@ -109,8 +147,15 @@ public class InstantMathTest
     [Fact]
     public void InstantMath_Member_By_String_Computation_LogicOnStack_Test()
     {
+        InstantMath_Member_By_String_Computation_LogicOnStack_Method(instantSeries);
 
-        instantMath = new InstantMath(instantSeries);
+        InstantMath_Member_By_String_Computation_LogicOnStack_Method(instantProxies);
+    }
+
+    private void InstantMath_Member_By_String_Computation_LogicOnStack_Method(IInstantSeries series)
+    {
+
+        instantMath = new InstantMath(series);
 
         MathSet ml = instantMath["SellNetPrice"];
 

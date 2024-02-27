@@ -15,12 +15,7 @@
 
         public SubMathSet this[Expression<Func<T, object>> member]
         {
-            get
-            {
-                if (SubFormula == null)
-                    SubFormula = new Mathstage(this);
-                return SubFormula[member.GetMemberName()];
-            }
+            get => this[member.GetMemberName()];
         }
     }
 

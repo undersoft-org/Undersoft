@@ -7,6 +7,7 @@ using Mocks;
 using Undersoft.SDK.Extracting;
 using Undersoft.SDK.Instant;
 using Undersoft.SDK.Instant.Series;
+using Xunit;
 
 public class ExtractTest
 {

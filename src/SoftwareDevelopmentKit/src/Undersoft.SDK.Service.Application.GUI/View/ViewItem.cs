@@ -193,5 +193,6 @@ namespace Undersoft.SDK.Service.Application.GUI.View
         {
             return origin.Stamp(entity);
         }
+
     }
 }

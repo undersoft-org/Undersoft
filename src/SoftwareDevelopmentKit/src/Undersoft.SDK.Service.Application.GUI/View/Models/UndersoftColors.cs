@@ -33,5 +33,7 @@ public enum UndersoftColors
     [Description("#b5deff")]
     Color13,
     [Description("#ffff00")]
-    Color14
+    Color14,
+    [Description("#ffffff")]
+    Color15
 }

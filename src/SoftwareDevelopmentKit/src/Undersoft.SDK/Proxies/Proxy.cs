@@ -1,18 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+﻿using System.Linq.Expressions;
+using Undersoft.SDK.Rubrics;
 using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Proxies;
 
-public class Proxy<T> : Proxy
+public class Proxy<T> : Proxy, IProxy<T> where T : class
 {
-    protected new T target { get; set; }
-
     public Proxy(T target)
     {
         this.target = target;
+        CreateProxy();
     }
 
     public Proxy(T target, Action<IInnerProxy, T> compilationAction)
@@ -21,9 +18,17 @@ public class Proxy<T> : Proxy
         CreateProxy(compilationAction);
     }
 
+    public virtual object this[Expression<Func<T, object>> member]
+    {
+        get => this[member.GetMemberName()];
+        set => this[member.GetMemberName()] = value;
+    }
+
+    public new T Target { get => (T)proxy.Target; set => proxy.Target = value; }
+
     protected virtual void CreateProxy(Action<IInnerProxy, T> compilationAction)
     {
-        compilationAction.Invoke(this, target);
+        compilationAction.Invoke(this, (T)target);
     }
 
     protected override IProxy CreateProxy()
@@ -33,13 +38,13 @@ public class Proxy<T> : Proxy
         if (type.IsAssignableTo(typeof(IProxy)))
             return (IProxy)target;
 
-        return proxy = ProxyFactory.GetCreator<T>().Create(target);
+        return proxy ??= ProxyFactory.GetCreator<T>().Create(target);
     }
 }
 
-public class Proxy : InnerProxy
+public class Proxy : InnerProxy, IProxy
 {
-    protected virtual object target { get; set; }
+    protected object target;
 
     public Proxy() { }
 
@@ -53,6 +58,32 @@ public class Proxy : InnerProxy
     {
         this.target = target;
         CreateProxy(compilationAction);
+    }
+
+    public object this[int fieldId]
+    {
+        get => proxy[fieldId];
+        set => proxy[fieldId] = value;
+    }
+
+    public object this[string propertyName]
+    {
+        get => proxy[propertyName];
+        set => proxy[propertyName] = value;
+    }
+
+    public IRubrics Rubrics
+    {
+        get => proxy.Rubrics;
+        set => proxy.Rubrics = value;
+    }
+
+    public virtual object Target { get => proxy.Target; set => proxy.Target = value; }
+
+    public Uscn Code
+    {
+        get => Proxy.Code;
+        set => Proxy.Code = value;
     }
 
     protected override void CreateProxy(Func<InnerProxy, IProxy> compilationAction)

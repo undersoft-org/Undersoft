@@ -1,14 +1,15 @@
 ﻿namespace Undersoft.SDK.Proxies;
 
 using Rubrics;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Undersoft.SDK.Instant;
 
-
 public interface IProxy<T> : IProxy
 {
+    object this[Expression<Func<T, object>> member] { get; set; }
+
     [JsonIgnore]
     [IgnoreDataMember]
     new T Target { get; set; }

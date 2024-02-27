@@ -28,71 +28,68 @@ namespace System.Series.Tests
 
         public IList<KeyValuePair<object, string>> stringKeyTestCollection { get; set; }
 
-        public void LogIntegrated_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void LogIntegrated_Test(IList<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            Add_Test(testCollection);
+            Add_Test(testCollection, registry);
             Count_Test(100000);
-            First_Test(testCollection[0].Value);
-            Last_Test(testCollection[99999].Value);
-            Get_Test(testCollection);
-            GetItem_Test(testCollection);
-            Remove_Test(testCollection);
+            First_Test(testCollection[0].Value, registry);
+            Last_Test(testCollection[99999].Value, registry);
+            Get_Test(testCollection, registry);
+            GetItem_Test(testCollection, registry);
+            Remove_Test(testCollection, registry);
             Count_Test(70000);
-            Enqueue_Test(testCollection);
+            Enqueue_Test(testCollection, registry);
             Count_Test(70005);
-            Dequeue_Test(testCollection);
-            Contains_Test(testCollection);
-            ContainsKey_Test(testCollection);
-            Put_Test(testCollection);
+            Dequeue_Test(testCollection, registry);
+            Contains_Test(testCollection, registry);
+            ContainsKey_Test(testCollection, registry);
+            Put_Test(testCollection, registry);
             Count_Test(100000);
-            Clear_Test();
-            Add_V_Test(testCollection);
+            Clear_Test(registry);
+            Add_V_Test(testCollection, registry);
             Count_Test(100000);
-            Remove_V_Test(testCollection);
+            Remove_V_Test(testCollection, registry);
             Count_Test(70000);
-            Put_V_Test(testCollection);
-            IndexOf_Test(testCollection);
-            GetByIndexer_Test(testCollection);
+            Put_V_Test(testCollection, registry);
+            IndexOf_Test(testCollection, registry);
+            GetByIndexer_Test(testCollection, registry);
             Count_Test(100000);
         }
 
         public void LogThreadIntegrated_Test(IList<KeyValuePair<object, string>> testCollection)
         {
-            LogAdd_Test(testCollection);
-            LogGet_Test(testCollection);
-            LogGetItem_Test(testCollection);
-            LogRemove_Test(testCollection);
-            LogEnqueue_Test(testCollection);
-            LogDequeue_Test(testCollection);
-            LogContains_Test(testCollection);
-            LogContainsKey_Test(testCollection);
-            LogPut_Test(testCollection);
-            LogGetByIndexer_Test(testCollection);
+            LogAdd_Test(testCollection, registry);
+            LogGet_Test(testCollection, registry);
+            LogGetItem_Test(testCollection, registry);
+            LogRemove_Test(testCollection, registry);
+            LogEnqueue_Test(testCollection, registry);
+            LogDequeue_Test(testCollection, registry);
+            LogContains_Test(testCollection, registry);
+            LogContainsKey_Test(testCollection, registry);
+            LogPut_Test(testCollection, registry);
+            LogGetByIndexer_Test(testCollection, registry);
 
             Debug.WriteLine($"Thread no {testCollection[0].Key.ToString()}_{registry.Count} ends");
         }
 
-        public void Add_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void Add_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            registry = new Registry<string>();
             foreach (var item in testCollection)
             {
                 registry.Add(item.Key, item.Value);
             }
         }
 
-        public void Add_V_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void Add_V_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            registry = new Registry<string>();
             foreach (var item in testCollection)
             {
                 registry.Add(item.Value);
             }
         }
 
-        public void Clear_Test()
+        public void Clear_Test(ISeries<string> registry)
         {
-            registry = new Registry<string>();
             foreach (var item in stringKeyTestCollection)
             {
                 registry.Add(item.Key, item.Value);
@@ -100,26 +97,16 @@ namespace System.Series.Tests
             registry.Clear();
         }
 
-        public void Contains_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void Contains_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            registry = new Registry<string>();
-            foreach (var item in testCollection)
-            {
-                registry.Add(item.Key, item.Value);
-            }
             foreach (var item in testCollection)
             {
                 registry.Contains(registry.NewItem(item.Key, item.Value));
             }
         }
 
-        public void ContainsKey_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void ContainsKey_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            registry = new Registry<string>();
-            foreach (var item in testCollection)
-            {
-                registry.Add(item.Key, item.Value);
-            }
             foreach (var item in testCollection)
             {
                 registry.ContainsKey(item.Key);
@@ -133,24 +120,24 @@ namespace System.Series.Tests
             Assert.Equals(count, registry.Count);
         }
 
-        public void Dequeue_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void Dequeue_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            for (int i = 0; i < 5; i++)
+            foreach (var item in testCollection)
             {
                 string output = null;
                 registry.TryDequeue(out output);
             }
         }
 
-        public void Enqueue_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void Enqueue_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            foreach (var item in testCollection.Skip(70000).Take(5))
+            foreach (var item in testCollection)
             {
                 registry.Enqueue(item.Key, item.Value);
             }
         }
 
-        public void First_Test(string firstValue)
+        public void First_Test(string firstValue, ISeries<string> registry)
         {
             registry = new Registry<string>();
             foreach (var item in identifierKeyTestCollection)
@@ -160,26 +147,16 @@ namespace System.Series.Tests
             Assert.Equals(registry.Next(registry.First).Value, firstValue);
         }
 
-        public void Get_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void Get_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            registry = new Registry<string>();
-            foreach (var item in testCollection)
-            {
-                registry.Add(item.Key, item.Value);
-            }
             foreach (var item in testCollection)
             {
                 string r = registry.Get(item.Key);
             }
         }
 
-        public void GetByIndex_From_Indexer_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void GetByIndex_From_Indexer_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            registry = new Registry<string>();
-            foreach (var item in testCollection)
-            {
-                registry.Add(item.Key, item.Value);
-            }
             int i = 0;
             foreach (var item in testCollection)
             {
@@ -187,13 +164,9 @@ namespace System.Series.Tests
             }
         }
 
-        public void GetByKey_From_Indexer_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void GetByKey_From_Indexer_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            registry = new Registry<string>();
-            foreach (var item in testCollection)
-            {
-                registry.Add(item.Key, item.Value);
-            }
+
             int i = 0;
             foreach (var item in testCollection)
             {
@@ -201,13 +174,8 @@ namespace System.Series.Tests
             }
         }
 
-        public void GetByIndexer_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void GetByIndexer_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            registry = new Registry<string>();
-            foreach (var item in testCollection)
-            {
-                registry.Add(item.Key, item.Value);
-            }
             int i = 0;
             foreach (var item in testCollection)
             {
@@ -215,56 +183,36 @@ namespace System.Series.Tests
             }
         }
 
-        public void GetItem_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void GetItem_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            registry = new Registry<string>();
-            foreach (var item in testCollection)
-            {
-                registry.Add(item.Key, item.Value);
-            }
             foreach (var item in testCollection)
             {
                 registry.GetItem(item.Key);
             }
         }
 
-        public void IndexOf_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void IndexOf_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            registry = new Registry<string>();
             foreach (var item in testCollection)
-            {
-                registry.Add(item.Key, item.Value);
-            }
-            foreach (var item in testCollection.Skip(5000).Take(100))
             {
                 registry.IndexOf(item.Value);
             }
         }
 
-        public void Iteration_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void Iteration_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            registry = new Registry<string>();
-            foreach (var item in testCollection)
-            {
-                registry.Add(item.Key, item.Value);
-            }
             foreach (var item in registry)
             {
                 object r = item;
             }
         }
 
-        public void Last_Test(string lastValue)
+        public void Last_Test(string lastValue, ISeries<string> registry)
         {
-            registry = new Registry<string>();
-            foreach (var item in identifierKeyTestCollection)
-            {
-                registry.Add(item.Key, item.Value);
-            }
             Assert.Equals(registry.Last.Value, lastValue);
         }
 
-        public void LogAdd_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void LogAdd_Test(IList<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
             int counter = 0;
             foreach (var item in testCollection)
@@ -275,7 +223,7 @@ namespace System.Series.Tests
             Debug.WriteLine($"Add Thread no {testCollection[0].Key.ToString()}_{counter} ends");
         }
 
-        public void LogAdd_V_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void LogAdd_V_Test(IList<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
             int counter = 0;
             foreach (var item in testCollection)
@@ -286,7 +234,7 @@ namespace System.Series.Tests
             Debug.WriteLine($"Add Thread no {testCollection[0].Key.ToString()}_{counter} ends");
         }
 
-        public void LogContains_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void LogContains_Test(IList<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
             int counter = 0;
             foreach (var item in testCollection)
@@ -299,7 +247,7 @@ namespace System.Series.Tests
             );
         }
 
-        public void LogContainsKey_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void LogContainsKey_Test(IList<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
             int counter = 0;
             foreach (var item in testCollection)
@@ -312,7 +260,7 @@ namespace System.Series.Tests
             );
         }
 
-        public void LogDequeue_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void LogDequeue_Test(IList<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
             int counter = 0;
             for (int i = 0; i < 5; i++)
@@ -326,7 +274,7 @@ namespace System.Series.Tests
             );
         }
 
-        public void LogEnqueue_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void LogEnqueue_Test(IList<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
             int counter = 0;
             foreach (var item in testCollection.Skip(5000).Take(5))
@@ -339,7 +287,7 @@ namespace System.Series.Tests
             );
         }
 
-        public void LogGet_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void LogGet_Test(IList<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
             int counter = 0;
             foreach (var item in testCollection)
@@ -351,7 +299,7 @@ namespace System.Series.Tests
             Debug.WriteLine($"Get Thread no {testCollection[0].Key.ToString()}_{counter} ends");
         }
 
-        public void LogGetByIndexer_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void LogGetByIndexer_Test(IList<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
             int counter = 0;
             int i = 0;
@@ -366,7 +314,7 @@ namespace System.Series.Tests
             );
         }
 
-        public void LogGetItem_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void LogGetItem_Test(IList<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
             int counter = 0;
             foreach (var item in testCollection)
@@ -380,7 +328,7 @@ namespace System.Series.Tests
             );
         }
 
-        public void LogPut_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void LogPut_Test(IList<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
             int counter = 0;
             foreach (var item in testCollection)
@@ -391,7 +339,7 @@ namespace System.Series.Tests
             Debug.WriteLine($"Put Thread no {testCollection[0].Key.ToString()}_{counter} ends");
         }
 
-        public void LogPut_V_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void LogPut_V_Test(IList<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
             int counter = 0;
             foreach (var item in testCollection)
@@ -403,7 +351,7 @@ namespace System.Series.Tests
             Debug.WriteLine($"Removed Thread no {testCollection[0].Key.ToString()}_{counter} ends");
         }
 
-        public void LogRemove_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void LogRemove_Test(IList<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
             int counter = 0;
             foreach (var item in testCollection.Skip(5000))
@@ -415,7 +363,7 @@ namespace System.Series.Tests
             Debug.WriteLine($"Removed Thread no {testCollection[0].Key.ToString()}_{counter} ends");
         }
 
-        public void LogRemove_V_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void LogRemove_V_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
             int counter = 0;
             foreach (var item in testCollection.Skip(5000))
@@ -424,57 +372,34 @@ namespace System.Series.Tests
                 if (r != null)
                     counter++;
             }
-            Debug.WriteLine(
-                $"Removed V Thread no {testCollection[0].Key.ToString()}_{counter} ends"
-            );
         }
 
-        public void Put_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void Put_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            registry = new Registry<string>();
-            foreach (var item in testCollection)
-            {
-                registry.Add(item.Key, item.Value);
-            }
             foreach (var item in testCollection)
             {
                 registry.Put(item.Key, item.Value);
             }
         }
 
-        public void Put_V_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void Put_V_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            registry = new Registry<string>();
-            foreach (var item in testCollection)
-            {
-                registry.Add(item.Key, item.Value);
-            }
             foreach (var item in testCollection)
             {
                 registry.Put(item.Value);
             }
         }
 
-        public void Remove_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void Remove_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            registry = new Registry<string>();
-            foreach (var item in testCollection)
-            {
-                registry.Add(item.Key, item.Value);
-            }
             foreach (var item in testCollection.Skip(100000))
             {
                 registry.Remove(item.Key);
             }
         }
 
-        public void Remove_V_Test(IList<KeyValuePair<object, string>> testCollection)
+        public void Remove_V_Test(IList<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            registry = new Registry<string>();
-            foreach (var item in testCollection)
-            {
-                registry.Add(item.Key, item.Value);
-            }
             foreach (var item in testCollection.Skip(70000))
             {
                 registry.Remove(item.Value);

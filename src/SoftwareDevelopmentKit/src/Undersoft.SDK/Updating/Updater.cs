@@ -4,8 +4,8 @@ using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Updating;
 
-using Rubrics;
 using Invoking;
+using Rubrics;
 using Undersoft.SDK;
 using Undersoft.SDK.Proxies;
 
@@ -36,15 +36,14 @@ public class Updater : IUpdater
             TraceEvent = traceChanges;
             traceable = true;
         }
+
         if (item.GetType().IsAssignableTo(typeof(IProxy)))
             Combine(item as IProxy);
         else
             Combine(item);
     }
 
-    public Updater(object item) : this(item, null)
-    {
-    }
+    public Updater(object item) : this(item, null) { }
 
     public Updater(IProxy proxy) : this(proxy.Target.GetType())
     {
@@ -225,9 +224,7 @@ public class Updater : IUpdater
                     var originValue = Source[targetndex];
                     var targetValue = _target[targetndex];
 
-                    if (
-                        !originValue.NullOrEquals(targetValue)
-                    )
+                    if (!originValue.NullOrEquals(targetValue))
                     {
                         if (!RecursiveUpdate(originValue, targetValue, target, rubric, rubric))
                         {
@@ -264,7 +261,8 @@ public class Updater : IUpdater
 
                         if (!originValue.NullOrEquals(targetValue))
                         {
-                            if (!RecursiveUpdate(
+                            if (
+                                !RecursiveUpdate(
                                     originValue,
                                     targetValue,
                                     target,
@@ -303,7 +301,9 @@ public class Updater : IUpdater
                     var originValue = Source[index];
                     var targetValue = _target[index];
 
-                    if (originValue != null && !RecursiveUpdate(originValue, targetValue, target, rubric, rubric)
+                    if (
+                        originValue != null
+                        && !RecursiveUpdate(originValue, targetValue, target, rubric, rubric)
                     )
                     {
                         _item.TargetIndex = index;
@@ -339,13 +339,16 @@ public class Updater : IUpdater
                         var targetIndex = targetRubric.RubricId;
                         var targetValue = _target[targetIndex];
 
-                        if (originValue != null && !RecursiveUpdate(
-                              originValue,
-                              targetValue,
-                              target,
-                              originRubric,
-                              targetRubric
-                          ))
+                        if (
+                            originValue != null
+                            && !RecursiveUpdate(
+                                originValue,
+                                targetValue,
+                                target,
+                                originRubric,
+                                targetRubric
+                            )
+                        )
                         {
                             _item.TargetIndex = targetIndex;
                             _item.OriginValue = originValue;
@@ -413,10 +416,7 @@ public class Updater : IUpdater
                                     if (traceable)
                                         targetItem = TraceEvent.Invoke(targetItem, null, null);
 
-                                    UpdateAction(
-                                        new Updater(originItem, TraceEvent),
-                                        targetItem
-                                    );
+                                    UpdateAction(new Updater(originItem, TraceEvent), targetItem);
                                 }
                                 else if (originItemType != targetItemType)
                                 {
@@ -515,14 +515,7 @@ public class Updater : IUpdater
 
     public HashSet<string> ExcludedRubrics
     {
-        get =>
-            excludedRubrics ??= new HashSet<string>(
-                new string[]
-                {
-                    "proxy",
-                "valuearray"
-                }
-            );
+        get => excludedRubrics ??= new HashSet<string>(new string[] { "proxy", "valuearray" });
     }
 
     public bool Equals(IUnique other)

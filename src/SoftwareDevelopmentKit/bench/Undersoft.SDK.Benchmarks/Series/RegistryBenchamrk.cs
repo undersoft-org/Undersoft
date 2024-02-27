@@ -3,6 +3,7 @@ using System.Series.Tests;
 namespace Undersoft.SDK.Benchmarks.Series
 {
     using BenchmarkDotNet.Attributes;
+    using BenchmarkDotNet.Engines;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -11,13 +12,13 @@ namespace Undersoft.SDK.Benchmarks.Series
 
     [MemoryDiagnoser]
     [RankColumn]
-    [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
     [RPlotExporter]
+    [SimpleJob(RunStrategy.ColdStart, targetCount: 5)]
     public class RegistryBenchmark
     {
         public static object holder = new object();
         public static int threadCount = 0;
-        public Task[] s1 = new Task[10];
+        public Task[] tasks = new Task[10];
         public BenchmarkDictionaryHelper dhelper = new BenchmarkDictionaryHelper();
         public BenchmarkHelper chelper = new BenchmarkHelper();
         public IList<KeyValuePair<object, string>> collection;
@@ -43,100 +44,89 @@ namespace Undersoft.SDK.Benchmarks.Series
             collection = dhelper.identifierKeyTestCollection;
         }
 
+        [IterationSetup]
+        public void Prepare()
+        {
+            chelper.registry = new Registry<string>();
+            foreach (var item in collection)
+            {
+                chelper.registry.Add(item.Key, item.Value);
+            }
+        }
+
         [Benchmark]
         public void Registry_Add_Test()
         {
-            chelper.Add_Test(collection);
+            chelper.registry = new Registry<string>(capacity: 1000000);
+            chelper.Add_Test(collection, chelper.registry);
         }
 
         [Benchmark]
         public void Registry_GetByKey_Test()
         {
-            chelper.GetByKey_From_Indexer_Test(collection);
+            chelper.GetByKey_From_Indexer_Test(collection, chelper.registry);
         }
 
         [Benchmark]
         public void Registry_ContainsKey_Test()
         {
-            chelper.ContainsKey_Test(collection);
+            chelper.ContainsKey_Test(collection, chelper.registry);
         }
 
         [Benchmark]
         public void Registry_GetByIndex_Test()
         {
-            chelper.GetByIndexer_Test(collection);
+            chelper.GetByIndexer_Test(collection, chelper.registry);
         }
 
         [Benchmark]
         public void Registry_Iteration_Test()
         {
-            chelper.Iteration_Test(collection);
+            chelper.Iteration_Test(collection, chelper.registry);
         }
 
         [Benchmark]
         public void Registry_Remove_Test()
         {
-            chelper.Remove_Test(collection);
+            chelper.Remove_Test(collection, chelper.registry);
         }
 
         [Benchmark]
-        public void Dictionary_Add_Test()
+        public void Registry_IndexOf_Test()
         {
-            dhelper.Add_Test(collection);
+            chelper.IndexOf_Test(collection, chelper.registry);
         }
 
         [Benchmark]
-        public void Dictionary_GetByKey_Test()
+        public void Registry_Put_Test()
         {
-            dhelper.GetByKey_Test(collection);
-        }
-
-        [Benchmark]
-        public void Dictionary_ContainsKey_Test()
-        {
-            dhelper.ContainsKey_Test(collection);
-        }
-
-        [Benchmark]
-        public void Dictionary_Contains_Test()
-        {
-            dhelper.Contains_Test(collection);
-        }
-
-        [Benchmark]
-        public void Registry_Contains_Test()
-        {
-            chelper.Contains_Test(collection);
-        }
-
-        [Benchmark]
-        public void Dictionary_GetByIndex_Test()
-        {
-            dhelper.GetByIndex_Test(collection);
-        }
-
-        [Benchmark]
-        public void Dictionary_GetLast_Test()
-        {
-            dhelper.GetLast_Test(collection);
+            chelper.registry = new Registry<string>(capacity: 1000000);
+            chelper.Put_Test(collection, chelper.registry);
         }
 
         [Benchmark]
         public void Registry_GetLast_Test()
         {
-            chelper.Last_Test(null);
+            chelper.Last_Test(null, chelper.registry);
         }
 
         [Benchmark]
-        public void Dictionary_Remove_Test()
+        public void Registry_Contains_Test()
         {
-            dhelper.Remove_Test(collection);
+            chelper.Contains_Test(collection, chelper.registry);
         }
 
         [Benchmark]
-        public void Dictionary_Iteration_Test()
+        public void Registry_Enqueue_Test()
         {
-            dhelper.Iteration_Test(collection);
+            chelper.Enqueue_Test(collection, chelper.registry);
         }
+
+        [Benchmark]
+        public void Registry_Dequeue_Test()
+        {
+            chelper.Dequeue_Test(collection, chelper.registry);
+        }
+
     }
 }

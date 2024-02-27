@@ -1,19 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using Undersoft.SDK.Instant.Attributes;
-using Undersoft.SDK.Rubrics.Attributes;
 using Undersoft.SDK.Logging;
+using Undersoft.SDK.Rubrics.Attributes;
 using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK
 {
     [DataContract]
     [StructLayout(LayoutKind.Sequential)]
-    public class Origin : Identifiable, IOrigin, IUnique
+    public class Origin : Identifiable, IOrigin, IUnique, INotifyPropertyChanged
     {
-        public Origin() : base(true) { }
+        public Origin() : base(true)
+        {
+        }
 
         public Origin(bool autoId) : base(autoId) { }
 
@@ -96,6 +99,8 @@ namespace Undersoft.SDK
         {
             return ((IComparable<IUnique>)code).CompareTo(other);
         }
+
+        public virtual event PropertyChangedEventHandler PropertyChanged;
     }
 
 

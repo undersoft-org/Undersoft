@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
@@ -6,11 +5,11 @@ namespace Undersoft.SDK.Service.Data.Object;
 
 using Event;
 using Proxies;
-using Undersoft.SDK.Proxies;
+using System.ComponentModel;
 
 [DataContract]
 [StructLayout(LayoutKind.Sequential)]
-public class DataObject : InnerProxy, INotifyPropertyChanged, IDataObject
+public class DataObject : InnerProxy, IDataObject, INotifyPropertyChanged
 {
     public DataObject() : base() { }
 
