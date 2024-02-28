@@ -3,7 +3,6 @@ using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Exporters.Csv;
 using BenchmarkDotNet.Running;
 using System;
-using Undersoft.SDK.Benchmarks.Instant.Math;
 using Undersoft.SDK.Benchmarks.Series;
 
 namespace Undersoft.Benchmarks
@@ -22,18 +21,10 @@ namespace Undersoft.Benchmarks
             var summary = BenchmarkRunner.Run(
                 new[]
                 {
-                    BenchmarkConverter.TypeToBenchmarks(typeof(UpdaterMathBenchmark), config),
-                    BenchmarkConverter.TypeToBenchmarks(typeof(ChainBenchamrk), config),
-                    BenchmarkConverter.TypeToBenchmarks(typeof(CatalogBenchamrk), config),
-                    BenchmarkConverter.TypeToBenchmarks(typeof(ListingBenchamrk), config),
-                    BenchmarkConverter.TypeToBenchmarks(typeof(RegistryBenchmark), config),
-                    BenchmarkConverter.TypeToBenchmarks(typeof(ConcurrentCatalogBenchamrk), config),
-                    BenchmarkConverter.TypeToBenchmarks(typeof(ConcurrentRegistryBenchmark), config),
-                    BenchmarkConverter.TypeToBenchmarks(typeof(OrderedDictionaryBenchmark), config),
-                    BenchmarkConverter.TypeToBenchmarks(typeof(DictionaryBenchmark), config),
-                    BenchmarkConverter.TypeToBenchmarks(typeof(ConcurrentDictionaryBenchamrk), config),
-                    BenchmarkConverter.TypeToBenchmarks(typeof(InstantSeriesMathBenchmark), config),
-                    BenchmarkConverter.TypeToBenchmarks(typeof(InstantProxiesMathBenchmark), config)
+                    BenchmarkConverter.TypeToBenchmarks(typeof(ConcurrentAddBenchmark), config),
+                    BenchmarkConverter.TypeToBenchmarks(typeof(ConcurrentAddOrUpdateBenchmark), config),
+                    BenchmarkConverter.TypeToBenchmarks(typeof(ConcurrentGetByKeyBenchmark), config),
+                    BenchmarkConverter.TypeToBenchmarks(typeof(ConcurrentSetByKeyBenchmark), config)
                 }
             );
 

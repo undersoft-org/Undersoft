@@ -60,7 +60,14 @@ namespace Undersoft.SDK.Benchmarks.Series
         }
 
         [Benchmark]
-        public Task Dictionary_Add_Test()
+        public void Dictionary_Add_Test()
+        {
+            dhelper.registry = new Dictionary<string, string>();
+            dhelper.Add_Test(collection, dhelper.registry);
+        }
+
+        [Benchmark]
+        public Task Dictionary_ConcurrentAdd_Test()
         {
             dhelper.registry = new ConcurrentDictionary<string, string>();
             int limit = count / 10;
@@ -109,6 +116,12 @@ namespace Undersoft.SDK.Benchmarks.Series
         }
 
         [Benchmark]
+        public void Registry_SetByKey_Test()
+        {
+            chelper.SetByKey_Test(collection, chelper.registry);
+        }
+
+        [Benchmark]
         public Task Dictionary_ContainsKey_Test()
         {
             int limit = count / 10;
@@ -132,29 +145,6 @@ namespace Undersoft.SDK.Benchmarks.Series
             );
         }
 
-        [Benchmark]
-        public Task Dictionary_Contains_Test()
-        {
-            int limit = count / 10;
-            return Task.Factory.ContinueWhenAll(
-                tasks
-                    .ForEach(
-                        (t, x) =>
-                            tasks[x] = Task.Run(
-                                () =>
-                                    dhelper.Contains_Test(
-                                        collection.Skip(x * limit).Take(limit),
-                                        dhelper.registry
-                                    )
-                            )
-                    )
-                    .ToArray(),
-                new Action<Task[]>(a =>
-                {
-                    Callback(a);
-                })
-            );
-        }
 
         [Benchmark]
         public Task Dictionary_GetLast_Test()

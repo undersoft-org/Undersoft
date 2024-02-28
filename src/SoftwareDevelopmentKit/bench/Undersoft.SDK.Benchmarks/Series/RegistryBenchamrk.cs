@@ -98,10 +98,28 @@ namespace Undersoft.SDK.Benchmarks.Series
         }
 
         [Benchmark]
+        public void Registry_Insert_Test()
+        {
+            chelper.IndexOf_Test(collection, chelper.registry);
+        }
+
+        [Benchmark]
         public void Registry_Put_Test()
         {
             chelper.registry = new Registry<string>(capacity: 1000000);
             chelper.Put_Test(collection, chelper.registry);
+        }
+
+        [Benchmark]
+        public void Registry_SetByKey_Test()
+        {
+            chelper.SetByKey_Test(collection, chelper.registry);
+        }
+
+        [Benchmark]
+        public void Registry_SetByIndex_Test()
+        {
+            chelper.SetByKey_Test(collection, chelper.registry);
         }
 
         [Benchmark]

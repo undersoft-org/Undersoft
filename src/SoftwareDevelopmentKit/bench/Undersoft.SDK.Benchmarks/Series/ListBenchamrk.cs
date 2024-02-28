@@ -13,7 +13,7 @@ namespace Undersoft.SDK.Benchmarks.Series
     [RankColumn]
     [RPlotExporter]
     [SimpleJob(RunStrategy.ColdStart, targetCount: 5)]
-    public class DictionaryBenchmark
+    public class ListBenchmark
     {
         public static object holder = new object();
         public static int threadCount = 0;
@@ -22,7 +22,7 @@ namespace Undersoft.SDK.Benchmarks.Series
         public BenchmarkHelper chelper = new BenchmarkHelper();
         public IList<KeyValuePair<object, string>> collection;
 
-        public DictionaryBenchmark()
+        public ListBenchmark()
         {
             Setup();
         }
@@ -43,53 +43,44 @@ namespace Undersoft.SDK.Benchmarks.Series
         [IterationSetup]
         public void Prepare()
         {
-            dhelper.registry = new Dictionary<string, string>();
+            dhelper.list = new List<string>();
+
             foreach (var item in collection)
             {
-                dhelper.registry.TryAdd(item.Key.ToString(), item.Value);
+                dhelper.list.Add(item.Value);
             }
         }
 
         [Benchmark]
-        public void Dictionary_Add_Test()
+        public void List_Add_Test()
         {
-            dhelper.registry = new Dictionary<string, string>();
-            dhelper.Add_Test(collection, dhelper.registry);
+            dhelper.list = new List<string>();
+            dhelper.Add_Test(collection, dhelper.list);
+        }
+
+
+        [Benchmark]
+        public void Registry_GetByIndex_Test()
+        {
+            dhelper.GetByIndex_Test(collection, dhelper.list);
         }
 
         [Benchmark]
-        public void Dictionary_GetByKey_Test()
-        {
-            dhelper.GetByKey_Test(collection, dhelper.registry);
-        }
-
-        [Benchmark]
-        public void Dictionary_ContainsKey_Test()
-        {
-            dhelper.ContainsKey_Test(collection, dhelper.registry);
-        }
-        [Benchmark]
-        public void Registry_SetByKey_Test()
+        public void Registry_SetByIndex_Test()
         {
             chelper.SetByKey_Test(collection, chelper.registry);
         }
 
         [Benchmark]
-        public void Dictionary_GetLast_Test()
+        public void List_Remove_Test()
         {
-            dhelper.GetLast_Test(collection, dhelper.registry);
+            dhelper.Remove_Test(collection, dhelper.list);
         }
 
         [Benchmark]
-        public void Dictionary_Remove_Test()
+        public void List_Iteration_Test()
         {
-            dhelper.Remove_Test(collection, dhelper.registry);
-        }
-
-        [Benchmark]
-        public void Dictionary_Iteration_Test()
-        {
-            dhelper.Iteration_Test(collection, dhelper.registry);
+            dhelper.Iteration_Test(collection, dhelper.list);
         }
     }
 }

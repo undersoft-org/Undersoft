@@ -71,6 +71,18 @@ namespace Undersoft.SDK.Benchmarks.Series
         }
 
         [Benchmark]
+        public void Registry_SetByKey_Test()
+        {
+            chelper.SetByKey_Test(collection, chelper.registry);
+        }
+
+        [Benchmark]
+        public void Registry_SetByIndex_Test()
+        {
+            chelper.SetByKey_Test(collection, chelper.registry);
+        }
+
+        [Benchmark]
         public void Dictionary_Remove_Test()
         {
             dhelper.Remove_Test(collection, dhelper.orderedRegistry);

@@ -80,6 +80,15 @@ namespace System.Series.Tests
             }
         }
 
+        public void Insert_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
+        {
+            int i = 0;
+            foreach (var item in testCollection)
+            {
+                registry.Insert(i++, item.Value);
+            }
+        }
+
         public void Add_V_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
             foreach (var item in testCollection)
@@ -188,6 +197,14 @@ namespace System.Series.Tests
             foreach (var item in testCollection)
             {
                 registry.GetItem(item.Key);
+            }
+        }
+
+        public void GetOrAdd_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
+        {
+            foreach (var item in testCollection)
+            {
+                registry.EnsureGet(item.Key, (k) => item.Value);
             }
         }
 
@@ -379,6 +396,23 @@ namespace System.Series.Tests
             foreach (var item in testCollection)
             {
                 registry.Put(item.Key, item.Value);
+            }
+        }
+
+        public void SetByKey_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
+        {
+            foreach (var item in testCollection)
+            {
+                registry[item.Key] = item.Value;
+            }
+        }
+
+        public void SetByIndex_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
+        {
+            int i = 0;
+            foreach (var item in testCollection)
+            {
+                registry[i++] = item.Value;
             }
         }
 

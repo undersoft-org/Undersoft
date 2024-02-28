@@ -3,6 +3,7 @@ namespace System.Series.Tests
     using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.Linq;
 
     public class BenchmarkDictionaryHelper
@@ -25,6 +26,8 @@ namespace System.Series.Tests
 
         public IDictionary orderedRegistry { get; set; }
 
+        public IList<string> list { get; set; }
+
         public ConcurrentQueue<string> queue { get; set; }
 
         public IList<KeyValuePair<object, string>> stringKeyTestCollection { get; set; }
@@ -37,13 +40,31 @@ namespace System.Series.Tests
             }
         }
 
-        public void Contains_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary<string, string> registry)
+        public void Insert_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IList<string> registry)
+        {
+            int i = 0;
+            foreach (var item in testCollection)
+            {
+                registry.Insert(i++, item.Value);
+            }
+        }
+
+        public void ContainsValue_Test(IEnumerable<KeyValuePair<object, string>> testCollection, Dictionary<string, string> registry)
         {
             foreach (var item in testCollection)
             {
-                registry.Contains(
-                    new KeyValuePair<string, string>((string)item.Key.ToString(), item.Value)
+                registry.ContainsValue(
+                    (item.Value)
                 );
+            }
+        }
+
+        public void Insert_Test(IEnumerable<KeyValuePair<object, string>> testCollection, OrderedDictionary registry)
+        {
+            int i = 0;
+            foreach (var item in testCollection)
+            {
+                registry.Insert(i++, item.Key, item.Value);
             }
         }
 
@@ -63,18 +84,34 @@ namespace System.Series.Tests
             }
         }
 
-        public void GetByIndex_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary<string, string> registry)
+        public void GetOrAdd_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ConcurrentDictionary<string, string> registry)
+        {
+            foreach (var item in testCollection)
+            {
+                string r = registry.GetOrAdd((string)item.Key.ToString(), item.Value);
+            }
+        }
+
+        public void GetByIndex_Test(IEnumerable<KeyValuePair<object, string>> testCollection, OrderedDictionary registry)
         {
             int i = 0;
             foreach (var item in testCollection)
             {
-                string r = registry.Values.ElementAt(i++);
+                object r = registry[i++];
             }
         }
 
         public void GetLast_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary<string, string> registry)
         {
             string r = registry.Last().Value;
+        }
+
+        public void SetByKey_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary<string, string> registry)
+        {
+            foreach (var item in testCollection)
+            {
+                registry[(string)item.Key.ToString()] = item.Value;
+            }
         }
 
         public void Remove_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary<string, string> registry)
@@ -90,6 +127,14 @@ namespace System.Series.Tests
             foreach (var item in registry)
             {
                 object r = item.Value;
+            }
+        }
+
+        public void IndexOf_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IList<string> registry)
+        {
+            foreach (var item in testCollection)
+            {
+                registry.IndexOf(item.Value);
             }
         }
 
@@ -118,6 +163,31 @@ namespace System.Series.Tests
             }
         }
 
+        public void SetByKey_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary registry)
+        {
+            foreach (var item in testCollection)
+            {
+                registry[item.Key] = item.Value;
+            }
+        }
+
+        public void AddOrUpdate_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ConcurrentDictionary<string, string> registry)
+        {
+            foreach (var item in testCollection)
+            {
+                registry.AddOrUpdate((string)item.Key.ToString(), item.Value, (k, v) => item.Value);
+            }
+        }
+
+        public void SetByIndex_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary registry)
+        {
+            int i = 0;
+            foreach (var item in testCollection)
+            {
+                registry[i++] = item.Value;
+            }
+        }
+
         public void Remove_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary registry)
         {
             foreach (var item in testCollection.Skip(100000))
@@ -134,7 +204,7 @@ namespace System.Series.Tests
             }
         }
 
-        public void Dequeue_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ConcurrentQueue<string> registry)
+        public void Dequeue_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ConcurrentQueue<string> queue)
         {
             foreach (var item in testCollection)
             {
@@ -143,11 +213,78 @@ namespace System.Series.Tests
             }
         }
 
-        public void Enqueue_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ConcurrentQueue<string> registry)
+        public void Enqueue_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ConcurrentQueue<string> queue)
         {
             foreach (var item in testCollection)
             {
                 queue.Enqueue(item.Value);
+            }
+        }
+
+        public void Dequeue_Test(IEnumerable<KeyValuePair<object, string>> testCollection, Queue<string> queue)
+        {
+            foreach (var item in testCollection)
+            {
+                var obj = queue.Dequeue();
+            }
+        }
+
+        public void Enqueue_Test(IEnumerable<KeyValuePair<object, string>> testCollection, Queue<string> queue)
+        {
+            foreach (var item in testCollection)
+            {
+                queue.Enqueue(item.Value);
+            }
+        }
+
+        public void Add_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IList<string> registry)
+        {
+            foreach (var item in testCollection)
+            {
+                registry.Add(item.Value);
+            }
+        }
+
+        public void Contains_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IList<string> registry)
+        {
+            foreach (var item in testCollection)
+            {
+                registry.Contains(item.Value);
+            }
+        }
+
+        public void Iteration_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IList<string> registry)
+        {
+            foreach (var item in registry)
+            {
+                object r = item;
+            }
+        }
+
+        public void GetByIndex_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IList<string> registry)
+        {
+            int i = 0;
+            foreach (var item in testCollection)
+            {
+                string r = registry.ElementAt(i++);
+            }
+        }
+
+
+        public void SetByIndex_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IList<string> registry)
+        {
+            int i = 0;
+            foreach (var item in testCollection)
+            {
+                string r = registry[i++] = item.Value;
+            }
+        }
+
+        public void Remove_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IList<string> registry)
+        {
+            foreach (var item in testCollection.Skip(100000))
+            {
+                registry.Remove(item.Value);
             }
         }
     }

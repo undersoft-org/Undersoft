@@ -231,6 +231,12 @@ namespace Undersoft.SDK.Benchmarks.Series
         }
 
         [Benchmark]
+        public void Registry_SetByKey_Test()
+        {
+            chelper.SetByKey_Test(collection, chelper.registry);
+        }
+
+        [Benchmark]
         public Task Catalog_Enqueue_Test()
         {
             int limit = count / 10;
@@ -288,29 +294,11 @@ namespace Undersoft.SDK.Benchmarks.Series
                         (t, x) =>
                             tasks[x] = Task.Run(
                                 () =>
-                                    dhelper.Contains_Test(
+                                    chelper.Contains_Test(
                                         collection.Skip(x * limit).Take(limit),
-                                        dhelper.registry
+                                        chelper.registry
                                     )
                             )
-                    )
-                    .ToArray(),
-                new Action<Task[]>(a =>
-                {
-                    Callback(a);
-                })
-            );
-        }
-
-        [Benchmark]
-        public Task Catalog_GetLast_Test()
-        {
-            int limit = count / 10;
-            return Task.Factory.ContinueWhenAll(
-                tasks
-                    .ForEach(
-                        (t, x) =>
-                            tasks[x] = Task.Run(() => chelper.Last_Test(null, chelper.registry))
                     )
                     .ToArray(),
                 new Action<Task[]>(a =>

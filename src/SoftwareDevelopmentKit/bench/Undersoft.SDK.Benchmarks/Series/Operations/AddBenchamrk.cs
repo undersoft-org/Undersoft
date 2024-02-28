@@ -5,7 +5,9 @@ namespace Undersoft.SDK.Benchmarks.Series
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Engines;
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.Diagnostics;
     using System.Threading.Tasks;
     using Undersoft.SDK.Series;
@@ -14,7 +16,7 @@ namespace Undersoft.SDK.Benchmarks.Series
     [RankColumn]
     [RPlotExporter]
     [SimpleJob(RunStrategy.ColdStart, targetCount: 5)]
-    public class CatalogBenchamrk
+    public class AddBenchmark
     {
         public static object holder = new object();
         public static int threadCount = 0;
@@ -23,7 +25,7 @@ namespace Undersoft.SDK.Benchmarks.Series
         public BenchmarkHelper chelper = new BenchmarkHelper();
         public IList<KeyValuePair<object, string>> collection;
 
-        public CatalogBenchamrk()
+        public AddBenchmark()
         {
             Setup();
         }
@@ -32,9 +34,7 @@ namespace Undersoft.SDK.Benchmarks.Series
         public void Setup()
         {
             dhelper = new BenchmarkDictionaryHelper();
-            chelper = new BenchmarkHelper();
-
-            chelper.registry = new Catalog<string>();
+            chelper = new BenchmarkHelper(); ;
 
             DefaultTraceListener Logfile = new DefaultTraceListener();
             Logfile.Name = "Logfile";
@@ -47,79 +47,69 @@ namespace Undersoft.SDK.Benchmarks.Series
         [IterationSetup]
         public void Prepare()
         {
-            chelper.registry = new Catalog<string>();
+            dhelper.registry = new Dictionary<string, string>();
             foreach (var item in collection)
             {
-                chelper.registry.Add(item.Key, item.Value);
+                dhelper.registry.TryAdd(item.Key.ToString(), item.Value);
             }
+        }
+
+        [Benchmark]
+        public void Chain_Add_Test()
+        {
+            var registry = new Chain<string>();
+            chelper.Add_Test(collection, registry);
         }
 
         [Benchmark]
         public void Catalog_Add_Test()
         {
-            chelper.registry = new Catalog<string>(capacity: 1000000);
-            chelper.Add_Test(collection, chelper.registry);
+            var registry = new Catalog<string>();
+            chelper.Add_Test(collection, registry);
         }
 
         [Benchmark]
-        public void Catalog_GetByKey_Test()
+        public void Listing_Add_Test()
         {
-            chelper.GetByKey_From_Indexer_Test(collection, chelper.registry);
+            var registry = new Listing<string>();
+            chelper.Add_Test(collection, registry);
         }
 
         [Benchmark]
-        public void Catalog_ContainsKey_Test()
+        public void Registry_Add_Test()
         {
-            chelper.ContainsKey_Test(collection, chelper.registry);
+            var registry = new Registry<string>();
+            chelper.Add_Test(collection, registry);
         }
 
         [Benchmark]
-        public void Catalog_Iteration_Test()
+        public void List_Add_Test()
         {
-            chelper.Iteration_Test(collection, chelper.registry);
+            var registry = new List<string>();
+            dhelper.Add_Test(collection, registry);
         }
 
         [Benchmark]
-        public void Catalog_Remove_Test()
+        public void Dictionary_Add_Test()
         {
-            chelper.Remove_Test(collection, chelper.registry);
+            var registry = new Dictionary<string, string>();
+            dhelper.Add_Test(collection, (IDictionary<string, string>)registry);
         }
 
         [Benchmark]
-        public void Catalog_Put_Test()
+        public void OrderedDictionary_Add_Test()
         {
-            chelper.registry = new Catalog<string>(capacity: 1000000);
-            chelper.Put_Test(collection, chelper.registry);
+            var registry = new OrderedDictionary();
+            dhelper.Add_Test(collection, registry);
         }
 
         [Benchmark]
-        public void Registry_SetByKey_Test()
+        public void ConcurrentDictionary_Add_Test()
         {
-            chelper.SetByKey_Test(collection, chelper.registry);
+            var registry = new ConcurrentDictionary<string, string>();
+            dhelper.Add_Test(collection, (IDictionary<string, string>)registry);
         }
 
-        [Benchmark]
-        public void Catalog_Enqueue_Test()
-        {
-            chelper.Enqueue_Test(collection, chelper.registry);
-        }
 
-        [Benchmark]
-        public void Catalog_Dequeue_Test()
-        {
-            chelper.Dequeue_Test(collection, chelper.registry);
-        }
-
-        [Benchmark]
-        public void Catalog_GetLast_Test()
-        {
-            chelper.Last_Test(null, chelper.registry);
-        }
-
-        [Benchmark]
-        public void Catalog_Contains_Test()
-        {
-            chelper.Contains_Test(collection, chelper.registry);
-        }
     }
 }

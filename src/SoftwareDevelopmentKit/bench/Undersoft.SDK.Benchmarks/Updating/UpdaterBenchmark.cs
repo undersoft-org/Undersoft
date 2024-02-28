@@ -12,14 +12,14 @@ namespace Undersoft.SDK.Benchmarks.Instant.Math
     [RankColumn]
     [RPlotExporter]
     [SimpleJob(RunStrategy.ColdStart, targetCount: 5)]
-    public class UpdaterMathBenchmark
+    public class UpdaterBenchmark
     {
         private InstantCreator figure;
         private InstantSeriesCreator factory;
         private IInstantSeries InstantSeries;
         private IInstantSeries InstantSeriesEmpty;
 
-        public UpdaterMathBenchmark()
+        public UpdaterBenchmark()
         {
             factory = new InstantSeriesCreator<User>(
                 "InstantSeriesCreator_InstantSeriesMath_Test", InstantType.Reference, false
@@ -40,25 +40,13 @@ namespace Undersoft.SDK.Benchmarks.Instant.Math
         }
 
         [Benchmark]
-        public void Instant_Updater_Undersoft_SDK_Object_Delta_Patch_New()
-        {
-            InstantSeries.ForEach(m => m.PatchTo<User>()).Commit();
-        }
-
-        [Benchmark]
-        public void Instant_Updater_Undersoft_SDK_Object_Full_Put_New()
-        {
-            InstantSeries.ForEach(m => m.PutTo<User>()).Commit();
-        }
-
-        [Benchmark]
-        public void Instant_Updater_Undersoft_SDK_Object_Delta_Patch_By_Id()
+        public void Instant_Updater_Undersoft_SDK_Object_Delta_Patch()
         {
             InstantSeries.ForEach(m => m.PatchTo(InstantSeriesEmpty[m.Id])).Commit();
         }
 
         [Benchmark]
-        public void Instant_Updater_Undersoft_SDK_Object_Full_Put_By_Id()
+        public void Instant_Updater_Undersoft_SDK_Object_Full_Put()
         {
             InstantSeries.ForEach(m => m.PutTo(InstantSeriesEmpty[m.Id])).Commit();
         }

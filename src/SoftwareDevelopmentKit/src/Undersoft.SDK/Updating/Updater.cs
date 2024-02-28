@@ -23,7 +23,7 @@ public class Updater : IUpdater
         set => source = value;
     }
 
-    public Action<Updater, object> UpdateAction { get; set; }
+    public Action<Updater, object> MemberUpdate { get; set; }
 
     public IInvoker TraceEvent { get; set; }
 
@@ -96,7 +96,7 @@ public class Updater : IUpdater
     {
         UpdatedItem[] changes;
 
-        UpdateAction = (o, t) => o.Patch(t);
+        MemberUpdate = (o, t) => o.Patch(t);
 
         IProxy target = item.ToProxy();
         if (item.GetType() != type)
@@ -111,7 +111,7 @@ public class Updater : IUpdater
     {
         UpdatedItem[] changes;
 
-        UpdateAction = (o, t) => o.Patch(t);
+        MemberUpdate = (o, t) => o.Patch(t);
 
         IProxy target = item.ToProxy();
         if (typeof(E) != type)
@@ -131,7 +131,7 @@ public class Updater : IUpdater
     {
         UpdatedItem[] updates = null;
 
-        UpdateAction = (o, t) => o.Put(t);
+        MemberUpdate = (o, t) => o.Put(t);
 
         IProxy target = item.ToProxy();
         if (target != null)
@@ -148,7 +148,7 @@ public class Updater : IUpdater
     {
         UpdatedItem[] updates = null;
 
-        UpdateAction = (o, t) => o.Put(t);
+        MemberUpdate = (o, t) => o.Put(t);
 
         IProxy target = item.ToProxy();
         if (target != null)
@@ -170,7 +170,7 @@ public class Updater : IUpdater
     {
         UpdatedItem[] changes = null;
 
-        UpdateAction = (o, t) => o.Detect(t);
+        MemberUpdate = (o, t) => o.Detect(t);
 
         IProxy target = item.ToProxy();
         if (target != null)
@@ -187,7 +187,7 @@ public class Updater : IUpdater
     {
         UpdatedItem[] changes = null;
 
-        UpdateAction = (o, t) => o.Detect(t);
+        MemberUpdate = (o, t) => o.Detect(t);
 
         IProxy target = item.ToProxy();
         if (target != null)
@@ -386,18 +386,18 @@ public class Updater : IUpdater
                 target[targetRubric.RubricId] = targetValue = targetType.New();
         }
 
-        if (originType.IsAssignableTo(typeof(ICollection)))
+        if (originType.IsAssignableTo(typeof(IEnumerable)))
         {
             if (originValue == null)
                 originValue = originType.New();
 
-            ICollection originItems = (ICollection)originValue;
+            IEnumerable originItems = (IEnumerable)originValue;
             var originItemType = originType.GetEnumerableElementType();
             if (originItemType == null || !originItemType.IsValueType)
             {
-                if (targetType.IsAssignableTo(typeof(ICollection)))
+                if (targetType.IsAssignableTo(typeof(IEnumerable)))
                 {
-                    ICollection targetItems = (ICollection)targetValue;
+                    IEnumerable targetItems = (IEnumerable)targetValue;
                     var targetItemType = targetType.GetEnumerableElementType();
                     if (targetItemType == null || !targetItemType.IsValueType)
                     {
@@ -416,7 +416,7 @@ public class Updater : IUpdater
                                     if (traceable)
                                         targetItem = TraceEvent.Invoke(targetItem, null, null);
 
-                                    UpdateAction(new Updater(originItem, TraceEvent), targetItem);
+                                    MemberUpdate(new Updater(originItem, TraceEvent), targetItem);
                                 }
                                 else if (originItemType != targetItemType)
                                 {
@@ -452,14 +452,14 @@ public class Updater : IUpdater
         if (traceable)
             targetValue = TraceEvent.Invoke(targetValue, null, null);
 
-        UpdateAction(new Updater(originValue, TraceEvent), targetValue);
+        MemberUpdate(new Updater(originValue, TraceEvent), targetValue);
 
         return false;
     }
 
     private bool GreedyLookup(
-        ICollection originItems,
-        ICollection targetItems,
+        IEnumerable originItems,
+        IEnumerable targetItems,
         Type originItemType,
         Type targetItemType
     )
@@ -481,7 +481,7 @@ public class Updater : IUpdater
                     if (traceable)
                         _targetItem = TraceEvent.Invoke(_targetItem, null, null);
 
-                    UpdateAction(new Updater(originItem, TraceEvent), _targetItem);
+                    MemberUpdate(new Updater(originItem, TraceEvent), _targetItem);
 
                     founded = true;
                     break;
@@ -494,7 +494,7 @@ public class Updater : IUpdater
                 if (originItemType != targetItemType)
                 {
                     targetItem = targetItemType.New();
-                    ((IUnique)targetItem).Id = ((IUnique)originItem).Id;
+                    ((IIdentifiable)targetItem).Id = ((IIdentifiable)originItem).Id;
                     if (traceable)
                         targetItem = TraceEvent.Invoke(targetItem, null, null);
                     ((IList)targetItems).Add(originItem.PatchTo(targetItem, TraceEvent));

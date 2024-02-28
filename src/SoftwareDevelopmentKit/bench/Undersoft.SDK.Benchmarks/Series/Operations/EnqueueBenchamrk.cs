@@ -5,15 +5,17 @@ namespace Undersoft.SDK.Benchmarks.Series
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Engines;
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Threading.Tasks;
+    using Undersoft.SDK.Series;
 
     [MemoryDiagnoser]
     [RankColumn]
     [RPlotExporter]
     [SimpleJob(RunStrategy.ColdStart, targetCount: 5)]
-    public class DictionaryBenchmark
+    public class EnqueueBenchmark
     {
         public static object holder = new object();
         public static int threadCount = 0;
@@ -22,7 +24,7 @@ namespace Undersoft.SDK.Benchmarks.Series
         public BenchmarkHelper chelper = new BenchmarkHelper();
         public IList<KeyValuePair<object, string>> collection;
 
-        public DictionaryBenchmark()
+        public EnqueueBenchmark()
         {
             Setup();
         }
@@ -31,6 +33,7 @@ namespace Undersoft.SDK.Benchmarks.Series
         public void Setup()
         {
             dhelper = new BenchmarkDictionaryHelper();
+            chelper = new BenchmarkHelper(); ;
 
             DefaultTraceListener Logfile = new DefaultTraceListener();
             Logfile.Name = "Logfile";
@@ -51,45 +54,61 @@ namespace Undersoft.SDK.Benchmarks.Series
         }
 
         [Benchmark]
-        public void Dictionary_Add_Test()
+        public void Chain_Enqueue_Test()
         {
-            dhelper.registry = new Dictionary<string, string>();
-            dhelper.Add_Test(collection, dhelper.registry);
+            var registry = new Chain<string>();
+            chelper.Enqueue_Test(collection, registry);
         }
 
         [Benchmark]
-        public void Dictionary_GetByKey_Test()
+        public void Catalog_Enqueue_Test()
         {
-            dhelper.GetByKey_Test(collection, dhelper.registry);
+            var registry = new Catalog<string>();
+            chelper.Enqueue_Test(collection, registry);
         }
 
         [Benchmark]
-        public void Dictionary_ContainsKey_Test()
+        public void Listing_Enqueue_Test()
         {
-            dhelper.ContainsKey_Test(collection, dhelper.registry);
-        }
-        [Benchmark]
-        public void Registry_SetByKey_Test()
-        {
-            chelper.SetByKey_Test(collection, chelper.registry);
+            var registry = new Listing<string>();
+            chelper.Enqueue_Test(collection, registry);
         }
 
         [Benchmark]
-        public void Dictionary_GetLast_Test()
+        public void Registry_Enqueue_Test()
         {
-            dhelper.GetLast_Test(collection, dhelper.registry);
+            var registry = new Registry<string>();
+            chelper.Enqueue_Test(collection, registry);
         }
 
         [Benchmark]
-        public void Dictionary_Remove_Test()
+        public void Queue_Enqueue_Test()
         {
-            dhelper.Remove_Test(collection, dhelper.registry);
+            var registry = new Queue<string>();
+            dhelper.Enqueue_Test(collection, registry);
         }
 
         [Benchmark]
-        public void Dictionary_Iteration_Test()
+        public void ConcurrentQueeu_Enqueue_Test()
         {
-            dhelper.Iteration_Test(collection, dhelper.registry);
+            var registry = new ConcurrentQueue<string>();
+            dhelper.Enqueue_Test(collection, registry);
         }
+
+        //[Benchmark]
+        //public void OrderedDictionary_Enqueue_Test()
+        //{
+        //    var registry = new OrderedDictionary();
+        //    dhelper.Enqueue_Test(collection, registry);
+        //}
+
+        //[Benchmark]
+        //public void ConcurrentDictionary_Enqueue_Test()
+        //{
+        //    var registry = new ConcurrentDictionary<string, string>();
+        //    dhelper.Enqueue_Test(collection, (IDictionary<string, string>)registry);
+        //}
+
+
     }
 }
