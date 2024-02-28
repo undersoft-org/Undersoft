@@ -22,8 +22,8 @@ namespace Undersoft.SDK.Benchmarks.Series
         public int count => collection.Count;
         public static int threadCount = 0;
         public Task[] tasks = new Task[10];
-        public BenchmarkDictionaryHelper dhelper = new BenchmarkDictionaryHelper();
-        public BenchmarkHelper chelper = new BenchmarkHelper();
+        public BenchmarkCollectionHelper dhelper = new BenchmarkCollectionHelper();
+        public BenchmarkSeriesHelper chelper = new BenchmarkSeriesHelper();
         public IList<KeyValuePair<object, string>> collection;
 
         public ConcurrentAddBenchmark()
@@ -34,8 +34,8 @@ namespace Undersoft.SDK.Benchmarks.Series
         [GlobalSetup]
         public void Setup()
         {
-            dhelper = new BenchmarkDictionaryHelper();
-            chelper = new BenchmarkHelper(); ;
+            dhelper = new BenchmarkCollectionHelper();
+            chelper = new BenchmarkSeriesHelper(); ;
 
             DefaultTraceListener Logfile = new DefaultTraceListener();
             Logfile.Name = "Logfile";
@@ -43,6 +43,13 @@ namespace Undersoft.SDK.Benchmarks.Series
             Logfile.LogFileName = $"Catalog64_{DateTime.Now.ToFileTime().ToString()}_Test.log";
 
             collection = dhelper.identifierKeyTestCollection;
+        }
+
+        [IterationSetup]
+        public void Prepare()
+        {
+            tasks = new Task[10];
+            threadCount = 0;
         }
 
         private void Callback(Task[] t)
@@ -57,18 +64,18 @@ namespace Undersoft.SDK.Benchmarks.Series
             var registry = new Catalog<string>();
             int limit = count / 10;
             return Task.Factory.ContinueWhenAll(
-                tasks
+                tasks.AsParallel()
                     .ForEach(
                         (t, x) =>
                             tasks[x] = Task.Factory.StartNew(
                                 () =>
                                     chelper.Add_Test(
-                                        collection.Skip(x * limit).Take(limit),
+                                        collection.Skip(x * limit).Take(limit).ToArray(),
                                         registry
                                     )
                             )
                     )
-                    .ToArray(),
+                    .Commit(),
                 new Action<Task[]>(a =>
                 {
                     Callback(a);
@@ -82,18 +89,18 @@ namespace Undersoft.SDK.Benchmarks.Series
             var registry = new Registry<string>();
             int limit = count / 10;
             return Task.Factory.ContinueWhenAll(
-                tasks
+                tasks.AsParallel()
                     .ForEach(
                         (t, x) =>
                             tasks[x] = Task.Factory.StartNew(
                                 () =>
                                     chelper.Add_Test(
-                                        collection.Skip(x * limit).Take(limit),
+                                        collection.Skip(x * limit).Take(limit).ToArray(),
                                         registry
                                     )
                             )
                     )
-                    .ToArray(),
+                    .Commit(),
                 new Action<Task[]>(a =>
                 {
                     Callback(a);
@@ -107,18 +114,18 @@ namespace Undersoft.SDK.Benchmarks.Series
             var registry = new ConcurrentDictionary<string, string>();
             int limit = count / 10;
             return Task.Factory.ContinueWhenAll(
-                tasks
+                tasks.AsParallel()
                     .ForEach(
                         (t, x) =>
                             tasks[x] = Task.Factory.StartNew(
                                 () =>
                                     dhelper.Add_Test(
-                                        collection.Skip(x * limit).Take(limit),
+                                        collection.Skip(x * limit).Take(limit).ToArray(),
                                         (IDictionary<string, string>)registry
                                     )
                             )
                     )
-                    .ToArray(),
+                    .Commit(),
                 new Action<Task[]>(a =>
                 {
                     Callback(a);

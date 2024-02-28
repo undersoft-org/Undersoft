@@ -6,9 +6,9 @@ namespace System.Series.Tests
     using System.Collections.Specialized;
     using System.Linq;
 
-    public class BenchmarkDictionaryHelper
+    public class BenchmarkCollectionHelper
     {
-        public BenchmarkDictionaryHelper()
+        public BenchmarkCollectionHelper()
         {
             stringKeyTestCollection = PrepareTestListings.prepareStringKeyTestCollection();
             intKeyTestCollection = PrepareTestListings.prepareIntKeyTestCollection();
@@ -36,7 +36,7 @@ namespace System.Series.Tests
         {
             foreach (var item in testCollection)
             {
-                registry.TryAdd((string)item.Key.ToString(), item.Value);
+                registry.TryAdd(item.Key.ToString(), item.Value);
             }
         }
 

@@ -22,8 +22,8 @@ namespace Undersoft.SDK.Benchmarks.Series
         public static object holder = new object();
         public static int threadCount = 0;
         public Task[] tasks = new Task[10];
-        public BenchmarkDictionaryHelper dhelper = new BenchmarkDictionaryHelper();
-        public BenchmarkHelper chelper = new BenchmarkHelper();
+        public BenchmarkCollectionHelper dhelper = new BenchmarkCollectionHelper();
+        public BenchmarkSeriesHelper chelper = new BenchmarkSeriesHelper();
         public IList<KeyValuePair<object, string>> collection;
 
         public Chain<string> chain = new Chain<string>();
@@ -44,26 +44,29 @@ namespace Undersoft.SDK.Benchmarks.Series
         [GlobalSetup]
         public void Setup()
         {
-            dhelper = new BenchmarkDictionaryHelper();
-            chelper = new BenchmarkHelper(); ;
+            dhelper = new BenchmarkCollectionHelper();
+            chelper = new BenchmarkSeriesHelper(); ;
+
+            collection = dhelper.identifierKeyTestCollection;
+
+            foreach (var item in collection)
+            {
+                catalog.TryAdd(item.Key, item.Value);
+                registry.TryAdd(item.Key, item.Value);
+                concurrentdictionary.TryAdd(item.Key.ToString(), item.Value);
+            }
 
             DefaultTraceListener Logfile = new DefaultTraceListener();
             Logfile.Name = "Logfile";
             Trace.Listeners.Add(Logfile);
             Logfile.LogFileName = $"Catalog64_{DateTime.Now.ToFileTime().ToString()}_Test.log";
-
-            collection = dhelper.identifierKeyTestCollection;
         }
 
         [IterationSetup]
         public void Prepare()
         {
-            foreach (var item in collection)
-            {
-                catalog.TryAdd(item.Key.ToString(), item.Value);
-                registry.TryAdd(item.Key.ToString(), item.Value);
-                concurrentdictionary.TryAdd(item.Key.ToString(), item.Value);
-            }
+            tasks = new Task[10];
+            threadCount = 0;
         }
 
         private void Callback(Task[] t)
@@ -74,9 +77,8 @@ namespace Undersoft.SDK.Benchmarks.Series
         public int count => collection.Count;
 
         [Benchmark]
-        public Task Catalog_GetKey_Test()
+        public Task Catalog_GetByKey_Test()
         {
-            var registry = new Catalog<string>();
             int limit = count / 10;
             return Task.Factory.ContinueWhenAll(
                 tasks
@@ -85,12 +87,12 @@ namespace Undersoft.SDK.Benchmarks.Series
                             tasks[x] = Task.Factory.StartNew(
                                 () =>
                                     chelper.GetByKey_From_Indexer_Test(
-                                        collection.Skip(x * limit).Take(limit),
+                                        collection.Skip(x * limit).Take(limit).ToArray(),
                                        catalog
                                     )
                             )
                     )
-                    .ToArray(),
+                    .Commit(),
                 new Action<Task[]>(a =>
                 {
                     Callback(a);
@@ -99,7 +101,7 @@ namespace Undersoft.SDK.Benchmarks.Series
         }
 
         [Benchmark]
-        public Task Registry_GetKey_Test()
+        public Task Registry_GetByKey_Test()
         {
             int limit = count / 10;
             return Task.Factory.ContinueWhenAll(
@@ -109,12 +111,12 @@ namespace Undersoft.SDK.Benchmarks.Series
                             tasks[x] = Task.Factory.StartNew(
                                 () =>
                                     chelper.GetByKey_From_Indexer_Test(
-                                        collection.Skip(x * limit).Take(limit),
+                                        collection.Skip(x * limit).Take(limit).ToArray(),
                                         registry
                                     )
                             )
                     )
-                    .ToArray(),
+                    .Commit(),
                 new Action<Task[]>(a =>
                 {
                     Callback(a);
@@ -123,7 +125,7 @@ namespace Undersoft.SDK.Benchmarks.Series
         }
 
         [Benchmark]
-        public Task ConcurrentDictionary_GetKey_Test()
+        public Task ConcurrentDictionary_GetByKey_Test()
         {
             int limit = count / 10;
             return Task.Factory.ContinueWhenAll(
@@ -133,7 +135,7 @@ namespace Undersoft.SDK.Benchmarks.Series
                             tasks[x] = Task.Factory.StartNew(
                                 () =>
                                     dhelper.GetByKey_Test(
-                                        collection.Skip(x * limit).Take(limit),
+                                        collection.Skip(x * limit).Take(limit).ToArray(),
                                         (IDictionary<string, string>)concurrentdictionary
                                     )
                             )

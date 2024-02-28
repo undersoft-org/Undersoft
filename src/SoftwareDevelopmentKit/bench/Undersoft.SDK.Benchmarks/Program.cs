@@ -21,10 +21,10 @@ namespace Undersoft.Benchmarks
             var summary = BenchmarkRunner.Run(
                 new[]
                 {
+                    BenchmarkConverter.TypeToBenchmarks(typeof(ConcurrentSetByKeyBenchmark), config),
                     BenchmarkConverter.TypeToBenchmarks(typeof(ConcurrentAddBenchmark), config),
                     BenchmarkConverter.TypeToBenchmarks(typeof(ConcurrentAddOrUpdateBenchmark), config),
-                    BenchmarkConverter.TypeToBenchmarks(typeof(ConcurrentGetByKeyBenchmark), config),
-                    BenchmarkConverter.TypeToBenchmarks(typeof(ConcurrentSetByKeyBenchmark), config)
+                    BenchmarkConverter.TypeToBenchmarks(typeof(ConcurrentGetByKeyBenchmark), config)
                 }
             );
 

@@ -88,6 +88,14 @@ namespace System.Series.Tests
             Assert.IsFalse(typedRegistry.Any());
         }
 
+        private void Catalog_Sync_SetByIndexer_Test(IList<Agreement> testCollection)
+        {
+            foreach (var item in testCollection)
+            {
+                typedRegistry[item.Id] = item;
+            }
+        }
+
         private void Typed_Catalog_Sync_Contains_Test(IList<Agreement> testCollection)
         {
             List<bool> items = new List<bool>();
@@ -96,7 +104,7 @@ namespace System.Series.Tests
                 if (typedRegistry.Contains(typedRegistry.NewItem(item)))
                     items.Add(true);
             }
-            Assert.Equals(70000, items.Count);
+            Assert.AreEqual(70000, items.Count);
         }
 
         private void Typed_Catalog_Sync_ContainsKey_Test(IList<Agreement> testCollection)
@@ -107,14 +115,14 @@ namespace System.Series.Tests
                 if (typedRegistry.ContainsKey(item))
                     items.Add(true);
             }
-            Assert.Equals(70000, items.Count);
+            Assert.AreEqual(70000, items.Count);
         }
 
         private void Typed_Catalog_Sync_CopyTo_Test() { }
 
         private void Typed_Catalog_Sync_Count_Test(int count)
         {
-            Assert.Equals(count, typedRegistry.Count);
+            Assert.AreEqual(count, typedRegistry.Count);
         }
 
         private void Typed_Catalog_Sync_Dequeue_Test(IList<Agreement> testCollection)
@@ -125,7 +133,7 @@ namespace System.Series.Tests
                 if (typedRegistry.TryDequeue(out Agreement output))
                     items.Add(output);
             }
-            Assert.Equals(5, items.Count);
+            Assert.AreEqual(5, items.Count);
         }
 
         private void Typed_Catalog_Sync_Enqueue_Test(IList<Agreement> testCollection)
@@ -136,12 +144,12 @@ namespace System.Series.Tests
                 if (typedRegistry.Enqueue(item))
                     items.Add(true);
             }
-            Assert.Equals(5, items.Count);
+            Assert.AreEqual(5, items.Count);
         }
 
         private void Typed_Catalog_Sync_First_Test(Agreement firstValue)
         {
-            Assert.Equals(typedRegistry.Next(typedRegistry.First).Value, firstValue);
+            Assert.AreEqual(typedRegistry.Next(typedRegistry.First).Value, firstValue);
         }
 
         private void Typed_Catalog_Sync_Get_Test(IList<Agreement> testCollection)
@@ -155,7 +163,7 @@ namespace System.Series.Tests
                 else
                     Thread.Sleep(1000);
             }
-            Assert.Equals(100000, items.Count);
+            Assert.AreEqual(100000, items.Count);
         }
 
         private void Typed_Catalog_Sync_GetByIndexer_Test(IList<Agreement> testCollection)
@@ -178,7 +186,7 @@ namespace System.Series.Tests
                 if (r != null)
                     items.Add(r);
             }
-            Assert.Equals(100000, items.Count);
+            Assert.AreEqual(100000, items.Count);
         }
 
         private void Typed_Catalog_Sync_IndexOf_Test(IList<Agreement> testCollection)
@@ -193,7 +201,7 @@ namespace System.Series.Tests
 
         private void Typed_Catalog_Sync_Last_Test(Agreement lastValue)
         {
-            Assert.Equals(typedRegistry.Last.Value, lastValue);
+            Assert.AreEqual(typedRegistry.Last.Value, lastValue);
         }
 
         private void Typed_Catalog_Sync_Put_Test(IList<Agreement> testCollection)
@@ -221,7 +229,7 @@ namespace System.Series.Tests
                 if (r != null)
                     items.Add(r);
             }
-            Assert.Equals(30000, items.Count);
+            Assert.AreEqual(30000, items.Count);
         }
 
         private void Typed_Catalog_Sync_Remove_Value_Test(IList<Agreement> testCollection)
@@ -232,7 +240,7 @@ namespace System.Series.Tests
                 Agreement r = typedRegistry.Remove(item);
                 items.Add(r);
             }
-            Assert.Equals(30000, items.Count);
+            Assert.AreEqual(30000, items.Count);
         }
 
         private void Typed_Catalog_Async_Add_Test(IList<Agreement> testCollection)
@@ -290,7 +298,7 @@ namespace System.Series.Tests
                 if (typedRegistry.TryDequeue(out output))
                     items.Add(output);
             }
-            Assert.Equals(5, items.Count);
+            Assert.AreEqual(5, items.Count);
         }
 
         private void Typed_Catalog_Async_Enqueue_Test(IList<Agreement> testCollection)
@@ -301,7 +309,7 @@ namespace System.Series.Tests
                 if (typedRegistry.Enqueue(item))
                     items.Add(true);
             }
-            Assert.Equals(5, items.Count);
+            Assert.AreEqual(5, items.Count);
         }
 
         private void Typed_Catalog_Async_Get_Test(IList<Agreement> testCollection)

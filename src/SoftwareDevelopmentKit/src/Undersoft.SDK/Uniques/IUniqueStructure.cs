@@ -1,7 +1,6 @@
 ﻿namespace Undersoft.SDK.Uniques
 {
     using System.Collections.Specialized;
-    using System.Reflection;
 
     public interface IUniqueStructure
         : IIdentifiable,
@@ -21,8 +20,12 @@
 
         long Time { get; set; }
 
-        ulong ValueFromXYZ(uint vectorZ, uint vectorY);
+        ulong GetBlockId();
 
-        ulong ValueToXYZ(ulong vectorZ, ulong vectorY, ulong value);
+        ulong SetBlockId(ulong index);
+
+        ulong GetBlockId(ulong vectorZ, ulong vectorY);
+
+        ulong SetBlockId(ulong vectorZ, ulong vectorY, ulong index);
     }
 }

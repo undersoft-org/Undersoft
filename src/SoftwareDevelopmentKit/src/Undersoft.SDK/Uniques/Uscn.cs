@@ -1,9 +1,9 @@
 ﻿namespace Undersoft.SDK.Uniques
 {
     using System.Collections.Specialized;
-    using Undersoft.SDK.Extracting;
     using System.Runtime.InteropServices;
     using Undersoft.SDK;
+    using Undersoft.SDK.Extracting;
 
     [Serializable]
     [ComVisible(true)]
@@ -18,9 +18,12 @@
             IUniqueStructure,
             IDisposable
     {
+        internal const ulong VECTOR_Y = 100000UL;
+        internal const ulong VECTOR_Z = 10UL;
+
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
         private byte[] bytes;
-      
+
         public string CodeNo
         {
             get => this.ToString();
@@ -182,9 +185,9 @@
             }
         }
 
-        public Uscn() 
-        { 
-            bytes = new byte[32]; 
+        public Uscn()
+        {
+            bytes = new byte[32];
         }
 
         public Uscn(long l)
@@ -431,7 +434,7 @@
 
         public long SetId(long value)
         {
-           return Id = value;
+            return Id = value;
         }
 
         public void SetCodeNo(string value)
@@ -446,7 +449,7 @@
 
         public long SetTypeId(long seed)
         {
-           return TypeId = seed;
+            return TypeId = seed;
         }
 
         public long SetOriginId(int key)
@@ -459,12 +462,22 @@
             return TypeId;
         }
 
-        public ulong ValueFromXYZ(uint vectorZ, uint vectorY)
+        public ulong GetBlockId()
+        {
+            return GetBlockId(VECTOR_Z, VECTOR_Y);
+        }
+
+        public ulong SetBlockId(ulong index)
+        {
+            return SetBlockId(VECTOR_Z, VECTOR_Y, index);
+        }
+
+        public ulong GetBlockId(ulong vectorZ, ulong vectorY)
         {
             return (BlockZ * vectorZ * vectorY) + (BlockY * vectorY) + BlockX;
         }
 
-        public ulong ValueToXYZ(ulong vectorZ, ulong vectorY, ulong value)
+        public ulong SetBlockId(ulong vectorZ, ulong vectorY, ulong value)
         {
             if (value > 0)
             {
@@ -672,7 +685,7 @@
                 return false;
             if ((type == typeof(string)))
                 return new Uscn(value.ToString()).Id == Id;
-            if(type.IsAssignableTo(typeof(ulong)))
+            if (type.IsAssignableTo(typeof(ulong)))
                 return (Id == (long)value);
             if (type.IsAssignableTo(typeof(long)))
                 return ((long)Id == (long)value);

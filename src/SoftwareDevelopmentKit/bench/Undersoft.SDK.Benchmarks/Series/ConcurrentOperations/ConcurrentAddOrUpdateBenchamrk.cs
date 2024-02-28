@@ -7,7 +7,6 @@ namespace Undersoft.SDK.Benchmarks.Series
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
     using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
@@ -22,8 +21,8 @@ namespace Undersoft.SDK.Benchmarks.Series
         public static object holder = new object();
         public static int threadCount = 0;
         public Task[] tasks = new Task[10];
-        public BenchmarkDictionaryHelper dhelper = new BenchmarkDictionaryHelper();
-        public BenchmarkHelper chelper = new BenchmarkHelper();
+        public BenchmarkCollectionHelper dhelper = new BenchmarkCollectionHelper();
+        public BenchmarkSeriesHelper chelper = new BenchmarkSeriesHelper();
         public IList<KeyValuePair<object, string>> collection;
 
         public Chain<string> chain = new Chain<string>();
@@ -31,9 +30,6 @@ namespace Undersoft.SDK.Benchmarks.Series
         public Listing<string> listing = new Listing<string>();
         public Registry<string> registry = new Registry<string>();
 
-        public List<string> list = new List<string>();
-        public Dictionary<string, string> dictionary = new Dictionary<string, string>();
-        public OrderedDictionary ordereddictionary = new OrderedDictionary();
         public ConcurrentDictionary<string, string> concurrentdictionary = new ConcurrentDictionary<string, string>();
 
         public ConcurrentAddOrUpdateBenchmark()
@@ -44,8 +40,8 @@ namespace Undersoft.SDK.Benchmarks.Series
         [GlobalSetup]
         public void Setup()
         {
-            dhelper = new BenchmarkDictionaryHelper();
-            chelper = new BenchmarkHelper(); ;
+            dhelper = new BenchmarkCollectionHelper();
+            chelper = new BenchmarkSeriesHelper(); ;
 
             DefaultTraceListener Logfile = new DefaultTraceListener();
             Logfile.Name = "Logfile";
@@ -58,13 +54,15 @@ namespace Undersoft.SDK.Benchmarks.Series
         [IterationSetup]
         public void Prepare()
         {
-            foreach (var item in collection)
+            tasks = new Task[10];
+            threadCount = 0;
+            catalog = new Catalog<string>();
+            registry = new Registry<string>();
+            concurrentdictionary = new ConcurrentDictionary<string, string>();
+            foreach (var item in collection.Take(collection.Count / 2))
             {
-                catalog.TryAdd(item.Key.ToString(), item.Value);
-
-                registry.TryAdd(item.Key.ToString(), item.Value);
-
-
+                catalog.TryAdd(item.Key, item.Value);
+                registry.TryAdd(item.Key, item.Value);
                 concurrentdictionary.TryAdd(item.Key.ToString(), item.Value);
             }
         }
@@ -79,16 +77,15 @@ namespace Undersoft.SDK.Benchmarks.Series
         [Benchmark]
         public Task Catalog_GetOrAdd_Test()
         {
-            var registry = new Catalog<string>();
             int limit = count / 10;
             return Task.Factory.ContinueWhenAll(
-                tasks
+                tasks.AsParallel()
                     .ForEach(
                         (t, x) =>
                             tasks[x] = Task.Factory.StartNew(
                                 () =>
                                     chelper.Put_Test(
-                                        collection.Skip(x * limit).Take(limit),
+                                        collection.Skip(x * limit).Take(limit).ToArray(),
                                         catalog
                                     )
                             )
@@ -106,13 +103,13 @@ namespace Undersoft.SDK.Benchmarks.Series
         {
             int limit = count / 10;
             return Task.Factory.ContinueWhenAll(
-                tasks
+                tasks.AsParallel()
                     .ForEach(
                         (t, x) =>
                             tasks[x] = Task.Factory.StartNew(
                                 () =>
                                     chelper.Put_Test(
-                                        collection.Skip(x * limit).Take(limit),
+                                        collection.Skip(x * limit).Take(limit).ToArray(),
                                         registry
                                     )
                             )
@@ -130,13 +127,13 @@ namespace Undersoft.SDK.Benchmarks.Series
         {
             int limit = count / 10;
             return Task.Factory.ContinueWhenAll(
-                tasks
+                tasks.AsParallel()
                     .ForEach(
                         (t, x) =>
                             tasks[x] = Task.Factory.StartNew(
                                 () =>
                                     dhelper.AddOrUpdate_Test(
-                                        collection.Skip(x * limit).Take(limit),
+                                        collection.Skip(x * limit).Take(limit).ToArray(),
                                         concurrentdictionary
                                     )
                             )

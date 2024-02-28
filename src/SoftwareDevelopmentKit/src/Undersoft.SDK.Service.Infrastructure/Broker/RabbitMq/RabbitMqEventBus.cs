@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using Undersoft.SDK.Series;
-using System.Threading.Tasks;
-using Undersoft.SDK.Uniques;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -259,14 +252,11 @@ namespace Undersoft.SDK.Service.Data.Event.Provider.RabbitMq
 
         private List<IEventHandlerFactory> GetOrCreateHandlerFactories(Type eventType)
         {
+
+
             return HandlerFactories.EnsureGet(
                 eventType,
-                x =>
-                {
-                    var eventName = EventNameAttribute.GetNameOrDefault(eventType);
-                    EventTypes.Put(eventName, eventType);
-                    return new EventWithHandlerFactories(eventType);
-                }
+                    new EventWithHandlerFactories(eventType)
                 ).Value.EventHandlerFactories;
         }
 

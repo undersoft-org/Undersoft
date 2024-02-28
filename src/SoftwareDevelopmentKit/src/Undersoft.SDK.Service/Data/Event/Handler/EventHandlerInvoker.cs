@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
-using Undersoft.SDK.Series;
-using System.Threading.Tasks;
-
-namespace Undersoft.SDK.Service.Data.Event.Handler
+﻿namespace Undersoft.SDK.Service.Data.Event.Handler
 {
 
     public class EventHandlerInvoker : IEventHandlerInvoker
@@ -17,10 +12,8 @@ namespace Undersoft.SDK.Service.Data.Event.Handler
 
         public async Task InvokeAsync(IEventHandler eventHandler, object eventData, Type eventType)
         {
-            var cacheItem = _cache.EnsureGet($"{eventHandler.GetType().FullName}-{eventType.FullName}", _ =>
-            {
-                return (IEventHandlerMethodExecutor)typeof(EventHandlerMethodExecutor<>).MakeGenericType(eventType).New();
-            });
+            var cacheItem = _cache.EnsureGet($"{eventHandler.GetType().FullName}-{eventType.FullName}", (IEventHandlerMethodExecutor)typeof(EventHandlerMethodExecutor<>).MakeGenericType(eventType).New()
+            );
 
 
 

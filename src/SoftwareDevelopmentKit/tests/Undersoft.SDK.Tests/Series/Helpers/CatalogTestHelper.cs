@@ -31,6 +31,7 @@ namespace System.Series.Tests
         {
             Catalog_Sync_Add_Test(testCollection);
             Catalog_Sync_Count_Test(100000);
+            Catalog_Sync_SetByIndexer_Test(testCollection);
             Catalog_Sync_First_Test(testCollection[0].Value);
             Catalog_Sync_Last_Test(testCollection[99999].Value);
             Catalog_Sync_Get_Test(testCollection);
@@ -103,7 +104,7 @@ namespace System.Series.Tests
                 if (registry.Contains(registry.NewItem(item.Key, item.Value)))
                     items.Add(true);
             }
-            Assert.Equals(70000, items.Count);
+            Assert.AreEqual(70000, items.Count);
         }
 
         private void Catalog_Sync_ContainsKey_Test(IList<KeyValuePair<object, string>> testCollection)
@@ -114,14 +115,14 @@ namespace System.Series.Tests
                 if (registry.ContainsKey(item.Key))
                     items.Add(true);
             }
-            Assert.Equals(70000, items.Count);
+            Assert.AreEqual(70000, items.Count);
         }
 
         private void Catalog_Sync_CopyTo_Test() { }
 
         private void Catalog_Sync_Count_Test(int count)
         {
-            Assert.Equals(count, registry.Count);
+            Assert.AreEqual(count, registry.Count);
         }
 
         private void Catalog_Sync_Dequeue_Test(IList<KeyValuePair<object, string>> testCollection)
@@ -133,7 +134,7 @@ namespace System.Series.Tests
                 if (registry.TryDequeue(out output))
                     items.Add(output);
             }
-            Assert.Equals(5, items.Count);
+            Assert.AreEqual(5, items.Count);
         }
 
         private void Catalog_Sync_Enqueue_Test(IList<KeyValuePair<object, string>> testCollection)
@@ -144,12 +145,12 @@ namespace System.Series.Tests
                 if (registry.Enqueue(item.Key, item.Value))
                     items.Add(true);
             }
-            Assert.Equals(5, items.Count);
+            Assert.AreEqual(5, items.Count);
         }
 
         private void Catalog_Sync_First_Test(string firstValue)
         {
-            Assert.Equals(registry.First.Next.Value, firstValue);
+            Assert.AreEqual(registry.First.Next.Value, firstValue);
         }
 
         private void Catalog_Sync_Get_Test(IList<KeyValuePair<object, string>> testCollection)
@@ -161,7 +162,7 @@ namespace System.Series.Tests
                 if (r != null)
                     items.Add(r);
             }
-            Assert.Equals(100000, items.Count);
+            Assert.AreEqual(100000, items.Count);
         }
 
         private void Catalog_Sync_GetByIndexer_Test(IList<KeyValuePair<object, string>> testCollection)
@@ -185,7 +186,7 @@ namespace System.Series.Tests
                 if (r != null)
                     items.Add(r);
             }
-            Assert.Equals(100000, items.Count);
+            Assert.AreEqual(100000, items.Count);
         }
 
         private void Catalog_Sync_IndexOf_Test(IList<KeyValuePair<object, string>> testCollection)
@@ -200,7 +201,15 @@ namespace System.Series.Tests
 
         private void Catalog_Sync_Last_Test(string lastValue)
         {
-            Assert.Equals(registry.Last.Value, lastValue);
+            Assert.AreEqual(registry.Last.Value, lastValue);
+        }
+
+        private void Catalog_Sync_SetByIndexer_Test(IList<KeyValuePair<object, string>> testCollection)
+        {
+            foreach (var item in testCollection)
+            {
+                registry[item.Key] = item.Value;
+            }
         }
 
         private void Catalog_Sync_Put_Test(IList<KeyValuePair<object, string>> testCollection)
@@ -228,7 +237,7 @@ namespace System.Series.Tests
                 if (r != null)
                     items.Add(r);
             }
-            Assert.Equals(30000, items.Count);
+            Assert.AreEqual(30000, items.Count);
         }
 
         private void Catalog_Sync_Remove_Value_Test(IList<KeyValuePair<object, string>> testCollection)
@@ -239,7 +248,7 @@ namespace System.Series.Tests
                 string r = registry.Remove(item.Value);
                 items.Add(r);
             }
-            Assert.Equals(30000, items.Count);
+            Assert.AreEqual(30000, items.Count);
         }
 
         private void Catalog_Async__Add_Test(IList<KeyValuePair<object, string>> testCollection)
@@ -287,7 +296,7 @@ namespace System.Series.Tests
                 if (registry.TryDequeue(out output))
                     items.Add(output);
             }
-            Assert.Equals(5, items.Count);
+            Assert.AreEqual(5, items.Count);
         }
 
         private void Catalog_Async__Enqueue_Test(IList<KeyValuePair<object, string>> testCollection)
@@ -298,7 +307,7 @@ namespace System.Series.Tests
                 if (registry.Enqueue(item.Key, item.Value))
                     items.Add(true);
             }
-            Assert.Equals(5, items.Count);
+            Assert.AreEqual(5, items.Count);
         }
 
         private void Catalog_Async__Get_Test(IList<KeyValuePair<object, string>> testCollection)

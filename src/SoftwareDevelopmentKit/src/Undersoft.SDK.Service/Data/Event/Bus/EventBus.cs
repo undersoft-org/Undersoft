@@ -1,13 +1,7 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Undersoft.SDK.Series;
 using Undersoft.SDK.Service.Data.Event.Handler;
 
 namespace Undersoft.SDK.Service.Data.Event.Bus
@@ -115,7 +109,7 @@ namespace Undersoft.SDK.Service.Data.Event.Bus
         private EventWithHandlerFactories GetOrCreateHandlerFactories(Type eventType, IEventHandlerFactory factory = null)
         {
 
-            return HandlerFactories.EnsureGet(eventType, (type) => new EventWithHandlerFactories(eventType, factory != null ? new List<IEventHandlerFactory>() { factory } : null)).Value;
+            return HandlerFactories.EnsureGet(eventType, new EventWithHandlerFactories(eventType, factory != null ? new List<IEventHandlerFactory>() { factory } : null)).Value;
         }
 
         private static bool ShouldTriggerEventForHandler(Type targetEventType, Type handlerEventType)

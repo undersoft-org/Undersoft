@@ -3,15 +3,17 @@
     using Enumerators;
     using System.Collections;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using Undersoft.SDK;
     using Undersoft.SDK.Uniques;
 
-    public abstract class TypedSeriesBase<V> : Identifiable, IIdentifiable, ITypedSeries<V> where V : IIdentifiable
+    public abstract class TypedSeriesBase<V> : Identifiable, IIdentifiable, ISet<V>, IAsyncDisposable, IListSource, ITypedSeries<V> where V : IIdentifiable
     {
         internal const float RESIZING_VECTOR = 1.766f;
         internal const float CONFLICTS_PERCENT_LIMIT = 0.22f;
         internal const float REMOVED_PERCENT_LIMIT = 0.15f;
+        internal const ulong MAX_BIT_MASK = 0xFFFFFFFFFFFFFFFF;
 
         protected IUniqueKey unique = Unique.Bit64;
         protected ISeriesItem<V> first,
@@ -22,8 +24,10 @@
             removed,
             minSize,
             size,
-            mincount;
-        protected uint maxId;
+            mincount,
+            msbid;
+        protected uint maxid;
+        protected ulong bitmask;
 
         protected int nextSize()
         {
@@ -73,7 +77,7 @@
 
             size = capacity;
             minSize = capacity;
-            maxId = (uint)(size - 1);
+            maxid = (uint)(size - 1);
             table = EmptyTable(capacity);
             first = EmptyItem();
             last = first;
@@ -155,18 +159,18 @@
             get => GetItem(index).Value;
             set => GetItem(index).Value = value;
         }
-        protected V this[long hashkey]
+        public V this[long hashkey]
         {
             get => InnerGet(hashkey);
-            set => InnerPut(hashkey, value);
+            set => InnerSet(hashkey, value);
         }
         public virtual V this[object key]
         {
             get
             {
-                if (key is IUnique)
+                if (key is IIdentifiable)
                 {
-                    IUnique ukey = (IUnique)key;
+                    IIdentifiable ukey = (IIdentifiable)key;
                     return InnerGet(unique.Key(ukey, ukey.TypeId));
                 }
                 else
@@ -174,10 +178,10 @@
             }
             set
             {
-                if (key is IUnique)
+                if (key is IIdentifiable)
                 {
-                    IUnique ukey = (IUnique)key;
-                    InnerPut(unique.Key(ukey, ukey.TypeId), value);
+                    IIdentifiable ukey = (IIdentifiable)key;
+                    InnerSet(unique.Key(ukey, ukey.TypeId), value);
                 }
                 else
                     throw new NotSupportedException();
@@ -187,9 +191,9 @@
         {
             get
             {
-                if (key is IUnique)
+                if (key is IIdentifiable)
                 {
-                    IUnique ukey = (IUnique)key;
+                    IIdentifiable ukey = (IIdentifiable)key;
                     return InnerGet(unique.Key(ukey, ukey.TypeId));
                 }
                 else
@@ -197,9 +201,9 @@
             }
             set
             {
-                if (key is IUnique)
+                if (key is IIdentifiable)
                 {
-                    IUnique ukey = (IUnique)key;
+                    IIdentifiable ukey = (IIdentifiable)key;
                     InnerPut(unique.Key(ukey, ukey.TypeId), (V)value);
                 }
                 else
@@ -209,27 +213,27 @@
         public virtual V this[IIdentifiable key]
         {
             get => InnerGet(unique.Key(key, key.TypeId));
-            set => InnerPut(unique.Key(key, key.TypeId), value);
+            set => InnerSet(unique.Key(key, key.TypeId), value);
         }
         public virtual V this[IUnique<V> key]
         {
             get => InnerGet(unique.Key(key, key.TypeId));
-            set => InnerPut(unique.Key(key, key.TypeId), value);
+            set => InnerSet(unique.Key(key, key.TypeId), value);
         }
         public virtual V this[object key, long seed]
         {
             get => InnerGet(unique.Key(key, seed));
-            set => InnerPut(unique.Key(key, seed), value);
+            set => InnerSet(unique.Key(key, seed), value);
         }
         public virtual V this[IIdentifiable key, long seed]
         {
             get => InnerGet(unique.Key(key, seed));
-            set => InnerPut(unique.Key(key, seed), value);
+            set => InnerSet(unique.Key(key, seed), value);
         }
         public virtual V this[IUnique<V> key, long seed]
         {
             get => InnerGet(unique.Key(key, seed));
-            set => InnerPut(unique.Key(key, seed), value);
+            set => InnerSet(unique.Key(key, seed), value);
         }
 
         protected virtual V InnerGet(long key)
@@ -509,35 +513,23 @@
             return count;
         }
 
-        public ISeriesItem<V> EnsureGet(object key, Func<long, V> sureaction)
+        public virtual ISeriesItem<V> EnsureGet(object key, V value)
         {
-            if (key is IUnique)
-            {
-                IUnique ukey = (IUnique)key;
-                long _key = unique.Key(ukey, ukey.TypeId);
-                return (!TryGet(_key, out ISeriesItem<V> item))
-                    ? Put(key, sureaction.Invoke(_key))
-                    : item;
-            }
-            else
-                throw new NotSupportedException();
+            if (!TryGet(key, out ISeriesItem<V> item))
+                return Put(key, value);
+            return item;
         }
-
-        public ISeriesItem<V> EnsureGet(long key, Func<long, V> sureaction)
+        public virtual ISeriesItem<V> EnsureGet(long key, V value)
         {
-            return (!TryGet(key, out ISeriesItem<V> item)) ? Put(key, sureaction.Invoke(key)) : item;
+            if (!TryGet(key, out ISeriesItem<V> item))
+                return Put(key, value);
+            return item;
         }
-
-        public ISeriesItem<V> EnsureGet(IIdentifiable key, Func<long, V> sureaction)
+        public virtual ISeriesItem<V> EnsureGet(IIdentifiable key, V value)
         {
-            long _key = unique.Key(key, key.TypeId);
-            return (!TryGet(_key, out ISeriesItem<V> item)) ? Put(key, sureaction.Invoke(_key)) : item;
-        }
-
-        public ISeriesItem<V> EnsureGet(IUnique<V> key, Func<long, V> sureaction)
-        {
-            long _key = unique.Key(key, key.TypeId);
-            return (!TryGet(_key, out ISeriesItem<V> item)) ? Put(key, sureaction.Invoke(_key)) : item;
+            if (!TryGet(key, out ISeriesItem<V> item))
+                return Put(key, value);
+            return item;
         }
 
         public virtual ISeriesItem<V> GetItem(object key)
@@ -759,6 +751,11 @@
         public virtual void Add(V value)
         {
             InnerAdd(value);
+        }
+
+        bool ISet<V>.Add(V value)
+        {
+            return InnerAdd(value);
         }
 
         public virtual void Add(IList<V> items)
@@ -1018,7 +1015,7 @@
             if (capacity != size || count > 0)
             {
                 size = capacity;
-                maxId = (uint)(capacity - 1);
+                maxid = (uint)(capacity - 1);
                 conflicts = 0;
                 removed = 0;
                 count = 0;
@@ -1241,7 +1238,7 @@
         public virtual void Clear()
         {
             size = minSize;
-            maxId = (uint)(size - 1);
+            maxid = (uint)(size - 1);
             conflicts = 0;
             removed = 0;
             count = 0;
@@ -1424,7 +1421,7 @@
 
         protected ulong getPosition(long key)
         {
-            return ((ulong)key % maxId);
+            return ((ulong)key % maxid);
         }
 
         protected static ulong getPosition(long key, uint tableMaxId)
@@ -1450,7 +1447,7 @@
             }
 
             table = newItemTable;
-            maxId = newMaxId;
+            maxid = newMaxId;
             size = newsize;
         }
 
@@ -1541,6 +1538,152 @@
             conflicts = _conflicts;
         }
 
+        protected ulong mapPosition(long key)
+        {
+            // standard hashmap method to establish position / index in table
+
+            // return ((ulong)key % (uint)size);
+
+            // author's algorithm to establish position / index in table            
+            // based on most significant bit - BSR (or equivalent depending on the cpu type) 
+            // alsow project must be compiled in x64 format (default) for x86 format proper C lib compilation of BitScan.dll is needed       
+
+            return Submix.Map(key, maxid, bitmask, msbid);
+        }
+
+        protected ulong mapPosition(long key, uint newmaxid, ulong newbitmask, int newmsbid)
+        {
+            // standard hashmap method to establish position / index in table 
+
+            // return ((ulong)key % (uint)newsize);
+
+            // author's algorithm to establish position / index in table            
+            // based on most significant bit - BSR (or equivalent depending on the cpu type)
+            // alsow project must be compiled in x64 format (default) for x86 format proper C lib compilation of BitScan.dll is needed       
+
+            return Submix.Map(key, newmaxid, newbitmask, newmsbid);
+        }
+
+        protected virtual void Remap(int newSize)
+        {
+            int finish = count;
+            int _size = newSize;
+            uint _maxid = (uint)(_size - 1);
+            ISeriesItem<V>[] _table = EmptyTable(_size);
+            ISeriesItem<V> item = first;
+            item = item.Next;
+            if (removed > 0)
+            {
+                remapAndReindex(item, _table, _maxid);
+            }
+            else
+            {
+                remap(item, _table, _maxid);
+            }
+
+            table = _table;
+            maxid = _maxid;
+            size = _size;
+        }
+
+        private void remapAndReindex(ISeriesItem<V> item, ISeriesItem<V>[] newTable, uint newMaxId)
+        {
+            int _conflicts = 0;
+            uint _maxid = newMaxId;
+            uint _size = _maxid + 1;
+            ulong _bitmask = Submix.Mask(_size);
+            int _msbid = Submix.MsbId(_size);
+            ISeriesItem<V>[] _table = newTable;
+            ISeriesItem<V> _first = EmptyItem();
+            ISeriesItem<V> _last = _first;
+            do
+            {
+                if (!item.Removed)
+                {
+                    ulong pos = mapPosition(item.Id, _maxid, _bitmask, _msbid);
+
+                    ISeriesItem<V> mem = _table[pos];
+
+                    if (mem == null)
+                    {
+                        item.Extended = null;
+                        _table[pos] = _last = _last.Next = item;
+                    }
+                    else
+                    {
+                        for (; ; )
+                        {
+                            if (mem.Extended == null)
+                            {
+                                item.Extended = null; ;
+                                _last = _last.Next = mem.Extended = item;
+                                _conflicts++;
+                                break;
+                            }
+                            else
+                                mem = mem.Extended;
+                        }
+                    }
+                }
+
+                item = item.Next;
+
+            } while (item != null);
+
+            conflicts = _conflicts;
+            removed = 0;
+            first = _first;
+            last = _last;
+            bitmask = _bitmask;
+            msbid = _msbid;
+        }
+
+        private void remap(ISeriesItem<V> item, ISeriesItem<V>[] newTable, uint newMaxId)
+        {
+            int _conflicts = 0;
+            uint _maxid = newMaxId;
+            uint _size = _maxid + 1;
+            ulong _bitmask = Submix.Mask(_size);
+            int _msbid = Submix.MsbId(_size);
+            do
+            {
+                if (!item.Removed)
+                {
+                    ulong pos = mapPosition(item.Id, _maxid, _bitmask, _msbid);
+
+                    ISeriesItem<V> mem = newTable[pos];
+
+                    if (mem == null)
+                    {
+                        item.Extended = null;
+                        newTable[pos] = item;
+                    }
+                    else
+                    {
+                        for (; ; )
+                        {
+                            if (mem.Extended == null)
+                            {
+                                item.Extended = null;
+                                mem.Extended = item;
+                                _conflicts++;
+                                break;
+                            }
+                            else
+                                mem = mem.Extended;
+                        }
+                    }
+                }
+
+                item = item.Next;
+
+            } while (item != null);
+
+            conflicts = _conflicts;
+            bitmask = _bitmask;
+            msbid = _msbid;
+        }
+
         protected bool disposedValue = false;
 
         protected virtual void Dispose(bool disposing)
@@ -1551,9 +1694,8 @@
                 {
                     first = null;
                     last = null;
+                    table = null;
                 }
-                table = null;
-
                 disposedValue = true;
             }
         }
@@ -1561,6 +1703,27 @@
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public virtual async ValueTask DisposeAsyncCore()
+        {
+            await new ValueTask(Task.Run(() =>
+            {
+                first = null;
+                last = null;
+                table = null;
+
+            }));
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            await DisposeAsyncCore();
+
+            Dispose(false);
+
+            GC.SuppressFinalize(this);
         }
 
         public bool Equals(IUnique other)
@@ -1583,18 +1746,12 @@
 
         public Type ElementType => typeof(V);
 
-        //public Expression Expression => this.AsQueryable().Expression;
-
-        //public IQueryProvider Provider => query ??= new EnumerableQuery<V>(this);
-
         public bool ContainsListCollection => true;
 
         public IList GetList()
         {
             return (IList)this;
         }
-
-        //private EnumerableQuery<V> query;
 
         public byte[] GetBytes()
         {
@@ -1606,56 +1763,56 @@
             return code.GetIdBytes();
         }
 
-        //public TEntity Sign<TEntity>(TEntity entity) where TEntity : class, IIdentifiable
-        //{
-        //    entity.AutoId();
-        //    Stamp(entity);
-        //    Created = Time;
-        //    return entity;
-        //}
+        public virtual void ExceptWith(IEnumerable<V> other)
+        {
+            this.AsItems().ForOnly(e => other.Contains(e.Value), e => Remove(e));
+        }
 
-        //public TEntity Stamp<TEntity>(TEntity entity) where TEntity : class, IIdentifiable
-        //{
-        //    entity.Time = DateTime.Now;
-        //    return entity;
-        //}
+        public virtual void IntersectWith(IEnumerable<V> other)
+        {
+            this.AsItems().ForOnly(e => !other.Contains(e.Value), (e) => Remove(e));
+        }
 
-        //public long SetId(long id)
-        //{
-        //    long longid = id;
-        //    long key = Id;
-        //    if (longid != 0 && key != longid)
-        //        return (Id = longid);
-        //    return AutoId();
-        //}
+        public virtual bool IsProperSubsetOf(IEnumerable<V> other)
+        {
+            return (this.Count < other.Count()) && this.All(e => other.Contains(e));
+        }
 
-        //public long SetId(object id)
-        //{
-        //    if (id == null)
-        //        return AutoId();
-        //    else if (id.GetType().IsPrimitive)
-        //        return SetId((long)id);
-        //    else
-        //        return SetId((long)id.UniqueKey64());
-        //}
+        public virtual bool IsProperSupersetOf(IEnumerable<V> other)
+        {
+            return (this.Count > other.Count()) && other.All(e => this.Contains(e));
+        }
 
-        //public byte[] GetBytes()
-        //{
-        //    return serialcode.GetBytes();
-        //}
+        public virtual bool IsSubsetOf(IEnumerable<V> other)
+        {
+            return (this.Count <= other.Count()) && this.All(e => other.Contains(e));
+        }
 
-        //public byte[] GetIdBytes()
-        //{
-        //    return serialcode.GetIdBytes();
-        //}
-        //public void GetFlag(StateFlags state)
-        //{
-        //    serialcode.GetFlag(state);
-        //}
+        public virtual bool IsSupersetOf(IEnumerable<V> other)
+        {
+            return (this.Count >= other.Count()) && other.All(e => this.Contains(e));
+        }
 
-        //public void SetFlag(StateFlags state, bool flag)
-        //{
-        //    serialcode.SetFlag(state, flag);
-        //}
+        public virtual bool Overlaps(IEnumerable<V> other)
+        {
+            return this.Any(e => other.Contains(e));
+        }
+
+        public virtual bool SetEquals(IEnumerable<V> other)
+        {
+            return ReferenceEquals(this, other) || (this.Count == other.Count()) && this.All(e => other.Contains(e));
+        }
+
+        public virtual void SymmetricExceptWith(IEnumerable<V> other)
+        {
+            var toRemove = this.AsItems().ForOnly(e => other.Contains(e.Value), (e) => e).ToListing();
+            other.ForOnly(e => !this.Contains(e), e => this.Add(e));
+            toRemove.ForEach(r => Remove(r));
+        }
+
+        public virtual void UnionWith(IEnumerable<V> other)
+        {
+            this.Add(other);
+        }
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using Undersoft.SDK.Series;
-using Undersoft.SDK.Uniques;
-using JetBrains.Annotations;
-using Undersoft.SDK.Service.Data.Blob;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace Undersoft.SDK.Service.Data.Blob.Container
 {
@@ -40,7 +34,7 @@ namespace Undersoft.SDK.Service.Data.Blob.Container
             configureAction(
                 _containers.EnsureGet(
                     name.UniqueKey(),
-                    (a) => new BlobContainerConfiguration(Default)
+                    new BlobContainerConfiguration(Default)
                 ).Value
             );
 

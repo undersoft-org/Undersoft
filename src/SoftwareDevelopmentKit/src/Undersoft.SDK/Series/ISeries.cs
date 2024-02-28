@@ -3,20 +3,19 @@
     using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Runtime.CompilerServices;
-    using Uniques;
     using Undersoft.SDK;
+    using Uniques;
 
     public interface ISeries<V>
         : IEnumerable<V>,
             IEnumerable,
             ICollection,
             ICollection<V>,
-            IList<V>,        
+            IList<V>,
             IProducerConsumerCollection<V>,
             IDisposable,
             IUnique,
-            IFindableSeries<V>, 
+            IFindableSeries<V>,
             IIdentifiable
     {
         ISeriesItem<V> First { get; }
@@ -61,9 +60,9 @@
         int Set(IList<V> values);
         int Set(IEnumerable<ISeriesItem<V>> values);
 
-        ISeriesItem<V> EnsureGet(object key, Func<long, V> ensureaction);
-        ISeriesItem<V> EnsureGet(long key, Func<long, V> ensureaction);
-        ISeriesItem<V> EnsureGet(IIdentifiable key, Func<long, V> ensureaction);
+        ISeriesItem<V> EnsureGet(object key, V value);
+        ISeriesItem<V> EnsureGet(long key, V value);
+        ISeriesItem<V> EnsureGet(IIdentifiable key, V value);
 
         ISeriesItem<V> New();
         ISeriesItem<V> New(long key);

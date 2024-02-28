@@ -1,8 +1,8 @@
 ﻿namespace Undersoft.SDK.Workflows
 {
+    using Series;
     using System.Collections.Generic;
     using System.Linq;
-    using Series;
     using Undersoft.SDK.Invoking;
 
     public class WorkAspect : Registry<WorkItem>, IWorkspace
@@ -87,21 +87,21 @@
                 deputy = new Invoker<T>(methodName);
             else
                 deputy = new Invoker<T>();
-            AddWork(Case.Methods.EnsureGet(deputy, k => deputy).Value);
+            AddWork(Case.Methods.EnsureGet(deputy, deputy).Value);
             return this;
         }
 
         public virtual WorkAspect AddWork<T>(Type[] arguments) where T : class
         {
             var deputy = new Invoker<T>(arguments);
-            AddWork(Case.Methods.EnsureGet(deputy, k => deputy).Value);
+            AddWork(Case.Methods.EnsureGet(deputy, deputy).Value);
             return this;
         }
 
         public virtual WorkAspect AddWork<T>(params object[] consrtuctorParams) where T : class
         {
             var deputy = new Invoker<T>(consrtuctorParams);
-            AddWork(Case.Methods.EnsureGet(deputy, k => deputy).Value);
+            AddWork(Case.Methods.EnsureGet(deputy, deputy).Value);
             return this;
         }
 
@@ -109,14 +109,14 @@
             where T : class
         {
             var deputy = new Invoker<T>(arguments, consrtuctorParams);
-            AddWork(Case.Methods.EnsureGet(deputy, k => deputy).Value);
+            AddWork(Case.Methods.EnsureGet(deputy, deputy).Value);
             return this;
         }
 
         public virtual WorkAspect AddWork<T>(Func<T, Delegate> method) where T : class
         {
             var deputy = new Invoker<T>(method);
-            AddWork(Case.Methods.EnsureGet(deputy, k => deputy).Value);
+            AddWork(Case.Methods.EnsureGet(deputy, deputy).Value);
             return this;
         }
 
@@ -124,7 +124,7 @@
             where T : class
         {
             var deputy = new Invoker<T>(method, arguments);
-            AddWork(Case.Methods.EnsureGet(deputy, k => deputy).Value);
+            AddWork(Case.Methods.EnsureGet(deputy, deputy).Value);
             return this;
         }
 
@@ -132,7 +132,7 @@
             where T : class
         {
             var deputy = new Invoker<T>(method, consrtuctorParams);
-            AddWork(Case.Methods.EnsureGet(deputy, k => deputy).Value);
+            AddWork(Case.Methods.EnsureGet(deputy, deputy).Value);
             return this;
         }
 
@@ -150,7 +150,7 @@
                     deputy = new Invoker<T>(methodName);
                 else
                     deputy = new Invoker<T>();
-                return AddWork(Case.Methods.EnsureGet(deputy, k => deputy).Value);
+                return AddWork(Case.Methods.EnsureGet(deputy, deputy).Value);
             }
             return labor;
         }
@@ -160,7 +160,7 @@
             if (!TryGet(Invoker.GetName<T>(arguments), out WorkItem labor))
             {
                 var deputy = new Invoker<T>();
-                return AddWork(Case.Methods.EnsureGet(deputy, k => deputy).Value);
+                return AddWork(Case.Methods.EnsureGet(deputy, deputy).Value);
             }
             return labor;
         }
@@ -170,7 +170,7 @@
             if (!TryGet(Invoker.GetName<T>(), out WorkItem labor))
             {
                 var deputy = new Invoker<T>(consrtuctorParams);
-                return AddWork(Case.Methods.EnsureGet(deputy, k => deputy).Value);
+                return AddWork(Case.Methods.EnsureGet(deputy, deputy).Value);
             }
             return labor;
         }
@@ -181,7 +181,7 @@
             if (!TryGet(Invoker.GetName<T>(arguments), out WorkItem labor))
             {
                 var deputy = new Invoker<T>(arguments, constructorParams);
-                return AddWork(Case.Methods.EnsureGet(deputy, k => deputy).Value);
+                return AddWork(Case.Methods.EnsureGet(deputy, deputy).Value);
             }
             return labor;
         }
@@ -191,7 +191,7 @@
             var deputy = new Invoker<T>(method);
             if (!TryGet(deputy.Name, out WorkItem labor))
             {
-                return AddWork(Case.Methods.EnsureGet(deputy, k => deputy).Value);
+                return AddWork(Case.Methods.EnsureGet(deputy, deputy).Value);
             }
             return labor;
         }
@@ -202,7 +202,7 @@
             var deputy = new Invoker<T>(method, arguments);
             if (!TryGet(deputy.Name, out WorkItem labor))
             {
-                return AddWork(Case.Methods.EnsureGet(deputy, k => deputy).Value);
+                return AddWork(Case.Methods.EnsureGet(deputy, deputy).Value);
             }
             return labor;
         }
@@ -213,7 +213,7 @@
             var deputy = new Invoker<T>(method, consrtuctorParams);
             if (!TryGet(deputy.Name, out WorkItem labor))
             {
-                return AddWork(Case.Methods.EnsureGet(deputy, k => deputy).Value);
+                return AddWork(Case.Methods.EnsureGet(deputy, deputy).Value);
             }
             return labor;
         }

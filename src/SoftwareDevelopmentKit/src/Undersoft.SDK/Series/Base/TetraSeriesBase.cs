@@ -125,7 +125,7 @@ namespace Undersoft.SDK.Series.Base
             get => GetItem(index).Value;
             set => GetItem(index).Value = value;
         }
-        protected V this[long hashkey]
+        public V this[long hashkey]
         {
             get { return InnerGet(hashkey); }
             set { InnerPut(hashkey, value); }
@@ -324,24 +324,23 @@ namespace Undersoft.SDK.Series.Base
             return catalogImplementation.Set(values);
         }
 
-        public ISeriesItem<V> EnsureGet(object key, Func<long, V> sureaction)
+        public virtual ISeriesItem<V> EnsureGet(object key, V value)
         {
-            return catalogImplementation.EnsureGet(key, sureaction);
+            if (!TryGet(key, out ISeriesItem<V> item))
+                return Put(key, value);
+            return item;
         }
-
-        public ISeriesItem<V> EnsureGet(long key, Func<long, V> sureaction)
+        public virtual ISeriesItem<V> EnsureGet(long key, V value)
         {
-            return catalogImplementation.EnsureGet((object)key, sureaction);
+            if (!TryGet(key, out ISeriesItem<V> item))
+                return Put(key, value);
+            return item;
         }
-
-        public ISeriesItem<V> EnsureGet(IIdentifiable key, Func<long, V> sureaction)
+        public virtual ISeriesItem<V> EnsureGet(IIdentifiable key, V value)
         {
-            return catalogImplementation.EnsureGet((object)key, sureaction);
-        }
-
-        public ISeriesItem<V> EnsureGet(IUnique<V> key, Func<long, V> sureaction)
-        {
-            return catalogImplementation.EnsureGet((object)key, sureaction);
+            if (!TryGet(key, out ISeriesItem<V> item))
+                return Put(key, value);
+            return item;
         }
 
         protected abstract ISeriesItem<V> InnerPut(long key, V value);

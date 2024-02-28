@@ -474,7 +474,7 @@
                 vector = newBaseDeck;
             }
             table = newItemTable;
-            maxId = newMaxId;
+            maxid = newMaxId;
             size = newsize;
         }
 
@@ -501,7 +501,7 @@
             if ((capacity != size) || (count > 0))
             {
                 size = capacity;
-                maxId = (uint)(capacity - 1);
+                maxid = (uint)(capacity - 1);
                 conflicts = 0;
                 removed = 0;
                 count = 0;
@@ -672,7 +672,7 @@
         public override void Clear()
         {
             base.Clear();
-            vector = EmptyVector(minSize);
+            vector = EmptyVector(minsize);
         }
 
         public override bool Contains(ISeriesItem<V> item)

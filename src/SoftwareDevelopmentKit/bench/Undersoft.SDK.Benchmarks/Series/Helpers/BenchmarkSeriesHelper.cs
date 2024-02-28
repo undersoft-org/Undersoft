@@ -6,9 +6,9 @@ namespace System.Series.Tests
     using System.Linq;
     using Undersoft.SDK.Series;
 
-    public class BenchmarkHelper
+    public class BenchmarkSeriesHelper
     {
-        public BenchmarkHelper()
+        public BenchmarkSeriesHelper()
         {
             stringKeyTestCollection = PrepareTestListings.prepareStringKeyTestCollection();
             intKeyTestCollection = PrepareTestListings.prepareIntKeyTestCollection();
@@ -175,8 +175,6 @@ namespace System.Series.Tests
 
         public void GetByKey_From_Indexer_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-
-            int i = 0;
             foreach (var item in testCollection)
             {
                 string a = registry[item.Key];
@@ -204,7 +202,7 @@ namespace System.Series.Tests
         {
             foreach (var item in testCollection)
             {
-                registry.EnsureGet(item.Key, (k) => item.Value);
+                registry.EnsureGet(item.Key, item.Value);
             }
         }
 

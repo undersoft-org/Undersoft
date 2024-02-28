@@ -573,9 +573,6 @@
             if (t.IsAssignableTo(typeof(IIdentifiable)) && seed == 0)
                 return (long)((IIdentifiable)obj).Id;
 
-            if (t.IsAssignableTo(typeof(IUnique)) && seed == 0)
-                return ((IUnique)obj).Id;
-
             if (t.IsValueType)
                 return getValueTypeUniqueKey64((ValueType)obj, seed);
 

@@ -17,14 +17,16 @@ namespace Undersoft.SDK.Series.Base
         internal const float RESIZING_VECTOR = 1.766F;
         internal const float CONFLICTS_PERCENT_LIMIT = 0.222F;
         internal const float REMOVED_PERCENT_LIMIT = 0.15F;
+        internal const ulong MAX_BIT_MASK = 0xFFFFFFFFFFFFFFFF;
 
         protected IUniqueKey unique = Unique.Bit64;
 
         protected ISeriesItem<V> first, last;
         protected ISeriesItem<V>[] table;
-        protected readonly int minSize;
-        protected int count, conflicts, removed, size, mincount;
-        protected uint maxId;
+        protected readonly int minsize;
+        protected int count, conflicts, removed, size, mincount, msbid;
+        protected uint maxid;
+        protected ulong bitmask;
 
         private int nextSize()
         {
@@ -71,8 +73,8 @@ namespace Undersoft.SDK.Series.Base
                 unique = Unique.Bit32;
 
             size = capacity;
-            minSize = capacity;
-            maxId = (uint)(capacity - 1);
+            minsize = capacity;
+            maxid = (uint)(capacity - 1);
             table = EmptyTable(capacity);
             first = EmptyItem();
             last = first;
@@ -127,22 +129,22 @@ namespace Undersoft.SDK.Series.Base
         protected V this[long hashkey]
         {
             get => InnerGet(hashkey);
-            set => InnerPut(hashkey, value);
+            set => InnerSet(hashkey, value);
         }
         public virtual V this[object key]
         {
             get => InnerGet(unique.Key(key));
-            set => InnerPut(unique.Key(key), value);
+            set => InnerSet(unique.Key(key), value);
         }
         public virtual V this[IIdentifiable key]
         {
-            get => InnerGet(unique.Key(key));
-            set => InnerPut(unique.Key(key), value);
+            get => InnerGet(key.Id);
+            set => InnerSet(key.Id, value);
         }
         object IFindableSeries.this[object key]
         {
             get => InnerGet(unique.Key(key));
-            set => InnerPut(unique.Key(key), (V)value);
+            set => InnerSet(unique.Key(key), (V)value);
         }
 
         protected virtual V InnerGet(long key)
@@ -268,22 +270,23 @@ namespace Undersoft.SDK.Series.Base
         }
         public abstract ISeriesItem<V> GetItem(int index);
 
-        public virtual ISeriesItem<V> EnsureGet(object key, Func<long, V> sureaction)
+        public virtual ISeriesItem<V> EnsureGet(object key, V value)
         {
-            long _key = unique.Key(key);
-            return (!TryGet(_key, out ISeriesItem<V> item)) ?
-                Put(key, sureaction.Invoke(_key)) : item;
+            if (!TryGet(key, out ISeriesItem<V> item))
+                return Put(key, value);
+            return item;
         }
-        public virtual ISeriesItem<V> EnsureGet(long key, Func<long, V> sureaction)
+        public virtual ISeriesItem<V> EnsureGet(long key, V value)
         {
-            return (!TryGet(key, out ISeriesItem<V> item)) ?
-                Put(key, sureaction.Invoke(key)) : item;
+            if (!TryGet(key, out ISeriesItem<V> item))
+                return Put(key, value);
+            return item;
         }
-        public virtual ISeriesItem<V> EnsureGet(IIdentifiable key, Func<long, V> sureaction)
+        public virtual ISeriesItem<V> EnsureGet(IIdentifiable key, V value)
         {
-            long _key = unique.Key(key);
-            return (!TryGet(_key, out ISeriesItem<V> item)) ?
-                Put(key, sureaction.Invoke(_key)) : item;
+            if (!TryGet(key, out ISeriesItem<V> item))
+                return Put(key, value);
+            return item;
         }
 
         protected virtual ISeriesItem<V> InnerSet(long key, V value)
@@ -675,7 +678,7 @@ namespace Undersoft.SDK.Series.Base
             if (capacity != size || count > 0)
             {
                 size = capacity;
-                maxId = (uint)(capacity - 1);
+                maxid = (uint)(capacity - 1);
                 conflicts = 0;
                 removed = 0;
                 count = 0;
@@ -687,7 +690,7 @@ namespace Undersoft.SDK.Series.Base
 
         public virtual void Renew(IEnumerable<V> items)
         {
-            renewClear(minSize);
+            renewClear(minsize);
             Put(items);
         }
         public virtual void Renew(IList<V> items)
@@ -706,7 +709,7 @@ namespace Undersoft.SDK.Series.Base
         }
         public virtual void Renew(IEnumerable<ISeriesItem<V>> items)
         {
-            renewClear(minSize);
+            renewClear(minsize);
             Put(items);
         }
 
@@ -832,8 +835,8 @@ namespace Undersoft.SDK.Series.Base
 
         public virtual void Clear()
         {
-            size = minSize;
-            maxId = (uint)(minSize - 1);
+            size = minsize;
+            maxid = (uint)(minsize - 1);
             conflicts = 0;
             removed = 0;
             count = 0;
@@ -984,8 +987,9 @@ namespace Undersoft.SDK.Series.Base
 
         protected ulong getPosition(long key)
         {
-            return ((ulong)key % maxId);
+            return ((ulong)key % maxid);
         }
+
         protected static ulong getPosition(long key, uint tableMaxId)
         {
             return ((ulong)key % tableMaxId);
@@ -994,44 +998,44 @@ namespace Undersoft.SDK.Series.Base
         protected virtual void Rehash(int newSize)
         {
             int finish = count;
-            int newsize = newSize;
-            uint newMaxId = (uint)(newsize - 1);
-            ISeriesItem<V>[] newitemTable = EmptyTable(newsize);
+            int _size = newSize;
+            uint _maxid = (uint)(_size - 1);
+            ISeriesItem<V>[] _table = EmptyTable(_size);
             ISeriesItem<V> item = first;
             item = item.Next;
             if (removed > 0)
             {
-                rehashAndReindex(item, newitemTable, newMaxId);
+                rehashAndReindex(item, _table, _maxid);
             }
             else
             {
-                rehash(item, newitemTable, newMaxId);
+                rehash(item, _table, _maxid);
             }
 
-            table = newitemTable;
-            maxId = newMaxId;
-            size = newsize;
+            table = _table;
+            maxid = _maxid;
+            size = _size;
         }
 
-        private void rehashAndReindex(ISeriesItem<V> item, ISeriesItem<V>[] newItemTable, uint newMaxId)
+        private void rehashAndReindex(ISeriesItem<V> item, ISeriesItem<V>[] newTable, uint newMaxId)
         {
             int _conflicts = 0;
-            uint _newMaxId = newMaxId;
-            ISeriesItem<V>[] _newItemTable = newItemTable;
-            ISeriesItem<V> _firstitem = EmptyItem();
-            ISeriesItem<V> _lastitem = _firstitem;
+            uint _maxid = newMaxId;
+            ISeriesItem<V>[] _table = newTable;
+            ISeriesItem<V> _first = EmptyItem();
+            ISeriesItem<V> _last = _first;
             do
             {
                 if (!item.Removed)
                 {
-                    ulong pos = getPosition(item.Id, _newMaxId);
+                    ulong pos = getPosition(item.Id, _maxid);
 
-                    ISeriesItem<V> ex_item = _newItemTable[pos];
+                    ISeriesItem<V> ex_item = _table[pos];
 
                     if (ex_item == null)
                     {
                         item.Extended = null;
-                        _newItemTable[pos] = _lastitem = _lastitem.Next = item;
+                        _table[pos] = _last = _last.Next = item;
                     }
                     else
                     {
@@ -1040,7 +1044,7 @@ namespace Undersoft.SDK.Series.Base
                             if (ex_item.Extended == null)
                             {
                                 item.Extended = null; ;
-                                _lastitem = _lastitem.Next = ex_item.Extended = item;
+                                _last = _last.Next = ex_item.Extended = item;
                                 _conflicts++;
                                 break;
                             }
@@ -1056,27 +1060,27 @@ namespace Undersoft.SDK.Series.Base
 
             conflicts = _conflicts;
             removed = 0;
-            first = _firstitem;
-            last = _lastitem;
+            first = _first;
+            last = _last;
         }
 
-        private void rehash(ISeriesItem<V> item, ISeriesItem<V>[] newItemTable, uint newMaxId)
+        private void rehash(ISeriesItem<V> item, ISeriesItem<V>[] newTable, uint newMaxId)
         {
             int _conflicts = 0;
-            uint _newMaxId = newMaxId;
-            ISeriesItem<V>[] _newItemTable = newItemTable;
+            uint _maxid = newMaxId;
+            ISeriesItem<V>[] _table = newTable;
             do
             {
                 if (!item.Removed)
                 {
-                    ulong pos = getPosition(item.Id, _newMaxId);
+                    ulong pos = getPosition(item.Id, _maxid);
 
-                    ISeriesItem<V> ex_item = _newItemTable[pos];
+                    ISeriesItem<V> ex_item = _table[pos];
 
                     if (ex_item == null)
                     {
                         item.Extended = null;
-                        _newItemTable[pos] = item;
+                        _table[pos] = item;
                     }
                     else
                     {
@@ -1099,6 +1103,152 @@ namespace Undersoft.SDK.Series.Base
 
             } while (item != null);
             conflicts = _conflicts;
+        }
+
+        protected ulong mapPosition(long key)
+        {
+            // standard hashmap method to establish position / index in table
+
+            // return ((ulong)key % (uint)size);
+
+            // author's algorithm to establish position / index in table            
+            // based on most significant bit - BSR (or equivalent depending on the cpu type) 
+            // alsow project must be compiled in x64 format (default) for x86 format proper C lib compilation of BitScan.dll is needed       
+
+            return Submix.Map(key, maxid, bitmask, msbid);
+        }
+
+        protected ulong mapPosition(long key, uint newmaxid, ulong newbitmask, int newmsbid)
+        {
+            // standard hashmap method to establish position / index in table 
+
+            // return ((ulong)key % (uint)newsize);
+
+            // author's algorithm to establish position / index in table            
+            // based on most significant bit - BSR (or equivalent depending on the cpu type)
+            // alsow project must be compiled in x64 format (default) for x86 format proper C lib compilation of BitScan.dll is needed       
+
+            return Submix.Map(key, newmaxid, newbitmask, newmsbid);
+        }
+
+        protected virtual void Remap(int newSize)
+        {
+            int finish = count;
+            int _size = newSize;
+            uint _maxid = (uint)(_size - 1);
+            ISeriesItem<V>[] _table = EmptyTable(_size);
+            ISeriesItem<V> item = first;
+            item = item.Next;
+            if (removed > 0)
+            {
+                remapAndReindex(item, _table, _maxid);
+            }
+            else
+            {
+                remap(item, _table, _maxid);
+            }
+
+            table = _table;
+            maxid = _maxid;
+            size = _size;
+        }
+
+        private void remapAndReindex(ISeriesItem<V> item, ISeriesItem<V>[] newTable, uint newMaxId)
+        {
+            int _conflicts = 0;
+            uint _maxid = newMaxId;
+            uint _size = _maxid + 1;
+            ulong _bitmask = Submix.Mask(_size);
+            int _msbid = Submix.MsbId(_size);
+            ISeriesItem<V>[] _table = newTable;
+            ISeriesItem<V> _first = EmptyItem();
+            ISeriesItem<V> _last = _first;
+            do
+            {
+                if (!item.Removed)
+                {
+                    ulong pos = mapPosition(item.Id, _maxid, _bitmask, _msbid);
+
+                    ISeriesItem<V> mem = _table[pos];
+
+                    if (mem == null)
+                    {
+                        item.Extended = null;
+                        _table[pos] = _last = _last.Next = item;
+                    }
+                    else
+                    {
+                        for (; ; )
+                        {
+                            if (mem.Extended == null)
+                            {
+                                item.Extended = null; ;
+                                _last = _last.Next = mem.Extended = item;
+                                _conflicts++;
+                                break;
+                            }
+                            else
+                                mem = mem.Extended;
+                        }
+                    }
+                }
+
+                item = item.Next;
+
+            } while (item != null);
+
+            conflicts = _conflicts;
+            removed = 0;
+            first = _first;
+            last = _last;
+            bitmask = _bitmask;
+            msbid = _msbid;
+        }
+
+        private void remap(ISeriesItem<V> item, ISeriesItem<V>[] newTable, uint newMaxId)
+        {
+            int _conflicts = 0;
+            uint _maxid = newMaxId;
+            uint _size = _maxid + 1;
+            ulong _bitmask = Submix.Mask(_size);
+            int _msbid = Submix.MsbId(_size);
+            do
+            {
+                if (!item.Removed)
+                {
+                    ulong pos = mapPosition(item.Id, _maxid, _bitmask, _msbid);
+
+                    ISeriesItem<V> mem = newTable[pos];
+
+                    if (mem == null)
+                    {
+                        item.Extended = null;
+                        newTable[pos] = item;
+                    }
+                    else
+                    {
+                        for (; ; )
+                        {
+                            if (mem.Extended == null)
+                            {
+                                item.Extended = null;
+                                mem.Extended = item;
+                                _conflicts++;
+                                break;
+                            }
+                            else
+                                mem = mem.Extended;
+                        }
+                    }
+                }
+
+                item = item.Next;
+
+            } while (item != null);
+
+            conflicts = _conflicts;
+            bitmask = _bitmask;
+            msbid = _msbid;
         }
 
         protected bool disposedValue = false;
@@ -1186,40 +1336,49 @@ namespace Undersoft.SDK.Series.Base
         {
             this.AsItems().ForOnly(e => other.Contains(e.Value), e => Remove(e));
         }
+
         public virtual void IntersectWith(IEnumerable<V> other)
         {
             this.AsItems().ForOnly(e => !other.Contains(e.Value), (e) => Remove(e));
         }
+
         public virtual bool IsProperSubsetOf(IEnumerable<V> other)
         {
             return (this.Count < other.Count()) && this.All(e => other.Contains(e));
         }
+
         public virtual bool IsProperSupersetOf(IEnumerable<V> other)
         {
             return (this.Count > other.Count()) && other.All(e => this.Contains(e));
         }
+
         public virtual bool IsSubsetOf(IEnumerable<V> other)
         {
             return (this.Count <= other.Count()) && this.All(e => other.Contains(e));
         }
+
         public virtual bool IsSupersetOf(IEnumerable<V> other)
         {
             return (this.Count >= other.Count()) && other.All(e => this.Contains(e));
         }
+
         public virtual bool Overlaps(IEnumerable<V> other)
         {
             return this.Any(e => other.Contains(e));
         }
+
         public virtual bool SetEquals(IEnumerable<V> other)
         {
             return ReferenceEquals(this, other) || (this.Count == other.Count()) && this.All(e => other.Contains(e));
         }
+
         public virtual void SymmetricExceptWith(IEnumerable<V> other)
         {
             var toRemove = this.AsItems().ForOnly(e => other.Contains(e.Value), (e) => e).ToListing();
             other.ForOnly(e => !this.Contains(e), e => this.Add(e));
             toRemove.ForEach(r => Remove(r));
         }
+
         public virtual void UnionWith(IEnumerable<V> other)
         {
             this.Add(other);

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using Undersoft.SDK.Uniques;
+﻿using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Series.Base
 {
@@ -10,10 +8,10 @@ namespace Undersoft.SDK.Series.Base
         const int WAIT_READ_TIMEOUT = 5000;
         const int WAIT_REHASH_TIMEOUT = 5000;
         const int WAIT_WRITE_TIMEOUT = 5000;
-        
+
         int readers;
 
-        readonly ManualResetEventSlim readAccess = new ManualResetEventSlim(true, 128);    
+        readonly ManualResetEventSlim readAccess = new ManualResetEventSlim(true, 128);
         readonly ManualResetEventSlim removeAccess = new ManualResetEventSlim(true, 128);
         readonly ManualResetEventSlim writeAccess = new ManualResetEventSlim(true, 128);
         readonly SemaphoreSlim writePass = new SemaphoreSlim(1);
@@ -70,12 +68,12 @@ namespace Undersoft.SDK.Series.Base
 
         protected void releaseReader()
         {
-            if (0 == Interlocked.Decrement(ref readers))            
+            if (0 == Interlocked.Decrement(ref readers))
                 removeAccess.Set();
         }
 
-        protected void releaseRemover() 
-        { 
+        protected void releaseRemover()
+        {
             readAccess.Set();
         }
 
@@ -146,30 +144,6 @@ namespace Undersoft.SDK.Series.Base
         {
             acquireWriter();
             V temp = base.InnerRemove(key);
-            releaseWriter();
-            return temp;
-        }
-
-        protected override ISeriesItem<V> InnerSet(ISeriesItem<V> value)
-        {
-            acquireWriter();
-            ISeriesItem<V> temp = base.InnerSet(value);
-            releaseWriter();
-            return temp;
-        }
-
-        protected override ISeriesItem<V> InnerSet(V value)
-        {
-            acquireWriter();
-            ISeriesItem<V> temp = base.InnerSet(value);
-            releaseWriter();
-            return temp;
-        }
-
-        protected override ISeriesItem<V> InnerSet(long key, V value)
-        {
-            acquireWriter();
-            ISeriesItem<V> temp = base.InnerSet(key, value);
             releaseWriter();
             return temp;
         }
@@ -320,14 +294,14 @@ namespace Undersoft.SDK.Series.Base
         public override bool TryDequeue(out ISeriesItem<V> output)
         {
             acquireWriter();
-            bool temp = base.TryDequeue(out output);            
+            bool temp = base.TryDequeue(out output);
             releaseWriter();
             return temp;
         }
 
         public override bool TryDequeue(out V output)
         {
-            acquireWriter();            
+            acquireWriter();
             bool temp = base.TryDequeue(out output);
             releaseWriter();
             return temp;
