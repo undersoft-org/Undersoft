@@ -62,10 +62,10 @@ namespace Undersoft.SDK.Benchmarks.Series
         {
             foreach (var item in collection)
             {
-                chain.TryAdd(item.Key.ToString(), item.Value);
-                catalog.TryAdd(item.Key.ToString(), item.Value);
-                listing.TryAdd(item.Key.ToString(), item.Value);
-                registry.TryAdd(item.Key.ToString(), item.Value);
+                chain.TryAdd(item.Key, item.Value);
+                catalog.TryAdd(item.Key, item.Value);
+                listing.TryAdd(item.Key, item.Value);
+                registry.TryAdd(item.Key, item.Value);
 
                 list.Add(item.Value);
                 dictionary.TryAdd(item.Key.ToString(), item.Value);

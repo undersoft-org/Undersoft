@@ -74,7 +74,6 @@ namespace Undersoft.SDK.Benchmarks.Series
         [Benchmark]
         public Task Catalog_ContainsKey_Test()
         {
-            var registry = new Catalog<string>();
             int limit = count / 10;
             return Task.Factory.ContinueWhenAll(
                 tasks.AsParallel()

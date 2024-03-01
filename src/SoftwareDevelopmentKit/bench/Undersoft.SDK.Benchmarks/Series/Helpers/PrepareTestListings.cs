@@ -10,8 +10,8 @@ namespace System.Series.Tests
         {
             List<KeyValuePair<object, string>> list = new List<KeyValuePair<object, string>>();
             string now = DateTime.Now.ToString() + "_prepareStringKeyTestCollection";
-            ulong max = uint.MaxValue + 2000 * 1000L;
-            for (ulong i = uint.MaxValue; i < max; i++)
+            long max = uint.MaxValue + 2000 * 1000L;
+            for (long i = uint.MaxValue; i < max; i++)
             {
                 string str = i.ToString() + "_" + now;
                 list.Add(new KeyValuePair<object, string>(new Uscn(i), str));
@@ -35,8 +35,8 @@ namespace System.Series.Tests
         {
             List<KeyValuePair<object, string>> list = new List<KeyValuePair<object, string>>();
             string now = DateTime.Now.ToString() + "_prepareStringKeyTestCollection";
-            ulong max = uint.MaxValue + (2000 * 1000L);
-            for (ulong i = uint.MaxValue; i < max; i++)
+            long max = uint.MaxValue + (2000 * 1000L);
+            for (long i = uint.MaxValue; i < max; i++)
             {
                 string str = i.ToString() + "_" + now;
                 list.Add(new KeyValuePair<object, string>(i, str));

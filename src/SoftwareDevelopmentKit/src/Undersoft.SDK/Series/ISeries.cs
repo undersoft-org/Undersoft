@@ -76,6 +76,8 @@
         void Add(IList<V> items);
         void Add(IEnumerable<V> items);
 
+        bool TryAdd(object key, V value);
+
         bool Enqueue(object key, V value);
         void Enqueue(ISeriesItem<V> item);
         bool Enqueue(V item);

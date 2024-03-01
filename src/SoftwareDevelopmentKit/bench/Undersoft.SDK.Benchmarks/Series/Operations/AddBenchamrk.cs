@@ -44,44 +44,6 @@ namespace Undersoft.SDK.Benchmarks.Series
             collection = dhelper.identifierKeyTestCollection;
         }
 
-        [IterationSetup]
-        public void Prepare()
-        {
-            dhelper.registry = new Dictionary<string, string>();
-            foreach (var item in collection)
-            {
-                dhelper.registry.TryAdd(item.Key.ToString(), item.Value);
-            }
-        }
-
-        [Benchmark]
-        public void Chain_Add_Test()
-        {
-            var registry = new Chain<string>();
-            chelper.Add_Test(collection, registry);
-        }
-
-        [Benchmark]
-        public void Catalog_Add_Test()
-        {
-            var registry = new Catalog<string>();
-            chelper.Add_Test(collection, registry);
-        }
-
-        [Benchmark]
-        public void Listing_Add_Test()
-        {
-            var registry = new Listing<string>();
-            chelper.Add_Test(collection, registry);
-        }
-
-        [Benchmark]
-        public void Registry_Add_Test()
-        {
-            var registry = new Registry<string>();
-            chelper.Add_Test(collection, registry);
-        }
-
         [Benchmark]
         public void List_Add_Test()
         {
@@ -111,5 +73,32 @@ namespace Undersoft.SDK.Benchmarks.Series
         }
 
 
+        [Benchmark]
+        public void Chain_Add_Test()
+        {
+            var registry = new Chain<string>();
+            chelper.Add_Test(collection, registry);
+        }
+
+        [Benchmark]
+        public void Catalog_Add_Test()
+        {
+            var registry = new Catalog<string>();
+            chelper.Add_Test(collection, registry);
+        }
+
+        [Benchmark]
+        public void Listing_Add_Test()
+        {
+            var registry = new Listing<string>();
+            chelper.Add_Test(collection, registry);
+        }
+
+        [Benchmark]
+        public void Registry_Add_Test()
+        {
+            var registry = new Registry<string>();
+            chelper.Add_Test(collection, registry);
+        }
     }
 }

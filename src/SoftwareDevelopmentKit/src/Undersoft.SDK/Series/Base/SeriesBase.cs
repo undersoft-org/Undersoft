@@ -14,9 +14,9 @@ namespace Undersoft.SDK.Series.Base
     public abstract class SeriesBase<V> : Identifiable, IIdentifiable, ISeries<V>, ISet<V>, IAsyncDisposable, IListSource
     {
 
-        internal const float RESIZING_VECTOR = 1.766F;
-        internal const float CONFLICTS_PERCENT_LIMIT = 0.222F;
-        internal const float REMOVED_PERCENT_LIMIT = 0.15F;
+        internal const float RESIZING_VECTOR = 2.333F;
+        internal const float CONFLICTS_PERCENT_LIMIT = 0.22F;
+        internal const float REMOVED_PERCENT_LIMIT = 0.45F;
         internal const ulong MAX_BIT_MASK = 0xFFFFFFFFFFFFFFFF;
 
         protected IUniqueKey unique = Unique.Bit64;
@@ -154,11 +154,10 @@ namespace Undersoft.SDK.Series.Base
             while (mem != null)
             {
                 if (mem.Equals(key))
-                {
-                    if (!mem.Removed)
-                        return mem.Value;
-                    return default(V);
-                }
+                    return (!mem.Removed)
+                        ? mem.Value
+                        : default(V);
+
                 mem = mem.Extended;
             }
 
@@ -179,21 +178,14 @@ namespace Undersoft.SDK.Series.Base
 
         protected virtual bool InnerTryGet(long key, out ISeriesItem<V> output)
         {
-            output = null;
+            output = table[getPosition(key)];
 
-            ISeriesItem<V> mem = table[getPosition(key)];
-            while (mem != null)
+            while (output != null)
             {
-                if (mem.Equals(key))
-                {
-                    if (!mem.Removed)
-                    {
-                        output = mem;
-                        return true;
-                    }
-                    return false;
-                }
-                mem = mem.Extended;
+                if (output.Equals(key))
+                    return (output.Removed) ? false : true;
+
+                output = output.Extended;
             }
             return false;
         }
@@ -246,11 +238,10 @@ namespace Undersoft.SDK.Series.Base
             while (mem != null)
             {
                 if (mem.Equals(key))
-                {
-                    if (!mem.Removed)
-                        return mem;
-                    return null;
-                }
+                    return (!mem.Removed)
+                        ? mem
+                        : null;
+
                 mem = mem.Extended;
             }
 

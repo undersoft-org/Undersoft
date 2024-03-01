@@ -87,7 +87,7 @@ namespace Undersoft.SDK.Benchmarks.Series
                             tasks[x] = Task.Factory.StartNew(
                                 () =>
                                     chelper.Iteration_Test(
-                                        collection.Skip(x * limit).Take(limit),
+                                        collection.Skip(x * limit).Take(limit).ToArray(),
                                        catalog
                                     )
                             )
@@ -111,7 +111,7 @@ namespace Undersoft.SDK.Benchmarks.Series
                             tasks[x] = Task.Factory.StartNew(
                                 () =>
                                     chelper.Iteration_Test(
-                                        collection.Skip(x * limit).Take(limit),
+                                        collection.Skip(x * limit).Take(limit).ToArray(),
                                         registry
                                     )
                             )
@@ -135,8 +135,8 @@ namespace Undersoft.SDK.Benchmarks.Series
                             tasks[x] = Task.Factory.StartNew(
                                 () =>
                                     dhelper.Iteration_Test(
-                                        collection.Skip(x * limit).Take(limit),
-                                        (IDictionary<string, string>)concurrentdictionary
+                                        collection.Skip(x * limit).Take(limit).ToArray(),
+                                        concurrentdictionary
                                     )
                             )
                     )

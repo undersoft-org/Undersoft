@@ -43,16 +43,6 @@ namespace Undersoft.SDK.Benchmarks.Series
             collection = dhelper.identifierKeyTestCollection;
         }
 
-        [IterationSetup]
-        public void Prepare()
-        {
-            dhelper.registry = new Dictionary<string, string>();
-            foreach (var item in collection)
-            {
-                dhelper.registry.TryAdd(item.Key.ToString(), item.Value);
-            }
-        }
-
         [Benchmark]
         public void Chain_Enqueue_Test()
         {

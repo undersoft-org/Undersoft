@@ -57,14 +57,23 @@ namespace Undersoft.SDK.Benchmarks.Series
         [IterationSetup]
         public void Prepare()
         {
+            chain = new Chain<string>();
+            listing = new Listing<string>();
+            catalog = new Catalog<string>();
+            registry = new Registry<string>();
+            //list = new List<string>();
+            dictionary = new Dictionary<string, string>();
+            ordereddictionary = new OrderedDictionary();
+            concurrentdictionary = new ConcurrentDictionary<string, string>();
+
             foreach (var item in collection)
             {
-                chain.TryAdd(item.Key.ToString(), item.Value);
-                catalog.TryAdd(item.Key.ToString(), item.Value);
-                listing.TryAdd(item.Key.ToString(), item.Value);
-                registry.TryAdd(item.Key.ToString(), item.Value);
+                chain.Add(item.Key, item.Value);
+                catalog.Add(item.Key, item.Value);
+                listing.Add(item.Key, item.Value);
+                registry.Add(item.Key, item.Value);
 
-                list.Add(item.Value);
+                // list.Add(item.Value);
                 dictionary.TryAdd(item.Key.ToString(), item.Value);
                 ordereddictionary.Add(item.Key.ToString(), item.Value);
                 concurrentdictionary.TryAdd(item.Key.ToString(), item.Value);
@@ -95,11 +104,11 @@ namespace Undersoft.SDK.Benchmarks.Series
             chelper.Remove_Test(collection, registry);
         }
 
-        [Benchmark]
-        public void List_Remove_Test()
-        {
-            dhelper.Remove_Test(collection, list);
-        }
+        //[Benchmark]
+        //public void List_Remove_Test()
+        //{
+        //    dhelper.Remove_Test(collection, list);
+        //}
 
         [Benchmark]
         public void Dictionary_Remove_Test()

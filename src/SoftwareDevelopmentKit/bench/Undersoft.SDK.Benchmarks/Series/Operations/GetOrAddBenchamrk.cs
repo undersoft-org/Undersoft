@@ -9,6 +9,7 @@ namespace Undersoft.SDK.Benchmarks.Series
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Diagnostics;
+    using System.Linq;
     using System.Threading.Tasks;
     using Undersoft.SDK.Series;
 
@@ -16,7 +17,7 @@ namespace Undersoft.SDK.Benchmarks.Series
     [RankColumn]
     [RPlotExporter]
     [SimpleJob(RunStrategy.ColdStart, targetCount: 5)]
-    public class GetItemByKeyBenchmark
+    public class GetOrAddBenchmark
     {
         public static object holder = new object();
         public static int threadCount = 0;
@@ -35,7 +36,7 @@ namespace Undersoft.SDK.Benchmarks.Series
         public OrderedDictionary ordereddictionary = new OrderedDictionary();
         public ConcurrentDictionary<string, string> concurrentdictionary = new ConcurrentDictionary<string, string>();
 
-        public GetItemByKeyBenchmark()
+        public GetOrAddBenchmark()
         {
             Setup();
         }
@@ -46,79 +47,61 @@ namespace Undersoft.SDK.Benchmarks.Series
             dhelper = new BenchmarkCollectionHelper();
             chelper = new BenchmarkSeriesHelper(); ;
 
+            collection = dhelper.identifierKeyTestCollection;
+
             DefaultTraceListener Logfile = new DefaultTraceListener();
             Logfile.Name = "Logfile";
             Trace.Listeners.Add(Logfile);
             Logfile.LogFileName = $"Catalog64_{DateTime.Now.ToFileTime().ToString()}_Test.log";
-
-            collection = dhelper.identifierKeyTestCollection;
         }
 
         [IterationSetup]
         public void Prepare()
         {
-            foreach (var item in collection)
-            {
-                chain.TryAdd(item.Key.ToString(), item.Value);
-                catalog.TryAdd(item.Key.ToString(), item.Value);
-                listing.TryAdd(item.Key.ToString(), item.Value);
-                registry.TryAdd(item.Key.ToString(), item.Value);
+            chain = new Chain<string>();
+            listing = new Listing<string>();
+            catalog = new Catalog<string>();
+            registry = new Registry<string>();
+            concurrentdictionary = new ConcurrentDictionary<string, string>();
 
-                list.Add(item.Value);
-                dictionary.TryAdd(item.Key.ToString(), item.Value);
-                ordereddictionary.Add(item.Key.ToString(), item.Value);
+            foreach (var item in collection.Take(collection.Count / 2))
+            {
+                chain.Add(item.Key, item.Value);
+                catalog.Add(item.Key, item.Value);
+                listing.Add(item.Key, item.Value);
+                registry.Add(item.Key, item.Value);
                 concurrentdictionary.TryAdd(item.Key.ToString(), item.Value);
             }
         }
 
-        [Benchmark]
-        public void Chain_GetByKey_Test()
-        {
-            chelper.GetOrAdd_Test(collection, chain);
-        }
+        //[Benchmark]
+        //public void Chain_GetOrAdd_Test()
+        //{
+        //    chelper.GetOrAdd_Test(collection, chain);
+        //}
+
+        //[Benchmark]
+        //public void Catalog_GetOrAdd_Test()
+        //{
+        //    chelper.GetOrAdd_Test(collection, catalog);
+        //}
+
+        //[Benchmark]
+        //public void Listing_GetOrAdd_Test()
+        //{
+        //    chelper.GetOrAdd_Test(collection, listing);
+        //}
 
         [Benchmark]
-        public void Catalog_GetByKey_Test()
-        {
-            chelper.GetOrAdd_Test(collection, catalog);
-        }
-
-        [Benchmark]
-        public void Listing_GetByKey_Test()
-        {
-            chelper.GetOrAdd_Test(collection, listing);
-        }
-
-        [Benchmark]
-        public void Registry_GetByKey_Test()
+        public void Registry_GetOrAdd_Test()
         {
             chelper.GetOrAdd_Test(collection, registry);
         }
 
         //[Benchmark]
-        //public void List_GetByKey_Test()
+        //public void ConcurrentDictionary_GetOrAdd_Test()
         //{
-        //    dhelper.GetByKey_Test(collection, list);
+        //    dhelper.GetOrAdd_Test(collection, concurrentdictionary);
         //}
-
-        //[Benchmark]
-        //public void Dictionary_GetByKey_Test()
-        //{
-        //    dhelper.GetByKey_Test(collection, (IDictionary<string, string>)dictionary);
-        //}
-
-        //[Benchmark]
-        //public void OrderedDictionary_GetByKey_Test()
-        //{
-        //    dhelper.GetByKey_Test(collection, ordereddictionary);
-        //}
-
-        [Benchmark]
-        public void ConcurrentDictionary_GetByKey_Test()
-        {
-            dhelper.GetOrAdd_Test(collection, concurrentdictionary);
-        }
-
-
     }
 }

@@ -490,6 +490,11 @@ namespace Undersoft.SDK.Series.Base
             return InnerAdd(value);
         }
 
+        public virtual bool TryAdd(object key, V value)
+        {
+            return InnerAdd(unique.Key(key), value);
+        }
+
         public virtual ISeriesItem<V> New()
         {
             ISeriesItem<V> newItem = NewItem(Unique.NewId, default(V));

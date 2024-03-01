@@ -10,9 +10,9 @@
 
     public abstract class TypedSeriesBase<V> : Identifiable, IIdentifiable, ISet<V>, IAsyncDisposable, IListSource, ITypedSeries<V> where V : IIdentifiable
     {
-        internal const float RESIZING_VECTOR = 1.766f;
+        internal const float RESIZING_VECTOR = 2.333f;
         internal const float CONFLICTS_PERCENT_LIMIT = 0.22f;
-        internal const float REMOVED_PERCENT_LIMIT = 0.15f;
+        internal const float REMOVED_PERCENT_LIMIT = 0.45f;
         internal const ulong MAX_BIT_MASK = 0xFFFFFFFFFFFFFFFF;
 
         protected IUniqueKey unique = Unique.Bit64;
@@ -824,6 +824,16 @@
             return InnerAdd(value, seed);
         }
 
+        public virtual bool TryAdd(object key, V value)
+        {
+            return Add(key, value);
+        }
+
+        public virtual bool TryAdd(object key, long seed, V value)
+        {
+            return Add(key, seed, value);
+        }
+
         public virtual ISeriesItem<V> New()
         {
             ISeriesItem<V> newItem = NewItem(Unique.NewId, default(V));
@@ -1313,7 +1323,7 @@
 
         public virtual object[] ToObjectArray()
         {
-            return this.AsValues().Select((x) => (object)x).ToArray();
+            return this.Select((x) => (object)x).ToArray();
         }
 
         public virtual ISeriesItem<V> Next(ISeriesItem<V> item)

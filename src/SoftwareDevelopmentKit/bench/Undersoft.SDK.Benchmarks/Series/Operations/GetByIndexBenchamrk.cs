@@ -46,29 +46,22 @@ namespace Undersoft.SDK.Benchmarks.Series
             dhelper = new BenchmarkCollectionHelper();
             chelper = new BenchmarkSeriesHelper(); ;
 
+            collection = dhelper.identifierKeyTestCollection;
+
+            foreach (var item in collection)
+            {
+                listing.Add(item.Key, item.Value);
+                registry.Add(item.Key, item.Value);
+
+                list.Add(item.Value);
+                ordereddictionary.Add(item.Key, item.Value);
+            }
+
             DefaultTraceListener Logfile = new DefaultTraceListener();
             Logfile.Name = "Logfile";
             Trace.Listeners.Add(Logfile);
             Logfile.LogFileName = $"Catalog64_{DateTime.Now.ToFileTime().ToString()}_Test.log";
 
-            collection = dhelper.identifierKeyTestCollection;
-        }
-
-        [IterationSetup]
-        public void Prepare()
-        {
-            foreach (var item in collection)
-            {
-                chain.TryAdd(item.Key.ToString(), item.Value);
-                catalog.TryAdd(item.Key.ToString(), item.Value);
-                listing.TryAdd(item.Key.ToString(), item.Value);
-                registry.TryAdd(item.Key.ToString(), item.Value);
-
-                list.Add(item.Value);
-                dictionary.TryAdd(item.Key.ToString(), item.Value);
-                ordereddictionary.Add(item.Key.ToString(), item.Value);
-                concurrentdictionary.TryAdd(item.Key.ToString(), item.Value);
-            }
         }
 
         //[Benchmark]

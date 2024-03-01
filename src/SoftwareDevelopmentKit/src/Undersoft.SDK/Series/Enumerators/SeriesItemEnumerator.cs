@@ -36,9 +36,7 @@
         {
             Entry = map.Next(Entry);
             if (Entry != null)
-            {
                 return true;
-            }
             return false;
         }
 
@@ -72,7 +70,7 @@
         V IAsyncEnumerator<V>.Current => Entry.Value;
 
         public ValueTask DisposeAsync()
-        {            
+        {
             Entry = map.First;
             return ValueTask.CompletedTask;
         }
@@ -81,21 +79,17 @@
         {
             Entry = map.Next(Entry);
             if (Entry != null)
-            {
                 return true;
-            }
             return false;
         }
 
         public ValueTask<bool> MoveNextAsync()
         {
-            
+
             Entry = map.Next(Entry);
-            if (Entry != null)
-            {
-                return ValueTask.FromResult(true);
-            }
-            return ValueTask.FromResult(false);
+            return (Entry != null)
+                ? ValueTask.FromResult(true)
+                : ValueTask.FromResult(false);
         }
 
         public void Reset()

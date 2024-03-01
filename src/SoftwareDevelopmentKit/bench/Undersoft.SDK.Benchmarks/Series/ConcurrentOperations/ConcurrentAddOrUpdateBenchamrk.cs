@@ -75,7 +75,7 @@ namespace Undersoft.SDK.Benchmarks.Series
         public int count => collection.Count;
 
         [Benchmark]
-        public Task Catalog_GetOrAdd_Test()
+        public Task Catalog_AddOrUpdate_Test()
         {
             int limit = count / 10;
             return Task.Factory.ContinueWhenAll(
@@ -99,7 +99,7 @@ namespace Undersoft.SDK.Benchmarks.Series
         }
 
         [Benchmark]
-        public Task Registry_GetOrAdd_Test()
+        public Task Registry_AddOrUpdate_Test()
         {
             int limit = count / 10;
             return Task.Factory.ContinueWhenAll(
@@ -123,7 +123,7 @@ namespace Undersoft.SDK.Benchmarks.Series
         }
 
         [Benchmark]
-        public Task ConcurrentDictionary_GetOrAdd_Test()
+        public Task ConcurrentDictionary_AddOrUpdate_Test()
         {
             int limit = count / 10;
             return Task.Factory.ContinueWhenAll(

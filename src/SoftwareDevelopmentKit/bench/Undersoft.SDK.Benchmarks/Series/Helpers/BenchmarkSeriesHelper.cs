@@ -24,7 +24,7 @@ namespace System.Series.Tests
 
         public ISeries<string> registry { get; set; }
 
-        public IDictionary<object, string> dictionary { get; set; }
+        public IDictionary<string, string> dictionary { get; set; }
 
         public IList<KeyValuePair<object, string>> stringKeyTestCollection { get; set; }
 
@@ -77,6 +77,14 @@ namespace System.Series.Tests
             foreach (var item in testCollection)
             {
                 registry.Add(item.Key, item.Value);
+            }
+        }
+
+        public void TryAdd_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
+        {
+            foreach (var item in testCollection)
+            {
+                registry.TryAdd(item.Key, item.Value);
             }
         }
 
@@ -181,6 +189,14 @@ namespace System.Series.Tests
             }
         }
 
+        public void TryGetByKey_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
+        {
+            foreach (var item in testCollection)
+            {
+                var a = registry.TryGet(item.Key, out string output);
+            }
+        }
+
         public void GetByIndexer_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
             int i = 0;
@@ -216,9 +232,26 @@ namespace System.Series.Tests
 
         public void Iteration_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ISeries<string> registry)
         {
-            foreach (var item in registry)
+            foreach (string item in registry)
             {
-                object r = item;
+                string r = item;
+            }
+        }
+
+        public void IterationAsBuckets_Test(IEnumerable<KeyValuePair<object, string>> testCollection, Chain<string> registry)
+        {
+            foreach (ISeriesItem<string> item in registry)
+            {
+                string r = item.Value;
+            }
+        }
+
+
+        public void IterationAsBuckets_Test(IEnumerable<KeyValuePair<object, string>> testCollection, Catalog<string> registry)
+        {
+            foreach (ISeriesItem<string> item in registry)
+            {
+                string r = item.Value;
             }
         }
 

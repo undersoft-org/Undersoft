@@ -463,7 +463,7 @@
             ISeriesItem<V>[] newItemTable = EmptyTable(_newsize);
             ISeriesItem<V>[] newBaseDeck = EmptyVector(_newsize);
             if (removed != 0)
-            {                
+            {
                 rehashAndReindex(newItemTable, newBaseDeck, newMaxId);
                 vector = newBaseDeck;
             }
@@ -807,12 +807,12 @@
 
         public override ISeriesItem<V> Next(ISeriesItem<V> item)
         {
-            item = vector[item.Index + 1];
-            if (item != null)
+            var _item = vector[item.Index + 1];
+            if (_item != null)
             {
-                if (!item.Removed)
-                    return item;
-                return Next(item);
+                if (!_item.Removed)
+                    return _item;
+                return Next(_item);
             }
             return null;
         }

@@ -22,7 +22,7 @@ namespace System.Series.Tests
 
         public IList<KeyValuePair<object, string>> longKeyTestCollection { get; set; }
 
-        public IDictionary<string, string> registry { get; set; }
+        public ConcurrentDictionary<string, string> registry { get; set; }
 
         public IDictionary orderedRegistry { get; set; }
 
@@ -32,11 +32,19 @@ namespace System.Series.Tests
 
         public IList<KeyValuePair<object, string>> stringKeyTestCollection { get; set; }
 
-        public void Add_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary<string, string> registry)
+        public void TryAdd_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary<string, string> registry)
         {
             foreach (var item in testCollection)
             {
                 registry.TryAdd(item.Key.ToString(), item.Value);
+            }
+        }
+
+        public void Add_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary<string, string> registry)
+        {
+            foreach (var item in testCollection)
+            {
+                registry.Add(item.Key.ToString(), item.Value);
             }
         }
 
@@ -64,7 +72,7 @@ namespace System.Series.Tests
             int i = 0;
             foreach (var item in testCollection)
             {
-                registry.Insert(i++, item.Key, item.Value);
+                registry.Insert(i++, item.Key.ToString(), item.Value);
             }
         }
 
@@ -72,15 +80,31 @@ namespace System.Series.Tests
         {
             foreach (var item in testCollection)
             {
-                registry.ContainsKey((string)item.Key.ToString());
+                registry.ContainsKey(item.Key.ToString());
             }
         }
 
-        public void GetByKey_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary<string, string> registry)
+        public void GetByKey_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ConcurrentDictionary<string, string> registry)
         {
             foreach (var item in testCollection)
             {
-                string r = registry[(string)item.Key.ToString()];
+                string r = registry[item.Key.ToString()];
+            }
+        }
+
+        public void GetByKey_Test(IEnumerable<KeyValuePair<object, string>> testCollection, Dictionary<string, string> registry)
+        {
+            foreach (var item in testCollection)
+            {
+                string r = registry[item.Key.ToString()];
+            }
+        }
+
+        public void TryGetByKey_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ConcurrentDictionary<string, string> registry)
+        {
+            foreach (var item in testCollection)
+            {
+                var r = registry.TryGetValue(item.Key.ToString(), out var output);
             }
         }
 
@@ -88,7 +112,7 @@ namespace System.Series.Tests
         {
             foreach (var item in testCollection)
             {
-                string r = registry.GetOrAdd((string)item.Key.ToString(), item.Value);
+                string r = registry.GetOrAdd(item.Key.ToString(), item.Value);
             }
         }
 
@@ -110,15 +134,23 @@ namespace System.Series.Tests
         {
             foreach (var item in testCollection)
             {
-                registry[(string)item.Key.ToString()] = item.Value;
+                registry[item.Key.ToString()] = item.Value;
             }
         }
 
         public void Remove_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary<string, string> registry)
         {
+            foreach (var item in testCollection)
+            {
+                registry.Remove(item.Key.ToString());
+            }
+        }
+
+        public void TryRemove_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ConcurrentDictionary<string, string> registry)
+        {
             foreach (var item in testCollection.Skip(100000))
             {
-                registry.Remove((string)item.Key.ToString());
+                var result = registry.Remove(item.Key.ToString(), out var output);
             }
         }
 
@@ -126,7 +158,31 @@ namespace System.Series.Tests
         {
             foreach (var item in registry)
             {
-                object r = item.Value;
+                var r = item.Value;
+            }
+        }
+
+        public void Iteration_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ConcurrentDictionary<string, string> registry)
+        {
+            foreach (var item in registry)
+            {
+                var r = item.Value;
+            }
+        }
+
+        public void IterationAsBuckets_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary<string, string> registry)
+        {
+            foreach (var item in registry)
+            {
+                string r = item.Value;
+            }
+        }
+
+        public void IterationAsBuckets_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ConcurrentDictionary<string, string> registry)
+        {
+            foreach (var item in registry)
+            {
+                var r = item.Value;
             }
         }
 
@@ -142,7 +198,7 @@ namespace System.Series.Tests
         {
             foreach (var item in testCollection)
             {
-                registry.Add((string)item.Key.ToString(), item.Value);
+                registry.Add(item.Key, item.Value);
             }
         }
 
@@ -150,7 +206,7 @@ namespace System.Series.Tests
         {
             foreach (var item in testCollection)
             {
-                registry.Contains((string)item.Key.ToString()
+                registry.Contains(item.Key
                 );
             }
         }
@@ -159,7 +215,7 @@ namespace System.Series.Tests
         {
             foreach (var item in testCollection)
             {
-                string r = (string)registry[(string)item.Key.ToString()];
+                string r = (string)registry[item.Key];
             }
         }
 
@@ -171,15 +227,31 @@ namespace System.Series.Tests
             }
         }
 
+        public void SetByKey_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ConcurrentDictionary<string, string> registry)
+        {
+            foreach (var item in testCollection)
+            {
+                registry[item.Key.ToString()] = item.Value;
+            }
+        }
+
+        public void SetByKey_Test(IEnumerable<KeyValuePair<object, string>> testCollection, Dictionary<string, string> registry)
+        {
+            foreach (var item in testCollection)
+            {
+                registry[item.Key.ToString()] = item.Value;
+            }
+        }
+
         public void AddOrUpdate_Test(IEnumerable<KeyValuePair<object, string>> testCollection, ConcurrentDictionary<string, string> registry)
         {
             foreach (var item in testCollection)
             {
-                registry.AddOrUpdate((string)item.Key.ToString(), item.Value, (k, v) => item.Value);
+                registry.AddOrUpdate(item.Key.ToString(), item.Value, (k, v) => item.Value);
             }
         }
 
-        public void SetByIndex_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary registry)
+        public void SetByIndex_Test(IEnumerable<KeyValuePair<object, string>> testCollection, OrderedDictionary registry)
         {
             int i = 0;
             foreach (var item in testCollection)
@@ -192,11 +264,19 @@ namespace System.Series.Tests
         {
             foreach (var item in testCollection.Skip(100000))
             {
-                registry.Remove((string)item.Key.ToString());
+                registry.Remove(item.Key);
             }
         }
 
         public void Iteration_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary registry)
+        {
+            foreach (var item in registry)
+            {
+                object r = item;
+            }
+        }
+
+        public void IterationAsBuckets_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary registry)
         {
             foreach (var item in registry)
             {

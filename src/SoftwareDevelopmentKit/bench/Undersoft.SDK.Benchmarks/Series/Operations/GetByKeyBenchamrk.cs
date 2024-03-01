@@ -46,29 +46,25 @@ namespace Undersoft.SDK.Benchmarks.Series
             dhelper = new BenchmarkCollectionHelper();
             chelper = new BenchmarkSeriesHelper(); ;
 
+            collection = dhelper.identifierKeyTestCollection;
+
+            foreach (var item in collection)
+            {
+                chain.Add(item.Key, item.Value);
+                catalog.Add(item.Key, item.Value);
+                listing.Add(item.Key, item.Value);
+                registry.Add(item.Key, item.Value);
+
+                list.Add(item.Value);
+                dictionary.Add(item.Key.ToString(), item.Value);
+                ordereddictionary.Add(item.Key.ToString(), item.Value);
+                concurrentdictionary.TryAdd(item.Key.ToString(), item.Value);
+            }
+
             DefaultTraceListener Logfile = new DefaultTraceListener();
             Logfile.Name = "Logfile";
             Trace.Listeners.Add(Logfile);
             Logfile.LogFileName = $"Catalog64_{DateTime.Now.ToFileTime().ToString()}_Test.log";
-
-            collection = dhelper.identifierKeyTestCollection;
-        }
-
-        [IterationSetup]
-        public void Prepare()
-        {
-            foreach (var item in collection)
-            {
-                chain.TryAdd(item.Key.ToString(), item.Value);
-                catalog.TryAdd(item.Key.ToString(), item.Value);
-                listing.TryAdd(item.Key.ToString(), item.Value);
-                registry.TryAdd(item.Key.ToString(), item.Value);
-
-                list.Add(item.Value);
-                dictionary.TryAdd(item.Key.ToString(), item.Value);
-                ordereddictionary.Add(item.Key.ToString(), item.Value);
-                concurrentdictionary.TryAdd(item.Key.ToString(), item.Value);
-            }
         }
 
         [Benchmark]
@@ -95,16 +91,10 @@ namespace Undersoft.SDK.Benchmarks.Series
             chelper.GetByKey_From_Indexer_Test(collection, registry);
         }
 
-        //[Benchmark]
-        //public void List_GetByKey_Test()
-        //{
-        //    dhelper.GetByKey_Test(collection, list);
-        //}
-
         [Benchmark]
         public void Dictionary_GetByKey_Test()
         {
-            dhelper.GetByKey_Test(collection, (IDictionary<string, string>)dictionary);
+            dhelper.GetByKey_Test(collection, dictionary);
         }
 
         [Benchmark]
@@ -116,9 +106,7 @@ namespace Undersoft.SDK.Benchmarks.Series
         [Benchmark]
         public void ConcurrentDictionary_GetByKey_Test()
         {
-            dhelper.GetByKey_Test(collection, (IDictionary<string, string>)concurrentdictionary);
+            dhelper.GetByKey_Test(collection, concurrentdictionary);
         }
-
-
     }
 }

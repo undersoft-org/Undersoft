@@ -136,7 +136,7 @@ namespace Undersoft.SDK.Benchmarks.Series
                                 () =>
                                     dhelper.GetByKey_Test(
                                         collection.Skip(x * limit).Take(limit).ToArray(),
-                                        (IDictionary<string, string>)concurrentdictionary
+                                        concurrentdictionary
                                     )
                             )
                     )

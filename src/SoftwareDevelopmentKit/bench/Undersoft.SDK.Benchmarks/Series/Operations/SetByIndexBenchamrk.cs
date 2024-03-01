@@ -46,42 +46,35 @@ namespace Undersoft.SDK.Benchmarks.Series
             dhelper = new BenchmarkCollectionHelper();
             chelper = new BenchmarkSeriesHelper(); ;
 
+            collection = dhelper.identifierKeyTestCollection;
+
+            foreach (var item in collection)
+            {
+                listing.Add(item.Key, item.Value);
+                registry.Add(item.Key, item.Value);
+
+                list.Add(item.Value);
+                ordereddictionary.Add(item.Key, item.Value);
+            }
+
             DefaultTraceListener Logfile = new DefaultTraceListener();
             Logfile.Name = "Logfile";
             Trace.Listeners.Add(Logfile);
             Logfile.LogFileName = $"Catalog64_{DateTime.Now.ToFileTime().ToString()}_Test.log";
 
-            collection = dhelper.identifierKeyTestCollection;
         }
 
-        [IterationSetup]
-        public void Prepare()
-        {
-            foreach (var item in collection)
-            {
-                chain.TryAdd(item.Key.ToString(), item.Value);
-                catalog.TryAdd(item.Key.ToString(), item.Value);
-                listing.TryAdd(item.Key.ToString(), item.Value);
-                registry.TryAdd(item.Key.ToString(), item.Value);
+        //[Benchmark]
+        //public void Chain_SetByIndex_Test()
+        //{
+        //    chelper.SetByIndex_Test(collection, chain);
+        //}
 
-                list.Add(item.Value);
-                dictionary.TryAdd(item.Key.ToString(), item.Value);
-                ordereddictionary.Add(item.Key.ToString(), item.Value);
-                concurrentdictionary.TryAdd(item.Key.ToString(), item.Value);
-            }
-        }
-
-        [Benchmark]
-        public void Chain_SetByIndex_Test()
-        {
-            chelper.SetByIndex_Test(collection, chain);
-        }
-
-        [Benchmark]
-        public void Catalog_SetByIndex_Test()
-        {
-            chelper.SetByIndex_Test(collection, catalog);
-        }
+        //[Benchmark]
+        //public void Catalog_SetByIndex_Test()
+        //{
+        //    chelper.SetByIndex_Test(collection, catalog);
+        //}
 
         [Benchmark]
         public void Listing_SetByIndex_Test()
@@ -107,11 +100,11 @@ namespace Undersoft.SDK.Benchmarks.Series
         //    dhelper.SetByIndex_Test(collection, (IDictionary<string, string>)dictionary);
         //}
 
-        //[Benchmark]
-        //public void OrderedDictionary_SetByIndex_Test()
-        //{
-        //    dhelper.SetByIndex_Test(collection, ordereddictionary);
-        //}
+        [Benchmark]
+        public void OrderedDictionary_SetByIndex_Test()
+        {
+            dhelper.SetByIndex_Test(collection, ordereddictionary);
+        }
 
         //[Benchmark]
         //public void ConcurrentDictionary_SetByIndex_Test()

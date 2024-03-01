@@ -157,7 +157,7 @@
 
         public override ISeriesItem<V> Next(ISeriesItem<V> item)
         {
-            ISeriesItem<V> _item = vector[item.Index + 1];
+            var _item = vector[item.Index + 1];
             if (_item != null)
             {
                 if (!_item.Removed)

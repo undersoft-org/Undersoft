@@ -16,7 +16,7 @@ namespace Undersoft.SDK.Benchmarks.Series
     [RankColumn]
     [RPlotExporter]
     [SimpleJob(RunStrategy.ColdStart, targetCount: 5)]
-    public class ConcurrentGetItemByKeyBenchmark
+    public class ConcurrentGetOrAddBenchmark
     {
         public static object holder = new object();
         public static int threadCount = 0;
@@ -29,7 +29,7 @@ namespace Undersoft.SDK.Benchmarks.Series
         public Registry<string> registry = new Registry<string>();
         public ConcurrentDictionary<string, string> concurrentdictionary = new ConcurrentDictionary<string, string>();
 
-        public ConcurrentGetItemByKeyBenchmark()
+        public ConcurrentGetOrAddBenchmark()
         {
             Setup();
         }
@@ -58,8 +58,8 @@ namespace Undersoft.SDK.Benchmarks.Series
             concurrentdictionary = new ConcurrentDictionary<string, string>();
             foreach (var item in collection.Take(count / 2))
             {
-                catalog.TryAdd(item.Key, item.Value);
-                registry.TryAdd(item.Key, item.Value);
+                catalog.Add(item.Key, item.Value);
+                registry.Add(item.Key, item.Value);
                 concurrentdictionary.TryAdd(item.Key.ToString(), item.Value);
             }
         }

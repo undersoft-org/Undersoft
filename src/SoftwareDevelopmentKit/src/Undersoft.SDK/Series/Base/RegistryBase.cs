@@ -12,7 +12,7 @@ namespace Undersoft.SDK.Series.Base
         int readers;
 
         readonly ManualResetEventSlim readAccess = new ManualResetEventSlim(true, 128);
-        readonly ManualResetEventSlim removeAccess = new ManualResetEventSlim(true, 128);
+        readonly ManualResetEventSlim rehashAccess = new ManualResetEventSlim(true, 128);
         readonly ManualResetEventSlim writeAccess = new ManualResetEventSlim(true, 128);
         readonly SemaphoreSlim writePass = new SemaphoreSlim(1);
 
@@ -44,14 +44,14 @@ namespace Undersoft.SDK.Series.Base
         protected void acquireReader()
         {
             Interlocked.Increment(ref readers);
-            removeAccess.Reset();
+            rehashAccess.Reset();
             if (!readAccess.Wait(WAIT_READ_TIMEOUT))
                 throw new TimeoutException("Wait read timeout");
         }
 
-        protected void acquireRemover()
+        protected void acquireRehash()
         {
-            if (!removeAccess.Wait(WAIT_REHASH_TIMEOUT))
+            if (!rehashAccess.Wait(WAIT_REHASH_TIMEOUT))
                 throw new TimeoutException("Wait write Timeout");
             readAccess.Reset();
         }
@@ -69,10 +69,10 @@ namespace Undersoft.SDK.Series.Base
         protected void releaseReader()
         {
             if (0 == Interlocked.Decrement(ref readers))
-                removeAccess.Set();
+                rehashAccess.Set();
         }
 
-        protected void releaseRemover()
+        protected void releaseRehash()
         {
             readAccess.Set();
         }
@@ -142,9 +142,9 @@ namespace Undersoft.SDK.Series.Base
 
         protected override V InnerRemove(long key)
         {
-            acquireWriter();
+            acquireReader();
             V temp = base.InnerRemove(key);
-            releaseWriter();
+            releaseReader();
             return temp;
         }
 
@@ -158,16 +158,16 @@ namespace Undersoft.SDK.Series.Base
 
         protected override void Rehash(int newsize)
         {
-            acquireRemover();
+            acquireRehash();
             base.Rehash(newsize);
-            releaseRemover();
+            releaseRehash();
         }
 
         protected override void Reindex()
         {
-            acquireRemover();
+            acquireRehash();
             base.Reindex();
-            releaseRemover();
+            releaseRehash();
         }
 
         protected override bool InnerAdd(ISeriesItem<V> value)
@@ -197,9 +197,9 @@ namespace Undersoft.SDK.Series.Base
         public override void Clear()
         {
             acquireWriter();
-            acquireRemover();
+            acquireRehash();
             base.Clear();
-            releaseRemover();
+            releaseRehash();
             releaseWriter();
         }
 
@@ -317,9 +317,9 @@ namespace Undersoft.SDK.Series.Base
 
         protected override ISeriesItem<V> swapRepeated(ISeriesItem<V> item)
         {
-            acquireRemover();
+            acquireRehash();
             var _item = base.swapRepeated(item);
-            releaseRemover();
+            releaseRehash();
             return _item;
         }
     }
