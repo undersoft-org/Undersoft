@@ -81,6 +81,25 @@ namespace Undersoft.SDK.Benchmarks.Series
         }
 
         [Benchmark]
+        public void Dictionary_Remove_Test()
+        {
+            dhelper.Remove_Test(collection, (IDictionary<string, string>)dictionary);
+        }
+
+        //[Benchmark]
+        //public void OrderedDictionary_Remove_Test()
+        //{
+        //    dhelper.Remove_Test(collection, ordereddictionary);
+        //}
+
+        [Benchmark]
+        public void ConcurrentDictionary_Remove_Test()
+        {
+            dhelper.Remove_Test(collection, (IDictionary<string, string>)concurrentdictionary);
+        }
+
+
+        [Benchmark]
         public void Chain_Remove_Test()
         {
             chelper.Remove_Test(collection, chain);
@@ -103,31 +122,5 @@ namespace Undersoft.SDK.Benchmarks.Series
         {
             chelper.Remove_Test(collection, registry);
         }
-
-        //[Benchmark]
-        //public void List_Remove_Test()
-        //{
-        //    dhelper.Remove_Test(collection, list);
-        //}
-
-        [Benchmark]
-        public void Dictionary_Remove_Test()
-        {
-            dhelper.Remove_Test(collection, (IDictionary<string, string>)dictionary);
-        }
-
-        [Benchmark]
-        public void OrderedDictionary_Remove_Test()
-        {
-            dhelper.Remove_Test(collection, ordereddictionary);
-        }
-
-        [Benchmark]
-        public void ConcurrentDictionary_Remove_Test()
-        {
-            dhelper.Remove_Test(collection, (IDictionary<string, string>)concurrentdictionary);
-        }
-
-
     }
 }

@@ -74,23 +74,23 @@ namespace Undersoft.SDK.Benchmarks.Series
             }
         }
 
-        //[Benchmark]
-        //public void Chain_GetOrAdd_Test()
-        //{
-        //    chelper.GetOrAdd_Test(collection, chain);
-        //}
+        [Benchmark]
+        public void Chain_GetOrAdd_Test()
+        {
+            chelper.GetOrAdd_Test(collection, chain);
+        }
 
-        //[Benchmark]
-        //public void Catalog_GetOrAdd_Test()
-        //{
-        //    chelper.GetOrAdd_Test(collection, catalog);
-        //}
+        [Benchmark]
+        public void Catalog_GetOrAdd_Test()
+        {
+            chelper.GetOrAdd_Test(collection, catalog);
+        }
 
-        //[Benchmark]
-        //public void Listing_GetOrAdd_Test()
-        //{
-        //    chelper.GetOrAdd_Test(collection, listing);
-        //}
+        [Benchmark]
+        public void Listing_GetOrAdd_Test()
+        {
+            chelper.GetOrAdd_Test(collection, listing);
+        }
 
         [Benchmark]
         public void Registry_GetOrAdd_Test()
@@ -98,10 +98,10 @@ namespace Undersoft.SDK.Benchmarks.Series
             chelper.GetOrAdd_Test(collection, registry);
         }
 
-        //[Benchmark]
-        //public void ConcurrentDictionary_GetOrAdd_Test()
-        //{
-        //    dhelper.GetOrAdd_Test(collection, concurrentdictionary);
-        //}
+        [Benchmark]
+        public void ConcurrentDictionary_GetOrAdd_Test()
+        {
+            dhelper.GetOrAdd_Test(collection, concurrentdictionary);
+        }
     }
 }

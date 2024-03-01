@@ -72,13 +72,6 @@ namespace Undersoft.SDK.Benchmarks.Series
         }
 
         [Benchmark]
-        public void List_TryAdd_Test()
-        {
-            var registry = new List<string>();
-            dhelper.Add_Test(collection, registry);
-        }
-
-        [Benchmark]
         public void Dictionary_TryAdd_Test()
         {
             var registry = new Dictionary<string, string>();

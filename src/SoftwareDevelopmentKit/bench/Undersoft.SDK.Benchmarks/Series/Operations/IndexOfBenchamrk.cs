@@ -9,6 +9,7 @@ namespace Undersoft.SDK.Benchmarks.Series
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Diagnostics;
+    using System.Linq;
     using System.Threading.Tasks;
     using Undersoft.SDK.Series;
 
@@ -46,7 +47,7 @@ namespace Undersoft.SDK.Benchmarks.Series
             dhelper = new BenchmarkCollectionHelper();
             chelper = new BenchmarkSeriesHelper(); ;
 
-            collection = dhelper.identifierKeyTestCollection;
+            collection = dhelper.identifierKeyTestCollection.Take(10000).ToArray();
 
             foreach (var item in collection)
             {
@@ -86,11 +87,11 @@ namespace Undersoft.SDK.Benchmarks.Series
             chelper.IndexOf_Test(collection, registry);
         }
 
-        //[Benchmark]
-        //public void List_IndexOf_Test()
-        //{
-        //    dhelper.IndexOf_Test(collection, list);
-        //}
+        [Benchmark]
+        public void List_IndexOf_Test()
+        {
+            dhelper.IndexOf_Test(collection, list);
+        }
 
         //[Benchmark]
         //public void Dictionary_IndexOf_Test()

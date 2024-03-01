@@ -13,7 +13,7 @@ public class Updater : IUpdater
 {
     protected ProxyCreator creator;
     protected IProxy source;
-    protected Type type => creator.BaseType;
+    protected Type type;
     protected int counter = 0;
     protected bool traceable;
 
@@ -29,7 +29,7 @@ public class Updater : IUpdater
 
     public Updater() { }
 
-    public Updater(object item, IInvoker traceChanges) : this(item.GetType())
+    public Updater(object item, IInvoker traceChanges)
     {
         if (traceChanges != null)
         {
@@ -37,87 +37,70 @@ public class Updater : IUpdater
             traceable = true;
         }
 
-        if (item.GetType().IsAssignableTo(typeof(IProxy)))
+        type = item.GetType();
+
+        if (type.IsAssignableTo(typeof(IProxy)))
             Combine(item as IProxy);
+        else if (type.IsAssignableTo(typeof(IInnerProxy)))
+            Combine(item as IInnerProxy);
         else
             Combine(item);
     }
 
     public Updater(object item) : this(item, null) { }
 
-    public Updater(IProxy proxy) : this(proxy.Target.GetType())
+    public Updater(IProxy proxy)
     {
         Combine(proxy);
     }
 
-    internal Updater(Type type)
+    protected virtual ProxyCreator GetCreator(Type type)
     {
-        creator = ProxyFactory.GetCreator(type);
+        return creator ??= ProxyFactory.GetCreator(type);
     }
 
     protected virtual void Combine(IProxy proxy)
     {
+        type = proxy.Target.GetType();
+        if (proxy.Rubrics == null)
+            proxy.Rubrics = GetCreator(type).Rubrics;
         source = proxy;
+    }
+
+    protected virtual void Combine(IInnerProxy proxy)
+    {
+        if (type == null)
+            type = proxy.GetType();
+        source = proxy.Proxy;
     }
 
     protected virtual void Combine(object item)
     {
-        source = creator.Create(item);
-    }
-
-    protected virtual void SetBy(IProxy target, UpdatedItem[] updates, int count)
-    {
-        var _target = target;
-        var _updates = updates;
-        UpdatedItem item;
-        for (int i = 0; i < count; i++)
-        {
-            item = _updates[i];
-            if (item.TargetType.IsAssignableTo(item.OriginType))
-            {
-                _target[item.TargetIndex] = item.OriginValue;
-            }
-        }
-    }
-
-    protected virtual void Set(IProxy target, UpdatedItem[] updates, int count)
-    {
-        var _target = target;
-        var _changes = updates;
-        UpdatedItem vary;
-        for (int i = 0; i < count; i++)
-        {
-            vary = _changes[i];
-            _target[vary.TargetIndex] = vary.OriginValue;
-        }
+        source = GetCreator(type ??= item.GetType()).Create(item);
     }
 
     public object Patch(object item)
     {
-        UpdatedItem[] changes;
-
         MemberUpdate = (o, t) => o.Patch(t);
 
         IProxy target = item.ToProxy();
         if (item.GetType() != type)
-            SetBy(target, changes = PatchNotEqualTypes(target), counter);
+            PatchNotEqualTypes(target);
         else
-            Set(target, changes = PatchEqualTypes(target), counter);
+            PatchEqualTypes(target);
 
         return item;
     }
 
     public E Patch<E>(E item) where E : class
     {
-        UpdatedItem[] changes;
-
         MemberUpdate = (o, t) => o.Patch(t);
 
         IProxy target = item.ToProxy();
         if (typeof(E) != type)
-            SetBy(target, changes = PatchNotEqualTypes(target), counter);
+            PatchNotEqualTypes(target);
         else
-            Set(target, changes = PatchEqualTypes(target), counter);
+            PatchEqualTypes(target);
 
         return item;
     }
@@ -129,34 +112,30 @@ public class Updater : IUpdater
 
     public object Put(object item)
     {
-        UpdatedItem[] updates = null;
-
         MemberUpdate = (o, t) => o.Put(t);
 
         IProxy target = item.ToProxy();
         if (target != null)
         {
             if (item.GetType() != type)
-                SetBy(target, updates = PutNotEqualTypes(target), counter);
+                PutNotEqualTypes(target);
             else
-                Set(target, updates = PutEqualTypes(target), counter);
+                PutEqualTypes(target);
         }
         return item;
     }
 
     public E Put<E>(E item) where E : class
     {
-        UpdatedItem[] updates = null;
-
         MemberUpdate = (o, t) => o.Put(t);
 
         IProxy target = item.ToProxy();
         if (target != null)
         {
             if (typeof(E) != type)
-                SetBy(target, updates = PutNotEqualTypes(target), counter);
+                PutNotEqualTypes(target);
             else
-                Set(target, updates = PutEqualTypes(target), counter);
+                PutEqualTypes(target);
         }
         return item;
     }
@@ -164,40 +143,6 @@ public class Updater : IUpdater
     public E Put<E>() where E : class
     {
         return Put(typeof(E).New<E>());
-    }
-
-    public UpdatedItem[] Detect(object item)
-    {
-        UpdatedItem[] changes = null;
-
-        MemberUpdate = (o, t) => o.Detect(t);
-
-        IProxy target = item.ToProxy();
-        if (target != null)
-        {
-            if (item.GetType() != type)
-                changes = PatchNotEqualTypes(target);
-            else
-                changes = PatchEqualTypes(target);
-        }
-        return changes;
-    }
-
-    public UpdatedItem[] Detect<E>(E item) where E : class
-    {
-        UpdatedItem[] changes = null;
-
-        MemberUpdate = (o, t) => o.Detect(t);
-
-        IProxy target = item.ToProxy();
-        if (target != null)
-        {
-            if (typeof(E) != type)
-                changes = PatchNotEqualTypes(target);
-            else
-                changes = PatchEqualTypes(target);
-        }
-        return changes;
     }
 
     public object Clone()
@@ -208,131 +153,108 @@ public class Updater : IUpdater
         return clone;
     }
 
-    protected UpdatedItem[] PatchEqualTypes(IProxy target)
+    protected void PatchEqualTypes(IProxy target)
     {
         counter = 0;
         var _target = target;
-        var _updates = new UpdatedItem[Rubrics.Count];
-        var _item = new UpdatedItem();
 
-        Rubrics.ForEach(
-            (rubric) =>
-            {
-                if (!rubric.IsKey && !ExcludedRubrics.Contains(rubric.Name.ToLower()))
+        Rubrics
+            .Where(r => !r.IsKey && !r.RubricName.Equals("proxy"))
+            .ForEach(
+                (rubric) =>
                 {
                     var targetndex = rubric.RubricId;
                     var originValue = Source[targetndex];
                     var targetValue = _target[targetndex];
 
-                    if (!originValue.NullOrEquals(targetValue))
+                    if (
+                        !originValue.NullOrEquals(targetValue)
+                        && !RecursiveUpdate(originValue, targetValue, target, rubric, rubric)
+                    )
                     {
-                        if (!RecursiveUpdate(originValue, targetValue, target, rubric, rubric))
-                        {
-                            _item.TargetIndex = targetndex;
-                            _item.OriginValue = originValue;
-                            _updates[counter++] = _item;
-                        }
+                        _target[targetndex] = originValue;
                     }
                 }
-            }
-        );
-        return _updates;
+            );
     }
 
-    protected UpdatedItem[] PatchNotEqualTypes(IProxy target)
+    protected void PatchNotEqualTypes(IProxy target)
     {
         counter = 0;
         var _target = target;
-        var _updates = new UpdatedItem[Rubrics.Count];
-        var _item = new UpdatedItem();
 
-        Rubrics.ForEach(
-            (originRubric) =>
-            {
-                if (!originRubric.IsKey && !ExcludedRubrics.Contains(originRubric.Name.ToLower()))
+        Rubrics
+            .Where(r => !r.IsKey && !r.RubricName.Equals("proxy"))
+            .ForEach(
+                (originRubric) =>
                 {
                     var name = originRubric.Name;
                     if (_target.Rubrics.TryGet(name, out MemberRubric targetRubric))
                     {
                         var originValue = Source[originRubric.RubricId];
-
                         var targetIndex = targetRubric.RubricId;
                         var targetValue = _target[targetIndex];
 
-                        if (!originValue.NullOrEquals(targetValue))
-                        {
-                            if (
-                                !RecursiveUpdate(
-                                    originValue,
-                                    targetValue,
-                                    target,
-                                    originRubric,
-                                    targetRubric
-                                )
+                        if (
+                            !originValue.NullOrEquals(targetValue)
+                            && !RecursiveUpdate(
+                                originValue,
+                                targetValue,
+                                target,
+                                originRubric,
+                                targetRubric
                             )
+                        )
+                        {
+                            if (targetRubric.RubricType.IsAssignableTo(originRubric.RubricType))
                             {
-                                _item.TargetIndex = targetIndex;
-                                _item.OriginValue = originValue;
-                                _item.OriginType = originRubric.RubricType;
-                                _item.TargetType = targetRubric.RubricType;
-                                _updates[counter++] = _item;
+                                _target[targetIndex] = originValue;
                             }
                         }
                     }
                 }
-            }
-        );
-        return _updates;
+            );
     }
 
-    protected UpdatedItem[] PutEqualTypes(IProxy target)
+    protected void PutEqualTypes(IProxy target)
     {
         counter = 0;
         var _target = target;
-        var _updates = new UpdatedItem[Rubrics.Count];
-        var _item = new UpdatedItem();
 
-        Rubrics.ForEach(
-            (rubric) =>
-            {
-                if (!rubric.IsKey && !ExcludedRubrics.Contains(rubric.Name.ToLower()))
+        Rubrics
+            .Where(r => !r.IsKey && !r.RubricName.Equals("proxy"))
+            .ForEach(
+                (rubric) =>
                 {
-                    var index = rubric.RubricId;
-                    var originValue = Source[index];
-                    var targetValue = _target[index];
+                    var targetndex = rubric.RubricId;
+                    var originValue = Source[targetndex];
+                    var targetValue = _target[targetndex];
 
                     if (
                         originValue != null
                         && !RecursiveUpdate(originValue, targetValue, target, rubric, rubric)
                     )
                     {
-                        _item.TargetIndex = index;
-                        _item.OriginValue = originValue;
-                        _updates[counter++] = _item;
+                        _target[targetndex] = originValue;
                     }
                 }
-            }
-        );
-        return _updates;
+            );
     }
 
-    protected UpdatedItem[] PutNotEqualTypes(IProxy target)
+    protected void PutNotEqualTypes(IProxy target)
     {
         counter = 0;
         var _target = target;
-        var _updates = new UpdatedItem[Rubrics.Count];
-        var _item = new UpdatedItem();
 
-        Rubrics.ForEach(
-            (originRubric) =>
-            {
-                if (!originRubric.IsKey && !ExcludedRubrics.Contains(originRubric.Name.ToLower()))
+        Rubrics
+            .Where(r => !r.IsKey && !r.RubricName.Equals("proxy"))
+            .ForEach(
+                (originRubric) =>
                 {
                     var name = originRubric.Name;
                     if (_target.Rubrics.TryGet(name, out MemberRubric targetRubric))
                     {
                         var originValue = Source[originRubric.RubricId];
-
                         if (originValue == null)
                             return;
 
@@ -350,17 +272,14 @@ public class Updater : IUpdater
                             )
                         )
                         {
-                            _item.TargetIndex = targetIndex;
-                            _item.OriginValue = originValue;
-                            _item.OriginType = originRubric.RubricType;
-                            _item.TargetType = targetRubric.RubricType;
-                            _updates[counter++] = _item;
+                            if (targetRubric.RubricType.IsAssignableTo(originRubric.RubricType))
+                            {
+                                _target[targetIndex] = originValue;
+                            }
                         }
                     }
                 }
-            }
-        );
-        return _updates;
+            );
     }
 
     private bool RecursiveUpdate(
@@ -379,11 +298,10 @@ public class Updater : IUpdater
 
         if (targetValue == null)
         {
+            target[targetRubric.RubricId] = targetValue = targetType.New();
+
             if (traceable)
                 targetValue = TraceEvent.Invoke(target.Target, targetRubric.RubricName, targetType);
-
-            if (targetValue == null)
-                target[targetRubric.RubricId] = targetValue = targetType.New();
         }
 
         if (originType.IsAssignableTo(typeof(IEnumerable)))

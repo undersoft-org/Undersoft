@@ -52,7 +52,7 @@ namespace Undersoft.SDK.Series.Base
         protected void acquireRehash()
         {
             if (!rehashAccess.Wait(WAIT_REHASH_TIMEOUT))
-                throw new TimeoutException("Wait write Timeout");
+                throw new TimeoutException("Wait rehash Timeout");
             readAccess.Reset();
         }
 
@@ -142,9 +142,9 @@ namespace Undersoft.SDK.Series.Base
 
         protected override V InnerRemove(long key)
         {
-            acquireReader();
+            acquireWriter();
             V temp = base.InnerRemove(key);
-            releaseReader();
+            releaseWriter();
             return temp;
         }
 

@@ -3,7 +3,7 @@ using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Exporters.Csv;
 using BenchmarkDotNet.Running;
 using System;
-using Undersoft.SDK.Benchmarks.Series;
+using Undersoft.SDK.Benchmarks.Instant.Math;
 
 namespace Undersoft.Benchmarks
 {
@@ -11,6 +11,12 @@ namespace Undersoft.Benchmarks
     {
         static void Main(string[] args)
         {
+            //var updater = new UpdaterProxySeriesBenchmark();
+            //updater.Setup();
+            //updater.Prepare();
+            //updater.Mapper_Map();
+            //updater.Updater_Patch();
+
             var config = ManualConfig
                 .Create(DefaultConfig.Instance)
                 .WithOptions(ConfigOptions.JoinSummary)
@@ -21,8 +27,7 @@ namespace Undersoft.Benchmarks
             var summary = BenchmarkRunner.Run(
                 new[]
                 {
-                    BenchmarkConverter.TypeToBenchmarks(typeof(RemoveBenchmark), config),
-
+                    BenchmarkConverter.TypeToBenchmarks(typeof(UpdaterProxySeriesBenchmark), config)
                 }
             );
 

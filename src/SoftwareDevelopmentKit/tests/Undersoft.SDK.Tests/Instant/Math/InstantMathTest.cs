@@ -64,14 +64,14 @@ public class InstantMathTest
 
     private void createInstantSeries_Test_Helper()
     {
-        instatnSeriesCreator = new InstantSeriesCreator<InstantMathTestDataModel>(InstantType.Derived, false);
+        instatnSeriesCreator = new InstantProxiesCreator<InstantMathTestDataModel>(InstantType.Derived, false);
 
         instantSeries = instatnSeriesCreator.Create();
     }
 
     private void createInstantValueSeries_Test_Helper()
     {
-        instatnSeriesCreator = new InstantSeriesCreator<InstantMathTestDataModel>(InstantType.ValueType, false);
+        instatnSeriesCreator = new InstantProxiesCreator<InstantMathTestDataModel>(InstantType.ValueType, false);
 
         instantValueSeries = instatnSeriesCreator.Create();
     }

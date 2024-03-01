@@ -141,8 +141,7 @@ namespace System.Series.Tests
         {
             foreach (var item in testCollection)
             {
-                string output = null;
-                registry.TryDequeue(out output);
+                string output = registry.Dequeue();
             }
         }
 

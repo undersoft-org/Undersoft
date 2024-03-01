@@ -9,6 +9,7 @@ namespace Undersoft.SDK.Benchmarks.Series
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Diagnostics;
+    using System.Linq;
     using System.Threading.Tasks;
     using Undersoft.SDK.Series;
 
@@ -16,7 +17,7 @@ namespace Undersoft.SDK.Benchmarks.Series
     [RankColumn]
     [RPlotExporter]
     [SimpleJob(RunStrategy.ColdStart, targetCount: 5)]
-    public class ContainsBenchmark
+    public class ContainsValueBenchmark
     {
         public static object holder = new object();
         public static int threadCount = 0;
@@ -35,7 +36,7 @@ namespace Undersoft.SDK.Benchmarks.Series
         public OrderedDictionary ordereddictionary = new OrderedDictionary();
         public ConcurrentDictionary<string, string> concurrentdictionary = new ConcurrentDictionary<string, string>();
 
-        public ContainsBenchmark()
+        public ContainsValueBenchmark()
         {
             Setup();
         }
@@ -46,7 +47,7 @@ namespace Undersoft.SDK.Benchmarks.Series
             dhelper = new BenchmarkCollectionHelper();
             chelper = new BenchmarkSeriesHelper(); ;
 
-            collection = dhelper.identifierKeyTestCollection;
+            collection = dhelper.identifierKeyTestCollection.Take(10000).ToArray();
 
             foreach (var item in collection)
             {
@@ -57,8 +58,6 @@ namespace Undersoft.SDK.Benchmarks.Series
 
                 list.Add(item.Value);
                 dictionary.TryAdd(item.Key.ToString(), item.Value);
-                ordereddictionary.Add(item.Key.ToString(), item.Value);
-                concurrentdictionary.TryAdd(item.Key.ToString(), item.Value);
             }
 
             DefaultTraceListener Logfile = new DefaultTraceListener();
@@ -69,53 +68,39 @@ namespace Undersoft.SDK.Benchmarks.Series
         }
 
         [Benchmark]
-        public void Chain_Contains_Test()
+        public void Chain_ContainsValue_Test()
         {
             chelper.Contains_Test(collection, chain);
         }
 
         [Benchmark]
-        public void Catalog_Contains_Test()
+        public void Catalog_ContainsValue_Test()
         {
             chelper.Contains_Test(collection, catalog);
         }
 
         [Benchmark]
-        public void Listing_Contains_Test()
+        public void Listing_ContainsValue_Test()
         {
             chelper.Contains_Test(collection, listing);
         }
 
         [Benchmark]
-        public void Registry_Contains_Test()
+        public void Registry_ContainsValue_Test()
         {
             chelper.Contains_Test(collection, registry);
         }
 
-        //[Benchmark]
-        //public void List_Contains_Test()
-        //{
-        //    dhelper.Contains_Test(collection, list);
-        //}
+        [Benchmark]
+        public void List_ContainsValue_Test()
+        {
+            dhelper.Contains_Test(collection, list);
+        }
 
-        //[Benchmark]
-        //public void Dictionary_Contains_Test()
-        //{
-        //    dhelper.ContainsValue_Test(collection, dictionary);
-        //}
-
-        //[Benchmark]
-        //public void OrderedDictionary_Contains_Test()
-        //{
-        //    dhelper.Contains_Test(collection, ordereddictionary);
-        //}
-
-        //[Benchmark]
-        //public void ConcurrentDictionary_Contains_Test()
-        //{
-        //    dhelper.ContainsValue_Test(collection, concurrentdictionary);
-        //}
-
-
+        [Benchmark]
+        public void Dictionary_ContainsValue_Test()
+        {
+            dhelper.ContainsValue_Test(collection, dictionary);
+        }
     }
 }

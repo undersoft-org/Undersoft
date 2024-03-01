@@ -9,6 +9,7 @@ namespace Undersoft.SDK.Benchmarks.Series
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Diagnostics;
+    using System.Linq;
     using System.Threading.Tasks;
     using Undersoft.SDK.Series;
 
@@ -46,9 +47,9 @@ namespace Undersoft.SDK.Benchmarks.Series
             dhelper = new BenchmarkCollectionHelper();
             chelper = new BenchmarkSeriesHelper(); ;
 
-            collection = dhelper.identifierKeyTestCollection;
+            collection = dhelper.identifierKeyTestCollection.Take(10000).ToArray();
 
-            foreach (var item in collection)
+            foreach (var item in collection.Take(collection.Count / 2))
             {
                 chain.Add(item.Key, item.Value);
                 catalog.Add(item.Key, item.Value);
@@ -56,9 +57,7 @@ namespace Undersoft.SDK.Benchmarks.Series
                 registry.Add(item.Key, item.Value);
 
                 list.Add(item.Value);
-                dictionary.TryAdd(item.Key.ToString(), item.Value);
                 ordereddictionary.Add(item.Key.ToString(), item.Value);
-                concurrentdictionary.TryAdd(item.Key.ToString(), item.Value);
             }
 
             DefaultTraceListener Logfile = new DefaultTraceListener();
@@ -79,11 +78,11 @@ namespace Undersoft.SDK.Benchmarks.Series
             chelper.Insert_Test(collection, registry);
         }
 
-        //[Benchmark]
-        //public void List_Insert_Test()
-        //{
-        //    dhelper.Insert_Test(collection, list);
-        //}
+        [Benchmark]
+        public void List_Insert_Test()
+        {
+            dhelper.Insert_Test(collection, list);
+        }
 
         [Benchmark]
         public void OrderedDictionary_Insert_Test()

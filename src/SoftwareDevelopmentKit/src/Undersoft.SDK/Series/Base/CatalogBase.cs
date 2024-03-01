@@ -47,13 +47,13 @@
             Interlocked.Increment(ref readers);
             rehashAccess.Reset();
             if (!readAccess.Wait(WAIT_READ_TIMEOUT))
-                throw new TimeoutException("Wait write Timeout");
+                throw new TimeoutException("Wait read Timeout");
         }
 
         protected void acquireRehash()
         {
             if (!rehashAccess.Wait(WAIT_REHASH_TIMEOUT))
-                throw new TimeoutException("Wait write Timeout");
+                throw new TimeoutException("Wait rehash Timeout");
             readAccess.Reset();
         }
 
@@ -126,9 +126,9 @@
 
         protected override V InnerRemove(long key)
         {
-            acquireReader();
+            acquireWriter();
             V temp = base.InnerRemove(key);
-            releaseReader();
+            releaseWriter();
             return temp;
         }
 

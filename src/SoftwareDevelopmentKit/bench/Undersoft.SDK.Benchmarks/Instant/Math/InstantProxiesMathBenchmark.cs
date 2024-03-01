@@ -57,7 +57,7 @@ namespace Undersoft.SDK.Benchmarks.Instant.Math
         [Benchmark]
         public void Parallel_Instant_Proxies_Undersoft_SDK_Instant_Math_Engine()
         {
-            seriesMathB.ComputeInParallel(10);
+            seriesMathB.Compute(10);
         }
 
         [Benchmark]

@@ -2,10 +2,14 @@ namespace Undersoft.SDK.Benchmarks.Updating.Models.Agreements
 {
     public class AgreementFormat : Identifiable
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = "FORMAT";
 
-        public virtual Agreements Agreements { get; } = new Agreements();
     }
 
+    public class EmptyAgreementFormat : Identifiable
+    {
+        public string Name { get; set; }
+
+    }
 
 }

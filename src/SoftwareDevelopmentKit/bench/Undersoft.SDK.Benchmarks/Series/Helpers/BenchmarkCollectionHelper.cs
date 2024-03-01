@@ -140,7 +140,7 @@ namespace System.Series.Tests
 
         public void Remove_Test(IEnumerable<KeyValuePair<object, string>> testCollection, IDictionary<string, string> registry)
         {
-            foreach (var item in testCollection)
+            foreach (var item in testCollection.Skip(100000))
             {
                 registry.Remove(item.Key.ToString());
             }

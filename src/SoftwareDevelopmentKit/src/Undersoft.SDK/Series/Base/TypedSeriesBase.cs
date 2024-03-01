@@ -8,7 +8,7 @@
     using Undersoft.SDK;
     using Undersoft.SDK.Uniques;
 
-    public abstract class TypedSeriesBase<V> : Identifiable, IIdentifiable, ISet<V>, IAsyncDisposable, IListSource, ITypedSeries<V> where V : IIdentifiable
+    public abstract class TypedSeriesBase<V> : Identifiable, IIdentifiable, ISet<V>, IAsyncDisposable, IList, IListSource, ITypedSeries<V> where V : IIdentifiable
     {
         internal const float RESIZING_VECTOR = 2.333f;
         internal const float CONFLICTS_PERCENT_LIMIT = 0.22f;
@@ -1823,6 +1823,35 @@
         public virtual void UnionWith(IEnumerable<V> other)
         {
             this.Add(other);
+        }
+
+        bool IList.IsFixedSize => throw new NotImplementedException();
+
+        object IList.this[int index] { get => this[index]; set => this[index] = (V)value; }
+
+        int IList.Add(object value)
+        {
+            return this.InnerPut((V)value).Index;
+        }
+
+        bool IList.Contains(object value)
+        {
+            return this.Contains((V)value);
+        }
+
+        int IList.IndexOf(object value)
+        {
+            return this.IndexOf((V)value);
+        }
+
+        void IList.Insert(int index, object value)
+        {
+            this.Insert(index, (V)value);
+        }
+
+        void IList.Remove(object value)
+        {
+            this.Remove((V)value);
         }
     }
 }

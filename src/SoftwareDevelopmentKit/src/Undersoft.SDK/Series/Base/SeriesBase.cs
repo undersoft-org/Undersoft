@@ -11,7 +11,7 @@ namespace Undersoft.SDK.Series.Base
     using Undersoft.SDK;
     using Undersoft.SDK.Uniques;
 
-    public abstract class SeriesBase<V> : Identifiable, IIdentifiable, ISeries<V>, ISet<V>, IAsyncDisposable, IListSource
+    public abstract class SeriesBase<V> : Identifiable, IIdentifiable, ISeries<V>, ISet<V>, IList, IAsyncDisposable, IListSource
     {
 
         internal const float RESIZING_VECTOR = 2.333F;
@@ -35,7 +35,6 @@ namespace Undersoft.SDK.Series.Base
 
         private int previousSize()
         {
-
             return (int)(size * (1 - REMOVED_PERCENT_LIMIT)) | 3;
         }
 
@@ -1308,11 +1307,6 @@ namespace Undersoft.SDK.Series.Base
 
         public bool ContainsListCollection => true;
 
-        public IList GetList()
-        {
-            return (IList)this;
-        }
-
         public virtual byte[] GetBytes()
         {
             return code.GetBytes();
@@ -1375,5 +1369,38 @@ namespace Undersoft.SDK.Series.Base
             this.Add(other);
         }
 
+        bool IList.IsFixedSize => throw new NotImplementedException();
+
+        object IList.this[int index] { get => this[index]; set => this[index] = (V)value; }
+
+        public IList GetList()
+        {
+            return (IList)this;
+        }
+
+        int IList.Add(object value)
+        {
+            return this.InnerPut((V)value).Index;
+        }
+
+        bool IList.Contains(object value)
+        {
+            return this.Contains((V)value);
+        }
+
+        int IList.IndexOf(object value)
+        {
+            return this.IndexOf((V)value);
+        }
+
+        void IList.Insert(int index, object value)
+        {
+            this.Insert(index, (V)value);
+        }
+
+        void IList.Remove(object value)
+        {
+            this.Remove((V)value);
+        }
     }
 }

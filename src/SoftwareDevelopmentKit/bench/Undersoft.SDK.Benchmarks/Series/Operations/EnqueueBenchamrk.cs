@@ -84,21 +84,5 @@ namespace Undersoft.SDK.Benchmarks.Series
             var registry = new ConcurrentQueue<string>();
             dhelper.Enqueue_Test(collection, registry);
         }
-
-        //[Benchmark]
-        //public void OrderedDictionary_Enqueue_Test()
-        //{
-        //    var registry = new OrderedDictionary();
-        //    dhelper.Enqueue_Test(collection, registry);
-        //}
-
-        //[Benchmark]
-        //public void ConcurrentDictionary_Enqueue_Test()
-        //{
-        //    var registry = new ConcurrentDictionary<string, string>();
-        //    dhelper.Enqueue_Test(collection, (IDictionary<string, string>)registry);
-        //}
-
-
     }
 }

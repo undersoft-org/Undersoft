@@ -1,9 +1,8 @@
 ﻿namespace Undersoft.SDK.Proxies
 {
-    using Proxies;
     using Undersoft.SDK.Instant;
-    using Undersoft.SDK.Rubrics;
     using Undersoft.SDK.Instant.Series;
+    using Undersoft.SDK.Rubrics;
     using Undersoft.SDK.Uniques;
 
     public class ProxySeriesCreator<T> : ProxySeriesCreator
@@ -18,7 +17,7 @@
             : base(typeof(T), seriesName, threadSafe) { }
     }
 
-    public class ProxySeriesCreator : InstantSeriesCreator
+    public class ProxySeriesCreator : InstantSeriesCreator, IProxyCreator
     {
         private ProxyCreator proxy;
 
@@ -53,6 +52,8 @@
         public ProxySeriesCreator(Type proxyModelType, string seriesName, bool threadSafe = true)
             : this(new ProxyCreator(proxyModelType), seriesName, threadSafe) { }
 
+        public virtual Type TargetType => proxy.BaseType;
+
         public override IRubrics Rubrics
         {
             get => proxy.Rubrics;
@@ -73,6 +74,16 @@
                 key = Unique.NewId;
             }
             return newProxies();
+        }
+
+        public virtual ProxyCreator GetProxyCreator()
+        {
+            return proxy;
+        }
+
+        public virtual IProxy CreateProxy(object target = null)
+        {
+            return proxy.Create(target);
         }
 
         public override object New()

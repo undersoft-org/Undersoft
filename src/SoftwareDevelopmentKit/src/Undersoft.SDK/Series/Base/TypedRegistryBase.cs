@@ -11,7 +11,7 @@
         const int WAIT_REHASH_TIMEOUT = 5000;
         const int WAIT_WRITE_TIMEOUT = 5000;
         internal readonly ManualResetEventSlim readAccess = new ManualResetEventSlim(true, 128);
-        internal readonly ManualResetEventSlim removeAccess = new ManualResetEventSlim(true, 128);
+        internal readonly ManualResetEventSlim rehashAccess = new ManualResetEventSlim(true, 128);
         internal readonly ManualResetEventSlim writeAccess = new ManualResetEventSlim(true, 128);
         internal readonly SemaphoreSlim writePass = new SemaphoreSlim(1);
         internal int readers;
@@ -75,15 +75,15 @@
         protected void acquireReader()
         {
             Interlocked.Increment(ref readers);
-            removeAccess.Reset();
+            rehashAccess.Reset();
             if (!readAccess.Wait(WAIT_READ_TIMEOUT))
-                throw new TimeoutException("Wait write Timeout");
+                throw new TimeoutException("Wait read Timeout");
         }
 
-        protected void acquireRemover()
+        protected void acquireRehash()
         {
-            if (!removeAccess.Wait(WAIT_REHASH_TIMEOUT))
-                throw new TimeoutException("Wait write Timeout");
+            if (!rehashAccess.Wait(WAIT_REHASH_TIMEOUT))
+                throw new TimeoutException("Wait rehash Timeout");
             readAccess.Reset();
         }
 
@@ -100,7 +100,7 @@
         protected void releaseReader()
         {
             if (0 == Interlocked.Decrement(ref readers))
-                removeAccess.Set();
+                rehashAccess.Set();
         }
 
         protected void releaseRehash()
@@ -213,14 +213,14 @@
 
         protected override void Rehash(int newsize)
         {
-            acquireRemover();
+            acquireRehash();
             base.Rehash(newsize);
             releaseRehash();
         }
 
         protected override void Reindex()
         {
-            acquireRemover();
+            acquireRehash();
             base.Reindex();
             releaseRehash();
         }
@@ -228,7 +228,7 @@
         public override void Clear()
         {
             acquireWriter();
-            acquireRemover();
+            acquireRehash();
 
             base.Clear();
 

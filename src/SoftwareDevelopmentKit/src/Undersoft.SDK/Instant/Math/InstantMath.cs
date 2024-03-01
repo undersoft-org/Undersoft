@@ -127,7 +127,7 @@ public class InstantMath : Identifiable, IInstantMath
         return _routine.Data;
     }
 
-    public IInstantSeries ComputeInParallel(int chunks = 4)
+    public IInstantSeries Compute(int chunks)
     {
         var rowcount = _routine.Data.Count;
         var chunksize = rowcount / chunks;

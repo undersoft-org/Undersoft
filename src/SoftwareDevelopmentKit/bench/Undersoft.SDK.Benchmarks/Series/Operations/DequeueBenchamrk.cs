@@ -60,17 +60,18 @@ namespace Undersoft.SDK.Benchmarks.Series
         [IterationSetup]
         public void Prepare()
         {
+            chain = new Chain<string>();
+            listing = new Listing<string>();
+            catalog = new Catalog<string>();
+            registry = new Registry<string>();
+            queue = new Queue<string>();
+            concurrentqueue = new ConcurrentQueue<string>();
             foreach (var item in collection)
             {
                 chain.TryAdd(item.Key, item.Value);
                 catalog.TryAdd(item.Key, item.Value);
                 listing.TryAdd(item.Key, item.Value);
                 registry.TryAdd(item.Key, item.Value);
-
-                list.Add(item.Value);
-                dictionary.TryAdd(item.Key.ToString(), item.Value);
-                ordereddictionary.Add(item.Key.ToString(), item.Value);
-                concurrentdictionary.TryAdd(item.Key.ToString(), item.Value);
 
                 queue.Enqueue(item.Value);
                 concurrentqueue.Enqueue(item.Value);

@@ -34,11 +34,6 @@
             return (T)base.source.Target;
         }
 
-        public UpdatedItem[] Detect(T item)
-        {
-            return base.Detect(item);
-        }
-
         public new T Clone()
         {
             var clone = typeof(T).New<T>();

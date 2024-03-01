@@ -16,6 +16,7 @@ namespace Undersoft.SDK.Series.Base
             ICollection<ISeriesItem<V>>,
             IList<ISeriesItem<V>>,
             IProducerConsumerCollection<V>,
+            IList,
             IDisposable,
             IIdentifiable
     {
@@ -1159,6 +1160,33 @@ namespace Undersoft.SDK.Series.Base
             return (IList)this;
         }
 
-        //private EnumerableQuery<V> query;
+        bool IList.IsFixedSize => throw new NotImplementedException();
+
+        object IList.this[int index] { get => this[index]; set => this[index] = (V)value; }
+
+        int IList.Add(object value)
+        {
+            return this.InnerPut((V)value).Index;
+        }
+
+        bool IList.Contains(object value)
+        {
+            return this.Contains((V)value);
+        }
+
+        int IList.IndexOf(object value)
+        {
+            return this.IndexOf((V)value);
+        }
+
+        void IList.Insert(int index, object value)
+        {
+            this.Insert(index, (V)value);
+        }
+
+        void IList.Remove(object value)
+        {
+            this.Remove((V)value);
+        }
     }
 }
