@@ -57,6 +57,4 @@ public class AppearanceState : ViewwModel
     {
         OnChange?.Invoke();
     }
-
-
 }

@@ -6,14 +6,14 @@
 <FluentHeader class="top-bar" Height="50">
     <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" Width="100%">
         <a href="/landing" style="margin-left:-10px;">
-                <img src="img/logo-white.svg" />           
+            <FluentIcon Value="@(new ViewGraphic.Logo.Header())" Color="Color.Fill" />
         </a>
         <FluentSpacer />
         <div class="top-bar-tools">
             <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="15">
                 <GenericTopMenu TModel="TModel" />
                 <div class="github">
-                    <FluentAnchor Appearance="Appearance.Hypertext" Href="http://github.com/undersoft-org/undersoft" Target="_blank" Rel="noreferrer noopener" title="Shared Service Center source on GitHub" aria-label="SSC Repo">
+                    <FluentAnchor Appearance="Appearance.Hypertext" Href="http://github.com/undersoft-org/undersoft" Target="_blank" Rel="noreferrer noopener" title="Undersoft source on GitHub" aria-label="SSC Repository">
                         <div style="line-height:2;">
                             <FluentIcon Value="@(new ViewGraphic.Size20.GitHub())" Width="18" Color="Color.Fill" />
                         </div>
