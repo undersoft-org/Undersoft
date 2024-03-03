@@ -42,13 +42,11 @@ public class Account : Authorization, IEntity, IAccount
 
     public virtual Listing<AccountToken> Tokens { get; set; }
 
-    public long? PersonalId
-    {
-        get; set;
-    }
+    public long? PersonalId { get; set; }
     public virtual AccountPersonal Personal { get; set; }
 
-    public virtual Listing<AccountProffesional> Proffesionals { get; set; }
+    public long? ProfessionalId { get; set; }
+    public virtual AccountProfessional Professional { get; set; }
 
     public virtual Listing<AccountOrganization> Organizations { get; set; }
 

@@ -38,7 +38,7 @@ public partial class AccountStoreContext<TStore>
             .ApplyMapping<AccountToken>(new AccountTokenMappings())
             .ApplyMapping<Role>(new RolemMappings())
             .ApplyMapping<AccountPersonal>(new AccountPersonalMappings())
-            .ApplyMapping<AccountProffesional>(new AccountProffesionalMappings())
+            .ApplyMapping<AccountProfessional>(new AccountProffesionalMappings())
             .ApplyMapping<AccountOrganization>(new AccountOrganizationsMappings())
             .ApplyMapping<AccountSubscription>(new AccountSubscriptionsMappings())
             .ApplyMapping<AccountConsent>(new AccountConsentsMappings())
@@ -80,7 +80,7 @@ public partial class AccountStoreContext<TStore>
         {
             entity.ToTable(name: "AccountPersonals");
         });
-        builder.Entity<AccountProffesional>(entity =>
+        builder.Entity<AccountProfessional>(entity =>
         {
             entity.ToTable("AccountProffesionals");
         });

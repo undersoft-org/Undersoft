@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using Undersoft.SDK.Service.Data.Object;
+using Undersoft.SDK.Service.Operation;
 using Undersoft.SDK.Updating;
 
 namespace Undersoft.SDK.Service.Access
@@ -14,7 +15,7 @@ namespace Undersoft.SDK.Service.Access
 
         [NotMapped]
         [DataMember(Order = 17)]
-        public virtual AuthorizationNotes Notes { get; set; } = new AuthorizationNotes();
+        public virtual OperationNotes Notes { get; set; } = new OperationNotes();
 
         [DataMember(Order = 18)]
         public virtual bool IsAvailable { get; set; }

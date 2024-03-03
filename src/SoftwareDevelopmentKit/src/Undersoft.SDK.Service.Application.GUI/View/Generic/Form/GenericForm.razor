@@ -5,18 +5,20 @@
 @using Undersoft.SDK
 @using Undersoft.SDK.Invoking
 
+@inherits ViewItem<TModel>
+
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 @typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
 
 <div class="generics generic-form forms">
     <CascadingValue Value="@FormContext">
-        <EditForm EditContext="@FormContext" FormName="generic_form">
-            <CascadingValue Value="@Data">
+        <EditForm EditContext="@FormContext" FormName="generic_form" @ref="@Reference">
+            <CascadingValue Value="@Content">
                 <GenericValidator TValidator="TValidator" TModel="TModel" />
                 <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="3">
                     @foreach (var _rubric in _rubrics)
                     {
-                        <GenericField TModel="TModel" Rubric="@_rubric" />
+                        <GenericField Rubric="@_rubric" />
                     }
                 </FluentStack>
             </CascadingValue>
@@ -29,8 +31,12 @@
 
     protected override void OnInitialized()
     {
-        FormContext = new EditContext(Data);
-        FormContext.OnFieldChanged += FieldChanged;
+        Content.ViewItem = this;
+        if (FormContext == null)
+        {
+            FormContext = new EditContext(Content);
+            FormContext.OnFieldChanged += FieldChanged;
+        }
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -38,7 +44,7 @@
         var _firstRubric = _rubrics.FirstOrDefault();
         if (_firstRubric != null)
         {
-            var reference = _firstRubric.View.Reference;
+            var reference = _firstRubric.ViewItem.Reference;
             if (reference != null)
             {
                 ((FluentComponentBase)reference).Element.FocusAsync();
@@ -48,10 +54,8 @@
         base.OnAfterRender(firstRender);
     }
 
-    public EditContext FormContext { get; set; } = default!;
-
-    [Parameter]
-    public IViewData<TModel> Data { get; set; } = default!;
+    [CascadingParameter]
+    public EditContext? FormContext { get; set; } = default!;
 
     private void FieldChanged(object? sender, FieldChangedEventArgs args)
     {

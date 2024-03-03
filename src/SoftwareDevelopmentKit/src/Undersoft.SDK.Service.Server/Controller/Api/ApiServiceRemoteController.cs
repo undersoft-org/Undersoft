@@ -34,7 +34,7 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
             return BadRequest(ModelState);
 
         var result = await _servicer.Entry(
-            new RemoteAction<TStore, TService, TModel>(method, arguments)
+            new RemoteAccess<TStore, TService, TModel>(method, arguments)
         );
 
         return !result.IsValid ? BadRequest(result.ErrorMessages) : Ok(result.Response);
@@ -66,7 +66,7 @@ public abstract class ApiServiceRemoteController<TStore, TService, TModel>
             return BadRequest(ModelState);
 
         var result = await _servicer.Entry(
-            new RemoteAction<TStore, TService, TModel>(method, arguments)
+            new RemoteSetup<TStore, TService, TModel>(method, arguments)
         );
 
         return !result.IsValid ? BadRequest(result.ErrorMessages) : Ok(result.Response);

@@ -34,13 +34,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\img\logo-black.svg">
+    <Content Update="Pages\Landing\Advantages.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="wwwroot\img\logo-white.svg">
+    <Content Update="Pages\Landing\Development.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Pages\Landing\Overview.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Pages\Landing\SharedServices.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>
 

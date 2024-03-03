@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Rubrics;
 using Undersoft.SDK.Series;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
@@ -11,11 +12,13 @@ public class ViewRubric : MemberRubric, IViewRubric
 
     public ISeries<string> Errors { get; set; } = new Listing<string>();
 
-    public IViewItem View { get; set; } = default!;
+    public IViewItem ViewItem { get; set; } = default!;
+
+    public Icon? Icon { get; set; }
 
     public void RenderView()
     {
-        View?.RenderView();
+        ViewItem?.RenderView();
     }
 
     public ViewRubric ShallowCopy(ViewRubric dst)

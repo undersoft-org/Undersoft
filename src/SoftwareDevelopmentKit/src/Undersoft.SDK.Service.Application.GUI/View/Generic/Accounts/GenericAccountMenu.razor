@@ -7,14 +7,15 @@
 
 @inherits ViewItem
 
-
 <CascadingValue Value="@Data">
     <CascadingValue Value="@Root">
-        <FluentMenu Style="@Style" Anchor="@AnchorId" Trigger="@Trigger" Anchored="@Anchored" HorizontalPosition="HorizontalPosition.Left" Width="100px">
-            @foreach (var rubric in Data.Rubrics)
-            {
-                <GenericMenuItem Rubric="@rubric" Parent="@this"  />
-            }
+        <FluentMenu @bind-Open="@IsOpen" Style="@Style" Anchor="@AnchorId" Trigger="@Trigger" Anchored="@Anchored" HorizontalPosition="HorizontalPosition.Left" Width="100px" @ref="@Reference">
+            <CascadingValue Value="@IsOpen">
+                @foreach (var rubric in Data.Rubrics)
+                {
+                    <GenericMenuItem Rubric="@rubric" Parent="@this" />
+                }
+            </CascadingValue>
         </FluentMenu>
     </CascadingValue>
 </CascadingValue>

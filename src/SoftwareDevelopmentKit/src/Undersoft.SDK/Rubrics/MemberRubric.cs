@@ -297,6 +297,8 @@
 
         public IMemberRubric VirtualInfo => (IMemberRubric)RubricInfo;
 
+        public SortDirection SortDirection { get; set; }
+
         public bool Visible { get; set; }
 
         public string CodeNo { get => code.ToString(); set => code.FromTetrahex(value.ToCharArray()); }

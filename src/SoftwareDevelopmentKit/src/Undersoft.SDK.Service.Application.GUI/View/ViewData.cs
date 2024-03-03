@@ -2,6 +2,7 @@ using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Series.Base;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
+using Undersoft.SDK.Service.Operation;
 using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Service.Application.GUI.View;
@@ -93,21 +94,17 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
 
     public string? Description { get; set; } = null;
 
-    public string? Info { get; set; }
-
-    public string? Errors { get; set; }
-
-    public string? Success { get; set; }
-
     public Icon? Icon { get; set; }
 
-    public string? Logo { get; set; }
+    public Icon? Logo { get; set; }
 
     public string Height { get; set; } = "400px";
 
     public string Width { get; set; } = "360px";
 
     public string? Href { get; set; }
+
+    public OperationNotes Notes { get; set; } = new OperationNotes();
 
     public HorizontalAlignment HorizontalAlignment { get; set; }
 
@@ -165,14 +162,16 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
         if (View != null)
             View.RenderView();
         else
-            Rubrics.ForEach(r => { if (r.View != null) r.View.RenderView(); });
+            Rubrics.ForEach(r => { if (r.ViewItem != null) r.ViewItem.RenderView(); });
     }
 
     public void ClearErrors()
     {
-        Errors = null;
+        Notes.Errors = null;
         Rubrics.ForEach(r => r.Errors.Clear());
     }
+
+    public IViewItem? ViewItem { get; set; }
 }
 
 public class DisplayPair : Identifiable

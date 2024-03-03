@@ -1,4 +1,5 @@
 ﻿using Undersoft.SDK.Proxies;
+using Undersoft.SDK.Service.Operation;
 
 namespace Undersoft.SDK.Service.Access
 {
@@ -6,6 +7,6 @@ namespace Undersoft.SDK.Service.Access
     {
         Credentials Credentials { get; set; }
 
-        AuthorizationNotes Notes { get; set; }
+        OperationNotes Notes { get; set; }
     }
 }

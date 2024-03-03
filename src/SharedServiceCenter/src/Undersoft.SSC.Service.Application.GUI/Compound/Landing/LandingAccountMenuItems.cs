@@ -10,21 +10,21 @@ public class LandingAccountMenuItems : DataObject
 {
     [VisibleRubric]
     [Invoke(typeof(LandingAccountPanel), "OpenAccountPanel")]
-    public IViewPanel<Account> Profile { get; set; } = default!;
+    public IViewPanel<Account> Account { get; set; } = default!;
 
     [Link]
     [VisibleRubric]
-    [DisplayRubric("Sign up")]
+    [DisplayRubric("sign up")]
     public string SignUp { get; set; } = "/access/sign_up";
 
     [Link]
     [VisibleRubric]
-    [DisplayRubric("Sign in")]
+    [DisplayRubric("sign in")]
     public string SignIn { get; set; } = "/access/sign_in";
 
     [Link]
     [VisibleRubric]
-    [DisplayRubric("Sign out")]
+    [DisplayRubric("sign out")]
     public string SignOut { get; set; } = "/access/sign_out";
 }
 

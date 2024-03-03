@@ -20,7 +20,7 @@ namespace Undersoft.SDK.Service.Server.Accounts
 
             builder.HasOne(c => c.Personal).WithOne().HasForeignKey<Account>(u => u.PersonalId);
 
-            builder.HasMany(c => c.Proffesionals).WithOne(c => c.Account).HasForeignKey(c => c.AccountId);
+            builder.HasOne(c => c.Professional).WithOne().HasForeignKey<Account>(c => c.ProfessionalId);
 
             builder.HasMany(c => c.Organizations).WithOne(c => c.Account).HasForeignKey(c => c.AccountId);
 
@@ -56,11 +56,11 @@ namespace Undersoft.SDK.Service.Server.Accounts
         }
     }
 
-    public class AccountProffesionalMappings : EntityTypeMapping<AccountProffesional>
+    public class AccountProffesionalMappings : EntityTypeMapping<AccountProfessional>
     {
-        public override void Configure(EntityTypeBuilder<AccountProffesional> builder)
+        public override void Configure(EntityTypeBuilder<AccountProfessional> builder)
         {
-            builder.HasOne(c => c.Account).WithMany(c => c.Proffesionals).HasForeignKey(c => c.AccountId);
+            builder.HasOne(c => c.Account).WithOne().HasForeignKey<AccountProfessional>(k => k.AccountId);
         }
     }
 

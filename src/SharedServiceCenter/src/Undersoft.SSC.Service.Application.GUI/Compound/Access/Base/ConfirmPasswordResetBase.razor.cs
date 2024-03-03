@@ -5,6 +5,7 @@ using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Application.GUI.View;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
 using Undersoft.SDK.Service.Application.GUI.View.Generic.Form.Dialog;
+using Undersoft.SDK.Updating;
 using Undersoft.SSC.Service.Application.GUI.Compound.Access.Dialog;
 using Undersoft.SSC.Service.Contracts;
 
@@ -64,9 +65,7 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
                         return;
                     }
                     data.ClearData();
-                    data.Info = result.Notes.Info;
-                    data.Success = result.Notes.Success;
-                    data.Errors = result.Notes.Errors;
+                    result.Notes.PatchTo(data.Notes);
                 }
                 else
                 {

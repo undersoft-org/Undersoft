@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ServiceStack;
 using Undersoft.SDK.Service.Access;
+using Undersoft.SDK.Service.Operation;
 using Undersoft.SDK.Service.Server.Accounts.Email;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
@@ -30,7 +31,7 @@ public class AccountService : IAccountAction, IAccountAccess
         if (account.Credentials.Authenticated && account.Credentials.EmailConfirmed)
         {
             account.Credentials.SessionToken = await _manager.GetToken(account);
-            account.Notes = new AuthorizationNotes()
+            account.Notes = new OperationNotes()
             {
                 Success = "Signed in",
                 Status = SigningStatus.SignedIn
@@ -65,7 +66,7 @@ public class AccountService : IAccountAction, IAccountAccess
         }
         else
         {
-            identity.Notes = new AuthorizationNotes()
+            identity.Notes = new OperationNotes()
             {
                 Errors = "Account already exists!!",
                 Status = SigningStatus.Failure
@@ -87,7 +88,7 @@ public class AccountService : IAccountAction, IAccountAccess
             );
             if (_manager.SignIn.IsSignedIn(principal))
                 await _manager.SignIn.SignOutAsync();
-            account.Notes = new AuthorizationNotes()
+            account.Notes = new OperationNotes()
             {
                 Success = "Signed out",
                 Status = SigningStatus.SignedOut
@@ -106,7 +107,7 @@ public class AccountService : IAccountAction, IAccountAccess
             if (token != null)
             {
                 account.Credentials.SessionToken = token;
-                account.Notes = new AuthorizationNotes()
+                account.Notes = new OperationNotes()
                 {
                     Success = "Token renewed",
                     Status = SigningStatus.Succeed
@@ -115,7 +116,7 @@ public class AccountService : IAccountAction, IAccountAccess
             else
             {
                 account.Credentials.SessionToken = null;
-                account.Notes = new AuthorizationNotes()
+                account.Notes = new OperationNotes()
                 {
                     Errors = "Invalid token ",
                     Status = SigningStatus.Failure
@@ -137,7 +138,7 @@ public class AccountService : IAccountAction, IAccountAccess
             _creds.PhoneNumberConfirmed = false;
             _creds.RegistrationCompleted = false;
             account = new Account() { Credentials = _creds };
-            account.Notes = new AuthorizationNotes()
+            account.Notes = new OperationNotes()
             {
                 Errors = "Invalid email",
                 Status = SigningStatus.InvalidEmail
@@ -168,7 +169,7 @@ public class AccountService : IAccountAction, IAccountAccess
             if (await _manager.CheckPassword(_creds.Email, _creds.Password) == null)
             {
                 _creds.Authenticated = false;
-                account.Notes = new AuthorizationNotes()
+                account.Notes = new OperationNotes()
                 {
                     Errors = "Invalid password",
                     Status = SigningStatus.InvalidPassword
@@ -177,7 +178,7 @@ public class AccountService : IAccountAction, IAccountAccess
             else
             {
                 _creds.Authenticated = true;
-                account.Notes = new AuthorizationNotes()
+                account.Notes = new OperationNotes()
                 {
                     Info = "Pasword is valid",
                 };
@@ -186,7 +187,7 @@ public class AccountService : IAccountAction, IAccountAccess
         else
         {
             _creds.Authenticated = false;
-            account.Notes = new AuthorizationNotes()
+            account.Notes = new OperationNotes()
             {
                 Errors = "Account is locked out",
                 Status = SigningStatus.InvalidPassword
@@ -216,7 +217,7 @@ public class AccountService : IAccountAction, IAccountAccess
                     {
                         _creds.EmailConfirmed = true;
                         account.Credentials.Authenticated = true;
-                        account.Notes = new AuthorizationNotes()
+                        account.Notes = new OperationNotes()
                         {
                             Success = "Email has been confirmed",
                             Status = SigningStatus.EmailConfirmed
@@ -225,7 +226,7 @@ public class AccountService : IAccountAction, IAccountAccess
                     }
                     else
                     {
-                        account.Notes = new AuthorizationNotes()
+                        account.Notes = new OperationNotes()
                         {
                             Errors = result.Errors
                                 .Select(d => d.Description)
@@ -252,7 +253,7 @@ public class AccountService : IAccountAction, IAccountAccess
                         )
                 );
 
-                account.Notes = new AuthorizationNotes()
+                account.Notes = new OperationNotes()
                 {
                     Info = "Please check your email",
                     Status = SigningStatus.EmailNotConfirmed,
@@ -261,7 +262,7 @@ public class AccountService : IAccountAction, IAccountAccess
             }
             else
             {
-                account.Notes = new AuthorizationNotes() { Info = "Email was confirmed" };
+                account.Notes = new OperationNotes() { Info = "Email was confirmed" };
                 account.Credentials.Authenticated = true;
             }
         }
@@ -293,7 +294,7 @@ public class AccountService : IAccountAction, IAccountAccess
                 if (result != null && result.Succeeded)
                 {
                     account.Credentials.Authenticated = true;
-                    account.Notes = new AuthorizationNotes()
+                    account.Notes = new OperationNotes()
                     {
                         Success = "Password has been reset",
                         Status = SigningStatus.ResetPasswordConfirmed
@@ -311,7 +312,7 @@ public class AccountService : IAccountAction, IAccountAccess
                 else
                 {
                     account.Credentials.Authenticated = false;
-                    account.Notes = new AuthorizationNotes()
+                    account.Notes = new OperationNotes()
                     {
                         Errors = result.Errors
                             .Select(d => d.Description)
@@ -338,7 +339,7 @@ public class AccountService : IAccountAction, IAccountAccess
                     )
             );
 
-            account.Notes = new AuthorizationNotes()
+            account.Notes = new OperationNotes()
             {
                 Info = "Please check your email to confirm password reset",
                 Status = SigningStatus.ResetPasswordNotConfirmed,
@@ -364,7 +365,7 @@ public class AccountService : IAccountAction, IAccountAccess
 
             if (result.Succeeded)
             {
-                account.Notes = new AuthorizationNotes()
+                account.Notes = new OperationNotes()
                 {
                     Success = "Password has been changed",
                     Status = SigningStatus.Succeed
@@ -374,7 +375,7 @@ public class AccountService : IAccountAction, IAccountAccess
             else
             {
                 account.Credentials.Authenticated = false;
-                account.Notes = new AuthorizationNotes()
+                account.Notes = new OperationNotes()
                 {
                     Errors = result.Errors
                         .Select(d => d.Description)
@@ -404,7 +405,7 @@ public class AccountService : IAccountAction, IAccountAccess
                 var _account = await _manager.GetByEmail(_creds.Email);
                 if (_account == null)
                 {
-                    account.Notes = new AuthorizationNotes()
+                    account.Notes = new OperationNotes()
                     {
                         Errors = "Account not found",
                         Status = SigningStatus.RegistrationNotCompleted
@@ -430,7 +431,7 @@ public class AccountService : IAccountAction, IAccountAccess
                         {
                             _creds.RegistrationCompleted = true;
                             _creds.Authenticated = true;
-                            account.Notes = new AuthorizationNotes()
+                            account.Notes = new OperationNotes()
                             {
                                 Success = "Registration completed",
                                 Status = SigningStatus.RegistrationCompleted
@@ -444,7 +445,7 @@ public class AccountService : IAccountAction, IAccountAccess
                     }
                     else
                     {
-                        account.Notes = new AuthorizationNotes()
+                        account.Notes = new OperationNotes()
                         {
                             Errors = "Registration not completed. Invalid verification code",
                             Status = SigningStatus.RegistrationNotCompleted
@@ -460,14 +461,14 @@ public class AccountService : IAccountAction, IAccountAccess
                     "AccountRegistrationProcessTokenProvider",
                     "Registration"
                 );
-                account.Notes = new AuthorizationNotes()
+                account.Notes = new OperationNotes()
                 {
                     Info = "Please complete registration process",
                     Status = SigningStatus.RegistrationNotCompleted
                 };
             }
             else
-                account.Notes = new AuthorizationNotes() { Info = "Registration was completed" };
+                account.Notes = new OperationNotes() { Info = "Registration was completed" };
         }
         return account;
     }

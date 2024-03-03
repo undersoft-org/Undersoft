@@ -34,7 +34,7 @@ public abstract class OpenServiceRemoteController<TStore, TService, TDto>
 
         var result = Invoke(
             args,
-            (arg) => new RemoteAction<TStore, TService, TDto>(arg.Key, arg.Value)
+            (arg) => new RemoteAccess<TStore, TService, TDto>(arg.Key, arg.Value)
         );
 
         Task.WaitAll(result);

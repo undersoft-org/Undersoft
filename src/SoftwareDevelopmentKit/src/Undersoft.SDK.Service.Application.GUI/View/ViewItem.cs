@@ -11,13 +11,13 @@ namespace Undersoft.SDK.Service.Application.GUI.View
         protected override void OnInitialized()
         {
             if (Data == null)
-                GenericData = new ViewData<TModel>(typeof(TModel).New<TModel>());
+                Content = new ViewData<TModel>(typeof(TModel).New<TModel>());
         }
 
-        public override TModel Model => GenericData.Model;
+        public override TModel Model => Content.Model;
 
         [Parameter]
-        public virtual IViewData<TModel> GenericData
+        public virtual IViewData<TModel> Content
         {
             get => (IViewData<TModel>)base.Data;
             set => base.Data = value;

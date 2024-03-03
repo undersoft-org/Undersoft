@@ -1,4 +1,5 @@
 ﻿using Undersoft.SDK.Service.Access;
+using Undersoft.SDK.Service.Operation;
 
 namespace Undersoft.SSC.Service.Application.Models
 {
@@ -12,7 +13,7 @@ namespace Undersoft.SSC.Service.Application.Models
 
         public Credentials Credentials { get; set; } = new Credentials();
 
-        public AuthorizationNotes Notes { get; set; } = new AuthorizationNotes();
+        public OperationNotes Notes { get; set; } = new OperationNotes();
 
         IProxy IInnerProxy.Proxy => throw new NotImplementedException();
 

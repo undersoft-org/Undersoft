@@ -1,12 +1,15 @@
+using Undersoft.SDK.Series.Base;
+using Undersoft.SDK.Service.Data.Object;
+
 namespace Undersoft.SDK.Service.Application.GUI.View;
 
-public class ViewDelegates
+public class ViewDelegates : ListingBase<ViewDelegate>
 {
-    public Delegate? OnPrimaryAction { get; set; }
+}
 
-    public Delegate? OnSecondaryAction { get; set; }
+public class ViewDelegate : DataObject
+{
+    public string? Name { get; set; }
 
-    public Delegate? OnClick { get; set; }
-
-    public Delegate? OnChange { get; set; }
+    public Delegate? Delegate { get; set; }
 }

@@ -13,15 +13,12 @@
 @implements IView
 
 <CascadingValue Value="@Content">
-    <CascadingValue Value="@FormContext">
-
         <!-- Header -->
         <GenericFormDialogHeader TModel="TModel" />
 
         <!-- Body -->
         <GenericFormDialogBody TValidator="TValidator" TModel="TModel" />
-
-    </CascadingValue>
+    
 </CascadingValue>
 
 <!-- Footer -->
@@ -40,8 +37,6 @@
 
 @code
 {
-    public EditContext FormContext { get; set; } = default!;
-
     [Parameter]
     public IViewData<TModel> Content { get; set; } = default!;
 
@@ -51,7 +46,6 @@
     protected override void OnInitialized()
     {
         Content.View = this;
-        FormContext = new EditContext(Content);
     }
 
     private async Task SaveAsync()

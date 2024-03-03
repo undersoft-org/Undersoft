@@ -67,7 +67,7 @@ public partial class GenericPageContents : FluentComponentBase, IAsyncDisposable
         if (firstRender)
         {
             _jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import",
-            "./_content/Undersoft.SDK.Service.Application.GUI/Generic/GenericPageContents.razor.js");
+            "./_content/Undersoft.SDK.Service.Application.GUI/View/Generic/GenericPageContents.razor.js");
             var mobile = AppearanceState.IsDevice;
 
             await QueryDomAsync();

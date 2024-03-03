@@ -1,0 +1,63 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using FluentValidation
+@using Undersoft.SDK.Proxies
+@using Undersoft.SDK.Rubrics
+@using Undersoft.SDK
+@using Undersoft.SDK.Invoking
+
+@inherits ViewItem<TModel>
+
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+@typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
+
+<div class="generics generic-form-set forms">
+    <CascadingValue Value="@FormContext">
+        <CascadingValue Value="@Content">
+            <EditForm EditContext="@FormContext" FormName="generic_form_set" @ref="@Reference">
+                <GenericValidator TValidator="TValidator" TModel="TModel" />
+                @ChildContent
+            </EditForm>
+        </CascadingValue>
+    </CascadingValue>
+</div>
+
+@code {
+    private IViewRubrics _rubrics => Data.Rubrics;
+
+    protected override void OnInitialized()
+    {
+        Data.ViewItem = this;
+        if (FormContext == null)
+        {
+            FormContext = new EditContext(Data);
+            FormContext.OnFieldChanged += FieldChanged;
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        var _firstRubric = _rubrics.FirstOrDefault();
+        if (_firstRubric != null)
+        {
+            var reference = _firstRubric.ViewItem.Reference;
+            if (reference != null)
+            {
+                ((FluentComponentBase)reference).Element.FocusAsync();
+            }
+        }
+
+        base.OnAfterRender(firstRender);
+    }
+
+    [Parameter]
+    public EditContext? FormContext { get; set; } = default!;
+
+    private void FieldChanged(object? sender, FieldChangedEventArgs args)
+    {
+        if (OnFieldChanged != null)
+            OnFieldChanged(sender, args);
+    }
+
+    public event EventHandler<FieldChangedEventArgs>? OnFieldChanged;
+}
+

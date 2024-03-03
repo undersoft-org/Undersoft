@@ -11,12 +11,35 @@ public class Account : Authorization, IContract
     public AccountUser? User { get; set; } = default!;
 
     [DataMember(Order = 13)]
-    public ObjectSet<Role>? Roles { get; set; } = default!;
+    public Listing<Role>? Roles { get; set; } = default!;
 
     [DataMember(Order = 14)]
-    public ObjectSet<Claim>? Claims { get; set; } = default!;
+    public Listing<Claim>? Claims { get; set; } = default!;
 
     [DataMember(Order = 15)]
-    public ObjectSet<Token>? Tokens { get; set; } = default!;
+    public Listing<Token>? Tokens { get; set; } = default!;
 
+    [DataMember(Order = 16)]
+    public long? PersonalId { get; set; }
+
+    [DataMember(Order = 17)]
+    public virtual AccountPersonal? Personal { get; set; }
+
+    [DataMember(Order = 18)]
+    public long? ProfessionalId { get; set; }
+
+    [DataMember(Order = 19)]
+    public virtual AccountProfessional? Professional { get; set; }
+
+    [DataMember(Order = 20)]
+    public virtual Listing<AccountOrganization>? Organizations { get; set; }
+
+    [DataMember(Order = 21)]
+    public virtual Listing<AccountConsent>? Consents { get; set; }
+
+    [DataMember(Order = 22)]
+    public virtual Listing<AccountSubscription>? Subscriptions { get; set; }
+
+    [DataMember(Order = 23)]
+    public virtual Listing<AccountPayment>? Payments { get; set; }
 }

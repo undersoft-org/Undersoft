@@ -6,6 +6,6 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Landing;
 public class LandingTopicMenu : DataObject
 {
     [VisibleRubric]
-    public LandingTopicMenuItems Categories { get; set; } = new LandingTopicMenuItems();
+    public LandingTopicMenuItems Topics { get; set; } = new LandingTopicMenuItems();
 }
 

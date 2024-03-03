@@ -64,14 +64,14 @@ public class InstantMathTest
 
     private void createInstantSeries_Test_Helper()
     {
-        instatnSeriesCreator = new InstantProxiesCreator<InstantMathTestDataModel>(InstantType.Derived, false);
+        instatnSeriesCreator = new InstantSeriesCreator<InstantMathTestDataModel>(InstantType.Derived, false);
 
         instantSeries = instatnSeriesCreator.Create();
     }
 
     private void createInstantValueSeries_Test_Helper()
     {
-        instatnSeriesCreator = new InstantProxiesCreator<InstantMathTestDataModel>(InstantType.ValueType, false);
+        instatnSeriesCreator = new InstantSeriesCreator<InstantMathTestDataModel>(InstantType.ValueType, false);
 
         instantValueSeries = instatnSeriesCreator.Create();
     }
@@ -201,7 +201,7 @@ public class InstantMathTest
         math1.Formula = math0 * math1[p => p.TaxRate];
 
         var watch = Stopwatch.StartNew();
-        genericInstantMath.ComputeInParallel(4);
+        genericInstantMath.Compute(4);
         watch.Stop();
         return watch.Elapsed;
     }
@@ -248,7 +248,7 @@ public class InstantMathTest
         ml2.Formula = ml * ml2["TaxRate"];
 
         var watch = Stopwatch.StartNew();
-        instantMath.ComputeInParallel(4);
+        instantMath.Compute(4);
         watch.Stop();
         return watch.Elapsed;
     }

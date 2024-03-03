@@ -26,14 +26,14 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Accounts
 
                 if (!state.User.Identity.IsAuthenticated)
                 {
-                    _rubrics["Profile"].Visible = false;
+                    _rubrics["Account"].Visible = false;
                     _rubrics["SignOut"].Visible = false;
                     _rubrics["SignIn"].Visible = true;
                     _rubrics["SignUp"].Visible = true;
                 }
                 else
                 {
-                    Data.Model.Proxy[_rubrics["Profile"].RubricId] = servicer.Initialize<
+                    Data.Model.Proxy[_rubrics["Account"].RubricId] = servicer.Initialize<
                         ViewPanel<
                             GenericAccountPanel<Account, GenericAccountPanelValidator>,
                             Account
@@ -41,7 +41,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Accounts
                     >(DialogService);
                     _rubrics["SignIn"].Visible = false;
                     _rubrics["SignUp"].Visible = false;
-                    _rubrics["Profile"].Visible = true;
+                    _rubrics["Account"].Visible = true;
                     _rubrics["SignOut"].Visible = true;
                 }
             }
@@ -51,6 +51,8 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Accounts
                 Root = this;
             base.OnInitialized();
         }
+
+        public bool IsOpen { get; set; }
 
         [Parameter]
         public HorizontalPosition Position { get; set; } = HorizontalPosition.Left;

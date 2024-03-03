@@ -13,16 +13,11 @@
             <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" VerticalGap="0" Style="text-align: center;">
                 @if (Content.Logo != null)
                 {
-                    <a href="">
-                        @if (appearance.IsDarkMode)
-                        {
-                            <img src="@(Content.Logo.Replace("black", "white"))" />
-                        }
-                        else
-                        {
-                            <img src="@Content.Logo" />
-                        }
-                    </a>
+                    <div style="width:135px;">
+                        <a href="">
+                            <FluentIcon Value="@Content.Logo" Color="Color.FillInverse" />
+                        </a>
+                    </div>
                 }
                 <FluentSpacer />
                 @if (Content.Icon != null)
@@ -38,13 +33,13 @@
                     @Content.Description
                 </FluentLabel>
                 <FluentLabel Typo="Typography.Body" Color="Color.Error">
-                    @Content.Errors
+                    @Content.Notes.Errors
                 </FluentLabel>
                 <FluentLabel Typo="Typography.Body" Color="Color.Success">
-                    @Content.Success
+                    @Content.Notes.Success
                 </FluentLabel>
                 <FluentLabel Typo="Typography.Body" Color="Color.Neutral">
-                    @Content.Info
+                    @Content.Notes.Info
                 </FluentLabel>
             </FluentStack>
         </FluentStack>

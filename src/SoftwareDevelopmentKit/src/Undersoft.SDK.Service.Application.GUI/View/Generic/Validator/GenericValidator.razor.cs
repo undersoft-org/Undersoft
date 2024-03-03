@@ -87,7 +87,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Validator
                         ValidationMessageStore.Add(rubric.FieldIdentifier, e.ErrorMessage);
                 });
             }
-            rubric.View.RenderView();
+            rubric.ViewItem.RenderView();
             FormContext.NotifyValidationStateChanged();
             return _result;
         }
@@ -111,7 +111,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Validator
                         ValidationMessageStore.Add(args.FieldIdentifier, e.ErrorMessage);
                 });
             }
-            rubric.View.RenderView();
+            rubric.ViewItem.RenderView();
             FormContext.NotifyValidationStateChanged();
         }
     }

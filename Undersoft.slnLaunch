@@ -38,5 +38,20 @@
         "DebugTarget": "Windows Machine"
       }
     ]
+  },
+  {
+    "Name": "SSC-Client-Bridge-Kube",
+    "Projects": [
+      {
+        "Name": "src\\SharedServiceCenter\\src\\Undersoft.SSC.Service.Server\\Undersoft.SSC.Service.Server.csproj",
+        "Action": "Start",
+        "DebugTarget": "Bridge to Kubernetes"
+      },
+      {
+        "Name": "src\\SharedServiceCenter\\src\\Undersoft.SSC.Service.Application.Server\\Undersoft.SSC.Service.Application.Server.csproj",
+        "Action": "Start",
+        "DebugTarget": "Bridge to Kubernetes"
+      }
+    ]
   }
 ]

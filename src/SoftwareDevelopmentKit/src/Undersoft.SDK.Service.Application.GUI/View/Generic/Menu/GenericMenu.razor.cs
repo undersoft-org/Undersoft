@@ -11,10 +11,12 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Menu
             if (Parent == null)
                 Root = this;
 
-
+            Data.ViewItem = this;
 
             base.OnInitialized();
         }
+
+        public bool IsOpen { get; set; }
 
         [Parameter]
         public HorizontalPosition Position { get; set; } = HorizontalPosition.Right;

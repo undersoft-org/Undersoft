@@ -10,6 +10,6 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Abstraction
 
         ISeries<string> Errors { get; set; }
 
-        IViewItem View { get; set; }
+        IViewItem ViewItem { get; set; }
     }
 }

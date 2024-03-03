@@ -16,6 +16,9 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Menu
         private string? _name { get; set; } = "";
         private string? _label { get; set; }
 
+        [CascadingParameter]
+        private bool IsOpen { get; set; }
+
         protected override void OnInitialized()
         {
             _type = Rubric.RubricType;
@@ -27,7 +30,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Menu
             Id = Rubric.Id.UniqueKey(Parent.Id);
             TypeId = _type.UniqueKey(Parent.TypeId);
 
-            Rubric.View = this;
+            Rubric.ViewItem = this;
 
             if (Rubric.Expandable && _type.IsClass)
             {
@@ -76,6 +79,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Menu
             {
                 Rubric.Invoker.Invoke(Value);
             }
+            IsOpen = false;
         }
     }
 }

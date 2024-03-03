@@ -97,6 +97,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Property<long?>("PersonalId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("ProfessionalId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -112,6 +115,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.HasKey("Id");
 
                     b.HasIndex("PersonalId")
+                        .IsUnique();
+
+                    b.HasIndex("ProfessionalId")
                         .IsUnique();
 
                     b.HasIndex("UserId")
@@ -610,7 +616,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.ToTable("AccountPersonals", "Accounts");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.AccountProffesional", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.AccountProfessional", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -637,6 +643,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
                     b.Property<string>("Email")
                         .HasColumnType("text");
+
+                    b.Property<float>("Experience")
+                        .HasColumnType("real");
 
                     b.Property<string>("Image")
                         .HasColumnType("text");
@@ -672,7 +681,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
-                    b.Property<string>("Proffesion")
+                    b.Property<string>("Profession")
                         .HasColumnType("text");
 
                     b.Property<string>("SocialMedia")
@@ -693,12 +702,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Property<string>("Websites")
                         .HasColumnType("text");
 
-                    b.Property<float>("Years")
-                        .HasColumnType("real");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("AccountId")
+                        .IsUnique();
 
                     b.ToTable("AccountProffesionals", "Accounts");
                 });
@@ -1016,6 +1023,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .WithOne()
                         .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.Account", "PersonalId");
 
+                    b.HasOne("Undersoft.SDK.Service.Server.Accounts.AccountProfessional", "Professional")
+                        .WithOne()
+                        .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.Account", "ProfessionalId");
+
                     b.HasOne("Undersoft.SDK.Service.Server.Accounts.AccountUser", "User")
                         .WithOne()
                         .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.Account", "UserId")
@@ -1023,6 +1034,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .IsRequired();
 
                     b.Navigation("Personal");
+
+                    b.Navigation("Professional");
 
                     b.Navigation("User");
                 });
@@ -1081,11 +1094,11 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Navigation("Account");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.AccountProffesional", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.AccountProfessional", b =>
                 {
                     b.HasOne("Undersoft.SDK.Service.Server.Accounts.Account", "Account")
-                        .WithMany("Proffesionals")
-                        .HasForeignKey("AccountId");
+                        .WithOne()
+                        .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.AccountProfessional", "AccountId");
 
                     b.Navigation("Account");
                 });
@@ -1164,8 +1177,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Navigation("Organizations");
 
                     b.Navigation("Payments");
-
-                    b.Navigation("Proffesionals");
 
                     b.Navigation("Subscriptions");
 

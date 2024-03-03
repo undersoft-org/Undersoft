@@ -36,7 +36,7 @@ public abstract class OpenServiceController<TStore, TService, TModel>
 
         var result = Invoke(
             args,
-            (arg) => new Action<TStore, TService, TModel>(arg.Key, arg.Value)
+            (arg) => new Access<TStore, TService, TModel>(arg.Key, arg.Value)
         );
 
         Task.WaitAll(result);
