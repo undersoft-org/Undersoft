@@ -7,9 +7,9 @@
 
 @inherits ViewItem
 
-<div class="generics generic-form forms">
+<div class="generics generic-form-item forms">
     <CascadingValue Value="@FormContext">
-        <EditForm EditContext="@FormContext" FormName="generic_form" @ref="@Reference">
+        <EditForm EditContext="@FormContext" FormName="generic_form_item" @ref="@Reference">
             <CascadingValue Value="@Data">
                 <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="3">
                     @foreach (var _rubric in _rubrics)

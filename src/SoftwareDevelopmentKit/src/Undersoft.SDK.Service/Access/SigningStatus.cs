@@ -13,6 +13,7 @@
         InvalidPassword,
         RegistrationCompleted,
         RegistrationNotCompleted,
+        RegistrationNotConfirmed,
         EmailNotConfirmed,
         ResetPasswordConfirmed,
         ResetPasswordNotConfirmed,

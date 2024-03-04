@@ -4,16 +4,17 @@ using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Application.GUI.View;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
+using Undersoft.SDK.Service.Application.GUI.View.Generic.Form.Dialog;
 using Undersoft.SDK.Updating;
 using Undersoft.SSC.Service.Application.GUI.Compound.Access.Dialog;
 using Undersoft.SSC.Service.Contracts;
 
 namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
 {
-    public partial class ConfirmEmailBase : ComponentBase
+    public partial class CompleteRegistrationBase : ComponentBase
     {
         [Inject]
-        private IAccountAccess _access { get; set; } = default!;
+        private IAccountService<Account> _access { get; set; } = default!;
 
         [Inject]
         private NavigationManager _navigation { get; set; } = default!;
@@ -32,19 +33,19 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
 
         protected override void OnInitialized()
         {
-            _dialog = _servicer.Initialize<AccessDialog<ConfirmEmailDialog<Credentials, AccessValidator>, Credentials>>(DialogService);
+            _dialog = _servicer.Initialize<AccessDialog<GenericFormDialog<Credentials, AccessValidator>, Credentials>>(DialogService);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
-                await ConfirmingEmail("Email confirmation", "Please check your e-mail");
+                await CompletingRegistration("Completing registration", "Please check your professional e-mail");
         }
 
-        private async Task ConfirmingEmail(string title, string description = "")
+        private async Task CompletingRegistration(string title, string description = "")
         {
             var data = new ViewData<Credentials>(new Credentials() { Email = Email }, OperationType.Setup, title);
-            data.SetVisible("EmailConfirmationToken");
+            data.SetVisible("RegistrationCompleteToken");
             data.Description = description;
             data.Width = "360px";
             data.Height = "360px";
@@ -57,11 +58,11 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
 
                 if (content != null)
                 {
-                    var result = await _access.ConfirmEmail(new Account() { Credentials = content.Model });
+                    var result = await _access.CompleteRegistration(new Account() { Credentials = content.Model });
 
-                    if (result.Notes.Status == SigningStatus.EmailConfirmed)
+                    if (result.Notes.Status == SigningStatus.RegistrationCompleted)
                     {
-                        _navigation.NavigateTo("access/register");
+                        _navigation.NavigateTo("");
                         return;
                     }
                     data.ClearData();

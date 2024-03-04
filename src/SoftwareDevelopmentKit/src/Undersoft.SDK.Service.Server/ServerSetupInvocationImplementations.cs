@@ -13,7 +13,6 @@ using Undersoft.SDK.Service.Operation.Invocation;
 using Undersoft.SDK.Service.Operation.Invocation.Handler;
 using Undersoft.SDK.Service.Operation.Invocation.Notification;
 using Undersoft.SDK.Service.Operation.Invocation.Notification.Handler;
-using static Grpc.Core.ChannelOption;
 
 public partial class ServerSetup
 {
@@ -77,6 +76,16 @@ public partial class ServerSetup
                     typeof(Invocation<>).MakeGenericType(modelType)
                 );
                 service.AddTransient(
+                 typeof(IRequestHandler<,>).MakeGenericType(
+                     new[]
+                     {
+                            typeof(Access<,,>).MakeGenericType(storeType, serviceType, modelType),
+                            typeof(Invocation<>).MakeGenericType(modelType)
+                     }
+                 ),
+                 typeof(AccessHandler<,,>).MakeGenericType(storeType, serviceType, modelType)
+                );
+                service.AddTransient(
                     typeof(IRequestHandler<,>).MakeGenericType(
                         new[]
                         {
@@ -96,6 +105,16 @@ public partial class ServerSetup
                     ),
                     typeof(SetupHandler<,,>).MakeGenericType(storeType, serviceType, modelType)
                 );
+                service.AddTransient(
+                  typeof(INotificationHandler<>).MakeGenericType(
+                      typeof(AccessInvoked<,,>).MakeGenericType(storeType, serviceType, modelType)
+                  ),
+                  typeof(AccessInvokedHandler<,,>).MakeGenericType(
+                      storeType,
+                      serviceType,
+                      modelType
+                  )
+              );
                 service.AddTransient(
                     typeof(INotificationHandler<>).MakeGenericType(
                         typeof(ActionInvoked<,,>).MakeGenericType(storeType, serviceType, modelType)

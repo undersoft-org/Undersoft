@@ -255,6 +255,8 @@
 
         public int RubricId { get => OriginId; set => OriginId = value; }
 
+        public int RubricOrdinal { get; set; }
+
         public MemberInfo RubricInfo { get; set; }
 
         public Module RubricModule =>

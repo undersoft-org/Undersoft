@@ -34,6 +34,7 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
     public virtual IViewRubrics MapRubrics()
     {
         Rubrics.Put(_proxy.Rubrics.ForOnly(r => r.Visible, r => (ViewRubric)(object)r.ShalowCopy(new ViewRubric())));
+        Rubrics.ForEach((r, x) => r.RubricOrdinal = x).Commit();
         return Rubrics;
     }
 
@@ -46,11 +47,12 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
         var rubrics = requiredList.ForEach(
             r => (ViewRubric)(object)_proxy.Rubrics[r].ShalowCopy(new ViewRubric())
         );
-        rubrics.ForEach(r =>
+        rubrics.ForEach((r, x) =>
         {
             r.Required = true;
             r.Visible = true;
             r.Editable = true;
+            r.RubricOrdinal = x;
         });
 
         Rubrics.Put(rubrics);
@@ -61,7 +63,11 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
         var rubrics = visibleList.ForEach(
             r => (ViewRubric)(object)_proxy.Rubrics[r].ShalowCopy(new ViewRubric())
         );
-        rubrics.ForEach(r => r.Visible = true);
+        rubrics.ForEach((r, x) =>
+        {
+            r.Visible = true;
+            r.RubricOrdinal = x;
+        });
         Rubrics.Put(rubrics);
     }
 
@@ -70,17 +76,23 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
         var rubrics = editableList.ForEach(
             r => (ViewRubric)(object)_proxy.Rubrics[r].ShalowCopy(new ViewRubric())
         );
-        rubrics.ForEach(r => r.Editable = true);
+        rubrics.ForEach((r, x) =>
+        {
+            r.Visible = true;
+            r.Editable = true;
+            r.RubricOrdinal = x;
+        });
         Rubrics.Put(rubrics);
     }
 
     public virtual void SetDisplay(params DisplayPair[] displayPairList)
     {
-        var rubrics = displayPairList.ForEach(d =>
+        var rubrics = displayPairList.ForEach((d, x) =>
         {
             var rubric = _proxy.Rubrics[d.RubricName].ShalowCopy(new ViewRubric());
             rubric.DisplayName = d.DisplayName;
             rubric.Visible = true;
+            rubric.RubricOrdinal = x;
             return (ViewRubric)(object)rubric;
         });
         Rubrics.Put(rubrics);

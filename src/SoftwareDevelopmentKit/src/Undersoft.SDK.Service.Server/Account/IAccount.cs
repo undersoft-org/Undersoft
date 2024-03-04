@@ -15,6 +15,20 @@ namespace Undersoft.SDK.Service.Server.Accounts
 
         IEnumerable<Claim> GetClaims();
 
+        long? PersonalId { get; set; }
+        AccountPersonal Personal { get; set; }
+
+        long? ProfessionalId { get; set; }
+        AccountProfessional Professional { get; set; }
+
+        Listing<AccountOrganization> Organizations { get; set; }
+
+        Listing<AccountConsent> Consents { get; set; }
+
+        Listing<AccountSubscription> Subscriptions { get; set; }
+
+        Listing<AccountPayment> Payments { get; set; }
+
         bool IsAvailable { get; set; }
 
         bool Authenticated { get; set; }

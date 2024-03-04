@@ -9,6 +9,7 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Landing;
 public class LandingAccountMenuItems : DataObject
 {
     [VisibleRubric]
+    [DisplayRubric("account")]
     [Invoke(typeof(LandingAccountPanel), "OpenAccountPanel")]
     public IViewPanel<Account> Account { get; set; } = default!;
 

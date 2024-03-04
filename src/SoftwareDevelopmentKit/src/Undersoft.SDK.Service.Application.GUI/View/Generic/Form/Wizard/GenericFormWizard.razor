@@ -1,0 +1,91 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using Undersoft.SDK.Proxies
+@using Undersoft.SDK.Rubrics
+@using Undersoft.SDK;
+
+@inherits ViewItem<TModel>
+
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+@typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
+
+@implements IDialogContentComponent<IViewData<TModel>>
+@implements IView
+
+<style>
+    #generic-wizard li[status="current"] > div {
+        font-weight: bold;
+    }
+
+    #generic-wizard li[disabled] > div {
+        color: var(--neutral-stroke-strong-rest);
+        opacity: var(--disabled-opacity);
+    }
+</style>
+
+<CascadingValue Value="@Content">
+    <GenericFormWizardHeader TModel="TModel" />
+    <FluentDialogBody>
+        <GenericFormSet TValidator="TValidator" TModel="TModel" Content="@Content">
+            <FluentWizard Id="generic-wizard" @bind-Value="@ActiveId" StepTitleHiddenWhen="@GridItemHidden.XsAndDown" Height="@Content.Height" Width="@Content.Width" StepperPosition="Position">
+                <Steps>
+                    @foreach (var _rubric in _rubrics)
+                    {
+                        @if (ContainsStepData(_rubric))
+                        {
+                            <GenericFormWizardStep TValidator="TValidator" TModel="TModel" Rubric="_rubric" Data="@(GetStepData(_rubric))" />
+                        }
+                    }
+                </Steps>
+                <ButtonTemplate>
+                    <GenericFormWizardButtons TModel="TModel" GoToFirstEnabled="@GoToFirstEnabled" GoToLastEnabled="@GoToLastEnabled" />
+                </ButtonTemplate>
+            </FluentWizard>
+        </GenericFormSet>
+    </FluentDialogBody>
+    <FluentDialogFooter />
+</CascadingValue>
+
+@code
+{
+    private IViewRubrics _rubrics => Content.Rubrics;
+
+    private int ActiveId
+    {
+        get => Content.ActiveRubric.RubricOrdinal;
+        set => Content.ActiveRubric = Content.Rubrics[value];
+    }
+
+    [CascadingParameter]
+    public FluentDialog Dialog { get; set; } = default!;
+
+    [Parameter]
+    public bool GoToFirstEnabled { get; set; }
+
+
+    [Parameter]
+    public bool GoToLastEnabled { get; set; }
+
+    [Parameter]
+    public StepperPosition Position { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Content.View = this;
+        if (!Content.Rubrics.Any())
+            Content.MapRubrics();
+        var firstRubric = Content.Rubrics.FirstOrDefault();
+        if (firstRubric != null)
+            Content.ActiveRubric = firstRubric;
+        base.OnInitialized();
+    }
+
+    private IViewData GetStepData(IViewRubric rubric)
+    {
+        return typeof(ViewData<>).MakeGenericType(rubric.RubricType).New<IViewData>(Model.Proxy[rubric.RubricId]);
+    }
+
+    private bool ContainsStepData(IViewRubric rubric)
+    {
+        return Model.Proxy[rubric.RubricId] != null;
+    }
+}

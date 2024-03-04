@@ -12,6 +12,8 @@ namespace Undersoft.SDK.Rubrics
 
         int RubricId { get; set; }
 
+        int RubricOrdinal { get; set; }
+
         string RubricName { get; set; }
 
         string DisplayName { get; set; }

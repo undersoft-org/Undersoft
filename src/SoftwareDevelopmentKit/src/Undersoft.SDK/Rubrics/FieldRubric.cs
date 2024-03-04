@@ -102,6 +102,8 @@ namespace Undersoft.SDK.Rubrics
 
         public int RubricOffset { get; set; }
 
+        public int RubricOrdinal { get; set; }
+
         public PropertyInfo[] RubricParameterInfo
         {
             get => throw new NotImplementedException();

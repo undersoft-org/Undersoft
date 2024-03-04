@@ -7,7 +7,7 @@ using Undersoft.SDK.Service.Server.Accounts.Email;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
 
-public class AccountService : IAccountAction, IAccountAccess
+public class AccountService : IAccountService<IAccount>
 {
     private IServicer _servicer;
     private IAccountManager _manager;
@@ -79,7 +79,7 @@ public class AccountService : IAccountAction, IAccountAccess
 
     public async Task<IAuthorization> SignOut(IAuthorization identity)
     {
-        var account = await AccountInfo(identity);
+        var account = await SignedUp(identity);
 
         if (account.Credentials.IsLockedOut)
         {
@@ -97,9 +97,9 @@ public class AccountService : IAccountAction, IAccountAccess
         return account;
     }
 
-    public async Task<IAuthorization> Renew(IAuthorization identity)
+    public async Task<IAuthorization> SignedIn(IAuthorization identity)
     {
-        var account = await AccountInfo(identity);
+        var account = await SignedUp(identity);
 
         if (account.Credentials.IsLockedOut)
         {
@@ -126,7 +126,7 @@ public class AccountService : IAccountAction, IAccountAccess
         return account;
     }
 
-    public async Task<IAuthorization> AccountInfo(IAuthorization identity)
+    public async Task<IAuthorization> SignedUp(IAuthorization identity)
     {
         var _creds = identity.Credentials;
         if (!_manager.TryGetByEmail(_creds.Email, out var account))
@@ -160,7 +160,7 @@ public class AccountService : IAccountAction, IAccountAccess
 
     public async Task<IAuthorization> Authenticate(IAuthorization account)
     {
-        account = await AccountInfo(account);
+        account = await SignedUp(account);
 
         var _creds = account?.Credentials;
 
@@ -271,7 +271,7 @@ public class AccountService : IAccountAction, IAccountAccess
 
     public async Task<IAuthorization> ResetPassword(IAuthorization account)
     {
-        account = await AccountInfo(account);
+        account = await SignedUp(account);
 
         if (account != null && !account.Credentials.IsLockedOut)
         {
@@ -416,11 +416,14 @@ public class AccountService : IAccountAction, IAccountAccess
 
                 if (_creds.RegistrationCompleteToken != null)
                 {
+                    var _code = int.Parse(_creds.RegistrationCompleteToken);
+                    var _token = TokenRegistry.Get(_code);
+                    TokenRegistry.Remove(_code);
                     var isValid = await _manager.User.VerifyUserTokenAsync(
                         _account.User,
                         "AccountRegistrationProcessTokenProvider",
                         "Registration",
-                        _creds.RegistrationCompleteToken
+                        _token
                     );
 
                     if (isValid)
@@ -456,19 +459,95 @@ public class AccountService : IAccountAction, IAccountAccess
                     _creds.RegistrationCompleteToken = null;
                     return account;
                 }
-                _creds.RegistrationCompleteToken = await _manager.User.GenerateUserTokenAsync(
+
+                var token = await _manager.User.GenerateUserTokenAsync(
                     (await _manager.GetByEmail(_creds.Email)).User,
                     "AccountRegistrationProcessTokenProvider",
                     "Registration"
                 );
+                var code = Math.Abs(token.UniqueKey32());
+                TokenRegistry.Add(code, token);
+                _ = _servicer.Serve<IEmailSender>(
+                    e =>
+                        e.SendEmailAsync(
+                            _creds.Email,
+                            "Verfication code to confirm your email address and proceed with account registration process",
+                            EmailTemplate.GetVerificationCodeMessage(code.ToString())
+                        )
+                );
                 account.Notes = new OperationNotes()
                 {
-                    Info = "Please complete registration process",
-                    Status = SigningStatus.RegistrationNotCompleted
+                    Info = "Please confirm registration process",
+                    Status = SigningStatus.RegistrationNotConfirmed
                 };
             }
             else
                 account.Notes = new OperationNotes() { Info = "Registration was completed" };
+        }
+        return account;
+    }
+
+    public async Task<IAccount> Register(IAccount account)
+    {
+        if (
+            account != null
+            && !account.Credentials.IsLockedOut
+            && account.Credentials.Authenticated
+            && account.Credentials.EmailConfirmed
+        )
+        {
+            var _creds = account.Credentials;
+            var _account = await _manager.GetByEmail(_creds.Email);
+            if (_account == null)
+            {
+                account.Notes = new OperationNotes()
+                {
+                    Errors = "Account not found",
+                    Status = SigningStatus.RegistrationNotCompleted
+                };
+                this.Failure<Accesslog>(account.Notes.Success, account);
+                return account;
+            }
+
+            _account.Credentials = account.Credentials;
+            account.Personal.PatchTo(_account.Personal);
+            account.Professional.PatchTo(_account.Professional);
+
+            account = await _manager.Accounts.Put(_account, null);
+
+            await CompleteRegistration((IAuthorization)account);
+        }
+        return account;
+    }
+
+    public async Task<IAccount> Unregister(IAccount account)
+    {
+        if (
+         account != null
+     )
+        {
+            var _creds = account.Credentials;
+            var _account = await _manager.GetByEmail(_creds.Email);
+            if (_account != null)
+                account = await _manager.Accounts.Delete(_account.Id);
+        }
+        return account;
+    }
+
+    public async Task<IAccount> Registered(IAccount account)
+    {
+        if (
+         account != null
+         && !account.Credentials.IsLockedOut
+         && account.Credentials.Authenticated
+         && account.Credentials.EmailConfirmed
+         && account.Credentials.RegistrationCompleted
+     )
+        {
+            var _creds = account.Credentials;
+            var _account = await _manager.GetByEmail(_creds.Email);
+            if (_account != null)
+                account = await _manager.Accounts.Find(_account.Id);
         }
         return account;
     }

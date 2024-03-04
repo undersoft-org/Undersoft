@@ -46,7 +46,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Abstraction
         IViewRubric ActiveRubric { get; set; }
         IViewRubrics Rubrics { get; set; }
 
-        IViewItem ViewItem { get; set; }
+        IViewItem? ViewItem { get; set; }
 
         IViewRubrics MapRubrics();
         void SetRequired(params string[] requiredList);

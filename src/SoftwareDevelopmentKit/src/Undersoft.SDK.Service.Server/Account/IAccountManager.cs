@@ -10,6 +10,7 @@ namespace Undersoft.SDK.Service.Server.Accounts
         SignInManager<AccountUser> SignIn { get; set; }
         AccountTokenGenerator Token { get; set; }
         UserManager<AccountUser> User { get; set; }
+        IStoreRepository<IAccountStore, Account> Accounts { get; set; }
 
         Task<Account> CheckPassword(string email, string password);
         Task<bool> CheckToken(string token);

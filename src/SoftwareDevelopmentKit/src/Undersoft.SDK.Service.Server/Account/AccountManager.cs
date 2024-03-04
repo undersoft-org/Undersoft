@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Undersoft.SDK.Service.Access;
-using Undersoft.SDK.Updating;
 using Claim = System.Security.Claims.Claim;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
@@ -23,6 +22,7 @@ public class AccountManager : Registry<IAccount>, IAccountManager
         Role = role;
         SignIn = signIn;
         Token = token;
+        Accounts = accounts;
     }
 
     public IStoreRepository<IAccountStore, Account> Accounts { get; set; }

@@ -34,21 +34,6 @@
         }
     }
 
-    protected override void OnAfterRender(bool firstRender)
-    {
-        var _firstRubric = _rubrics.FirstOrDefault();
-        if (_firstRubric != null)
-        {
-            var reference = _firstRubric.ViewItem.Reference;
-            if (reference != null)
-            {
-                ((FluentComponentBase)reference).Element.FocusAsync();
-            }
-        }
-
-        base.OnAfterRender(firstRender);
-    }
-
     [Parameter]
     public EditContext? FormContext { get; set; } = default!;
 

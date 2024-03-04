@@ -70,6 +70,8 @@
 
         public string RubricName { get; set; }
 
+        public int RubricOrdinal { get; set; }
+
         public int RubricOffset { get; set; } = 0;
 
         public ParameterInfo[] RubricParameterInfo { get; set; }

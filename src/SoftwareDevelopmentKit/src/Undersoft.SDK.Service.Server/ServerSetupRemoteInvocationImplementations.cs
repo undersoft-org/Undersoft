@@ -5,7 +5,6 @@ using System.Reflection;
 
 namespace Undersoft.SDK.Service.Server;
 
-using Castle.Core.Internal;
 using Microsoft.IdentityModel.Tokens;
 using Undersoft.SDK.Service.Data.Client.Attributes;
 using Undersoft.SDK.Service.Operation.Invocation;
@@ -54,10 +53,10 @@ public partial class ServerSetup
                 serviceType = null;
 
             var genericTypes = controllerType.BaseType.GenericTypeArguments;
-            
+
             if (genericTypes.Length < 3)
                 continue;
-            
+
             Type[] list = GetStoreModelServiceTypes(genericTypes);
 
             storeType = list[0];
@@ -73,7 +72,24 @@ public partial class ServerSetup
                     ),
                     typeof(Invocation<>).MakeGenericType(modelType)
                 );
-
+                service.AddTransient(
+                   typeof(IRequestHandler<,>).MakeGenericType(
+                       new[]
+                       {
+                            typeof(RemoteAccess<,,>).MakeGenericType(
+                                storeType,
+                                serviceType,
+                                modelType
+                            ),
+                            typeof(Invocation<>).MakeGenericType(modelType)
+                       }
+                   ),
+                   typeof(RemoteAcccessHandler<,,>).MakeGenericType(
+                       storeType,
+                       serviceType,
+                       modelType
+                   )
+               );
                 service.AddTransient(
                     typeof(IRequestHandler<,>).MakeGenericType(
                         new[]
@@ -110,6 +126,20 @@ public partial class ServerSetup
                         modelType
                     )
                 );
+                service.AddTransient(
+                  typeof(INotificationHandler<>).MakeGenericType(
+                      typeof(RemoteAccessInvoked<,,>).MakeGenericType(
+                          storeType,
+                          serviceType,
+                          modelType
+                      )
+                  ),
+                  typeof(RemoteAccessInvokedHandler<,,>).MakeGenericType(
+                      storeType,
+                      serviceType,
+                      modelType
+                  )
+              );
                 service.AddTransient(
                     typeof(INotificationHandler<>).MakeGenericType(
                         typeof(RemoteActionInvoked<,,>).MakeGenericType(

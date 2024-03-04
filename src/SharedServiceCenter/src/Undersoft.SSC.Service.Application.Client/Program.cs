@@ -49,8 +49,11 @@ namespace Undersoft.SSC.Service.Application.Client
                         .AddScoped<AccessProvider<Account>>()
                         .AddScoped<AuthenticationStateProvider, AccessProvider<Account>>()
                         .AddScoped<IAccountAccess, AccessProvider<Account>>()
+                        .AddScoped<IAccountService<Account>, AccessProvider<Account>>()
                         .AddScoped<IValidator<IViewData<Credentials>>, AccessValidator>()
                         .AddScoped<IValidator<IViewData<Account>>, GenericAccountPanelValidator>()
+                        .AddScoped<IValidator<IViewData<Account>>, AccountValidator>()
+                        .AddScoped<AccountValidator>()
                         .AddScoped<GenericAccountPanelValidator>()
                         .AddScoped<AccessValidator>();
                     reg.MergeServices(services, true);

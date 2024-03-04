@@ -23,23 +23,23 @@ public class Account : Authorization, IContract
     public long? PersonalId { get; set; }
 
     [DataMember(Order = 17)]
-    public virtual AccountPersonal? Personal { get; set; }
+    public virtual AccountPersonal Personal { get; set; } = default!;
 
     [DataMember(Order = 18)]
     public long? ProfessionalId { get; set; }
 
     [DataMember(Order = 19)]
-    public virtual AccountProfessional? Professional { get; set; }
+    public virtual AccountProfessional Professional { get; set; } = default!;
 
     [DataMember(Order = 20)]
-    public virtual Listing<AccountOrganization>? Organizations { get; set; }
+    public virtual Listing<AccountOrganization> Organizations { get; set; } = default!;
 
     [DataMember(Order = 21)]
-    public virtual Listing<AccountConsent>? Consents { get; set; }
+    public virtual Listing<AccountConsent> Consents { get; set; } = default!;
 
     [DataMember(Order = 22)]
-    public virtual Listing<AccountSubscription>? Subscriptions { get; set; }
+    public virtual Listing<AccountSubscription> Subscriptions { get; set; } = default!;
 
     [DataMember(Order = 23)]
-    public virtual Listing<AccountPayment>? Payments { get; set; }
+    public virtual Listing<AccountPayment> Payments { get; set; } = default!;
 }

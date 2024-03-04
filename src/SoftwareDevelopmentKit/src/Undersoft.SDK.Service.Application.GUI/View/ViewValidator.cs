@@ -49,7 +49,7 @@ public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IVali
         );
     }
 
-    protected void ValidateRequired(params Expression<Func<IViewData<TModel>, object>>[] members)
+    protected void ValidateRequired(params Expression<Func<IViewData<TModel>, object?>>[] members)
     {
         foreach (var member in members)
         {
@@ -59,7 +59,7 @@ public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IVali
         }
     }
 
-    protected void ValidateEmail(params Expression<Func<IViewData<TModel>, string>>[] members)
+    protected void ValidateEmail(params Expression<Func<IViewData<TModel>, string?>>[] members)
     {
         foreach (var member in members)
         {
@@ -70,7 +70,7 @@ public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IVali
     protected void ValidateLength(
         int min,
         int max,
-        params Expression<Func<IViewData<TModel>, string>>[] members
+        params Expression<Func<IViewData<TModel>, string?>>[] members
     )
     {
         foreach (var member in members)
@@ -99,7 +99,7 @@ public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IVali
         }
     }
 
-    protected void ValidateEnum(params Expression<Func<IViewData<TModel>, string>>[] members)
+    protected void ValidateEnum(params Expression<Func<IViewData<TModel>, string?>>[] members)
     {
         foreach (var member in members)
         {
@@ -109,43 +109,43 @@ public class ViewValidator<TModel> : ViewValidatorBase<IViewData<TModel>>, IVali
 
     protected void ValidateNotEqual(
         object item,
-        params Expression<Func<IViewData<TModel>, object>>[] members
+        params Expression<Func<IViewData<TModel>, object?>>[] members
     )
     {
         foreach (var member in members)
         {
-            RuleFor(member).NotEqual(item, EqualityComparer<object>.Default).WithMessage($"{member.GetMemberName()} not equal: {item}");
+            RuleFor(member).NotEqual(item, EqualityComparer<object?>.Default).WithMessage($"{member.GetMemberName()} not equal: {item}");
         }
     }
 
     protected void ValidateNotEqual(
-        Expression<Func<IViewData<TModel>, object>> first,
-        Expression<Func<IViewData<TModel>, object>> second
+        Expression<Func<IViewData<TModel>, object?>> first,
+        Expression<Func<IViewData<TModel>, object?>> second
     )
     {
-        RuleFor(first).NotEqual(second, EqualityComparer<object>.Default).WithMessage($"{first.GetMemberName()} not equal {second.GetMemberName()}");
+        RuleFor(first).NotEqual(second, EqualityComparer<object?>.Default).WithMessage($"{first.GetMemberName()} not equal {second.GetMemberName()}");
     }
 
     protected void ValidateEqual(
         object item,
-        params Expression<Func<IViewData<TModel>, object>>[] members
+        params Expression<Func<IViewData<TModel>, object?>>[] members
     )
     {
         foreach (var member in members)
         {
-            RuleFor(member).Equal(item, EqualityComparer<object>.Default).WithMessage($"{member.GetMemberName()} equal: {item}");
+            RuleFor(member).Equal(item, EqualityComparer<object?>.Default).WithMessage($"{member.GetMemberName()} equal: {item}");
         }
     }
 
     protected void ValidateEqual(
-        Expression<Func<IViewData<TModel>, object>> first,
-        Expression<Func<IViewData<TModel>, object>> second
+        Expression<Func<IViewData<TModel>, object?>> first,
+        Expression<Func<IViewData<TModel>, object?>> second
     )
     {
-        RuleFor(first).Equal(second, EqualityComparer<object>.Default).WithMessage($"{first.GetMemberName()} equal {second.GetMemberName()}");
+        RuleFor(first).Equal(second, EqualityComparer<object?>.Default).WithMessage($"{first.GetMemberName()} equal {second.GetMemberName()}");
     }
 
-    protected void ValidateLanguage(params Expression<Func<IViewData<TModel>, object>>[] members)
+    protected void ValidateLanguage(params Expression<Func<IViewData<TModel>, object?>>[] members)
     {
         foreach (var member in members)
         {

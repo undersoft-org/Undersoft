@@ -70,9 +70,12 @@ public static class MauiProgram
                     .AddScoped<IRemoteRepository<IAccountStore, Account>, RemoteRepository<IAccountStore, Account>>()
                     .AddScoped<AccessProvider<Account>>()
                     .AddScoped<AuthenticationStateProvider, AccessProvider<Account>>()
+                    .AddScoped<IAccountService<Account>, AccessProvider<Account>>()
                     .AddScoped<IAccountAccess, AccessProvider<Account>>()
                     .AddScoped<IValidator<IViewData<Credentials>>, AccessValidator>()
                     .AddScoped<IValidator<IViewData<Account>>, GenericAccountPanelValidator>()
+                    .AddScoped<IValidator<IViewData<Account>>, AccountValidator>()
+                    .AddScoped<AccountValidator>()
                     .AddScoped<GenericAccountPanelValidator>()
                     .AddScoped<AccessValidator>();
                 reg.MergeServices(services, true);

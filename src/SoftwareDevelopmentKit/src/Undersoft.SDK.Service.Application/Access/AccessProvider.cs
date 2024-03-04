@@ -12,7 +12,7 @@ using Claim = System.Security.Claims.Claim;
 
 namespace Undersoft.SDK.Service.Application.Access;
 
-public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAccess
+public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountService<TAccount>
     where TAccount : class, IAuthorization
 {
     private readonly IJSRuntime js;
@@ -58,8 +58,11 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
             }
             if (IsTokenExpired(expirationTime.AddMinutes(-5)))
             {
-                var auth = await Renew(
-                    new Authorization() { Credentials = new Credentials() { Email = email, SessionToken = token } }
+                var auth = await SignedIn(
+                    new Authorization()
+                    {
+                        Credentials = new Credentials() { Email = email, SessionToken = token }
+                    }
                 );
 
                 if (auth != null)
@@ -79,7 +82,9 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
     public AccessState GetAccessState(string token)
     {
         _authorization.Credentials.SessionToken = token;
-        return new AccessState(new ClaimsPrincipal(new ClaimsIdentity(GetTokenClaims(token), "jwt")));
+        return new AccessState(
+            new ClaimsPrincipal(new ClaimsIdentity(GetTokenClaims(token), "jwt"))
+        );
     }
 
     private ISeries<Claim> GetTokenClaims(string jwt)
@@ -158,9 +163,9 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
         return result;
     }
 
-    public async Task<IAuthorization?> Renew(IAuthorization auth)
+    public async Task<IAuthorization?> SignedIn(IAuthorization auth)
     {
-        var result = await _repository.Access(nameof(Renew), auth);
+        var result = await _repository.Access(nameof(SignedIn), auth);
 
         if (result == null)
             return null;
@@ -196,9 +201,9 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
         return _authorization = result;
     }
 
-    public async Task<IAuthorization?> AccountInfo(IAuthorization auth)
+    public async Task<IAuthorization?> SignedUp(IAuthorization auth)
     {
-        var result = await _repository.Access(nameof(AccountInfo), auth);
+        var result = await _repository.Access(nameof(SignedUp), auth);
 
         if (result == null)
             return null;
@@ -218,12 +223,48 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountAcc
 
     public async Task<IAuthorization?> CompleteRegistration(IAuthorization auth)
     {
-        var result = await _repository.Action(nameof(CompleteRegistration), auth);
+        var result = await _repository.Setup(nameof(CompleteRegistration), auth);
 
         if (result == null)
             return null;
 
         return _authorization = result;
+    }
+
+    public async Task<TAccount> Register(TAccount auth)
+    {
+        var result = await _repository.Setup(nameof(Register), auth);
+
+        if (result == null)
+            return default(TAccount)!;
+
+        _authorization = (IAuthorization)result;
+
+        return result;
+    }
+
+    public async Task<TAccount> Unregister(TAccount auth)
+    {
+        var result = await _repository.Setup(nameof(Unregister), auth);
+
+        if (result == null)
+            return default(TAccount)!;
+
+        _authorization = (IAuthorization)result;
+
+        return result;
+    }
+
+    public async Task<TAccount> Registered(TAccount auth)
+    {
+        var result = await _repository.Setup(nameof(Registered), auth);
+
+        if (result == null)
+            return default(TAccount)!;
+
+        _authorization = (IAuthorization)result;
+
+        return result;
     }
 
     private async Task CleanUp()
