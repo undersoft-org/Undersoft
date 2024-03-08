@@ -1,4 +1,6 @@
-﻿namespace Undersoft.SSC.Service.Application.Hybrid
+﻿
+
+namespace Undersoft.SSC.Service.Application.Hybrid
 {
     public partial class App : Microsoft.Maui.Controls.Application
     {

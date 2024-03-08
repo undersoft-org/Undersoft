@@ -2,8 +2,6 @@
 
 public class AccountProfessional : DataObject
 {
-    public string Title { get; set; }
-
     public string Email { get; set; }
 
     public string PhoneNumber { get; set; }
@@ -11,8 +9,6 @@ public class AccountProfessional : DataObject
     public string Profession { get; set; }
 
     public string Industry { get; set; }
-
-    public string Image { get; set; }
 
     public string SocialMedia { get; set; }
 

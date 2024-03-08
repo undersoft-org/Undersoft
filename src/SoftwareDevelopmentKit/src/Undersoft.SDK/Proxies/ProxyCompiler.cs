@@ -18,7 +18,7 @@ public class ProxyCompiler : ProxyCompilerBase
     protected FieldBuilder rubricsField;
     public bool hasSerialCode;
 
-    public ProxyCompiler(ProxyCreator instantSleeve, ISeries<RubricModel> rubricBuilders)
+    public ProxyCompiler(ProxyCreator instantSleeve, ISeries<MemberBuilder> rubricBuilders)
         : base(instantSleeve, rubricBuilders) { }
 
     public override Type CompileProxyType(string typeName)
@@ -568,7 +568,7 @@ public class ProxyCompiler : ProxyCompilerBase
     public override void CreateCodeProperty(TypeBuilder tb, Type type, string name)
     {
 
-        RubricModel newFieldModel = null;
+        MemberBuilder newFieldModel = null;
         var existedFiedModel = rubricBuilders
             .AsValues()
             .FirstOrDefault(
@@ -588,7 +588,7 @@ public class ProxyCompiler : ProxyCompilerBase
         {
             FieldBuilder fb = createField(tb, null, type, name.ToLower());
             codeField = fb;
-            newFieldModel = new RubricModel(new MemberRubric(fb));
+            newFieldModel = new MemberBuilder(new MemberRubric(fb));
         }
 
         PropertyBuilder prop = tb.DefineProperty(

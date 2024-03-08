@@ -9,7 +9,7 @@
                         Max="9"
                         ShowOverflow="true"
                         BackgroundColor="@Color.Error"
-                        Color="Color.Fill"
+                        Color="Color.FillInverse"
                         Appearance="Appearance.Accent"
                         ShowZero=true>
         <ChildContent>
@@ -49,7 +49,7 @@ else
         InvokeAsync(StateHasChanged);
     }
 
-    private RenderFragment NotificationIcon() => @<FluentIcon Value="@(new Icons.Regular.Size20.Alert())" Color="Color.Fill" Title="Notification center" OnClick="OpenNotificationPanelAsync" />;
+    private RenderFragment NotificationIcon() => @<FluentIcon Value="@(new Icons.Regular.Size20.Alert())" Color="Color.FillInverse" Title="Notification center" OnClick="OpenNotificationPanelAsync" />;
 
     private async Task OpenNotificationPanelAsync()
     {

@@ -15,8 +15,8 @@ public class ProxyCreator<T> : ProxyCreator
 
 public class ProxyCreator : IInstantCreator
 {
-    private ISeries<RubricModel> rubricModels;
-    private RubricBuilder rubricBuilder;
+    private ISeries<MemberBuilder> rubricModels;
+    private MemberBuilderCreator rubricBuilder;
     private Type compiledType;
 
     public ProxyCreator(Type figureModelType) : this(figureModelType, null) { }
@@ -31,7 +31,7 @@ public class ProxyCreator : IInstantCreator
             ? figureModelType.Name
             : figureTypeName;
 
-        rubricBuilder = new RubricBuilder();
+        rubricBuilder = new MemberBuilderCreator();
         rubricModels = rubricBuilder.Create(figureModelType);
 
         Rubrics = new MemberRubrics(rubricModels.Select(m => m.Member).ToArray());

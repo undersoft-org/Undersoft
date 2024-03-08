@@ -2,6 +2,7 @@
 {
     using Undersoft.SDK;
     using Undersoft.SDK.Invoking;
+    using Undersoft.SDK.Rubrics.Attributes;
 
     public interface IRubric : IMemberRubric, IOrigin
     {
@@ -22,6 +23,10 @@
         bool Required { get; set; }
 
         bool IsLink { get; set; }
+
+        bool IsFile { get; set; }
+
+        FileRubricType FileType { get; set; }
 
         string LinkValue { get; set; }
 

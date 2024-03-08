@@ -7,26 +7,22 @@
     using Undersoft.SDK.Proxies;
     using Undersoft.SDK.Series;
 
-    public class RubricBuilder
+    public class MemberBuilderCreator
     {
-        public ISeries<RubricModel> Create(Type modelType)
+        public ISeries<MemberBuilder> Create(Type modelType)
         {
-            Registry<RubricModel> rubricBuilders = new Registry<RubricModel>(true);
-
-            var memberRubrics = PrepareMembers(GetMembers(modelType));
-
-            return Create(memberRubrics);
+            return Create(PrepareMembers(GetMembers(modelType)));
         }
 
-        public ISeries<RubricModel> Create(MemberRubric[] memberRubrics)
+        public ISeries<MemberBuilder> Create(MemberRubric[] memberRubrics)
         {
-            Registry<RubricModel> rubricBuilders = new Registry<RubricModel>();
+            Registry<MemberBuilder> rubricBuilders = new Registry<MemberBuilder>();
 
             memberRubrics.ForEach(
                 (member) =>
                 {
-                    if (!rubricBuilders.TryGet(member.RubricName, out RubricModel fieldProperty))
-                        rubricBuilders.Put(new RubricModel(member));
+                    if (!rubricBuilders.TryGet(member.RubricName, out MemberBuilder fieldProperty))
+                        rubricBuilders.Put(new MemberBuilder(member));
                     else
                         fieldProperty.SetMember(member);
                 }

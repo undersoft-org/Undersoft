@@ -10,3 +10,4 @@ export function isDarkMode() {
     else
         return false;
     }
+

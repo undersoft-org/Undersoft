@@ -23,33 +23,36 @@
 </style>
 
 <CascadingValue Value="@Content">
-    <GenericFormWizardHeader TModel="TModel" />
-    <FluentDialogBody>
-        <GenericFormSet TValidator="TValidator" TModel="TModel" Content="@Content">
-            <FluentWizard Id="generic-wizard" @bind-Value="@ActiveId" StepTitleHiddenWhen="@GridItemHidden.XsAndDown" Height="@Content.Height" Width="@Content.Width" StepperPosition="Position">
-                <Steps>
-                    @foreach (var _rubric in _rubrics)
-                    {
-                        @if (ContainsStepData(_rubric))
+    <CascadingValue Value="@FormWizard">
+        <GenericFormWizardHeader TModel="TModel" />
+        <FluentDialogBody>
+            <GenericFormSet TValidator="TValidator" TModel="TModel" Content="@Content">
+                <FluentWizard Id="generic-wizard" @bind-Value="@ActiveId" StepTitleHiddenWhen="@GridItemHidden.None" Width="100%" StepperPosition="Position">
+                    <Steps>
+                        @foreach (var _rubric in _rubrics)
                         {
-                            <GenericFormWizardStep TValidator="TValidator" TModel="TModel" Rubric="_rubric" Data="@(GetStepData(_rubric))" />
+                            @if (ContainsStepData(_rubric))
+                            {
+                                <GenericFormWizardStep Rubric="_rubric" Data="@(GetStepData(_rubric))" />
+                            }
                         }
-                    }
-                </Steps>
-                <ButtonTemplate>
-                    <GenericFormWizardButtons TModel="TModel" GoToFirstEnabled="@GoToFirstEnabled" GoToLastEnabled="@GoToLastEnabled" />
-                </ButtonTemplate>
-            </FluentWizard>
-        </GenericFormSet>
-    </FluentDialogBody>
-    <FluentDialogFooter />
+                    </Steps>
+                    <ButtonTemplate>
+                        <FluentDialogFooter>
+                            <GenericFormWizardButtons TModel="TModel" GoToFirstEnabled="@GoToFirstEnabled" GoToLastEnabled="@GoToLastEnabled" />
+                        </FluentDialogFooter>
+                    </ButtonTemplate>
+                </FluentWizard>
+            </GenericFormSet>
+        </FluentDialogBody>
+    </CascadingValue>
 </CascadingValue>
 
 @code
 {
     private IViewRubrics _rubrics => Content.Rubrics;
 
-    private int ActiveId
+    public int ActiveId
     {
         get => Content.ActiveRubric.RubricOrdinal;
         set => Content.ActiveRubric = Content.Rubrics[value];
@@ -57,6 +60,8 @@
 
     [CascadingParameter]
     public FluentDialog Dialog { get; set; } = default!;
+
+    public IViewItem FormWizard => this;
 
     [Parameter]
     public bool GoToFirstEnabled { get; set; }
@@ -81,7 +86,10 @@
 
     private IViewData GetStepData(IViewRubric rubric)
     {
-        return typeof(ViewData<>).MakeGenericType(rubric.RubricType).New<IViewData>(Model.Proxy[rubric.RubricId]);
+        var data = typeof(ViewData<>).MakeGenericType(rubric.RubricType).New<IViewData>(Model.Proxy[rubric.RubricId]);
+        data.Title = (rubric.DisplayName != null) ? rubric.DisplayName : rubric.RubricName;
+        data.MapRubrics();
+        return data;
     }
 
     private bool ContainsStepData(IViewRubric rubric)

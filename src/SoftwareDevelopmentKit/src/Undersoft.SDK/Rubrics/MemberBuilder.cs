@@ -4,9 +4,9 @@
     using System.Reflection;
     using Undersoft.SDK.Uniques;
 
-    public class RubricModel : Identifiable
+    public class MemberBuilder : Identifiable
     {
-        public RubricModel(MemberRubric member) : base()
+        public MemberBuilder(MemberRubric member) : base()
         {
             SetMember(member);
             Id = Name.UniqueKey();

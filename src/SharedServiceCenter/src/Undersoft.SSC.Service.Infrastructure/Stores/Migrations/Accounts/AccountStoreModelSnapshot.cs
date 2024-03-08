@@ -47,6 +47,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
+                    b.Property<long?>("AddressId")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("Authenticated")
                         .HasColumnType("boolean");
 
@@ -56,6 +59,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(4);
+
+                    b.Property<long?>("ConsentId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp")
@@ -90,14 +96,23 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(7);
 
+                    b.Property<long?>("OrganizationId")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
+
+                    b.Property<long?>("PaymentId")
+                        .HasColumnType("bigint");
 
                     b.Property<long?>("PersonalId")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("ProfessionalId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("SubscriptionId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("TypeId")
@@ -114,16 +129,124 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AddressId")
+                        .IsUnique();
+
+                    b.HasIndex("ConsentId")
+                        .IsUnique();
+
+                    b.HasIndex("OrganizationId")
+                        .IsUnique();
+
+                    b.HasIndex("PaymentId")
+                        .IsUnique();
+
                     b.HasIndex("PersonalId")
                         .IsUnique();
 
                     b.HasIndex("ProfessionalId")
                         .IsUnique();
 
+                    b.HasIndex("SubscriptionId")
+                        .IsUnique();
+
                     b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Accounts", "Accounts");
+                });
+
+            modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.AccountAddress", b =>
+                {
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
+
+                    b.Property<long?>("AccountId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ApartmentNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BuildingNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CityName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CodeNo")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnOrder(4);
+
+                    b.Property<string>("Country")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp")
+                        .HasColumnOrder(8);
+
+                    b.Property<string>("Creator")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(9);
+
+                    b.Property<int>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(10);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
+
+                    b.Property<string>("Label")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)")
+                        .HasColumnOrder(11);
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("timestamp")
+                        .HasColumnOrder(6);
+
+                    b.Property<string>("Modifier")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnOrder(7);
+
+                    b.Property<int>("OriginId")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(3);
+
+                    b.Property<string>("Postcode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SocialMedia")
+                        .HasColumnType("text");
+
+                    b.Property<string>("State")
+                        .HasColumnType("text");
+
+                    b.Property<string>("StreetName")
+                        .HasColumnType("text");
+
+                    b.Property<long>("TypeId")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("TypeName")
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)")
+                        .HasColumnOrder(5);
+
+                    b.Property<string>("Websites")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("AccountAddress", "Accounts");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.AccountClaim", b =>
@@ -238,7 +361,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("AccountId")
+                        .IsUnique();
 
                     b.ToTable("AccountConsents", "Accounts");
                 });
@@ -279,24 +403,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Property<long?>("AccountId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("ApartmentNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BuildingNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CityName")
-                        .HasColumnType("text");
-
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
                         .IsRequired()
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(4);
-
-                    b.Property<string>("Country")
-                        .HasColumnType("text");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp")
@@ -353,21 +465,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Property<string>("Position")
                         .HasColumnType("text");
 
-                    b.Property<string>("Postcode")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Size")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("SocialMedia")
-                        .HasColumnType("text");
-
-                    b.Property<string>("State")
-                        .HasColumnType("text");
-
-                    b.Property<string>("StreetName")
-                        .HasColumnType("text");
-
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -377,12 +474,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnType("character varying(512)")
                         .HasColumnOrder(5);
 
-                    b.Property<string>("Websites")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("AccountId")
+                        .IsUnique();
 
                     b.ToTable("AccountOrganizations", "Accounts");
                 });
@@ -487,7 +582,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("AccountId")
+                        .IsUnique();
 
                     b.ToTable("AccountPayments", "Accounts");
                 });
@@ -501,20 +597,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Property<long?>("AccountId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Age")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ApartmentNumber")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("Birthdate")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("BuildingNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CityName")
-                        .HasColumnType("text");
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -522,9 +606,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasColumnOrder(4);
-
-                    b.Property<string>("Country")
-                        .HasColumnType("text");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp")
@@ -541,7 +622,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("Gender")
                         .HasColumnType("text");
 
                     b.Property<string>("Image")
@@ -578,19 +659,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
-                    b.Property<string>("Postcode")
-                        .HasColumnType("text");
-
                     b.Property<string>("SecondName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SocialMedia")
-                        .HasColumnType("text");
-
-                    b.Property<string>("State")
-                        .HasColumnType("text");
-
-                    b.Property<string>("StreetName")
                         .HasColumnType("text");
 
                     b.Property<string>("Title")
@@ -604,9 +673,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasMaxLength(512)
                         .HasColumnType("character varying(512)")
                         .HasColumnOrder(5);
-
-                    b.Property<string>("Websites")
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -647,9 +713,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Property<float>("Experience")
                         .HasColumnType("real");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("text");
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -685,9 +748,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnType("text");
 
                     b.Property<string>("SocialMedia")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Title")
                         .HasColumnType("text");
 
                     b.Property<long>("TypeId")
@@ -739,9 +799,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
                     b.Property<long?>("AccountId")
                         .HasColumnType("bigint");
-
-                    b.Property<string>("ApplicationServer")
-                        .HasColumnType("text");
 
                     b.Property<string>("CodeNo")
                         .IsConcurrencyToken()
@@ -799,15 +856,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Property<double>("Quantity")
                         .HasColumnType("double precision");
 
-                    b.Property<string>("ServiceApplication")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ServiceServer")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SharedServiceCenter")
-                        .HasColumnType("text");
-
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint")
                         .HasColumnOrder(2);
@@ -822,7 +870,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("AccountId")
+                        .IsUnique();
 
                     b.ToTable("AccountSubscriptions", "Accounts");
                 });
@@ -1019,6 +1068,22 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
             modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.Account", b =>
                 {
+                    b.HasOne("Undersoft.SDK.Service.Server.Accounts.AccountAddress", "Address")
+                        .WithOne()
+                        .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.Account", "AddressId");
+
+                    b.HasOne("Undersoft.SDK.Service.Server.Accounts.AccountConsent", "Consent")
+                        .WithOne()
+                        .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.Account", "ConsentId");
+
+                    b.HasOne("Undersoft.SDK.Service.Server.Accounts.AccountOrganization", "Organization")
+                        .WithOne()
+                        .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.Account", "OrganizationId");
+
+                    b.HasOne("Undersoft.SDK.Service.Server.Accounts.AccountPayment", "Payment")
+                        .WithOne()
+                        .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.Account", "PaymentId");
+
                     b.HasOne("Undersoft.SDK.Service.Server.Accounts.AccountPersonal", "Personal")
                         .WithOne()
                         .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.Account", "PersonalId");
@@ -1027,17 +1092,40 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .WithOne()
                         .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.Account", "ProfessionalId");
 
+                    b.HasOne("Undersoft.SDK.Service.Server.Accounts.AccountSubscription", "Subscription")
+                        .WithOne()
+                        .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.Account", "SubscriptionId");
+
                     b.HasOne("Undersoft.SDK.Service.Server.Accounts.AccountUser", "User")
                         .WithOne()
                         .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.Account", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Address");
+
+                    b.Navigation("Consent");
+
+                    b.Navigation("Organization");
+
+                    b.Navigation("Payment");
+
                     b.Navigation("Personal");
 
                     b.Navigation("Professional");
 
+                    b.Navigation("Subscription");
+
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.AccountAddress", b =>
+                {
+                    b.HasOne("Undersoft.SDK.Service.Server.Accounts.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId");
+
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.AccountClaim", b =>
@@ -1052,8 +1140,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
             modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.AccountConsent", b =>
                 {
                     b.HasOne("Undersoft.SDK.Service.Server.Accounts.Account", "Account")
-                        .WithMany("Consents")
-                        .HasForeignKey("AccountId");
+                        .WithOne()
+                        .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.AccountConsent", "AccountId");
 
                     b.Navigation("Account");
                 });
@@ -1070,8 +1158,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
             modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.AccountOrganization", b =>
                 {
                     b.HasOne("Undersoft.SDK.Service.Server.Accounts.Account", "Account")
-                        .WithMany("Organizations")
-                        .HasForeignKey("AccountId");
+                        .WithOne()
+                        .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.AccountOrganization", "AccountId");
 
                     b.Navigation("Account");
                 });
@@ -1079,8 +1167,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
             modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.AccountPayment", b =>
                 {
                     b.HasOne("Undersoft.SDK.Service.Server.Accounts.Account", "Account")
-                        .WithMany("Payments")
-                        .HasForeignKey("AccountId");
+                        .WithOne()
+                        .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.AccountPayment", "AccountId");
 
                     b.Navigation("Account");
                 });
@@ -1121,8 +1209,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
             modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.AccountSubscription", b =>
                 {
                     b.HasOne("Undersoft.SDK.Service.Server.Accounts.Account", "Account")
-                        .WithMany("Subscriptions")
-                        .HasForeignKey("AccountId");
+                        .WithOne()
+                        .HasForeignKey("Undersoft.SDK.Service.Server.Accounts.AccountSubscription", "AccountId");
 
                     b.Navigation("Account");
                 });
@@ -1172,14 +1260,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
             modelBuilder.Entity("Undersoft.SDK.Service.Server.Accounts.Account", b =>
                 {
-                    b.Navigation("Consents");
-
-                    b.Navigation("Organizations");
-
-                    b.Navigation("Payments");
-
-                    b.Navigation("Subscriptions");
-
                     b.Navigation("Tokens");
                 });
 

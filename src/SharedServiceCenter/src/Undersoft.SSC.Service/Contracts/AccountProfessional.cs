@@ -1,24 +1,29 @@
-﻿namespace Undersoft.SSC.Service.Contracts;
+﻿using Undersoft.SDK.Rubrics.Attributes;
+
+namespace Undersoft.SSC.Service.Contracts;
 
 public class AccountProfessional : DataObject
 {
-    public string? Title { get; set; }
+    [VisibleRubric]
+    public string Industry { get; set; } = default!;
 
-    public string? Email { get; set; }
+    [VisibleRubric]
+    public string Profession { get; set; } = default!;
 
-    public string? PhoneNumber { get; set; }
+    [VisibleRubric]
+    public string Email { get; set; } = default!;
 
-    public string? Profession { get; set; }
+    [VisibleRubric]
+    public string PhoneNumber { get; set; } = default!;
 
-    public string? Industry { get; set; }
+    [VisibleRubric]
+    public string SocialMedia { get; set; } = default!;
 
-    public string? Image { get; set; }
+    [VisibleRubric]
+    public string Websites { get; set; } = default!;
 
-    public string? SocialMedia { get; set; }
-
-    public string? Websites { get; set; }
-
+    [VisibleRubric]
     public float Experience { get; set; }
 
-    public long? AccountId { get; set; }
+    public long AccountId { get; set; }
 }

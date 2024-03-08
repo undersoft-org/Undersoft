@@ -20,9 +20,11 @@
         protected readonly ConstructorInfo DisplayRubricCtor =
             typeof(DisplayRubricAttribute).GetConstructor(new Type[] { typeof(string) });
 
-        protected readonly ConstructorInfo LinkRubricCtor = typeof(LinkAttribute).GetConstructor(new Type[] { typeof(string) });
+        protected readonly ConstructorInfo LinkRubricCtor =
+            typeof(LinkAttribute).GetConstructor(new Type[] { typeof(string) });
 
-        protected readonly ConstructorInfo InvokeRubricCtor = typeof(InvokeAttribute).GetConstructor(Type.EmptyTypes);
+        protected readonly ConstructorInfo InvokeRubricCtor =
+            typeof(InvokeAttribute).GetConstructor(Type.EmptyTypes);
 
         protected readonly ConstructorInfo IdentityRubricCtor =
             typeof(IdentityRubricAttribute).GetConstructor(Type.EmptyTypes);
@@ -30,9 +32,8 @@
         protected readonly ConstructorInfo KeyRubricCtor =
             typeof(KeyRubricAttribute).GetConstructor(Type.EmptyTypes);
 
-        protected readonly ConstructorInfo KeyCtor = typeof(KeyAttribute).GetConstructor(
-            Type.EmptyTypes
-        );
+        protected readonly ConstructorInfo KeyCtor =
+            typeof(KeyAttribute).GetConstructor(Type.EmptyTypes);
 
         protected readonly ConstructorInfo RequiredRubricCtor =
             typeof(RequiredRubricAttribute).GetConstructor(Type.EmptyTypes);
@@ -40,15 +41,17 @@
         protected readonly ConstructorInfo VisibleRubricCtor =
             typeof(VisibleRubricAttribute).GetConstructor(Type.EmptyTypes);
 
-        protected readonly ConstructorInfo RequiredCtor = typeof(RequiredAttribute).GetConstructor(
-            Type.EmptyTypes
-        );
+        protected readonly ConstructorInfo RequiredCtor =
+            typeof(RequiredAttribute).GetConstructor(Type.EmptyTypes);
 
         protected readonly ConstructorInfo AggregateRubricCtor =
-            typeof(RubricAggregateAttribute).GetConstructor(Type.EmptyTypes);
+            typeof(AggregateRubricAttribute).GetConstructor(Type.EmptyTypes);
 
         protected readonly ConstructorInfo ExpandRubricCtor =
             typeof(ExpandRubricAttribute).GetConstructor(Type.EmptyTypes);
+
+        protected readonly ConstructorInfo FileRubricCtor =
+         typeof(FileRubricAttribute).GetConstructor(Type.EmptyTypes);
 
         protected readonly ConstructorInfo MarshalAsCtor =
             typeof(MarshalAsAttribute).GetConstructor(new Type[] { typeof(UnmanagedType) });

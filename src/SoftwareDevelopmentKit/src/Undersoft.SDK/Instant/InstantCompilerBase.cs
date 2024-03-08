@@ -33,6 +33,10 @@
 
                 resolveInstantCreatorAggregateAttributes(fb, mi, mr);
 
+                resolveInstantCreatorExpandAttributes(fb, mi, mr);
+
+                resolveInstantCreatorFileAttributes(fb, mi, mr);
+
                 resolveInstantCreatorLinkAttributes(fb, mi, mr);
 
                 resolveInstantCreatorInvokeAttributes(fb, mi, mr);
@@ -206,7 +210,7 @@
             );
         }
 
-        public void CreateInstantCreatorAggregateAttribute(FieldBuilder field, RubricAggregateAttribute attrib)
+        public void CreateInstantCreatorAggregateAttribute(FieldBuilder field, AggregateRubricAttribute attrib)
         {
             field.SetCustomAttribute(
                 new CustomAttributeBuilder(
@@ -214,7 +218,7 @@
                     Type.EmptyTypes,
                     new FieldInfo[]
                     {
-                    typeof(RubricAggregateAttribute).GetField("Operand")
+                    typeof(AggregateRubricAttribute).GetField("Operand")
                     },
                     new object[] { attrib.Operand }
                 )
@@ -233,6 +237,21 @@
                     typeof(LinkAttribute).GetField("Operation")
                     },
                     new object[] { attrib.Value, attrib.Operation }
+                )
+            );
+        }
+
+        public void CreateInstantCreatorFileAttribute(FieldBuilder field, FileRubricAttribute attrib)
+        {
+            field.SetCustomAttribute(
+                new CustomAttributeBuilder(
+                    FileRubricCtor,
+                    Type.EmptyTypes,
+                    new FieldInfo[]
+                    {
+                    typeof(FileRubricAttribute).GetField("Type"),
+                    },
+                    new object[] { attrib.Type }
                 )
             );
         }
@@ -427,10 +446,10 @@
 
         void resolveInstantCreatorAggregateAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
         {
-            object o = mi.GetCustomAttributes(typeof(RubricAggregateAttribute), false).FirstOrDefault();
+            object o = mi.GetCustomAttributes(typeof(AggregateRubricAttribute), false).FirstOrDefault();
             if ((o != null))
             {
-                RubricAggregateAttribute fta = (RubricAggregateAttribute)o;
+                AggregateRubricAttribute fta = (AggregateRubricAttribute)o;
                 ;
 
                 mr.AggregationOperand = fta.Operand;
@@ -442,7 +461,29 @@
             {
                 CreateInstantCreatorAggregateAttribute(
                     fb,
-                    new RubricAggregateAttribute { Operand = mr.AggregationOperand }
+                    new AggregateRubricAttribute { Operand = mr.AggregationOperand }
+                );
+            }
+        }
+
+        void resolveInstantCreatorFileAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        {
+            object o = mi.GetCustomAttributes(typeof(FileRubricAttribute), false).FirstOrDefault();
+            if ((o != null))
+            {
+                FileRubricAttribute fta = (FileRubricAttribute)o;
+
+                mr.IsFile = true;
+                mr.FileType = fta.Type;
+
+                if (fb != null)
+                    CreateInstantCreatorFileAttribute(fb, fta);
+            }
+            else if (mr.IsFile || mr.FileType != FileRubricType.None)
+            {
+                CreateInstantCreatorFileAttribute(
+                    fb,
+                    new FileRubricAttribute() { Type = mr.FileType }
                 );
             }
         }

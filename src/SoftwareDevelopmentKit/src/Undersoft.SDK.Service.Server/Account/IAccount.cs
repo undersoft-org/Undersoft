@@ -18,16 +18,23 @@ namespace Undersoft.SDK.Service.Server.Accounts
         long? PersonalId { get; set; }
         AccountPersonal Personal { get; set; }
 
+        long? AddressId { get; set; }
+        AccountAddress Address { get; set; }
+
         long? ProfessionalId { get; set; }
         AccountProfessional Professional { get; set; }
 
-        Listing<AccountOrganization> Organizations { get; set; }
+        long? OrganizationId { get; set; }
+        AccountOrganization Organization { get; set; }
 
-        Listing<AccountConsent> Consents { get; set; }
+        long? SubscriptionId { get; set; }
+        AccountSubscription Subscription { get; set; }
 
-        Listing<AccountSubscription> Subscriptions { get; set; }
+        long? PaymentId { get; set; }
+        AccountPayment Payment { get; set; }
 
-        Listing<AccountPayment> Payments { get; set; }
+        long? ConsentId { get; set; }
+        AccountConsent Consent { get; set; }
 
         bool IsAvailable { get; set; }
 

@@ -14,9 +14,9 @@ public abstract class ProxyCompilerBase : InstantCompilerBase
     protected InstantType instantType;
     protected ProxyCreator proxyCreator;
 
-    public ISeries<RubricModel> rubricBuilders;
+    public ISeries<MemberBuilder> rubricBuilders;
 
-    public ProxyCompilerBase(ProxyCreator creator, ISeries<RubricModel> rubricBuilders)
+    public ProxyCompilerBase(ProxyCreator creator, ISeries<MemberBuilder> rubricBuilders)
     {
         proxyCreator = creator;
         this.rubricBuilders = rubricBuilders;

@@ -7,22 +7,22 @@ public class LandingTopicMenuItems : DataObject
 {
     [Link]
     [VisibleRubric]
-    [DisplayRubric("overview")]
+    [DisplayRubric("Overview")]
     public string Overview { get; set; } = "/landing/overview";
 
     [Link]
     [VisibleRubric]
-    [DisplayRubric("advantages")]
+    [DisplayRubric("Advantages")]
     public string Advantages { get; set; } = "/landing/advantages";
 
     [Link]
     [VisibleRubric]
-    [DisplayRubric("development")]
-    public string Development { get; set; } = "/landing/development";
+    [DisplayRubric("Ecosystems")]
+    public string Ecosystems { get; set; } = "/landing/ecosystems";
 
     [Link]
     [VisibleRubric]
-    [DisplayRubric("shared services")]
+    [DisplayRubric("Shared services")]
     public string SharedServices { get; set; } = "/landing/shared_services";
 }
 

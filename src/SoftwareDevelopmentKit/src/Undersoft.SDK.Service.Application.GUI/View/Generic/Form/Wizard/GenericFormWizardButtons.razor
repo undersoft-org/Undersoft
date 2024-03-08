@@ -6,7 +6,7 @@
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 
 <div>
-    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Right">
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
 
         @if (!IsFirst)
         {
@@ -43,7 +43,7 @@
             {
                 <FluentButton Appearance="Appearance.Accent"
                               OnClick="@SaveAsync">
-                    @Dialog.Instance.Parameters.PrimaryAction
+                    Done
                 </FluentButton>
             }
         }
@@ -51,7 +51,7 @@
         @if (Dialog.Instance.Parameters.SecondaryActionEnabled)
         {
             <FluentButton OnClick="@CancelAsync" Appearance="Appearance.Neutral">
-                @Dialog.Instance.Parameters.SecondaryAction
+                Skip
             </FluentButton>
         }
 
@@ -60,15 +60,18 @@
 
 @code
 {
-    private int ActiveId
+    public int ActiveId
     {
         get => Content.ActiveRubric.RubricOrdinal;
         set => Content.ActiveRubric = Content.Rubrics[value];
     }
 
-    private bool IsLast => Content.ActiveRubric.RubricOrdinal == Content.Rubrics.Count - 1;
+    public bool IsLast => Content.ActiveRubric.RubricOrdinal == Content.Rubrics.Count - 1;
 
-    private bool IsFirst => Content.ActiveRubric.RubricOrdinal == 0;
+    public bool IsFirst => Content.ActiveRubric.RubricOrdinal == 0;
+
+    [CascadingParameter]
+    public IViewItem FormWizard { get; set; } = default!;
 
     [Parameter]
     public bool GoToFirstEnabled { get; set; }
@@ -95,23 +98,27 @@
     private void GoToFirst()
     {
         ActiveId = 0;
+        FormWizard.RenderView();
     }
 
     private void GoToLast()
     {
         ActiveId = Content.Rubrics.Count - 1;
+        FormWizard.RenderView();
     }
 
     private void Next()
     {
         if(!IsLast)
             ActiveId += 1;
+        FormWizard.RenderView();
     }
 
     private void Previous()
     {
         if (!IsFirst)
             ActiveId -= 1;
+        FormWizard.RenderView();
     }
 
     private async Task CancelAsync(MouseEventArgs e)

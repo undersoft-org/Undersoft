@@ -1,10 +1,10 @@
 ﻿using Undersoft.SDK.Instant.Series;
-using Undersoft.SDK.Series;
+using Undersoft.SDK.Series.Base;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
 
 namespace Undersoft.SDK.Service.Application.GUI.View;
 
-public class ViewRubrics : Registry<ViewRubric>, IViewRubrics
+public class ViewRubrics : ListingBase<ViewRubric>, IViewRubrics
 {
     public IInstantSeries? Series { get; set; }
 

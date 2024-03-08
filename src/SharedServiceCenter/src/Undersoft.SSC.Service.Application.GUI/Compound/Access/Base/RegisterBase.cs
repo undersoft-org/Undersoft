@@ -4,7 +4,6 @@ using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Application.GUI.View;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
-using Undersoft.SDK.Service.Application.GUI.View.Generic.Form.Wizard;
 using Undersoft.SDK.Updating;
 using Undersoft.SSC.Service.Application.GUI.Compound.Access.Dialog;
 using Undersoft.SSC.Service.Contracts;
@@ -32,7 +31,7 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
 
         protected override void OnInitialized()
         {
-            _dialog = _servicer.Initialize<AccessDialog<GenericFormWizard<Account, AccountValidator>, Account>>(DialogService);
+            _dialog = _servicer.Initialize<AccessDialog<RegisterDialog<Account, AccountValidator>, Account>>(DialogService);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -43,16 +42,16 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
 
         private async Task Registering(string title, string description = "")
         {
-            var account = new Account() { Personal = new AccountPersonal(), Professional = new AccountProfessional() };
+            var account = new Account() { Personal = new AccountPersonal(), Address = new AccountAddress(), Professional = new AccountProfessional(), Organization = new AccountOrganization() };
 
             _authorization.Credentials.PatchTo(account.Personal);
             _authorization.Credentials.PatchTo(account.Professional);
 
             var data = new ViewData<Account>(account, OperationType.Any, title);
-            data.SetVisible(nameof(Account.Personal), nameof(Account.Professional));
+            data.SetVisible(nameof(Account.Personal), nameof(Account.Address), nameof(Account.Professional), nameof(Account.Organization));
             data.Description = description;
-            data.Height = "600px";
-            data.Width = "380px";
+            data.Height = "700px";
+            data.Width = "400px";
 
             while (true)
             {

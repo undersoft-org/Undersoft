@@ -3,10 +3,10 @@
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 @typeparam TAccount where TAccount : class, IOrigin, IInnerProxy
 
-<FluentHeader class="top-bar" Height="50">
+<FluentHeader class="siteheader" Height="50">
     <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" Width="100%">
         <a href="/landing" style="margin-left:-10px;">
-            <FluentIcon Value="@(new ViewGraphic.Logo.Header())" Color="Color.Fill" />
+            <FluentIcon Value="@(new ViewGraphic.Logo.HeaderColor())" Color="Color.FillInverse" />
         </a>
         <FluentSpacer />
         <div class="top-bar-tools">
@@ -15,7 +15,7 @@
                 <div class="github">
                     <FluentAnchor Appearance="Appearance.Hypertext" Href="http://github.com/undersoft-org/undersoft" Target="_blank" Rel="noreferrer noopener" title="Undersoft source on GitHub" aria-label="SSC Repository">
                         <div style="line-height:2;">
-                            <FluentIcon Value="@(new ViewGraphic.Size20.GitHub())" Width="18" Color="Color.Fill" />
+                            <FluentIcon Value="@(new ViewGraphic.Size20.GitHub())" Width="18" Color="Color.FillInverse" />
                         </div>
                     </FluentAnchor>
                 </div>

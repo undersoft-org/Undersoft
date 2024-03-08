@@ -23,14 +23,14 @@
         protected InstantType mode;
         protected FieldInfo scodeField;
 
-        public ISeries<RubricModel> rubricBuilders;
+        public ISeries<MemberBuilder> memberBuilders;
 
         public InstantCompiler(
             InstantCreator instantInstantCreator,
-            ISeries<RubricModel> rubricBuilders
+            ISeries<MemberBuilder> rubricBuilders
         )
         {
-            this.rubricBuilders = rubricBuilders;
+            this.memberBuilders = rubricBuilders;
             figure = instantInstantCreator;
             length = rubricBuilders.Count;
         }

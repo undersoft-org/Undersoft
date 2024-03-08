@@ -45,16 +45,23 @@ public class Account : Authorization, IEntity, IAccount
     public long? PersonalId { get; set; }
     public virtual AccountPersonal Personal { get; set; }
 
+    public long? AddressId { get; set; }
+    public virtual AccountAddress Address { get; set; }
+
     public long? ProfessionalId { get; set; }
     public virtual AccountProfessional Professional { get; set; }
 
-    public virtual Listing<AccountOrganization> Organizations { get; set; }
+    public long? OrganizationId { get; set; }
+    public virtual AccountOrganization Organization { get; set; }
 
-    public virtual Listing<AccountConsent> Consents { get; set; }
+    public long? ConsentId { get; set; }
+    public virtual AccountConsent Consent { get; set; }
 
-    public virtual Listing<AccountSubscription> Subscriptions { get; set; }
+    public long? SubscriptionId { get; set; }
+    public virtual AccountSubscription Subscription { get; set; }
 
-    public virtual Listing<AccountPayment> Payments { get; set; }
+    public long? PaymentId { get; set; }
+    public virtual AccountPayment Payment { get; set; }
 
     public IEnumerable<Claim> GetClaims()
     {

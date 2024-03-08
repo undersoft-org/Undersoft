@@ -46,7 +46,7 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
     {
         var rubrics = requiredList.ForEach(
             r => (ViewRubric)(object)_proxy.Rubrics[r].ShalowCopy(new ViewRubric())
-        );
+        ).Commit();
         rubrics.ForEach((r, x) =>
         {
             r.Required = true;
@@ -62,7 +62,7 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
     {
         var rubrics = visibleList.ForEach(
             r => (ViewRubric)(object)_proxy.Rubrics[r].ShalowCopy(new ViewRubric())
-        );
+        ).Commit();
         rubrics.ForEach((r, x) =>
         {
             r.Visible = true;
@@ -75,7 +75,7 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
     {
         var rubrics = editableList.ForEach(
             r => (ViewRubric)(object)_proxy.Rubrics[r].ShalowCopy(new ViewRubric())
-        );
+        ).Commit();
         rubrics.ForEach((r, x) =>
         {
             r.Visible = true;
@@ -94,7 +94,7 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
             rubric.Visible = true;
             rubric.RubricOrdinal = x;
             return (ViewRubric)(object)rubric;
-        });
+        }).Commit();
         Rubrics.Put(rubrics);
     }
 

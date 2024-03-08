@@ -1,44 +1,29 @@
-﻿namespace Undersoft.SSC.Service.Contracts;
+﻿using Undersoft.SDK.Rubrics.Attributes;
+
+namespace Undersoft.SSC.Service.Contracts;
 
 public class AccountPersonal : DataObject
 {
-    public string? Title { get; set; }
+    [VisibleRubric]
+    public string FirstName { get; set; } = default!;
 
-    public string? Email { get; set; }
+    [VisibleRubric]
+    public string LastName { get; set; } = default!;
 
-    public string? PhoneNumber { get; set; }
+    [VisibleRubric]
+    public string Email { get; set; } = default!;
 
-    public string? FirstName { get; set; }
+    [VisibleRubric]
+    public string PhoneNumber { get; set; } = default!;
 
-    public string? SecondName { get; set; }
-
-    public string? LastName { get; set; }
-
-    public string? FullName { get; set; }
-
+    [VisibleRubric]
     public DateTime Birthdate { get; set; }
 
-    public int Age { get; set; }
+    [VisibleRubric]
+    public string Gender { get; set; } = default!;
 
-    public string? Image { get; set; }
-
-    public string? Country { get; set; }
-
-    public string? State { get; set; }
-
-    public string? CityName { get; set; }
-
-    public string? StreetName { get; set; }
-
-    public string? BuildingNumber { get; set; }
-
-    public string? ApartmentNumber { get; set; }
-
-    public string? Postcode { get; set; }
-
-    public string? SocialMedia { get; set; }
-
-    public string? Websites { get; set; }
+    [VisibleRubric]
+    public string Image { get; set; } = default!;
 
     public long? AccountId { get; set; }
 }

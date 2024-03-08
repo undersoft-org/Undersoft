@@ -21,8 +21,8 @@
 
     public class InstantCreator : IInstantCreator
     {
-        protected RubricBuilder rubricBuilder = new RubricBuilder();
-        protected ISeries<RubricModel> rubricModels = new Registry<RubricModel>();
+        protected MemberBuilderCreator memberBuilderCreator = new MemberBuilderCreator();
+        protected ISeries<MemberBuilder> memberBuilders = new Registry<MemberBuilder>();
         private Type compiledType;
 
         public InstantCreator(
@@ -36,8 +36,6 @@
             InstantType modeType = InstantType.Reference
         )
         {
-
-
             Name =
                 (createdTypeName != null && createdTypeName != "")
                     ? createdTypeName
@@ -47,11 +45,11 @@
 
             mode = modeType;
 
-            rubricBuilder = new RubricBuilder();
+            memberBuilderCreator = new MemberBuilderCreator();
 
-            rubricModels = rubricBuilder.Create(rubricBuilder.PrepareMembers(instantMembers));
+            memberBuilders = memberBuilderCreator.Create(memberBuilderCreator.PrepareMembers(instantMembers));
 
-            Rubrics = new MemberRubrics(rubricModels.Select(m => m.Member).ToArray());
+            Rubrics = new MemberRubrics(memberBuilders.Select(m => m.Member).ToArray());
             Rubrics.KeyRubrics = new MemberRubrics();
         }
 
@@ -79,10 +77,10 @@
             Name += "Instant";
             mode = modeType;
 
-            rubricBuilder = new RubricBuilder();
-            rubricModels = rubricBuilder.Create(baseOnType);
+            memberBuilderCreator = new MemberBuilderCreator();
+            memberBuilders = memberBuilderCreator.Create(baseOnType);
 
-            Rubrics = new MemberRubrics(rubricModels.Select(m => m.Member).ToArray());
+            Rubrics = new MemberRubrics(memberBuilders.Select(m => m.Member).ToArray());
             Rubrics.KeyRubrics = new MemberRubrics();
         }
 
@@ -113,15 +111,15 @@
                     {
                         case InstantType.Reference:
                             compileInstantType(
-                                new InstantCompilerReferenceTypes(this, rubricModels)
+                                new InstantCompilerReferenceTypes(this, memberBuilders)
                             );
                             break;
                         case InstantType.ValueType:
-                            compileInstantType(new InstantCompilerValueTypes(this, rubricModels));
+                            compileInstantType(new InstantCompilerValueTypes(this, memberBuilders));
                             break;
                         case InstantType.Derived:
                             compileDerivedType(
-                                new InstantCompilerDerivedTypes(this, rubricModels)
+                                new InstantCompilerDerivedTypes(this, memberBuilders)
                             );
                             break;
                         default:

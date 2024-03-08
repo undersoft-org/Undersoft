@@ -6,6 +6,7 @@
     using System.Reflection;
     using Undersoft.SDK;
     using Undersoft.SDK.Invoking;
+    using Undersoft.SDK.Rubrics.Attributes;
     using Uniques;
 
     public class MemberRubric : MemberInfo, IRubric
@@ -224,6 +225,10 @@
         public bool IsKey { get; set; }
 
         public bool IsUnique { get; set; }
+
+        public bool IsFile { get; set; }
+
+        public FileRubricType FileType { get; set; }
 
         public string LinkValue { get; set; }
 

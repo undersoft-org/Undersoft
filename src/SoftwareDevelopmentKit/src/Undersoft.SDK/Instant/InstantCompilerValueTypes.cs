@@ -12,8 +12,8 @@
 
     public class InstantCompilerValueTypes : InstantCompiler
     {
-        public InstantCompilerValueTypes(InstantCreator instantInstantCreator, ISeries<RubricModel> rubricBuilders)
-            : base(instantInstantCreator, rubricBuilders) { }
+        public InstantCompilerValueTypes(InstantCreator instantInstantCreator, ISeries<MemberBuilder> memberBuilders)
+            : base(instantInstantCreator, memberBuilders) { }
 
         public override Type CompileInstantType(string typeName)
         {
@@ -47,56 +47,56 @@
         public override void CreateFieldsAndProperties(TypeBuilder tb)
         {
             int i = 0;
-            rubricBuilders.ForEach(
-                (fp) =>
+            memberBuilders.ForEach(
+                (mb) =>
                 {
-                    MemberRubric attributeAtMember = null;
+                    MemberRubric member = null;
 
-                    if (fp.Field != null)
+                    if (mb.Field != null)
                     {
-                        if (!(fp.Field.IsBackingField))
-                            attributeAtMember = new MemberRubric(fp.Field);
-                        else if (fp.Property != null)
-                            attributeAtMember = new MemberRubric(fp.Property);
+                        if (!(mb.Field.IsBackingField))
+                            member = new MemberRubric(mb.Field);
+                        else if (mb.Property != null)
+                            member = new MemberRubric(mb.Property);
                     }
                     else
                     {
-                        attributeAtMember = new MemberRubric(fp.Property);
+                        member = new MemberRubric(mb.Property);
                     }
 
-                    if (fp.Type == typeof(string))
-                        fp.FieldType = typeof(char[]);
+                    if (mb.Type == typeof(string))
+                        mb.FieldType = typeof(char[]);
                     else
-                        fp.FieldType = fp.Type;
+                        mb.FieldType = mb.Type;
 
-                    FieldBuilder fb = createField(
+                    FieldBuilder fb = CreateField(
                         tb,
-                        attributeAtMember,
-                        fp.FieldType,
-                        '_' + fp.Name.ToLowerInvariant()
+                        member,
+                        mb.FieldType,
+                        '_' + mb.Name.ToLowerInvariant()
                     );
 
                     if (fb != null)
                     {
-                        ResolveMemberAttributes(fb, attributeAtMember.RubricInfo, attributeAtMember);
+                        ResolveMemberAttributes(fb, member.RubricInfo, member);
 
-                        PropertyBuilder pi = null;
-                        if (fp.Type != typeof(string))
-                            pi = createProperty(tb, fb, fp.Type, fp.Name);
+                        PropertyBuilder pb = null;
+                        if (mb.Type != typeof(string))
+                            pb = CreateProperty(tb, fb, mb.Type, mb.Name);
                         else
-                            pi = createStringProperty(tb, fb, fp.Type, fp.Name);
+                            pb = CreateStringProperty(tb, fb, mb.Type, mb.Name);
 
-                        pi.SetCustomAttribute(
+                        pb.SetCustomAttribute(
                             new CustomAttributeBuilder(
                                 DataMemberCtor,
                                 new object[0],
                                 DataMemberProps,
-                                new object[2] { i++, fp.Name }
+                                new object[2] { i++, mb.Name }
                             )
                         );
 
-                        fp.SetMember(new MemberRubric(fb));
-                        fp.SetMember(new MemberRubric(pi));
+                        mb.SetMember(new MemberRubric(fb));
+                        mb.SetMember(new MemberRubric(pb));
                     }
                 }
             );
@@ -168,12 +168,12 @@
                         {
                             il.MarkLabel(branches[i]);
                             il.Emit(OpCodes.Ldarg_0);
-                            il.Emit(OpCodes.Ldfld, rubricBuilders[i].Field.RubricInfo);
-                            if (rubricBuilders[i].FieldType.IsValueType)
+                            il.Emit(OpCodes.Ldfld, memberBuilders[i].Field.RubricInfo);
+                            if (memberBuilders[i].FieldType.IsValueType)
                             {
-                                il.Emit(OpCodes.Box, rubricBuilders[i].FieldType);
+                                il.Emit(OpCodes.Box, memberBuilders[i].FieldType);
                             }
-                            else if (rubricBuilders[i].FieldType == typeof(char[]))
+                            else if (memberBuilders[i].FieldType == typeof(char[]))
                             {
                                 il.Emit(
                                     OpCodes.Newobj,
@@ -222,11 +222,11 @@
                             il.MarkLabel(branches[i]);
                             il.Emit(OpCodes.Ldarg_0);
                             il.Emit(OpCodes.Ldarg_2);
-                            if (rubricBuilders[i].FieldType.IsValueType)
+                            if (memberBuilders[i].FieldType.IsValueType)
                             {
-                                il.Emit(OpCodes.Unbox_Any, rubricBuilders[i].FieldType);
+                                il.Emit(OpCodes.Unbox_Any, memberBuilders[i].FieldType);
                             }
-                            else if (rubricBuilders[i].FieldType == typeof(char[]))
+                            else if (memberBuilders[i].FieldType == typeof(char[]))
                             {
                                 il.Emit(OpCodes.Castclass, typeof(string));
                                 il.EmitCall(
@@ -236,8 +236,8 @@
                                 );
                             }
                             else
-                                il.Emit(OpCodes.Castclass, rubricBuilders[i].FieldType);
-                            il.Emit(OpCodes.Stfld, rubricBuilders[i].Field.RubricInfo);
+                                il.Emit(OpCodes.Castclass, memberBuilders[i].FieldType);
+                            il.Emit(OpCodes.Stfld, memberBuilders[i].Field.RubricInfo);
                             il.Emit(OpCodes.Ret);
                         }
                     }
@@ -282,7 +282,7 @@
                         for (int i = 0; i < length; i++)
                         {
                             il.Emit(OpCodes.Ldloc_0);
-                            il.Emit(OpCodes.Ldstr, rubricBuilders[i].Name);
+                            il.Emit(OpCodes.Ldstr, memberBuilders[i].Name);
                             il.EmitCall(
                                 OpCodes.Call,
                                 typeof(string).GetMethod(
@@ -301,12 +301,12 @@
                         {
                             il.MarkLabel(branches[i]);
                             il.Emit(OpCodes.Ldarg_0);
-                            il.Emit(OpCodes.Ldfld, rubricBuilders[i].Field.RubricInfo);
-                            if (rubricBuilders[i].FieldType.IsValueType)
+                            il.Emit(OpCodes.Ldfld, memberBuilders[i].Field.RubricInfo);
+                            if (memberBuilders[i].FieldType.IsValueType)
                             {
-                                il.Emit(OpCodes.Box, rubricBuilders[i].FieldType);
+                                il.Emit(OpCodes.Box, memberBuilders[i].FieldType);
                             }
-                            else if (rubricBuilders[i].FieldType == typeof(char[]))
+                            else if (memberBuilders[i].FieldType == typeof(char[]))
                             {
                                 il.Emit(
                                     OpCodes.Newobj,
@@ -354,7 +354,7 @@
                         for (int i = 0; i < length; i++)
                         {
                             il.Emit(OpCodes.Ldloc_0);
-                            il.Emit(OpCodes.Ldstr, rubricBuilders[i].Name);
+                            il.Emit(OpCodes.Ldstr, memberBuilders[i].Name);
                             il.EmitCall(
                                 OpCodes.Call,
                                 typeof(string).GetMethod(
@@ -373,11 +373,11 @@
                             il.MarkLabel(branches[i]);
                             il.Emit(OpCodes.Ldarg_0);
                             il.Emit(OpCodes.Ldarg_2);
-                            if (rubricBuilders[i].FieldType.IsValueType)
+                            if (memberBuilders[i].FieldType.IsValueType)
                             {
-                                il.Emit(OpCodes.Unbox_Any, rubricBuilders[i].FieldType);
+                                il.Emit(OpCodes.Unbox_Any, memberBuilders[i].FieldType);
                             }
-                            else if (rubricBuilders[i].FieldType == typeof(char[]))
+                            else if (memberBuilders[i].FieldType == typeof(char[]))
                             {
                                 il.Emit(OpCodes.Castclass, typeof(string));
                                 il.EmitCall(
@@ -387,8 +387,8 @@
                                 );
                             }
                             else
-                                il.Emit(OpCodes.Castclass, rubricBuilders[i].FieldType);
-                            il.Emit(OpCodes.Stfld, rubricBuilders[i].Field.RubricInfo);
+                                il.Emit(OpCodes.Castclass, memberBuilders[i].FieldType);
+                            il.Emit(OpCodes.Stfld, memberBuilders[i].Field.RubricInfo);
                             il.Emit(OpCodes.Ret);
                         }
                     }
@@ -398,8 +398,8 @@
 
         public override void CreateCodeProperty(TypeBuilder tb, Type type, string name)
         {
-            RubricModel fp = null;
-            var field = rubricBuilders
+            MemberBuilder fp = null;
+            var field = memberBuilders
                 .AsValues()
                 .FirstOrDefault(
                     p =>
@@ -415,9 +415,9 @@
             }
             else
             {
-                FieldBuilder fb = createField(tb, null, type, name.ToLower());
+                FieldBuilder fb = CreateField(tb, null, type, name.ToLower());
                 scodeField = fb;
-                fp = new RubricModel(new MemberRubric(fb));
+                fp = new MemberBuilder(new MemberRubric(fb));
             }
 
             PropertyBuilder prop = tb.DefineProperty(
@@ -484,7 +484,7 @@
             if (fp != null)
             {
                 fp.SetMember(new MemberRubric(prop));
-                rubricBuilders.Add(fp);
+                memberBuilders.Add(fp);
             }
         }
 
@@ -518,12 +518,12 @@
                 il.Emit(OpCodes.Ldloc_0);
                 il.Emit(OpCodes.Ldc_I4, i);
                 il.Emit(OpCodes.Ldarg_0);
-                il.Emit(OpCodes.Ldfld, rubricBuilders[i].Field.RubricInfo);
-                if (rubricBuilders[i].FieldType.IsValueType)
+                il.Emit(OpCodes.Ldfld, memberBuilders[i].Field.RubricInfo);
+                if (memberBuilders[i].FieldType.IsValueType)
                 {
-                    il.Emit(OpCodes.Box, rubricBuilders[i].FieldType);
+                    il.Emit(OpCodes.Box, memberBuilders[i].FieldType);
                 }
-                else if (rubricBuilders[i].FieldType == typeof(char[]))
+                else if (memberBuilders[i].FieldType == typeof(char[]))
                 {
                     il.Emit(
                         OpCodes.Newobj,
@@ -559,11 +559,11 @@
                 il.Emit(OpCodes.Ldloc_0);
                 il.Emit(OpCodes.Ldc_I4, i);
                 il.Emit(OpCodes.Ldelem, typeof(object));
-                if (rubricBuilders[i].FieldType.IsValueType)
+                if (memberBuilders[i].FieldType.IsValueType)
                 {
-                    il.Emit(OpCodes.Unbox_Any, rubricBuilders[i].FieldType);
+                    il.Emit(OpCodes.Unbox_Any, memberBuilders[i].FieldType);
                 }
-                else if (rubricBuilders[i].FieldType == typeof(char[]))
+                else if (memberBuilders[i].FieldType == typeof(char[]))
                 {
                     il.Emit(OpCodes.Castclass, typeof(string));
                     il.EmitCall(
@@ -573,8 +573,8 @@
                     );
                 }
                 else
-                    il.Emit(OpCodes.Castclass, rubricBuilders[i].FieldType);
-                il.Emit(OpCodes.Stfld, rubricBuilders[i].Field.RubricInfo);
+                    il.Emit(OpCodes.Castclass, memberBuilders[i].FieldType);
+                il.Emit(OpCodes.Stfld, memberBuilders[i].Field.RubricInfo);
             }
             il.Emit(OpCodes.Ret);
         }
@@ -627,7 +627,7 @@
             return tb;
         }
 
-        private FieldBuilder createField(
+        public FieldBuilder CreateField(
             TypeBuilder tb,
             MemberRubric mr,
             Type type,
@@ -657,7 +657,7 @@
             }
         }
 
-        private PropertyBuilder createProperty(
+        public PropertyBuilder CreateProperty(
             TypeBuilder tb,
             FieldBuilder field,
             Type type,
@@ -712,7 +712,7 @@
             return prop;
         }
 
-        private PropertyBuilder createStringProperty(
+        public PropertyBuilder CreateStringProperty(
             TypeBuilder tb,
             FieldBuilder field,
             Type type,

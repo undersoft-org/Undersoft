@@ -8,17 +8,13 @@
 @inherits ViewItem
 
 <div class="generics generic-form-item forms">
-    <CascadingValue Value="@FormContext">
-        <EditForm EditContext="@FormContext" FormName="generic_form_item" @ref="@Reference">
-            <CascadingValue Value="@Data">
-                <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="3">
-                    @foreach (var _rubric in _rubrics)
-                    {
-                        <GenericField Rubric="@_rubric" />
-                    }
-                </FluentStack>
-            </CascadingValue>
-        </EditForm>
+    <CascadingValue Value="@Data">
+        <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="3">
+            @foreach (var _rubric in _rubrics)
+            {
+                <GenericField Rubric="@_rubric" />
+            }
+        </FluentStack>
     </CascadingValue>
 </div>
 
@@ -28,37 +24,6 @@
     protected override void OnInitialized()
     {
         Data.ViewItem = this;
-        if (FormContext == null)
-        {
-            FormContext = new EditContext(Data);
-            FormContext.OnFieldChanged += FieldChanged;
-        }
     }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        var _firstRubric = _rubrics.FirstOrDefault();
-        if (_firstRubric != null)
-        {
-            var reference = _firstRubric.ViewItem.Reference;
-            if (reference != null)
-            {
-                ((FluentComponentBase)reference).Element.FocusAsync();
-            }
-        }
-
-        base.OnAfterRender(firstRender);
-    }
-
-    [CascadingParameter]
-    public EditContext? FormContext { get; set; } = default!;
-
-    private void FieldChanged(object? sender, FieldChangedEventArgs args)
-    {
-        if (OnFieldChanged != null)
-            OnFieldChanged(sender, args);
-    }
-
-    public event EventHandler<FieldChangedEventArgs>? OnFieldChanged;
 }
 

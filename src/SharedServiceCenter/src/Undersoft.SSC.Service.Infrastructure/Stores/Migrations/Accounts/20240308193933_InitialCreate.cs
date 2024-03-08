@@ -65,6 +65,39 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 });
 
             migrationBuilder.CreateTable(
+                name: "AccountAddress",
+                schema: "Accounts",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    TypeId = table.Column<long>(type: "bigint", nullable: false),
+                    OriginId = table.Column<int>(type: "integer", nullable: false),
+                    CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
+                    Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    Creator = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    Index = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Country = table.Column<string>(type: "text", nullable: true),
+                    State = table.Column<string>(type: "text", nullable: true),
+                    CityName = table.Column<string>(type: "text", nullable: true),
+                    StreetName = table.Column<string>(type: "text", nullable: true),
+                    BuildingNumber = table.Column<string>(type: "text", nullable: true),
+                    ApartmentNumber = table.Column<string>(type: "text", nullable: true),
+                    Postcode = table.Column<string>(type: "text", nullable: true),
+                    SocialMedia = table.Column<string>(type: "text", nullable: true),
+                    Websites = table.Column<string>(type: "text", nullable: true),
+                    AccountId = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccountAddress", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AccountClaims",
                 schema: "Accounts",
                 columns: table => new
@@ -154,16 +187,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     Position = table.Column<string>(type: "text", nullable: true),
                     Image = table.Column<string>(type: "text", nullable: true),
                     Industry = table.Column<string>(type: "text", nullable: true),
-                    Size = table.Column<int>(type: "integer", nullable: false),
-                    Country = table.Column<string>(type: "text", nullable: true),
-                    State = table.Column<string>(type: "text", nullable: true),
-                    CityName = table.Column<string>(type: "text", nullable: true),
-                    StreetName = table.Column<string>(type: "text", nullable: true),
-                    BuildingNumber = table.Column<string>(type: "text", nullable: true),
-                    ApartmentNumber = table.Column<string>(type: "text", nullable: true),
-                    Postcode = table.Column<string>(type: "text", nullable: true),
-                    SocialMedia = table.Column<string>(type: "text", nullable: true),
-                    Websites = table.Column<string>(type: "text", nullable: true),
                     AccountId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
@@ -231,19 +254,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     FirstName = table.Column<string>(type: "text", nullable: true),
                     SecondName = table.Column<string>(type: "text", nullable: true),
                     LastName = table.Column<string>(type: "text", nullable: true),
-                    FullName = table.Column<string>(type: "text", nullable: true),
                     Birthdate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    Age = table.Column<int>(type: "integer", nullable: false),
+                    Gender = table.Column<string>(type: "text", nullable: true),
                     Image = table.Column<string>(type: "text", nullable: true),
-                    Country = table.Column<string>(type: "text", nullable: true),
-                    State = table.Column<string>(type: "text", nullable: true),
-                    CityName = table.Column<string>(type: "text", nullable: true),
-                    StreetName = table.Column<string>(type: "text", nullable: true),
-                    BuildingNumber = table.Column<string>(type: "text", nullable: true),
-                    ApartmentNumber = table.Column<string>(type: "text", nullable: true),
-                    Postcode = table.Column<string>(type: "text", nullable: true),
-                    SocialMedia = table.Column<string>(type: "text", nullable: true),
-                    Websites = table.Column<string>(type: "text", nullable: true),
                     AccountId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
@@ -268,12 +281,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     Index = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    Title = table.Column<string>(type: "text", nullable: true),
                     Email = table.Column<string>(type: "text", nullable: true),
                     PhoneNumber = table.Column<string>(type: "text", nullable: true),
                     Profession = table.Column<string>(type: "text", nullable: true),
                     Industry = table.Column<string>(type: "text", nullable: true),
-                    Image = table.Column<string>(type: "text", nullable: true),
                     SocialMedia = table.Column<string>(type: "text", nullable: true),
                     Websites = table.Column<string>(type: "text", nullable: true),
                     Experience = table.Column<float>(type: "real", nullable: false),
@@ -345,13 +356,42 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     Label = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     PersonalId = table.Column<long>(type: "bigint", nullable: true),
+                    AddressId = table.Column<long>(type: "bigint", nullable: true),
                     ProfessionalId = table.Column<long>(type: "bigint", nullable: true),
+                    OrganizationId = table.Column<long>(type: "bigint", nullable: true),
+                    ConsentId = table.Column<long>(type: "bigint", nullable: true),
+                    SubscriptionId = table.Column<long>(type: "bigint", nullable: true),
+                    PaymentId = table.Column<long>(type: "bigint", nullable: true),
                     IsAvailable = table.Column<bool>(type: "boolean", nullable: false),
                     Authenticated = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Accounts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Accounts_AccountAddress_AddressId",
+                        column: x => x.AddressId,
+                        principalSchema: "Accounts",
+                        principalTable: "AccountAddress",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Accounts_AccountConsents_ConsentId",
+                        column: x => x.ConsentId,
+                        principalSchema: "Accounts",
+                        principalTable: "AccountConsents",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Accounts_AccountOrganizations_OrganizationId",
+                        column: x => x.OrganizationId,
+                        principalSchema: "Accounts",
+                        principalTable: "AccountOrganizations",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Accounts_AccountPayments_PaymentId",
+                        column: x => x.PaymentId,
+                        principalSchema: "Accounts",
+                        principalTable: "AccountPayments",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Accounts_AccountPersonals_PersonalId",
                         column: x => x.PersonalId,
@@ -389,10 +429,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     Quantity = table.Column<double>(type: "double precision", nullable: false),
                     Value = table.Column<double>(type: "double precision", nullable: false),
                     Currency = table.Column<string>(type: "text", nullable: true),
-                    SharedServiceCenter = table.Column<string>(type: "text", nullable: true),
-                    ApplicationServer = table.Column<string>(type: "text", nullable: true),
-                    ServiceApplication = table.Column<string>(type: "text", nullable: true),
-                    ServiceServer = table.Column<string>(type: "text", nullable: true),
                     AccountId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
@@ -476,6 +512,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AccountAddress_AccountId",
+                schema: "Accounts",
+                table: "AccountAddress",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AccountClaims_UserId",
                 schema: "Accounts",
                 table: "AccountClaims",
@@ -485,7 +527,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 name: "IX_AccountConsents_AccountId",
                 schema: "Accounts",
                 table: "AccountConsents",
-                column: "AccountId");
+                column: "AccountId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccountLogins_UserId",
@@ -497,13 +540,15 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 name: "IX_AccountOrganizations_AccountId",
                 schema: "Accounts",
                 table: "AccountOrganizations",
-                column: "AccountId");
+                column: "AccountId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccountPayments_AccountId",
                 schema: "Accounts",
                 table: "AccountPayments",
-                column: "AccountId");
+                column: "AccountId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccountPersonals_AccountId",
@@ -532,6 +577,34 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Accounts_AddressId",
+                schema: "Accounts",
+                table: "Accounts",
+                column: "AddressId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Accounts_ConsentId",
+                schema: "Accounts",
+                table: "Accounts",
+                column: "ConsentId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Accounts_OrganizationId",
+                schema: "Accounts",
+                table: "Accounts",
+                column: "OrganizationId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Accounts_PaymentId",
+                schema: "Accounts",
+                table: "Accounts",
+                column: "PaymentId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Accounts_PersonalId",
                 schema: "Accounts",
                 table: "Accounts",
@@ -546,6 +619,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Accounts_SubscriptionId",
+                schema: "Accounts",
+                table: "Accounts",
+                column: "SubscriptionId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Accounts_UserId",
                 schema: "Accounts",
                 table: "Accounts",
@@ -556,7 +636,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 name: "IX_AccountSubscriptions_AccountId",
                 schema: "Accounts",
                 table: "AccountSubscriptions",
-                column: "AccountId");
+                column: "AccountId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccountTokens_AccountId",
@@ -601,6 +682,15 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 table: "Roles",
                 column: "NormalizedName",
                 unique: true);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AccountAddress_Accounts_AccountId",
+                schema: "Accounts",
+                table: "AccountAddress",
+                column: "AccountId",
+                principalSchema: "Accounts",
+                principalTable: "Accounts",
+                principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AccountClaims_AccountUsers_UserId",
@@ -688,6 +778,15 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Accounts_AccountSubscriptions_SubscriptionId",
+                schema: "Accounts",
+                table: "Accounts",
+                column: "SubscriptionId",
+                principalSchema: "Accounts",
+                principalTable: "AccountSubscriptions",
+                principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_Accounts_AccountUsers_UserId",
                 schema: "Accounts",
                 table: "Accounts",
@@ -702,9 +801,24 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Accounts_AccountUsers_UserId",
+                name: "FK_AccountAddress_Accounts_AccountId",
                 schema: "Accounts",
-                table: "Accounts");
+                table: "AccountAddress");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_AccountConsents_Accounts_AccountId",
+                schema: "Accounts",
+                table: "AccountConsents");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_AccountOrganizations_Accounts_AccountId",
+                schema: "Accounts",
+                table: "AccountOrganizations");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_AccountPayments_Accounts_AccountId",
+                schema: "Accounts",
+                table: "AccountPayments");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_AccountPersonals_Accounts_AccountId",
@@ -716,24 +830,22 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 schema: "Accounts",
                 table: "AccountProffesionals");
 
+            migrationBuilder.DropForeignKey(
+                name: "FK_AccountSubscriptions_Accounts_AccountId",
+                schema: "Accounts",
+                table: "AccountSubscriptions");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_AccountUsers_Accounts_AccountId",
+                schema: "Accounts",
+                table: "AccountUsers");
+
             migrationBuilder.DropTable(
                 name: "AccountClaims",
                 schema: "Accounts");
 
             migrationBuilder.DropTable(
-                name: "AccountConsents",
-                schema: "Accounts");
-
-            migrationBuilder.DropTable(
                 name: "AccountLogins",
-                schema: "Accounts");
-
-            migrationBuilder.DropTable(
-                name: "AccountOrganizations",
-                schema: "Accounts");
-
-            migrationBuilder.DropTable(
-                name: "AccountPayments",
                 schema: "Accounts");
 
             migrationBuilder.DropTable(
@@ -742,10 +854,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
             migrationBuilder.DropTable(
                 name: "AccountRoles",
-                schema: "Accounts");
-
-            migrationBuilder.DropTable(
-                name: "AccountSubscriptions",
                 schema: "Accounts");
 
             migrationBuilder.DropTable(
@@ -761,11 +869,23 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                 schema: "Accounts");
 
             migrationBuilder.DropTable(
-                name: "AccountUsers",
+                name: "Accounts",
                 schema: "Accounts");
 
             migrationBuilder.DropTable(
-                name: "Accounts",
+                name: "AccountAddress",
+                schema: "Accounts");
+
+            migrationBuilder.DropTable(
+                name: "AccountConsents",
+                schema: "Accounts");
+
+            migrationBuilder.DropTable(
+                name: "AccountOrganizations",
+                schema: "Accounts");
+
+            migrationBuilder.DropTable(
+                name: "AccountPayments",
                 schema: "Accounts");
 
             migrationBuilder.DropTable(
@@ -774,6 +894,14 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 
             migrationBuilder.DropTable(
                 name: "AccountProffesionals",
+                schema: "Accounts");
+
+            migrationBuilder.DropTable(
+                name: "AccountSubscriptions",
+                schema: "Accounts");
+
+            migrationBuilder.DropTable(
+                name: "AccountUsers",
                 schema: "Accounts");
         }
     }

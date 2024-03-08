@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.FluentUI.AspNetCore.Components;
+using Microsoft.FluentUI.AspNetCore.Components.Utilities;
 using System.Reflection;
 using System.Text.Json;
 using Undersoft.SDK.Service.Application.Extensions;
@@ -20,6 +21,18 @@ public partial class GenericLayout : LayoutComponentBase
     private GenericPageContents? _toc;
     private bool _menuChecked = true;
     private readonly string APPEARANCEKEY = "APPEARANCEKEY";
+
+    protected string? ClassValue => new CssBuilder(Class)
+       .AddClass("layout")
+       .Build();
+
+    protected string? StyleValue => new StyleBuilder(Style).Build();
+
+    [Parameter]
+    public string? Style { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
 
     [Parameter]
     public string? Color { get; set; } = default!;
@@ -46,6 +59,11 @@ public partial class GenericLayout : LayoutComponentBase
 
     [Inject]
     private GlobalState GlobalState { get; set; } = default!;
+
+    public object? Reference { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public virtual IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
