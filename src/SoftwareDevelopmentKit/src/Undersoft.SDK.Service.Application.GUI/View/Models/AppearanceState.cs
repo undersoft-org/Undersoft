@@ -6,7 +6,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Models;
 public class AppearanceState : ViewwModel
 {
     public LocalizationDirection Dir { get; set; } = LocalizationDirection.LeftToRight;
-    public StandardLuminance Luminance { get; set; } = StandardLuminance.LightMode;
+    public StandardLuminance Luminance { get; set; } = StandardLuminance.DarkMode;
 
     public ElementReference Container { get; set; } = default!;
 

@@ -12,17 +12,17 @@ public class LandingTopicMenuItems : DataObject
 
     [Link]
     [VisibleRubric]
-    [DisplayRubric("Advantages")]
-    public string Advantages { get; set; } = "/landing/advantages";
+    [DisplayRubric("Benchmarks")]
+    public string Benchmarks { get; set; } = "/landing/benchmarks";
 
     [Link]
     [VisibleRubric]
-    [DisplayRubric("Ecosystems")]
-    public string Ecosystems { get; set; } = "/landing/ecosystems";
+    [DisplayRubric("Documentation")]
+    public string Documentation { get; set; } = "/landing/documentation";
 
     [Link]
     [VisibleRubric]
-    [DisplayRubric("Shared services")]
-    public string SharedServices { get; set; } = "/landing/shared_services";
+    [DisplayRubric("Downloads")]
+    public string Downloads { get; set; } = "/landing/downloads";
 }
 

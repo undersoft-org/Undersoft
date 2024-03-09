@@ -3,8 +3,56 @@
 
 @page "/landing/overview"
 
-<FluentStack Orientation="Orientation.Vertical">
-
-    <FluentIcon Value="@(new ViewGraphic.Logo.Development())" Color="Color.FillInverse"></FluentIcon>
-
-</FluentStack>
+<FluentGrid Spacing="3">
+    <FluentGridItem sm="12" md="4">
+        <FluentStack Orientation="Orientation.Vertical">
+            <a href="/landing/benchmarks" role="button">
+                <FluentIcon Value="@(new ViewGraphic.Topic.Benchmarks())" Color="Color.FillInverse" Width="280px"></FluentIcon>
+            </a>
+            <FluentLabel Typo="Typography.Subject">
+                - Performance
+            </FluentLabel>
+            <FluentLabel Typo="Typography.Subject">
+                - Efficiency
+            </FluentLabel>
+            <FluentLabel Typo="Typography.Subject">
+                - Scalability
+            </FluentLabel>
+        </FluentStack>
+    </FluentGridItem>
+    <FluentGridItem sm="12" md="4">
+        <FluentStack Orientation="Orientation.Vertical">
+            <a href="/landing/downloads" role="button">
+                <FluentIcon Value="@(new ViewGraphic.Topic.Downloads())" Color="Color.FillInverse" Width="280px"></FluentIcon>
+            </a>
+            <FluentLabel Typo="Typography.Subject">
+                - Windows
+            </FluentLabel>
+            <FluentLabel Typo="Typography.Subject">
+                - Android
+            </FluentLabel>
+            <FluentLabel Typo="Typography.Subject">
+                - iOS
+            </FluentLabel>
+            <FluentLabel Typo="Typography.Subject">
+                - Mac OS/X
+            </FluentLabel>
+        </FluentStack>
+    </FluentGridItem>
+    <FluentGridItem sm="12" md="4">
+        <FluentStack Orientation="Orientation.Vertical">
+            <a href="/landing/downloads" role="button">
+                <FluentIcon Value="@(new ViewGraphic.Topic.Documentation())" Color="Color.FillInverse" Width="280px"></FluentIcon>
+            </a>
+            <FluentLabel Typo="Typography.Subject">
+                - Architecture
+            </FluentLabel>
+            <FluentLabel Typo="Typography.Subject">
+                - Reference
+            </FluentLabel>
+            <FluentLabel Typo="Typography.Subject">
+                - API
+            </FluentLabel>
+        </FluentStack>
+    </FluentGridItem>
+</FluentGrid>

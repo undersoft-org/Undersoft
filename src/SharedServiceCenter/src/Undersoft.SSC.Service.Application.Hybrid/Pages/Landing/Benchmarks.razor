@@ -1,12 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 @using Undersoft.SDK.Proxies
 
-@page "/landing/advantages"
+@attribute [Authorize]
+
+@page "/landing/benchmarks"
 
 <PageTitle>Undersoft</PageTitle>
 
 <FluentStack Orientation="Orientation.Horizontal">
 
-    <FluentIcon Value="@(new ViewGraphic.Logo.Advantages())" Color="Color.FillInverse"></FluentIcon>
+    <FluentIcon Value="@(new ViewGraphic.Topic.Benchmarks())" Color="Color.FillInverse"></FluentIcon>
 
 </FluentStack>

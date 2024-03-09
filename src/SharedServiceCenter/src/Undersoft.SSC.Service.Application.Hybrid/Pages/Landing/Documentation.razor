@@ -1,12 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 @using Undersoft.SDK.Proxies
 
-@page "/landing/development"
+@attribute [Authorize]
+
+@page "/landing/documentation"
 
 <PageTitle>Undersoft</PageTitle>
 
 <FluentStack Orientation="Orientation.Horizontal">
 
-    <FluentIcon Value="@(new ViewGraphic.Logo.Development())" Color="Color.FillInverse"></FluentIcon>
+    <FluentIcon Value="@(new ViewGraphic.Topic.Documentation())" Color="Color.FillInverse"></FluentIcon>
 
 </FluentStack>

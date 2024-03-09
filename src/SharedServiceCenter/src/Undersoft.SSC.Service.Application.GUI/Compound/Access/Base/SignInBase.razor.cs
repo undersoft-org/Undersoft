@@ -79,7 +79,7 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
                 }
                 else
                 {
-                    _navigation.NavigateTo("");
+                    _navigation.NavigateTo("", true);
                     return;
                 }
             }
