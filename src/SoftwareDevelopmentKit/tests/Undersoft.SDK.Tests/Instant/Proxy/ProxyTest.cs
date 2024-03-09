@@ -38,7 +38,7 @@ namespace Undersoft.SDK.Tests.Instant
                 {
                     _Proxy2[rubric.RubricName] = _Proxy0[rubric.RubricName];
 
-                    Assert.Equals(profile.ValueOf(rubric.RubricName), _Proxy0[rubric.RubricName]);
+                    Assert.AreEqual(profile.ValueOf(rubric.RubricName), _Proxy0[rubric.RubricName]);
                 }
                 list.Add(_Proxy2);
             }
@@ -48,7 +48,7 @@ namespace Undersoft.SDK.Tests.Instant
         }
 
         [TestMethod]
-        private void Proxy_Test_For_Compilated_Type_With_GetById()
+        public void Proxy_Test_For_Compilated_Type_With_GetById()
         {
             var profile = new Agreement()
             {

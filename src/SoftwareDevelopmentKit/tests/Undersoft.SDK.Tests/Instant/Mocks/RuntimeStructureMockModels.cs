@@ -1,17 +1,13 @@
 namespace Undersoft.SDK.Tests.Instant
 {
+    using System;
+    using System.Runtime.InteropServices;
     using Undersoft.SDK.Instant.Attributes;
     using Undersoft.SDK.Rubrics.Attributes;
-    using Undersoft.SDK.Uniques;
-    using System.Runtime.InteropServices;
-    using System;
 
-    [StructLayout(LayoutKind.Sequential)]
-    public class FieldsAndPropertiesModel
+
+    public class FieldsAndPropertiesModel : Origin
     {
-        public int Id { get; set; } = 404;
-
-        [KeyRubric]
         public long Key = long.MaxValue;
 
         [InstantAs(UnmanagedType.ByValTStr, SizeConst = 10)]
@@ -28,22 +24,10 @@ namespace Undersoft.SDK.Tests.Instant
         public Guid GlobalId { get; set; } = new Guid();
 
         public bool Status { get; set; }
-
-        public Uscn SystemKey { get; set; } = Uscn.New;
-
-        public long time = 0;
-        public DateTime Time
-        {
-            get => DateTime.FromBinary(time);
-            set => time = value.ToBinary();
-        }
     }
 
-    [StructLayout(LayoutKind.Sequential)]
-    public class FieldsOnlyModel
+    public class FieldsOnlyModel : Origin
     {
-        [KeyRubric]
-        public int Id = 404;
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 10)]
         public string Alias = "ProperSize";
@@ -60,18 +44,12 @@ namespace Undersoft.SDK.Tests.Instant
         [DisplayRubric("AvgPrice")]
         public double Price;
         public bool Status;
-        public Uscn SystemKey = Uscn.Empty;
-        public DateTime Time = DateTime.Now;
+
     }
 
-    [StructLayout(LayoutKind.Sequential)]
-    public class PropertiesOnlyModel
-    {
-        [KeyRubric(IsAutoincrement = true, Order = 0)]
-        public int Id { get; set; } = 405;
 
-        [KeyRubric]
-        public long Key { get; set; } = long.MaxValue;
+    public class PropertiesOnlyModel : Origin
+    {
 
         [InstantAs(UnmanagedType.ByValTStr, SizeConst = 10)]
         public string Alias { get; set; } = "ProperSize";
@@ -93,8 +71,5 @@ namespace Undersoft.SDK.Tests.Instant
 
         public bool Status { get; set; }
 
-        public Uscn SystemKey { get; set; } = Uscn.Empty;
-
-        public DateTime Time { get; set; } = DateTime.Now;
     }
 }

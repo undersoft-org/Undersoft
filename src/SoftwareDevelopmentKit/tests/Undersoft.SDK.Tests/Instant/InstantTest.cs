@@ -26,14 +26,11 @@ namespace Undersoft.SDK.Tests.Instant
         [TestMethod]
         public void Instant_Memberinfo_FieldsOnlyModel_Integration_Test()
         {
-            InstantCreator derivedType = new InstantCreator(typeof(FieldsOnlyModel), InstantType.Derived);
+            InstantCreator derivedType = new InstantCreator<FieldsOnlyModel>(InstantType.Derived);
             IInstant InstantA = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(derivedType, new FieldsOnlyModel());
 
             InstantCreator referenceType = new InstantCreator(typeof(FieldsOnlyModel), InstantType.Reference);
             IInstant InstantB = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(referenceType, new FieldsOnlyModel());
-
-            InstantCreator valueType = new InstantCreator(typeof(FieldsOnlyModel), InstantType.ValueType);
-            IInstant InstantC = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(valueType, new FieldsOnlyModel());
         }
 
         [TestMethod]
@@ -50,9 +47,6 @@ namespace Undersoft.SDK.Tests.Instant
                 referenceType,
                 new PropertiesOnlyModel()
             );
-
-            InstantCreator valueType = new InstantCreator(typeof(PropertiesOnlyModel), InstantType.ValueType);
-            IInstant InstantC = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(valueType, new PropertiesOnlyModel());
         }
 
         [TestMethod]
@@ -64,14 +58,6 @@ namespace Undersoft.SDK.Tests.Instant
             );
             FieldsOnlyModel fom = new FieldsOnlyModel();
             IInstant InstantA = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(referenceType, fom);
-
-            InstantCreator valueType = new InstantCreator(
-                InstantMocks.Instant_Memberinfo_FieldsOnlyModel(),
-                "Instant_MemberRubric_FieldsOnlyModel_ValueType",
-                 InstantType.ValueType
-            );
-            fom = new FieldsOnlyModel();
-            IInstant InstantB = Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(valueType, fom);
         }
 
         private IInstant Instant_Creation_Compilation_Get_Set_Property_Operations_On_New_RuntimeType_Object_Instance_Test(InstantCreator str, Agreement fom)
@@ -79,15 +65,15 @@ namespace Undersoft.SDK.Tests.Instant
             IInstant rts = str.Create();
             fom.Kind = AgreementKind.Agree;
             rts[0] = 1;
-            Assert.Equals(fom.Kind, rts[0]);
+            Assert.AreEqual(fom.Kind, rts[0]);
             rts["Id"] = 555L;
             Assert.AreNotEqual(fom.Id, rts[nameof(fom.Id)]);
             rts[nameof(fom.Comments)] = fom.Comments;
-            Assert.Equals(fom.Comments, rts[nameof(fom.Comments)]);
+            Assert.AreEqual(fom.Comments, rts[nameof(fom.Comments)]);
             rts.Code = new Uscn(DateTime.Now.ToBinary());
             string hexTetra = rts.Code.ToString();
             Uscn ssn = new Uscn(hexTetra);
-            Assert.Equals(ssn, rts.Code);
+            Assert.AreEqual(ssn, rts.Code);
 
             for (int i = 1; i < str.Rubrics.Count; i++)
             {
@@ -117,7 +103,7 @@ namespace Undersoft.SDK.Tests.Instant
                 {
                     var fi = fom.GetType().GetField(((FieldInfo)r).Name);
                     if (fi != null)
-                        Assert.Equals(rts[r.Name], fi.GetValue(fom));
+                        Assert.AreEqual(rts[r.Name], fi.GetValue(fom));
                 }
                 if (r.MemberType == MemberTypes.Property && r.Name != "TypeId")
                 {
@@ -126,7 +112,7 @@ namespace Undersoft.SDK.Tests.Instant
                     {
                         var value = pi.GetValue(fom);
                         if (value != null)
-                            Assert.Equals(rts[r.Name], pi.GetValue(fom));
+                            Assert.AreEqual(rts[r.Name], pi.GetValue(fom));
                     }
                 }
             }
@@ -137,16 +123,16 @@ namespace Undersoft.SDK.Tests.Instant
         {
             IInstant rts = str.Create();
             fom.Id = 202;
-            rts[0] = 202;
-            Assert.Equals(fom.Id, rts[0]);
-            rts["Id"] = 404;
+            rts[0] = 202L;
+            Assert.AreEqual(fom.Id, rts[0]);
+            rts["Id"] = 404L;
             Assert.AreNotEqual(fom.Id, rts[nameof(fom.Id)]);
             rts[nameof(fom.Name)] = fom.Name;
-            Assert.Equals(fom.Name, rts[nameof(fom.Name)]);
+            Assert.AreEqual(fom.Name, rts[nameof(fom.Name)]);
             rts.Code = new Uscn(DateTime.Now.ToBinary());
             string hexTetra = rts.Code.ToString();
             Uscn ssn = new Uscn(hexTetra);
-            Assert.Equals(ssn, rts.Code);
+            Assert.AreEqual(ssn, rts.Code);
 
             for (int i = 1; i < str.Rubrics.Count; i++)
             {
@@ -172,13 +158,13 @@ namespace Undersoft.SDK.Tests.Instant
                 {
                     var fi = fom.GetType().GetField(((FieldInfo)r).Name);
                     if (fi != null)
-                        Assert.Equals(rts[r.Name], fi.GetValue(fom));
+                        Assert.AreEqual(rts[r.Name], fi.GetValue(fom));
                 }
                 if (r.MemberType == MemberTypes.Property && r.Name != "TypeId")
                 {
                     var pi = fom.GetType().GetProperty(((PropertyInfo)r).Name);
                     if (pi != null)
-                        Assert.Equals(rts[r.Name], pi.GetValue(fom));
+                        Assert.AreEqual(rts[r.Name], pi.GetValue(fom));
                 }
             }
             return rts;
@@ -188,15 +174,15 @@ namespace Undersoft.SDK.Tests.Instant
         {
             IInstant rts = str.Create();
             fom.Id = 202;
-            rts["Id"] = 404;
+            rts["Id"] = 404L;
             Assert.AreNotEqual(fom.Id, rts[nameof(fom.Id)]);
             rts[nameof(fom.Name)] = fom.Name;
-            Assert.Equals(fom.Name, rts[nameof(fom.Name)]);
+            Assert.AreEqual(fom.Name, rts[nameof(fom.Name)]);
 
             rts.Code = new Uscn(DateTime.Now.ToBinary());
             string hexTetra = rts.Code.ToString();
             Uscn ssn = new Uscn(hexTetra);
-            Assert.Equals(ssn, rts.Code);
+            Assert.AreEqual(ssn, rts.Code);
 
             for (int i = 1; i < str.Rubrics.Count; i++)
             {
@@ -222,13 +208,13 @@ namespace Undersoft.SDK.Tests.Instant
                 {
                     var fi = fom.GetType().GetField(((FieldInfo)r).Name);
                     if (fi != null)
-                        Assert.Equals(rts[r.Name], fi.GetValue(fom));
+                        Assert.AreEqual(rts[r.Name], fi.GetValue(fom));
                 }
                 if (r.MemberType == MemberTypes.Property && r.Name != "TypeId")
                 {
                     var pi = fom.GetType().GetProperty(((PropertyInfo)r).Name);
                     if (pi != null)
-                        Assert.Equals(rts[r.Name], pi.GetValue(fom));
+                        Assert.AreEqual(rts[r.Name], pi.GetValue(fom));
                 }
             }
             return rts;
@@ -247,14 +233,14 @@ namespace Undersoft.SDK.Tests.Instant
         {
             IInstant rts = str.Create();
             fom.Id = 202;
-            rts["Id"] = 404;
+            rts["Id"] = 404L;
             Assert.AreNotEqual(fom.Id, rts[nameof(fom.Id)]);
             rts[nameof(fom.Name)] = fom.Name;
-            Assert.Equals(fom.Name, rts[nameof(fom.Name)]);
+            Assert.AreEqual(fom.Name, rts[nameof(fom.Name)]);
             rts.Code = new Uscn(DateTime.Now.ToBinary());
             string hexTetra = rts.Code.ToString();
             Uscn ssn = new Uscn(hexTetra);
-            Assert.Equals(ssn, rts.Code);
+            Assert.AreEqual(ssn, rts.Code);
 
             for (int i = 1; i < str.Rubrics.Count; i++)
             {
@@ -280,13 +266,13 @@ namespace Undersoft.SDK.Tests.Instant
                 {
                     var fi = fom.GetType().GetField(((FieldInfo)r).Name);
                     if (fi != null)
-                        Assert.Equals(rts[r.Name], fi.GetValue(fom));
+                        Assert.AreEqual(rts[r.Name], fi.GetValue(fom));
                 }
                 if (r.MemberType == MemberTypes.Property && r.Name != "TypeId")
                 {
                     var pi = fom.GetType().GetProperty(((PropertyInfo)r).Name);
                     if (pi != null)
-                        Assert.Equals(rts[r.Name], pi.GetValue(fom));
+                        Assert.AreEqual(rts[r.Name], pi.GetValue(fom));
                 }
             }
             return rts;

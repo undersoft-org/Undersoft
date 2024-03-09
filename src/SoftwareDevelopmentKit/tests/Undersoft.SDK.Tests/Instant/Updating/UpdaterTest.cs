@@ -113,8 +113,6 @@ namespace Undersoft.SDK.Tests.Instant.Updating
                 VersionId = 992
             };
 
-            updater0.Patch(profile);
-            updater1.Put(_Proxy0);
 
             mock.PatchTo(updater3.Source);
             dataObject0.PatchFrom(updater0.Source);

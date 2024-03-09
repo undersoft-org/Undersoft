@@ -1,5 +1,4 @@
 ﻿using Microsoft.OData.Edm;
-using Undersoft.SDK.Service.Data.Client;
 using Undersoft.SDK.Service.Data.Store;
 
 namespace Undersoft.SSC.Service.Clients;

@@ -10,6 +10,9 @@ namespace Undersoft.SDK.Service.Data.Client
 
         public OpenDataContext(Uri serviceUri) : base(serviceUri)
         {
+            if (serviceUri == null)
+                throw new ArgumentNullException(nameof(serviceUri));
+
             MergeOption = MergeOption.AppendOnly;
             HttpRequestTransportMode = HttpRequestTransportMode.HttpClient;
             IgnoreResourceNotFoundException = true;

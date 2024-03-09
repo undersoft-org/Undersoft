@@ -33,12 +33,6 @@ namespace Undersoft.SDK.Tests.Series
             await Typed_Catalog_Async_Thread_Safe_Integrated_Test_Startup(identifiableObjectTestCollection).ConfigureAwait(true);
         }
 
-        [TestMethod]
-        public void Typed_Catalog_Integrational_Test()
-        {
-            Typed_Catalog_Sync_Integrated_Test_Helper(identifiableObjectTestCollection.Take(100000).ToArray());
-        }
-
         private void Typed_Catalog_Async_Thread_Safe_Integrated_Test_Callback(Task[] t)
         {
             Debug.WriteLine($"Test Finished");

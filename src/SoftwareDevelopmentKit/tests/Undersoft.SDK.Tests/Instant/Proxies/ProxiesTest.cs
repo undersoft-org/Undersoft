@@ -25,13 +25,13 @@ namespace Undersoft.SDK.Tests.Proxies
 
             Instant = Proxy_Compilation_Helper_Test(Proxies, new FieldsAndPropertiesModel());
 
-            int idSeed = (int)Instant["Id"];
+            long idSeed = (long)Instant["Id"];
             DateTime now = DateTime.Now;
             for (int i = 0; i < 250000; i++)
             {
                 IProxy _proxy = Proxies.NewProxy();
                 _proxy.Target = Proxies.NewProxy(); ;
-                _proxy.Id = idSeed + i;
+                _proxy.Id = (long)(idSeed + i);
                 _proxy["Time"] = now;
                 Proxies.Add(_proxy);
             }

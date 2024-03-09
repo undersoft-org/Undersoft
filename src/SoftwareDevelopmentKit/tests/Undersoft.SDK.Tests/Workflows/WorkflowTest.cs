@@ -2,7 +2,6 @@ namespace Undersoft.SDK.Tests.Workflows
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Text;
-    using System.Threading;
     using Undersoft.SDK.Invoking;
     using Undersoft.SDK.Tests.Workflows.Features;
     using Undersoft.SDK.Workflows;
@@ -49,7 +48,7 @@ namespace Undersoft.SDK.Tests.Workflows
                     .Work<SecondCurrency>((w) => w.GetCurrency).Run("USD", i);
             }
 
-            Thread.Sleep(10000);
+            Task.Delay(5000);
 
             download.Close(true);
             compute.Close(true);
@@ -64,7 +63,7 @@ namespace Undersoft.SDK.Tests.Workflows
             ql0 = Workout.Run<FirstCurrency>(true, "EUR", 1);
             ql1 = Workout.Run<SecondCurrency>(false, "USD", 1);
 
-            Thread.Sleep(5000);
+            Task.Delay(5000);
         }
     }
 }

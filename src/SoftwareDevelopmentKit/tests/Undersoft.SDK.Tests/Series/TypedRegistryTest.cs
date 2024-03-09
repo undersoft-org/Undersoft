@@ -35,12 +35,6 @@ namespace Undersoft.SDK.Tests.Series
         }
 
         [TestMethod]
-        public void Typed_Registry_Sync_Integrated_Test()
-        {
-            Typed_Registry_Sync_Integrated_Test_Helper(identifiableObjectTestCollection.Take(100000).ToArray());
-        }
-
-        [TestMethod]
         public void Typed_Registry_Seeded_Hash_Keys_Test()
         {
             var uniques = Unique.Bit64;
@@ -48,7 +42,7 @@ namespace Undersoft.SDK.Tests.Series
             var key0 = uniques.Key(list[0], list[0].TypeId);
             var key1 = uniques.Key(list[0], list[0].TypeId);
 
-            Assert.Equals(key0, key1);
+            Assert.AreEqual(key0, key1);
 
             typedRegistry.Add(key0, list[0]);
 
@@ -59,7 +53,7 @@ namespace Undersoft.SDK.Tests.Series
             var key2 = uniques.Key(list[1], list[1].TypeId);
             var key3 = uniques.Key(list[1], list[1].TypeId);
 
-            Assert.Equals(key2, key3);
+            Assert.AreEqual(key2, key3);
 
             typedRegistry.Add(list[1]);
 

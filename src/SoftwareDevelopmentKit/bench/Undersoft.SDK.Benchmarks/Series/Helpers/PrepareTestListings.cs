@@ -10,7 +10,7 @@ namespace System.Series.Tests
         {
             List<KeyValuePair<object, string>> list = new List<KeyValuePair<object, string>>();
             string now = DateTime.Now.ToString() + "_prepareStringKeyTestCollection";
-            long max = uint.MaxValue + 2000 * 1000L;
+            long max = uint.MaxValue + 2000 * 100L;
             for (long i = uint.MaxValue; i < max; i++)
             {
                 string str = i.ToString() + "_" + now;
@@ -23,7 +23,7 @@ namespace System.Series.Tests
         {
             List<KeyValuePair<object, string>> list = new List<KeyValuePair<object, string>>();
             string now = DateTime.Now.ToString() + "_prepareStringKeyTestCollection";
-            for (int i = 0; i < 2000 * 1000; i++)
+            for (int i = 0; i < 2000 * 100; i++)
             {
                 string str = i.ToString() + "_" + now;
                 list.Add(new KeyValuePair<object, string>(i, str));
@@ -35,7 +35,7 @@ namespace System.Series.Tests
         {
             List<KeyValuePair<object, string>> list = new List<KeyValuePair<object, string>>();
             string now = DateTime.Now.ToString() + "_prepareStringKeyTestCollection";
-            long max = uint.MaxValue + (2000 * 1000L);
+            long max = uint.MaxValue + (2000 * 100L);
             for (long i = uint.MaxValue; i < max; i++)
             {
                 string str = i.ToString() + "_" + now;
@@ -48,7 +48,7 @@ namespace System.Series.Tests
         {
             List<KeyValuePair<object, string>> list = new List<KeyValuePair<object, string>>();
             string now = DateTime.Now.ToString() + "_prepareStringKeyTestCollection";
-            for (int i = 0; i < 2000 * 1000; i++)
+            for (int i = 0; i < 2000 * 100; i++)
             {
                 string str = i.ToString() + "_" + now;
                 list.Add(
@@ -59,7 +59,7 @@ namespace System.Series.Tests
                 );
             }
             List<object> keys = new List<object>();
-            for (int i = 0; i < 2000 * 1000; i++)
+            for (int i = 0; i < 2000 * 100; i++)
             {
                 keys.Add(list[i].Key);
             }

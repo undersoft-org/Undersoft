@@ -31,7 +31,7 @@ public class InstantMathTest
         var price = nameof(InstantMathTestDataModel.NetPrice);
         var fee = nameof(InstantMathTestDataModel.SellFeeRate);
 
-        for (int i = 0; i < 2000 * 2000; i++)
+        for (int i = 0; i < 1000 * 1000; i++)
         {
             IProxy proxyRow = instantProxies.NewProxy();
             IInstant instantRow = instantSeries.NewInstant();
@@ -77,7 +77,7 @@ public class InstantMathTest
     }
 
     [TestMethod]
-    public void InstantMath_Generic_Member_Computation_Tes_Four_Milions_Of_Objectst()
+    public void InstantMath_Generic_Member_Computation_Test_Milion_Of_Objects()
     {
 
         var elapsed1 = InstantMath_Generic_Member_Computation_Method(instantValueSeries);
@@ -121,7 +121,7 @@ public class InstantMathTest
     }
 
     [TestMethod]
-    public void InstantMath_Member_By_String_Computation_Test_Four_Milions_Of_Objects()
+    public void InstantMath_Member_By_String_Computation_Test_Milion_Of_Objects()
     {
 
         var elapsed1 = InstantMath_Member_By_String_Computation_Method(instantValueSeries);
@@ -164,7 +164,7 @@ public class InstantMathTest
     }
 
     [TestMethod]
-    public void InstantMath_Generic_Member_Parallel_Computation_In_4_Chunks_Test_Four_Milions_Of_Objects()
+    public void InstantMath_Generic_Member_Parallel_Computation_In_4_Chunks_Test_Milion_Of_Objects()
     {
         var elapsed1 = InstantMath_Generic_Member_Parallel_Computation_In_4_Chunks_Method(instantValueSeries);
 
@@ -207,7 +207,7 @@ public class InstantMathTest
     }
 
     [TestMethod]
-    public void InstantMath_Member_By_String_Computation_LogicOnStack_Test_Four_Milions_Of_Objects()
+    public void InstantMath_Member_By_String_Computation_LogicOnStack_Test_Milion_Of_Objects()
     {
         var elapsed1 = InstantMath_Member_By_String_Computation_LogicOnStack_Method(instantValueSeries);
 

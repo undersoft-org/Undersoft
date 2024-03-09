@@ -58,7 +58,7 @@ namespace Undersoft.SDK.Tests.Instant
             instantSeries.Add(instantSeries.NewInstant());
             instantSeries[0, 4] = instant[4];
 
-            Assert.Equals(instant[4], instantSeries[0, 4]);
+            Assert.AreEqual(instant[4], instantSeries[0, 4]);
         }
 
         [TestMethod]
@@ -78,7 +78,7 @@ namespace Undersoft.SDK.Tests.Instant
             instantSeries.Add(instantSeries.NewInstant());
             instantSeries[0, nameof(fom.Name)] = instant[nameof(fom.Name)];
 
-            Assert.Equals(instant[nameof(fom.Name)], instantSeries[0, nameof(fom.Name)]);
+            Assert.AreEqual(instant[nameof(fom.Name)], instantSeries[0, nameof(fom.Name)]);
         }
 
         [TestMethod]
@@ -128,9 +128,9 @@ namespace Undersoft.SDK.Tests.Instant
         {
             IInstant rts = Instant.Create();
 
-            for (int i = 1; i < instantSeriesCreator.Rubrics.Count; i++)
+            for (int i = 1; i < Instant.Rubrics.Count; i++)
             {
-                var r = instantSeriesCreator.Rubrics[i].RubricInfo;
+                var r = Instant.Rubrics[i].RubricInfo;
                 if (r.MemberType == MemberTypes.Field)
                 {
                     var fi = fom.GetType().GetField(((FieldInfo)r).Name);

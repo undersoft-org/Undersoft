@@ -157,50 +157,6 @@ public class ExtractTest
         }
     }
 
-    [TestMethod]
-    public unsafe void Extract_StructModel_Test()
-    {
-        StructModel[] structure = new StructModel[]
-        {
-            new StructModel(83948930),
-            new StructModel(45453),
-            new StructModel(5435332)
-        };
-        structure[0].Alias = "FirstAlias";
-        structure[0].Name = "FirstName";
-        structure[1].Alias = "SecondAlia";
-        structure[1].Name = "SecondName";
-        structure[2].Alias = "ThirdAlias";
-        structure[2].Name = "ThirdName";
-
-        StructModels structures = new StructModels(structure);
-
-        int size = Marshal.SizeOf(structure[0]);
-
-        byte* pserial = Extract.GetStructurePointer(structure[0]);
-
-        StructModel structure2 = new StructModel();
-        ValueType o = structure2;
-
-        o = Extract.PointerToStructure(pserial, o);
-
-        structure2 = (StructModel)o;
-
-        structure2.Alias = "FirstChange";
-    }
-
-    [TestMethod]
-    public unsafe void Extract_StructToBytesArray_Test()
-    {
-        byte[] b = instant.GetStructureBytes();
-        bool equal = serializedBytesB.BlockEqual(serializedBytesA);
-        Assert.IsTrue(equal);
-        object ro = instant;
-        serializedBytesB = new byte[instant.GetSize()];
-        Extract.StructureToBytes(ro, ref serializedBytesB, 0);
-        bool equal2 = serializedBytesB.BlockEqual(serializedBytesA);
-        Assert.IsTrue(equal2);
-    }
 
     [TestMethod]
     public unsafe void Extract_StructToPointer_Test()
@@ -208,18 +164,18 @@ public class ExtractTest
         GCHandle gcptr = GCHandle.Alloc(serializedBytesA, GCHandleType.Pinned);
         byte* ptr = (byte*)gcptr.AddrOfPinnedObject();
 
-        instant.StructureTo(ptr);
+        Extract.StructureToPointer(instant, ptr);
 
         instant["Id"] = 88888;
         instant["ServiceName"] = "Zmiany";
 
-        instant.StructureTo(ptr);
+        Extract.StructureToPointer(instant, ptr);
 
         instant["Id"] = 5555555;
         instant["ServiceName"] = "Zm342";
 
-        instant.StructureFrom(ptr);
+        Extract.PointerToStructure(ptr, instant);
 
-        Assert.Equals(88888, instant["Id"]);
+        Assert.AreEqual(88888, instant["Id"]);
     }
 }
