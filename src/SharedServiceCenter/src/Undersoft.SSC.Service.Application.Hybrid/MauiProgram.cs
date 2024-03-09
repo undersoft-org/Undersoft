@@ -8,7 +8,6 @@ using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Application.Access;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
-using Undersoft.SDK.Service.Application.GUI.View.Generic.Accounts;
 using Undersoft.SDK.Service.Application.GUI.View.Models;
 using Undersoft.SDK.Service.Data.Remote.Repository;
 using Undersoft.SDK.Service.Data.Store;
@@ -73,10 +72,8 @@ public static class MauiProgram
                     .AddScoped<IAccountService<Account>, AccessProvider<Account>>()
                     .AddScoped<IAccountAccess, AccessProvider<Account>>()
                     .AddScoped<IValidator<IViewData<Credentials>>, AccessValidator>()
-                    .AddScoped<IValidator<IViewData<Account>>, GenericAccountPanelValidator>()
                     .AddScoped<IValidator<IViewData<Account>>, AccountValidator>()
                     .AddScoped<AccountValidator>()
-                    .AddScoped<GenericAccountPanelValidator>()
                     .AddScoped<AccessValidator>();
                 reg.MergeServices(services, true);
             }

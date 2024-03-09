@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 namespace Undersoft.SDK.Service.Application.GUI.View;
 
 using Proxies;
-using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
 using Undersoft.SDK.Service.Data.Query;
 using Undersoft.SDK.Service.Data.Store;

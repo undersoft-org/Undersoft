@@ -7,7 +7,9 @@ using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Validator
 {
-    public partial class GenericValidator<TValidator, TModel> : FluentComponentBase, IViewValidator where TValidator : class, IValidator<IViewData<TModel>> where TModel : class, IOrigin, IInnerProxy
+    public partial class GenericValidator<TValidator, TModel> : FluentComponentBase, IViewValidator
+        where TValidator : class, IValidator<IViewData<TModel>>
+        where TModel : class, IOrigin, IInnerProxy
     {
         [CascadingParameter]
         private EditContext FormContext { get; set; } = default!;
@@ -39,6 +41,28 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Validator
             FormContext.OnFieldChanged += FieldChanged;
         }
 
+        private ViewRubric? RecursiveFindViewRubric(IViewData content, string? rubricName)
+        {
+            if (rubricName == null)
+                return null;
+
+            var rubric = content.Rubrics[rubricName];
+
+            if (rubric != null)
+                return rubric;
+
+            foreach (var r in content.Rubrics)
+            {
+                if (r.ViewItem != null)
+                {
+                    rubric = RecursiveFindViewRubric(r.ViewItem.Data, rubricName);
+                    if (rubric != null)
+                        break;
+                }
+            }
+            return rubric;
+        }
+
         public async Task<ValidationResult> ValidateAsync()
         {
             ValidationMessageStore.Clear();
@@ -49,20 +73,113 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Validator
 
             if (result.Errors.Any())
             {
-                result.Errors.GroupBy(e => e.PropertyName).ForEach(r =>
-                {
-                    var rubric = Content.Rubrics[r.Key.Split(".").LastOrDefault()];
-                    if (rubric != null)
+                result.Errors
+                    .GroupBy(e => e.PropertyName)
+                    .ForEach(r =>
                     {
-                        rubric.Errors.Clear();
-                        r.ForEach(e =>
+                        var rubric = RecursiveFindViewRubric(
+                            Content,
+                            r.Key.Split(".").LastOrDefault()
+                        );
+
+                        if (rubric != null)
                         {
-                            if (rubric.Errors.TryAdd(e.ErrorMessage))
-                                ValidationMessageStore.Add(rubric.FieldIdentifier, e.ErrorMessage);
-                        });
-                    }
-                });
+                            rubric.Errors.Clear();
+                            r.ForEach(e =>
+                            {
+                                if (
+                                    rubric.Errors.TryAdd(e.ErrorMessage)
+                                    && rubric.FieldIdentifier.Model != null
+                                )
+                                    ValidationMessageStore.Add(
+                                        rubric.FieldIdentifier,
+                                        e.ErrorMessage
+                                    );
+                                else
+                                    Content.Notes.Errors =
+                                        Content.Notes.Errors == null
+                                            ? e.ErrorMessage
+                                            : string.Concat(
+                                                Content.Notes.Errors,
+                                                ", ",
+                                                e.ErrorMessage
+                                            );
+                            });
+                        }
+                    });
             }
+            Content.RenderView();
+            FormContext.NotifyValidationStateChanged();
+            return result;
+        }
+
+        public async Task<ValidationResult> ValidateAsync(IViewData subContent, string? subRubricName = null)
+        {
+            ValidationMessageStore.Clear();
+            Content.ClearErrors();
+
+            var context = new ValidationContext<IViewData<TModel>>(Content);
+            var result = await Validator.ValidateAsync(context);
+
+            if (result.Errors.Any())
+            {
+                result.Errors
+                    .GroupBy(e => e.PropertyName)
+                    .ForEach(r =>
+                    {
+                        bool invalid = false;
+                        if (subRubricName != null)
+                        {
+                            var splits = r.Key.Split(".");
+                            var item = splits[splits.Length - 2];
+                            if (subRubricName != item)
+                                invalid = true;
+                        }
+                        if (!invalid)
+                        {
+
+                            var rubric = RecursiveFindViewRubric(
+                                subContent,
+                                r.Key.Split(".").LastOrDefault()
+                            );
+
+                            if (rubric != null)
+                            {
+                                rubric.Errors.Clear();
+                                r.ForEach(e =>
+                                {
+                                    if (
+                                        rubric.Errors.TryAdd(e.ErrorMessage)
+                                        && rubric.FieldIdentifier.Model != null
+                                    )
+                                        ValidationMessageStore.Add(
+                                            rubric.FieldIdentifier,
+                                            e.ErrorMessage
+                                        );
+                                    else
+                                        Content.Notes.Errors =
+                                            Content.Notes.Errors == null
+                                                ? e.ErrorMessage
+                                                : string.Concat(
+                                                    Content.Notes.Errors,
+                                                    ", ",
+                                                    e.ErrorMessage
+                                                );
+                                });
+                            }
+                            else
+                            {
+                                r.ForEach(e =>
+                                {
+                                    result.Errors.Remove(e);
+                                });
+                            }
+                        }
+                    });
+            }
+            if (string.IsNullOrEmpty(Content.Notes.Errors))
+                result.Errors.Clear();
+
             Content.RenderView();
             FormContext.NotifyValidationStateChanged();
             return result;
@@ -77,7 +194,11 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Validator
 
             var context = new ValidationContext<IViewData<TModel>>(Content);
             var result = await Validator.ValidateAsync(context);
-            var _result = new ValidationResult(result.Errors.Where(e => rubric.RubricName.Equals(e.PropertyName.Split(".").LastOrDefault())));
+            var _result = new ValidationResult(
+                result.Errors.Where(
+                    e => rubric.RubricName.Equals(e.PropertyName.Split(".").LastOrDefault())
+                )
+            );
 
             if (_result.Errors.Any())
             {
@@ -95,24 +216,40 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Validator
         async void FieldChanged(object? sender, FieldChangedEventArgs args)
         {
             ValidationMessageStore.Clear(args.FieldIdentifier);
-            dynamic field = args.FieldIdentifier.Model;
-            IViewRubric rubric = field.Rubric;
-            rubric.Errors.Clear();
 
-            var context = new ValidationContext<IViewData<TModel>>(Content);
-            var result = await Validator.ValidateAsync(context);
-            var _result = new ValidationResult(result.Errors.Where(e => rubric.RubricName.Equals(e.PropertyName.Split(".").LastOrDefault())));
-
-            if (_result.Errors.Any())
+            if (args.FieldIdentifier.Model.GetType().IsAssignableTo(typeof(IViewItem)))
             {
-                _result.Errors.ForEach(e =>
+                var field = (IViewItem)args.FieldIdentifier.Model;
+                IViewRubric rubric = field.Rubric;
+                rubric.Errors.Clear();
+
+                var context = new ValidationContext<IViewData<TModel>>(Content);
+                var result = await Validator.ValidateAsync(context);
+                var _result = new ValidationResult(result.Errors.Where(e =>
                 {
-                    if (rubric.Errors.TryAdd(e.ErrorMessage))
-                        ValidationMessageStore.Add(args.FieldIdentifier, e.ErrorMessage);
-                });
+                    if (Content.ActiveRubric == null)
+                        return rubric.RubricName.Equals(e.PropertyName.Split(".").LastOrDefault());
+
+                    var activeName = Content.ActiveRubric.RubricName;
+                    var splits = e.PropertyName.Split(".");
+                    var item = splits[splits.Length - 2];
+
+                    return item == activeName && rubric.RubricName.Equals(e.PropertyName.Split(".").LastOrDefault());
+                }));
+
+                if (_result.Errors.Any())
+                {
+                    _result.Errors.ForEach(e =>
+                    {
+                        if (rubric.Errors.TryAdd(e.ErrorMessage))
+                            ValidationMessageStore.Add(args.FieldIdentifier, e.ErrorMessage);
+                    });
+                }
+
+                field.RenderView();
+
+                FormContext.NotifyValidationStateChanged();
             }
-            rubric.ViewItem.RenderView();
-            FormContext.NotifyValidationStateChanged();
         }
     }
 }

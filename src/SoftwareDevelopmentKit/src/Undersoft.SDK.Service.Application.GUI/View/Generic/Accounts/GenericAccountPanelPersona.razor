@@ -1,8 +1,10 @@
 ﻿@using Undersoft.SDK.Service
 @using Undersoft.SDK.Service.Data.Event
-@using Undersoft.SSC.Service.Contracts
 
 @inject IServicer _servicer
+
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+@typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
 
 <div role="button" @onclick="@OpenAccountPanelAsync">
 <FluentPersona Initials="?" ImageSize="35px" StatusSize="PresenceBadgeSize.Tiny" >
@@ -11,16 +13,16 @@
 
 @code {
 
-    private IViewPanel<Account> _panel = default!;
+    private IViewPanel<TModel> _panel = default!;
 
     protected override void OnInitialized()
     {
-        _panel = _servicer.Initialize<ViewPanel<GenericAccountPanel<Account, GenericAccountPanelValidator>, Account>>();
+        _panel = _servicer.Initialize<ViewPanel<GenericAccountPanel<TModel, TValidator>, TModel>>();
     }
 
     private async Task OpenAccountPanelAsync(MouseEventArgs args)
     {
-        await _panel.Show(new ViewData<Account>(), (p) =>
+        await _panel.Show(new ViewData<TModel>(), (p) =>
            {
                p.Alignment = HorizontalAlignment.Right;
                p.Title = $"Account";
@@ -32,7 +34,7 @@
         HandlePanel(_panel.Content);
     }
 
-    private void HandlePanel(IViewData<Account>? result)
+    private void HandlePanel(IViewData<TModel>? result)
     {
 
     }

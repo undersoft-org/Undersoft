@@ -17,12 +17,12 @@ public class LandingTopicMenuItems : DataObject
 
     [Link]
     [VisibleRubric]
-    [DisplayRubric("Documentation")]
-    public string Documentation { get; set; } = "/landing/documentation";
+    [DisplayRubric("Downloads")]
+    public string Downloads { get; set; } = "/landing/downloads";
 
     [Link]
     [VisibleRubric]
-    [DisplayRubric("Downloads")]
-    public string Downloads { get; set; } = "/landing/downloads";
+    [DisplayRubric("Documentation")]
+    public string Documentation { get; set; } = "/landing/documentation";
 }
 

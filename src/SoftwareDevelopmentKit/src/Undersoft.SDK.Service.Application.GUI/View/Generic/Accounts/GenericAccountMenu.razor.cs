@@ -1,14 +1,16 @@
+using FluentValidation;
 using Microsoft.FluentUI.AspNetCore.Components;
+using Undersoft.SDK.Proxies;
+using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Application.Access;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
-using Undersoft.SSC.Service.Contracts;
 
 namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Accounts
 {
-    public partial class GenericAccountMenu : ViewItem
+    public partial class GenericAccountMenu<TModel, TValidator> : ViewItem where TModel : class, IOrigin, IInnerProxy, IAuthorization where TValidator : class, IValidator<IViewData<TModel>>
     {
         [Inject]
-        private AccessProvider<Account> access { get; set; } = default!;
+        private AccessProvider<TModel> access { get; set; } = default!;
 
         [Inject]
         private IServicer servicer { get; set; } = default!;
@@ -35,8 +37,8 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Accounts
                 {
                     Data.Model.Proxy[_rubrics["Account"].RubricId] = servicer.Initialize<
                         ViewPanel<
-                            GenericAccountPanel<Account, GenericAccountPanelValidator>,
-                            Account
+                            GenericAccountPanel<TModel, TValidator>,
+                            TModel
                         >
                     >(DialogService);
                     _rubrics["SignIn"].Visible = false;

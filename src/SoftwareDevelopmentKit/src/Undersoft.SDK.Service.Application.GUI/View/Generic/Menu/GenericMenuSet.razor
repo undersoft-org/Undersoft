@@ -3,9 +3,9 @@
 @using Undersoft.SDK.Invoking
 @using Undersoft.SDK.Proxies
 
-@inherits ViewItem<TModel>
+@inherits ViewItem<TMenu>
 
-@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+@typeparam TMenu where TMenu : class, IOrigin, IInnerProxy
 
 <div class="generic top-menu">
     <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Right" HorizontalGap="5">
@@ -30,32 +30,6 @@
     </FluentStack>
 </div>
 
-@code
-{
-    public bool IsSingle => Data.Rubrics.Count < 2;
 
-    [Parameter]
-    public bool ShowLabels { get; set; } = false;
-
-    [Parameter]
-    public bool ShowIcon { get; set; } = true;
-
-    protected override void OnParametersSet()
-    {
-        if (Data == null)
-            Data = new ViewData<TModel>(typeof(TModel).New<TModel>());
-
-        Data.MapRubrics();
-        Data.Rubrics.ForEach(r =>
-            {
-                Model.Proxy[r.RubricId] = r.RubricType.New();
-                if (r.DisplayName == null)
-                    r.DisplayName = r.RubricName;
-            });
-        Data.Put(Data.Rubrics.ForEach(r => typeof(ViewData<>).MakeGenericType(r.RubricType).New<IViewData>(Model.Proxy[r.RubricId])));
-
-        base.OnParametersSet();
-    }
-}
 
 

@@ -7,7 +7,6 @@ using Undersoft.SDK.Service;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Application.Access;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
-using Undersoft.SDK.Service.Application.GUI.View.Generic.Accounts;
 using Undersoft.SDK.Service.Application.GUI.View.Models;
 using Undersoft.SSC.Service.Application.GUI.Compound.Access;
 using Undersoft.SSC.Service.Clients;
@@ -51,10 +50,8 @@ namespace Undersoft.SSC.Service.Application.Client
                         .AddScoped<IAccountAccess, AccessProvider<Account>>()
                         .AddScoped<IAccountService<Account>, AccessProvider<Account>>()
                         .AddScoped<IValidator<IViewData<Credentials>>, AccessValidator>()
-                        .AddScoped<IValidator<IViewData<Account>>, GenericAccountPanelValidator>()
                         .AddScoped<IValidator<IViewData<Account>>, AccountValidator>()
                         .AddScoped<AccountValidator>()
-                        .AddScoped<GenericAccountPanelValidator>()
                         .AddScoped<AccessValidator>();
                     reg.MergeServices(services, true);
                 }

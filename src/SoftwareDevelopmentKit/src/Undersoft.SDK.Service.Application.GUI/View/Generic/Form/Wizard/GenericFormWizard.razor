@@ -9,7 +9,6 @@
 @typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
 
 @implements IDialogContentComponent<IViewData<TModel>>
-@implements IView
 
 <style>
     #generic-wizard li[status="current"] > div {
@@ -33,7 +32,7 @@
                         {
                             @if (ContainsStepData(_rubric))
                             {
-                                <GenericFormWizardStep Rubric="_rubric" Data="@(GetStepData(_rubric))" />
+                                <GenericFormWizardStep Rubric="_rubric" Data="@(GetStepData(_rubric))"  />
                             }
                         }
                     </Steps>

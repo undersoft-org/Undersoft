@@ -89,10 +89,13 @@
     private async Task SaveAsync()
     {
         var result = await Content.Validator.ValidateAsync();
+       
         if (result.IsValid)
         {
             await Dialog.CloseAsync(Content);
         }
+        else
+            FormWizard.RenderView();
     }
 
     private void GoToFirst()
@@ -107,10 +110,16 @@
         FormWizard.RenderView();
     }
 
-    private void Next()
+    private async Task Next()
     {
-        if(!IsLast)
-            ActiveId += 1;
+        var result = await Content.Validator.ValidateAsync(
+                                Content.Rubrics[ActiveId].ViewItem.Data, 
+                                Content.Rubrics[ActiveId].RubricName);
+        if(result.IsValid)
+        {
+            if(!IsLast)
+                ActiveId += 1;
+        }
         FormWizard.RenderView();
     }
 

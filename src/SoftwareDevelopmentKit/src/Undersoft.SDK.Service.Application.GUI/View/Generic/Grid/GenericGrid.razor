@@ -9,58 +9,14 @@
 
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy
 
-<FluentGrid Spacing="3" OnBreakpointEnter="@OnBreakpointEnterHandler" Justify="@Justification" Style="background-color: var(--neutral-layer-3);">
-    <FluentGridItem xs="12">
-        <div class="card">
-            xs="12"
-        </div>
-    </FluentGridItem>
-    <FluentGridItem xs="12" sm="6" HiddenWhen="GridItemHidden.SmAndDown">
-        <div class="card">
-            xs="12" sm="6" Hidden="SmAndDown"
-        </div>
-    </FluentGridItem>
-    <FluentGridItem xs="12" sm="6">
-        <div class="card">
-            xs="12" sm="6"
-        </div>
-    </FluentGridItem>
-    <FluentGridItem xs="6" sm="3">
-        <div class="card">
-            xs="6" sm="3"
-        </div>
-    </FluentGridItem>
-    <FluentGridItem xs="6" sm="3">
-        <div class="card">
-            xs="6" sm="3"
-        </div>
-    </FluentGridItem>
-    <FluentGridItem xs="6" sm="3">
-        <div class="card">
-            xs="6" sm="3"
-        </div>
-    </FluentGridItem>
-    <FluentGridItem xs="6" sm="3">
-        <div class="card">
-            xs="6" sm="3"
-        </div>
-    </FluentGridItem>
-    <FluentGridItem xs="3">
-        <div class="card">
-            xs="3"
-        </div>
-    </FluentGridItem>
+<FluentGrid>
+   
+
 </FluentGrid>
+
 
 @code
 {
-    JustifyContent Justification = JustifyContent.FlexStart;
-
-    void OnBreakpointEnterHandler(GridItemSize size)
-    {
-        Console.WriteLine($"Page Size: {size}");
-        ViewLogger.WriteLine($"Page Size: {size}");
-    }
 }
 
 

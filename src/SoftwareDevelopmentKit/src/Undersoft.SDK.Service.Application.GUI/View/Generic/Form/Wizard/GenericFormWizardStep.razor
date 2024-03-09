@@ -28,4 +28,10 @@
 
     [Parameter]
     public bool ShowTitle { get; set; } = false;
+
+
+    protected override void OnInitialized()
+    {
+        Data.ViewItem = this;     
+    }
 }

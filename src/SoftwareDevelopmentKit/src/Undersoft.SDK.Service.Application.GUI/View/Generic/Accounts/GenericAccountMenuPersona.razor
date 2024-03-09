@@ -1,11 +1,13 @@
 ﻿@using Undersoft.SDK.Service
 @using Undersoft.SDK.Service.Access
 @using Undersoft.SDK.Service.Data.Event
-@using Undersoft.SSC.Service.Contracts
 
-@inherits ViewItem<TModel>
+@inherits ViewItem<TAccount>
 
-@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+@typeparam TAccount where TAccount : class, IOrigin, IInnerProxy
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy, IAuthorization
+@typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
+
 <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Right" HorizontalGap="5">
 <div id="account-top-menu" role="button">
     <FluentPersona Initials="?" ImageSize="35px">
@@ -13,7 +15,7 @@
 </div>
 
 <div>
-    <GenericAccountMenu Position="HorizontalPosition.Left" Rubric="Data.Rubrics[0]" AnchorId="account-top-menu" Data="@(Data[0])" Anchored="true" Style="@("margin-top:8px;")" />
+        <GenericAccountMenu TModel="TModel" TValidator="TValidator" Position="HorizontalPosition.Left" Rubric="Data.Rubrics[0]" AnchorId="account-top-menu" Data="@(Data[0])" Anchored="true" Style="@("margin-top:8px;")" />
 </div>
 </FluentStack>
 @code {
@@ -21,7 +23,7 @@
     protected override void OnParametersSet()
     {
         if (Data == null)
-            Data = new ViewData<TModel>(typeof(TModel).New<TModel>());
+            Data = new ViewData<TAccount>(typeof(TAccount).New<TAccount>());
 
         Data.MapRubrics();
         Data.Rubrics.ForEach(r =>

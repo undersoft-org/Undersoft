@@ -1,7 +1,10 @@
-﻿@inherits FluentComponentBase
+﻿@using Undersoft.SDK.Service.Access
+@inherits FluentComponentBase
 
-@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+@typeparam TMenu where TMenu : class, IOrigin, IInnerProxy
 @typeparam TAccount where TAccount : class, IOrigin, IInnerProxy
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy, IAuthorization
+@typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
 
 <FluentHeader class="siteheader" Height="50">
     <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" Width="100%">
@@ -11,7 +14,7 @@
         <FluentSpacer />
         <div class="top-bar-tools">
             <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="15">
-                <GenericMenuSet TModel="TModel" />
+                <GenericMenuSet TMenu="TMenu" />
                 <div class="github">
                     <FluentAnchor Appearance="Appearance.Hypertext" Href="http://github.com/undersoft-org/undersoft" Target="_blank" Rel="noreferrer noopener" title="Undersoft source on GitHub" aria-label="SSC Repository">
                         <div style="line-height:2;">
@@ -26,7 +29,7 @@
                     <GenericAppearancePanelButton />
                 </div>
                 <div class="account" style="margin-right:-15px;">
-                    <GenericAccountMenuPersona TModel="TAccount" />
+                    <GenericAccountMenuPersona TAccount="TAccount" TModel="TModel" TValidator="TValidator" />
                 </div>
             </FluentStack>
         </div>

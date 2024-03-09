@@ -13,19 +13,34 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic
         private int _index;
         private int _size;
         private string? _name { get; set; } = "";
-        private string _label { get; set; } = default!;
+        private string? _label { get; set; } = default!;
         private bool _required { get; set; }
         private InputMode _inputMode { get; set; } = InputMode.None;
         private TextFieldType _textFieldType { get; set; } = TextFieldType.Text;
 
-        private long? _numberValue
+        private long? _longValue
         {
             get => (long?)Value;
             set => Value = value;
         }
-        private double? _decimalValue
+        private double? _doubleValue
         {
             get { return (double?)Value; }
+            set { Value = value; }
+        }
+        private int? _intValue
+        {
+            get => (int?)Value;
+            set => Value = value;
+        }
+        private float? _floatValue
+        {
+            get { return (float?)Value; }
+            set { Value = value; }
+        }
+        private decimal? _decimalValue
+        {
+            get { return (decimal?)Value; }
             set { Value = value; }
         }
         private string? _textValue
@@ -47,7 +62,8 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic
         protected override void OnInitialized()
         {
             _type = Rubric.RubricType;
-            _proxy = Data.Model.Proxy;
+            if (Data != null)
+                _proxy = Data.Model.Proxy;
             _index = Rubric.RubricId;
             _size = Rubric.RubricSize;
             _name = Rubric.RubricName;
@@ -61,10 +77,10 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic
             Rubric.ViewItem = this;
         }
 
-        public override string Label { get => _label; set { _label = value; } }
+        public override string? Label { get => _label; set { _label = value; } }
 
         [CascadingParameter]
-        public override IViewData? Data { get; set; }
+        public override IViewData Data { get; set; } = default!;
 
         [CascadingParameter]
         protected EditContext FormContext { get; set; } = default!;
@@ -81,9 +97,6 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic
         }
 
         private EventCallback<object?> ValueChanged { get; set; }
-
-        [Parameter]
-        public override IViewRubric Rubric { get; set; } = default!;
 
         private InputMode GetInputMode()
         {

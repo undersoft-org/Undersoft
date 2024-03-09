@@ -36,6 +36,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View
                 Data = typeof(ViewData<>)
                     .MakeGenericType(Model.GetType())
                     .New<IViewData>(Model.GetType().New());
+
         }
 
         [Parameter]

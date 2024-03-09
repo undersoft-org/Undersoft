@@ -17,7 +17,7 @@ public class AccountPersonal : DataObject
     public string PhoneNumber { get; set; } = default!;
 
     [VisibleRubric]
-    public DateTime Birthdate { get; set; }
+    public DateTime Birthdate { get; set; } = DateTime.Parse("01.01.1990");
 
     [VisibleRubric]
     public string Gender { get; set; } = default!;

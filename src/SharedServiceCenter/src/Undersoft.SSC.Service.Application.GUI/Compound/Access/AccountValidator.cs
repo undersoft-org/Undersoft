@@ -18,7 +18,6 @@ public class AccountValidator : ViewValidator<Account>
                 ValidateRequired(p => p.Model.Personal.PhoneNumber);
                 ValidateRequired(p => p.Model.Personal.FirstName);
                 ValidateRequired(p => p.Model.Personal.LastName);
-                ValidateRequired(p => p.Model.Personal.Birthdate);
                 ValidateRequired(p => p.Model.Address.Country);
                 ValidateRequired(p => p.Model.Address.CityName);
                 ValidateRequired(p => p.Model.Address.Postcode);
