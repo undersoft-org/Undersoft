@@ -43,5 +43,11 @@
     <Using Include="Undersoft.SDK.Logging" />
     <Using Include="Undersoft.SDK.Uniques" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="Properties\undersoftsscserviceserver.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>

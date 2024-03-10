@@ -27,4 +27,10 @@
     <ProjectReference Include="..\Undersoft.SSC.Service.Infrastructure\Undersoft.SSC.Service.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Properties\undersoftsscserviceserver.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
