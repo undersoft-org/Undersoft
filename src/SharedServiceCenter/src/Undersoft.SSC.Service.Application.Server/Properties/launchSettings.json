@@ -20,7 +20,6 @@
     },
     "WSL": {
       "commandName": "WSL2",
-      "launchBrowser": false,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
@@ -34,9 +33,21 @@
       "environmentVariables": {
         "ASPNETCORE_URLS": "https://+:15015;http://+:16016"
       },
+      "DockerfileRunArguments": "-p 15015:15015 -p 16016:16016",
       "publishAllPorts": true,
       "useSSL": true,
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}"
+    },
+    "Container (.NET SDK)": {
+      "commandName": "SdkContainer",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "environmentVariables": {
+        "ASPNETCORE_HTTPS_PORTS": "8081",
+        "ASPNETCORE_HTTP_PORTS": "8080"
+      },
+      "publishAllPorts": true,
+      "useSSL": true
     }
   },
   "iisSettings": {

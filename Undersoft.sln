@@ -51,7 +51,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Undersoft.SDK.Native", "src
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8C7130F9-9B19-4B19-B272-5D8ED545360A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Undersoft.SSC.Tests", "src\SharedServiceCenter\tests\Undersoft.SSC.Tests\Undersoft.SSC.Tests.csproj", "{5F0D7378-D698-41BB-A9A4-D503AA839E3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Tests", "src\SharedServiceCenter\tests\Undersoft.SSC.Tests\Undersoft.SSC.Tests.csproj", "{5F0D7378-D698-41BB-A9A4-D503AA839E3F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Tests", "src\SharedServiceCenter\tests\Undersoft.SSC.Service.Tests\Undersoft.SSC.Service.Tests.csproj", "{9ACA03EC-5467-4D7D-93FF-2DE37B072E43}"
 EndProject
