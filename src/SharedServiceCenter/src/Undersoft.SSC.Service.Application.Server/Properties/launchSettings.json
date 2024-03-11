@@ -30,9 +30,6 @@
     },
     "Docker": {
       "commandName": "Docker",
-      "environmentVariables": {
-        "ASPNETCORE_URLS": "https://+:15015;http://+:16016"
-      },
       "DockerfileRunArguments": "-p 15015:15015 -p 16016:16016",
       "publishAllPorts": true,
       "useSSL": true,

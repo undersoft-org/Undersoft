@@ -66,6 +66,10 @@ spec:
   ports:
   - port: 25025
     targetPort: 25025
+    name: https
+  - port: 26026
+    targetPort: 26026
+    name: http
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -94,3 +98,7 @@ spec:
   ports:
   - port: 15015
     targetPort: 15015
+    name: https
+  - port: 26026
+    targetPort: 16016
+    name: http

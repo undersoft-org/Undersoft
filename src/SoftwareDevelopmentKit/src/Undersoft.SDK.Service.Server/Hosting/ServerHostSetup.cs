@@ -149,13 +149,12 @@ public class ServerHostSetup : IServerHostSetup
             _builder.UseDeveloperExceptionPage();
 
         _builder
-            .UseHttpsRedirection()
             .UseODataBatching()
             .UseODataQueryRequest()
             .UseDefaultFiles()
             .UseStaticFiles()
             .UseRouting()
-            .UseCors();
+            .UseCors(o => o.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
         if (apiVersions != null)
             UseSwaggerSetup(apiVersions);

@@ -31,13 +31,12 @@ public class ApplicationServerHostSetup : ServerHostSetup, IApplicationServerHos
         }
 
         _builder
-            .UseHttpsRedirection()
             .UseODataBatching()
             .UseODataQueryRequest()
             .UseBlazorFrameworkFiles()
             .UseStaticFiles()
             .UseRouting()
-            .UseCors();
+            .UseCors(o => o.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
         UseSwaggerSetup(new[] { "v1.0" });
 

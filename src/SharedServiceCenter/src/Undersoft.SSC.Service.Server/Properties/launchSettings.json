@@ -19,9 +19,6 @@
     "Docker": {
       "commandName": "Docker",
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
-      "environmentVariables": {
-        "ASPNETCORE_URLS": "https://+:25025;http://+:26026"
-      },
       "DockerfileRunArguments": "-p 25025:25025 -p 26026:26026",
       "publishAllPorts": true,
       "useSSL": true
