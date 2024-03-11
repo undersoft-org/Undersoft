@@ -18,8 +18,9 @@
     },
     "Docker": {
       "commandName": "Docker",
+      "applicationUrl": "https://127.0.0.1:25025;http://127.0.0.1:26026",
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
-      "DockerfileRunArguments": "-p 25025:25025 -p 26026:26026",
+      "DockerfileRunArguments": "-p 127.0.0.1:25025:25025 -p 127.0.0.1:26026:26026",
       "publishAllPorts": true,
       "useSSL": true
     },

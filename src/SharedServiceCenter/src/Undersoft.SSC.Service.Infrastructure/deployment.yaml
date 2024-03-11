@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: undersoft-ssc-data-server
 spec:
@@ -14,18 +14,6 @@ spec:
       containers:
       - name: undersoft-ssc-data-server
         image: de.icr.io/undersoft/undersoftsscdataserver:latest
-        volumeMounts:
-         - name: undersoft-ssc-data-storage
-           mountPath: /data
-  volumeClaimTemplates:
-   - metadata:
-       name: undersoft-ssc-data-storage
-     spec:
-       accessModes:
-         - "ReadWriteOnce"
-       resources:
-          requests:
-              storage: 20Gi
 ---
 apiVersion: v1
 kind: Service
@@ -34,7 +22,6 @@ metadata:
 spec:
   selector:
     name: undersoft-ssc-data-server
-    type: LoadBalancer
   ports:
   - port: 5432
     targetPort: 5432    
@@ -93,12 +80,12 @@ kind: Service
 metadata:
   name: undersoft-ssc-service-application-server
 spec:
-  selector:
+  selector:ibmcloud 
     name: undersoft-ssc-service-application-server
   ports:
   - port: 15015
     targetPort: 15015
     name: https
-  - port: 26026
+  - port: 16016
     targetPort: 16016
     name: http

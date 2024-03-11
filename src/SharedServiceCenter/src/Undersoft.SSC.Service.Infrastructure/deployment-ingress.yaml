@@ -1,3 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  # This service is meant to be used by clients of the database. It exposes a ClusterIP that will
+  # automatically load balance connections to the different database pods.
+  name: undersoft-ssc-data-server
+  labels:
+    app: undersoft-ssc-data-server
+spec:
+  ports:
+  # The main port, served by gRPC, serves Postgres-flavor SQL, internode
+  # traffic and the cli.
+  - port: 5432
+    targetPort: 5432
+    name: grpc
+  # The secondary port serves the UI as well as health and debug endpoints.
+  selector:
+    app: undersoft-ssc-data-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # This service only exists to create DNS entries for each pod in the stateful
+  # set such that they can resolve each other's IP addresses. It does not
+  # create a load-balanced ClusterIP and should not be used directly by clients
+  # in most circumstances.
+  name: undersoft-ssc-data-server-private
+  labels:
+    app: undersoft-ssc-data-server
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+    name: grpc
+  # We want all pods in the StatefulSet to have their addresses published for
+  # the sake of the other CockroachDB pods even before they're ready, since they
+  # have to be able to talk to each other in order to become ready.
+  publishNotReadyAddresses: true
+  clusterIP: None
+  selector:
+    app: undersoft-ssc-data-server
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -5,15 +47,30 @@ metadata:
 spec:
   selector:
     matchLabels:
-      name: undersoft-ssc-data-server
+      app: undersoft-ssc-data-server
   template:
     metadata:
       labels:
-        name: undersoft-ssc-data-server
+        app: undersoft-ssc-data-server
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - undersoft-ssc-data-server
+              topologyKey: kubernetes.io/hostname
       containers:
       - name: undersoft-ssc-data-server
         image: de.icr.io/undersoft/undersoftsscdataserver:latest
+        ports:
+        - containerPort: 5432
+          name: grpc
         volumeMounts:
          - name: undersoft-ssc-data-storage
            mountPath: /data
@@ -26,18 +83,6 @@ spec:
        resources:
           requests:
               storage: 20Gi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: undersoft-ssc-data-server
-spec:
-  selector:
-    name: undersoft-ssc-data-server
-    type: LoadBalancer
-  ports:
-  - port: 5432
-    targetPort: 5432  
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -99,26 +144,26 @@ spec:
   - port: 15015
     targetPort: 15015
     name: https
-  - port: 26026
+  - port: 16016
     targetPort: 16016
     name: http
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: Undersoft.SSC.Ingress.Server
+  name: undersoft-ssc-ingress-server
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
-  ingressClassName: nginx
+  ingressClassName: public-iks-k8s-nginx
   rules:
-  - host: undersoft.io
+  - host: undersoft-cluster-eu-3-2-23dd2136791178231fcf2808dd02cd32-0000.eu-de.containers.appdomain.cloud
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: Undersoft.SSC.Service.Application.Server
+            name: undersoft-ssc-service-application-server
             port: 
-              number: 80
+              number: 443

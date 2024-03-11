@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: undersoft-ssc-data-server
-        image: docker.io/undersoftware/undersoftsscdataserver:latest
+        image: undersoftsscdataserver:latest
         volumeMounts:
          - name: undersoft-ssc-data-storage
            mountPath: /data
@@ -54,7 +54,7 @@ spec:
     spec:
       containers:
       - name: undersoft-ssc-service-server
-        image: docker.io/undersoftware/undersoftsscserviceserver:latest
+        image: undersoftsscserviceserver:latest
 ---
 apiVersion: v1
 kind: Service
@@ -86,7 +86,7 @@ spec:
     spec:
       containers:
       - name: undersoft-ssc-service-application-server
-        image: docker.io/undersoftware/undersoftsscserviceapplicationserver:latest
+        image: undersoftsscserviceapplicationserver:latest
 ---
 apiVersion: v1
 kind: Service
