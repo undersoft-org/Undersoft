@@ -17,14 +17,14 @@ COPY ["src/SoftwareDevelopmentKit/src/Undersoft.SDK/Undersoft.SDK.csproj", "src/
 COPY ["src/SharedServiceCenter/src/Undersoft.SSC.Service.Infrastructure/Undersoft.SSC.Service.Infrastructure.csproj", "src/SharedServiceCenter/src/Undersoft.SSC.Service.Infrastructure/"]
 COPY ["src/SharedServiceCenter/src/Undersoft.SSC.Service/Undersoft.SSC.Service.csproj", "src/SharedServiceCenter/src/Undersoft.SSC.Service/"]
 COPY ["src/SharedServiceCenter/src/Undersoft.SSC/Undersoft.SSC.csproj", "src/SharedServiceCenter/src/Undersoft.SSC/"]
-RUN dotnet restore "./src/SharedServiceCenter/src/Undersoft.SSC.Service.Server/Undersoft.SSC.Service.Server.csproj"
+RUN dotnet restore ./src/SharedServiceCenter/src/Undersoft.SSC.Service.Server/Undersoft.SSC.Service.Server.csproj
 COPY . .
-WORKDIR "/src/src/SharedServiceCenter/src/Undersoft.SSC.Service.Server"
-RUN dotnet build "./Undersoft.SSC.Service.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR /src/src/SharedServiceCenter/src/Undersoft.SSC.Service.Server
+RUN dotnet build ./Undersoft.SSC.Service.Server.csproj -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Undersoft.SSC.Service.Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish ./Undersoft.SSC.Service.Server.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
