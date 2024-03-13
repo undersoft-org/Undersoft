@@ -29,4 +29,4 @@ RUN dotnet publish ./Undersoft.SSC.Service.Server.csproj -c $BUILD_CONFIGURATION
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT [dotnet, Undersoft.SSC.Service.Server.dll]
+ENTRYPOINT ["dotnet", "Undersoft.SSC.Service.Server.dll"]
