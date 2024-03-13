@@ -69,9 +69,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SDK.Service.Appli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Undersoft.SSC.Service.Application.Tests", "src\SharedServiceCenter\tests\Undersoft.SSC.Service.Application.Tests\Undersoft.SSC.Service.Application.Tests.csproj", "{97486509-DEDF-4F8C-85F0-3B4759183C53}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{06F42CB4-8E4F-4073-A457-9B03771B3179}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{72B54066-5049-4133-9C72-1D8BB4CD1B73}"
 	ProjectSection(SolutionItems) = preProject
-		deployment.yaml = deployment.yaml
+		deploy\Undersoft.SSC.Data.Server.Dockerfile = deploy\Undersoft.SSC.Data.Server.Dockerfile
+		deploy\Undersoft.SSC.Service.Application.Server.Dockerfile = deploy\Undersoft.SSC.Service.Application.Server.Dockerfile
+		deploy\Undersoft.SSC.Kubernetes.Deployment.yaml = deploy\Undersoft.SSC.Kubernetes.Deployment.yaml
+		deploy\Undersoft.SSC.Service.Server.Dockerfile = deploy\Undersoft.SSC.Service.Server.Dockerfile
 	EndProjectSection
 EndProject
 Global
