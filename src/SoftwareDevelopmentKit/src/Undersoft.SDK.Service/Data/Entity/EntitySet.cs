@@ -1,9 +1,5 @@
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Runtime.Serialization;
-using Undersoft.SDK.Series;
-using Undersoft.SDK.Service.Data.Object;
-using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Service.Data.Entity
 {
@@ -21,7 +17,7 @@ namespace Undersoft.SDK.Service.Data.Entity
 
         [IgnoreDataMember]
         public TDto Single
-        { 
+        {
             get => this.FirstOrDefault();
         }
 
@@ -30,12 +26,12 @@ namespace Undersoft.SDK.Service.Data.Entity
         {
             get
             {
-                TryGetValue((long)key.UniqueKey64(), out TDto result);
+                TryGetValue(key.UniqueKey64(), out TDto result);
                 return result;
             }
             set
             {
-                Dictionary[(long)key.UniqueKey64()] = (TDto)value;
+                Dictionary[key.UniqueKey64()] = (TDto)value;
             }
         }
     }

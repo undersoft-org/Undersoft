@@ -19,7 +19,7 @@ public class AccessDialog<TDialog, TModel> : ViewDialog<TDialog, TModel> where T
     {
         if (Service != null)
         {
-            data.Logo = new ViewGraphic.Logo.HeaderColor();
+            data.Logo = new ViewGraphic.Logo.ColorHorizontal130x40();
             Reference = await Service.ShowDialogAsync<TDialog>(data, new DialogParameters<IViewData<TModel>>()
             {
                 Height = data.Height,

@@ -3,13 +3,6 @@ using AutoMapper.Configuration;
 using AutoMapper.Internal;
 using System.Collections;
 using System.Linq.Expressions;
-using Undersoft.SDK.Uniques;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Threading;
-using System;
-using System.Linq;
-using System.Runtime.Intrinsics.Arm;
 
 namespace Undersoft.SDK.Service.Data.Mapper
 {
@@ -88,10 +81,8 @@ namespace Undersoft.SDK.Service.Data.Mapper
                 if (expression.Mappers.Any(m => m.IsMatch(_pair)))
                     return true;
 
-                //if (reverse)
-                //    expression.CreateMap(_pair.SourceType, _pair.DestinationType).ReverseMap();
-                //else
-                    expression.CreateMap(_pair.SourceType, _pair.DestinationType);
+
+                expression.CreateMap(_pair.SourceType, _pair.DestinationType);
 
                 var source = _pair.SourceType;
                 var destination = _pair.DestinationType;
@@ -116,7 +107,7 @@ namespace Undersoft.SDK.Service.Data.Mapper
                     TryCreateMap(tp);
                 }
 
-                new Type[] { source, destination }.ForEach(t =>                 
+                new Type[] { source, destination }.ForEach(t =>
                     t.GetProperties()
                     .Where(
                         p =>
@@ -148,7 +139,7 @@ namespace Undersoft.SDK.Service.Data.Mapper
                         }
                     }));
 
-              
+
                 return true;
             }
 
@@ -191,7 +182,7 @@ namespace Undersoft.SDK.Service.Data.Mapper
         public bool MapExist(TypePair pair)
         {
             if (configuration.FindTypeMapFor(pair) == null)
-                return false;            
+                return false;
             return true;
         }
 
@@ -243,12 +234,12 @@ namespace Undersoft.SDK.Service.Data.Mapper
         public IDataMapper Build()
         {
             lock (buildHolder)
-            {               
+            {
                 expression.ShouldMapMethod = m => false;
                 expression.ShouldMapProperty = m => true;
                 expression.ShouldMapField = m => false;
-                expression.Advanced.AllowAdditiveTypeMapCreation = true;               
-    
+                expression.Advanced.AllowAdditiveTypeMapCreation = true;
+
                 configuration = new MapperConfiguration(expression);
                 mapper = configuration.CreateMapper();
             }

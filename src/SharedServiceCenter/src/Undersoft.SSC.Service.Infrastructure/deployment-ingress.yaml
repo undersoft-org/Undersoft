@@ -33,7 +33,7 @@ spec:
     targetPort: 5432
     name: grpc
   # We want all pods in the StatefulSet to have their addresses published for
-  # the sake of the other CockroachDB pods even before they're ready, since they
+  # the sake of the other pods even before they're ready, since they
   # have to be able to talk to each other in order to become ready.
   publishNotReadyAddresses: true
   clusterIP: None
@@ -109,12 +109,18 @@ spec:
   selector:
     name: undersoft-ssc-service-server
   ports:
+  - port: 443
+    targetPort: 25025
+    name: public-https
+  - port: 80
+    targetPort: 26026
+    name: public-http
   - port: 25025
     targetPort: 25025
-    name: https
+    name: private-https
   - port: 26026
     targetPort: 26026
-    name: http
+    name: private-http
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -141,12 +147,19 @@ spec:
   selector:
     name: undersoft-ssc-service-application-server
   ports:
+  - port: 443
+    targetPort: 15015
+    name: public-https
+  - port: 80
+    targetPort: 16016
+    name: public-http
   - port: 15015
     targetPort: 15015
-    name: https
+    name: private-https
   - port: 16016
     targetPort: 16016
-    name: http
+    name: private-http
+
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -157,7 +170,7 @@ metadata:
 spec:
   ingressClassName: public-iks-k8s-nginx
   rules:
-  - host: undersoft-cluster-eu-3-2-23dd2136791178231fcf2808dd02cd32-0000.eu-de.containers.appdomain.cloud
+  - host: undersoft.io
     http:
       paths:
       - path: /
@@ -166,4 +179,4 @@ spec:
           service:
             name: undersoft-ssc-service-application-server
             port: 
-              number: 443
+              number: 80

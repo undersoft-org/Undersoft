@@ -6,8 +6,6 @@ namespace Undersoft.SDK.Service.Data.Query;
 
 using Proxies;
 using Rubrics;
-using Undersoft.SDK.Proxies;
-using Undersoft.SDK.Rubrics;
 
 public class FilterExpression<TEntity>
 {
