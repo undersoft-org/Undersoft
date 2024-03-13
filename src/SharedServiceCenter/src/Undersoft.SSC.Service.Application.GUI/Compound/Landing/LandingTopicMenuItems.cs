@@ -12,6 +12,11 @@ public class LandingTopicMenuItems : DataObject
 
     [Link]
     [VisibleRubric]
+    [DisplayRubric("Documentation")]
+    public string Documentation { get; set; } = "/landing/documentation";
+
+    [Link]
+    [VisibleRubric]
     [DisplayRubric("Benchmarks")]
     public string Benchmarks { get; set; } = "/landing/benchmarks";
 
@@ -22,7 +27,7 @@ public class LandingTopicMenuItems : DataObject
 
     [Link]
     [VisibleRubric]
-    [DisplayRubric("Documentation")]
-    public string Documentation { get; set; } = "/landing/documentation";
+    [DisplayRubric("Contact")]
+    public string Contact { get; set; } = "/landing/contact";
 }
 

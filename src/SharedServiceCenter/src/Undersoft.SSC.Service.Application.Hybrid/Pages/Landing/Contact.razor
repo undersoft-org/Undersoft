@@ -1,0 +1,14 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using Undersoft.SDK.Proxies
+
+@attribute [Authorize]
+
+@page "/landing/contact"
+
+<PageTitle>Undersoft</PageTitle>
+
+<FluentStack Orientation="Orientation.Horizontal">
+
+    <FluentIcon Value="@(new ViewGraphic.Topic.Contact())" Color="Color.FillInverse"></FluentIcon>
+
+</FluentStack>

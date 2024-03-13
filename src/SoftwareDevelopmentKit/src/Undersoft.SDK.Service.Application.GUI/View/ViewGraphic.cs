@@ -68,7 +68,7 @@ public static class ViewGraphic
                     "Undersoft",
                     IconVariant.Regular,
                     IconSize.Custom,
-                    @"<svg width=""260"" height=""231"" version=""1.1"" viewBox=""0 0 68.542 60.949"" xmlns=""http://www.w3.org/2000/svg"">
+                    @"<svg width=""200"" height=""160"" version=""1.1"" viewBox=""0 0 68.542 60.949"" xmlns=""http://www.w3.org/2000/svg"">
                      <g transform=""matrix(5.109 0 0 5.109 -113.74 -231.65)"">
                       <path d=""m26.805 46.488v-0.52959l0.52884-3.81e-4 0.52662-0.0046v1.0641h-1.0555z"" style=""fill:#fc3;stroke-width:.093248""/>
                       <path d=""m28.815 46.517v-0.99899l1.015 0.0043 1.03-3.4e-5 -0.0019 0.59375-0.0016 0.61211-0.39807 4.28e-4 -0.4086-0.0035-0.0043 0.40004-0.0043 0.39372h-0.6043l-0.62317 0.0036z"" style=""fill:#3c3;stroke-width:.062516""/>
@@ -137,6 +137,23 @@ public static class ViewGraphic
                 )
             { }
         }
+
+        public sealed class Contact : Icon
+        {
+            public Contact()
+                : base(
+                    "Downloads",
+                    IconVariant.Regular,
+                    IconSize.Custom,
+                    @"<svg width=""240"" height=""40"" version=""1.1"" viewBox=""0 0 79.377 11.906"" xmlns=""http://www.w3.org/2000/svg"">
+                    <g transform=""matrix(2.1784,0,0,2.1784,-45.901,-91.18)"">
+                    <path d=""m21.071 44.606v-2.6709h5.0403v5.3414h-5.0403z"" style=""fill:#ffcc33;stroke-width:.92145""/>
+                    <text fill-rule=""evenodd"" clip-rule=""evenodd"" transform=""scale(.90811 1.1012)"" x=""25.777142"" y=""42.325024"" style=""font-family:sans-serif;font-size:14.862px;letter-spacing:0px;line-height:125%;stroke-width:.37158px;word-spacing:0px"" xml:space=""preserve""><tspan x=""25.777142"" y=""42.325024"" style=""font-family:'Cascadia Code';font-size:4.9542px;font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;font-variation-settings:'wght' 300;stroke-width:.37158px"">Contact</tspan></text>
+                    </g>
+                    </svg>"
+                )
+            { }
+        }
     }
 
     public static class Title
@@ -148,13 +165,14 @@ public static class ViewGraphic
                     "Benchmarks",
                     IconVariant.Regular,
                     IconSize.Custom,
-                    @"<svg width=""415"" height=""84"" version=""1.1"" viewBox=""0 0 109.8 22.224"" xmlns=""http://www.w3.org/2000/svg"">
+                    @"<svg width=""300"" height=""60"" version=""1.1"" viewBox=""0 0 109.8 22.224"" xmlns=""http://www.w3.org/2000/svg"">
                       <g transform=""matrix(2.4897 0 0 3.6725 -52.463 -153.78)"" style=""stroke-width:.99997"">
                        <path fill-rule=""evenodd"" clip-rule=""evenodd"" d=""m51.179 46.488v-0.71333h14.01v1.4266h-14.01z"" style=""stroke-width:1.0906""/>
                        <path fill-rule=""evenodd"" clip-rule=""evenodd"" d=""m51.077 46.737v-0.45904h5.9322v0.91806h-5.9322z"" style=""stroke-width:1.0906""/>
-                       <rect x=""21.072"" y=""41.874"" width=""6.9495"" height=""4.9923"" style=""fill:#fc3;font-variation-settings:'wght' 426;stroke-width:.9299""/>
-                       <text fill-rule=""evenodd"" clip-rule=""evenodd"" transform=""scale(1.0673 .93692)"" x=""22.724001"" y=""49.438763"" style=""font-family:sans-serif;font-size:18.036px;letter-spacing:0px;line-height:125%;stroke-width:1.0906;word-spacing:0px"" xml:space=""preserve""><tspan x=""22.724001"" y=""49.438763"" style=""fill:#000000;font-family:'Cascadia Code';font-size:6.0119px;font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;font-variation-settings:'wght' 426;stroke-width:1.0906"">Servitizone</tspan></text>
-                       <text transform=""scale(1.2283 .81415)"" x=""41.360222"" y=""57.968552"" style=""fill:#ffcc33;font-family:sans-serif;font-size:10.186px;letter-spacing:0px;line-height:125%;stroke-width:1.0906;word-spacing:0px"" xml:space=""preserve""><tspan x=""41.360222"" y=""57.968552"" style=""fill:#ffcc33;font-family:'Cascadia Code';font-size:3.3954px;font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;font-variation-settings:'wght' 426;stroke-width:1.0906"">engine</tspan></text>
+                       <rect x=""21.072"" y=""41.874"" width=""6.9495"" height=""4.9923"" style=""fill:#9900ff;font-variation-settings:'wght' 426;stroke-width:.9299""/>
+                       <text fill-rule=""evenodd"" clip-rule=""evenodd"" transform=""scale(1.0673 .93692)"" x=""22.724001"" y=""49.438763"" style=""font-family:sans-serif;font-size:18.036px;letter-spacing:0px;line-height:125%;stroke-width:1.0906;word-spacing:0px"" xml:space=""preserve"">
+                       <tspan fill-rule=""evenodd"" clip-rule=""evenodd"" x=""22.724001"" y=""49.438763"" style=""font-family:'Cascadia Code';font-size:6.0119px;font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;font-variation-settings:'wght' 426;stroke-width:1.0906"">Servitizone</tspan></text>
+                       <text transform=""scale(1.2283 .81415)"" x=""41.360222"" y=""57.968552"" style=""fill:#9900ff;font-family:sans-serif;font-size:10.186px;letter-spacing:0px;line-height:125%;stroke-width:1.0906;word-spacing:0px"" xml:space=""preserve""><tspan x=""41.360222"" y=""57.968552"" style=""fill:#9900ff;font-family:'Cascadia Code';font-size:3.3954px;font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;font-variation-settings:'wght' 600;stroke-width:1.0906"">engine</tspan></text>
                       </g>
                      </svg>"
                 )

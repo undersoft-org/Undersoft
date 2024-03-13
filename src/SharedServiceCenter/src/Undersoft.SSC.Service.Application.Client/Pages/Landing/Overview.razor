@@ -3,79 +3,87 @@
 
 @page "/landing/overview"
 
-<FluentGrid Spacing="1">
-    <FluentGridItem xs="12" md="4">
-                <FluentIcon Value="@(new ViewGraphic.Logo.ColorSquare260x230())" Color="Color.FillInverse" Width="260px"></FluentIcon>
+<FluentGrid Spacing="4" Justify="JustifyContent.Center">
+    <FluentGridItem xs="12" md="12" lg="3" xl="2" Style="text-align:center;" >
+                <FluentIcon Value="@(new ViewGraphic.Logo.ColorSquare260x230())" Color="Color.FillInverse" Width="200px"></FluentIcon>
     </FluentGridItem>
-    <FluentGridItem xs="12" md="8">
-        <FluentStack Orientation="Orientation.Vertical">
-            <FluentIcon Value="@(new ViewGraphic.Title.Servitizone())" Color="Color.FillInverse" Width="415px"></FluentIcon>
-            <FluentLabel Typo="Typography.PaneHeader">
-                Create highly advanced and complex shared service center digital ecosystems with operational service servers. Providing synchronization of corelated parallel 
-                with concurrent bussines procesess and features for various generic designs and implementations of single code based hybrid applications 
-            </FluentLabel>
-            <FluentLabel Typo="Typography.PaneHeader">
-                - Project realization applied after specially for it researched and developed software development kit   
-            </FluentLabel>
-            <FluentLabel Typo="Typography.PaneHeader">
-                - Generic design and implemantation
-            </FluentLabel>
-            <FluentLabel Typo="Typography.PaneHeader">
-                - Instant new type features generation
-            </FluentLabel>
-            <FluentLabel Typo="Typography.PaneHeader">
-                - Adaptive assemblies integration
-            </FluentLabel>
-        </FluentStack>
+    <FluentGridItem xs="12" md="12" lg="9" xl="10" >
+        <FluentStack Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="20" Style="margin-top:10px">
+            <FluentIcon Value="@(new ViewGraphic.Title.Servitizone())" Color="Color.FillInverse" Width="280px"></FluentIcon>
+            <FluentLabel Typo="Typography.H5">
+                Build highly advanced and complex shared service center digital ecosystems with operational data service servers. Provide synchronization for corelated concurrent and parallel
+                hypergraphs with bussines process workflow features for various designs and implementations of generated as single code based hybrid applications. 
+                Project applies constantly researched and developed for it purpose specialized software development kit
+            </FluentLabel>           
+            </FluentStack>     
     </FluentGridItem>
-    <FluentGridItem xs="12" md="4"  >
-        <FluentStack Orientation="Orientation.Vertical">
-            <a href="/landing/benchmarks" role="button">
-                <FluentIcon Value="@(new ViewGraphic.Topic.Benchmarks())" Color="Color.FillInverse" Width="240px"></FluentIcon>
-            </a>
-            <FluentLabel Typo="Typography.Subject">
-                - Performance
-            </FluentLabel>
-            <FluentLabel Typo="Typography.Subject">
-                - Efficiency
-            </FluentLabel>
-            <FluentLabel Typo="Typography.Subject">
-                - Scalability
-            </FluentLabel>
-        </FluentStack>
-    </FluentGridItem>
-    <FluentGridItem xs="12" md="4">
-        <FluentStack Orientation="Orientation.Vertical">
-            <a href="/landing/downloads" role="button">
-                <FluentIcon Value="@(new ViewGraphic.Topic.Downloads())" Color="Color.FillInverse" Width="240px"></FluentIcon>
-            </a>
-            <FluentLabel Typo="Typography.Subject">
-                - Windows
-            </FluentLabel>
-            <FluentLabel Typo="Typography.Subject">
-                - Android
-            </FluentLabel>
-            <FluentLabel Typo="Typography.Subject">
-                - iOS
-            </FluentLabel>
-            <FluentLabel Typo="Typography.Subject">
-                - Mac OS/X
-            </FluentLabel>
-        </FluentStack>
-    </FluentGridItem>
-    <FluentGridItem xs="12" md="4">
+    <FluentGridItem xs="12" md="6" lg="3">
         <FluentStack Orientation="Orientation.Vertical">
             <a href="/landing/documentation" role="button">
                 <FluentIcon Value="@(new ViewGraphic.Topic.Documentation())" Color="Color.FillInverse" Width="240px"></FluentIcon>
             </a>
-            <FluentLabel Typo="Typography.Subject">
+            <FluentLabel Typo="Typography.H5">
                 - Architecture
             </FluentLabel>
-            <FluentLabel Typo="Typography.Subject">
+            <FluentLabel Typo="Typography.H5">
                 - Reference
             </FluentLabel>
-            <FluentLabel Typo="Typography.Subject">
+            <FluentLabel Typo="Typography.H5">
                 - API
+            </FluentLabel>
+        </FluentStack>
+    </FluentGridItem>
+    <FluentGridItem xs="12" md="6" lg="3">
+        <FluentStack Orientation="Orientation.Vertical">
+            <a href="/landing/benchmarks" role="button">
+                <FluentIcon Value="@(new ViewGraphic.Topic.Benchmarks())" Color="Color.FillInverse" Width="240px"></FluentIcon>
+            </a>
+            <FluentLabel Typo="Typography.H5">
+                - Performance
+            </FluentLabel>
+            <FluentLabel Typo="Typography.H5">
+                - Efficiency
+            </FluentLabel>
+            <FluentLabel Typo="Typography.H5">
+                - Scalability
+            </FluentLabel>
+        </FluentStack>
+    </FluentGridItem>
+    <FluentGridItem xs="12" md="6" lg="3">
+        <FluentStack Orientation="Orientation.Vertical">
+            <a href="/landing/downloads" role="button">
+                <FluentIcon Value="@(new ViewGraphic.Topic.Downloads())" Color="Color.FillInverse" Width="240px"></FluentIcon>
+            </a>
+            <FluentLabel Typo="Typography.H5">
+                - Windows
+            </FluentLabel>
+            <FluentLabel Typo="Typography.H5">
+                - Android
+            </FluentLabel>
+            <FluentLabel Typo="Typography.H5">
+                - iOS
+            </FluentLabel>
+            <FluentLabel Typo="Typography.H5">
+                - Mac OS/X
+            </FluentLabel>
+        </FluentStack>
+    </FluentGridItem>   
+    <FluentGridItem xs="12" md="6" lg="3">
+        <FluentStack Orientation="Orientation.Vertical">
+            <a href="/landing/contact" role="button">
+                <FluentIcon Value="@(new ViewGraphic.Topic.Contact())" Color="Color.FillInverse" Width="240px"></FluentIcon>
+            </a>
+            <FluentLabel Typo="Typography.H5">
+                - Donation
+            </FluentLabel>
+            <FluentLabel Typo="Typography.H5">
+                - Contribution
+            </FluentLabel>
+            <FluentLabel Typo="Typography.H5">
+                - Invitation
+            </FluentLabel>
+            <FluentLabel Typo="Typography.H5">
+                - Proposition
             </FluentLabel>
         </FluentStack>
     </FluentGridItem>
