@@ -498,12 +498,11 @@ public class AccountService<TAccount> : IAccountService<TAccount> where TAccount
 
         _servicer.Mapper.Map(account, _account);
 
-        if (_account.User == null)
-            _account.User = await _manager.User.FindByEmailAsync(_creds.Email);
+        var _accountuser = await _manager.User.FindByEmailAsync(_creds.Email);
 
-        _account.User.RegistrationCompleted = true;
+        _accountuser.RegistrationCompleted = true;
 
-        if ((await _manager.User.UpdateAsync(_account.User)).Succeeded)
+        if ((await _manager.User.UpdateAsync(_accountuser)).Succeeded)
         {
             _creds.RegistrationCompleted = true;
             _creds.Authenticated = true;
@@ -512,17 +511,18 @@ public class AccountService<TAccount> : IAccountService<TAccount> where TAccount
                 Success = "Registration completed",
                 Status = SigningStatus.RegistrationCompleted
             };
-            this.Success<Accesslog>(account.Notes.Success, account);
+            this.Success<Accesslog>(_account.Notes.Success, account);
         }
         else
         {
-            this.Failure<Accesslog>(account.Notes.Errors, account);
+            this.Failure<Accesslog>(_account.Notes.Errors, account);
         }
 
+        _account.UserId = _accountuser.Id;
         _account = _manager.Accounts.Add(_account);
-
+        await _manager.Accounts.Save(true);
+        _account.User = _accountuser;
         _account.PatchTo(account);
-
         return account;
     }
 

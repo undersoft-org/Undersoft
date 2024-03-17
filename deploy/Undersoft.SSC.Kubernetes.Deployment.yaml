@@ -109,12 +109,6 @@ spec:
   selector:
     name: undersoft-ssc-service-server
   ports:
-  - port: 443
-    targetPort: 25025
-    name: public-https
-  - port: 80
-    targetPort: 26026
-    name: public-http
   - port: 25025
     targetPort: 25025
     name: private-https

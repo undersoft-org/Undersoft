@@ -6,6 +6,7 @@
 @using Undersoft.SDK.Invoking
 
 @inherits ViewItem
+
 <FluentLabel Typo="Typography.Body">
     @DisplayName
 </FluentLabel>
@@ -21,7 +22,7 @@
                  OnCompleted="@OnCompleted">
     <ChildContent>
         <div>
-            Drag files here or <label for="my-file-uploader">browse</label><span style="color: red;">*</span>.
+            Drag file here or <label for="my-file-uploader">browse</label><span style="color: red;">*</span>.
         </div>
     </ChildContent>
 </FluentInputFile>

@@ -25,5 +25,5 @@ public class AccountProfessional : DataObject
     [VisibleRubric]
     public float Experience { get; set; }
 
-    public long AccountId { get; set; }
+    public long? AccountId { get; set; }
 }

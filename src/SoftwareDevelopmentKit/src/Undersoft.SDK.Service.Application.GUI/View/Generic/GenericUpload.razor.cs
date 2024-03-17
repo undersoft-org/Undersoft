@@ -9,7 +9,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic
         string? progressTitle;
 
         [Parameter]
-        public string DisplayName {  get; set; } = default!;
+        public string DisplayName { get; set; } = default!;
 
         List<string> Files = new();
 
@@ -20,7 +20,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic
 
             var localFile = Path.GetRandomFileName() + "-" + file.Name;
             Data.Model.Proxy[Rubric.RubricId] = localFile;
-            Files.Add(localFile);
+            Files.Add(file.Name);
 
             // Write to the FileStream
             // See other samples: https://docs.microsoft.com/en-us/aspnet/core/blazor/file-uploads
