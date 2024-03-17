@@ -1,0 +1,39 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using FluentValidation
+@using Undersoft.SDK.Proxies
+@using Undersoft.SDK.Rubrics
+@using Undersoft.SDK
+@using Undersoft.SDK.Invoking
+
+@inherits ViewItem
+<FluentLabel Typo="Typography.Body">
+    @DisplayName
+</FluentLabel>
+<FluentInputFile @ref="@myFileByStream"
+                 Id="my-file-uploader"
+                 DragDropZoneVisible="true"
+                 Mode="InputFileMode.Stream"
+                 Multiple="false"
+                 MaximumFileSize="@(20 * 1024 * 1024)"
+                 @bind-ProgressPercent="@progressPercent"
+                 Accept=".png, .jpg, .svg"
+                 OnFileUploaded="@OnFileUploadedAsync"
+                 OnCompleted="@OnCompleted">
+    <ChildContent>
+        <div>
+            Drag files here or <label for="my-file-uploader">browse</label><span style="color: red;">*</span>.
+        </div>
+    </ChildContent>
+</FluentInputFile>
+
+@if (Files.Any())
+{
+        @foreach (var file in Files)
+        {
+            <div>
+                @file
+                -uploaded.
+            </div>
+        }
+}
+

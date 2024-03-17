@@ -35,8 +35,10 @@ public class RemoteSetupHandler<TStore, TService, TModel>
             return request;
         try
         {
-            request.Response = await _repository.Setup(request.Arguments.MethodName, request.Arguments)
-            ;
+            request.Response = await _repository.Setup(
+                request.Arguments.MethodName,
+                request.Arguments
+            );
 
             if (request.Response == null)
                 throw new Exception(

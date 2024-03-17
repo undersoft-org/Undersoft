@@ -21,10 +21,10 @@ public class Setup
                     typeof(EntryStore),
                     typeof(ReportStore)
                 },
-                new[] { typeof(ApplicationClient), 
+                new[] { typeof(ApplicationClient),
                         typeof(EventClient) }
             )
-            .AddAccessServer<AccountStore>()
+            .AddAccessServer<AccountStore, Account>()
             .AddDataServer<IEntityStore>(
                 DataServerTypes.All,
                 builder =>

@@ -159,7 +159,6 @@ spec:
   - port: 16016
     targetPort: 16016
     name: private-http
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

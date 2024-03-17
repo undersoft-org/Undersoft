@@ -7,8 +7,13 @@
 @implements IIdentifiable
 @implements IViewItem
 
-
-@if (_type.IsPrimitive)
+@if(_isUpload)
+{
+    <div style="width:179px">
+        <GenericUpload Rubric="@Rubric" Data="@Data" DisplayName="@_label"  @ref="Reference" />
+    </div>
+}
+else if (_type.IsPrimitive)
 {
     @if (_type.IsAssignableTo(typeof(long)))
     {
@@ -55,7 +60,7 @@
 }
 else if (_type.IsValueType)
 {
-    if (_type.IsAssignableTo(typeof(DateTime)))
+    @if (_type.IsAssignableTo(typeof(DateTime)))
     {
         <div style="width:179px">
             <FluentDatePicker class="" Name="@_name" @bind-Value="@_timeValue" Label="@_label" DisplayName="@_name" Required="@_required" @ref="Reference" />

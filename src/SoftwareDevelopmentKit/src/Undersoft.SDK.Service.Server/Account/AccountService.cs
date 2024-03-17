@@ -7,7 +7,7 @@ using Undersoft.SDK.Service.Server.Accounts.Email;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
 
-public class AccountService : IAccountService<IAccount>
+public class AccountService<TAccount> : IAccountService<TAccount> where TAccount : class, IOrigin, IAuthorization
 {
     private IServicer _servicer;
     private IAccountManager _manager;
@@ -392,111 +392,9 @@ public class AccountService : IAccountService<IAccount>
 
     public async Task<IAuthorization> CompleteRegistration(IAuthorization account)
     {
-        if (
-            account != null
-            && !account.Credentials.IsLockedOut
-            && account.Credentials.Authenticated
-            && account.Credentials.EmailConfirmed
-        )
+        var _creds = account.Credentials;
+        if (!_creds.RegistrationCompleted)
         {
-            var _creds = account.Credentials;
-            if (!_creds.RegistrationCompleted)
-            {
-                var _account = await _manager.GetByEmail(_creds.Email);
-                if (_account == null)
-                {
-                    account.Notes = new OperationNotes()
-                    {
-                        Errors = "Account not found",
-                        Status = SigningStatus.RegistrationNotCompleted
-                    };
-                    this.Failure<Accesslog>(account.Notes.Success, account);
-                    return account;
-                }
-
-                if (_creds.RegistrationCompleteToken != null)
-                {
-                    var _code = int.Parse(_creds.RegistrationCompleteToken);
-                    var _token = TokenRegistry.Get(_code);
-                    TokenRegistry.Remove(_code);
-                    var isValid = await _manager.User.VerifyUserTokenAsync(
-                        _account.User,
-                        "AccountRegistrationProcessTokenProvider",
-                        "Registration",
-                        _token
-                    );
-
-                    if (isValid)
-                    {
-                        _account.User.RegistrationCompleted = true;
-
-                        if ((await _manager.User.UpdateAsync(_account.User)).Succeeded)
-                        {
-                            _creds.RegistrationCompleted = true;
-                            _creds.Authenticated = true;
-                            account.Notes = new OperationNotes()
-                            {
-                                Success = "Registration completed",
-                                Status = SigningStatus.RegistrationCompleted
-                            };
-                            this.Success<Accesslog>(account.Notes.Success, account);
-                        }
-                        else
-                        {
-                            this.Failure<Accesslog>(account.Notes.Errors, account);
-                        }
-                    }
-                    else
-                    {
-                        account.Notes = new OperationNotes()
-                        {
-                            Errors = "Registration not completed. Invalid verification code",
-                            Status = SigningStatus.RegistrationNotCompleted
-                        };
-                        this.Failure<Accesslog>(account.Notes.Success, account);
-                    }
-
-                    _creds.RegistrationCompleteToken = null;
-                    return account;
-                }
-
-                var token = await _manager.User.GenerateUserTokenAsync(
-                    (await _manager.GetByEmail(_creds.Email)).User,
-                    "AccountRegistrationProcessTokenProvider",
-                    "Registration"
-                );
-                var code = Math.Abs(token.UniqueKey32());
-                TokenRegistry.Add(code, token);
-                _ = _servicer.Serve<IEmailSender>(
-                    e =>
-                        e.SendEmailAsync(
-                            _creds.Email,
-                            "Verfication code to confirm your email address and proceed with account registration process",
-                            EmailTemplate.GetVerificationCodeMessage(code.ToString())
-                        )
-                );
-                account.Notes = new OperationNotes()
-                {
-                    Info = "Please confirm registration process",
-                    Status = SigningStatus.RegistrationNotConfirmed
-                };
-            }
-            else
-                account.Notes = new OperationNotes() { Info = "Registration was completed" };
-        }
-        return account;
-    }
-
-    public async Task<IAccount> Register(IAccount account)
-    {
-        if (
-            account != null
-            && !account.Credentials.IsLockedOut
-            && account.Credentials.Authenticated
-            && account.Credentials.EmailConfirmed
-        )
-        {
-            var _creds = account.Credentials;
             var _account = await _manager.GetByEmail(_creds.Email);
             if (_account == null)
             {
@@ -509,18 +407,126 @@ public class AccountService : IAccountService<IAccount>
                 return account;
             }
 
-            _account.Credentials = account.Credentials;
-            account.Personal.PatchTo(_account.Personal);
-            account.Professional.PatchTo(_account.Professional);
+            if (_creds.RegistrationCompleteToken != null)
+            {
+                var _code = int.Parse(_creds.RegistrationCompleteToken);
+                var _token = TokenRegistry.Get(_code);
+                TokenRegistry.Remove(_code);
+                var isValid = await _manager.User.VerifyUserTokenAsync(
+                    _account.User,
+                    "AccountRegistrationProcessTokenProvider",
+                    "Registration",
+                    _token
+                );
 
-            account = await _manager.Accounts.Put(_account, null);
+                if (isValid)
+                {
+                    _account.User.RegistrationCompleted = true;
 
-            await CompleteRegistration((IAuthorization)account);
+                    if ((await _manager.User.UpdateAsync(_account.User)).Succeeded)
+                    {
+                        _creds.RegistrationCompleted = true;
+                        _creds.Authenticated = true;
+                        account.Notes = new OperationNotes()
+                        {
+                            Success = "Registration completed",
+                            Status = SigningStatus.RegistrationCompleted
+                        };
+                        this.Success<Accesslog>(account.Notes.Success, account);
+                    }
+                    else
+                    {
+                        this.Failure<Accesslog>(account.Notes.Errors, account);
+                    }
+                }
+                else
+                {
+                    account.Notes = new OperationNotes()
+                    {
+                        Errors = "Registration not completed. Invalid verification code",
+                        Status = SigningStatus.RegistrationNotCompleted
+                    };
+                    this.Failure<Accesslog>(account.Notes.Success, account);
+                }
+
+                _creds.RegistrationCompleteToken = null;
+                return account;
+            }
+
+            var token = await _manager.User.GenerateUserTokenAsync(
+                (await _manager.GetByEmail(_creds.Email)).User,
+                "AccountRegistrationProcessTokenProvider",
+                "Registration"
+            );
+            var code = Math.Abs(token.UniqueKey32());
+            TokenRegistry.Add(code, token);
+            _ = _servicer.Serve<IEmailSender>(
+                e =>
+                    e.SendEmailAsync(
+                        _creds.Email,
+                        "Verfication code to confirm your email address and proceed with account registration process",
+                        EmailTemplate.GetVerificationCodeMessage(code.ToString())
+                    )
+            );
+            account.Notes = new OperationNotes()
+            {
+                Info = "Please confirm registration process",
+                Status = SigningStatus.RegistrationNotConfirmed
+            };
         }
+        else
+            account.Notes = new OperationNotes() { Info = "Registration was completed" };
+
         return account;
     }
 
-    public async Task<IAccount> Unregister(IAccount account)
+    public async Task<TAccount> Register(TAccount account)
+    {
+        var _creds = account.Credentials;
+        var _account = await _manager.GetByEmail(_creds.Email);
+
+        if (_account == null)
+        {
+            account.Notes = new OperationNotes()
+            {
+                Errors = "Account not found",
+                Status = SigningStatus.RegistrationNotCompleted
+            };
+            this.Failure<Accesslog>(account.Notes.Success, account);
+            return account;
+        }
+
+        _servicer.Mapper.Map(account, _account);
+
+        if (_account.User == null)
+            _account.User = await _manager.User.FindByEmailAsync(_creds.Email);
+
+        _account.User.RegistrationCompleted = true;
+
+        if ((await _manager.User.UpdateAsync(_account.User)).Succeeded)
+        {
+            _creds.RegistrationCompleted = true;
+            _creds.Authenticated = true;
+            _account.Notes = new OperationNotes()
+            {
+                Success = "Registration completed",
+                Status = SigningStatus.RegistrationCompleted
+            };
+            this.Success<Accesslog>(account.Notes.Success, account);
+        }
+        else
+        {
+            this.Failure<Accesslog>(account.Notes.Errors, account);
+        }
+
+        _account = _manager.Accounts.Add(_account);
+
+        _account.PatchTo(account);
+
+        return account;
+    }
+
+    public async Task<TAccount> Unregister(TAccount account)
     {
         if (
          account != null
@@ -529,25 +535,22 @@ public class AccountService : IAccountService<IAccount>
             var _creds = account.Credentials;
             var _account = await _manager.GetByEmail(_creds.Email);
             if (_account != null)
-                account = await _manager.Accounts.Delete(_account.Id);
+            {
+                var _serviceaccount = await _manager.Accounts.Delete(_account.Id);
+                _serviceaccount.PatchTo(account);
+            }
         }
         return account;
     }
 
-    public async Task<IAccount> Registered(IAccount account)
+    public async Task<TAccount> Registered(TAccount account)
     {
-        if (
-         account != null
-         && !account.Credentials.IsLockedOut
-         && account.Credentials.Authenticated
-         && account.Credentials.EmailConfirmed
-         && account.Credentials.RegistrationCompleted
-     )
+        var _creds = account.Credentials;
+        var _account = await _manager.GetByEmail(_creds.Email);
+        if (_account != null)
         {
-            var _creds = account.Credentials;
-            var _account = await _manager.GetByEmail(_creds.Email);
-            if (_account != null)
-                account = await _manager.Accounts.Find(_account.Id);
+            var _serviceaccount = await _manager.Accounts.Find(_account.Id);
+            _serviceaccount.PatchTo(account);
         }
         return account;
     }

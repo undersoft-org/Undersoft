@@ -17,7 +17,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.15")
+                .HasAnnotation("ProductVersion", "8.0.3")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -92,14 +95,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
                         .HasColumnOrder(2);
 
                     b.Property<string>("TypeName")
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)")
+                        .HasMaxLength(768)
+                        .HasColumnType("character varying(768)")
                         .HasColumnOrder(5);
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Index");
 
                     b.ToTable("Events", "domain");
                 });

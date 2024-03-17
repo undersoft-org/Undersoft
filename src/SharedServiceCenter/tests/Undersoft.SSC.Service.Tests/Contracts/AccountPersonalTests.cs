@@ -1,6 +1,4 @@
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shouldly;
 using Undersoft.SSC.Service.Contracts;
 
 namespace Undersoft.SSC.Service.Tests.Contracts;
@@ -67,14 +65,6 @@ public class AccountPersonalTests
         this._testClass.CheckProperty(x => x.Birthdate);
     }
 
-    /// <summary>
-    /// Checks that setting the Gender property correctly raises PropertyChanged events.
-    /// </summary>
-    [TestMethod]
-    public void CanSetAndGetGender()
-    {
-        this._testClass.CheckProperty(x => x.Gender);
-    }
 
     /// <summary>
     /// Checks that setting the Image property correctly raises PropertyChanged events.

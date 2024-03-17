@@ -111,6 +111,8 @@
             dst.Required = Required;
             dst.DisplayName = DisplayName;
             dst.IsLink = IsLink;
+            dst.IsFile = IsFile;
+            dst.FileType = FileType;
             dst.Id = RubricName.UniqueKey64();
 
             return dst;
@@ -139,6 +141,8 @@
             dst.Required = Required;
             dst.DisplayName = DisplayName;
             dst.IsLink = IsLink;
+            dst.IsFile = IsFile;
+            dst.FileType = FileType;
             return dst;
         }
 

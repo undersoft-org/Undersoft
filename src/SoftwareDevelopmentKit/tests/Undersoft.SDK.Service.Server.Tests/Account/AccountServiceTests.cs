@@ -420,7 +420,7 @@ public class AccountServiceTests
     public async Task CanCallRegisterAsync()
     {
         // Arrange
-        var account = Substitute.For<IAccount>();
+        var account = Substitute.For<Account>();
 
         _accountManager.GetByEmail(Arg.Any<string>()).Returns(new Account());
         _accountManager.Accounts.Returns(Substitute.For<IStoreRepository<IAccountStore, Account>>());
@@ -442,7 +442,7 @@ public class AccountServiceTests
     [TestMethod]
     public async Task CannotCallRegisterWithNullAccountAsync()
     {
-        await Should.ThrowAsync<ArgumentNullException>(() => this._testClass.Register(default(IAccount)));
+        await Should.ThrowAsync<ArgumentNullException>(() => this._testClass.Register(default(Account)));
     }
 
     /// <summary>
@@ -453,7 +453,7 @@ public class AccountServiceTests
     public async Task CanCallUnregisterAsync()
     {
         // Arrange
-        var account = Substitute.For<IAccount>();
+        var account = Substitute.For<Account>();
 
         _accountManager.GetByEmail(Arg.Any<string>()).Returns(new Account());
         _accountManager.Accounts.Returns(Substitute.For<IStoreRepository<IAccountStore, Account>>());
@@ -474,7 +474,7 @@ public class AccountServiceTests
     [TestMethod]
     public async Task CannotCallUnregisterWithNullAccountAsync()
     {
-        await Should.ThrowAsync<ArgumentNullException>(() => this._testClass.Unregister(default(IAccount)));
+        await Should.ThrowAsync<ArgumentNullException>(() => this._testClass.Unregister(default(Account)));
     }
 
     /// <summary>
@@ -485,7 +485,7 @@ public class AccountServiceTests
     public async Task CanCallRegisteredAsync()
     {
         // Arrange
-        var account = Substitute.For<IAccount>();
+        var account = Substitute.For<Account>();
 
         _accountManager.GetByEmail(Arg.Any<string>()).Returns(new Account());
         _accountManager.Accounts.Returns(Substitute.For<IStoreRepository<IAccountStore, Account>>());
@@ -506,7 +506,7 @@ public class AccountServiceTests
     [TestMethod]
     public async Task CannotCallRegisteredWithNullAccountAsync()
     {
-        await Should.ThrowAsync<ArgumentNullException>(() => this._testClass.Registered(default(IAccount)));
+        await Should.ThrowAsync<ArgumentNullException>(() => this._testClass.Registered(default(Account)));
     }
 
     /// <summary>

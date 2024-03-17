@@ -18,7 +18,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("Accounts")
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true)
@@ -120,8 +120,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnOrder(2);
 
                     b.Property<string>("TypeName")
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)")
+                        .HasMaxLength(768)
+                        .HasColumnType("character varying(768)")
                         .HasColumnOrder(5);
 
                     b.Property<long>("UserId")
@@ -235,8 +235,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnOrder(2);
 
                     b.Property<string>("TypeName")
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)")
+                        .HasMaxLength(768)
+                        .HasColumnType("character varying(768)")
                         .HasColumnOrder(5);
 
                     b.Property<string>("Websites")
@@ -355,8 +355,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnOrder(2);
 
                     b.Property<string>("TypeName")
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)")
+                        .HasMaxLength(768)
+                        .HasColumnType("character varying(768)")
                         .HasColumnOrder(5);
 
                     b.HasKey("Id");
@@ -470,8 +470,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnOrder(2);
 
                     b.Property<string>("TypeName")
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)")
+                        .HasMaxLength(768)
+                        .HasColumnType("character varying(768)")
                         .HasColumnOrder(5);
 
                     b.HasKey("Id");
@@ -573,8 +573,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnOrder(2);
 
                     b.Property<string>("TypeName")
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)")
+                        .HasMaxLength(768)
+                        .HasColumnType("character varying(768)")
                         .HasColumnOrder(5);
 
                     b.Property<string>("Websites")
@@ -670,8 +670,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnOrder(2);
 
                     b.Property<string>("TypeName")
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)")
+                        .HasMaxLength(768)
+                        .HasColumnType("character varying(768)")
                         .HasColumnOrder(5);
 
                     b.HasKey("Id");
@@ -755,8 +755,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnOrder(2);
 
                     b.Property<string>("TypeName")
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)")
+                        .HasMaxLength(768)
+                        .HasColumnType("character varying(768)")
                         .HasColumnOrder(5);
 
                     b.Property<string>("Websites")
@@ -861,8 +861,8 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnOrder(2);
 
                     b.Property<string>("TypeName")
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)")
+                        .HasMaxLength(768)
+                        .HasColumnType("character varying(768)")
                         .HasColumnOrder(5);
 
                     b.Property<double>("Value")

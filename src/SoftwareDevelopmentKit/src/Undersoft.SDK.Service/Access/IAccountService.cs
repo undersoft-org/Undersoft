@@ -1,6 +1,6 @@
 ﻿namespace Undersoft.SDK.Service.Access
 {
-    public interface IAccountService<TAccount> : IAccountAccess
+    public interface IAccountService<TAccount> : IAccountAccess where TAccount : class, IOrigin, IAuthorization
     {
         Task<TAccount> Register(TAccount account);
 

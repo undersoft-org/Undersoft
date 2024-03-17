@@ -44,6 +44,7 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
         {
             var account = new Account() { Personal = new AccountPersonal(), Address = new AccountAddress(), Professional = new AccountProfessional(), Organization = new AccountOrganization() };
 
+            account.Credentials = _authorization.Credentials;
             _authorization.Credentials.PatchTo(account.Personal);
             _authorization.Credentials.PatchTo(account.Professional);
 
@@ -63,13 +64,12 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
                 {
                     var result = await _access.Register(content.Model);
 
-                    if (result.Notes.Status != SigningStatus.InvalidEmail && result.Notes.Status == SigningStatus.RegistrationNotConfirmed)
+                    if (result.Notes.Status != SigningStatus.InvalidEmail && result.Notes.Status == SigningStatus.RegistrationCompleted)
                     {
-                        _navigation.NavigateTo($"access/complete_registration/{result.Credentials.Email}");
+                        _navigation.NavigateTo("access/sign_in");
                         return;
                     }
 
-                    data.ClearData();
                     result.Notes.PatchTo(data.Notes);
                 }
                 else

@@ -1,6 +1,4 @@
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shouldly;
 using Undersoft.SDK.Series;
 using Undersoft.SSC.Service.Contracts;
 
@@ -117,7 +115,6 @@ public class AccountTests
             Email = "TestValue1774789709",
             PhoneNumber = "TestValue1967752863",
             Birthdate = DateTime.UtcNow,
-            Gender = "TestValue1810567359",
             Image = "TestValue664509259",
             AccountId = 1736463161L
         }, new AccountPersonal
@@ -127,7 +124,6 @@ public class AccountTests
             Email = "TestValue965851949",
             PhoneNumber = "TestValue1817220057",
             Birthdate = DateTime.UtcNow,
-            Gender = "TestValue1618435012",
             Image = "TestValue1252932949",
             AccountId = 52450991L
         });

@@ -17,6 +17,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic
         private bool _required { get; set; }
         private InputMode _inputMode { get; set; } = InputMode.None;
         private TextFieldType _textFieldType { get; set; } = TextFieldType.Text;
+        private bool _isUpload { get; set; }
 
         private long? _longValue
         {
@@ -64,6 +65,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic
             _type = Rubric.RubricType;
             if (Data != null)
                 _proxy = Data.Model.Proxy;
+            _isUpload = Rubric.IsFile;
             _index = Rubric.RubricId;
             _size = Rubric.RubricSize;
             _name = Rubric.RubricName;

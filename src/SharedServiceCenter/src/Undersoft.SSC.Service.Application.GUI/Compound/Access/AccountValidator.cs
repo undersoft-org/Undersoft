@@ -24,12 +24,8 @@ public class AccountValidator : ViewValidator<Account>
                 ValidateRequired(p => p.Model.Address.StreetName);
                 ValidateRequired(p => p.Model.Address.BuildingNumber);
                 ValidateRequired(p => p.Model.Address.ApartmentNumber);
-                ValidateEmail(p => p.Model.Professional.Email);
-                ValidateRequired(p => p.Model.Professional.Email);
-                ValidateRequired(p => p.Model.Professional.PhoneNumber);
                 ValidateRequired(p => p.Model.Professional.Profession);
                 ValidateRequired(p => p.Model.Professional.Industry);
-                ValidateRequired(p => p.Model.Professional.Experience);
             }
         );
     }

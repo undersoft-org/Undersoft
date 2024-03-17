@@ -304,11 +304,11 @@ public class Updater : IUpdater
                 targetValue = TraceEvent.Invoke(target.Target, targetRubric.RubricName, targetType);
         }
 
+        if (originValue == null)
+            originValue = originType.New();
+
         if (originType.IsAssignableTo(typeof(IEnumerable)))
         {
-            if (originValue == null)
-                originValue = originType.New();
-
             IEnumerable originItems = (IEnumerable)originValue;
             var originItemType = originType.GetEnumerableElementType();
             if (originItemType == null || !originItemType.IsValueType)

@@ -11,14 +11,14 @@ namespace Undersoft.SSC.Service.Application.Server.Controllers
     [AllowAnonymous]
     [Route($"{StoreRoutes.ApiAuthRoute}/Account")]
     public class AccountsController
-        : ApiDataRemoteController<long, IAccountStore, Contracts.Account, Contracts.Account, AccountService>
+        : ApiDataRemoteController<long, IAccountStore, Contracts.Account, Contracts.Account, AccountService<Contracts.Account>>
     {
         public AccountsController(IServicer servicer) : base(servicer) { }
     }
 
     [AllowAnonymous]
     public class AccountController
-        : OpenDataRemoteController<long, IAccountStore, Contracts.Account, Contracts.Account, AccountService>
+        : OpenDataRemoteController<long, IAccountStore, Contracts.Account, Contracts.Account, AccountService<Contracts.Account>>
     {
         public AccountController(IServicer servicer) : base(servicer) { }
     }

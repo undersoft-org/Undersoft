@@ -24,7 +24,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
                     TypeId = table.Column<long>(type: "bigint", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: false),
                     CodeNo = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    TypeName = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
+                    TypeName = table.Column<string>(type: "character varying(768)", maxLength: 768, nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp", nullable: false),
                     Modifier = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp", nullable: false),
@@ -44,6 +44,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Events
                 {
                     table.PrimaryKey("PK_Events", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_Index",
+                schema: "domain",
+                table: "Events",
+                column: "Index");
         }
 
         /// <inheritdoc />

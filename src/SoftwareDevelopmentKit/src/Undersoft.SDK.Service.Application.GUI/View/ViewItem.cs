@@ -68,6 +68,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View
         [Parameter]
         public virtual string? Attributes { get; set; }
 
+        [Parameter]
         public virtual object? Value
         {
             get => Data.Model.Proxy[Rubric.RubricId];

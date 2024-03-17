@@ -18,6 +18,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using System.Diagnostics.Metrics;
+using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Configuration;
 using Undersoft.SDK.Service.Data.Repository.Source;
 using Undersoft.SDK.Service.Data.Store;
@@ -212,7 +213,7 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
         return this;
     }
 
-    public IServerSetup AddAccessServer<TContext>() where TContext : DbContext
+    public IServerSetup AddAccessServer<TContext, TAccount>() where TContext : DbContext where TAccount : class, IOrigin, IAuthorization
     {
         registry.Services
             .AddIdentity<AccountUser, Role>(options =>
@@ -240,14 +241,6 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
                     )
                 );
                 options.Tokens.ChangeEmailTokenProvider = "AccountChangeEmailTokenProvider";
-                options.Tokens.ProviderMap.Add(
-                    "AccountRegistrationProcessTokenProvider",
-                    new TokenProviderDescriptor(
-                        typeof(AccountRegistrationProcessTokenProvider<AccountUser>)
-                    )
-                );
-                options.Tokens.ChangePhoneNumberTokenProvider =
-                    "AccountRegistrationProcessTokenProvider";
                 options.User.RequireUniqueEmail = true;
             })
             .AddEntityFrameworkStores<TContext>();
@@ -264,7 +257,7 @@ public partial class ServerSetup : ServiceSetup, IServerSetup
         AddAuthorization();
 
         registry.AddScoped<IAccountManager, AccountManager>();
-        registry.AddScoped<AccountService>();
+        registry.AddScoped<AccountService<TAccount>>();
         registry.AddTransient<IEmailSender, AccountEmailSender>();
         registry.Configure<AccountEmailSenderOptions>(configuration);
 

@@ -66,7 +66,7 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
                     {
                         if (result.Credentials.EmailConfirmed)
                             if (result.Credentials.RegistrationCompleted)
-                                _navigation.NavigateTo("");
+                                _navigation.NavigateTo("", true);
                             else
                                 _navigation.NavigateTo("/access/register");
                         else
