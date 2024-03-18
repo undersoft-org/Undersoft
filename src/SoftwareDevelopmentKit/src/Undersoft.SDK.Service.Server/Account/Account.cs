@@ -14,6 +14,7 @@ public class Account : Authorization, IEntity, IAccount
         Roles = new Listing<Role>();
         Roles.Add(new Role("guest"));
         UserId = User.Id;
+        Id = User.Id;
     }
 
     public Account(string email, string role)
@@ -22,6 +23,7 @@ public class Account : Authorization, IEntity, IAccount
         Roles = new Listing<Role>();
         Roles.Add(new Role(role));
         UserId = User.Id;
+        Id = User.Id;
     }
 
     public Account(string userName, string email, IEnumerable<string> roles)
@@ -30,6 +32,7 @@ public class Account : Authorization, IEntity, IAccount
         Roles = new Listing<Role>();
         roles.ForEach(r => Roles.Add(new Role(r)));
         UserId = User.Id;
+        Id = User.Id;
     }
 
     public long UserId { get; set; }

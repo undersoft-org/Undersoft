@@ -141,5 +141,7 @@ namespace Undersoft.SDK.Service.Access
         [DataMember(Order = 6)]
         [DisplayRubric("New Password")]
         public string NewPassword { get; set; }
+
+        public string Image { get; set; }
     }
 }

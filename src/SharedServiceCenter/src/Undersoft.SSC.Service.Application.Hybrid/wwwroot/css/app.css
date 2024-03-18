@@ -94,6 +94,7 @@ aside {
 }
 
 .content {
+    min-height: calc(100dvh - 90px);
     display: flex;
     background-color: var(--neutral-layer-1);
 }

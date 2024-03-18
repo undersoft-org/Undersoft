@@ -89,7 +89,7 @@
     private async Task SaveAsync()
     {
         var result = await Content.Validator.ValidateAsync();
-       
+
         if (result.IsValid)
         {
             await Dialog.CloseAsync(Content);
@@ -132,7 +132,8 @@
 
     private async Task CancelAsync(MouseEventArgs e)
     {
-        await Dialog.CancelAsync();
+        Content.Canceled = true;
+        await Dialog.CancelAsync(Content);
 
     }
 }

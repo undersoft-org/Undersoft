@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using ServiceStack;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Operation;
 using Undersoft.SDK.Service.Server.Accounts.Email;
@@ -43,6 +42,11 @@ public class AccountService<TAccount> : IAccountService<TAccount> where TAccount
                 account.Credentials.SaveAccountInCookies,
                 claims
             );
+            var a = typeof(TAccount).New<TAccount>();
+            a.Credentials = account.Credentials;
+            dynamic registered = await Registered(a);
+            if (registered != null)
+                ((object)registered.Personal).PatchTo(account.Credentials);
         }
         return account;
     }
@@ -500,11 +504,13 @@ public class AccountService<TAccount> : IAccountService<TAccount> where TAccount
 
         var _accountuser = await _manager.User.FindByEmailAsync(_creds.Email);
 
-        _accountuser.RegistrationCompleted = true;
+        if (account.Notes.Status != SigningStatus.RegistrationNotCompleted)
+            _accountuser.RegistrationCompleted = true;
 
         if ((await _manager.User.UpdateAsync(_accountuser)).Succeeded)
         {
-            _creds.RegistrationCompleted = true;
+            if (account.Notes.Status != SigningStatus.RegistrationNotCompleted)
+                _creds.RegistrationCompleted = true;
             _creds.Authenticated = true;
             _account.Notes = new OperationNotes()
             {
@@ -518,28 +524,43 @@ public class AccountService<TAccount> : IAccountService<TAccount> where TAccount
             this.Failure<Accesslog>(_account.Notes.Errors, account);
         }
 
+        _account.Id = _accountuser.Id;
         _account.UserId = _accountuser.Id;
-        _account = _manager.Accounts.Add(_account);
+
+        _account = await _manager.Accounts.Put(_account, null);
+
         await _manager.Accounts.Save(true);
+
         _account.User = _accountuser;
+
         _account.PatchTo(account);
+
         return account;
     }
 
     public async Task<TAccount> Unregister(TAccount account)
     {
-        if (
-         account != null
-     )
+        var _creds = account.Credentials;
+        var _account = await _manager.GetByEmail(_creds.Email);
+
+        if (_account == null)
         {
-            var _creds = account.Credentials;
-            var _account = await _manager.GetByEmail(_creds.Email);
-            if (_account != null)
+            account.Notes = new OperationNotes()
             {
-                var _serviceaccount = await _manager.Accounts.Delete(_account.Id);
-                _serviceaccount.PatchTo(account);
-            }
+                Errors = "Account not found",
+                Status = SigningStatus.RegistrationNotCompleted
+            };
+            this.Failure<Accesslog>(account.Notes.Success, account);
+            return account;
         }
+
+        var _accountuser = await _manager.User.FindByEmailAsync(_creds.Email);
+
+        _account = await _manager.Accounts.Delete(_accountuser.Id);
+
+        _account.User = _accountuser;
+        _account.PatchTo(account);
+
         return account;
     }
 
@@ -547,11 +568,25 @@ public class AccountService<TAccount> : IAccountService<TAccount> where TAccount
     {
         var _creds = account.Credentials;
         var _account = await _manager.GetByEmail(_creds.Email);
-        if (_account != null)
+
+        if (_account == null)
         {
-            var _serviceaccount = await _manager.Accounts.Find(_account.Id);
-            _serviceaccount.PatchTo(account);
+            account.Notes = new OperationNotes()
+            {
+                Errors = "Account not found",
+                Status = SigningStatus.RegistrationNotCompleted
+            };
+            this.Failure<Accesslog>(account.Notes.Success, account);
+            return account;
         }
+
+        var _accountuser = await _manager.User.FindByEmailAsync(_creds.Email);
+
+        _account = await _manager.Accounts.Find(_accountuser.Id);
+
+        _account.User = _accountuser;
+        _account.PatchTo(account);
+
         return account;
     }
 

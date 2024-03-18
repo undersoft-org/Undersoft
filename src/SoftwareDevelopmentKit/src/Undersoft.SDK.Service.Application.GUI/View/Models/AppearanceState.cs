@@ -25,9 +25,9 @@ public class AppearanceState : ViewwModel
 
     public int? Density { get; set; } = 0;
 
-    public int? ControlCornerRadius { get; set; } = 3;
+    public int? ControlCornerRadius { get; set; } = 2;
 
-    public int? LayerCornerRadius { get; set; } = 5;
+    public int? LayerCornerRadius { get; set; } = 3;
 
     public void SetDirection(LocalizationDirection dir)
     {

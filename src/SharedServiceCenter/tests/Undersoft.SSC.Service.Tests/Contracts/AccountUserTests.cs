@@ -1,6 +1,4 @@
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shouldly;
 using Undersoft.SSC.Service.Contracts;
 
 namespace Undersoft.SSC.Service.Tests.Contracts;
@@ -65,33 +63,6 @@ public class AccountUserTests
     public void CanSetAndGetEmailConfirmed()
     {
         this._testClass.CheckProperty(x => x.EmailConfirmed);
-    }
-
-    /// <summary>
-    /// Checks that setting the PasswordHash property correctly raises PropertyChanged events.
-    /// </summary>
-    [TestMethod]
-    public void CanSetAndGetPasswordHash()
-    {
-        this._testClass.CheckProperty(x => x.PasswordHash);
-    }
-
-    /// <summary>
-    /// Checks that setting the SecurityStamp property correctly raises PropertyChanged events.
-    /// </summary>
-    [TestMethod]
-    public void CanSetAndGetSecurityStamp()
-    {
-        this._testClass.CheckProperty(x => x.SecurityStamp);
-    }
-
-    /// <summary>
-    /// Checks that setting the ConcurrencyStamp property correctly raises PropertyChanged events.
-    /// </summary>
-    [TestMethod]
-    public void CanSetAndGetConcurrencyStamp()
-    {
-        this._testClass.CheckProperty(x => x.ConcurrencyStamp);
     }
 
     /// <summary>

@@ -34,9 +34,6 @@ public class AccountTests
             Email = "TestValue1089438592",
             NormalizedEmail = "TestValue852857851",
             EmailConfirmed = true,
-            PasswordHash = "TestValue1247954733",
-            SecurityStamp = "TestValue1403991347",
-            ConcurrencyStamp = "TestValue1514439653",
             PhoneNumber = "TestValue2001459811",
             PhoneNumberConfirmed = false,
             TwoFactorEnabled = false,
@@ -52,9 +49,6 @@ public class AccountTests
             Email = "TestValue491352323",
             NormalizedEmail = "TestValue762169981",
             EmailConfirmed = false,
-            PasswordHash = "TestValue115407214",
-            SecurityStamp = "TestValue1796042806",
-            ConcurrencyStamp = "TestValue1405406582",
             PhoneNumber = "TestValue1928516419",
             PhoneNumberConfirmed = true,
             TwoFactorEnabled = true,
@@ -226,9 +220,6 @@ public class AccountTests
             Name = "TestValue1352485785",
             FullName = "TestValue399328444",
             Position = "TestValue149827982",
-            Email = "TestValue310479693",
-            PhoneNumber = "TestValue695915046",
-            Image = "TestValue1539107230",
             AccountId = 502161539L
         }, new AccountOrganization
         {
@@ -236,9 +227,6 @@ public class AccountTests
             Name = "TestValue900303296",
             FullName = "TestValue1341452432",
             Position = "TestValue780351618",
-            Email = "TestValue2096647478",
-            PhoneNumber = "TestValue1662566739",
-            Image = "TestValue1415551047",
             AccountId = 131410813L
         });
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.FluentUI.AspNetCore.Components;
+using Undersoft.SDK;
 using Undersoft.SDK.Service.Application.GUI.View;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
 using Undersoft.SSC.Service.Contracts;
@@ -11,7 +12,12 @@ public class LandingAccountPanel
 
     public async Task OpenAccountPanel(IViewPanel<Account> _panel)
     {
-        await _panel.Show(new ViewData<Account>(), (p) =>
+        var account = new Account() { Personal = new AccountPersonal(), Address = new AccountAddress(), Professional = new AccountProfessional(), Organization = new AccountOrganization() };
+
+        var data = new ViewData<Account>(account, OperationType.Any);
+        data.SetVisible(nameof(Account.Personal), nameof(Account.Address), nameof(Account.Professional), nameof(Account.Organization));
+        data.Width = "380px";
+        await _panel.Show(data, (p) =>
            {
                p.Alignment = HorizontalAlignment.Right;
                p.Title = $"Account";

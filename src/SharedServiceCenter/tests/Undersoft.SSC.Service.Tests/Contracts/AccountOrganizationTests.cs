@@ -1,6 +1,4 @@
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shouldly;
 using Undersoft.SSC.Service.Contracts;
 
 namespace Undersoft.SSC.Service.Tests.Contracts;
@@ -56,33 +54,6 @@ public class AccountOrganizationTests
     public void CanSetAndGetPosition()
     {
         this._testClass.CheckProperty(x => x.Position);
-    }
-
-    /// <summary>
-    /// Checks that setting the Email property correctly raises PropertyChanged events.
-    /// </summary>
-    [TestMethod]
-    public void CanSetAndGetEmail()
-    {
-        this._testClass.CheckProperty(x => x.Email);
-    }
-
-    /// <summary>
-    /// Checks that setting the PhoneNumber property correctly raises PropertyChanged events.
-    /// </summary>
-    [TestMethod]
-    public void CanSetAndGetPhoneNumber()
-    {
-        this._testClass.CheckProperty(x => x.PhoneNumber);
-    }
-
-    /// <summary>
-    /// Checks that setting the Image property correctly raises PropertyChanged events.
-    /// </summary>
-    [TestMethod]
-    public void CanSetAndGetImage()
-    {
-        this._testClass.CheckProperty(x => x.Image);
     }
 
     /// <summary>

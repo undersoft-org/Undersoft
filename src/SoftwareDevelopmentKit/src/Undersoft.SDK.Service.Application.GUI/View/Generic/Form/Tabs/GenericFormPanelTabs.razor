@@ -1,10 +1,13 @@
-﻿@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+﻿@using System.ComponentModel.DataAnnotations
+@using Undersoft.SDK.Proxies
+@using Undersoft.SDK.Rubrics
+@using Undersoft.SDK;
+
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy
 @typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
 
 @implements IDialogContentComponent<IViewData<TModel>>
 @implements IView
-@inject IMessageService MessageService
-
 
 
 <CascadingValue Value="@Content">
@@ -12,22 +15,13 @@
     <!-- Header -->
     <GenericFormPanelTabsHeader TModel="TModel" />
 
-    <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalGap="20">
+    <!-- Body -->
+    <GenericFormPanelTabsBody TValidator="TValidator" TModel="TModel" />
 
-        <FluentPersona Initials="?" ImageSize="150px" Style="height:auto;"/>
-
-        <!-- Body -->
-        <GenericFormPanelTabsBody TValidator="TValidator" TModel="TModel" Orientation="Orientation.Horizontal" />
-
-
-    </FluentStack>
-    <FluentSpacer/>
     <!-- Footer -->
     <GenericFormPanelTabsFooter TModel="TModel" />
 
 </CascadingValue>
-
-
 
 @code
 {
@@ -39,12 +33,12 @@
 
     protected override void OnInitialized()
     {
-        base.OnInitialized();
+        Content.View = this;
+
     }
 
     public void RenderView()
     {
         this.StateHasChanged();
     }
-
 }

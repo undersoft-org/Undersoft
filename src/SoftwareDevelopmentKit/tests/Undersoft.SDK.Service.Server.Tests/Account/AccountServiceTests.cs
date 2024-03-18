@@ -20,7 +20,7 @@ namespace Undersoft.SDK.Service.Server.Tests.Accounts;
 [TestClass]
 public class AccountServiceTests
 {
-    private AccountService _testClass;
+    private AccountService<Account> _testClass;
     private IServicer _servicer;
     private IAccountManager _accountManager;
     private IEmailSender _email;
@@ -34,7 +34,7 @@ public class AccountServiceTests
         this._servicer = Substitute.For<IServicer>();
         this._accountManager = Substitute.For<IAccountManager>();
         this._email = Substitute.For<IEmailSender>();
-        this._testClass = new AccountService(this._servicer, this._accountManager, this._email);
+        this._testClass = new AccountService<Account>(this._servicer, this._accountManager, this._email);
     }
 
     /// <summary>
@@ -44,13 +44,13 @@ public class AccountServiceTests
     public void CanConstruct()
     {
         // Act
-        var instance = new AccountService();
+        var instance = new AccountService<Account>();
 
         // Assert
         instance.ShouldNotBeNull();
 
         // Act
-        instance = new AccountService(this._servicer, this._accountManager, this._email);
+        instance = new AccountService<Account>(this._servicer, this._accountManager, this._email);
 
         // Assert
         instance.ShouldNotBeNull();
@@ -62,7 +62,7 @@ public class AccountServiceTests
     [TestMethod]
     public void CannotConstructWithNullServicer()
     {
-        Should.Throw<ArgumentNullException>(() => new AccountService(default(IServicer), this._accountManager, this._email));
+        Should.Throw<ArgumentNullException>(() => new AccountService<Account>(default(IServicer), this._accountManager, this._email));
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public class AccountServiceTests
     [TestMethod]
     public void CannotConstructWithNullAccountManager()
     {
-        Should.Throw<ArgumentNullException>(() => new AccountService(this._servicer, default(IAccountManager), this._email));
+        Should.Throw<ArgumentNullException>(() => new AccountService<Account>(this._servicer, default(IAccountManager), this._email));
     }
 
     /// <summary>
@@ -80,7 +80,7 @@ public class AccountServiceTests
     [TestMethod]
     public void CannotConstructWithNullEmail()
     {
-        Should.Throw<ArgumentNullException>(() => new AccountService(this._servicer, this._accountManager, default(IEmailSender)));
+        Should.Throw<ArgumentNullException>(() => new AccountService<Account>(this._servicer, this._accountManager, default(IEmailSender)));
     }
 
     /// <summary>
@@ -516,7 +516,7 @@ public class AccountServiceTests
     public void CanCallGenerateRandomPassword()
     {
         // Act
-        var result = AccountService.GenerateRandomPassword();
+        var result = AccountService<Account>.GenerateRandomPassword();
 
     }
 }

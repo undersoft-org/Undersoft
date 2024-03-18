@@ -1,0 +1,76 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using Undersoft.SDK.Proxies
+@using Undersoft.SDK.Rubrics
+@using Undersoft.SDK;
+
+@inherits ViewItem<TModel>
+
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+@typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
+
+@implements IDialogContentComponent<IViewData<TModel>>
+
+
+<CascadingValue Value="@Content">
+    <CascadingValue Value="@FormTabs">      
+        <FluentDialogBody>
+            <GenericFormSet TValidator="TValidator" TModel="TModel" Content="@Content">
+                <FluentTabs @bind-ActiveTabId="@ActiveId" Width="100%" Orientation="@Orientation">                   
+                        @foreach (var _rubric in _rubrics)
+                        {
+                            @if (ContainsTabData(_rubric))
+                            {
+                                <GenericFormPanelTabsTab Rubric="_rubric" Data="@(GetTabData(_rubric))"  />
+                            }
+                        }                                        
+                </FluentTabs>
+            </GenericFormSet>
+        </FluentDialogBody>
+    </CascadingValue>
+</CascadingValue>
+
+@code
+{
+    [CascadingParameter]
+    public override IViewData<TModel> Content { get; set; } = default!;
+
+    private IViewRubrics _rubrics => Content.Rubrics;
+
+    public string ActiveId
+    {
+        get => Content.ActiveRubric.RubricName;
+        set => Content.ActiveRubric = Content.Rubrics[value];
+    }
+
+    [CascadingParameter]
+    public FluentDialog Dialog { get; set; } = default!;
+
+    public IViewItem FormTabs => this;
+
+    [Parameter]
+    public Orientation Orientation { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Content.View = this;
+        if (!Content.Rubrics.Any())
+            Content.MapRubrics();
+        var firstRubric = Content.Rubrics.FirstOrDefault();
+        if (firstRubric != null)
+            Content.ActiveRubric = firstRubric;
+
+    }
+
+    private IViewData GetTabData(IViewRubric rubric)
+    {
+        var data = typeof(ViewData<>).MakeGenericType(rubric.RubricType).New<IViewData>(Model.Proxy[rubric.RubricId]);
+        data.Title = (rubric.DisplayName != null) ? rubric.DisplayName : rubric.RubricName;
+        data.MapRubrics();
+        return data;
+    }
+
+    private bool ContainsTabData(IViewRubric rubric)
+    {
+        return Model.Proxy[rubric.RubricId] != null;
+    }
+}

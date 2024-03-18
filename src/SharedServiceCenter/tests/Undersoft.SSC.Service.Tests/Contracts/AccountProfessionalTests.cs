@@ -1,6 +1,4 @@
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shouldly;
 using Undersoft.SSC.Service.Contracts;
 
 namespace Undersoft.SSC.Service.Tests.Contracts;
@@ -83,14 +81,5 @@ public class AccountProfessionalTests
     public void CanSetAndGetExperience()
     {
         this._testClass.CheckProperty(x => x.Experience, 19746.7637F, 1544.67566F);
-    }
-
-    /// <summary>
-    /// Checks that setting the AccountId property correctly raises PropertyChanged events.
-    /// </summary>
-    [TestMethod]
-    public void CanSetAndGetAccountId()
-    {
-        this._testClass.CheckProperty(x => x.AccountId);
     }
 }

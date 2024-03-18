@@ -7,6 +7,10 @@ namespace Undersoft.SSC.Service.Contracts;
 [DataContract]
 public class Account : Authorization, IContract
 {
+    public Account() { }
+
+    public Account(string email) { Id = email.UniqueKey64(); }
+
     [DataMember(Order = 12)]
     public AccountUser? User { get; set; } = default!;
 

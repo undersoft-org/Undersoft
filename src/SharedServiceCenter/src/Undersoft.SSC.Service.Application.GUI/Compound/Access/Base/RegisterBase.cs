@@ -42,7 +42,7 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
 
         private async Task Registering(string title, string description = "")
         {
-            var account = new Account() { Personal = new AccountPersonal(), Address = new AccountAddress(), Professional = new AccountProfessional(), Organization = new AccountOrganization() };
+            var account = new Account(_authorization.Credentials.Email) { Personal = new AccountPersonal(), Address = new AccountAddress(), Professional = new AccountProfessional(), Organization = new AccountOrganization() };
 
             account.Credentials = _authorization.Credentials;
             _authorization.Credentials.PatchTo(account.Personal);
@@ -62,6 +62,9 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
 
                 if (content != null)
                 {
+                    if (content.Canceled)
+                        content.Model.Notes.Status = SigningStatus.RegistrationNotCompleted;
+
                     var result = await _access.Register(content.Model);
 
                     if (result.Notes.Status != SigningStatus.InvalidEmail && result.Notes.Status == SigningStatus.RegistrationCompleted)
