@@ -8,6 +8,7 @@ using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Application.Extensions;
 using Undersoft.SDK.Service.Data.Remote.Repository;
 using Undersoft.SDK.Service.Data.Store;
+using Undersoft.SDK.Updating;
 using Claim = System.Security.Claims.Claim;
 
 namespace Undersoft.SDK.Service.Application.Access;
@@ -21,6 +22,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountSer
     private readonly string TOKENKEY = "TOKENKEY";
     private readonly string EXPIRATIONTOKENKEY = "EXPIRATIONTOKENKEY";
     private readonly string EMAILKEY = "EMAILKEY";
+    private TAccount? _account;
 
     private AuthenticationState Anonymous =>
         new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
@@ -75,13 +77,22 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountSer
                     return Anonymous;
             }
         }
-
-        return GetAccessState(token);
+        _authorization.Credentials.Email = email;
+        return await GetAccessStateAsync(token);
     }
 
     public AccessState GetAccessState(string token)
     {
         _authorization.Credentials.SessionToken = token;
+        return new AccessState(
+            new ClaimsPrincipal(new ClaimsIdentity(GetTokenClaims(token), "jwt"))
+        );
+    }
+
+    public async Task<AccessState> GetAccessStateAsync(string token)
+    {
+        _authorization.Credentials.SessionToken = token;
+        await Registered(typeof(TAccount).New<TAccount>());
         return new AccessState(
             new ClaimsPrincipal(new ClaimsIdentity(GetTokenClaims(token), "jwt"))
         );
@@ -138,7 +149,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountSer
         {
             await js.SetInLocalStorage(TOKENKEY, result.Credentials.SessionToken);
             await js.SetInLocalStorage(EMAILKEY, result.Credentials.Email);
-            var authState = GetAccessState(result.Credentials.SessionToken);
+            var authState = await GetAccessStateAsync(result.Credentials.SessionToken);
             NotifyAuthenticationStateChanged(Task.FromResult((AuthenticationState)authState));
         }
         return _authorization;
@@ -170,12 +181,12 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountSer
         if (result == null)
             return null;
 
-        _authorization = result;
+        result.PatchTo(_authorization);
         if (result.Credentials.SessionToken != null)
         {
             await js.SetInLocalStorage(TOKENKEY, result.Credentials.SessionToken);
             await js.SetInLocalStorage(EMAILKEY, result.Credentials.Email);
-            var authState = GetAccessState(result.Credentials.SessionToken);
+            var authState = await GetAccessStateAsync(result.Credentials.SessionToken);
             NotifyAuthenticationStateChanged(Task.FromResult((AuthenticationState)authState));
         }
         return _authorization;
@@ -208,7 +219,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountSer
         if (result == null)
             return null;
 
-        return _authorization = result;
+        return result.PatchTo(_authorization);
     }
 
     public async Task<IAuthorization?> ConfirmEmail(IAuthorization auth)
@@ -218,7 +229,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountSer
         if (result == null)
             return null;
 
-        return _authorization = result;
+        return result.PatchTo(_authorization);
     }
 
     public async Task<IAuthorization?> CompleteRegistration(IAuthorization auth)
@@ -228,7 +239,7 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountSer
         if (result == null)
             return null;
 
-        return _authorization = result;
+        return result.PatchTo(_authorization);
     }
 
     public async Task<TAccount> Register(TAccount auth)
@@ -238,7 +249,10 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountSer
         if (result == null)
             return default(TAccount)!;
 
-        _authorization = (IAuthorization)result;
+        ((IAuthorization)result).Credentials.Authenticated = _authorization.Credentials.Authenticated;
+        ((IAuthorization)result).PatchTo(_authorization);
+
+        _account = result;
 
         return result;
     }
@@ -250,19 +264,28 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountSer
         if (result == null)
             return default(TAccount)!;
 
-        _authorization = (IAuthorization)result;
+        ((IAuthorization)result).Credentials.Authenticated = _authorization.Credentials.Authenticated;
+        ((IAuthorization)result).PatchTo(_authorization);
+        _account = result;
 
         return result;
     }
 
     public async Task<TAccount> Registered(TAccount auth)
     {
-        var result = await _repository.Setup(nameof(Registered), auth);
+        if (_account != null)
+            return _account;
+
+        auth.Credentials = _authorization.Credentials;
+
+        var result = await _repository.Access(nameof(Registered), auth);
 
         if (result == null)
             return default(TAccount)!;
 
-        _authorization = (IAuthorization)result;
+        ((IAuthorization)result).Credentials.Authenticated = _authorization.Credentials.Authenticated;
+        ((IAuthorization)result).PatchTo(_authorization);
+        _account = result;
 
         return result;
     }

@@ -35,12 +35,19 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Accounts
                 }
                 else
                 {
-                    Data.Model.Proxy[_rubrics["Account"].RubricId] = servicer.Initialize<
+                    var _panel = servicer.Initialize<
                         ViewPanel<
                             GenericAccountPanel<TModel, TValidator>,
                             TModel
                         >
                     >(DialogService);
+
+                    var _account = await access.Registered(typeof(TModel).New<TModel>());
+                    if (_account != null)
+                        _panel.Content = new ViewData<TModel>(_account, OperationType.Any);
+
+                    Data.Model.Proxy[_rubrics["Account"].RubricId] = _panel;
+
                     _rubrics["SignIn"].Visible = false;
                     _rubrics["SignUp"].Visible = false;
                     _rubrics["Account"].Visible = true;

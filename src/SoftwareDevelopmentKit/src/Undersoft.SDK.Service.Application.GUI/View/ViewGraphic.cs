@@ -68,7 +68,7 @@ public static class ViewGraphic
                     "Undersoft",
                     IconVariant.Regular,
                     IconSize.Custom,
-                    @"<svg width=""200"" height=""160"" version=""1.1"" viewBox=""0 0 68.542 60.949"" xmlns=""http://www.w3.org/2000/svg"">
+                    @"<svg width=""220"" height=""200"" version=""1.1"" viewBox=""0 0 68.542 60.949"" xmlns=""http://www.w3.org/2000/svg"">
                      <g transform=""matrix(5.109 0 0 5.109 -113.74 -231.65)"">
                       <path d=""m26.805 46.488v-0.52959l0.52884-3.81e-4 0.52662-0.0046v1.0641h-1.0555z"" style=""fill:#fc3;stroke-width:.093248""/>
                       <path d=""m28.815 46.517v-0.99899l1.015 0.0043 1.03-3.4e-5 -0.0019 0.59375-0.0016 0.61211-0.39807 4.28e-4 -0.4086-0.0035-0.0043 0.40004-0.0043 0.39372h-0.6043l-0.62317 0.0036z"" style=""fill:#3c3;stroke-width:.062516""/>
@@ -154,6 +154,22 @@ public static class ViewGraphic
                 )
             { }
         }
+
+        public sealed class TechAndTools : Icon
+        {
+            public TechAndTools()
+                : base(
+                    "Downloads",
+                    IconVariant.Regular,
+                    IconSize.Custom,
+                    @"<svg width=""205"" height=""41"" version=""1.1"" viewBox=""0 0 54.24 10.848"" xmlns=""http://www.w3.org/2000/svg"">
+                     <rect x=""20.71"" y=""1.3063"" width=""8.6342"" height=""8.6342"" style=""fill:#cf0;font-variation-settings:'wght' 300""/>
+                     <text fill-rule=""evenodd"" clip-rule=""evenodd"" x=""0.61568415"" y=""8.0887651"" style=""font-family:Sans;font-size:11.33px;font-variation-settings:'wght' 300;letter-spacing:0px;line-height:125%;stroke-width:.31642px;;word-spacing:0px"" xml:space=""preserve""><tspan x=""0.61568415"" y=""8.0887651"" style=""font-family:'Cascadia Code';font-size:7.5941px;font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;font-variation-settings:'wght' 300;stroke-width:.31642px;stroke:none"">Tech &amp; Tools</tspan></text>
+                    </svg>"
+                )
+            { }
+        }
+
     }
 
     public static class Title
@@ -165,7 +181,7 @@ public static class ViewGraphic
                     "Benchmarks",
                     IconVariant.Regular,
                     IconSize.Custom,
-                    @"<svg width=""300"" height=""60"" version=""1.1"" viewBox=""0 0 109.8 22.224"" xmlns=""http://www.w3.org/2000/svg"">
+                    @"<svg width=""370"" height=""100"" version=""1.1"" viewBox=""0 0 109.8 22.224"" xmlns=""http://www.w3.org/2000/svg"">
                       <g transform=""matrix(2.4897 0 0 3.6725 -52.463 -153.78)"" style=""stroke-width:.99997"">
                        <path fill-rule=""evenodd"" clip-rule=""evenodd"" d=""m51.179 46.488v-0.71333h14.01v1.4266h-14.01z"" style=""stroke-width:1.0906""/>
                        <path fill-rule=""evenodd"" clip-rule=""evenodd"" d=""m51.077 46.737v-0.45904h5.9322v0.91806h-5.9322z"" style=""stroke-width:1.0906""/>

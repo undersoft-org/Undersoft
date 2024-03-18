@@ -1,4 +1,5 @@
-﻿@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+﻿@using Undersoft.SDK.Service.Access
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy
 @typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
 
 @implements IDialogContentComponent<IViewData<TModel>>
@@ -14,10 +15,10 @@
 
     <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalGap="20">
 
-        <FluentPersona Initials="?" ImageSize="150px" Style="height:auto;"/>
+        <FluentPersona Initials="_initials" Image="_image" ImageSize="150px" Style="height:auto;"/>
 
         <!-- Body -->
-        <GenericFormPanelTabsBody TValidator="TValidator" TModel="TModel" Orientation="Orientation.Horizontal" />
+        <GenericFormPanelTabsBody TValidator="TValidator" TModel="TModel" Orientation="Orientation.Vertical" />
 
 
     </FluentStack>
@@ -31,6 +32,26 @@
 
 @code
 {
+    [Inject]
+    private IAuthorization _authorization { get; set; } = default!;
+
+    private string _initials
+    {
+        get
+        {
+            string s = "";
+            if (!string.IsNullOrEmpty(_authorization.Credentials.FirstName))
+                s += _authorization.Credentials.FirstName.First().ToString();
+            if (!string.IsNullOrEmpty(_authorization.Credentials.LastName))
+                s += _authorization.Credentials.LastName.First().ToString();
+            if (string.IsNullOrEmpty(s))
+                s = "?";
+            return s;
+        }
+    }
+
+    private string _image => _authorization.Credentials.Image;
+
     [Parameter]
     public IViewData<TModel> Content { get; set; } = default!;
 

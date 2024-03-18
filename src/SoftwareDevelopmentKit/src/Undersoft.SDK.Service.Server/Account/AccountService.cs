@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using System.Linq.Expressions;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Operation;
 using Undersoft.SDK.Service.Server.Accounts.Email;
@@ -43,7 +44,7 @@ public class AccountService<TAccount> : IAccountService<TAccount> where TAccount
                 claims
             );
             var a = typeof(TAccount).New<TAccount>();
-            a.Credentials = account.Credentials;
+            account.Credentials.PatchTo(a.Credentials);
             dynamic registered = await Registered(a);
             if (registered != null)
                 ((object)registered.Personal).PatchTo(account.Credentials);
@@ -532,8 +533,9 @@ public class AccountService<TAccount> : IAccountService<TAccount> where TAccount
         await _manager.Accounts.Save(true);
 
         _account.User = _accountuser;
-
         _account.PatchTo(account);
+        _accountuser.PatchTo(account.Credentials);
+        _account.Personal.PatchTo(account.Credentials);
 
         return account;
     }
@@ -557,10 +559,13 @@ public class AccountService<TAccount> : IAccountService<TAccount> where TAccount
         var _accountuser = await _manager.User.FindByEmailAsync(_creds.Email);
 
         _account = await _manager.Accounts.Delete(_accountuser.Id);
-
-        _account.User = _accountuser;
-        _account.PatchTo(account);
-
+        if (_account != null)
+        {
+            _account.User = _accountuser;
+            _account.PatchTo(account);
+            _accountuser.PatchTo(account.Credentials);
+            _account.Personal.PatchTo(account.Credentials);
+        }
         return account;
     }
 
@@ -582,11 +587,14 @@ public class AccountService<TAccount> : IAccountService<TAccount> where TAccount
 
         var _accountuser = await _manager.User.FindByEmailAsync(_creds.Email);
 
-        _account = await _manager.Accounts.Find(_accountuser.Id);
-
-        _account.User = _accountuser;
-        _account.PatchTo(account);
-
+        _account = await _manager.Accounts.Find(new object[] { _accountuser.Id }, new Expression<Func<Account, object>>[] { e => e.Address, e => e.Personal, e => e.Professional, e => e.Organization });
+        if (_account != null)
+        {
+            _account.User = _accountuser;
+            _account.PatchTo(account);
+            _accountuser.PatchTo(account.Credentials);
+            _account.Personal.PatchTo(account.Credentials);
+        }
         return account;
     }
 

@@ -84,15 +84,15 @@ public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepos
                 return entity;
             if (expanders != null)
             {
-                IQueryable<TEntity> query = entity.ToQueryable();
+                IQueryable<TEntity> _query = Query.Where(e => e.Id == entity.Id);
                 if (expanders != null)
                 {
                     foreach (Expression<Func<TEntity, object>> expander in expanders)
                     {
-                        query = query.Include(expander);
+                        _query = _query.Include(expander);
                     }
                 }
-                entity = query.FirstOrDefault();
+                entity = _query.FirstOrDefault();
             }
             return entity;
         }
@@ -101,13 +101,15 @@ public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepos
             TEntity entity = this[keys];
             if (entity != null)
             {
-                IQueryable<TEntity> query = entity.ToQueryable();
+
                 if (expanders != null)
                 {
+                    IQueryable<TEntity> _query = Query.Where(e => e.Id == entity.Id);
                     foreach (Expression<Func<TEntity, object>> expander in expanders)
                     {
-                        query = query.Include(expander);
+                        _query = _query.Include(expander);
                     }
+                    entity = _query.FirstOrDefault();
                 }
 
                 TEntity current = value.PatchTo(Stamp(entity));
@@ -124,28 +126,31 @@ public partial class StoreRepository<TEntity> : Repository<TEntity>, IStoreRepos
             TEntity entity = this[keys];
             if (entity == null)
                 return entity;
-            IQueryable<TEntity> query = entity.ToQueryable();
             if (expanders != null)
             {
+                IQueryable<TEntity> _query = Query.Where(e => e.Id == entity.Id);
                 foreach (Expression<Func<TEntity, object>> expander in expanders)
                 {
-                    query = query.Include(expander);
+                    _query = _query.Include(expander);
                 }
+                entity = _query.FirstOrDefault();
             }
-            return query.Select(selector).FirstOrDefault();
+            return entity.ToQueryable().Select(selector).FirstOrDefault();
         }
         set
         {
             TEntity entity = this[keys];
-            IQueryable<TEntity> query = entity.ToQueryable();
+
             if (expanders != null)
             {
+                IQueryable<TEntity> _query = Query.Where(e => e.Id == entity.Id);
                 foreach (Expression<Func<TEntity, object>> expander in expanders)
                 {
-                    query = query.Include(expander);
+                    _query = _query.Include(expander);
                 }
+                entity = _query.FirstOrDefault();
             }
-            object s = query.Select(selector).FirstOrDefault();
+            object s = entity.ToQueryable().Select(selector).FirstOrDefault();
             if (s != null)
             {
                 value.PatchTo(s);
