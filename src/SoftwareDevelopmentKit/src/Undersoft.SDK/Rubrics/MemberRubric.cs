@@ -113,6 +113,7 @@
             dst.IsLink = IsLink;
             dst.IsFile = IsFile;
             dst.FileType = FileType;
+            dst.DataRubricName = DataRubricName;
             dst.Id = RubricName.UniqueKey64();
 
             return dst;
@@ -143,6 +144,7 @@
             dst.IsLink = IsLink;
             dst.IsFile = IsFile;
             dst.FileType = FileType;
+            dst.DataRubricName = DataRubricName;
             return dst;
         }
 
@@ -233,6 +235,8 @@
         public bool IsFile { get; set; }
 
         public FileRubricType FileType { get; set; }
+
+        public string DataRubricName { get; set; }
 
         public string LinkValue { get; set; }
 

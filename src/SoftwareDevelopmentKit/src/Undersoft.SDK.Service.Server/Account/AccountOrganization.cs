@@ -2,19 +2,19 @@
 
 public class AccountOrganization : DataObject
 {
-    public string Name { get; set; }
+    public string OrganizationIndustry { get; set; }
 
-    public string Email { get; set; }
+    public string OrganizationName { get; set; }
 
-    public string PhoneNumber { get; set; }
+    public string OrganizationFullName { get; set; }
 
-    public string FullName { get; set; }
+    public string OrganizationWebsites { get; set; }
 
-    public string Position { get; set; }
+    public string PositionInOrganization { get; set; }
 
-    public string Image { get; set; }
+    public string OrganizationImage { get; set; }
 
-    public string Industry { get; set; }
+    public byte[] OrganizationImageData { get; set; }
 
     public long? AccountId { get; set; }
     public virtual Account Account { get; set; }

@@ -143,5 +143,7 @@ namespace Undersoft.SDK.Service.Access
         public string NewPassword { get; set; }
 
         public string Image { get; set; }
+
+        public byte[] ImageData { get; set; }
     }
 }

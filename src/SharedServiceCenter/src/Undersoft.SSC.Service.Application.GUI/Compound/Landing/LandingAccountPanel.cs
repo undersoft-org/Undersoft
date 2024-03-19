@@ -22,6 +22,7 @@ public class LandingAccountPanel
         }
         data.SetVisible(nameof(Account.Personal), nameof(Account.Address), nameof(Account.Professional), nameof(Account.Organization));
         data.Width = "400px";
+
         await _panel.Show(data, (p) =>
            {
                p.Alignment = HorizontalAlignment.Right;

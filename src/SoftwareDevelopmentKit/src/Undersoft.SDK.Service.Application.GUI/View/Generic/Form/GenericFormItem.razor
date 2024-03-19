@@ -9,7 +9,7 @@
 
 <div class="generics generic-form-item forms" style="@Style">
     <CascadingValue Value="@Data">
-        <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center" VerticalGap="3">
+        <FluentStack Orientation="@Orientation" HorizontalAlignment="@HorizontalAlignment" VerticalAlignment="@VerticalAlignment" VerticalGap="3">
             @foreach (var _rubric in _rubrics)
             {
                 <GenericField Rubric="@_rubric" />
@@ -19,6 +19,14 @@
 </div>
 
 @code {
+    [Parameter]
+    public HorizontalAlignment HorizontalAlignment { get; set; } = HorizontalAlignment.Center;
+
+    [Parameter]
+    public VerticalAlignment VerticalAlignment { get; set; } = VerticalAlignment.Center;
+    [Parameter]
+    public Orientation Orientation { get; set; } = Orientation.Vertical;
+
     private IViewRubrics _rubrics => Data.Rubrics;
 
     protected override void OnInitialized()

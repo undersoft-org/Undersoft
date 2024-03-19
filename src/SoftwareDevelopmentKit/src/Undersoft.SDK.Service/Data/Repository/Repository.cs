@@ -96,14 +96,14 @@ public abstract partial class Repository<TEntity> : Repository, IPagedSet<TEntit
     public TEntity Sign(TEntity entity)
     {
         entity.Sign(entity);
-        cache?.MemorizeAsync(entity);
+        cache?.Memorize(entity);
         return entity;
     }
 
     public TEntity Stamp(TEntity entity)
     {
         entity.Stamp(entity);
-        cache?.MemorizeAsync(entity);
+        cache?.Memorize(entity);
         return entity;
     }
 

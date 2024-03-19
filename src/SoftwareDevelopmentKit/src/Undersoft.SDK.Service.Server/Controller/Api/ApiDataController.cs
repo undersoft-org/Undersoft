@@ -112,7 +112,7 @@ public class ApiDataController<TKey, TStore, TEntity, TDto, TService>
     {
         return (!ModelState.IsValid)
             ? BadRequest(ModelState)
-            : await ExecuteSet(new ChangeSet<TStore, TEntity, TDto>(_publishMode, dtos));
+            : await ExecuteSet(new CreateSet<TStore, TEntity, TDto>(_publishMode, dtos));
     }
 
     [HttpPost("{key}")]

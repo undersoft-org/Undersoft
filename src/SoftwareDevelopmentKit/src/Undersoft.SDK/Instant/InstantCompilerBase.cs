@@ -250,8 +250,9 @@
                     new FieldInfo[]
                     {
                     typeof(FileRubricAttribute).GetField("Type"),
+                    typeof(FileRubricAttribute).GetField("DataRubricName"),
                     },
-                    new object[] { attrib.Type }
+                    new object[] { attrib.Type, attrib.DataRubricName }
                 )
             );
         }
@@ -475,6 +476,7 @@
 
                 mr.IsFile = true;
                 mr.FileType = fta.Type;
+                mr.DataRubricName = fta.DataRubricName;
 
                 if (fb != null)
                     CreateInstantCreatorFileAttribute(fb, fta);
@@ -483,7 +485,7 @@
             {
                 CreateInstantCreatorFileAttribute(
                     fb,
-                    new FileRubricAttribute() { Type = mr.FileType }
+                    new FileRubricAttribute() { Type = mr.FileType, DataRubricName = mr.DataRubricName }
                 );
             }
         }

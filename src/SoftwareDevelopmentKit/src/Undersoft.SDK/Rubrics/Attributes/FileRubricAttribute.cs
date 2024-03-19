@@ -5,9 +5,11 @@
     {
         public FileRubricType Type { get; set; }
 
+        public string DataRubricName { get; set; }
+
         public FileRubricAttribute() { }
 
-        public FileRubricAttribute(FileRubricType type) { Type = type; }
+        public FileRubricAttribute(FileRubricType type, string dataRubricName = null) { Type = type; DataRubricName = dataRubricName; }
     }
 
     public enum FileRubricType

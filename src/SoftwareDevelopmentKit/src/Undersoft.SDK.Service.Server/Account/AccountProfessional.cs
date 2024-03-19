@@ -2,19 +2,19 @@
 
 public class AccountProfessional : DataObject
 {
-    public string Email { get; set; }
+    public string ProfessionalEmail { get; set; }
 
-    public string PhoneNumber { get; set; }
+    public string ProfessionalPhoneNumber { get; set; }
 
     public string Profession { get; set; }
 
-    public string Industry { get; set; }
+    public string ProfessionIndustry { get; set; }
 
-    public string SocialMedia { get; set; }
+    public string ProfessionalSocialMedia { get; set; }
 
-    public string Websites { get; set; }
+    public string ProfessionalWebsites { get; set; }
 
-    public float Experience { get; set; }
+    public float ProfessionalExperience { get; set; }
 
     public long? AccountId { get; set; }
     public virtual Account Account { get; set; }

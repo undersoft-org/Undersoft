@@ -5,18 +5,30 @@ namespace Undersoft.SSC.Service.Contracts;
 public class AccountOrganization : DataObject
 {
     [VisibleRubric]
-    public string? Industry { get; set; }
+    [DisplayRubric("Industry")]
+    public string? OrganizationIndustry { get; set; }
 
     [VisibleRubric]
     [DisplayRubric("Short name")]
-    public string? Name { get; set; }
+    public string? OrganizationName { get; set; }
 
     [VisibleRubric]
     [DisplayRubric("Full name")]
-    public string? FullName { get; set; }
+    public string? OrganizationFullName { get; set; }
 
     [VisibleRubric]
-    public string? Position { get; set; }
+    [DisplayRubric("Position")]
+    public string? PositionInOrganization { get; set; }
+
+    [VisibleRubric]
+    [DisplayRubric("Websites")]
+    public string? OrganizationWebsites { get; set; }
+
+    [VisibleRubric]
+    [FileRubric(FileRubricType.Path, "OrganizationImageData")]
+    public string? OrganizationImage { get; set; }
+
+    public byte[]? OrganizationImageData { get; set; }
 
     public long? AccountId { get; set; }
 }

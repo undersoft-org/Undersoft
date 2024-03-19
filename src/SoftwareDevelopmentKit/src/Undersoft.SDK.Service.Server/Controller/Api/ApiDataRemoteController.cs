@@ -107,7 +107,7 @@ public abstract class ApiDataRemoteController<TKey, TStore, TDto, TModel, TServi
     {
         return (!ModelState.IsValid)
            ? BadRequest(ModelState)
-           : await ExecuteSet(new RemoteChangeSet<TStore, TDto, TModel>(_publishMode, dtos));
+           : await ExecuteSet(new RemoteCreateSet<TStore, TDto, TModel>(_publishMode, dtos));
     }
 
     [HttpPost("{key}")]

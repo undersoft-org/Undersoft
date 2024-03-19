@@ -16,9 +16,15 @@ public class AccountPersonal : DataObject
 
     public DateTime Birthdate { get; set; }
 
+    public string SocialMedia { get; set; }
+
+    public string Websites { get; set; }
+
     public string Gender { get; set; }
 
     public string Image { get; set; }
+
+    public byte[] ImageData { get; set; }
 
     public long? AccountId { get; set; }
     public virtual Account Account { get; set; }

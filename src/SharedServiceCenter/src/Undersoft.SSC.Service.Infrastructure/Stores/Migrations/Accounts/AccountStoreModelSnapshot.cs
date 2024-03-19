@@ -165,13 +165,13 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Property<long?>("AccountId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("ApartmentNumber")
+                    b.Property<string>("Apartment")
                         .HasColumnType("text");
 
-                    b.Property<string>("BuildingNumber")
+                    b.Property<string>("Building")
                         .HasColumnType("text");
 
-                    b.Property<string>("CityName")
+                    b.Property<string>("City")
                         .HasColumnType("text");
 
                     b.Property<string>("CodeNo")
@@ -221,13 +221,10 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Property<string>("Postcode")
                         .HasColumnType("text");
 
-                    b.Property<string>("SocialMedia")
-                        .HasColumnType("text");
-
                     b.Property<string>("State")
                         .HasColumnType("text");
 
-                    b.Property<string>("StreetName")
+                    b.Property<string>("Street")
                         .HasColumnType("text");
 
                     b.Property<long>("TypeId")
@@ -238,9 +235,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasMaxLength(768)
                         .HasColumnType("character varying(768)")
                         .HasColumnOrder(5);
-
-                    b.Property<string>("Websites")
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -419,24 +413,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(9);
 
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FullName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("text");
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnOrder(10);
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Industry")
-                        .HasColumnType("text");
 
                     b.Property<string>("Label")
                         .HasMaxLength(256)
@@ -452,17 +434,29 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(7);
 
-                    b.Property<string>("Name")
+                    b.Property<string>("OrganizationFullName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OrganizationImage")
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("OrganizationImageData")
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("OrganizationIndustry")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OrganizationName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OrganizationWebsites")
                         .HasColumnType("text");
 
                     b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Position")
+                    b.Property<string>("PositionInOrganization")
                         .HasColumnType("text");
 
                     b.Property<long>("TypeId")
@@ -491,10 +485,16 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Property<long?>("AccountId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("CSV")
+                    b.Property<string>("CardCSV")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CardExpirationDate")
                         .HasColumnType("text");
 
                     b.Property<string>("CardNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CardTitle")
                         .HasColumnType("text");
 
                     b.Property<string>("CardType")
@@ -516,15 +516,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(9);
 
-                    b.Property<string>("Expiration")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("text");
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -536,9 +527,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)")
                         .HasColumnOrder(11);
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("text");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("timestamp")
@@ -553,19 +541,34 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
+                    b.Property<string>("PaymentFirstName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PaymentImage")
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("PaymentImageData")
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("PaymentLastName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PaymentPhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PaymentProvider")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PaymentStatus")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("PaymentTermsConsent")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("PaymentType")
                         .HasColumnType("text");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Provider")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("TermsConsent")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Title")
+                    b.Property<string>("PaymentWebsites")
                         .HasColumnType("text");
 
                     b.Property<long>("TypeId")
@@ -576,9 +579,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasMaxLength(768)
                         .HasColumnType("character varying(768)")
                         .HasColumnOrder(5);
-
-                    b.Property<string>("Websites")
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -628,6 +628,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Property<string>("Image")
                         .HasColumnType("text");
 
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("bytea");
+
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -662,6 +665,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                     b.Property<string>("SecondName")
                         .HasColumnType("text");
 
+                    b.Property<string>("SocialMedia")
+                        .HasColumnType("text");
+
                     b.Property<string>("Title")
                         .HasColumnType("text");
 
@@ -673,6 +679,9 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasMaxLength(768)
                         .HasColumnType("character varying(768)")
                         .HasColumnOrder(5);
+
+                    b.Property<string>("Websites")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -707,21 +716,12 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(9);
 
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<float>("Experience")
-                        .HasColumnType("real");
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnOrder(10);
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Index"));
-
-                    b.Property<string>("Industry")
-                        .HasColumnType("text");
 
                     b.Property<string>("Label")
                         .HasMaxLength(256)
@@ -741,13 +741,25 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
                     b.Property<string>("Profession")
                         .HasColumnType("text");
 
-                    b.Property<string>("SocialMedia")
+                    b.Property<string>("ProfessionIndustry")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProfessionalEmail")
+                        .HasColumnType("text");
+
+                    b.Property<float>("ProfessionalExperience")
+                        .HasColumnType("real");
+
+                    b.Property<string>("ProfessionalPhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProfessionalSocialMedia")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProfessionalWebsites")
                         .HasColumnType("text");
 
                     b.Property<long>("TypeId")
@@ -758,9 +770,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasMaxLength(768)
                         .HasColumnType("character varying(768)")
                         .HasColumnOrder(5);
-
-                    b.Property<string>("Websites")
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -816,15 +825,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(9);
 
-                    b.Property<string>("Currency")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -846,14 +846,35 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasColumnType("character varying(128)")
                         .HasColumnOrder(7);
 
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
                     b.Property<int>("OriginId")
                         .HasColumnType("integer")
                         .HasColumnOrder(3);
 
-                    b.Property<double>("Quantity")
+                    b.Property<string>("SubscriptionCurrency")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SubscriptionDescription")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("SubscriptionExpireDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("SubscriptionName")
+                        .HasColumnType("text");
+
+                    b.Property<double>("SubscriptionPeriod")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("SubscriptionQuantity")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("SubscriptionStatus")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SubscriptionToken")
+                        .HasColumnType("text");
+
+                    b.Property<double>("SubscriptionValue")
                         .HasColumnType("double precision");
 
                     b.Property<long>("TypeId")
@@ -864,9 +885,6 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
                         .HasMaxLength(768)
                         .HasColumnType("character varying(768)")
                         .HasColumnOrder(5);
-
-                    b.Property<double>("Value")
-                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 

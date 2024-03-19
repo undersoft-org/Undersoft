@@ -30,8 +30,10 @@ public class AccountPersonal : DataObject
 
     [VisibleRubric]
     [DisplayRubric("Upload image")]
-    [FileRubric(FileRubricType.Path)]
+    [FileRubric(FileRubricType.Path, "ImageData")]
     public string Image { get; set; } = default!;
+
+    public byte[] ImageData { get; set; } = default!;
 
     public long? AccountId { get; set; }
 }

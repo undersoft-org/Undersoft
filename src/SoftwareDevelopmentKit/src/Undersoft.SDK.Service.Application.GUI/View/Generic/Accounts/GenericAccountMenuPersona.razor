@@ -1,4 +1,5 @@
-﻿@using Undersoft.SDK.Service
+﻿@using System.Text
+@using Undersoft.SDK.Service
 @using Undersoft.SDK.Service.Access
 @using Undersoft.SDK.Service.Data.Event
 
@@ -25,27 +26,28 @@
     [Inject]
     private AccessProvider<TModel> access { get; set; } = default!;
 
-    private string _initials 
-    { 
-        get
+    private string? _initials = null;
+
+    private string? _image = null;
+
+    protected override void OnInitialized()
+    {
+        if (_authorization.Credentials.Image != null && _authorization.Credentials.ImageData != null)
         {
-            string s = "";
-            if (!string.IsNullOrEmpty(_authorization.Credentials.FirstName))
-                s += _authorization.Credentials.FirstName.First().ToString();
-            if (!string.IsNullOrEmpty(_authorization.Credentials.LastName))
-                s += _authorization.Credentials.LastName.First().ToString();
-            if (string.IsNullOrEmpty(s))
-                s = "?";
-            return s;
+            _image = $"{_authorization.Credentials.Image.Split(";")[0]};base64, {Convert.ToBase64String(_authorization.Credentials.ImageData)}";
         }
+        else
+        {
+            _initials = "";
+            if (!string.IsNullOrEmpty(_authorization.Credentials.FirstName))
+                _initials += _authorization.Credentials.FirstName.First().ToString();
+            if (!string.IsNullOrEmpty(_authorization.Credentials.LastName))
+                _initials += _authorization.Credentials.LastName.First().ToString();
+            if (string.IsNullOrEmpty(_initials))
+                _initials = "?";
+        }
+
     }
-
-    private string _image => _authorization.Credentials.Image;
-
-    // protected async override Task OnInitializedAsync()
-    // {
-    //    // await access.Registered(typeof(TModel).New<TModel>());
-    // }
 
     protected override void OnParametersSet()
     {                    
@@ -60,6 +62,7 @@
                     r.DisplayName = r.RubricName;
 
             });
+
 
         Data.Put(Data.Rubrics.ForEach(r => typeof(ViewData<>).MakeGenericType(r.RubricType).New<IViewData>(Model.Proxy[r.RubricId])));
 

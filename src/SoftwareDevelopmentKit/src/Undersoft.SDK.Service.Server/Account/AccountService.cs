@@ -7,7 +7,8 @@ using Undersoft.SDK.Service.Server.Accounts.Email;
 
 namespace Undersoft.SDK.Service.Server.Accounts;
 
-public class AccountService<TAccount> : IAccountService<TAccount> where TAccount : class, IOrigin, IAuthorization
+public class AccountService<TAccount> : IAccountService<TAccount>
+    where TAccount : class, IOrigin, IAuthorization
 {
     private IServicer _servicer;
     private IAccountManager _manager;
@@ -183,10 +184,7 @@ public class AccountService<TAccount> : IAccountService<TAccount> where TAccount
             else
             {
                 _creds.Authenticated = true;
-                account.Notes = new OperationNotes()
-                {
-                    Info = "Pasword is valid",
-                };
+                account.Notes = new OperationNotes() { Info = "Pasword is valid", };
             }
         }
         else
@@ -557,14 +555,16 @@ public class AccountService<TAccount> : IAccountService<TAccount> where TAccount
         }
 
         var _accountuser = await _manager.User.FindByEmailAsync(_creds.Email);
-
-        _account = await _manager.Accounts.Delete(_accountuser.Id);
-        if (_account != null)
+        if (_accountuser != null)
         {
-            _account.User = _accountuser;
-            _account.PatchTo(account);
-            _accountuser.PatchTo(account.Credentials);
-            _account.Personal.PatchTo(account.Credentials);
+            _account = await _manager.Accounts.Delete(_accountuser.Id);
+            if (_account != null)
+            {
+                _account.User = _accountuser;
+                _account.PatchTo(account);
+                _accountuser.PatchTo(account.Credentials);
+                _account.Personal.PatchTo(account.Credentials);
+            }
         }
         return account;
     }
@@ -586,14 +586,25 @@ public class AccountService<TAccount> : IAccountService<TAccount> where TAccount
         }
 
         var _accountuser = await _manager.User.FindByEmailAsync(_creds.Email);
-
-        _account = await _manager.Accounts.Find(new object[] { _accountuser.Id }, new Expression<Func<Account, object>>[] { e => e.Address, e => e.Personal, e => e.Professional, e => e.Organization });
-        if (_account != null)
+        if (_accountuser != null)
         {
-            _account.User = _accountuser;
-            _account.PatchTo(account);
-            _accountuser.PatchTo(account.Credentials);
-            _account.Personal.PatchTo(account.Credentials);
+            _account = await _manager.Accounts.Find(
+                new object[] { _accountuser.Id },
+                new Expression<Func<Account, object>>[]
+                {
+                e => e.Address,
+                e => e.Personal,
+                e => e.Professional,
+                e => e.Organization
+                }
+            );
+            if (_account != null)
+            {
+                _account.User = _accountuser;
+                _account.PatchTo(account);
+                _accountuser.PatchTo(account.Credentials);
+                _account.Personal.PatchTo(account.Credentials);
+            }
         }
         return account;
     }

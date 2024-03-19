@@ -11,20 +11,20 @@ public class AccountAddress : DataObject
     public string State { get; set; } = default!;
 
     [VisibleRubric]
-    public string CityName { get; set; } = default!;
+    public string City { get; set; } = default!;
 
     [VisibleRubric]
     public string Postcode { get; set; } = default!;
 
     [VisibleRubric]
-    public string StreetName { get; set; } = default!;
+    public string Street { get; set; } = default!;
 
     [VisibleRubric]
-    public string BuildingNumber { get; set; } = default!;
+    public string Building { get; set; } = default!;
 
     [VisibleRubric]
     [RequiredRubric]
-    public string ApartmentNumber { get; set; } = default!;
+    public string Apartment { get; set; } = default!;
 
     public long? AccountId { get; set; }
 }

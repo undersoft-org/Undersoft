@@ -5,25 +5,44 @@ namespace Undersoft.SSC.Service.Contracts;
 public class AccountProfessional : DataObject
 {
     [VisibleRubric]
-    public string Industry { get; set; } = default!;
+    [DisplayRubric("Industry")]
+    public string? ProfessionIndustry { get; set; }
 
     [VisibleRubric]
-    public string Profession { get; set; } = default!;
+    public string? Profession { get; set; } = default!;
 
     [VisibleRubric]
-    public string Email { get; set; } = default!;
+    [DisplayRubric("Email")]
+    public string? ProfessionalEmail { get; set; }
 
     [VisibleRubric]
-    public string PhoneNumber { get; set; } = default!;
+    [DisplayRubric("Phone number")]
+    public string? ProfessionalPhoneNumber { get; set; }
 
     [VisibleRubric]
-    public string SocialMedia { get; set; } = default!;
+    [DisplayRubric("Social media")]
+    public string? ProfessionalSocialMedia { get; set; }
 
     [VisibleRubric]
-    public string Websites { get; set; } = default!;
+    [DisplayRubric("Websites")]
+    public string? ProfessionalWebsites { get; set; }
 
     [VisibleRubric]
-    public float Experience { get; set; }
+    [DisplayRubric("Experience in years")]
+    public float ProfessionalExperience { get; set; }
 
     public long? AccountId { get; set; }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

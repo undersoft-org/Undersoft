@@ -97,7 +97,7 @@ public abstract class ApiEventRemoteController<TKey, TStore, TDto, TModel>
     {
         return (!ModelState.IsValid)
            ? BadRequest(ModelState)
-           : await ExecuteSet(new RemoteChangeSet<TStore, TDto, TModel>(_publishMode, dtos));
+           : await ExecuteSet(new RemoteCreateSet<TStore, TDto, TModel>(_publishMode, dtos));
     }
 
     [HttpPost("{key}")]

@@ -31,7 +31,9 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
 
         protected override void OnInitialized()
         {
-            _dialog = _servicer.Initialize<AccessDialog<RegisterDialog<Account, AccountValidator>, Account>>(DialogService);
+            _dialog = _servicer.Initialize<
+                AccessDialog<RegisterDialog<Account, AccountValidator>, Account>
+            >(DialogService);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -42,14 +44,25 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
 
         private async Task Registering(string title, string description = "")
         {
-            var account = new Account(_authorization.Credentials.Email) { Personal = new AccountPersonal(), Address = new AccountAddress(), Professional = new AccountProfessional(), Organization = new AccountOrganization() };
+            var account = new Account(_authorization.Credentials.Email)
+            {
+                Personal = new AccountPersonal(),
+                Address = new AccountAddress(),
+                Professional = new AccountProfessional(),
+                Organization = new AccountOrganization()
+            };
 
             account.Credentials = _authorization.Credentials;
             _authorization.Credentials.PatchTo(account.Personal);
             _authorization.Credentials.PatchTo(account.Professional);
 
             var data = new ViewData<Account>(account, OperationType.Any, title);
-            data.SetVisible(nameof(Account.Personal), nameof(Account.Address), nameof(Account.Professional), nameof(Account.Organization));
+            data.SetVisible(
+                nameof(Account.Personal),
+                nameof(Account.Address),
+                nameof(Account.Professional),
+                nameof(Account.Organization)
+            );
             data.Description = description;
             data.Height = "700px";
             data.Width = "400px";
@@ -67,12 +80,14 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
 
                     var result = await _access.Register(content.Model);
 
-                    if (result.Notes.Status != SigningStatus.InvalidEmail && result.Notes.Status == SigningStatus.RegistrationCompleted)
+                    if (
+                        result.Notes.Status != SigningStatus.InvalidEmail
+                        && result.Notes.Status == SigningStatus.RegistrationCompleted
+                    )
                     {
                         _navigation.NavigateTo("access/sign_in");
                         return;
                     }
-
                     result.Notes.PatchTo(data.Notes);
                 }
                 else

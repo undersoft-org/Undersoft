@@ -28,6 +28,8 @@
 
         FileRubricType FileType { get; set; }
 
+        string DataRubricName { get; set; }
+
         string LinkValue { get; set; }
 
         string InvokeMethod { get; set; }

@@ -67,9 +67,10 @@ namespace Undersoft.SDK
             {
                 if (value != 0 && value != code.TypeId)
                 {
-                    var t = GetType();
-                    TypeName = t.FullName;
-                    code.SetTypeId(TypeName.UniqueKey32());
+                    code.TypeId = value;
+                    //var t = GetType();
+                    //TypeName = t.FullName;
+                    //code.SetTypeId(TypeName.UniqueKey32());
                 }
             }
         }
@@ -154,6 +155,17 @@ namespace Undersoft.SDK
                 return SetId((long)id);
             else
                 return SetId(id.UniqueKey64());
+        }
+
+        public virtual long SetTypeId(long typeid)
+        {
+            return code.SetTypeId(typeid);
+        }
+
+        public virtual long SetTypeId(Type type)
+        {
+
+            return code.SetTypeId(type.FullName.UniqueKey32());
         }
     }
 }

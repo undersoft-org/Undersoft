@@ -63,7 +63,7 @@ else if (_type.IsValueType)
     @if (_type.IsAssignableTo(typeof(DateTime)))
     {
         <div style="width:179px">
-            <FluentDatePicker class="" Name="@_name" @bind-Value="@_timeValue" Label="@_label" DisplayName="@_name" Required="@_required" @ref="Reference" />
+            <FluentDatePicker   Name="@_name" @bind-Value="@_timeValue" Label="@_label" DisplayName="@_name"  Required="@_required" @ref="Reference" />
         </div>
     }
     else

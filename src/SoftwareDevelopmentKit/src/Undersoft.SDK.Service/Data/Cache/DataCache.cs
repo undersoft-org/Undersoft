@@ -1,11 +1,9 @@
 ﻿namespace Undersoft.SDK.Service.Data.Cache;
 
+using Invoking;
 using Proxies;
 using Rubrics;
-using Invoking;
 using Undersoft.SDK;
-using Undersoft.SDK.Proxies;
-using Undersoft.SDK.Rubrics;
 using Undersoft.SDK.Service.Data.Object;
 using Undersoft.SDK.Service.Data.Store;
 
@@ -35,18 +33,18 @@ public class DataCache : TypedCache<IIdentifiable>, IDataCache
 
             cache.Add(group, deck);
 
-            ((ITypedSeries<IIdentifiable>)deck).Put(item);
+            ((ITypedSeries<IIdentifiable>)deck).Put(item, group);
 
-            cache.Add(item);
+            cache.Add(item, group);
 
             return item;
         }
 
-        if (!cache.ContainsKey(item))
+        if (!cache.ContainsKey(item, group))
         {
-            ((ITypedSeries<IIdentifiable>)deck).Put(item);
+            ((ITypedSeries<IIdentifiable>)deck).Put(item, group);
 
-            cache.Add(item);
+            cache.Add(item, group);
         }
 
         return item;
@@ -54,7 +52,7 @@ public class DataCache : TypedCache<IIdentifiable>, IDataCache
 
     protected override T InnerMemorize<T>(T item, params string[] names)
     {
-        Memorize(item);        
+        Memorize(item);
 
         return item;
     }

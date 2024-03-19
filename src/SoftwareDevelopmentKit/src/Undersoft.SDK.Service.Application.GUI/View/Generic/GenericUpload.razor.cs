@@ -4,7 +4,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic
 {
     public partial class GenericUpload : ViewItem
     {
-        FluentInputFile? myFileByStream = default!;
+        FluentInputFile? FileByStream = default!;
         int progressPercent;
         string? progressTitle;
 
@@ -13,26 +13,44 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic
 
         List<string> Files = new();
 
+        protected override void OnInitialized()
+        {
+            var filename = Data.Model.Proxy[Rubric.RubricId];
+            if (filename != null)
+                Files.Add(filename.ToString()!.Split(';')[2]);
+
+            base.OnInitialized();
+        }
+
         async Task OnFileUploadedAsync(FluentInputFileEventArgs file)
         {
+            Files.Clear();
+
             progressPercent = file.ProgressPercent;
             progressTitle = file.ProgressTitle;
 
-            var localFile = Path.GetRandomFileName() + "-" + file.Name;
+            var localFile = $"data:{file.ContentType};name:{file.Name}";
             Data.Model.Proxy[Rubric.RubricId] = localFile;
             Files.Add(file.Name);
 
-            // Write to the FileStream
-            // See other samples: https://docs.microsoft.com/en-us/aspnet/core/blazor/file-uploads
             await using FileStream fs = new(localFile, FileMode.Create);
-            await file.Stream!.CopyToAsync(fs);
+
+            if (Rubric.DataRubricName != null)
+            {
+                var bytes = await file.Stream!.GetAllBytesAsync();
+                Data.Model.Proxy[Rubric.DataRubricName] = bytes;
+                await fs.WriteAsync(bytes, 0, bytes.Length);
+            }
+            else
+                await file.Stream!.CopyToAsync(fs);
+
             await file.Stream!.DisposeAsync();
         }
 
         void OnCompleted(IEnumerable<FluentInputFileEventArgs> files)
         {
-            progressPercent = myFileByStream!.ProgressPercent;
-            progressTitle = myFileByStream!.ProgressTitle;
+            progressPercent = FileByStream!.ProgressPercent;
+            progressTitle = FileByStream!.ProgressTitle;
         }
     }
 }

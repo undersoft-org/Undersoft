@@ -293,7 +293,7 @@ public class Updater : IUpdater
         var originType = originRubric.RubricType;
         var targetType = targetRubric.RubricType;
 
-        if (originType.IsValueType || originType == typeof(string))
+        if (originType.IsValueType || originType == typeof(string) || originType.IsArray)
             return false;
 
         if (targetValue == null)
@@ -305,7 +305,9 @@ public class Updater : IUpdater
         }
 
         if (originValue == null)
+        {
             originValue = originType.New();
+        }
 
         if (originType.IsAssignableTo(typeof(IEnumerable)))
         {

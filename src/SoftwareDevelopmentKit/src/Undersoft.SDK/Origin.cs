@@ -67,11 +67,13 @@ namespace Undersoft.SDK
             if (entity == null)
             {
                 AutoId();
+                Time = Log.Clock;
                 Stamp<TEntity>();
                 Created = Time;
                 return default;
             }
             entity.AutoId();
+            entity.Time = Log.Clock;
             Stamp(entity);
             entity.Created = entity.Time;
             return entity;
@@ -81,11 +83,10 @@ namespace Undersoft.SDK
         {
             if (entity == null)
             {
-                Time = Log.Clock;
+                Modified = Log.Clock;
                 return default;
             }
-            entity.Time = Log.Clock;
-            entity.Modified = entity.Time;
+            entity.Modified = Log.Clock;
             return entity;
 
         }

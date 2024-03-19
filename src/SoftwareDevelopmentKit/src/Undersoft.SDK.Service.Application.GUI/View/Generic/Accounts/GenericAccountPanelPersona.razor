@@ -3,7 +3,7 @@
 
 @inject IServicer _servicer
 
-@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy, IAuthorization
 @typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
 
 <div role="button" @onclick="@OpenAccountPanelAsync">

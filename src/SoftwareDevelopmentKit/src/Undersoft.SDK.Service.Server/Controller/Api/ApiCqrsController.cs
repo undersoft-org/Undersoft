@@ -101,7 +101,7 @@ public class ApiCqrsController<TKey, TEntry, TReport, TEntity, TDto, TService>
     {
         return (!ModelState.IsValid)
             ? BadRequest(ModelState)
-            : await ExecuteSet(new ChangeSet<TEntry, TEntity, TDto>(_publishMode, dtos));
+            : await ExecuteSet(new CreateSet<TEntry, TEntity, TDto>(_publishMode, dtos));
     }
 
     [HttpPost("{key}")]

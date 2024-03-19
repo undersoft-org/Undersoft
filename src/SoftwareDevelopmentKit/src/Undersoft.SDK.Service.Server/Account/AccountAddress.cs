@@ -6,19 +6,15 @@ public class AccountAddress : DataObject
 
     public string State { get; set; }
 
-    public string CityName { get; set; }
+    public string City { get; set; }
 
-    public string StreetName { get; set; }
+    public string Street { get; set; }
 
-    public string BuildingNumber { get; set; }
+    public string Building { get; set; }
 
-    public string ApartmentNumber { get; set; }
+    public string Apartment { get; set; }
 
     public string Postcode { get; set; }
-
-    public string SocialMedia { get; set; }
-
-    public string Websites { get; set; }
 
     public long? AccountId { get; set; }
     public virtual Account Account { get; set; }

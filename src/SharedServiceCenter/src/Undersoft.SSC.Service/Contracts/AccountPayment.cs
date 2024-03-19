@@ -1,32 +1,46 @@
-﻿namespace Undersoft.SSC.Service.Contracts;
+﻿using Undersoft.SDK.Rubrics.Attributes;
+
+namespace Undersoft.SSC.Service.Contracts;
 
 public class AccountPayment : DataObject
 {
-    public string? Title { get; set; }
+    [VisibleRubric]
+    public string? CardTitle { get; set; }
 
+    [VisibleRubric]
     public string? CardNumber { get; set; }
 
+    [VisibleRubric]
     public string? CardType { get; set; }
 
-    public string? Expiration { get; set; }
+    [VisibleRubric]
+    public string? CardExpirationDate { get; set; }
 
-    public string? CSV { get; set; }
+    [VisibleRubric]
+    public string? CardCSV { get; set; }
 
-    public string? FirstName { get; set; }
+    [VisibleRubric]
+    public string? PaymentFirstName { get; set; }
 
-    public string? LastName { get; set; }
+    [VisibleRubric]
+    public string? PaymentLastName { get; set; }
 
-    public bool TermsConsent { get; set; }
+    public bool PaymentTermsConsent { get; set; }
 
+    [VisibleRubric]
     public string? PaymentType { get; set; }
 
-    public string? PhoneNumber { get; set; }
+    public string? PaymentPhoneNumber { get; set; }
 
-    public string? Image { get; set; }
+    public string? PaymentImage { get; set; }
 
-    public string? Provider { get; set; }
+    public byte[]? PaymentImageData { get; set; }
 
-    public string? Websites { get; set; }
+    public string? PaymentStatus { get; set; }
+
+    public string? PaymentProvider { get; set; }
+
+    public string? PaymentWebsites { get; set; }
 
     public long? AccountId { get; set; }
 }

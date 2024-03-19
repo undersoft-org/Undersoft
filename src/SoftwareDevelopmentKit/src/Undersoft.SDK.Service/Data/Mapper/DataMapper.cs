@@ -116,7 +116,7 @@ namespace Undersoft.SDK.Service.Data.Mapper
                                 || Nullable.GetUnderlyingType(p.PropertyType) != null
                             )
                         && p.PropertyType != typeof(string)
-                            && p.PropertyType != typeof(Type) && p.PropertyType.IsPublic && p.PropertyType.Name != "IRubrics" && p.PropertyType.Name != "IProxy" && p.PropertyType.Name != "code"
+                            && p.PropertyType != typeof(Type) && p.PropertyType.IsPublic && p.PropertyType.Name != "IRubrics" && p.PropertyType.Name != "IProxy" && p.PropertyType.Name != "Uscn"
                     )
                     .ForEach(s =>
                     {

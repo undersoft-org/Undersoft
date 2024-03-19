@@ -440,13 +440,14 @@ public abstract partial class Repository<TEntity> : IRepositoryCommand<TEntity> 
         ).Commit();
     }
 
-    public virtual Task<TEntity> Patch<TModel>(TModel delta, params object[] keys)
+    public async virtual Task<TEntity> Patch<TModel>(TModel delta, params object[] keys)
         where TModel : class, IOrigin
     {
-        return Task.Run(async () =>
+        return await Task.Run(async () =>
         {
             if (keys == null)
                 return null;
+
             var entity = await Find(keys);
 
             if (entity != null)
@@ -456,22 +457,28 @@ public abstract partial class Repository<TEntity> : IRepositoryCommand<TEntity> 
         });
     }
 
-    public virtual Task<TEntity> Patch<TModel>(
+    public async virtual Task<TEntity> Patch<TModel>(
         TModel delta,
         Func<TModel, Expression<Func<TEntity, bool>>> predicate
     ) where TModel : class, IOrigin
     {
-        return Task.Run(() =>
+        return await Task.Run(() =>
         {
-            TEntity entity = null;
-            if (predicate != null)
-                entity = this[false, predicate(delta)];
-            else
-                entity = this[new object[] { delta.Id }];
-
+            TEntity entity = lookup<TModel>(delta);
+            if (entity == null || predicate != null && !entity.ToQueryable().Where(predicate(delta)).Commit().Any())
+            {
+                if (predicate != null)
+                    entity = this[false, predicate(delta)];
+                else
+                    entity = this[new object[] { delta.Id }];
+            }
             if (entity != null)
             {
-                return InnerSet((TEntity)delta.PatchTo(entity.Proxy, PatchingEvent).Target);
+
+                var item = delta.PatchTo(entity.Proxy, PatchingEvent);
+                var target = item.Target;
+
+                return InnerSet((TEntity)target);
             }
             return default;
         });

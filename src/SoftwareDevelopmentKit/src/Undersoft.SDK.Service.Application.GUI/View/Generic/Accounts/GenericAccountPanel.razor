@@ -1,5 +1,5 @@
 ﻿@using Undersoft.SDK.Service.Access
-@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+@typeparam TModel where TModel : class, IOrigin, IInnerProxy, IAuthorization
 @typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
 
 @implements IDialogContentComponent<IViewData<TModel>>
@@ -15,20 +15,19 @@
 
     <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalGap="20">
 
-        <FluentPersona Initials="_initials" Image="_image" ImageSize="150px" Style="height:auto;"/>
+        <FluentPersona Initials="_initials" Image="_image" ImageSize="150px" Style="height:auto;" />
 
         <!-- Body -->
-        <GenericFormPanelTabsBody TValidator="TValidator" TModel="TModel" Orientation="Orientation.Vertical" />
-
+        <div>
+            <GenericFormPanelTabsBody TValidator="TValidator" TModel="TModel" Orientation="Orientation.Vertical" />
+        </div>
 
     </FluentStack>
-    <FluentSpacer/>
+    <FluentSpacer />
     <!-- Footer -->
     <GenericFormPanelTabsFooter TModel="TModel" />
 
 </CascadingValue>
-
-
 
 @code
 {
@@ -40,17 +39,18 @@
         get
         {
             string s = "";
-            if (!string.IsNullOrEmpty(_authorization.Credentials.FirstName))
-                s += _authorization.Credentials.FirstName.First().ToString();
-            if (!string.IsNullOrEmpty(_authorization.Credentials.LastName))
-                s += _authorization.Credentials.LastName.First().ToString();
+            if (Content != null)
+            {
+                if (!string.IsNullOrEmpty(Content.Model.Credentials.FirstName))
+                    s += Content.Model.Credentials.FirstName.First().ToString();
+                if (!string.IsNullOrEmpty(Content.Model.Credentials.LastName))
+                    s += Content.Model.Credentials.LastName.First().ToString();
+            }
             if (string.IsNullOrEmpty(s))
                 s = "?";
             return s;
         }
     }
-
-    private string _image => _authorization.Credentials.Image;
 
     [Parameter]
     public IViewData<TModel> Content { get; set; } = default!;
@@ -58,9 +58,17 @@
     [CascadingParameter]
     public FluentDialog Dialog { get; set; } = default!;
 
+    private string? _image = null;
+
     protected override void OnInitialized()
     {
-        base.OnInitialized();
+        if (Content != null)
+        {
+            if (Content.Model.Credentials.Image != null && Content.Model.Credentials.ImageData != null)
+            {
+                _image = $"{Content.Model.Credentials.Image.Split(";")[0]};base64, {Convert.ToBase64String(Content.Model.Credentials.ImageData)}";
+            }
+        }
     }
 
     public void RenderView()
