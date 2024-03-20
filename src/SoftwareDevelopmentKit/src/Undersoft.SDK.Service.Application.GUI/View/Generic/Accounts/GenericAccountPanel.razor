@@ -15,12 +15,10 @@
 
     <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalGap="20">
 
-        <FluentPersona Initials="_initials" Image="_image" ImageSize="150px" Style="height:auto;" />
+        <GenericPersona TModel="TModel" Content="@Content" ForFirstName="@ForFirstName" ForLastName="@ForLastName" ForImage="@ForImage" ForImageData="@ForImageData" ImageSize="150px" Style="height:auto;" />
 
         <!-- Body -->
-        <div>
-            <GenericFormPanelTabsBody TValidator="TValidator" TModel="TModel" Orientation="Orientation.Vertical" />
-        </div>
+        <GenericFormPanelTabsBody TValidator="TValidator" TModel="TModel" Orientation="Orientation.Vertical" />
 
     </FluentStack>
     <FluentSpacer />
@@ -31,26 +29,10 @@
 
 @code
 {
-    [Inject]
-    private IAuthorization _authorization { get; set; } = default!;
-
-    private string _initials
-    {
-        get
-        {
-            string s = "";
-            if (Content != null)
-            {
-                if (!string.IsNullOrEmpty(Content.Model.Credentials.FirstName))
-                    s += Content.Model.Credentials.FirstName.First().ToString();
-                if (!string.IsNullOrEmpty(Content.Model.Credentials.LastName))
-                    s += Content.Model.Credentials.LastName.First().ToString();
-            }
-            if (string.IsNullOrEmpty(s))
-                s = "?";
-            return s;
-        }
-    }
+    private Func<TModel, string> ForFirstName => f => f.Credentials.FirstName;
+    private Func<TModel, string> ForLastName => f => f.Credentials.LastName;
+    private Func<TModel, string> ForImage => f => f.Credentials.Image;
+    private Func<TModel, byte[]> ForImageData => f => f.Credentials.ImageData;
 
     [Parameter]
     public IViewData<TModel> Content { get; set; } = default!;
@@ -59,17 +41,6 @@
     public FluentDialog Dialog { get; set; } = default!;
 
     private string? _image = null;
-
-    protected override void OnInitialized()
-    {
-        if (Content != null)
-        {
-            if (Content.Model.Credentials.Image != null && Content.Model.Credentials.ImageData != null)
-            {
-                _image = $"{Content.Model.Credentials.Image.Split(";")[0]};base64, {Convert.ToBase64String(Content.Model.Credentials.ImageData)}";
-            }
-        }
-    }
 
     public void RenderView()
     {

@@ -35,6 +35,18 @@
                     InnerAdd(c);
         }
 
+        public ListingBase(
+           IEnumerable<ISeriesItem<V>> collection,
+           int capacity = 17,
+           bool repeatable = false,
+           HashBits bits = HashBits.bit64
+       ) : this(repeatable, capacity, bits)
+        {
+            if (collection != null)
+                foreach (var c in collection)
+                    InnerAdd(c);
+        }
+
         void rehash(ISeriesItem<V>[] newItemTable, uint newMaxId)
         {
             int _conflicts = 0;

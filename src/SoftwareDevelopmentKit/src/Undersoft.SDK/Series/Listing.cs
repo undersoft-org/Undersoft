@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using Undersoft.SDK.Series.Base;
-using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Series;
 
@@ -14,6 +10,8 @@ public class Listing<V> : ListingBase<V>
         : base(collection, capacity, repeatable) { }
 
     public Listing(bool repeatable = false, int capacity = 17) : base(repeatable, capacity) { }
+
+    public Listing(IEnumerable<ISeriesItem<V>> items, int capacity = 17, bool repeatable = false) : base(items, capacity) { }
 
     public override ISeriesItem<V> EmptyItem()
     {

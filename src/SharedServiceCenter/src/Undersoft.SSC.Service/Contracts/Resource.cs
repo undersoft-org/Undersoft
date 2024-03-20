@@ -1,5 +1,4 @@
 using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
 using Undersoft.SSC.Service.Contracts.Base;
 
 namespace Undersoft.SSC.Service.Contracts;
@@ -7,21 +6,21 @@ namespace Undersoft.SSC.Service.Contracts;
 [DataContract]
 public class Resource : ResourceBase
 {
-    [DataMember(Order = 21)]
+    [DataMember(Order = 25)]
     public virtual ObjectSet<ResourceBase>? RelatedFrom { get; set; }
 
-    [DataMember(Order = 22)]
+    [DataMember(Order = 26)]
     public virtual ObjectSet<ResourceBase>? RelatedTo { get; set; }
 
-    [DataMember(Order = 23)]
+    [DataMember(Order = 27)]
     public virtual ObjectSet<MemberBase>? Members { get; set; }
 
-    [DataMember(Order = 24)]
+    [DataMember(Order = 28)]
     public virtual ObjectSet<ActivityBase>? Activities { get; set; }
 
-    [DataMember(Order = 25)]
+    [DataMember(Order = 29)]
     public virtual ObjectSet<ScheduleBase>? Schedules { get; set; }
-  
+
     [DataMember(Order = 17)]
     public virtual Default? Default { get; set; }
 

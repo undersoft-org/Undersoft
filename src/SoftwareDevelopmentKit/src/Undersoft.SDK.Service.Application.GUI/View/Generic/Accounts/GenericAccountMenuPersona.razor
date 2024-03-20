@@ -11,8 +11,9 @@
 
 <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Right" HorizontalGap="5">
     <div id="account-top-menu" role="button">
-        <FluentPersona Initials="@_initials" Image="@_image" ImageSize="35px">
-        </FluentPersona>
+        <GenericPersona TModel="IAuthorization" ForFirstName="@ForFirstName" ForLastName="@ForLastName" 
+                        ForImage="@ForImage" ForImageData="@ForImageData" ImageSize="35px" 
+                        Content="@(new ViewData<IAuthorization>(Authorization))" />
     </div>
 
     <div>
@@ -21,36 +22,14 @@
 </FluentStack>
 @code {
     [Inject]
-    private IAuthorization _authorization { get; set; } = default!;
-
-    [Inject]
-    private AccessProvider<TModel> access { get; set; } = default!;
-
-    private string? _initials = null;
-
-    private string? _image = null;
-
-    protected override void OnInitialized()
-    {
-        if (_authorization.Credentials.Image != null && _authorization.Credentials.ImageData != null)
-        {
-            _image = $"{_authorization.Credentials.Image.Split(";")[0]};base64, {Convert.ToBase64String(_authorization.Credentials.ImageData)}";
-        }
-        else
-        {
-            _initials = "";
-            if (!string.IsNullOrEmpty(_authorization.Credentials.FirstName))
-                _initials += _authorization.Credentials.FirstName.First().ToString();
-            if (!string.IsNullOrEmpty(_authorization.Credentials.LastName))
-                _initials += _authorization.Credentials.LastName.First().ToString();
-            if (string.IsNullOrEmpty(_initials))
-                _initials = "?";
-        }
-
-    }
+    public IAuthorization Authorization { get; set; } = default!;
+    private Func<IAuthorization, string> ForFirstName => f => f.Credentials.FirstName;
+    private Func<IAuthorization, string> ForLastName => f => f.Credentials.LastName;
+    private Func<IAuthorization, string> ForImage => f => f.Credentials.Image;
+    private Func<IAuthorization, byte[]> ForImageData => f => f.Credentials.ImageData;
 
     protected override void OnParametersSet()
-    {                    
+    {
         if (Data == null)
             Data = new ViewData<TAccount>(typeof(TAccount).New<TAccount>());
 

@@ -1,13 +1,8 @@
 ﻿using MediatR;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Undersoft.SDK.Service.Server.Behaviour;
 
 using Logging;
-using Operation;
-using System.Diagnostics;
-using System.Diagnostics.Metrics;
 
 public class LoggingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>, IOperation
@@ -21,7 +16,7 @@ public class LoggingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest,
     //}
 
     public LoggingBehaviour()
-    {        
+    {
     }
 
     public async Task<TResponse> Handle(
@@ -29,7 +24,6 @@ public class LoggingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest,
         CancellationToken cancellationToken
        )
     {
-
         //using var activity = activitySource.StartActivity($"Operation Request: {request.GetType().Name}");
 
         request.Info<Apilog>($"Request data source", request.Input);

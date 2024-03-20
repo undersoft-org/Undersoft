@@ -10,10 +10,10 @@ using Undersoft.SSC.Service.Infrastructure.Stores;
 
 #nullable disable
 
-namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
+namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Reports
 {
-    [DbContext(typeof(EntryStore))]
-    [Migration("20240317032543_InitialCreate")]
+    [DbContext(typeof(ReportStore))]
+    [Migration("20240319231902_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -669,7 +669,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.ToTable("SettingIdentifiers", "identifiers");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Data.RemoteRepository.RemoteLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Application>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Data.Remote.RemoteLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Application>", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
@@ -3793,7 +3793,7 @@ namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Entries
                     b.Navigation("Object");
                 });
 
-            modelBuilder.Entity("Undersoft.SDK.Service.Data.RemoteRepository.RemoteLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Application>", b =>
+            modelBuilder.Entity("Undersoft.SDK.Service.Data.Remote.RemoteLink<Undersoft.SSC.Domain.Entities.Service, Undersoft.SSC.Domain.Entities.Application>", b =>
                 {
                     b.HasOne("Undersoft.SSC.Domain.Entities.Service", "LeftEntity")
                         .WithMany("ServicesToApplications")

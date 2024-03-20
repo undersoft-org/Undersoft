@@ -43,10 +43,10 @@ public partial class GenericLayout : LayoutComponentBase
     public int? Density { get; set; } = 0;
 
     [Parameter]
-    public int? ControlCornerRadius { get; set; } = 2;
+    public int? ControlCornerRadius { get; set; } = 0;
 
     [Parameter]
-    public int? LayerCornerRadius { get; set; } = 3;
+    public int? LayerCornerRadius { get; set; } = 0;
 
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;

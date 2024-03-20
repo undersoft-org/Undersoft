@@ -12,7 +12,7 @@ using Undersoft.SSC.Service.Infrastructure.Stores;
 namespace Undersoft.SSC.Service.Infrastructure.Stores.Migrations.Accounts
 {
     [DbContext(typeof(AccountStore))]
-    [Migration("20240319022743_InitialCreate")]
+    [Migration("20240319231834_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

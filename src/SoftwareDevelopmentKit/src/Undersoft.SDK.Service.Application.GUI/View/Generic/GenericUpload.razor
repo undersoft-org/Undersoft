@@ -21,13 +21,14 @@
                  OnFileUploaded="@OnFileUploadedAsync"
                  OnCompleted="@OnCompleted">
     <ChildContent>
-        <label for="@CodeNo">
-            <FluentIcon Value="@(new Icons.Regular.Size16.ArrowUpload())" Color="Color.Accent" />
+        <label for="@CodeNo" style="padding-top:15px;">
+            <FluentIcon Value="@(new Icons.Regular.Size24.ArrowUpload())" Color="Color.Accent" />
         </label>
         <div>
-            Drag file here or <label for="@CodeNo">browse</label><span style="color: red;">*</span>.
+            <label for="@CodeNo">
+                Drag or browse
+            </label>
         </div>
-
     </ChildContent>
 </FluentInputFile>
 
