@@ -135,10 +135,6 @@ public class Stock : IStock
         options.BlockSize = instantSeries.InstantSize;
     }
 
-    public void Write() { }
-
-    public void Read() { }
-
     public void Open()
     {
         if (clusters == null)
@@ -152,7 +148,7 @@ public class Stock : IStock
             Directory.CreateDirectory(options.StockPath);
         else
             files = Directory.GetFiles(options.StockPath);
-        if (files is null)
+        if (files != null)
         {
             foreach (string file in files)
                 if (file.Contains($".{options.SectorSuffix}"))

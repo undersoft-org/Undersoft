@@ -12,7 +12,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Menu
         public bool ShowLabels { get; set; } = false;
 
         [Parameter]
-        public bool ShowIcon { get; set; } = true;
+        public bool ShowIcons { get; set; } = true;
 
         protected override void OnParametersSet()
         {

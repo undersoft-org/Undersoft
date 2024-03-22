@@ -23,7 +23,7 @@ public class ViewRubric : MemberRubric, IViewRubric
 
     public ViewRubric ShallowCopy(ViewRubric dst)
     {
-        object result = ShalowCopy(dst);
+        object result = ShallowCopy((MemberRubric)dst);
         return (ViewRubric)result;
     }
 }

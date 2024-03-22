@@ -8,6 +8,8 @@ using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Application.Access;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
 using Undersoft.SDK.Service.Application.GUI.View.Models;
+using Undersoft.SDK.Service.Data.Remote.Repository;
+using Undersoft.SDK.Service.Data.Store;
 using Undersoft.SSC.Service.Application.GUI.Compound.Access;
 using Undersoft.SSC.Service.Clients;
 using Undersoft.SSC.Service.Contracts;
@@ -33,7 +35,7 @@ namespace Undersoft.SSC.Service.Application.Client
                 })
                 .Manager;
 
-            await manager
+            _ = manager
                     .BuildInternalProvider()
                     .UseServiceClientsAsync();
 
@@ -44,11 +46,12 @@ namespace Undersoft.SSC.Service.Application.Client
                     var reg = manager.GetRegistry();
                     reg.AddAuthorizationCore()
                         .AddFluentUIComponents((o) => { o.UseTooltipServiceProvider = true; })
+                        .AddScoped<IRemoteRepository<IAccountStore, Account>, RemoteRepository<IAccountStore, Account>>()
                         .AddSingleton<AppearanceState>()
                         .AddScoped<AccessProvider<Account>>()
-                        .AddScoped<AuthenticationStateProvider, AccessProvider<Account>>()
-                        .AddScoped<IAccountAccess, AccessProvider<Account>>()
-                        .AddScoped<IAccountService<Account>, AccessProvider<Account>>()
+                        .AddScoped<AuthenticationStateProvider, AccessProvider<Account>>(sp => sp.GetRequiredService<AccessProvider<Account>>())
+                        .AddScoped<IAccountAccess, AccessProvider<Account>>(sp => sp.GetRequiredService<AccessProvider<Account>>())
+                        .AddScoped<IAccountService<Account>, AccessProvider<Account>>(sp => sp.GetRequiredService<AccessProvider<Account>>())
                         .AddScoped<IValidator<IViewData<Credentials>>, AccessValidator>()
                         .AddScoped<IValidator<IViewData<Account>>, AccountValidator>()
                         .AddScoped<AccountValidator>()

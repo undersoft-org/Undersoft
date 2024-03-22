@@ -1,6 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using Undersoft.SDK.Service.Access;
 using Undersoft.SDK.Service.Data.Contract;
+using Undersoft.SSC.Service.Contracts.Accounts;
 
 namespace Undersoft.SSC.Service.Contracts;
 

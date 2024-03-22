@@ -5,7 +5,7 @@
     {
         public string Value;
 
-        public OperationType Operation = OperationType.Any;
+        public bool PrefixedLink = true;
 
         public LinkAttribute() { }
 
@@ -14,10 +14,10 @@
             Value = link;
         }
 
-        public LinkAttribute(OperationType operation, string link)
+        public LinkAttribute(string link, bool prefixedLink)
         {
             Value = link;
-            Operation = operation;
+            PrefixedLink = prefixedLink;
         }
     }
 }

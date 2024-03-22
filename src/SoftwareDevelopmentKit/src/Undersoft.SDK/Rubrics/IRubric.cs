@@ -14,6 +14,10 @@
 
         bool Expandable { get; set; }
 
+        bool Expanded { get; set; }
+
+        bool Disabled { get; set; }
+
         bool IsIdentity { get; set; }
 
         bool IsKey { get; set; }
@@ -28,9 +32,15 @@
 
         FileRubricType FileType { get; set; }
 
-        string DataRubricName { get; set; }
+        string DataMember { get; set; }
 
         string LinkValue { get; set; }
+
+        bool PrefixedLink { get; set; }
+
+        string IconMember { get; set; }
+
+        IconSlot IconSlot { get; set; }
 
         string InvokeMethod { get; set; }
 

@@ -16,6 +16,9 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
         private IAccountAccess _access { get; set; } = default!;
 
         [Inject]
+        private IAuthorization _authorization { get; set; } = default!;
+
+        [Inject]
         private NavigationManager _navigation { get; set; } = default!;
 
         [Inject]
@@ -26,10 +29,6 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
 
         private IViewDialog<Credentials> _dialog = default!;
 
-
-        [Parameter]
-        public string? Email { get; set; }
-
         protected override void OnInitialized()
         {
             _dialog = _servicer.Initialize<AccessDialog<ConfirmEmailDialog<Credentials, AccessValidator>, Credentials>>(DialogService);
@@ -38,12 +37,12 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
-                await ConfirmingEmail("Email confirmation", "Please check your e-mail");
+                await ConfirmingEmail("Confirm email", "Please check your e-mail");
         }
 
         private async Task ConfirmingEmail(string title, string description = "")
         {
-            var data = new ViewData<Credentials>(new Credentials() { Email = Email }, OperationType.Setup, title);
+            var data = new ViewData<Credentials>(_authorization.Credentials, OperationType.Setup, title);
             data.SetVisible("EmailConfirmationToken");
             data.Description = description;
             data.Width = "360px";

@@ -7,25 +7,27 @@
 @typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
 
 <FluentHeader class="siteheader" Height="50">
-    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" Width="100%">
-        <a href="" style="margin-left:-10px;">
-            <FluentIcon Value="@(new ViewGraphic.Logo.ColorHorizontal130x40())" Color="Color.FillInverse" />
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" Width="100%" Style="height:50px">
+        <a href="" style="margin-left:-10px; height:40px">
+            <FluentIcon Value="@(new ViewGraphic.Logo.ColorHorizontal())" Color="Color.FillInverse" Width="131"/>
         </a>
         <FluentSpacer />
-        <div class="top-bar-tools">
+        <div class="top-bar-tools" style="height:35px">
             <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="15">
-                <GenericMenuSet TMenu="TMenu" />
-                <div class="github">
+                <div style="margin-right:-2px; height:20px">
+                    <GenericMenuSet TMenu="TMenu" />
+                </div>
+                <div class="github" style="height:20px">
                     <FluentAnchor Appearance="Appearance.Hypertext" Href="http://github.com/undersoft-org/undersoft" Target="_blank" Rel="noreferrer noopener" title="Undersoft source on GitHub" aria-label="SSC Repository">
-                        <div style="line-height:2;">
-                            <FluentIcon Value="@(new ViewGraphic.Size20.GitHub())" Width="18" Color="Color.FillInverse" />
+                        <div >
+                            <FluentIcon Value="@(new ViewGraphic.Logo.GitHub())" Width="18" Color="Color.FillInverse" />
                         </div>
                     </FluentAnchor>
                 </div>
-                <div class="notification">
+                <div class="notification" style="height:20px">
                     <GenericNotificationPanelButton />
                 </div>
-                <div class="appearance">
+                <div class="appearance" style="height:20px">
                     <GenericAppearancePanelButton />
                 </div>
                 <div class="account" style="margin-right:-15px;">

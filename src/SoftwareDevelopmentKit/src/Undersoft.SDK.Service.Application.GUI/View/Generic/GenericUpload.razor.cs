@@ -17,7 +17,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic
         {
             var filename = Data.Model.Proxy[Rubric.RubricId];
             if (filename != null)
-                Files.Add(filename.ToString()!.Split(';')[1]);
+                Files.Add(filename.ToString()!.Split(';')[2]);
 
             base.OnInitialized();
         }
@@ -29,20 +29,12 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic
             progressPercent = file.ProgressPercent;
             progressTitle = file.ProgressTitle;
 
-            var localFile = $"{DateTime.Now.ToFileTime()}-{file.Name}";
-            Data.Model.Proxy[Rubric.RubricId] = $"{file.ContentType};{localFile}";
+            var fileInfo = $"{file.ContentType};{DateTime.Now.ToFileTime()};{file.Name}";
+            Data.Model.Proxy[Rubric.RubricId] = fileInfo;
             Files.Add(file.Name);
 
-            await using FileStream fs = new(localFile, FileMode.Create);
-
-            if (Rubric.DataRubricName != null)
-            {
-                var bytes = await file.Stream!.GetAllBytesAsync();
-                Data.Model.Proxy[Rubric.DataRubricName] = bytes;
-                await fs.WriteAsync(bytes, 0, bytes.Length);
-            }
-            else
-                await file.Stream!.CopyToAsync(fs);
+            if (Rubric.DataMember != null)
+                Data.Model.Proxy[Rubric.DataMember] = await file.Stream!.GetAllBytesAsync(); ;
 
             await file.Stream!.DisposeAsync();
         }

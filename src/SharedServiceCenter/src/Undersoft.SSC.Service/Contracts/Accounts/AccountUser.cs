@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using Undersoft.SDK.Service.Access;
 
-namespace Undersoft.SSC.Service.Contracts;
+namespace Undersoft.SSC.Service.Contracts.Accounts;
 
 [DataContract]
 public class AccountUser : InnerProxy, IAccountUser

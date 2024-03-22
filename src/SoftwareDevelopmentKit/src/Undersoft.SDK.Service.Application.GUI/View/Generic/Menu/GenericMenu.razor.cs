@@ -19,6 +19,9 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Menu
         public bool IsOpen { get; set; }
 
         [Parameter]
+        public bool ShowIcons { get; set; } = true;
+
+        [Parameter]
         public HorizontalPosition Position { get; set; } = HorizontalPosition.Right;
 
         [Parameter]

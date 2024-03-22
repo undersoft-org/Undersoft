@@ -7,6 +7,7 @@
     using Undersoft.SDK;
     using Undersoft.SDK.Invoking;
     using Undersoft.SDK.Rubrics.Attributes;
+    using Undersoft.SDK.Updating;
     using Uniques;
 
     public class MemberRubric : MemberInfo, IRubric
@@ -85,66 +86,13 @@
             return RubricInfo.IsDefined(attributeType, inherit);
         }
 
-        public MemberRubric ShalowCopy(MemberRubric dst)
+        public MemberRubric ShallowCopy(MemberRubric dst)
         {
             if (dst == null)
                 dst = new MemberRubric();
-            dst.RubricInfo = this;
-            dst.RubricName = RubricName;
-            dst.RubricId = RubricId;
-            dst.Visible = Visible;
-            dst.Editable = Editable;
-            dst.LinkValue = LinkValue;
-            dst.LinkOperation = LinkOperation;
-            dst.InvokeTarget = InvokeTarget;
-            dst.InvokeMethod = InvokeMethod;
-            dst.InvokeType = InvokeType;
-            dst.InstantType = InstantType;
-            dst.Invoker = Invoker;
-            dst.InstantField = InstantField;
-            dst.FieldId = FieldId;
-            dst.RubricOffset = RubricOffset;
-            dst.IsKey = IsKey;
-            dst.IsIdentity = IsIdentity;
-            dst.IsAutoincrement = IsAutoincrement;
-            dst.IdentityOrder = IdentityOrder;
-            dst.Required = Required;
-            dst.DisplayName = DisplayName;
-            dst.IsLink = IsLink;
-            dst.IsFile = IsFile;
-            dst.FileType = FileType;
-            dst.DataRubricName = DataRubricName;
+            this.ShallowPutTo(dst);
             dst.Id = RubricName.UniqueKey64();
 
-            return dst;
-        }
-
-        public MemberRubric CopyAttributeValues(MemberRubric dst)
-        {
-            if (dst == null)
-                dst = new MemberRubric();
-            dst.RubricInfo = this;
-            dst.RubricName = RubricName;
-            dst.Visible = Visible;
-            dst.Editable = Editable;
-            dst.LinkValue = LinkValue;
-            dst.LinkOperation = LinkOperation;
-            dst.InvokeTarget = InvokeTarget;
-            dst.InvokeMethod = InvokeMethod;
-            dst.InvokeType = InvokeType;
-            dst.InstantType = InstantType;
-            dst.Invoker = Invoker;
-            dst.RubricOffset = RubricOffset;
-            dst.IsKey = IsKey;
-            dst.IsIdentity = IsIdentity;
-            dst.IsAutoincrement = IsAutoincrement;
-            dst.IdentityOrder = IdentityOrder;
-            dst.Required = Required;
-            dst.DisplayName = DisplayName;
-            dst.IsLink = IsLink;
-            dst.IsFile = IsFile;
-            dst.FileType = FileType;
-            dst.DataRubricName = DataRubricName;
             return dst;
         }
 
@@ -224,6 +172,10 @@
 
         public bool Expandable { get; set; }
 
+        public bool Expanded { get; set; }
+
+        public bool Disabled { get; set; }
+
         public bool IsIdentity { get; set; }
 
         public bool IsLink { get; set; }
@@ -236,11 +188,15 @@
 
         public FileRubricType FileType { get; set; }
 
-        public string DataRubricName { get; set; }
+        public string DataMember { get; set; }
 
         public string LinkValue { get; set; }
 
-        public OperationType LinkOperation { get; set; }
+        public bool PrefixedLink { get; set; }
+
+        public string IconMember { get; set; }
+
+        public IconSlot IconSlot { get; set; }
 
         public string InvokeMethod { get; set; }
 

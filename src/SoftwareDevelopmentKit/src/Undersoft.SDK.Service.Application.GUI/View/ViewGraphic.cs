@@ -4,7 +4,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View;
 
 public static class ViewGraphic
 {
-    public static class Size20
+    public static class Logo
     {
         public sealed class GitHub : Icon
         {
@@ -17,13 +17,10 @@ public static class ViewGraphic
                 )
             { }
         }
-    }
 
-    public static class Logo
-    {
-        public sealed class MonoHorizontal130x40 : Icon
+        public sealed class MonoHorizontal : Icon
         {
-            public MonoHorizontal130x40()
+            public MonoHorizontal()
                 : base(
                     "Undersoft",
                     IconVariant.Regular,
@@ -41,9 +38,9 @@ public static class ViewGraphic
             { }
         }
 
-        public sealed class ColorHorizontal130x40 : Icon
+        public sealed class ColorHorizontal : Icon
         {
-            public ColorHorizontal130x40()
+            public ColorHorizontal()
                 : base(
                     "Undersoft",
                     IconVariant.Regular,
@@ -61,9 +58,9 @@ public static class ViewGraphic
             { }
         }
 
-        public sealed class ColorSquare260x230 : Icon
+        public sealed class ColorSquare : Icon
         {
-            public ColorSquare260x230()
+            public ColorSquare()
                 : base(
                     "Undersoft",
                     IconVariant.Regular,

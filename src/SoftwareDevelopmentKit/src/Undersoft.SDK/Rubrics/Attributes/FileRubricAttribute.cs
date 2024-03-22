@@ -3,13 +3,17 @@
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class FileRubricAttribute : RubricAttribute
     {
-        public FileRubricType Type { get; set; }
+        public FileRubricType Type;
 
-        public string DataRubricName { get; set; }
+        public string DataMember;
 
         public FileRubricAttribute() { }
 
-        public FileRubricAttribute(FileRubricType type, string dataRubricName = null) { Type = type; DataRubricName = dataRubricName; }
+        public FileRubricAttribute(FileRubricType type, string dataMember = null)
+        {
+            Type = type;
+            DataMember = dataMember;
+        }
     }
 
     public enum FileRubricType

@@ -77,5 +77,25 @@
         {
             return new Updater(source, traceChanges).Put(item);
         }
+
+        public static object ShallowPatchTo(this object item, object target, IInvoker traceChanges = null)
+        {
+            return new Updater(item, traceChanges).ShallowPatch(target);
+        }
+
+        public static object ShallowPatchFrom(this object item, object source, IInvoker traceChanges = null)
+        {
+            return new Updater(source, traceChanges).ShallowPatch(item);
+        }
+
+        public static object ShallowPutTo(this object item, object target, IInvoker traceChanges = null)
+        {
+            return new Updater(item, traceChanges).ShallowPut(target);
+        }
+
+        public static object ShallowPutFrom(this object item, object source, IInvoker traceChanges = null)
+        {
+            return new Updater(source, traceChanges).ShallowPut(item);
+        }
     }
 }

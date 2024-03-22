@@ -1,0 +1,34 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using Undersoft.SDK.Proxies
+@using Undersoft.SDK.Rubrics
+@using Undersoft.SDK;
+@using Undersoft.SDK.Service.Application.GUI.View.Abstraction
+
+@inherits ViewItem
+@implements IIdentifiable
+@implements IViewItem
+
+<div>
+    @if (Rubric.Visible)
+    {
+        @if (!Rubric.Expandable)
+        {
+            <FluentNavLink Id="@ViewId" Icon="@Rubric.Icon" Match="@Match" Disabled="@Disabled" OnClick="@((e) => OnClick())" @ref="@Reference">
+                @_label
+            </FluentNavLink>
+        }
+        else
+        {
+            <FluentNavGroup Id="@ViewId" @bind-Expanded="@Expanded" Icon="@Rubric.Icon" Match="@Match" Disabled="@Disabled" Title="@_label" OnClick="@((e) => OnClick())" @ref="@Reference">
+                @foreach (var rubric in ExpandData.Rubrics)
+                {
+                    <div>
+                        <GenericNavItem Rubric="@rubric" Data="@ExpandData" Parent="@this" />
+                    </div>
+                }
+            </FluentNavGroup>
+        }
+    }
+</div>
+
+

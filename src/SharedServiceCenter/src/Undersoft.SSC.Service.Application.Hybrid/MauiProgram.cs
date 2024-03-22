@@ -55,7 +55,9 @@ public static class MauiProgram
             .ConfigureServices(new[] { typeof(ApplicationClient), typeof(AccessClient) })
             .Manager;
 
-        _ = manager.BuildInternalProvider().UseServiceClientsAsync();
+        _ = manager
+            .BuildInternalProvider()
+            .UseServiceClientsAsync();
 
         builder.ConfigureContainer(
             manager.GetProviderFactory(),
@@ -68,9 +70,9 @@ public static class MauiProgram
                     .AddSingleton<AppearanceState>()
                     .AddScoped<IRemoteRepository<IAccountStore, Account>, RemoteRepository<IAccountStore, Account>>()
                     .AddScoped<AccessProvider<Account>>()
-                    .AddScoped<AuthenticationStateProvider, AccessProvider<Account>>()
-                    .AddScoped<IAccountService<Account>, AccessProvider<Account>>()
-                    .AddScoped<IAccountAccess, AccessProvider<Account>>()
+                    .AddScoped<AuthenticationStateProvider, AccessProvider<Account>>(sp => sp.GetRequiredService<AccessProvider<Account>>())
+                    .AddScoped<IAccountAccess, AccessProvider<Account>>(sp => sp.GetRequiredService<AccessProvider<Account>>())
+                    .AddScoped<IAccountService<Account>, AccessProvider<Account>>(sp => sp.GetRequiredService<AccessProvider<Account>>())
                     .AddScoped<IValidator<IViewData<Credentials>>, AccessValidator>()
                     .AddScoped<IValidator<IViewData<Account>>, AccountValidator>()
                     .AddScoped<AccountValidator>()

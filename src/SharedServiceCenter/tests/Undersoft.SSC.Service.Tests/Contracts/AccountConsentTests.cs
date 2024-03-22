@@ -1,7 +1,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
-using Undersoft.SSC.Service.Contracts;
+using Undersoft.SSC.Service.Contracts.Accounts;
 
 namespace Undersoft.SSC.Service.Tests.Contracts;
 

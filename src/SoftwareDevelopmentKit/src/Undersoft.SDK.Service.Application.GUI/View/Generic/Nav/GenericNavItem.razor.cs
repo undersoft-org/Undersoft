@@ -1,26 +1,26 @@
+using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.FluentUI.AspNetCore.Components.Utilities;
 using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
 using Undersoft.SDK.Uniques;
 
-namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Menu
+namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Nav
 {
-    public partial class GenericMenuItem : ViewItem
+    public partial class GenericNavItem : ViewItem
     {
         [Inject]
         private NavigationManager _navigation { get; set; } = default!;
 
+        internal string? ClassValue => new CssBuilder(Class).AddClass("fluent-nav-item").Build();
+
+        internal string? LinkClassValue =>
+            new CssBuilder("fluent-nav-link").AddClass($"disabled", Disabled).Build();
+
         private Type _type = default!;
         private IProxy _proxy = default!;
-        private IProxy _childProxy = default!;
         private int _index;
         private string? _name { get; set; } = "";
         private string? _label { get; set; }
-
-        [CascadingParameter]
-        private bool IsOpen { get; set; }
-
-        [CascadingParameter]
-        public bool ShowIcons { get; set; } = true;
 
         protected override void OnInitialized()
         {
@@ -45,15 +45,6 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Menu
             }
         }
 
-        public override object? Value
-        {
-            get { return _proxy[_index]; }
-            set
-            {
-                _proxy[_index] = value;
-            }
-        }
-
         [CascadingParameter]
         public override IViewData Data { get; set; } = default!;
 
@@ -63,26 +54,48 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Menu
         [CascadingParameter]
         public IViewItem Root { get; set; } = default!;
 
+        private string? Href => GetLinkValue();
+
+        private NavLinkMatch Match => Rubric.PrefixedLink ? NavLinkMatch.Prefix : NavLinkMatch.All;
+
+        [Parameter]
+        private bool Expanded
+        {
+            get => Rubric.Expanded;
+            set => Rubric.Expanded = value;
+        }
+
+        [Parameter]
+        private bool Disabled
+        {
+            get => Rubric.Disabled;
+            set => Rubric.Disabled = value;
+        }
+
         public IViewData ExpandData { get; set; } = default!;
+
+        private string? GetLinkValue()
+        {
+            string? link = null;
+            if (Rubric.LinkValue != null)
+                link = Rubric.LinkValue;
+            if (Rubric.RubricType == typeof(string))
+                link = Value?.ToString();
+            return link;
+        }
 
         public void OnClick()
         {
             if (Rubric.IsLink)
             {
-                if (Rubric.LinkValue != null)
-                    _navigation.NavigateTo(Rubric.LinkValue);
-                if (Rubric.RubricType == typeof(string))
-                {
-                    var uri = Value?.ToString();
-                    if (uri != null)
-                        _navigation.NavigateTo(uri);
-                }
+                var link = Href;
+                if (link != null)
+                    _navigation.NavigateTo(link);
             }
             if (Rubric.Invoker != null)
             {
                 Rubric.Invoker.Invoke(Value);
             }
-            IsOpen = false;
         }
     }
 }

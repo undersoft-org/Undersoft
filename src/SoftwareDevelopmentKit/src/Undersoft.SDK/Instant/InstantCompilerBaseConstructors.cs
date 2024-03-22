@@ -21,7 +21,10 @@
             typeof(DisplayRubricAttribute).GetConstructor(new Type[] { typeof(string) });
 
         protected readonly ConstructorInfo LinkRubricCtor =
-            typeof(LinkAttribute).GetConstructor(new Type[] { typeof(string) });
+            typeof(LinkAttribute).GetConstructor(Type.EmptyTypes);
+
+        protected readonly ConstructorInfo IconRubricCtor =
+           typeof(IconRubricAttribute).GetConstructor(Type.EmptyTypes);
 
         protected readonly ConstructorInfo InvokeRubricCtor =
             typeof(InvokeAttribute).GetConstructor(Type.EmptyTypes);

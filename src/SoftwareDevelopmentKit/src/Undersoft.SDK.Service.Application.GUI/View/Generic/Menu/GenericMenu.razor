@@ -10,11 +10,13 @@
 <CascadingValue Value="@Data">
     <CascadingValue Value="@Root">
         <FluentMenu @bind-Open="@IsOpen" HorizontalPosition="@Position" Style="@Style" Anchor="@AnchorId" Trigger="@Trigger" Anchored="@Anchored" @ref="@Reference">
-            <CascadingValue Value="@IsOpen">
-            @foreach (var rubric in Data.Rubrics)
-            {
-                <GenericMenuItem Rubric="@rubric" Parent="@this" />
-            }
+            <CascadingValue Value="@ShowIcons">
+                <CascadingValue Value="@IsOpen">
+                    @foreach (var rubric in Data.Rubrics)
+                    {
+                        <GenericMenuItem Rubric="@rubric" Parent="@this" />
+                    }
+                </CascadingValue>
             </CascadingValue>
         </FluentMenu>
     </CascadingValue>

@@ -12,19 +12,24 @@
         @foreach (var rubric in Data.Rubrics)
         {
             <div id="@($"{Model.CodeNo}{@rubric.CodeNo}")" role="button">
-                @if (IsSingle && !ShowLabels)
+                @if (ShowIcons && rubric.Icon != null && rubric.IconSlot == IconSlot.Start)
                 {
-                    <FluentIcon Value="@(new Icons.Regular.Size20.LineHorizontal4())" Color="Color.FillInverse" Title="Categories" />
+                    <FluentIcon Value="@(rubric.Icon)" Color="Color.FillInverse" Title="@rubric.DisplayName" />
                 }
-                else
+                @if(ShowLabels)
                 {
                     <FluentLabel Typo="Typography.Body" Weight="FontWeight.Bold" Color="Color.Lightweight">
                         @rubric.DisplayName
                     </FluentLabel>
                 }
+                @if (ShowIcons && rubric.Icon != null && rubric.IconSlot == IconSlot.End)
+                {
+                    <FluentIcon Value="@(rubric.Icon)" Color="Color.FillInverse" Title="@rubric.DisplayName" />
+                }
+
             </div>
             <div>
-                <GenericMenu Position="HorizontalPosition.Right" Rubric="@rubric" AnchorId="@($"{Model.CodeNo}{@rubric.CodeNo}")" Data="@(Data[rubric.RubricId])" Anchored="true" Style="@("margin-top:14px;")" />
+                <GenericMenu Position="HorizontalPosition.Right" Rubric="@rubric" AnchorId="@($"{Model.CodeNo}{@rubric.CodeNo}")" Data="@(Data[rubric.RubricId])" Anchored="true" Style="@("margin-top:12px;")" />
             </div>
         }
     </FluentStack>

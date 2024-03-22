@@ -18,21 +18,39 @@
 
                     @if (_type == typeof(bool))
                     {
-                        <FluentMenuItem Id="@ViewId" Label="@_label" Role="MenuItemRole.MenuItemCheckbox" OnClick="@((e) => OnClick())" @ref="@Reference" />
+                        <FluentMenuItem Id="@ViewId" Label="@_label" Role="MenuItemRole.MenuItemCheckbox" OnClick="@((e) => OnClick())" @ref="@Reference">
+                            @if (ShowIcons && Rubric.Icon != null)
+                            {
+                                <FluentIcon Value="@(Rubric.Icon)" Color="Color.FillInverse" Slot="checkbox-indicator" />
+                            }
+                        </FluentMenuItem>
                     }
                     else
                     {
-                        <FluentMenuItem Id="@ViewId" Label="@_label" OnClick="@((e) => OnClick())" @ref="@Reference" />
+                        <FluentMenuItem Id="@ViewId" Label="@_label" OnClick="@((e) => OnClick())" @ref="@Reference">
+                            @if (ShowIcons && Rubric.Icon != null)
+                            {
+                                <span slot="@(Rubric.IconSlot.ToString().ToLower())">
+                                    <FluentIcon Value="@(Rubric.Icon)" Color="Color.FillInverse" />
+                                </span>
+                            }
+                        </FluentMenuItem>
                     }
                 }
                 else
                 {
                     <FluentMenuItem Id="@ViewId" Label="@_label" OnClick="@((e) => OnClick())" @ref="@Reference">
                         <MenuItems>
+                            @if (ShowIcons && Rubric.Icon != null)
+                            {
+                                <span slot="start">
+                                    <FluentIcon Value="@(Rubric.Icon)" Color="Color.FillInverse" />
+                                </span>
+                            }
                             @foreach (var rubric in ExpandData.Rubrics)
                             {
                                 <div>
-                                    <GenericMenuItem Rubric="@rubric" Data="ExpandData" Parent="@this" />
+                                    <GenericMenuItem Rubric="@rubric" Data="@ExpandData" Parent="@this" />
                                 </div>
                             }
                         </MenuItems>

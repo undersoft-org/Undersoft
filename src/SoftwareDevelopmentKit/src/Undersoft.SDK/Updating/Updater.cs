@@ -23,7 +23,7 @@ public class Updater : IUpdater
         set => source = value;
     }
 
-    public Action<Updater, object> MemberUpdate { get; set; }
+    public Action<Updater, object> ForUpdate { get; set; }
 
     public IInvoker TraceEvent { get; set; }
 
@@ -81,7 +81,7 @@ public class Updater : IUpdater
 
     public object Patch(object item)
     {
-        MemberUpdate = (o, t) => o.Patch(t);
+        ForUpdate = (o, t) => o.Patch(t);
 
         IProxy target = item.ToProxy();
         if (item.GetType() != type)
@@ -94,7 +94,7 @@ public class Updater : IUpdater
 
     public E Patch<E>(E item) where E : class
     {
-        MemberUpdate = (o, t) => o.Patch(t);
+        ForUpdate = (o, t) => o.Patch(t);
 
         IProxy target = item.ToProxy();
         if (typeof(E) != type)
@@ -112,7 +112,7 @@ public class Updater : IUpdater
 
     public object Put(object item)
     {
-        MemberUpdate = (o, t) => o.Put(t);
+        ForUpdate = (o, t) => o.Put(t);
 
         IProxy target = item.ToProxy();
         if (target != null)
@@ -127,7 +127,7 @@ public class Updater : IUpdater
 
     public E Put<E>(E item) where E : class
     {
-        MemberUpdate = (o, t) => o.Put(t);
+        ForUpdate = (o, t) => o.Put(t);
 
         IProxy target = item.ToProxy();
         if (target != null)
@@ -336,7 +336,7 @@ public class Updater : IUpdater
                                     if (traceable)
                                         targetItem = TraceEvent.Invoke(targetItem, null, null);
 
-                                    MemberUpdate(new Updater(originItem, TraceEvent), targetItem);
+                                    ForUpdate(new Updater(originItem, TraceEvent), targetItem);
                                 }
                                 else if (originItemType != targetItemType)
                                 {
@@ -372,7 +372,7 @@ public class Updater : IUpdater
         if (traceable)
             targetValue = TraceEvent.Invoke(targetValue, null, null);
 
-        MemberUpdate(new Updater(originValue, TraceEvent), targetValue);
+        ForUpdate(new Updater(originValue, TraceEvent), targetValue);
 
         return false;
     }
@@ -401,7 +401,7 @@ public class Updater : IUpdater
                     if (traceable)
                         _targetItem = TraceEvent.Invoke(_targetItem, null, null);
 
-                    MemberUpdate(new Updater(originItem, TraceEvent), _targetItem);
+                    ForUpdate(new Updater(originItem, TraceEvent), _targetItem);
 
                     founded = true;
                     break;
@@ -429,6 +429,177 @@ public class Updater : IUpdater
         }
 
         return true;
+    }
+
+    public object ShallowPatch(object item)
+    {
+        IProxy target = item.ToProxy();
+        if (item.GetType() != type)
+            ShallowPatchNotEqualTypes(target);
+        else
+            ShallowPatchEqualTypes(target);
+
+        return item;
+    }
+
+    public E ShallowPatch<E>(E item) where E : class
+    {
+        IProxy target = item.ToProxy();
+        if (typeof(E) != type)
+            ShallowPatchNotEqualTypes(target);
+        else
+            ShallowPatchEqualTypes(target);
+
+        return item;
+    }
+
+    public E ShallowPatch<E>() where E : class
+    {
+        return ShallowPatch(typeof(E).New<E>());
+    }
+
+    public object ShallowPut(object item)
+    {
+        IProxy target = item.ToProxy();
+        if (target != null)
+        {
+            if (item.GetType() != type)
+                ShallowPutNotEqualTypes(target);
+            else
+                ShallowPutEqualTypes(target);
+        }
+        return item;
+    }
+
+    public E ShallowPut<E>(E item) where E : class
+    {
+        IProxy target = item.ToProxy();
+        if (target != null)
+        {
+            if (typeof(E) != type)
+                ShallowPutNotEqualTypes(target);
+            else
+                ShallowPutEqualTypes(target);
+        }
+        return item;
+    }
+
+    public E ShallowPut<E>() where E : class
+    {
+        return ShallowPut(typeof(E).New<E>());
+    }
+
+    protected void ShallowPatchEqualTypes(IProxy target)
+    {
+        counter = 0;
+        var _target = target;
+
+        Rubrics
+            .Where(r => !r.IsKey && !r.RubricName.Equals("proxy"))
+            .ForEach(
+                (rubric) =>
+                {
+                    var targetndex = rubric.RubricId;
+                    var originValue = Source[targetndex];
+                    var targetValue = _target[targetndex];
+
+                    if (
+                        !originValue.NullOrEquals(targetValue)
+                    )
+                    {
+                        _target[targetndex] = originValue;
+                    }
+                }
+            );
+    }
+
+    protected void ShallowPatchNotEqualTypes(IProxy target)
+    {
+        counter = 0;
+        var _target = target;
+
+        Rubrics
+            .Where(r => !r.IsKey && !r.RubricName.Equals("proxy"))
+            .ForEach(
+                (originRubric) =>
+                {
+                    var name = originRubric.Name;
+                    if (_target.Rubrics.TryGet(name, out MemberRubric targetRubric))
+                    {
+                        var originValue = Source[originRubric.RubricId];
+                        var targetIndex = targetRubric.RubricId;
+                        var targetValue = _target[targetIndex];
+
+                        if (
+                            !originValue.NullOrEquals(targetValue)
+                        )
+                        {
+                            if (targetRubric.RubricType.IsAssignableTo(originRubric.RubricType))
+                            {
+                                _target[targetIndex] = originValue;
+                            }
+                        }
+                    }
+                }
+            );
+    }
+
+    protected void ShallowPutEqualTypes(IProxy target)
+    {
+        counter = 0;
+        var _target = target;
+
+        Rubrics
+            .Where(r => !r.IsKey && !r.RubricName.Equals("proxy"))
+            .ForEach(
+                (rubric) =>
+                {
+                    var targetndex = rubric.RubricId;
+                    var originValue = Source[targetndex];
+                    var targetValue = _target[targetndex];
+
+                    if (
+                        originValue != null
+                    )
+                    {
+                        _target[targetndex] = originValue;
+                    }
+                }
+            );
+    }
+
+    protected void ShallowPutNotEqualTypes(IProxy target)
+    {
+        counter = 0;
+        var _target = target;
+
+        Rubrics
+            .Where(r => !r.IsKey && !r.RubricName.Equals("proxy"))
+            .ForEach(
+                (originRubric) =>
+                {
+                    var name = originRubric.Name;
+                    if (_target.Rubrics.TryGet(name, out MemberRubric targetRubric))
+                    {
+                        var originValue = Source[originRubric.RubricId];
+                        if (originValue == null)
+                            return;
+
+                        var targetIndex = targetRubric.RubricId;
+                        var targetValue = _target[targetIndex];
+
+                        if (
+                            originValue != null
+                        )
+                        {
+                            if (targetRubric.RubricType.IsAssignableTo(originRubric.RubricType))
+                            {
+                                _target[targetIndex] = originValue;
+                            }
+                        }
+                    }
+                }
+            );
     }
 
     private static HashSet<string> excludedRubrics;

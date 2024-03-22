@@ -30,6 +30,7 @@ namespace Undersoft.SDK.Rubrics.Attributes
         {
             Type = targetType;
             Method = method;
+            Target = targetType.FullName;
             Invoker = new Invoker(Type, Method);
         }
     }

@@ -11,19 +11,19 @@
 <CascadingValue Value="@Content">
 
     <!-- Header -->
-    <GenericFormPanelTabsHeader TModel="TModel" />
+    <GenericFormTabsHeader TModel="TModel" />
 
     <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalGap="20">
 
         <GenericPersona TModel="TModel" Content="@Content" ForFirstName="@ForFirstName" ForLastName="@ForLastName" ForImage="@ForImage" ForImageData="@ForImageData" ImageSize="150px" Style="height:auto;" />
 
         <!-- Body -->
-        <GenericFormPanelTabsBody TValidator="TValidator" TModel="TModel" Orientation="Orientation.Vertical" />
+        <GenericFormTabsBody TValidator="TValidator" TModel="TModel" Orientation="Orientation.Vertical" />
 
     </FluentStack>
     <FluentSpacer />
     <!-- Footer -->
-    <GenericFormPanelTabsFooter TModel="TModel" />
+    <GenericFormTabsFooter TModel="TModel" />
 
 </CascadingValue>
 

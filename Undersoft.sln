@@ -72,8 +72,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{72B54066-5049-4133-9C72-1D8BB4CD1B73}"
 	ProjectSection(SolutionItems) = preProject
 		deploy\Undersoft.SSC.Data.Server.Dockerfile = deploy\Undersoft.SSC.Data.Server.Dockerfile
-		deploy\Undersoft.SSC.Service.Application.Server.Dockerfile = deploy\Undersoft.SSC.Service.Application.Server.Dockerfile
 		deploy\Undersoft.SSC.Kubernetes.Deployment.yaml = deploy\Undersoft.SSC.Kubernetes.Deployment.yaml
+		deploy\Undersoft.SSC.Service.Application.Server.Dockerfile = deploy\Undersoft.SSC.Service.Application.Server.Dockerfile
 		deploy\Undersoft.SSC.Service.Server.Dockerfile = deploy\Undersoft.SSC.Service.Server.Dockerfile
 	EndProjectSection
 EndProject

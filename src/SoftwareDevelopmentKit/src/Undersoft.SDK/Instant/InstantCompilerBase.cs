@@ -40,6 +40,8 @@
                 resolveInstantCreatorLinkAttributes(fb, mi, mr);
 
                 resolveInstantCreatorInvokeAttributes(fb, mi, mr);
+
+                resolveInstantCreatorIconAttributes(fb, mi, mr);
             }
             return mr;
         }
@@ -234,9 +236,9 @@
                     new FieldInfo[]
                     {
                     typeof(LinkAttribute).GetField("Value"),
-                    typeof(LinkAttribute).GetField("Operation")
+                    typeof(LinkAttribute).GetField("PrefixedLink"),
                     },
-                    new object[] { attrib.Value, attrib.Operation }
+                    new object[] { attrib.Value, attrib.PrefixedLink }
                 )
             );
         }
@@ -250,9 +252,9 @@
                     new FieldInfo[]
                     {
                     typeof(FileRubricAttribute).GetField("Type"),
-                    typeof(FileRubricAttribute).GetField("DataRubricName"),
+                    typeof(FileRubricAttribute).GetField("DataMember"),
                     },
-                    new object[] { attrib.Type, attrib.DataRubricName }
+                    new object[] { attrib.Type, attrib.DataMember }
                 )
             );
         }
@@ -268,8 +270,25 @@
                     typeof(InvokeAttribute).GetField("Method"),
                     typeof(InvokeAttribute).GetField("Target"),
                     typeof(InvokeAttribute).GetField("Type"),
+                    typeof(InvokeAttribute).GetField("Invoker")
                     },
-                    new object[] { attrib.Method, attrib.Target, attrib.Type }
+                    new object[] { attrib.Method, attrib.Target, attrib.Type, attrib.Invoker }
+                )
+            );
+        }
+
+        public void CreateInstantCreatorIconAttribute(FieldBuilder field, IconRubricAttribute attrib)
+        {
+            field.SetCustomAttribute(
+                new CustomAttributeBuilder(
+                    IconRubricCtor,
+                    Type.EmptyTypes,
+                    new FieldInfo[]
+                    {
+                    typeof(IconRubricAttribute).GetField("IconMember"),
+                    typeof(IconRubricAttribute).GetField("IconSlot")
+                    },
+                    new object[] { attrib.IconMember, attrib.IconSlot }
                 )
             );
         }
@@ -476,7 +495,7 @@
 
                 mr.IsFile = true;
                 mr.FileType = fta.Type;
-                mr.DataRubricName = fta.DataRubricName;
+                mr.DataMember = fta.DataMember;
 
                 if (fb != null)
                     CreateInstantCreatorFileAttribute(fb, fta);
@@ -485,7 +504,7 @@
             {
                 CreateInstantCreatorFileAttribute(
                     fb,
-                    new FileRubricAttribute() { Type = mr.FileType, DataRubricName = mr.DataRubricName }
+                    new FileRubricAttribute() { Type = mr.FileType, DataMember = mr.DataMember }
                 );
             }
         }
@@ -498,7 +517,7 @@
                 LinkAttribute fta = (LinkAttribute)o;
 
                 mr.LinkValue = fta.Value;
-                mr.LinkOperation = fta.Operation;
+                mr.PrefixedLink = fta.PrefixedLink;
                 mr.IsLink = true;
 
                 if (fb != null)
@@ -508,8 +527,30 @@
             {
                 CreateInstantCreatorLinkAttribute(
                     fb,
-                    new LinkAttribute() { Value = mr.LinkValue }
+                    new LinkAttribute() { Value = mr.LinkValue, PrefixedLink = mr.PrefixedLink }
                 );
+            }
+        }
+
+        void resolveInstantCreatorIconAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        {
+            object o = mi.GetCustomAttributes(typeof(IconRubricAttribute), false).FirstOrDefault();
+            if ((o != null))
+            {
+                IconRubricAttribute fta = (IconRubricAttribute)o;
+
+                mr.IconMember = fta.IconMember;
+                mr.IconSlot = fta.IconSlot;
+
+                if (fb != null)
+                    CreateInstantCreatorIconAttribute(fb, fta);
+            }
+            else if (mr.IconMember != null)
+            {
+                CreateInstantCreatorIconAttribute(
+                   fb,
+                   new IconRubricAttribute(mr.IconMember, mr.IconSlot)
+               );
             }
         }
 
@@ -527,6 +568,13 @@
 
                 if (fb != null)
                     CreateInstantCreatorInvokeAttribute(fb, fta);
+            }
+            else if (mr.InvokeMethod != null && mr.InvokeType != null)
+            {
+                CreateInstantCreatorInvokeAttribute(
+                   fb,
+                   new InvokeAttribute(mr.InvokeType, mr.InvokeMethod)
+               );
             }
             else if (mr.InvokeMethod != null && mr.InvokeTarget != null)
             {

@@ -1,6 +1,6 @@
 ﻿using Undersoft.SDK.Rubrics.Attributes;
 
-namespace Undersoft.SSC.Service.Contracts;
+namespace Undersoft.SSC.Service.Contracts.Accounts;
 
 public class AccountSubscription : DataObject
 {

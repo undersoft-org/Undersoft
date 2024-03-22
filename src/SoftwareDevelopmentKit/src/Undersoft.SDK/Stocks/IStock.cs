@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Undersoft.SDK.Stocks
+﻿namespace Undersoft.SDK.Stocks
 {
     public interface IStock
     {
@@ -19,8 +13,6 @@ namespace Undersoft.SDK.Stocks
             set;
         }
 
-        void Write();
-        void Read();
         void Open();
         void Close();
     }

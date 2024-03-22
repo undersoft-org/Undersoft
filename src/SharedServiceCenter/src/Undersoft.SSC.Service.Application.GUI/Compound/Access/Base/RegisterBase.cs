@@ -7,6 +7,7 @@ using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
 using Undersoft.SDK.Updating;
 using Undersoft.SSC.Service.Application.GUI.Compound.Access.Dialog;
 using Undersoft.SSC.Service.Contracts;
+using Undersoft.SSC.Service.Contracts.Accounts;
 
 namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
 {
@@ -54,7 +55,6 @@ namespace Undersoft.SSC.Service.Application.GUI.Compound.Access
 
             account.Credentials = _authorization.Credentials;
             _authorization.Credentials.PatchTo(account.Personal);
-            _authorization.Credentials.PatchTo(account.Professional);
 
             var data = new ViewData<Account>(account, OperationType.Any, title);
             data.SetVisible(

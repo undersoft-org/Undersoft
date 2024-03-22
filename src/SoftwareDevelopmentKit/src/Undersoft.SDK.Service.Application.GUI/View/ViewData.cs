@@ -33,7 +33,8 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
 
     public virtual IViewRubrics MapRubrics()
     {
-        Rubrics.Put(_proxy.Rubrics.ForOnly(r => r.Visible, r => (ViewRubric)(object)r.ShalowCopy(new ViewRubric())));
+        Rubrics.Put(_proxy.Rubrics.ForOnly(r => r.Visible, r => (ViewRubric)(object)r.ShallowCopy(new ViewRubric())));
+        Rubrics.ForOnly(r => r.IconMember != null, r => r.Icon = (Icon)_proxy[r.IconMember]).Commit();
         Rubrics.ForEach((r, x) => r.RubricOrdinal = x).Commit();
         return Rubrics;
     }
@@ -45,7 +46,7 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
     public virtual void SetRequired(params string[] requiredList)
     {
         var rubrics = requiredList.ForEach(
-            r => (ViewRubric)(object)_proxy.Rubrics[r].ShalowCopy(new ViewRubric())
+            r => (ViewRubric)(object)_proxy.Rubrics[r].ShallowCopy(new ViewRubric())
         ).Commit();
         rubrics.ForEach((r, x) =>
         {
@@ -61,7 +62,7 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
     public virtual void SetVisible(params string[] visibleList)
     {
         var rubrics = visibleList.ForEach(
-            r => (ViewRubric)(object)_proxy.Rubrics[r].ShalowCopy(new ViewRubric())
+            r => (ViewRubric)(object)_proxy.Rubrics[r].ShallowCopy(new ViewRubric())
         ).Commit();
         rubrics.ForEach((r, x) =>
         {
@@ -74,7 +75,7 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
     public virtual void SetEditable(params string[] editableList)
     {
         var rubrics = editableList.ForEach(
-            r => (ViewRubric)(object)_proxy.Rubrics[r].ShalowCopy(new ViewRubric())
+            r => (ViewRubric)(object)_proxy.Rubrics[r].ShallowCopy(new ViewRubric())
         ).Commit();
         rubrics.ForEach((r, x) =>
         {
@@ -89,7 +90,7 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
     {
         var rubrics = displayPairList.ForEach((d, x) =>
         {
-            var rubric = _proxy.Rubrics[d.RubricName].ShalowCopy(new ViewRubric());
+            var rubric = _proxy.Rubrics[d.RubricName].ShallowCopy(new ViewRubric());
             rubric.DisplayName = d.DisplayName;
             rubric.Visible = true;
             rubric.RubricOrdinal = x;

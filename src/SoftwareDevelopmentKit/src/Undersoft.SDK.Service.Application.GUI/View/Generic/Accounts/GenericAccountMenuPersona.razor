@@ -9,18 +9,19 @@
 @typeparam TModel where TModel : class, IOrigin, IInnerProxy, IAuthorization
 @typeparam TValidator where TValidator : class, IValidator<IViewData<TModel>>
 
-<FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Right" HorizontalGap="5">
-    <div id="account-top-menu" role="button">
-        <GenericPersona TModel="IAuthorization" ForFirstName="@ForFirstName" ForLastName="@ForLastName" 
-                        ForImage="@ForImage" ForImageData="@ForImageData" ImageSize="35px" 
-                        Content="@(new ViewData<IAuthorization>(Authorization))" />
-    </div>
 
+<div id="account-top-menu" role="button">
+    <GenericPersona TModel="IAuthorization" ForFirstName="@ForFirstName" ForLastName="@ForLastName"
+                    ForImage="@ForImage" ForImageData="@ForImageData" ImageSize="35px"
+                    Content="@(new ViewData<IAuthorization>(Authorization))" />
+</div>
+<FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Right" HorizontalGap="5">
     <div>
-        <GenericAccountMenu TModel="TModel" TValidator="TValidator" Position="HorizontalPosition.Left" Rubric="Data.Rubrics[0]" AnchorId="account-top-menu" Data="@(Data[0])" Anchored="true" Style="@("margin-top:8px;")" />
+        <GenericAccountMenu TModel="TModel" TValidator="TValidator" Position="HorizontalPosition.Left" Rubric="Data.Rubrics.FirstOrDefault()" AnchorId="account-top-menu" Data="@(Data.FirstOrDefault())" Anchored="true" Style="@("margin-top:8px;")" />
     </div>
 </FluentStack>
 @code {
+
     [Inject]
     public IAuthorization Authorization { get; set; } = default!;
     private Func<IAuthorization, string> ForFirstName => f => f.Credentials.FirstName;

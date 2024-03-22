@@ -5,18 +5,14 @@
 @using Undersoft.SDK
 @using Undersoft.SDK.Invoking
 
-@inherits ViewItem<TModel>
+@inherits ViewItem
 
-@typeparam TModel where TModel : class, IOrigin, IInnerProxy
+<CascadingValue Value="@Data">
+    @foreach (var rubric in Data.Rubrics)
+    {
+        <GenericNavItem Rubric="@rubric" Parent="@this" />
+    }
+</CascadingValue>
 
-<FluentGrid>
-   
-
-</FluentGrid>
-
-
-@code
-{
-}
 
 
