@@ -14,6 +14,8 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Menu
         [Parameter]
         public bool ShowIcons { get; set; } = true;
 
+        public override string ViewId => $"{Model.Id.ToString()}{Rubric.Id.ToString()}";
+
         protected override void OnParametersSet()
         {
             if (Data == null)

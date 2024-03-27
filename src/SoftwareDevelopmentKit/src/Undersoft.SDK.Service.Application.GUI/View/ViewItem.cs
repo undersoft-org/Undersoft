@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.FluentUI.AspNetCore.Components;
 using System.ComponentModel;
 using Undersoft.SDK.Proxies;
+using Undersoft.SDK.Series;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
 using Undersoft.SDK.Uniques;
 
@@ -12,6 +14,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View
         {
             if (Data == null)
                 Content = new ViewData<TModel>(typeof(TModel).New<TModel>());
+            base.OnInitialized();
         }
 
         public override TModel Model => Content.Model;
@@ -32,11 +35,16 @@ namespace Undersoft.SDK.Service.Application.GUI.View
 
         protected override void OnInitialized()
         {
-            if (Data == null)
-                Data = typeof(ViewData<>)
-                    .MakeGenericType(Model.GetType())
-                    .New<IViewData>(Model.GetType().New());
+            if (Data != null)
+            {
+                BindingId = Data.Model.TypeId.ToString();
+            }
 
+            if (Rubric != null)
+            {
+                Rubric.FieldIdentifier = new FieldIdentifier(this, Rubric.RubricName);
+                Rubric.ViewItem = this;
+            }
         }
 
         [Parameter]
@@ -55,6 +63,9 @@ namespace Undersoft.SDK.Service.Application.GUI.View
         }
 
         public virtual string ViewId => Id.ToString();
+
+        [Parameter]
+        public string? BindingId { get; set; }
 
         [Parameter]
         public virtual Icon? Icon { get; set; }
@@ -84,6 +95,8 @@ namespace Undersoft.SDK.Service.Application.GUI.View
         public virtual IViewRubric Rubric { get; set; } = default!;
 
         public object? Reference { get; set; } = default!;
+
+        public ISeries<IViewItem> ChildItems { get; set; } = default!;
 
         public string CodeNo
         {

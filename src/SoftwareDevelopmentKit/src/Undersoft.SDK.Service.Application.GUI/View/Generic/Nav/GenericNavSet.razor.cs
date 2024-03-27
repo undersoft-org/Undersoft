@@ -6,7 +6,13 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Nav
 {
     public partial class GenericNavSet<TMenu> : ViewItem<TMenu> where TMenu : class, IOrigin, IInnerProxy
     {
-        public bool IsSingle => Data.Rubrics.Count < 2;
+        private IJSObjectReference _jsModule = default!;
+
+        [Inject]
+        private IJSRuntime JSRuntime { get; set; } = default!;
+
+        [Inject]
+        private NavigationManager _navigation { get; set; } = default!;
 
         [Parameter]
         public override string? Style { get; set; }
@@ -17,10 +23,31 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Nav
         [CascadingParameter]
         public IViewItem? Root { get; set; }
 
+        [CascadingParameter]
+        public bool Expanded { get; set; }
+
         public string ActiveId
         {
             get => Data.ActiveRubric.RubricName;
             set => Data.ActiveRubric = Content.Rubrics[value];
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                _jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>(
+                    "import",
+                    "./_content/Undersoft.SDK.Service.Application.GUI/View/Generic/Nav/GenericNavSet.razor.js"
+                );
+
+                foreach (var rubric in Data.Rubrics)
+                {
+                    await _jsModule.InvokeVoidAsync("removeExpandIcon", rubric.RubricName);
+                }
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
         }
 
         protected override void OnParametersSet()
@@ -42,6 +69,14 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Nav
                 Data.ActiveRubric = firstRubric;
 
             base.OnParametersSet();
+        }
+
+        public void OnExpandLink(ViewRubric rubric)
+        {
+            if (rubric.IsLink)
+            {
+                _navigation.NavigateTo(rubric.LinkValue);
+            }
         }
     }
 }

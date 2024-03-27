@@ -1,0 +1,30 @@
+﻿@inherits FluentComponentBase
+
+
+@typeparam TMenu where TMenu : class, IOrigin, IInnerProxy
+
+<FluentStack Class="body-stack" Orientation="Orientation.Horizontal" Width="100%" HorizontalGap="0">
+
+    <GenericNavMenu TMenu="TMenu" Margin="0px" Style="min-width:46px;" Width="200"></GenericNavMenu>
+
+    <FluentBodyContent id="body-content" Style="height: calc(100dvh - 90px);">
+       
+        <div class="content">
+        
+            <article id="article">
+                @Body
+            </article>
+            
+            <aside>
+                <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center">
+                
+
+                </FluentStack>
+
+                <GenericGoTopButton />
+            </aside>
+        
+        </div>
+    </FluentBodyContent>
+
+</FluentStack>

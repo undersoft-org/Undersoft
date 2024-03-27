@@ -30,11 +30,13 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic
             progressTitle = file.ProgressTitle;
 
             var fileInfo = $"{file.ContentType};{DateTime.Now.ToFileTime()};{file.Name}";
-            Data.Model.Proxy[Rubric.RubricId] = fileInfo;
+            Model.Proxy[Rubric.RubricId] = fileInfo;
             Files.Add(file.Name);
 
             if (Rubric.DataMember != null)
-                Data.Model.Proxy[Rubric.DataMember] = await file.Stream!.GetAllBytesAsync(); ;
+                Model.Proxy[Rubric.DataMember] = await file.Stream!.GetAllBytesAsync();
+            else if (Model.Proxy.Rubrics.ContainsKey(Rubric.RubricName + "Data"))
+                Model.Proxy[Rubric.RubricName + "Data"] = await file.Stream!.GetAllBytesAsync();
 
             await file.Stream!.DisposeAsync();
         }

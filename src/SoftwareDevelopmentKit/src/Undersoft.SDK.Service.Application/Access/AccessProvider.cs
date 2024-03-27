@@ -84,18 +84,24 @@ public class AccessProvider<TAccount> : AuthenticationStateProvider, IAccountSer
     public AccessState GetAccessState(string token)
     {
         _authorization.Credentials.SessionToken = token;
-        return new AccessState(
+        var accessState = new AccessState(
             new ClaimsPrincipal(new ClaimsIdentity(GetTokenClaims(token), "jwt"))
         );
+        if (accessState.User.Identity != null)
+            _authorization.Credentials.Authenticated = accessState.User.Identity.IsAuthenticated;
+        return accessState;
     }
 
     public async Task<AccessState> GetAccessStateAsync(string token)
     {
         _authorization.Credentials.SessionToken = token;
         await Registered(typeof(TAccount).New<TAccount>());
-        return new AccessState(
+        var accessState = new AccessState(
             new ClaimsPrincipal(new ClaimsIdentity(GetTokenClaims(token), "jwt"))
         );
+        if (accessState.User.Identity != null)
+            _authorization.Credentials.Authenticated = accessState.User.Identity.IsAuthenticated;
+        return accessState;
     }
 
     private ISeries<Claim> GetTokenClaims(string jwt)

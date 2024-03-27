@@ -35,6 +35,7 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
     {
         Rubrics.Put(_proxy.Rubrics.ForOnly(r => r.Visible, r => (ViewRubric)(object)r.ShallowCopy(new ViewRubric())));
         Rubrics.ForOnly(r => r.IconMember != null, r => r.Icon = (Icon)_proxy[r.IconMember]).Commit();
+        Rubrics.ForOnly(r => r.Icon == null && _proxy.Rubrics.ContainsKey(r.RubricName + "Icon"), r => r.Icon = (Icon)_proxy[r.RubricName + "Icon"]).Commit();
         Rubrics.ForEach((r, x) => r.RubricOrdinal = x).Commit();
         return Rubrics;
     }

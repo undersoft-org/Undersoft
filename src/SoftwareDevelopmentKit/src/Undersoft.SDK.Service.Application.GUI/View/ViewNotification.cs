@@ -41,7 +41,6 @@ public class ViewNotification
             options.Link = notification.Link;
             options.Timestamp = DateTime.Now;
             options.Timeout = notification.Timeout;
-            options.Section = ViewSection.PANEL;
         });
     }
 

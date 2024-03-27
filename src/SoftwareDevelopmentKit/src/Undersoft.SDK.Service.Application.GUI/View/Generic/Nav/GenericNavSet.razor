@@ -8,25 +8,32 @@
 @typeparam TMenu where TMenu : class, IOrigin, IInnerProxy
 
 <div class="generic nav-menu">
-    <CascadingValue Value="@Data">
-        <CascadingValue Value="@Root">
-            <FluentAccordion ActiveId="@ActiveId" ExpandMode="AccordionExpandMode.Single">
-                @foreach (var rubric in Data.Rubrics)
-                {
-                    <FluentAccordionItem Class="fluent-nav-group fluent-nav-item">
-                        <HeadingTemplate>
-                            <FluentIcon Value="@(rubric.Icon)" Color="Color.FillInverse" Title="@rubric.DisplayName" Slot="start" />
-                            <FluentLabel Typo="Typography.H6" Weight="FontWeight.Bold" Color="Color.Lightweight">
-                                @rubric.DisplayName
-                            </FluentLabel>
-                        </HeadingTemplate>
-                        <ChildContent>
+    <CascadingValue Value="@Root">
+        <FluentAccordion ActiveId="@ActiveId" ExpandMode="AccordionExpandMode.Single" Style="gap:0">
+            @foreach (var rubric in Data.Rubrics)
+            {
+                <FluentAccordionItem Id="@rubric.RubricName" Class="fluent-nav-group fluent-nav-item" Style="margin:0px;" ExpandedChanged="@((e) => OnExpandLink(rubric))">
+                    <HeadingTemplate>
+                        <div style="padding:0px; margin:0px; height:24px">
+                            <FluentStack Orientation="Orientation.Horizontal">
+                                <FluentIcon Value="@(rubric.Icon)" Color="Color.Accent" Width="24px" Title="@rubric.DisplayName" Slot="start" />
+                                @if (Expanded)
+                                {
+                                    <FluentLabel Typo="Typography.Subject" Weight="FontWeight.Normal" Color="Color.Accent">
+                                        @rubric.DisplayName
+                                    </FluentLabel>
+                                }
+                            </FluentStack>
+                        </div>
+                    </HeadingTemplate>
+                    <ChildContent>
+                        <div style="background:var(--neutral-fill-alt-rest); padding:0px; margin:0px;">
                             <GenericNav Rubric="@rubric" Data="@(Data[rubric.RubricId])" Parent="this" />
-                        </ChildContent>
-                    </FluentAccordionItem>
-                }
-            </FluentAccordion>
-        </CascadingValue>
+                        </div>
+                    </ChildContent>
+                </FluentAccordionItem>
+            }            
+        </FluentAccordion>
     </CascadingValue>
 </div>
 

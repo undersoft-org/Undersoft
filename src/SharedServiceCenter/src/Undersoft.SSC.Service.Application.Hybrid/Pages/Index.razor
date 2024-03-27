@@ -4,10 +4,17 @@
 
 @inject NavigationManager _navigation
 
+@inject IAuthorization _authorization
+
 @code
 {
     protected override void OnInitialized()
     {
-        _navigation.NavigateTo("/landing/overview");
+        if (!_authorization.Credentials.Authenticated)
+            _navigation.NavigateTo("/landing/overview");
+        else
+            _navigation.NavigateTo("/presenting/dashboard");
+
+        base.OnInitialized();
     }
 }

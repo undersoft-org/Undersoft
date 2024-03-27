@@ -35,6 +35,8 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Nav
 
             Rubric.ViewItem = this;
 
+            Root.ChildItems.Put(this);
+
             if (Rubric.Expandable && _type.IsClass)
             {
                 ExpandData = typeof(ViewData<>).MakeGenericType(_type).New<IViewData>(Value);
@@ -44,9 +46,6 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Nav
                 Root.Data.Put(ExpandData);
             }
         }
-
-        [CascadingParameter]
-        public override IViewData Data { get; set; } = default!;
 
         [Parameter]
         public IViewItem Parent { get; set; } = default!;
@@ -59,14 +58,14 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Nav
         private NavLinkMatch Match => Rubric.PrefixedLink ? NavLinkMatch.Prefix : NavLinkMatch.All;
 
         [Parameter]
-        private bool Expanded
+        public bool Expanded
         {
             get => Rubric.Expanded;
             set => Rubric.Expanded = value;
         }
 
         [Parameter]
-        private bool Disabled
+        public bool Disabled
         {
             get => Rubric.Disabled;
             set => Rubric.Disabled = value;

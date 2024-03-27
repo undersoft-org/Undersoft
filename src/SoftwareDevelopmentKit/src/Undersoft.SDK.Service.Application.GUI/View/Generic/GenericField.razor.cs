@@ -3,6 +3,7 @@ using Microsoft.FluentUI.AspNetCore.Components;
 using System.Diagnostics.CodeAnalysis;
 using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
+using Undersoft.SDK.Uniques;
 
 namespace Undersoft.SDK.Service.Application.GUI.View.Generic
 {
@@ -73,13 +74,17 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic
             _required = Rubric.Required;
             _inputMode = GetInputMode();
             _textFieldType = GetTexType();
-            Id = Rubric.Id;
+            Id = Model.Id.UniqueKey(Rubric.Id);
             TypeId = Model.TypeId;
-            Rubric.FieldIdentifier = new FieldIdentifier(this, _name);
-            Rubric.ViewItem = this;
+
+            base.OnInitialized();
         }
 
+        [Parameter]
         public override string? Label { get => _label; set { _label = value; } }
+
+        [Parameter]
+        public string Width { get; set; } = "179px";
 
         [CascadingParameter]
         public override IViewData Data { get; set; } = default!;

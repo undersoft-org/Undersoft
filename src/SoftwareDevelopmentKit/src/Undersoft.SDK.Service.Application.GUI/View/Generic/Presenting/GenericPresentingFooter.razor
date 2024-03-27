@@ -1,0 +1,14 @@
+﻿@inherits FluentComponentBase
+
+
+<FluentFooter Style="@("display:flex; height: 40px; width:100%;")">
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" Width="100%">
+        <small>
+            v@(AppearanceState?.Version) dh@undersoft.pl
+        </small>
+        <FluentSpacer/>
+            <a href="" style="height:30px">
+                <FluentIcon Value="@(new ViewGraphic.Logo.ColorHorizontalSmall())" Color="Color.FillInverse" Width="100" />
+            </a>        
+    </FluentStack>
+</FluentFooter>

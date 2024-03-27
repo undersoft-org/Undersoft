@@ -13,19 +13,28 @@
     {
         @if (!Rubric.Expandable)
         {
-            <FluentNavLink Id="@ViewId" Icon="@Rubric.Icon" Match="@Match" Disabled="@Disabled" OnClick="@((e) => OnClick())" @ref="@Reference">
+            <FluentNavLink Id="@ViewId" IconColor="Color.FillInverse" Icon="@Rubric.Icon" Match="@Match" Disabled="@Disabled" OnClick="@((e) => OnClick())" @ref="@Reference" Style="margin:0px">
+               <FluentLabel Color="Color.FillInverse">
                 @_label
+                </FluentLabel>
             </FluentNavLink>
         }
         else
         {
-            <FluentNavGroup Id="@ViewId" @bind-Expanded="@Expanded" Icon="@Rubric.Icon" Match="@Match" Disabled="@Disabled" Title="@_label" OnClick="@((e) => OnClick())" @ref="@Reference">
+            <FluentNavGroup Id="@ViewId" @bind-Expanded="@Expanded" IconColor="Color.Accent" Icon="@Rubric.Icon" Match="@Match" Disabled="@Disabled" OnClick="@((e) => OnClick())" @ref="@Reference" Style="margin:0px">
+                <TitleTemplate>
+                    <FluentLabel Typo="Typography.Body" Weight="FontWeight.Bold" Color="Color.Accent">
+                        @_label
+                    </FluentLabel>
+                </TitleTemplate>
+                <ChildContent>
                 @foreach (var rubric in ExpandData.Rubrics)
                 {
                     <div>
                         <GenericNavItem Rubric="@rubric" Data="@ExpandData" Parent="@this" />
                     </div>
                 }
+                </ChildContent>
             </FluentNavGroup>
         }
     }

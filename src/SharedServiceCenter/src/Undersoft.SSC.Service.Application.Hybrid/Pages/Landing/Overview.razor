@@ -4,88 +4,72 @@
 @page "/landing/overview"
 
 <FluentGrid Spacing="4" Justify="JustifyContent.Center">
-    <FluentGridItem xs="12" md="12" lg="3" xl="2" Style="text-align:center;" >
-                <FluentIcon Value="@(new ViewGraphic.Logo.ColorSquare())" Color="Color.FillInverse" Width="200px"></FluentIcon>
+    <FluentGridItem xs="12" md="12" lg="3" xl="2" Style="text-align:center;">
+        <FluentIcon Value="@(new ViewGraphic.Logo.ColorSquare())" Color="Color.FillInverse" Width="200px"></FluentIcon>
     </FluentGridItem>
-    <FluentGridItem xs="12" md="12" lg="9" xl="10" >
-        <FluentStack Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="20" Style="margin-top:10px">
-            <FluentIcon Value="@(new ViewGraphic.Title.Universer())" Color="Color.FillInverse" Width="280px"></FluentIcon>
+    <FluentGridItem xs="12" md="12" lg="9" xl="10">
+        <FluentStack Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Center" VerticalGap="20" Style="margin-top:20px">
+            <div style="text-align:center;">
+                <FluentIcon Value="@(new ViewGraphic.Title.Shared())" Color="Color.FillInverse" Width="280px"></FluentIcon>
+                <FluentIcon Value="@(new ViewGraphic.Title.Service())" Color="Color.FillInverse" Width="320px"></FluentIcon>
+                <FluentIcon Value="@(new ViewGraphic.Title.Center())" Color="Color.FillInverse" Width="280px"></FluentIcon>
+            </div>
             <FluentLabel Typo="Typography.H5">
                 Create shared service center digital ecosystems with operational data service tier. Provide synchronization for corelated concurrent and parallel
-                hypergraphs with bussines process workflow features for various designs and implementations of generated as single code based hybrid applications. 
-                Project applies constantly researched and developed for it purpose faster and more efficient algorithms. Implemented as advancements in undersoft 
-                version of compact .net software development kit
-            </FluentLabel>           
-            </FluentStack>     
+                hypergraphs with bussines process workflow features for various designs and implementations of generated as single code based hybrid applications.
+                Project applies constantly researched and developed for it purpose faster and more efficient algorithms. Implemented as advancements in Undersoft
+                version of compact .NET software development kit
+            </FluentLabel>
+        </FluentStack>
     </FluentGridItem>
     <FluentGridItem xs="12" md="6" lg="3">
-        <FluentStack Orientation="Orientation.Vertical">
+        <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
             <a href="/landing/documentation" role="button">
                 <FluentIcon Value="@(new ViewGraphic.Topic.Documentation())" Color="Color.FillInverse" Width="240px"></FluentIcon>
             </a>
-            <FluentLabel Typo="Typography.H5">
-                - Architecture
-            </FluentLabel>
-            <FluentLabel Typo="Typography.H5">
-                - Reference
-            </FluentLabel>
-            <FluentLabel Typo="Typography.H5">
-                - API
-            </FluentLabel>
+            <ul>
+                <li><FluentLabel Typo="Typography.H5">Architecture</FluentLabel></li>
+                <li><FluentLabel Typo="Typography.H5">Reference</FluentLabel></li>
+                <li><FluentLabel Typo="Typography.H5">API</FluentLabel></li>
+            </ul>
         </FluentStack>
     </FluentGridItem>
     <FluentGridItem xs="12" md="6" lg="3">
-        <FluentStack Orientation="Orientation.Vertical">
+        <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
             <a href="/landing/benchmarks" role="button">
                 <FluentIcon Value="@(new ViewGraphic.Topic.Benchmarks())" Color="Color.FillInverse" Width="240px"></FluentIcon>
             </a>
-            <FluentLabel Typo="Typography.H5">
-                - Performance
-            </FluentLabel>
-            <FluentLabel Typo="Typography.H5">
-                - Efficiency
-            </FluentLabel>
-            <FluentLabel Typo="Typography.H5">
-                - Scalability
-            </FluentLabel>
+            <ul>
+                <li><FluentLabel Typo="Typography.H5">Performance</FluentLabel></li>
+                <li><FluentLabel Typo="Typography.H5">Efficiency</FluentLabel></li>
+                <li><FluentLabel Typo="Typography.H5">Scalability</FluentLabel></li>
+            </ul>
         </FluentStack>
     </FluentGridItem>
     <FluentGridItem xs="12" md="6" lg="3">
-        <FluentStack Orientation="Orientation.Vertical">
+        <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
             <a href="/landing/downloads" role="button">
                 <FluentIcon Value="@(new ViewGraphic.Topic.Downloads())" Color="Color.FillInverse" Width="240px"></FluentIcon>
             </a>
-            <FluentLabel Typo="Typography.H5">
-                - Windows
-            </FluentLabel>
-            <FluentLabel Typo="Typography.H5">
-                - Android
-            </FluentLabel>
-            <FluentLabel Typo="Typography.H5">
-                - iOS
-            </FluentLabel>
-            <FluentLabel Typo="Typography.H5">
-                - Mac OS/X
-            </FluentLabel>
+            <ul>
+                <li><FluentLabel Typo="Typography.H5">Windows</FluentLabel></li>
+                <li><FluentLabel Typo="Typography.H5">Android</FluentLabel></li>
+                <li><FluentLabel Typo="Typography.H5">iOS</FluentLabel></li>
+                <li><FluentLabel Typo="Typography.H5">Mac OS/X</FluentLabel></li>
+            </ul>
         </FluentStack>
-    </FluentGridItem>   
+    </FluentGridItem>
     <FluentGridItem xs="12" md="6" lg="3">
-        <FluentStack Orientation="Orientation.Vertical">
+        <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
             <a href="/landing/contact" role="button">
                 <FluentIcon Value="@(new ViewGraphic.Topic.Contact())" Color="Color.FillInverse" Width="240px"></FluentIcon>
             </a>
-            <FluentLabel Typo="Typography.H5">
-                - Donation
-            </FluentLabel>
-            <FluentLabel Typo="Typography.H5">
-                - Contribution
-            </FluentLabel>
-            <FluentLabel Typo="Typography.H5">
-                - Invitation
-            </FluentLabel>
-            <FluentLabel Typo="Typography.H5">
-                - Proposition
-            </FluentLabel>
+            <ul>
+                <li><FluentLabel Typo="Typography.H5">Author</FluentLabel></li>
+                <li><FluentLabel Typo="Typography.H5">Invite</FluentLabel></li>
+                <li><FluentLabel Typo="Typography.H5">Contribute</FluentLabel></li>
+                <li><FluentLabel Typo="Typography.H5">Donate</FluentLabel></li>
+            </ul>
         </FluentStack>
     </FluentGridItem>
 </FluentGrid>

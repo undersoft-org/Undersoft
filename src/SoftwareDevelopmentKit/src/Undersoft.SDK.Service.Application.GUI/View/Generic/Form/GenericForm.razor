@@ -37,6 +37,8 @@
             FormContext = new EditContext(Content);
             FormContext.OnFieldChanged += FieldChanged;
         }
+
+        base.OnInitialized();
     }
 
     protected override void OnAfterRender(bool firstRender)

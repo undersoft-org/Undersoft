@@ -7,12 +7,10 @@
 
 @inherits ViewItem
 
-<CascadingValue Value="@Data">
-    @foreach (var rubric in Data.Rubrics)
-    {
-        <GenericNavItem Rubric="@rubric" Parent="@this" />
-    }
-</CascadingValue>
+@foreach (var rubric in Data.Rubrics)
+{
+    <GenericNavItem Rubric="@rubric" Data="@Data" Parent="@this" />
+}
 
 
 

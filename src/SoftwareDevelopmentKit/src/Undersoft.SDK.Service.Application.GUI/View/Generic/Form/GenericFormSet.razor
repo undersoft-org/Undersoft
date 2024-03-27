@@ -34,6 +34,7 @@
             FormContext = new EditContext(Data);
             FormContext.OnFieldChanged += FieldChanged;
         }
+        base.OnInitialized();
     }
 
     [Parameter]

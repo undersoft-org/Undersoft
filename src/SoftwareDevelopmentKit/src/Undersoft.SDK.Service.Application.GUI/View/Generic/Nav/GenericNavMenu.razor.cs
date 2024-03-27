@@ -1,12 +1,13 @@
 using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Proxies;
+using Undersoft.SDK.Series;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
 
 namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Nav
 {
-    public partial class GenericNavSetMenu<TMenu> : ViewItem<TMenu> where TMenu : class, IOrigin, IInnerProxy
+    public partial class GenericNavMenu<TMenu> : ViewItem<TMenu> where TMenu : class, IOrigin, IInnerProxy
     {
-        private DotNetObjectReference<GenericNavSetMenu<TMenu>>? _dotNetHelper = null;
+        private DotNetObjectReference<GenericNavMenu<TMenu>>? _dotNetHelper = null;
         private IJSObjectReference _jsModule = default!;
 
         [Inject]
@@ -22,6 +23,10 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Nav
 
             Content.ViewItem = this;
 
+            ChildItems = new Listing<IViewItem>();
+
+            Expanded = true;
+
             base.OnInitialized();
         }
 
@@ -31,14 +36,14 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Nav
             {
                 _jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>(
                     "import",
-                    "./_content/Undersoft.SDK.Service.Application.GUI/Generic/Nav/GenericNav.razor.js"
+                    "./_content/Undersoft.SDK.Service.Application.GUI/View/Generic/Nav/GenericNavMenu.razor.js"
                 );
 
                 _dotNetHelper = DotNetObjectReference.Create(this);
 
-                if (AnchorId is not null)
+                if (BindingId is not null)
                 {
-                    await _jsModule.InvokeVoidAsync("addEventLeftClick", AnchorId, _dotNetHelper);
+                    await _jsModule.InvokeVoidAsync("addEventLeftClick", BindingId, _dotNetHelper);
                 }
             }
 
@@ -48,10 +53,10 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Nav
         public bool Expanded { get; set; }
 
         [Parameter]
-        public override string? Style { get; set; }
+        public bool SingleMenu { get; set; }
 
         [Parameter]
-        public string AnchorId { get; set; } = default!;
+        public override string? Style { get; set; }
 
         [Parameter]
         public IViewItem? Parent { get; set; }
@@ -65,14 +70,14 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Nav
         public int? Width { get; set; }
 
         [Parameter]
-        public bool Collapsible { get; set; }
+        public bool Collapsible { get; set; } = true;
 
         [Parameter]
-        public bool CollapseOnOverlayClick { get; set; } = false;
+        public bool CollapseOnOverlayClick { get; set; } = true;
 
-        private async Task HandleExpandCollapseKeyDownAsync(FluentKeyCodeEventArgs args)
+        public async Task HandleExpandCollapseKeyDownAsync(FluentKeyCodeEventArgs args)
         {
-            if (args.TargetId != AnchorId)
+            if (args.TargetId != BindingId)
             {
                 return;
             }
@@ -86,9 +91,18 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Nav
             await handler;
         }
 
-        private async Task ToggleExpandedAsync() => await Task.FromResult(Expanded = !Expanded);
+        [JSInvokable]
+        public async Task ToggleExpandedAsync()
+        {
+            //if (Expanded)
+            //{
+            //    ChildItems.Cast<GenericNavItem>().ForEach(c => c.Expanded = false).Commit();
+            //}
+            await Task.FromResult(Expanded = !Expanded);
+            this.RenderView();
+        }
 
-        private async Task SetExpandedAsync(bool value)
+        public async Task SetExpandedAsync(bool value)
         {
             if (value == Expanded)
             {
@@ -98,7 +112,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Nav
             await Task.FromResult(Expanded = value);
         }
 
-        private async Task CollapseAsync()
+        public async Task CollapseAsync()
         {
             await Task.FromResult(Expanded = false);
         }

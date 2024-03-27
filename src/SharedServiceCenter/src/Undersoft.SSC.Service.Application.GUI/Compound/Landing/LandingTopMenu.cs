@@ -4,11 +4,11 @@ using Undersoft.SDK.Service.Data.Object;
 
 namespace Undersoft.SSC.Service.Application.GUI.Compound.Landing;
 
-public class LandingTopicMenu : DataObject
+public class LandingTopMenu : DataObject
 {
     [VisibleRubric]
     [IconRubric("MenuIcon")]
-    public LandingTopicMenuItems Menu { get; set; } = new LandingTopicMenuItems();
+    public LandingTopMenuItems Menu { get; set; } = new LandingTopMenuItems();
 
     public Icon MenuIcon = new Icons.Regular.Size20.Navigation();
 }

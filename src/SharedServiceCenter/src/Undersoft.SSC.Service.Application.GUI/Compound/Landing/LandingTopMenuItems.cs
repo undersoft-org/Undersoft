@@ -3,7 +3,7 @@ using Undersoft.SDK.Service.Data.Object;
 
 namespace Undersoft.SSC.Service.Application.GUI.Compound.Landing;
 
-public class LandingTopicMenuItems : DataObject
+public class LandingTopMenuItems : DataObject
 {
     [Link]
     [VisibleRubric]

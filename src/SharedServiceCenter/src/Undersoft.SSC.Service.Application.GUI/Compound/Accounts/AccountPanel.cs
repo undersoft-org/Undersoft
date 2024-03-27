@@ -7,9 +7,9 @@ using Undersoft.SSC.Service.Contracts.Accounts;
 
 namespace Undersoft.SSC.Service.Application.GUI.Compound.Access;
 
-public class LandingAccountPanel
+public class AccountPanel
 {
-    public LandingAccountPanel() { }
+    public AccountPanel() { }
 
     public async Task OpenAccountPanel(IViewPanel<Account> _panel)
     {

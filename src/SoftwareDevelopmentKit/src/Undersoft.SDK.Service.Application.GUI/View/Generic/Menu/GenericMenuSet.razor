@@ -11,7 +11,7 @@
     <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Right" HorizontalGap="5">
         @foreach (var rubric in Data.Rubrics)
         {
-            <div id="@($"{Model.CodeNo}{@rubric.CodeNo}")" role="button">
+            <div id="@($"{Model.Id.ToString()}-{@rubric.Id.ToString()}")" role="button">
                 @if (ShowIcons && rubric.Icon != null && rubric.IconSlot == IconSlot.Start)
                 {
                     <FluentIcon Value="@(rubric.Icon)" Color="Color.FillInverse" Title="@rubric.DisplayName" />
@@ -29,7 +29,7 @@
 
             </div>
             <div>
-                <GenericMenu Position="HorizontalPosition.Right" Rubric="@rubric" AnchorId="@($"{Model.CodeNo}{@rubric.CodeNo}")" Data="@(Data[rubric.RubricId])" Anchored="true" Style="@("margin-top:12px;")" />
+                <GenericMenu Position="HorizontalPosition.Right" Rubric="@rubric" AnchorId="@($"{Model.Id.ToString()}-{@rubric.Id.ToString()}")" Data="@(Data[rubric.RubricId])" Anchored="true" Style="@("margin-top:12px;")" />
             </div>
         }
     </FluentStack>

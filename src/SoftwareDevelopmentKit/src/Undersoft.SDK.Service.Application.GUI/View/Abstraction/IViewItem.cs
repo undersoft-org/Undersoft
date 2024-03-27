@@ -1,4 +1,5 @@
 ﻿using Microsoft.FluentUI.AspNetCore.Components;
+using Undersoft.SDK.Series;
 
 namespace Undersoft.SDK.Service.Application.GUI.View.Abstraction
 {
@@ -17,5 +18,7 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Abstraction
         IViewRubric Rubric { get; set; }
 
         IViewData Data { get; set; }
+
+        ISeries<IViewItem> ChildItems { get; set; }
     }
 }

@@ -17,7 +17,7 @@
 </div>
 <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Right" HorizontalGap="5">
     <div>
-        <GenericAccountMenu TModel="TModel" TValidator="TValidator" Position="HorizontalPosition.Left" Rubric="Data.Rubrics.FirstOrDefault()" AnchorId="account-top-menu" Data="@(Data.FirstOrDefault())" Anchored="true" Style="@("margin-top:8px;")" />
+        <GenericAccountMenu TModel="TModel" TValidator="TValidator" Position="HorizontalPosition.Left" Rubric="@Data.Rubrics.FirstOrDefault()" AnchorId="account-top-menu" Data="@Data.FirstOrDefault()" Anchored="true" Style="@("margin-top:8px;")" />
     </div>
 </FluentStack>
 @code {

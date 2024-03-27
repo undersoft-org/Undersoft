@@ -170,6 +170,12 @@ public class AccountService<TAccount> : IAccountService<TAccount>
 
         var _creds = account?.Credentials;
 
+        if (account.Notes.Status == SigningStatus.InvalidEmail)
+        {
+            _creds.Password = null;
+            return account;
+        }
+
         if (!_creds.IsLockedOut)
         {
             if (await _manager.CheckPassword(_creds.Email, _creds.Password) == null)
@@ -202,7 +208,7 @@ public class AccountService<TAccount> : IAccountService<TAccount>
 
     public async Task<IAuthorization> ConfirmEmail(IAuthorization account)
     {
-        if (account != null && !account.Credentials.IsLockedOut)
+        if (account != null && !account.Credentials.IsLockedOut && account.Credentials.Authenticated)
         {
             var _creds = account.Credentials;
             if (!_creds.EmailConfirmed)
