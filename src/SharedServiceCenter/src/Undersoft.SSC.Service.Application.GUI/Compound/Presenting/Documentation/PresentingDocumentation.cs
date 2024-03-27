@@ -4,7 +4,7 @@ using Undersoft.SDK.Service.Data.Object;
 
 namespace Undersoft.SSC.Service.Application.GUI.Compound.Presenting.Documentation;
 
-public class Documentation : DataObject
+public class PresentingDocumentation : DataObject
 {
     [ExpandRubric]
     [VisibleRubric]

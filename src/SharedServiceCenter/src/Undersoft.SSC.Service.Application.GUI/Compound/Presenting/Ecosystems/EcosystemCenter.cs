@@ -8,14 +8,9 @@ public class EcosystemCenter : DataObject
 {
     [Link]
     [VisibleRubric]
-    public string? Applications { get; set; } = "/presenting/ecosystem/center/applications";
-    public Icon ApplicationsIcon = new Icons.Regular.Size20.AppGeneric();
-
-
-    [Link]
-    [VisibleRubric]
-    public string? Services { get; set; } = "/presenting/ecosystem/center/services";
-    public Icon ServicesIcon = new Icons.Regular.Size20.ServiceBell();
+    [DisplayRubric("Shared services")]
+    public string? SharedServices { get; set; } = "/presenting/ecosystem/center/shared_services";
+    public Icon SharedServicesIcon = new Icons.Regular.Size20.ServiceBell();
 
     [Link]
     [VisibleRubric]

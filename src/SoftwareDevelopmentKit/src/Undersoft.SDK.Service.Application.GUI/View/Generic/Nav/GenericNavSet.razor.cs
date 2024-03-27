@@ -43,7 +43,8 @@ namespace Undersoft.SDK.Service.Application.GUI.View.Generic.Nav
 
                 foreach (var rubric in Data.Rubrics)
                 {
-                    await _jsModule.InvokeVoidAsync("removeExpandIcon", rubric.RubricName);
+                    var display = rubric.IsLink ? "display:none;" : "";
+                    await _jsModule.InvokeVoidAsync("removeExpandIcon", rubric.RubricName, display);
                 }
             }
 

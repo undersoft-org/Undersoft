@@ -1,4 +1,4 @@
-﻿export function removeExpandIcon(id) {
+﻿export function removeExpandIcon(id, display) {
     var item = document.getElementById(id);
     if (!!item) {
         var shadow = item.shadowRoot;
@@ -10,7 +10,7 @@
                 }
             }
             if (node.className === "region") {
-                node.style = "padding:0px; background:var(--neutral-fill-stealth-rest);";
+                node.style = "padding:0px; " + display + " background:var(--neutral-fill-stealth-rest);";
             }
         }
     }

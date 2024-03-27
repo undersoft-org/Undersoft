@@ -40,7 +40,10 @@ body {
 
 nav.sitenav {
     background-color: var(--neutral-fill-layer-rest);
-    height: calc(100dvh - 90px);    
+    border-right-style: solid;
+    border-right-color: var(--accent-fill-rest);
+    border-right-width: 1px;
+    height: calc(100dvh - 90px);
     overflow-y: auto;
 }
 

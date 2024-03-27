@@ -12,14 +12,14 @@
         <FluentAccordion ActiveId="@ActiveId" ExpandMode="AccordionExpandMode.Single" Style="gap:0">
             @foreach (var rubric in Data.Rubrics)
             {
-                <FluentAccordionItem Id="@rubric.RubricName" Class="fluent-nav-group fluent-nav-item" Style="margin:0px;" ExpandedChanged="@((e) => OnExpandLink(rubric))">
+                <FluentAccordionItem Id="@rubric.RubricName" Class="fluent-nav-group fluent-nav-item" Style="margin:0px; border-bottom-color:var(--accent-fill-rest);" ExpandedChanged="@((e) => OnExpandLink(rubric))">
                     <HeadingTemplate>
                         <div style="padding:0px; margin:0px; height:24px">
                             <FluentStack Orientation="Orientation.Horizontal">
                                 <FluentIcon Value="@(rubric.Icon)" Color="Color.Accent" Width="24px" Title="@rubric.DisplayName" Slot="start" />
                                 @if (Expanded)
                                 {
-                                    <FluentLabel Typo="Typography.Subject" Weight="FontWeight.Normal" Color="Color.Accent">
+                                    <FluentLabel Typo="Typography.Subject" Weight="FontWeight.Bold" Color="Color.Accent">
                                         @rubric.DisplayName
                                     </FluentLabel>
                                 }

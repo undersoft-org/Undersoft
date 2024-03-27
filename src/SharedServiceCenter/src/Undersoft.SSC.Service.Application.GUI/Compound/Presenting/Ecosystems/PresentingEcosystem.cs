@@ -4,7 +4,7 @@ using Undersoft.SDK.Service.Data.Object;
 
 namespace Undersoft.SSC.Service.Application.GUI.Compound.Presenting.Ecosystems;
 
-public class Ecosystem : DataObject
+public class PresentingEcosystem : DataObject
 {
     [ExpandRubric]
     [VisibleRubric]
@@ -14,11 +14,16 @@ public class Ecosystem : DataObject
     [ExpandRubric]
     [VisibleRubric]
     public EcosystemService Service { get; set; } = new EcosystemService();
-    public Icon ServiceIcon = new Icons.Regular.Size20.Toolbox();
+    public Icon ServiceIcon = new Icons.Regular.Size20.ServerMultiple();
 
     [ExpandRubric]
     [VisibleRubric]
     public EcosystemAplication Application { get; set; } = new EcosystemAplication();
     public Icon ApplicationIcon = new Icons.Regular.Size20.Apps();
+
+    [ExpandRubric]
+    [VisibleRubric]
+    public EcosystemMember Member { get; set; } = new EcosystemMember();
+    public Icon MemberIcon = new Icons.Regular.Size20.Compose();
 }
 

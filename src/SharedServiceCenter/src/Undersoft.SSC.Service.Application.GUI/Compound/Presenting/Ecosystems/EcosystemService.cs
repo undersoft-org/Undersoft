@@ -15,10 +15,5 @@ public class EcosystemService : DataObject
     [VisibleRubric]
     public string? Applications { get; set; } = "/presenting/ecosystem/service/applications";
     public Icon ApplicationsIcon = new Icons.Regular.Size20.AppFolder();
-
-    [Link]
-    [VisibleRubric]
-    public string? Accounts { get; set; } = "/presenting/ecosystem/service/accounts";
-    public Icon AccountsIcon = new Icons.Regular.Size20.PeopleAdd();
 }
 

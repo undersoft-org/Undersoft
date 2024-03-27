@@ -12,6 +12,11 @@ public class LandingTopMenuItems : DataObject
 
     [Link]
     [VisibleRubric]
+    [DisplayRubric("Ecosystem")]
+    public string Ecosystem { get; set; } = "/landing/ecosystem";
+
+    [Link]
+    [VisibleRubric]
     [DisplayRubric("Documentation")]
     public string Documentation { get; set; } = "/landing/documentation";
 

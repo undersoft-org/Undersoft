@@ -4,7 +4,7 @@ using Undersoft.SDK.Service.Data.Object;
 
 namespace Undersoft.SSC.Service.Application.GUI.Compound.Presenting.Benchmarks;
 
-public class Benchmarks : DataObject
+public class PresentingBenchmarks : DataObject
 {
     [ExpandRubric]
     [VisibleRubric]
@@ -14,7 +14,7 @@ public class Benchmarks : DataObject
 
     [ExpandRubric]
     [VisibleRubric]
-    [DisplayRubric("Series (Data structures)")]
+    [DisplayRubric("Series (Collections)")]
     public BenchmarksSeries Series { get; set; } = new BenchmarksSeries();
     public Icon SeriesIcon = new Icons.Regular.Size20.DataUsageToolbox();
 }
