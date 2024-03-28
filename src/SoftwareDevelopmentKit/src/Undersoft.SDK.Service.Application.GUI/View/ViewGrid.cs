@@ -1,12 +1,10 @@
 ﻿using Microsoft.FluentUI.AspNetCore.Components;
 
-namespace Undersoft.SDK.Service.Application.GUI.View.Attributes
+namespace Undersoft.SDK.Service.Application.GUI.View
 {
-
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    public class GridAttribute : Attribute
+    public class ViewGrid
     {
-        public GridAttribute() { }
+        public ViewGrid() { }
 
         public int? xs { get; set; }
 

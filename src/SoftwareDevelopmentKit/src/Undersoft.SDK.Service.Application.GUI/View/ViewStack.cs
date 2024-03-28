@@ -2,11 +2,9 @@
 
 namespace Undersoft.SDK.Service.Application.GUI.View
 {
-
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    public class StackAttribute : Attribute
+    public class ViewStack : Attribute
     {
-        public StackAttribute() { }
+        public ViewStack() { }
 
         public Orientation? Orientation { get; set; }
 

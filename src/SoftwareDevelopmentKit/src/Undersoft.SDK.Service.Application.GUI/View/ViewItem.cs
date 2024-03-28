@@ -33,20 +33,6 @@ namespace Undersoft.SDK.Service.Application.GUI.View
 
         protected IOrigin origin = new Origin();
 
-        protected override void OnInitialized()
-        {
-            if (Data != null)
-            {
-                BindingId = Data.Model.TypeId.ToString();
-            }
-
-            if (Rubric != null)
-            {
-                Rubric.FieldIdentifier = new FieldIdentifier(this, Rubric.RubricName);
-                Rubric.ViewItem = this;
-            }
-        }
-
         [Parameter]
         public RenderFragment? ChildContent { get; set; }
 
@@ -89,10 +75,30 @@ namespace Undersoft.SDK.Service.Application.GUI.View
         public virtual IInnerProxy Model => Data.Model;
 
         [Parameter]
-        public virtual IViewData Data { get; set; } = default!;
+        public virtual IViewData Data
+        {
+            get => _data;
+            set
+            {
+                _data = value;
+                _data.ViewItem = this;
+                BindingId = _data.Model.TypeId.ToString();
+            }
+        }
+        private IViewData _data = default!;
 
         [Parameter]
-        public virtual IViewRubric Rubric { get; set; } = default!;
+        public virtual IViewRubric Rubric
+        {
+            get => _rubric;
+            set
+            {
+                _rubric = value;
+                _rubric.ViewItem = this;
+                _rubric.FieldIdentifier = new FieldIdentifier(this, value.RubricName);
+            }
+        }
+        private IViewRubric _rubric = default!;
 
         public object? Reference { get; set; } = default!;
 
@@ -208,6 +214,5 @@ namespace Undersoft.SDK.Service.Application.GUI.View
         {
             return origin.Stamp(entity);
         }
-
     }
 }

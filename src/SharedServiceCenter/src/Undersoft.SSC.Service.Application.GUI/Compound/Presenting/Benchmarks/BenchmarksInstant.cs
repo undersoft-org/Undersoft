@@ -8,13 +8,13 @@ public class BenchmarksInstant : DataObject
 {
     [Link]
     [VisibleRubric]
-    [DisplayRubric("Series")]
+    [DisplayRubric("Object structures")]
     public string Series { get; set; } = "/presenting/benchmarks/instant/series";
     public Icon SeriesIcon = new Icons.Regular.Size20.ListBarTree();
 
     [Link]
     [VisibleRubric]
-    [DisplayRubric("Proxies")]
+    [DisplayRubric("Structures proxy")]
     public string Proxies { get; set; } = "/presenting/benchmarks/instant/proxies";
     public Icon ProxiesIcon = new Icons.Regular.Size20.SubGrid();
 }

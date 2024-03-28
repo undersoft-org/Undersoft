@@ -1,4 +1,4 @@
-﻿namespace Undersoft.SDK.Instant.Attributes
+﻿namespace Undersoft.SDK.Service.Application.GUI.View.Attributes
 {
 
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]

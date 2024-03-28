@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.FluentUI.AspNetCore.Components;
+using Undersoft.SDK.Instant.Attributes;
 using Undersoft.SDK.Rubrics;
 using Undersoft.SDK.Series;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
@@ -14,7 +15,15 @@ public class ViewRubric : MemberRubric, IViewRubric
 
     public IViewItem ViewItem { get; set; } = default!;
 
+    public string? Class { get; set; }
+
+    public string? Style { get; set; }
+
     public Icon? Icon { get; set; }
+
+    public ViewGrid? Grid { get; set; }
+
+    public ViewStack? Stack { get; set; }
 
     public void RenderView()
     {

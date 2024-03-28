@@ -68,9 +68,6 @@ namespace Undersoft.SDK
                 if (value != 0 && value != code.TypeId)
                 {
                     code.TypeId = value;
-                    //var t = GetType();
-                    //TypeName = t.FullName;
-                    //code.SetTypeId(TypeName.UniqueKey32());
                 }
             }
         }

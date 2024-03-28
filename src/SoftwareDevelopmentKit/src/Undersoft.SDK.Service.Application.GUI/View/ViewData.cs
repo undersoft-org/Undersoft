@@ -2,6 +2,7 @@ using Microsoft.FluentUI.AspNetCore.Components;
 using Undersoft.SDK.Proxies;
 using Undersoft.SDK.Series.Base;
 using Undersoft.SDK.Service.Application.GUI.View.Abstraction;
+using Undersoft.SDK.Service.Application.GUI.View.Attributes;
 using Undersoft.SDK.Service.Operation;
 using Undersoft.SDK.Uniques;
 
@@ -34,6 +35,7 @@ public class ViewData<TModel> : ListingBase<IViewData>, IViewData<TModel> where 
     public virtual IViewRubrics MapRubrics()
     {
         Rubrics.Put(_proxy.Rubrics.ForOnly(r => r.Visible, r => (ViewRubric)(object)r.ShallowCopy(new ViewRubric())));
+        Rubrics.ForEach(r => ViewAttributes.Resolve(r)).Commit();
         Rubrics.ForOnly(r => r.IconMember != null, r => r.Icon = (Icon)_proxy[r.IconMember]).Commit();
         Rubrics.ForOnly(r => r.Icon == null && _proxy.Rubrics.ContainsKey(r.RubricName + "Icon"), r => r.Icon = (Icon)_proxy[r.RubricName + "Icon"]).Commit();
         Rubrics.ForEach((r, x) => r.RubricOrdinal = x).Commit();

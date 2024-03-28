@@ -6,7 +6,113 @@
     using System.Reflection.Emit;
     using System.Runtime.InteropServices;
     using Undersoft.SDK.Instant.Attributes;
+    using Undersoft.SDK.Invoking;
     using Undersoft.SDK.Rubrics;
+    using Undersoft.SDK.Series;
+
+    public static class InstantResolveAttributes
+    {
+        public static ISeries<IInvoker> Registry;
+        private static InstantCompilerBase InstantCompilerBase;
+
+        static InstantResolveAttributes()
+        {
+            Registry = new Registry<IInvoker>();
+            InstantCompilerBase = new InstantCompilerBase();
+
+            Registry.Add(
+                typeof(KeyAttribute),
+                new Invoker<InstantCompilerBase>(
+                    InstantCompilerBase,
+                    m => m.ResolveInstantCreatorKeyAttributes
+                )
+            );
+            Registry.Add(
+                typeof(KeyRubricAttribute),
+                new Invoker<InstantCompilerBase>(
+                    InstantCompilerBase,
+                    m => m.ResolveInstantCreatorKeyAttributes
+                )
+            );
+            Registry.Add(
+                typeof(IdentityRubricAttribute),
+                new Invoker<InstantCompilerBase>(
+                    InstantCompilerBase,
+                    m => m.ResolveInstantCreatorIdentityAttributes
+                )
+            );
+            Registry.Add(
+                typeof(RequiredRubricAttribute),
+                new Invoker<InstantCompilerBase>(
+                    InstantCompilerBase,
+                    m => m.ResolveInstantCreatorRquiredAttributes
+                )
+            );
+            Registry.Add(
+                typeof(RequiredAttribute),
+                new Invoker<InstantCompilerBase>(
+                    InstantCompilerBase,
+                    m => m.ResolveInstantCreatorRquiredAttributes
+                )
+            );
+            Registry.Add(
+                typeof(VisibleRubricAttribute),
+                new Invoker<InstantCompilerBase>(
+                    InstantCompilerBase,
+                    m => m.ResolveInstantCreatorVisibleAttributes
+                )
+            );
+            Registry.Add(
+                typeof(DisplayRubricAttribute),
+                new Invoker<InstantCompilerBase>(
+                    InstantCompilerBase,
+                    m => m.ResolveInstantCreatorDisplayAttributes
+                )
+            );
+            Registry.Add(
+                typeof(AggregateRubricAttribute),
+                new Invoker<InstantCompilerBase>(
+                    InstantCompilerBase,
+                    m => m.ResolveInstantCreatorAggregateAttributes
+                )
+            );
+            Registry.Add(
+                typeof(ExpandRubricAttribute),
+                new Invoker<InstantCompilerBase>(
+                    InstantCompilerBase,
+                    m => m.ResolveInstantCreatorExpandAttributes
+                )
+            );
+            Registry.Add(
+                typeof(FileRubricAttribute),
+                new Invoker<InstantCompilerBase>(
+                    InstantCompilerBase,
+                    m => m.ResolveInstantCreatorFileAttributes
+                )
+            );
+            Registry.Add(
+                typeof(LinkAttribute),
+                new Invoker<InstantCompilerBase>(
+                    InstantCompilerBase,
+                    m => m.ResolveInstantCreatorLinkAttributes
+                )
+            );
+            Registry.Add(
+                typeof(InvokeAttribute),
+                new Invoker<InstantCompilerBase>(
+                    InstantCompilerBase,
+                    m => m.ResolveInstantCreatorInvokeAttributes
+                )
+            );
+            Registry.Add(
+                typeof(IconRubricAttribute),
+                new Invoker<InstantCompilerBase>(
+                    InstantCompilerBase,
+                    m => m.ResolveInstantCreatorIconAttributes
+                )
+            );
+        }
+    }
 
     public class InstantCompilerBase : InstantCompilerBaseConstructors
     {
@@ -21,32 +127,39 @@
             {
                 mi = ((IMemberRubric)mi).MemberInfo;
 
-                resolveInstantCreatorKeyAttributes(fb, mi, mr);
+                var customAttributes = mi.GetCustomAttributes(false);
 
-                resolveInstantCreatorIdentityAttributes(fb, mi, mr);
+                if (customAttributes.Any())
+                {
+                    var duplicateCheck = new HashSet<string>();
 
-                resolveInstantCreatorRquiredAttributes(fb, mi, mr);
-
-                resolveInstantCreatorVisibleAttributes(fb, mi, mr);
-
-                resolveInstantCreatorDisplayAttributes(fb, mi, mr);
-
-                resolveInstantCreatorAggregateAttributes(fb, mi, mr);
-
-                resolveInstantCreatorExpandAttributes(fb, mi, mr);
-
-                resolveInstantCreatorFileAttributes(fb, mi, mr);
-
-                resolveInstantCreatorLinkAttributes(fb, mi, mr);
-
-                resolveInstantCreatorInvokeAttributes(fb, mi, mr);
-
-                resolveInstantCreatorIconAttributes(fb, mi, mr);
+                    customAttributes.ForEach(a =>
+                    {
+                        var type = a.GetType();
+                        if (InstantResolveAttributes.Registry.TryGet(type, out IInvoker invoker))
+                        {
+                            var methodName = invoker.MethodName;
+                            if (duplicateCheck.Add(methodName))
+                            {
+                                if (methodName != nameof(this.ResolveInstantCreatorIdentityAttributes)
+                                    && methodName != nameof(this.ResolveInstantCreatorKeyAttributes)
+                                )
+                                    invoker.Invoke(fb, mi, mr);
+                                else
+                                    invoker.Invoke(fb, mi, mr, Identities);
+                            }
+                        }
+                    });
+                }
             }
             return mr;
         }
 
-        public void ResolveMarshalAsAttributeForArray(FieldBuilder field, MemberRubric member, Type type)
+        public void ResolveMarshalAsAttributeForArray(
+            FieldBuilder field,
+            MemberRubric member,
+            Type type
+        )
         {
             MemberInfo _member = member.RubricInfo;
             if ((member is MemberRubric) && (member.InstantField != null))
@@ -93,7 +206,11 @@
             }
         }
 
-        public void ResolveMarshalAsAttributeForString(FieldBuilder field, MemberRubric member, Type type)
+        public void ResolveMarshalAsAttributeForString(
+            FieldBuilder field,
+            MemberRubric member,
+            Type type
+        )
         {
             MemberInfo _member = member.RubricInfo;
             if ((member is MemberRubric) && (member.InstantField != null))
@@ -152,14 +269,20 @@
             );
         }
 
-        public void CreateInstantCreatorDisplayAttribute(FieldBuilder field, DisplayRubricAttribute attrib)
+        public void CreateInstantCreatorDisplayAttribute(
+            FieldBuilder field,
+            DisplayRubricAttribute attrib
+        )
         {
             field.SetCustomAttribute(
                 new CustomAttributeBuilder(DisplayRubricCtor, new object[] { attrib.Name })
             );
         }
 
-        public void CreateInstantCreatorIdentityAttribute(FieldBuilder field, IdentityRubricAttribute attrib)
+        public void CreateInstantCreatorIdentityAttribute(
+            FieldBuilder field,
+            IdentityRubricAttribute attrib
+        )
         {
             field.SetCustomAttribute(
                 new CustomAttributeBuilder(
@@ -167,8 +290,8 @@
                     Type.EmptyTypes,
                     new FieldInfo[]
                     {
-                    typeof(IdentityRubricAttribute).GetField("Order"),
-                    typeof(IdentityRubricAttribute).GetField("IsAutoincrement")
+                        typeof(IdentityRubricAttribute).GetField("Order"),
+                        typeof(IdentityRubricAttribute).GetField("IsAutoincrement")
                     },
                     new object[] { attrib.Order, attrib.IsAutoincrement }
                 )
@@ -183,8 +306,8 @@
                     Type.EmptyTypes,
                     new FieldInfo[]
                     {
-                    typeof(KeyRubricAttribute).GetField("Order"),
-                    typeof(KeyRubricAttribute).GetField("IsAutoincrement")
+                        typeof(KeyRubricAttribute).GetField("Order"),
+                        typeof(KeyRubricAttribute).GetField("IsAutoincrement")
                     },
                     new object[] { attrib.Order, attrib.IsAutoincrement }
                 )
@@ -207,21 +330,19 @@
 
         public void CreateInstantCreatorExpandAttribute(FieldBuilder field)
         {
-            field.SetCustomAttribute(
-                new CustomAttributeBuilder(ExpandRubricCtor, Type.EmptyTypes)
-            );
+            field.SetCustomAttribute(new CustomAttributeBuilder(ExpandRubricCtor, Type.EmptyTypes));
         }
 
-        public void CreateInstantCreatorAggregateAttribute(FieldBuilder field, AggregateRubricAttribute attrib)
+        public void CreateInstantCreatorAggregateAttribute(
+            FieldBuilder field,
+            AggregateRubricAttribute attrib
+        )
         {
             field.SetCustomAttribute(
                 new CustomAttributeBuilder(
                     AggregateRubricCtor,
                     Type.EmptyTypes,
-                    new FieldInfo[]
-                    {
-                    typeof(AggregateRubricAttribute).GetField("Operand")
-                    },
+                    new FieldInfo[] { typeof(AggregateRubricAttribute).GetField("Operand") },
                     new object[] { attrib.Operand }
                 )
             );
@@ -235,15 +356,18 @@
                     Type.EmptyTypes,
                     new FieldInfo[]
                     {
-                    typeof(LinkAttribute).GetField("Value"),
-                    typeof(LinkAttribute).GetField("PrefixedLink"),
+                        typeof(LinkAttribute).GetField("Value"),
+                        typeof(LinkAttribute).GetField("PrefixedLink"),
                     },
                     new object[] { attrib.Value, attrib.PrefixedLink }
                 )
             );
         }
 
-        public void CreateInstantCreatorFileAttribute(FieldBuilder field, FileRubricAttribute attrib)
+        public void CreateInstantCreatorFileAttribute(
+            FieldBuilder field,
+            FileRubricAttribute attrib
+        )
         {
             field.SetCustomAttribute(
                 new CustomAttributeBuilder(
@@ -251,8 +375,8 @@
                     Type.EmptyTypes,
                     new FieldInfo[]
                     {
-                    typeof(FileRubricAttribute).GetField("Type"),
-                    typeof(FileRubricAttribute).GetField("DataMember"),
+                        typeof(FileRubricAttribute).GetField("Type"),
+                        typeof(FileRubricAttribute).GetField("DataMember"),
                     },
                     new object[] { attrib.Type, attrib.DataMember }
                 )
@@ -267,17 +391,20 @@
                     Type.EmptyTypes,
                     new FieldInfo[]
                     {
-                    typeof(InvokeAttribute).GetField("Method"),
-                    typeof(InvokeAttribute).GetField("Target"),
-                    typeof(InvokeAttribute).GetField("Type"),
-                    typeof(InvokeAttribute).GetField("Invoker")
+                        typeof(InvokeAttribute).GetField("Method"),
+                        typeof(InvokeAttribute).GetField("Target"),
+                        typeof(InvokeAttribute).GetField("Type"),
+                        typeof(InvokeAttribute).GetField("Invoker")
                     },
                     new object[] { attrib.Method, attrib.Target, attrib.Type, attrib.Invoker }
                 )
             );
         }
 
-        public void CreateInstantCreatorIconAttribute(FieldBuilder field, IconRubricAttribute attrib)
+        public void CreateInstantCreatorIconAttribute(
+            FieldBuilder field,
+            IconRubricAttribute attrib
+        )
         {
             field.SetCustomAttribute(
                 new CustomAttributeBuilder(
@@ -285,8 +412,8 @@
                     Type.EmptyTypes,
                     new FieldInfo[]
                     {
-                    typeof(IconRubricAttribute).GetField("IconMember"),
-                    typeof(IconRubricAttribute).GetField("IconSlot")
+                        typeof(IconRubricAttribute).GetField("IconMember"),
+                        typeof(IconRubricAttribute).GetField("IconSlot")
                     },
                     new object[] { attrib.IconMember, attrib.IconSlot }
                 )
@@ -305,9 +432,14 @@
             );
         }
 
-        void resolveInstantCreatorDisplayAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        public void ResolveInstantCreatorDisplayAttributes(
+            FieldBuilder fb,
+            MemberInfo mi,
+            MemberRubric mr
+        )
         {
-            object o = mi.GetCustomAttributes(typeof(DisplayRubricAttribute), false).FirstOrDefault();
+            object o = mi.GetCustomAttributes(typeof(DisplayRubricAttribute), false)
+                .FirstOrDefault();
             if ((o != null))
             {
                 DisplayRubricAttribute fda = (DisplayRubricAttribute)o;
@@ -319,31 +451,40 @@
             }
             else if (mr.DisplayName != null)
             {
-                CreateInstantCreatorDisplayAttribute(fb, new DisplayRubricAttribute(mr.DisplayName));
+                CreateInstantCreatorDisplayAttribute(
+                    fb,
+                    new DisplayRubricAttribute(mr.DisplayName)
+                );
             }
         }
 
-        void resolveInstantCreatorIdentityAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        public void ResolveInstantCreatorIdentityAttributes(
+            FieldBuilder fb,
+            MemberInfo mi,
+            MemberRubric mr,
+            SortedList<short, MemberRubric> identities
+        )
         {
             if (!mr.IsKey)
             {
-                object o = mi.GetCustomAttributes(typeof(IdentityRubricAttribute), false).FirstOrDefault();
+                object o = mi.GetCustomAttributes(typeof(IdentityRubricAttribute), false)
+                    .FirstOrDefault();
                 if ((o != null))
                 {
                     IdentityRubricAttribute fia = (IdentityRubricAttribute)o;
                     mr.IsIdentity = true;
                     mr.IsAutoincrement = fia.IsAutoincrement;
-                    fia.Order = (short)(Identities.Count);
+                    fia.Order = (short)(identities.Count);
                     mr.IdentityOrder = fia.Order;
-                    Identities.Add(mr.IdentityOrder, mr);
+                    identities.Add(mr.IdentityOrder, mr);
 
                     if (fb != null)
                         CreateInstantCreatorIdentityAttribute(fb, fia);
                 }
                 else if (mr.IsIdentity)
                 {
-                    mr.IdentityOrder = (short)(Identities.Count);
-                    Identities.Add(mr.IdentityOrder, mr);
+                    mr.IdentityOrder = (short)(identities.Count);
+                    identities.Add(mr.IdentityOrder, mr);
 
                     if (fb != null)
                         CreateInstantCreatorIdentityAttribute(
@@ -358,7 +499,12 @@
             }
         }
 
-        void resolveInstantCreatorKeyAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        public void ResolveInstantCreatorKeyAttributes(
+            FieldBuilder fb,
+            MemberInfo mi,
+            MemberRubric mr,
+            SortedList<short, MemberRubric> identities
+        )
         {
             object o = mi.GetCustomAttributes(typeof(KeyAttribute), false).FirstOrDefault();
             if ((o == null))
@@ -376,9 +522,9 @@
                 mr.IsIdentity = true;
                 mr.IsAutoincrement = fka.IsAutoincrement;
 
-                fka.Order = (short)(Identities.Count);
+                fka.Order = (short)(identities.Count);
                 mr.IdentityOrder = fka.Order;
-                Identities.Add(mr.IdentityOrder, mr);
+                identities.Add(mr.IdentityOrder, mr);
 
                 mr.Required = true;
 
@@ -390,8 +536,8 @@
                 mr.IsIdentity = true;
                 mr.Required = true;
 
-                mr.IdentityOrder = (short)(Identities.Count);
-                Identities.Add(mr.IdentityOrder, mr);
+                mr.IdentityOrder = (short)(identities.Count);
+                identities.Add(mr.IdentityOrder, mr);
 
                 if (fb != null)
                     CreateInstantCreatorKeyAttribute(
@@ -405,7 +551,11 @@
             }
         }
 
-        void resolveInstantCreatorRquiredAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        public void ResolveInstantCreatorRquiredAttributes(
+            FieldBuilder fb,
+            MemberInfo mi,
+            MemberRubric mr
+        )
         {
             object o = mi.GetCustomAttributes(typeof(RequiredAttribute), false).FirstOrDefault();
             if ((o == null))
@@ -430,9 +580,14 @@
             }
         }
 
-        void resolveInstantCreatorVisibleAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        public void ResolveInstantCreatorVisibleAttributes(
+            FieldBuilder fb,
+            MemberInfo mi,
+            MemberRubric mr
+        )
         {
-            object o = mi.GetCustomAttributes(typeof(VisibleRubricAttribute), false).FirstOrDefault();
+            object o = mi.GetCustomAttributes(typeof(VisibleRubricAttribute), false)
+                .FirstOrDefault();
             if ((o != null))
             {
                 mr.Visible = true;
@@ -447,9 +602,14 @@
             }
         }
 
-        void resolveInstantCreatorExpandAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        public void ResolveInstantCreatorExpandAttributes(
+            FieldBuilder fb,
+            MemberInfo mi,
+            MemberRubric mr
+        )
         {
-            object o = mi.GetCustomAttributes(typeof(ExpandRubricAttribute), false).FirstOrDefault();
+            object o = mi.GetCustomAttributes(typeof(ExpandRubricAttribute), false)
+                .FirstOrDefault();
             if ((o != null))
             {
                 mr.Expandable = true;
@@ -464,9 +624,14 @@
             }
         }
 
-        void resolveInstantCreatorAggregateAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        public void ResolveInstantCreatorAggregateAttributes(
+            FieldBuilder fb,
+            MemberInfo mi,
+            MemberRubric mr
+        )
         {
-            object o = mi.GetCustomAttributes(typeof(AggregateRubricAttribute), false).FirstOrDefault();
+            object o = mi.GetCustomAttributes(typeof(AggregateRubricAttribute), false)
+                .FirstOrDefault();
             if ((o != null))
             {
                 AggregateRubricAttribute fta = (AggregateRubricAttribute)o;
@@ -486,7 +651,11 @@
             }
         }
 
-        void resolveInstantCreatorFileAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        public void ResolveInstantCreatorFileAttributes(
+            FieldBuilder fb,
+            MemberInfo mi,
+            MemberRubric mr
+        )
         {
             object o = mi.GetCustomAttributes(typeof(FileRubricAttribute), false).FirstOrDefault();
             if ((o != null))
@@ -509,7 +678,11 @@
             }
         }
 
-        void resolveInstantCreatorLinkAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        public void ResolveInstantCreatorLinkAttributes(
+            FieldBuilder fb,
+            MemberInfo mi,
+            MemberRubric mr
+        )
         {
             object o = mi.GetCustomAttributes(typeof(LinkAttribute), false).FirstOrDefault();
             if ((o != null))
@@ -532,7 +705,11 @@
             }
         }
 
-        void resolveInstantCreatorIconAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        public void ResolveInstantCreatorIconAttributes(
+            FieldBuilder fb,
+            MemberInfo mi,
+            MemberRubric mr
+        )
         {
             object o = mi.GetCustomAttributes(typeof(IconRubricAttribute), false).FirstOrDefault();
             if ((o != null))
@@ -548,13 +725,17 @@
             else if (mr.IconMember != null)
             {
                 CreateInstantCreatorIconAttribute(
-                   fb,
-                   new IconRubricAttribute(mr.IconMember, mr.IconSlot)
-               );
+                    fb,
+                    new IconRubricAttribute(mr.IconMember, mr.IconSlot)
+                );
             }
         }
 
-        void resolveInstantCreatorInvokeAttributes(FieldBuilder fb, MemberInfo mi, MemberRubric mr)
+        public void ResolveInstantCreatorInvokeAttributes(
+            FieldBuilder fb,
+            MemberInfo mi,
+            MemberRubric mr
+        )
         {
             object o = mi.GetCustomAttributes(typeof(InvokeAttribute), false).FirstOrDefault();
             if ((o != null))
@@ -572,9 +753,9 @@
             else if (mr.InvokeMethod != null && mr.InvokeType != null)
             {
                 CreateInstantCreatorInvokeAttribute(
-                   fb,
-                   new InvokeAttribute(mr.InvokeType, mr.InvokeMethod)
-               );
+                    fb,
+                    new InvokeAttribute(mr.InvokeType, mr.InvokeMethod)
+                );
             }
             else if (mr.InvokeMethod != null && mr.InvokeTarget != null)
             {

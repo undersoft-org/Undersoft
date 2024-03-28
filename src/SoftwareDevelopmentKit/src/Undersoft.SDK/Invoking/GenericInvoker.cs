@@ -1,9 +1,4 @@
-﻿using System.Reflection;
-using System.Reflection.Emit;
-using Undersoft.SDK.Series;
-using Undersoft.SDK.Uniques;
-
-namespace Undersoft.SDK.Invoking
+﻿namespace Undersoft.SDK.Invoking
 {
     public interface IInvoker<T> : IInvoker { }
 
@@ -15,7 +10,8 @@ namespace Undersoft.SDK.Invoking
             : base(
                 targetObject,
                 targetObject.GetType().GetMethods().FirstOrDefault(m => m.IsPublic)
-            ) { }
+            )
+        { }
 
         public Invoker(Arguments arguemnts) : base(typeof(T).New(), arguemnts) { }
 
@@ -33,13 +29,17 @@ namespace Undersoft.SDK.Invoking
                 typeof(T),
                 method(typeof(T).New<T>(constructorParams)).Method.Name,
                 constructorParams
-            ) { }
+            )
+        { }
 
         public Invoker(Func<T, Delegate> method, params Type[] parameterTypes)
             : base(typeof(T), method(typeof(T).New<T>()).Method.Name, parameterTypes) { }
 
         public Invoker(T targetObject, Func<T, Delegate> method)
             : base(targetObject, method(targetObject).Method.Name) { }
+
+        public Invoker(T targetObject, string method)
+           : base(targetObject, method) { }
 
         public Invoker(Type[] parameterTypes, params object[] constructorParams)
             : base(typeof(T), parameterTypes, constructorParams) { }

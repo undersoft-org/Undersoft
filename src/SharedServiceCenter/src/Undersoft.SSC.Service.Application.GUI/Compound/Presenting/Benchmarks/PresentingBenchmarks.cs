@@ -8,13 +8,13 @@ public class PresentingBenchmarks : DataObject
 {
     [ExpandRubric]
     [VisibleRubric]
-    [DisplayRubric("Instant (JIT)")]
+    [DisplayRubric("Dynamic (JIT)")]
     public BenchmarksInstant Instant { get; set; } = new BenchmarksInstant();
     public Icon InstantIcon = new Icons.Regular.Size20.TableLightning();
 
     [ExpandRubric]
     [VisibleRubric]
-    [DisplayRubric("Series (Collections)")]
+    [DisplayRubric("Data structures")]
     public BenchmarksSeries Series { get; set; } = new BenchmarksSeries();
     public Icon SeriesIcon = new Icons.Regular.Size20.DataUsageToolbox();
 }
